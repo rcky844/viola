@@ -38,6 +38,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebIconDatabase;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -544,6 +545,12 @@ public class MainActivity extends AppCompatActivity {
 
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
+
+        // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
+        // Chrome does this in the current Chrome Dev, but not Chrome release).
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setAllowFileAccess(false);
         webview.getSettings().setAllowContentAccess(false);
