@@ -158,6 +158,14 @@ public class UrlUtils {
                             "(?:;\\s*filename\\*\\s*=\\s*(utf-8|iso-8859-1)'[^']*'(\\S*))?",
                     Pattern.CASE_INSENSITIVE);
 
+    /**
+     * Keys for the capture groups inside CONTENT_DISPOSITION_PATTERN
+     */
+    private static final int ENCODED_FILE_NAME_GROUP = 5;
+    private static final int ENCODING_GROUP = 4;
+    private static final int QUOTED_FILE_NAME_GROUP = 3;
+    private static final int UNQUOTED_FILE_NAME = 2;
+
     @Nullable
     private static String parseContentDisposition(String contentDisposition) {
         try {
@@ -165,22 +173,22 @@ public class UrlUtils {
 
             if (m.find()) {
                 // If escaped string is found, decode it using the given encoding.
-                String encodedFileName = m.group(5);
-                String encoding = m.group(4);
+                String encodedFileName = m.group(ENCODED_FILE_NAME_GROUP);
+                String encoding = m.group(ENCODING_GROUP);
 
                 if (encodedFileName != null) {
                     return decodeHeaderField(encodedFileName, encoding);
                 }
 
                 // Return quoted string if available and replace escaped characters.
-                String quotedFileName = m.group(3);
+                String quotedFileName = m.group(QUOTED_FILE_NAME_GROUP);
 
                 if (quotedFileName != null) {
                     return quotedFileName.replaceAll("\\\\(.)", "$1");
                 }
 
                 // Otherwise try to extract the unquoted file name
-                return m.group(2);
+                return m.group(UNQUOTED_FILE_NAME);
             }
         } catch (IllegalStateException | UnsupportedEncodingException ex) {
             // This function is defined as returning null when it can't parse the header
