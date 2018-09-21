@@ -132,7 +132,7 @@ public class UrlUtils {
                 int lastDotIndex = filename.lastIndexOf('.');
                 String typeFromExt = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
                         filename.substring(lastDotIndex + 1));
-                if (typeFromExt != null && !typeFromExt.equalsIgnoreCase(mimeType)) {
+                if (typeFromExt == null || !typeFromExt.equalsIgnoreCase(mimeType)) {
                     extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
                     if (extension != null) {
                         extension = "." + extension;
