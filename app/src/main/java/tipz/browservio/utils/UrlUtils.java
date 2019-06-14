@@ -176,7 +176,7 @@ public class UrlUtils {
                 String encodedFileName = m.group(ENCODED_FILE_NAME_GROUP);
                 String encoding = m.group(ENCODING_GROUP);
 
-                if (encodedFileName != null) {
+                if (encodedFileName != null && encoding != null) {
                     return decodeHeaderField(encodedFileName, encoding);
                 }
 
