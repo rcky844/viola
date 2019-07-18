@@ -67,35 +67,23 @@ public class UrlUtils {
      * @return file name including extension
      */
     public static String guessFileName(String url, @Nullable String contentDisposition, @Nullable String mimeType) {
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         String filename = null;
         String extension = null;
 
         // Extract file name from content disposition header field
         if (contentDisposition != null) {
             filename = parseContentDisposition(contentDisposition);
-            if (filename != null) {
-                int index = filename.lastIndexOf('/') + 1;
-                if (index > 0) {
-                    filename = filename.substring(index);
-                }
-            }
+            assert filename != null;
+            filename = filename.substring(filename.lastIndexOf("/") + 1);
         }
 
         // If all the other http-related approaches failed, use the plain uri
         if (filename == null) {
             String decodedUrl = Uri.decode(url);
-            if (decodedUrl != null) {
-                int queryIndex = decodedUrl.indexOf('?');
-                // If there is a query string strip it, same as desktop browsers
-                if (queryIndex > 0) {
-                    decodedUrl = decodedUrl.substring(0, queryIndex);
-                }
-                if (!decodedUrl.endsWith("/")) {
-                    int index = decodedUrl.lastIndexOf('/') + 1;
-                    if (index > 0) {
-                        filename = decodedUrl.substring(index);
-                    }
-                }
+            decodedUrl = decodedUrl.substring(decodedUrl.lastIndexOf("/") + 1);
+            if (!decodedUrl.endsWith("/")) {
+                filename = decodedUrl.substring(decodedUrl.lastIndexOf("/") + 1);
             }
         }
 
@@ -129,14 +117,10 @@ public class UrlUtils {
             if (mimeType != null) {
                 // Compare the last segment of the extension against the mime type.
                 // If there's a mismatch, discard the entire extension.
-                int lastDotIndex = filename.lastIndexOf('.');
-                String typeFromExt = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                        filename.substring(lastDotIndex + 1));
-                if (typeFromExt == null || !typeFromExt.equalsIgnoreCase(mimeType)) {
-                    extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
-                    if (extension != null) {
-                        extension = "." + extension;
-                    }
+                String typeFromExt = mimeTypeMap.getMimeTypeFromExtension(
+                        filename.substring(filename.lastIndexOf(".") + 1));
+                if (typeFromExt.equalsIgnoreCase(mimeType)) {
+                    extension = "." + mimeTypeMap.getExtensionFromMimeType(mimeType);
                 }
             }
             if (extension == null) {
