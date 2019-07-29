@@ -59,7 +59,7 @@ public class UrlUtils {
      * Guess the name of the file that should be downloaded.
      * <p>
      * This method is largely identical to {@link android.webkit.URLUtil#guessFileName}
-     * which unfortunately does not implement RfC 5987.
+     * which unfortunately does not implement RFC 5987.
      *
      * @param url                Url to the content
      * @param contentDisposition Content-Disposition HTTP header or {@code null}
@@ -67,9 +67,19 @@ public class UrlUtils {
      * @return file name including extension
      */
     public static String guessFileName(String url, @Nullable String contentDisposition, @Nullable String mimeType) {
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        String filename = extractFileNameFromUrl(contentDisposition, url);
+
+        // Split filename between base and extension
+        // Add an extension if filename does not have one
+        if (filename.contains(".")) {
+            return changeExtension(filename, mimeType);
+        } else {
+            return filename + createExtension(mimeType);
+        }
+    }
+
+    private static String extractFileNameFromUrl(String contentDisposition, String url) {
         String filename = null;
-        String extension = null;
 
         // Extract file name from content disposition header field
         if (contentDisposition != null) {
@@ -92,44 +102,7 @@ public class UrlUtils {
             filename = "downloadfile";
         }
 
-        // Split filename between base and extension
-        // Add an extension if filename does not have one
-        int dotIndex = filename.indexOf('.');
-        if (dotIndex < 0) {
-            if (mimeType != null) {
-                extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
-                if (extension != null) {
-                    extension = "." + extension;
-                }
-            }
-            if (extension == null) {
-                if (mimeType != null && mimeType.toLowerCase(Locale.ROOT).startsWith("text/")) {
-                    if (mimeType.equalsIgnoreCase("text/html")) {
-                        extension = ".html";
-                    } else {
-                        extension = ".txt";
-                    }
-                } else {
-                    extension = ".bin";
-                }
-            }
-        } else {
-            if (mimeType != null) {
-                // Compare the last segment of the extension against the mime type.
-                // If there's a mismatch, discard the entire extension.
-                String typeFromExt = mimeTypeMap.getMimeTypeFromExtension(
-                        filename.substring(filename.lastIndexOf(".") + 1));
-                if (typeFromExt.equalsIgnoreCase(mimeType)) {
-                    extension = "." + mimeTypeMap.getExtensionFromMimeType(mimeType);
-                }
-            }
-            if (extension == null) {
-                extension = filename.substring(dotIndex);
-            }
-            filename = filename.substring(0, dotIndex);
-        }
-
-        return filename + extension;
+        return filename;
     }
 
     /**
@@ -203,5 +176,62 @@ public class UrlUtils {
         }
 
         return stream.toString(encoding);
+    }
+
+    /**
+     * Compare the filename extension with the mime type and change it if necessary.
+     */
+    private static String changeExtension(String filename, String mimeType) {
+        String extension = null;
+        int dotIndex = filename.lastIndexOf(".");
+
+        if (mimeType != null) {
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            // Compare the last segment of the extension against the mime type.
+            // If there's a mismatch, discard the entire extension.
+            String typeFromExt = mimeTypeMap.getMimeTypeFromExtension(filename.substring(filename.lastIndexOf(".") + 1));
+            if (typeFromExt.equalsIgnoreCase(mimeType)) {
+                extension = "." + mimeTypeMap.getExtensionFromMimeType(mimeType);
+                // Check if the extension needs to be changed
+                if (filename.toLowerCase(Locale.ROOT).endsWith(extension.toLowerCase())) {
+                    return filename;
+                }
+            }
+        }
+
+        if (extension != null) {
+            return filename.substring(0, dotIndex) + extension;
+        } else {
+            return filename;
+        }
+    }
+
+    /**
+     * Guess the extension for a file using the mime type.
+     */
+    private static String createExtension(String mimeType) {
+        String extension = null;
+
+        if (mimeType != null) {
+            extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
+            if (extension != null) {
+                extension = "." + extension;
+            }
+        }
+
+        if (extension == null) {
+            if (mimeType != null && mimeType.toLowerCase(Locale.ROOT).startsWith("text/")) {
+                if (mimeType.equalsIgnoreCase("text/html")) {
+                    extension = ".html";
+                } else {
+                    extension = ".txt";
+                }
+            } else {
+                // If there's no mime type assume binary data
+                extension = ".bin";
+            }
+        }
+
+        return extension;
     }
 }
