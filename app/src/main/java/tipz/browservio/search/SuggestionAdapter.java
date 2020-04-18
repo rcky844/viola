@@ -105,8 +105,11 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
         @SuppressWarnings("unchecked")
         protected void publishResults(@Nullable CharSequence constraint, FilterResults results) {
             mItems.clear();
-            if (results.values != null)
+            if (results.values != null) {
                 mItems.addAll((List<String>) results.values);
+                mQueryText = constraint != null
+                        ? constraint.toString().toLowerCase(Locale.getDefault()).trim() : null;
+            }
             notifyDataSetChanged();
         }
     }
