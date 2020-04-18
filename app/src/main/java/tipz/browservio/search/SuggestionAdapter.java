@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
 
     private class ItemFilter extends Filter {
         @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
+        protected FilterResults performFiltering(@Nullable CharSequence constraint) {
             FilterResults results = new FilterResults();
             if (constraint == null || constraint.length() == 0)
                 return results;
@@ -102,12 +103,10 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
 
         @Override
         @SuppressWarnings("unchecked")
-        protected void publishResults(CharSequence constraint, FilterResults results) {
+        protected void publishResults(@Nullable CharSequence constraint, FilterResults results) {
             mItems.clear();
             if (results.values != null)
                 mItems.addAll((List<String>) results.values);
-            mQueryText = constraint != null
-                    ? constraint.toString().toLowerCase(Locale.getDefault()).trim() : null;
             notifyDataSetChanged();
         }
     }
