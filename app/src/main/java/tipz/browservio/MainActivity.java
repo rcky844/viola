@@ -23,6 +23,7 @@ import android.webkit.WebSettings;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.view.View;
+import android.webkit.WebViewClient;
 
 public class MainActivity extends Activity {
 	
@@ -54,7 +55,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onPageStarted(WebView _param1, String _param2, Bitmap _param3) {
 				final String _url = _param2;
-				
+				// Set urledit to current URL
+				urledit.setText(webview.getUrl());
 				super.onPageStarted(_param1, _param2, _param3);
 			}
 			
@@ -75,13 +77,13 @@ public class MainActivity extends Activity {
 		});
 	}
 	private void initializeLogic() {
-		// Set activity title
-		setTitle("Browservio");
 		/* Load default homepage.
 
 Current default page: google.com */
 		defaultURL = "https://www.google.com";
 		webview.loadUrl(defaultURL);
+		// Start downloadManager service
+		_downloadManager();
 	}
 	
 	@Override
@@ -94,6 +96,40 @@ Current default page: google.com */
 			break;
 		}
 	}
+	
+	@Override
+	public void onBackPressed() {
+		// onBackPressed to go back in history or finish activity
+		if (webview.canGoBack()) {
+			// Go back
+			webview.goBack();
+		}
+		else {
+			// Finish activity
+			finish();
+		}
+	}
+	private void _downloadManager () {
+		webview.setDownloadListener(new DownloadListener() {       
+			    @Override
+			    public void onDownloadStart(String url, String userAgent,
+			                                    String contentDisposition, String mimetype,
+			                                    long contentLength) {
+				            DownloadManager.Request request = new DownloadManager.Request(
+				                    Uri.parse(url));
+				
+				            request.allowScanningByMediaScanner();
+				            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+				            final String filename= URLUtil.guessFileName(url, contentDisposition, mimetype);
+				            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+				            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+				            dm.enqueue(request);
+				            Toast.makeText(getApplicationContext(), "Downloading File", //To notify the Client that the file is being downloaded
+				                    Toast.LENGTH_LONG).show();
+				        }
+			    });
+	}
+	
 	
 	@Deprecated
 	public void showMessage(String _s) {

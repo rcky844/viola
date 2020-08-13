@@ -10,18 +10,22 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:padding="8dp"
+		android:background="#039BE5"
 		android:gravity="center_horizontal|center_vertical"
 		android:orientation="horizontal"
 		android:layout_gravity="center_horizontal|center_vertical">
 		<EditText
 			android:id="@+id/urledit"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:padding="8dp"
+			android:layout_height="match_parent"
+			android:gravity="center_vertical"
 			android:textSize="12sp"
 			android:textColor="#000000"
-			android:hint="Edit Text"
+			android:hint="Type web address..."
 			android:textColorHint="#607D8B"
+			android:singleLine="true"
+			android:imeOptions="actionSearch"
+			android:layout_gravity="center_horizontal"
 			android:layout_weight="1"/>
 		<ImageView
 			android:id="@+id/browse"
