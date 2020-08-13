@@ -1,0 +1,39 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/linear_urledit"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="8dp"
+		android:gravity="center_horizontal|center_vertical"
+		android:orientation="horizontal"
+		android:layout_gravity="center_horizontal|center_vertical">
+		<EditText
+			android:id="@+id/urledit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="8dp"
+			android:textSize="12sp"
+			android:textColor="#000000"
+			android:hint="Edit Text"
+			android:textColorHint="#607D8B"
+			android:layout_weight="1"/>
+		<ImageView
+			android:id="@+id/browse"
+			android:layout_width="48dp"
+			android:layout_height="48dp"
+			android:src="@drawable/ic_browse_black"
+			android:scaleType="center"
+			android:scaleX="1.5"
+			android:scaleY="1.5"/>
+	</LinearLayout>
+	<WebView
+		android:id="@+id/webview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+</LinearLayout>
