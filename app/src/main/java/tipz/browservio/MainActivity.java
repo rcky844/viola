@@ -145,16 +145,23 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("grey", browse);
-				if (browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
-					_browservio_browse();
+				if (urledit.getText().toString().equals("browservio://defaulterror") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
+					defaulterror = true;
+					urledit.setText("browservio://defaulterror");
+					webview.loadUrl("file:///sdcard/Browservio/error/setorerr.html");
 				}
 				else {
-					if (urledit.getText().toString().equals("")) {
-						urledit.setError("This flied cannot be empty");
+					if (browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
+						_browservio_browse();
 					}
 					else {
-						webview.loadUrl(urledit.getText().toString());
-						urledit.setText(urledit.getText().toString());
+						if (urledit.getText().toString().equals("")) {
+							urledit.setError("This flied cannot be empty");
+						}
+						else {
+							webview.loadUrl(urledit.getText().toString());
+							urledit.setText(urledit.getText().toString());
+						}
 					}
 				}
 			}
@@ -274,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
 											urledit.setText("browservio://error");
 										}
 										else {
-											urledit.setText("");
+											urledit.setText(webview.getUrl());
 										}
 									}
 								}
@@ -513,11 +520,6 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		/* Load default homepage.
-
-Current default page: https://www.google.com/ */
-		webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
-		urledit.setText(browservio_saver.getString("defaultHomePage", ""));
 		page_before_error = "browservio://no_error";
 		// desktopMode init code
 		webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
@@ -629,27 +631,20 @@ Current default page: https://www.google.com/ */
 	
 	
 	private void _browservio_browse () {
-		if (urledit.getText().toString().equals("browservio://defaulterror") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
-			urledit.setText("browservio://defaulterror");
-			webview.loadUrl("file:///sdcard/Browservio/error/setorerr.html");
-			defaulterror = true;
+		if (page_before_error.equals("browservio://no_error")) {
+			// Load URL from editurl
+			if(URLUtil.isValidUrl(urledit.getText().toString())) {
+				webview.loadUrl(urledit.getText().toString());
+			} else {
+				googleLoad = browservio_saver.getString("defaultSearch", "").concat(urledit.getText().toString());
+				webview.loadUrl(googleLoad);
+				urledit.setText(googleLoad);
+			}
 		}
 		else {
-			if (page_before_error.equals("browservio://no_error")) {
-				// Load URL from editurl
-				if(URLUtil.isValidUrl(urledit.getText().toString())) {
-					webview.loadUrl(urledit.getText().toString());
-				} else {
-					googleLoad = browservio_saver.getString("defaultSearch", "").concat(urledit.getText().toString());
-					webview.loadUrl(googleLoad);
-					urledit.setText(googleLoad);
-				}
-			}
-			else {
-				webview.loadUrl(page_before_error);
-				urledit.setText(page_before_error);
-				page_before_error = "browservio://no_error";
-			}
+			webview.loadUrl(page_before_error);
+			urledit.setText(page_before_error);
+			page_before_error = "browservio://no_error";
 		}
 	}
 	
@@ -703,6 +698,11 @@ Current default page: https://www.google.com/ */
 		}
 		// Settings check
 		_checkSettings();
+		/* Load default homepage.
+
+Current default page: https://www.google.com/ */
+		webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
+		urledit.setText(browservio_saver.getString("defaultHomePage", ""));
 	}
 	
 	
