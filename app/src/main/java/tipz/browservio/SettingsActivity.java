@@ -36,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private Toolbar _toolbar;
 	private boolean linear_general_open = false;
 	private boolean linear_advenced_open = false;
+	private boolean linear_about_open = false;
 	
 	private ScrollView vscroll_back;
 	private LinearLayout linear_back;
@@ -43,6 +44,8 @@ public class SettingsActivity extends AppCompatActivity {
 	private LinearLayout linear6;
 	private LinearLayout linear_advenced;
 	private LinearLayout linear5;
+	private LinearLayout linear_about;
+	private LinearLayout linear8;
 	private TextView textview_cool2;
 	private ImageView imageview4;
 	private LinearLayout linear1_homepage;
@@ -68,6 +71,11 @@ public class SettingsActivity extends AppCompatActivity {
 	private CheckBox checkbox2;
 	private TextView textview12;
 	private TextView textview13;
+	private TextView textview17;
+	private ImageView imageview5;
+	private LinearLayout linear_versuob;
+	private TextView textview23;
+	private TextView textview24;
 	
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -97,6 +105,8 @@ public class SettingsActivity extends AppCompatActivity {
 		linear6 = (LinearLayout) findViewById(R.id.linear6);
 		linear_advenced = (LinearLayout) findViewById(R.id.linear_advenced);
 		linear5 = (LinearLayout) findViewById(R.id.linear5);
+		linear_about = (LinearLayout) findViewById(R.id.linear_about);
+		linear8 = (LinearLayout) findViewById(R.id.linear8);
 		textview_cool2 = (TextView) findViewById(R.id.textview_cool2);
 		imageview4 = (ImageView) findViewById(R.id.imageview4);
 		linear1_homepage = (LinearLayout) findViewById(R.id.linear1_homepage);
@@ -122,6 +132,11 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox2 = (CheckBox) findViewById(R.id.checkbox2);
 		textview12 = (TextView) findViewById(R.id.textview12);
 		textview13 = (TextView) findViewById(R.id.textview13);
+		textview17 = (TextView) findViewById(R.id.textview17);
+		imageview5 = (ImageView) findViewById(R.id.imageview5);
+		linear_versuob = (LinearLayout) findViewById(R.id.linear_versuob);
+		textview23 = (TextView) findViewById(R.id.textview23);
+		textview24 = (TextView) findViewById(R.id.textview24);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		
@@ -155,6 +170,23 @@ public class SettingsActivity extends AppCompatActivity {
 					imageview1.setImageResource(R.drawable.ic_arrow_down_white);
 					linear5.setVisibility(View.VISIBLE);
 					linear_advenced_open = true;
+				}
+			}
+		});
+		
+		linear_about.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				_rippleAnimator("grey", textview17);
+				if (linear_about_open) {
+					imageview5.setImageResource(R.drawable.ic_arrow_up_white);
+					linear8.setVisibility(View.GONE);
+					linear_about_open = false;
+				}
+				else {
+					imageview5.setImageResource(R.drawable.ic_arrow_down_white);
+					linear8.setVisibility(View.VISIBLE);
+					linear_about_open = true;
 				}
 			}
 		});
@@ -283,6 +315,22 @@ public class SettingsActivity extends AppCompatActivity {
 				else {
 					browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 				}
+			}
+		});
+		
+		linear_versuob.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				_rippleAnimator("grey", linear_versuob);
+				dialog.setTitle("Version information");
+				dialog.setMessage("Version name: 1.2 build 2\nVersion technical name: 1.2.2\nVersion code: 6\nVersion build date: 2020-08-16");
+				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						
+					}
+				});
+				dialog.create().show();
 			}
 		});
 	}

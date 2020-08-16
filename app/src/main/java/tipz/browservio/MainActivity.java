@@ -151,16 +151,21 @@ public class MainActivity extends AppCompatActivity {
 					webview.loadUrl("file:///sdcard/Browservio/error/setorerr.html");
 				}
 				else {
-					if (browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
-						_browservio_browse();
+					if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/error.html")) {
+						_errorpage();
 					}
 					else {
-						if (urledit.getText().toString().equals("")) {
-							urledit.setError("This flied cannot be empty");
+						if (browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
+							_browservio_browse();
 						}
 						else {
-							webview.loadUrl(urledit.getText().toString());
-							urledit.setText(urledit.getText().toString());
+							if (urledit.getText().toString().equals("")) {
+								urledit.setError("This flied cannot be empty");
+							}
+							else {
+								webview.loadUrl(urledit.getText().toString());
+								urledit.setText(urledit.getText().toString());
+							}
 						}
 					}
 				}
@@ -546,24 +551,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 				else {
 					page_before_error = urledit.getText().toString();
-					         webview.loadUrl("file:///sdcard/Browservio/error/error.html");
-					//Setup media player (rewrote 200815-1307)
-					errorsound = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
-					errorsound.start();
-					errortime = new TimerTask() {
-						@Override
-						public void run() {
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									errorsound.reset();
-									errortime.cancel();
-								}
-							});
-						}
-					};
-					_timer.schedule(errortime, (int)(5500));
-					         urledit.setText("browservio://error");
+					_errorpage();
 				}
 				
 				    }
@@ -703,6 +691,28 @@ public class MainActivity extends AppCompatActivity {
 Current default page: https://www.google.com/ */
 		webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
 		urledit.setText(browservio_saver.getString("defaultHomePage", ""));
+	}
+	
+	
+	private void _errorpage () {
+		         webview.loadUrl("file:///sdcard/Browservio/error/error.html");
+		//Setup media player (rewrote 200815-1307)
+		errorsound = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
+		errorsound.start();
+		errortime = new TimerTask() {
+			@Override
+			public void run() {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						errorsound.reset();
+						errortime.cancel();
+					}
+				});
+			}
+		};
+		_timer.schedule(errortime, (int)(5500));
+		         urledit.setText("browservio://error");
 	}
 	
 	
