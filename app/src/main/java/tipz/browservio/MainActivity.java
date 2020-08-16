@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 	private MediaPlayer errorsound;
 	private TimerTask errortime;
 	private TimerTask teat;
+	private TimerTask rest;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -152,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
 						urledit.setError("This flied cannot be empty");
 					}
 					else {
-						_browservio_browse();
+						webview.loadUrl(urledit.getText().toString());
+						urledit.setText(urledit.getText().toString());
 					}
 				}
 			}
@@ -452,18 +454,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 	private void initializeLogic() {
 		setTitle("Browservio");
-		// First launch code
-		if (!browservio_saver.getString("configVersion", "").equals("3") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
-			browservio_saver.edit().putString("configVersion", "3").commit();
-			browservio_saver.edit().putString("isFirstLaunch", "0").commit();
-			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
-			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
-			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
-			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
-			_resetduetoup();
-		}
-		// Settings check
-		_checkSettings();
+		_firstLaunch();
 	}
 	
 	@Override
@@ -581,13 +572,13 @@ Current default page: https://www.google.com/ */
 	public void onResume() {
 		super.onResume();
 		// Settings check
-		_checkSettings();
 		if (actuallypaused) {
 			// Load Url before crashing
 			webview.loadUrl(beforepauseUrl);
 			urledit.setText(beforepauseUrl);
 			actuallypaused = false;
 		}
+		_firstLaunch();
 	}
 	
 	@Override
@@ -673,6 +664,45 @@ Current default page: https://www.google.com/ */
 			}
 		});
 		dialog.create().show();
+	}
+	
+	
+	private void _firstLaunch () {
+		// First launch code
+		if (!browservio_saver.getString("configVersion", "").equals("4") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
+			if (!browservio_saver.getString("configVersion", "").equals("4") && !browservio_saver.getString("configVersion", "").equals("")) {
+				_resetduetoup();
+			}
+			if (browservio_saver.getString("isFirstLaunch", "").equals("1")) {
+				SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully! Browservio will now restart!");
+				browservio_saver.edit().putString("isFirstLaunch", "").commit();
+				rest = new TimerTask() {
+					@Override
+					public void run() {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Intent i = getIntent();
+								finish();
+								startActivity(i);
+								webview.clearCache(true);
+								webview.clearHistory();
+								rest.cancel();
+							}
+						});
+					}
+				};
+				_timer.schedule(rest, (int)(2000));
+			}
+			browservio_saver.edit().putString("configVersion", "4").commit();
+			browservio_saver.edit().putString("isFirstLaunch", "0").commit();
+			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
+			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
+			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
+			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
+		}
+		// Settings check
+		_checkSettings();
 	}
 	
 	

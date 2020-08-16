@@ -47,12 +47,15 @@ public class SettingsActivity extends AppCompatActivity {
 	private ImageView imageview4;
 	private LinearLayout linear1_homepage;
 	private LinearLayout linear1_searches;
+	private LinearLayout linear1_b0;
 	private LinearLayout linear1_homepages;
 	private TextView textview4;
 	private TextView textview5;
 	private LinearLayout linear1_search;
 	private TextView textview8;
 	private TextView textview9;
+	private TextView textview15;
+	private TextView textview16;
 	private TextView textview_cool1;
 	private ImageView imageview1;
 	private LinearLayout linear1_javascript;
@@ -98,12 +101,15 @@ public class SettingsActivity extends AppCompatActivity {
 		imageview4 = (ImageView) findViewById(R.id.imageview4);
 		linear1_homepage = (LinearLayout) findViewById(R.id.linear1_homepage);
 		linear1_searches = (LinearLayout) findViewById(R.id.linear1_searches);
+		linear1_b0 = (LinearLayout) findViewById(R.id.linear1_b0);
 		linear1_homepages = (LinearLayout) findViewById(R.id.linear1_homepages);
 		textview4 = (TextView) findViewById(R.id.textview4);
 		textview5 = (TextView) findViewById(R.id.textview5);
 		linear1_search = (LinearLayout) findViewById(R.id.linear1_search);
 		textview8 = (TextView) findViewById(R.id.textview8);
 		textview9 = (TextView) findViewById(R.id.textview9);
+		textview15 = (TextView) findViewById(R.id.textview15);
+		textview16 = (TextView) findViewById(R.id.textview16);
 		textview_cool1 = (TextView) findViewById(R.id.textview_cool1);
 		imageview1 = (ImageView) findViewById(R.id.imageview1);
 		linear1_javascript = (LinearLayout) findViewById(R.id.linear1_javascript);
@@ -150,6 +156,29 @@ public class SettingsActivity extends AppCompatActivity {
 					linear5.setVisibility(View.VISIBLE);
 					linear_advenced_open = true;
 				}
+			}
+		});
+		
+		linear1_b0.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				_rippleAnimator("grey", linear1_b0);
+				dialog.setTitle("Are you sure?");
+				dialog.setMessage("Once you reset Browservio, your data will be gone forever!");
+				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						browservio_saver.edit().putString("isFirstLaunch", "1").commit();
+						finish();
+					}
+				});
+				dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						
+					}
+				});
+				dialog.create().show();
 			}
 		});
 		

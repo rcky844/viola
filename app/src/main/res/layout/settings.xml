@@ -43,7 +43,7 @@
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:text="General"
-						android:textSize="18sp"
+						android:textSize="16sp"
 						android:textStyle="bold"
 						android:textColor="#FFFFFF"/>
 					<ImageView
@@ -125,6 +125,33 @@
 								android:textColor="#000000"/>
 						</LinearLayout>
 					</LinearLayout>
+					<LinearLayout
+						android:id="@+id/linear1_b0"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:padding="8dp"
+						android:orientation="vertical">
+						<TextView
+							android:id="@+id/textview15"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:paddingLeft="8dp"
+							android:paddingTop="8dp"
+							android:paddingRight="8dp"
+							android:text="Reset to default"
+							android:textSize="16sp"
+							android:textColor="#000000"/>
+						<TextView
+							android:id="@+id/textview16"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:paddingLeft="8dp"
+							android:paddingRight="8dp"
+							android:paddingBottom="8dp"
+							android:text="This will reset everything and bring you back to original settings."
+							android:textSize="12sp"
+							android:textColor="#000000"/>
+					</LinearLayout>
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear_advenced"
@@ -140,7 +167,7 @@
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:text="Advanced"
-						android:textSize="18sp"
+						android:textSize="16sp"
 						android:textStyle="bold"
 						android:textColor="#FFFFFF"
 						android:singleLine="true"/>
