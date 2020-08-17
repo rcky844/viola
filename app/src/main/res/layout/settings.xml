@@ -39,19 +39,20 @@
 					android:layout_gravity="center_horizontal|center_vertical">
 					<TextView
 						android:id="@+id/textview_cool2"
-						android:layout_width="wrap_content"
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:text="General"
 						android:textSize="16sp"
 						android:textStyle="bold"
-						android:textColor="#FFFFFF"/>
+						android:textColor="#FFFFFF"
+						android:layout_weight="1"/>
 					<ImageView
 						android:id="@+id/imageview4"
-						android:layout_width="match_parent"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:src="@drawable/ic_arrow_down_white"
-						android:scaleType="fitEnd"/>
+						android:src="@drawable/ic_arrow_up_white"
+						android:scaleType="center"/>
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear6"
@@ -158,25 +159,26 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:background="#0288D1"
-					android:gravity="center_horizontal|center_vertical"
+					android:gravity="right|center_vertical"
 					android:orientation="horizontal"
-					android:layout_gravity="center_horizontal|center_vertical">
+					android:layout_gravity="right|center_vertical">
 					<TextView
 						android:id="@+id/textview_cool1"
-						android:layout_width="wrap_content"
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:text="Advanced"
 						android:textSize="16sp"
 						android:textStyle="bold"
 						android:textColor="#FFFFFF"
-						android:singleLine="true"/>
+						android:singleLine="true"
+						android:layout_weight="1"/>
 					<ImageView
 						android:id="@+id/imageview1"
-						android:layout_width="match_parent"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:src="@drawable/ic_arrow_down_white"
-						android:scaleType="fitEnd"/>
+						android:src="@drawable/ic_arrow_up_white"
+						android:scaleType="center"/>
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear5"
@@ -289,20 +291,21 @@
 					android:layout_gravity="center_horizontal|center_vertical">
 					<TextView
 						android:id="@+id/textview17"
-						android:layout_width="wrap_content"
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:text="About"
+						android:text="Help"
 						android:textSize="16sp"
 						android:textStyle="bold"
 						android:textColor="#FFFFFF"
-						android:singleLine="true"/>
+						android:singleLine="true"
+						android:layout_weight="1"/>
 					<ImageView
 						android:id="@+id/imageview5"
-						android:layout_width="match_parent"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:src="@drawable/ic_arrow_down_white"
-						android:scaleType="fitEnd"/>
+						android:src="@drawable/ic_arrow_up_white"
+						android:scaleType="center"/>
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear8"
@@ -333,7 +336,34 @@
 							android:paddingLeft="8dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
-							android:text="Browservio version 1.2 build 2"
+							android:text="Browservio version 1.2 build 3 Development Release 2"
+							android:textSize="12sp"
+							android:textColor="#000000"/>
+					</LinearLayout>
+					<LinearLayout
+						android:id="@+id/linear_feed"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:padding="8dp"
+						android:orientation="vertical">
+						<TextView
+							android:id="@+id/textview25"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:paddingLeft="8dp"
+							android:paddingTop="8dp"
+							android:paddingRight="8dp"
+							android:text="Feedback"
+							android:textSize="16sp"
+							android:textColor="#000000"/>
+						<TextView
+							android:id="@+id/textview26"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:paddingLeft="8dp"
+							android:paddingRight="8dp"
+							android:paddingBottom="8dp"
+							android:text="Give feedback to improve the quality of Browservio."
 							android:textSize="12sp"
 							android:textColor="#000000"/>
 					</LinearLayout>

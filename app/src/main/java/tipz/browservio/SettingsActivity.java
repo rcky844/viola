@@ -27,6 +27,14 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.animation.ObjectAnimator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.content.Intent;
+import android.net.Uri;
 import android.widget.CompoundButton;
 import android.view.View;
 
@@ -74,11 +82,19 @@ public class SettingsActivity extends AppCompatActivity {
 	private TextView textview17;
 	private ImageView imageview5;
 	private LinearLayout linear_versuob;
+	private LinearLayout linear_feed;
 	private TextView textview23;
 	private TextView textview24;
+	private TextView textview25;
+	private TextView textview26;
 	
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
+	private ObjectAnimator stackanim = new ObjectAnimator();
+	private AlertDialog.Builder dialog1;
+	private AlertDialog.Builder dabt;
+	private AlertDialog.Builder drst;
+	private Intent telegrambot = new Intent();
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -135,24 +151,38 @@ public class SettingsActivity extends AppCompatActivity {
 		textview17 = (TextView) findViewById(R.id.textview17);
 		imageview5 = (ImageView) findViewById(R.id.imageview5);
 		linear_versuob = (LinearLayout) findViewById(R.id.linear_versuob);
+		linear_feed = (LinearLayout) findViewById(R.id.linear_feed);
 		textview23 = (TextView) findViewById(R.id.textview23);
 		textview24 = (TextView) findViewById(R.id.textview24);
+		textview25 = (TextView) findViewById(R.id.textview25);
+		textview26 = (TextView) findViewById(R.id.textview26);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
+		dialog1 = new AlertDialog.Builder(this);
+		dabt = new AlertDialog.Builder(this);
+		drst = new AlertDialog.Builder(this);
 		
 		linear_general.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("grey", textview_cool2);
 				if (linear_general_open) {
-					imageview4.setImageResource(R.drawable.ic_arrow_up_white);
 					linear6.setVisibility(View.GONE);
 					linear_general_open = false;
+					stackanim.setTarget(imageview4);
+					stackanim.setPropertyName("rotation");
+					stackanim.setFloatValues((float)(0), (float)(180));
+					stackanim.setDuration((int)(250));
+					stackanim.start();
 				}
 				else {
-					imageview4.setImageResource(R.drawable.ic_arrow_down_white);
 					linear6.setVisibility(View.VISIBLE);
 					linear_general_open = true;
+					stackanim.setTarget(imageview4);
+					stackanim.setPropertyName("rotation");
+					stackanim.setFloatValues((float)(180), (float)(0));
+					stackanim.setDuration((int)(250));
+					stackanim.start();
 				}
 			}
 		});
@@ -162,14 +192,22 @@ public class SettingsActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				_rippleAnimator("grey", textview_cool1);
 				if (linear_advenced_open) {
-					imageview1.setImageResource(R.drawable.ic_arrow_up_white);
 					linear5.setVisibility(View.GONE);
 					linear_advenced_open = false;
+					stackanim.setTarget(imageview1);
+					stackanim.setPropertyName("rotation");
+					stackanim.setFloatValues((float)(0), (float)(180));
+					stackanim.setDuration((int)(250));
+					stackanim.start();
 				}
 				else {
-					imageview1.setImageResource(R.drawable.ic_arrow_down_white);
 					linear5.setVisibility(View.VISIBLE);
 					linear_advenced_open = true;
+					stackanim.setTarget(imageview1);
+					stackanim.setPropertyName("rotation");
+					stackanim.setFloatValues((float)(180), (float)(0));
+					stackanim.setDuration((int)(250));
+					stackanim.start();
 				}
 			}
 		});
@@ -179,14 +217,22 @@ public class SettingsActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				_rippleAnimator("grey", textview17);
 				if (linear_about_open) {
-					imageview5.setImageResource(R.drawable.ic_arrow_up_white);
 					linear8.setVisibility(View.GONE);
 					linear_about_open = false;
+					stackanim.setTarget(imageview5);
+					stackanim.setPropertyName("rotation");
+					stackanim.setFloatValues((float)(0), (float)(180));
+					stackanim.setDuration((int)(250));
+					stackanim.start();
 				}
 				else {
-					imageview5.setImageResource(R.drawable.ic_arrow_down_white);
 					linear8.setVisibility(View.VISIBLE);
 					linear_about_open = true;
+					stackanim.setTarget(imageview5);
+					stackanim.setPropertyName("rotation");
+					stackanim.setFloatValues((float)(180), (float)(0));
+					stackanim.setDuration((int)(250));
+					stackanim.start();
 				}
 			}
 		});
@@ -195,22 +241,22 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("grey", linear1_b0);
-				dialog.setTitle("Are you sure?");
-				dialog.setMessage("Once you reset Browservio, your data will be gone forever!");
-				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				drst.setTitle("Are you sure?");
+				drst.setMessage("Once you reset Browservio, your data will be gone forever!");
+				drst.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						browservio_saver.edit().putString("isFirstLaunch", "1").commit();
 						finish();
 					}
 				});
-				dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				drst.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						
 					}
 				});
-				dialog.create().show();
+				drst.create().show();
 			}
 		});
 		
@@ -244,25 +290,25 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("grey", linear1_search);
-				dialog.setTitle("Search engine");
-				dialog.setMessage("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
+				dialog1.setTitle("Search engine");
+				dialog1.setMessage("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
 				final EditText custom_se = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
-				custom_se.setLayoutParams(lp); dialog.setView(custom_se);
-				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				custom_se.setLayoutParams(lp); dialog1.setView(custom_se);
+				dialog1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).commit();
 						textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultSearch", "")));
 					}
 				});
-				dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				dialog1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						
 					}
 				});
-				dialog.setCancelable(false);
-				dialog.create().show();
+				dialog1.setCancelable(false);
+				dialog1.create().show();
 			}
 		});
 		
@@ -322,15 +368,25 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("grey", linear_versuob);
-				dialog.setTitle("Version information");
-				dialog.setMessage("Version name: 1.2 build 2\nVersion technical name: 1.2.2\nVersion code: 6\nVersion build date: 2020-08-16");
-				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				dabt.setTitle("Version information");
+				dabt.setMessage("Version name: 1.2 build 3 Development Release 2\nVersion technical name: 1.2.3.2\nVersion code: 8\nVersion build date: 2020-08-17");
+				dabt.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						
 					}
 				});
-				dialog.create().show();
+				dabt.create().show();
+			}
+		});
+		
+		linear_feed.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				_rippleAnimator("grey", linear_feed);
+				telegrambot.setAction(Intent.ACTION_VIEW);
+				telegrambot.setData(Uri.parse("https://t.me/BrowservioBot"));
+				startActivity(telegrambot);
 			}
 		});
 	}
@@ -344,6 +400,7 @@ public class SettingsActivity extends AppCompatActivity {
 		}
 		linear_general_open = true;
 		linear_advenced_open = true;
+		linear_about_open = true;
 	}
 	
 	@Override

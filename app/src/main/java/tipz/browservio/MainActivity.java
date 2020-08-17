@@ -33,6 +33,12 @@ import android.net.Uri;
 import android.media.MediaPlayer;
 import java.util.Timer;
 import java.util.TimerTask;
+import android.animation.ObjectAnimator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.view.View;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.ActivityCompat;
@@ -71,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 	private LinearLayout linear_control_b4;
 	private LinearLayout linear_control_b5;
 	private LinearLayout linear_control_b6;
+	private LinearLayout linear_control_b8;
+	private LinearLayout linear5;
 	private ImageView back;
 	private ImageView forward;
 	private ImageView reload;
@@ -79,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 	private ImageView ic_clear;
 	private ImageView ic_share;
 	private ImageView settings;
+	private ImageView imageview1;
 	
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -87,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
 	private TimerTask errortime;
 	private TimerTask teat;
 	private TimerTask rest;
+	private ObjectAnimator baranim = new ObjectAnimator();
+	private TimerTask reloadt;
+	private TimerTask error_defuse;
+	private TimerTask starthome;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -130,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b4 = (LinearLayout) findViewById(R.id.linear_control_b4);
 		linear_control_b5 = (LinearLayout) findViewById(R.id.linear_control_b5);
 		linear_control_b6 = (LinearLayout) findViewById(R.id.linear_control_b6);
+		linear_control_b8 = (LinearLayout) findViewById(R.id.linear_control_b8);
+		linear5 = (LinearLayout) findViewById(R.id.linear5);
 		back = (ImageView) findViewById(R.id.back);
 		forward = (ImageView) findViewById(R.id.forward);
 		reload = (ImageView) findViewById(R.id.reload);
@@ -138,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
 		ic_clear = (ImageView) findViewById(R.id.ic_clear);
 		ic_share = (ImageView) findViewById(R.id.ic_share);
 		settings = (ImageView) findViewById(R.id.settings);
+		imageview1 = (ImageView) findViewById(R.id.imageview1);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		
@@ -161,10 +177,21 @@ public class MainActivity extends AppCompatActivity {
 						else {
 							if (urledit.getText().toString().equals("")) {
 								urledit.setError("This flied cannot be empty");
+								error_defuse = new TimerTask() {
+									@Override
+									public void run() {
+										runOnUiThread(new Runnable() {
+											@Override
+											public void run() {
+												urledit.setError(null);
+											}
+										});
+									}
+								};
+								_timer.schedule(error_defuse, (int)(3000));
 							}
 							else {
-								webview.loadUrl(urledit.getText().toString());
-								urledit.setText(urledit.getText().toString());
+								_browservio_browse();
 							}
 						}
 					}
@@ -203,17 +230,7 @@ public class MainActivity extends AppCompatActivity {
 							runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
-									if (urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
-										urledit.setText("browservio://defaulterror");
-									}
-									else {
-										if (webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
-											urledit.setText("browservio://error");
-										}
-										else {
-											urledit.setText(webview.getUrl());
-										}
-									}
+									_URLindentify(2);
 								}
 							});
 						}
@@ -242,17 +259,7 @@ public class MainActivity extends AppCompatActivity {
 							runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
-									if (urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
-										urledit.setText("browservio://defaulterror");
-									}
-									else {
-										if (webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
-											urledit.setText("browservio://error");
-										}
-										else {
-											urledit.setText(webview.getUrl());
-										}
-									}
+									_URLindentify(2);
 								}
 							});
 						}
@@ -271,29 +278,21 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				_rippleAnimator("grey", linear_control_b2);
 				if (page_before_error.equals("browservio://no_error")) {
-					webview.reload();
-					teat = new TimerTask() {
-						@Override
-						public void run() {
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									if (urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
-										urledit.setText("browservio://defaulterror");
+					if (!webview.getUrl().equals("")) {
+						webview.reload();
+						reloadt = new TimerTask() {
+							@Override
+							public void run() {
+								runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										_URLindentify(0);
 									}
-									else {
-										if (webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
-											urledit.setText("browservio://error");
-										}
-										else {
-											urledit.setText(webview.getUrl());
-										}
-									}
-								}
-							});
-						}
-					};
-					_timer.schedule(teat, (int)(250));
+								});
+							}
+						};
+						_timer.schedule(reloadt, (int)(250));
+					}
 				}
 				else {
 					webview.loadUrl(page_before_error);
@@ -326,19 +325,17 @@ public class MainActivity extends AppCompatActivity {
 						switch (item.getTitle().toString()){
 							case "Desktop":
 							webview.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36");
-							webview.reload();
 							last_desktop = desktop;
 							desktop = 1;
 							desktop_switch.setImageResource(R.drawable.ic_desktop_black);
-							urledit.setText(webview.getUrl());
+							linear_control_b2.performClick();
 							break;
 							case "Mobile":
 							webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
-							webview.reload();
 							last_desktop = desktop;
 							desktop = 0;
 							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
-							urledit.setText(webview.getUrl());
+							linear_control_b2.performClick();
 							break;
 							case "Custom":
 							dialog.setTitle("User agent");
@@ -350,12 +347,10 @@ public class MainActivity extends AppCompatActivity {
 								public void onClick(DialogInterface _dialog, int _which) {
 									if (custom_ua.length() == 0) {
 										webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
-										webview.reload();
-										urledit.setText(webview.getUrl());
+										linear_control_b2.performClick();
 									} else {
 										webview.getSettings().setUserAgentString(custom_ua.getText().toString());
-										webview.reload();
-										urledit.setText(webview.getUrl());
+										linear_control_b2.performClick();
 									}
 								}
 							});
@@ -412,15 +407,18 @@ public class MainActivity extends AppCompatActivity {
 							case "Clear Cache":
 							webview.clearCache(true);
 							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
+							linear_control_b2.performClick();
 							break;
 							case "Clear History":
 							webview.clearHistory();
 							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
+							linear_control_b2.performClick();
 							break;
 							case "Clear All":
 							webview.clearCache(true);
 							webview.clearHistory();
 							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
+							linear_control_b2.performClick();
 							break;}
 						return true;
 					}
@@ -433,7 +431,7 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("grey", linear_control_b5);
-				Intent i = new Intent(android.content.Intent.ACTION_SEND); i.setType("text/plain");  i.putExtra(android.content.Intent.EXTRA_TEXT, webview.getUrl()); startActivity(Intent.createChooser(i,"Share using"));
+				Intent i = new Intent(android.content.Intent.ACTION_SEND); i.setType("text/plain");  i.putExtra(android.content.Intent.EXTRA_TEXT, webview.getUrl()); startActivity(Intent.createChooser(i,"Share URL using"));
 			}
 		});
 		
@@ -446,20 +444,34 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 		
+		linear_control_b8.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				_rippleAnimator("grey", linear_control_b8);
+				finish();
+			}
+		});
+		
 		_fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
 				if (fabstat == 0) {
-					// Set pic for fab 
-					_fab.setImageResource(R.drawable.ic_arrow_down_white);
-					linear_control.setVisibility(View.VISIBLE);
 					fabstat = 1;
+					linear_control.setVisibility(View.VISIBLE);
+					baranim.setTarget(_fab);
+					baranim.setPropertyName("rotation");
+					baranim.setFloatValues((float)(0), (float)(180));
+					baranim.setDuration((int)(300));
+					baranim.start();
 				}
 				else {
-					// Set pic for fab 
-					_fab.setImageResource(R.drawable.ic_arrow_up_white);
-					linear_control.setVisibility(View.GONE);
 					fabstat = 0;
+					linear_control.setVisibility(View.GONE);
+					baranim.setTarget(_fab);
+					baranim.setPropertyName("rotation");
+					baranim.setFloatValues((float)(180), (float)(0));
+					baranim.setDuration((int)(300));
+					baranim.start();
 				}
 			}
 		});
@@ -467,6 +479,10 @@ public class MainActivity extends AppCompatActivity {
 	private void initializeLogic() {
 		setTitle("Browservio");
 		_firstLaunch();
+		actuallypaused = false;
+		urledit.setOnEditorActionListener(new EditText.OnEditorActionListener() { public boolean onEditorAction(TextView v, int actionId, KeyEvent event) { if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) { browse.performClick(); return true; } return false; } });
+		_fullScreenVideo();
+		webview.setWebChromeClient(new CustomWebClient());
 	}
 	
 	@Override
@@ -482,37 +498,42 @@ public class MainActivity extends AppCompatActivity {
 	
 	@Override
 	public void onBackPressed() {
-		// onBackPressed to go back in history or finish activity
-		if (webview.canGoBack()) {
-			// Go back
-			webview.goBack();
-			// Fix URL not showing correctly
-			teat = new TimerTask() {
-				@Override
-				public void run() {
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							if (urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
-								urledit.setText("browservio://defaulterror");
-							}
-							else {
-								if (webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
-									urledit.setText("browservio://error");
-								}
-								else {
-									urledit.setText(webview.getUrl());
-								}
-							}
-						}
-					});
-				}
-			};
-			_timer.schedule(teat, (int)(250));
+		if (actuallypaused) {
+			
 		}
 		else {
-			// Finish activity
-			finish();
+			// onBackPressed to go back in history or finish activity
+			if (webview.canGoBack()) {
+				// Go back
+				webview.goBack();
+				// Fix URL not showing correctly
+				teat = new TimerTask() {
+					@Override
+					public void run() {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								if (urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
+									urledit.setText("browservio://defaulterror");
+								}
+								else {
+									if (webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
+										urledit.setText("browservio://error");
+									}
+									else {
+										urledit.setText(webview.getUrl());
+									}
+								}
+							}
+						});
+					}
+				};
+				_timer.schedule(teat, (int)(250));
+			}
+			else {
+				// Finish activity
+				finish();
+			}
 		}
 	}
 	
@@ -556,19 +577,48 @@ public class MainActivity extends AppCompatActivity {
 				
 				    }
 		});
+		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
+			/* Load default homepage.
+
+Current default page: https://www.google.com/ */
+			webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
+			urledit.setText(browservio_saver.getString("defaultHomePage", ""));
+		}
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		// Settings check
 		if (actuallypaused) {
-			// Load Url before crashing
-			webview.loadUrl(beforepauseUrl);
-			urledit.setText(beforepauseUrl);
+			if (fabstat == 0) {
+				linear_control.setVisibility(View.VISIBLE);
+				fabstat = 1;
+			}
+			else {
+				linear_control.setVisibility(View.GONE);
+				fabstat = 0;
+			}
+			teat = new TimerTask() {
+				@Override
+				public void run() {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							// Settings check
+							// Load Url before crashing
+							_URLindentify(1);
+							if (webview.canGoBack()) {
+								linear_control_b0.performClick();
+							}
+							beforepauseUrl = "";
+						}
+					});
+				}
+			};
+			_timer.schedule(teat, (int)(500));
 			actuallypaused = false;
+			_firstLaunch();
 		}
-		_firstLaunch();
 	}
 	
 	@Override
@@ -652,12 +702,16 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		if (!browservio_saver.getString("configVersion", "").equals("4") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
-			if (!browservio_saver.getString("configVersion", "").equals("4") && !browservio_saver.getString("configVersion", "").equals("")) {
+		if (!browservio_saver.getString("configVersion", "").equals("5") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
+			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
+			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
+			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
+			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
+			if (!browservio_saver.getString("configVersion", "").equals("5") && !browservio_saver.getString("configVersion", "").equals("")) {
 				_resetduetoup();
 			}
 			if (browservio_saver.getString("isFirstLaunch", "").equals("1")) {
-				SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully! Browservio will now restart!");
+				final ProgressDialog prog = new ProgressDialog(MainActivity.this); prog.setMax(100);prog.setTitle("Resetting"); prog.setMessage("Please wait..."); prog.setIndeterminate(true); prog.setCancelable(false);prog.show();
 				browservio_saver.edit().putString("isFirstLaunch", "").commit();
 				rest = new TimerTask() {
 					@Override
@@ -671,26 +725,25 @@ public class MainActivity extends AppCompatActivity {
 								webview.clearCache(true);
 								webview.clearHistory();
 								rest.cancel();
+								SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully!");
 							}
 						});
 					}
 				};
-				_timer.schedule(rest, (int)(2000));
+				_timer.schedule(rest, (int)(2500));
 			}
-			browservio_saver.edit().putString("configVersion", "4").commit();
+			if (!browservio_saver.getString("configVersion", "").equals("5") || browservio_saver.getString("isFirstLaunch", "").equals("")) {
+				/* Load default homepage.
+
+Current default page: https://www.google.com/ */
+				webview.loadUrl("https://www.google.com/");
+				urledit.setText("https://www.google.com/");
+			}
+			browservio_saver.edit().putString("configVersion", "5").commit();
 			browservio_saver.edit().putString("isFirstLaunch", "0").commit();
-			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
-			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
-			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
-			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 		}
 		// Settings check
 		_checkSettings();
-		/* Load default homepage.
-
-Current default page: https://www.google.com/ */
-		webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
-		urledit.setText(browservio_saver.getString("defaultHomePage", ""));
 	}
 	
 	
@@ -699,20 +752,112 @@ Current default page: https://www.google.com/ */
 		//Setup media player (rewrote 200815-1307)
 		errorsound = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
 		errorsound.start();
-		errortime = new TimerTask() {
-			@Override
-			public void run() {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						errorsound.reset();
-						errortime.cancel();
-					}
-				});
-			}
-		};
-		_timer.schedule(errortime, (int)(5500));
 		         urledit.setText("browservio://error");
+	}
+	
+	
+	private void _URLindentify (final double _type) {
+		if (_type == 0) {
+			if (urledit.getText().toString().equals("browservio://defaulterror") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
+				urledit.setText("browservio://defaulterror");
+				webview.loadUrl("file:///sdcard/Browservio/error/setorerr.html");
+				defaulterror = true;
+			}
+			else {
+				if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/error.html")) {
+					_errorpage();
+				}
+				else {
+					urledit.setText(webview.getUrl());
+				}
+			}
+		}
+		else {
+			if (_type == 1) {
+				if (beforepauseUrl.equals("browservio://defaulterror") || beforepauseUrl.equals("file:///sdcard/Browservio/error/setorerr.html")) {
+					urledit.setText("browservio://defaulterror");
+					webview.loadUrl("file:///sdcard/Browservio/error/setorerr.html");
+					defaulterror = true;
+				}
+				else {
+					if (beforepauseUrl.equals("browservio://error") || beforepauseUrl.equals("file:///sdcard/Browservio/error/error.html")) {
+						_errorpage();
+					}
+					else {
+						urledit.setText(beforepauseUrl);
+					}
+				}
+			}
+			else {
+				if (_type == 2) {
+					if (webview.getUrl().equals("browservio://defaulterror") || webview.getUrl().equals("file:///sdcard/Browservio/error/setorerr.html")) {
+						urledit.setText("browservio://defaulterror");
+						webview.loadUrl("file:///sdcard/Browservio/error/setorerr.html");
+						defaulterror = true;
+					}
+					else {
+						if (webview.getUrl().equals("browservio://error") || webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
+							_errorpage();
+						}
+						else {
+							urledit.setText(webview.getUrl());
+						}
+					}
+				}
+				else {
+					
+				}
+			}
+		}
+	}
+	
+	
+	private void _fullScreenVideo () {
+	}
+	
+	public class CustomWebClient extends WebChromeClient {
+		private View mCustomView;
+		private WebChromeClient.CustomViewCallback mCustomViewCallback;
+		protected FrameLayout frame;
+		
+		// Initially mOriginalOrientation is set to Landscape
+		private int mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+		private int mOriginalSystemUiVisibility;
+		
+		// Constructor for CustomWebClient
+		public CustomWebClient() {}
+		
+		public Bitmap getDefaultVideoPoster() {
+			if (MainActivity.this == null) {
+				return null; }
+			return BitmapFactory.decodeResource(MainActivity.this.getApplicationContext().getResources(), 2130837573); }
+		
+		public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
+			if (this.mCustomView != null) {
+				onHideCustomView();
+				return; }
+			this.mCustomView = paramView;
+			this.mOriginalSystemUiVisibility = MainActivity.this.getWindow().getDecorView().getSystemUiVisibility();
+			// When CustomView is shown screen orientation changes to mOriginalOrientation (Landscape).
+			MainActivity.this.setRequestedOrientation(this.mOriginalOrientation);
+			// After that mOriginalOrientation is set to portrait.
+			this.mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+			this.mCustomViewCallback = viewCallback; ((FrameLayout)MainActivity.this.getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1)); MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(3846);
+		}
+		
+		public void onHideCustomView() {
+			((FrameLayout)MainActivity.this.getWindow().getDecorView()).removeView(this.mCustomView);
+			this.mCustomView = null;
+			MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(this.mOriginalSystemUiVisibility);
+			// When CustomView is hidden, screen orientation is set to mOriginalOrientation (portrait).
+			MainActivity.this.setRequestedOrientation(this.mOriginalOrientation);
+			// After that mOriginalOrientation is set to landscape.
+			this.mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE; this.mCustomViewCallback.onCustomViewHidden();
+			this.mCustomViewCallback = null;
+		}
+	}
+	
+	{
 	}
 	
 	
