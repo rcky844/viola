@@ -35,8 +35,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.CompoundButton;
 import android.view.View;
+import android.widget.CompoundButton;
 
 public class SettingsActivity extends AppCompatActivity {
 	
@@ -56,32 +56,35 @@ public class SettingsActivity extends AppCompatActivity {
 	private LinearLayout linear8;
 	private TextView textview_cool2;
 	private ImageView imageview4;
-	private LinearLayout linear1_homepage;
-	private LinearLayout linear1_searches;
-	private LinearLayout linear1_b0;
-	private LinearLayout linear1_homepages;
-	private TextView textview4;
-	private TextView textview5;
 	private LinearLayout linear1_search;
+	private LinearLayout linear1_homepage;
+	private LinearLayout linear11;
+	private LinearLayout linear1_b0;
 	private TextView textview8;
 	private TextView textview9;
+	private TextView textview4;
+	private TextView textview5;
+	private LinearLayout linear12;
+	private CheckBox checkbox3;
+	private TextView textview31;
+	private TextView textview32;
 	private TextView textview15;
 	private TextView textview16;
 	private TextView textview_cool1;
 	private ImageView imageview1;
 	private LinearLayout linear1_javascript;
 	private LinearLayout linear1_overrideempt;
-	private LinearLayout linear1_javascripts;
+	private LinearLayout linear1_b1;
 	private CheckBox checkbox1;
-	private TextView textview1;
-	private TextView textview2;
+	private TextView textview29;
+	private TextView textview30;
 	private LinearLayout linear1_overrideemp;
 	private CheckBox checkbox2;
 	private TextView textview12;
 	private TextView textview13;
 	private TextView textview17;
 	private ImageView imageview5;
-	private LinearLayout linear_versuob;
+	private LinearLayout linear_version;
 	private LinearLayout linear_feed;
 	private TextView textview23;
 	private TextView textview24;
@@ -125,32 +128,35 @@ public class SettingsActivity extends AppCompatActivity {
 		linear8 = (LinearLayout) findViewById(R.id.linear8);
 		textview_cool2 = (TextView) findViewById(R.id.textview_cool2);
 		imageview4 = (ImageView) findViewById(R.id.imageview4);
-		linear1_homepage = (LinearLayout) findViewById(R.id.linear1_homepage);
-		linear1_searches = (LinearLayout) findViewById(R.id.linear1_searches);
-		linear1_b0 = (LinearLayout) findViewById(R.id.linear1_b0);
-		linear1_homepages = (LinearLayout) findViewById(R.id.linear1_homepages);
-		textview4 = (TextView) findViewById(R.id.textview4);
-		textview5 = (TextView) findViewById(R.id.textview5);
 		linear1_search = (LinearLayout) findViewById(R.id.linear1_search);
+		linear1_homepage = (LinearLayout) findViewById(R.id.linear1_homepage);
+		linear11 = (LinearLayout) findViewById(R.id.linear11);
+		linear1_b0 = (LinearLayout) findViewById(R.id.linear1_b0);
 		textview8 = (TextView) findViewById(R.id.textview8);
 		textview9 = (TextView) findViewById(R.id.textview9);
+		textview4 = (TextView) findViewById(R.id.textview4);
+		textview5 = (TextView) findViewById(R.id.textview5);
+		linear12 = (LinearLayout) findViewById(R.id.linear12);
+		checkbox3 = (CheckBox) findViewById(R.id.checkbox3);
+		textview31 = (TextView) findViewById(R.id.textview31);
+		textview32 = (TextView) findViewById(R.id.textview32);
 		textview15 = (TextView) findViewById(R.id.textview15);
 		textview16 = (TextView) findViewById(R.id.textview16);
 		textview_cool1 = (TextView) findViewById(R.id.textview_cool1);
 		imageview1 = (ImageView) findViewById(R.id.imageview1);
 		linear1_javascript = (LinearLayout) findViewById(R.id.linear1_javascript);
 		linear1_overrideempt = (LinearLayout) findViewById(R.id.linear1_overrideempt);
-		linear1_javascripts = (LinearLayout) findViewById(R.id.linear1_javascripts);
+		linear1_b1 = (LinearLayout) findViewById(R.id.linear1_b1);
 		checkbox1 = (CheckBox) findViewById(R.id.checkbox1);
-		textview1 = (TextView) findViewById(R.id.textview1);
-		textview2 = (TextView) findViewById(R.id.textview2);
+		textview29 = (TextView) findViewById(R.id.textview29);
+		textview30 = (TextView) findViewById(R.id.textview30);
 		linear1_overrideemp = (LinearLayout) findViewById(R.id.linear1_overrideemp);
 		checkbox2 = (CheckBox) findViewById(R.id.checkbox2);
 		textview12 = (TextView) findViewById(R.id.textview12);
 		textview13 = (TextView) findViewById(R.id.textview13);
 		textview17 = (TextView) findViewById(R.id.textview17);
 		imageview5 = (ImageView) findViewById(R.id.imageview5);
-		linear_versuob = (LinearLayout) findViewById(R.id.linear_versuob);
+		linear_version = (LinearLayout) findViewById(R.id.linear_version);
 		linear_feed = (LinearLayout) findViewById(R.id.linear_feed);
 		textview23 = (TextView) findViewById(R.id.textview23);
 		textview24 = (TextView) findViewById(R.id.textview24);
@@ -165,7 +171,6 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_general.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", textview_cool2);
 				if (linear_general_open) {
 					linear6.setVisibility(View.GONE);
 					linear_general_open = false;
@@ -190,7 +195,6 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_advenced.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", textview_cool1);
 				if (linear_advenced_open) {
 					linear5.setVisibility(View.GONE);
 					linear_advenced_open = false;
@@ -215,7 +219,6 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_about.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", textview17);
 				if (linear_about_open) {
 					linear8.setVisibility(View.GONE);
 					linear_about_open = false;
@@ -237,10 +240,79 @@ public class SettingsActivity extends AppCompatActivity {
 			}
 		});
 		
+		linear1_search.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				dialog1.setTitle("Search engine");
+				dialog1.setMessage("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
+				final EditText custom_se = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
+				custom_se.setLayoutParams(lp); dialog1.setView(custom_se);
+				dialog1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						if (custom_se.getText().toString().equals(""))
+						{
+						} else {
+							browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).commit();
+							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultSearch", "")));
+						}
+					}
+				});
+				dialog1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						
+					}
+				});
+				dialog1.setCancelable(false);
+				dialog1.create().show();
+			}
+		});
+		
+		linear1_homepage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				dialog.setTitle("Homepage");
+				dialog.setMessage("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
+				final EditText custom_hp = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
+				custom_hp.setLayoutParams(lp); dialog.setView(custom_hp);
+				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						if (custom_hp.getText().toString().equals(""))
+						{
+						} else {
+							browservio_saver.edit().putString("defaultHomePage", custom_hp.getText().toString()).commit();
+							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
+						}
+					}
+				});
+				dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						
+					}
+				});
+				dialog.setCancelable(false);
+				dialog.create().show();
+			}
+		});
+		
+		linear11.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				if (checkbox3.isChecked()) {
+					checkbox3.setChecked(false);
+				}
+				else {
+					checkbox3.setChecked(true);
+				}
+			}
+		});
+		
 		linear1_b0.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear1_b0);
 				drst.setTitle("Are you sure?");
 				drst.setMessage("Once you reset Browservio, your data will be gone forever!");
 				drst.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -260,80 +332,39 @@ public class SettingsActivity extends AppCompatActivity {
 			}
 		});
 		
-		linear1_homepages.setOnClickListener(new View.OnClickListener() {
+		checkbox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
-			public void onClick(View _view) {
-				_rippleAnimator("grey", linear1_homepages);
-				dialog.setTitle("Homepage");
-				dialog.setMessage("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
-				final EditText custom_hp = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
-				custom_hp.setLayoutParams(lp); dialog.setView(custom_hp);
-				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						browservio_saver.edit().putString("defaultHomePage", custom_hp.getText().toString()).commit();
-						textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
-					}
-				});
-				dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						
-					}
-				});
-				dialog.setCancelable(false);
-				dialog.create().show();
+			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
+				final boolean _isChecked = _param2;
+				if (_isChecked) {
+					browservio_saver.edit().putString("showBrowseBtn", "1").commit();
+				}
+				else {
+					browservio_saver.edit().putString("showBrowseBtn", "0").commit();
+				}
 			}
 		});
 		
-		linear1_search.setOnClickListener(new View.OnClickListener() {
+		linear1_javascript.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear1_search);
-				dialog1.setTitle("Search engine");
-				dialog1.setMessage("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
-				final EditText custom_se = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
-				custom_se.setLayoutParams(lp); dialog1.setView(custom_se);
-				dialog1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).commit();
-						textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultSearch", "")));
-					}
-				});
-				dialog1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						
-					}
-				});
-				dialog1.setCancelable(false);
-				dialog1.create().show();
+				if (checkbox1.isChecked()) {
+					checkbox1.setChecked(false);
+				}
+				else {
+					checkbox1.setChecked(true);
+				}
 			}
 		});
 		
 		linear1_overrideempt.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear1_overrideempt);
 				if (checkbox2.isChecked()) {
 					checkbox2.setChecked(false);
 				}
 				else {
 					checkbox2.setChecked(true);
-				}
-			}
-		});
-		
-		linear1_javascripts.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				_rippleAnimator("grey", linear1_javascripts);
-				if (checkbox1.isChecked()) {
-					checkbox1.setChecked(false);
-				}
-				else {
-					checkbox1.setChecked(true);
 				}
 			}
 		});
@@ -364,12 +395,11 @@ public class SettingsActivity extends AppCompatActivity {
 			}
 		});
 		
-		linear_versuob.setOnClickListener(new View.OnClickListener() {
+		linear_version.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_versuob);
 				dabt.setTitle("Version information");
-				dabt.setMessage("Version name: 1.2 build 3 Development Release 2\nVersion technical name: 1.2.3.2\nVersion code: 8\nVersion build date: 2020-08-17");
+				dabt.setMessage("Version name: 1.2 build 3\nVersion technical name: 1.2.3.3\nVersion code: 9\nVersion build date: 2020-08-17");
 				dabt.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
@@ -383,7 +413,6 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_feed.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_feed);
 				telegrambot.setAction(Intent.ACTION_VIEW);
 				telegrambot.setData(Uri.parse("https://t.me/BrowservioBot"));
 				startActivity(telegrambot);
@@ -398,6 +427,11 @@ public class SettingsActivity extends AppCompatActivity {
 		if (browservio_saver.getString("overrideEmptyError", "").equals("1")) {
 			checkbox2.setChecked(true);
 		}
+		if (browservio_saver.getString("showBrowseBtn", "").equals("1")) {
+			checkbox3.setChecked(true);
+		}
+		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
+		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
 		linear_general_open = true;
 		linear_advenced_open = true;
 		linear_about_open = true;
@@ -417,22 +451,266 @@ public class SettingsActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
-		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
+		_setRipple(linear_general);
+		_setRipple(linear_advenced);
+		_setRipple(linear_about);
+		_setRipple(linear_version);
+		_setRipple(linear_feed);
+		_setRipple(linear1_search);
+		_setRipple(linear1_homepage);
+		_setRipple(linear11);
+		_setRipple(linear1_javascript);
+		_setRipple(linear1_overrideempt);
+		_setRipple(linear1_b0);
+		_rippleRoundStroke(linear_general, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear_advenced, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear_about, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear_version, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear_feed, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear1_search, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear1_homepage, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear11, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear1_javascript, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear1_overrideempt, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear1_b0, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_ripple(linear_general, "#2196F3");
+		_ripple(linear_advenced, "#2196F3");
+		_ripple(linear_about, "#2196F3");
+		_ripple(linear_version, "#2196F3");
+		_ripple(linear_feed, "#2196F3");
+		_ripple(linear1_search, "#2196F3");
+		_ripple(linear1_homepage, "#2196F3");
+		_ripple(linear11, "#2196F3");
+		_ripple(linear1_javascript, "#2196F3");
+		_ripple(linear1_overrideempt, "#2196F3");
+		_ripple(linear1_b0, "#2196F3");
 	}
-	private void _rippleAnimator (final String _color, final View _view) {
-		android.content.res.ColorStateList clr = new android.content.res.ColorStateList(new int[][]{new int[]{}},new int[]{Color.parseColor(_color)});
-		android.graphics.drawable.RippleDrawable ripdr = new android.graphics.drawable.RippleDrawable(clr, null, null);
-		_view.setBackground(ripdr);
+	private void _setRipple (final View _view) {
+		TypedValue typedValue = new TypedValue();
+		
+		getApplicationContext().getTheme().resolveAttribute(16843868, typedValue, true);
+		
+		_view.setBackgroundResource(typedValue.resourceId);
+		
+		_view.setClickable(true);
 	}
 	
 	
-	private void _BorderLinear (final View _view, final String _color1, final double _border, final String _color2, final double _round) {
-		android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
-		gd.setColor(Color.parseColor(_color1));
-		gd.setCornerRadius((int) _round);
-		gd.setStroke((int) _border, Color.parseColor(_color2));
-		_view.setBackground(gd);
+	private void _rippleRoundStroke (final View _view, final String _focus, final String _pressed, final double _round, final double _stroke, final String _strokeclr) {
+		android.graphics.drawable.GradientDrawable GG = new android.graphics.drawable.GradientDrawable();
+		GG.setColor(Color.parseColor(_focus));
+		GG.setCornerRadius((float)_round);
+		GG.setStroke((int) _stroke,
+		Color.parseColor("#" + _strokeclr.replace("#", "")));
+		android.graphics.drawable.RippleDrawable RE = new android.graphics.drawable.RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{ Color.parseColor(_pressed)}), GG, null);
+		_view.setBackground(RE);
+	}
+	
+	
+	private void _ripple (final View _view, final String _c) {
+		_view.setBackground(Drawables.getSelectableDrawableFor(Color.parseColor(_c)));
+		_view.setClickable(true);
+		
+	}
+	
+	public static class Drawables {
+		    public static android.graphics.drawable.Drawable getSelectableDrawableFor(int color) {
+			        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+				            android.graphics.drawable.StateListDrawable stateListDrawable = new android.graphics.drawable.StateListDrawable();
+				            stateListDrawable.addState(
+				                new int[]{android.R.attr.state_pressed},
+				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#ffffff"))
+				            );
+				            stateListDrawable.addState(
+				                new int[]{android.R.attr.state_focused},
+				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"))
+				            );
+				            stateListDrawable.addState(
+				                new int[]{},
+				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"))
+				            );
+				            return stateListDrawable;
+				        } else {
+				            android.content.res.ColorStateList pressedColor = android.content.res.ColorStateList.valueOf(color);
+				            android.graphics.drawable.ColorDrawable defaultColor = new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"));
+				            
+				android.graphics.drawable.Drawable rippleColor = getRippleColor(color);
+				            return new android.graphics.drawable.RippleDrawable(
+				                pressedColor,
+				                defaultColor,
+				                rippleColor
+				            );
+				        }
+			    }
+		
+		    private static android.graphics.drawable.Drawable getRippleColor(int color) {
+			        float[] outerRadii = new float[8];
+			        Arrays.fill(outerRadii, 0);
+			        android.graphics.drawable.shapes.RoundRectShape r = new android.graphics.drawable.shapes.RoundRectShape(outerRadii, null, null);
+			        
+			android.graphics.drawable.ShapeDrawable shapeDrawable = new 
+			android.graphics.drawable.ShapeDrawable(r);
+			        shapeDrawable.getPaint().setColor(color);
+			        return shapeDrawable;
+			    }
+		 
+		    private static int lightenOrDarken(int color, double fraction) {
+			        if (canLighten(color, fraction)) {
+				            return lighten(color, fraction);
+				        } else {
+				            return darken(color, fraction);
+				        }
+			    }
+		 
+		    private static int lighten(int color, double fraction) {
+			        int red = Color.red(color);
+			        int green = Color.green(color);
+			        int blue = Color.blue(color);
+			        red = lightenColor(red, fraction);
+			        green = lightenColor(green, fraction);
+			        blue = lightenColor(blue, fraction);
+			        int alpha = Color.alpha(color);
+			        return Color.argb(alpha, red, green, blue);
+			    }
+		 
+		    private static int darken(int color, double fraction) {
+			        int red = Color.red(color);
+			        int green = Color.green(color);
+			        int blue = Color.blue(color);
+			        red = darkenColor(red, fraction);
+			        green = darkenColor(green, fraction);
+			        blue = darkenColor(blue, fraction);
+			        int alpha = Color.alpha(color);
+			 
+			        return Color.argb(alpha, red, green, blue);
+			    }
+		 
+		    private static boolean canLighten(int color, double fraction) {
+			        int red = Color.red(color);
+			        int green = Color.green(color);
+			        int blue = Color.blue(color);
+			        return canLightenComponent(red, fraction)
+			            && canLightenComponent(green, fraction)
+			            && canLightenComponent(blue, fraction);
+			    }
+		 
+		    private static boolean canLightenComponent(int colorComponent, double fraction) {
+			        int red = Color.red(colorComponent);
+			        int green = Color.green(colorComponent);
+			        int blue = Color.blue(colorComponent);
+			        return red + (red * fraction) < 255
+			            && green + (green * fraction) < 255
+			            && blue + (blue * fraction) < 255;
+			    }
+		 
+		    private static int darkenColor(int color, double fraction) {
+			        return (int) Math.max(color - (color * fraction), 0);
+			    }
+		 
+		    private static int lightenColor(int color, double fraction) {
+			        return (int) Math.min(color + (color * fraction), 255);
+			    }
+	}
+	public static class CircleDrawables {
+		    public static android.graphics.drawable.Drawable getSelectableDrawableFor(int color) {
+			        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+				            android.graphics.drawable.StateListDrawable stateListDrawable = new android.graphics.drawable.StateListDrawable();
+				            stateListDrawable.addState(
+				                new int[]{android.R.attr.state_pressed},
+				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#ffffff"))
+				            );
+				            stateListDrawable.addState(
+				                new int[]{android.R.attr.state_focused},
+				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"))
+				            );
+				            stateListDrawable.addState(
+				                new int[]{},
+				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"))
+				            );
+				            return stateListDrawable;
+				        } else {
+				            android.content.res.ColorStateList pressedColor = android.content.res.ColorStateList.valueOf(color);
+				            android.graphics.drawable.ColorDrawable defaultColor = new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"));
+				            
+				android.graphics.drawable.Drawable rippleColor = getRippleColor(color);
+				            return new android.graphics.drawable.RippleDrawable(
+				                pressedColor,
+				                defaultColor,
+				                rippleColor
+				            );
+				        }
+			    }
+		
+		    private static android.graphics.drawable.Drawable getRippleColor(int color) {
+			        float[] outerRadii = new float[180];
+			        Arrays.fill(outerRadii, 80);
+			        android.graphics.drawable.shapes.RoundRectShape r = new android.graphics.drawable.shapes.RoundRectShape(outerRadii, null, null);
+			        
+			android.graphics.drawable.ShapeDrawable shapeDrawable = new 
+			android.graphics.drawable.ShapeDrawable(r);
+			        shapeDrawable.getPaint().setColor(color);
+			        return shapeDrawable;
+			    }
+		 
+		    private static int lightenOrDarken(int color, double fraction) {
+			        if (canLighten(color, fraction)) {
+				            return lighten(color, fraction);
+				        } else {
+				            return darken(color, fraction);
+				        }
+			    }
+		 
+		    private static int lighten(int color, double fraction) {
+			        int red = Color.red(color);
+			        int green = Color.green(color);
+			        int blue = Color.blue(color);
+			        red = lightenColor(red, fraction);
+			        green = lightenColor(green, fraction);
+			        blue = lightenColor(blue, fraction);
+			        int alpha = Color.alpha(color);
+			        return Color.argb(alpha, red, green, blue);
+			    }
+		 
+		    private static int darken(int color, double fraction) {
+			        int red = Color.red(color);
+			        int green = Color.green(color);
+			        int blue = Color.blue(color);
+			        red = darkenColor(red, fraction);
+			        green = darkenColor(green, fraction);
+			        blue = darkenColor(blue, fraction);
+			        int alpha = Color.alpha(color);
+			 
+			        return Color.argb(alpha, red, green, blue);
+			    }
+		 
+		    private static boolean canLighten(int color, double fraction) {
+			        int red = Color.red(color);
+			        int green = Color.green(color);
+			        int blue = Color.blue(color);
+			        return canLightenComponent(red, fraction)
+			            && canLightenComponent(green, fraction)
+			            && canLightenComponent(blue, fraction);
+			    }
+		 
+		    private static boolean canLightenComponent(int colorComponent, double fraction) {
+			        int red = Color.red(colorComponent);
+			        int green = Color.green(colorComponent);
+			        int blue = Color.blue(colorComponent);
+			        return red + (red * fraction) < 255
+			            && green + (green * fraction) < 255
+			            && blue + (blue * fraction) < 255;
+			    }
+		 
+		    private static int darkenColor(int color, double fraction) {
+			        return (int) Math.max(color - (color * fraction), 0);
+			    }
+		 
+		    private static int lightenColor(int color, double fraction) {
+			        return (int) Math.min(color + (color * fraction), 255);
+		}
+	}
+	
+	public void drawableclass() {
 	}
 	
 	

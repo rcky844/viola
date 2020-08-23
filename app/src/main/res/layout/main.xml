@@ -43,8 +43,8 @@
 				android:layout_height="48dp"
 				android:src="@drawable/ic_browse_black"
 				android:scaleType="center"
-				android:scaleX="1.5"
-				android:scaleY="1.5"/>
+				android:scaleX="1.3"
+				android:scaleY="1.3"/>
 		</LinearLayout>
 		<LinearLayout
 			android:id="@+id/webview_linear"
@@ -100,8 +100,9 @@
 							android:id="@+id/forward"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_arrow_forward_black"
-							android:scaleType="center"/>
+							android:src="@drawable/ic_arrow_back_black"
+							android:scaleType="center"
+							android:rotation="180"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b2"
@@ -231,5 +232,5 @@
 		android:layout_height="wrap_content"
 		android:layout_margin="16dp"
 		android:layout_gravity="right|bottom"
-		app:srcCompat="@drawable/ic_arrow_down_white"/>
+		app:srcCompat="@drawable/ic_arrow_up_white"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
