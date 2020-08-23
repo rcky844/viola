@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				if (!actuallypressedbro) {
 					_rippleAnimator("grey", browse);
-					actuallypressedbro = true;
+					actuallypressedbro = false;
 				}
 				if (urledit.getText().toString().equals("browservio://defaulterror") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
 					defaulterror = true;
@@ -199,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
 						}
 					}
 				}
-				
 			}
 		});
 		
@@ -747,6 +746,27 @@ public class MainActivity extends AppCompatActivity {
 								webview.clearHistory();
 								reset.cancel();
 								SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully!");
+							}
+						});
+					}
+				};
+				_timer.schedule(reset, (int)(2000));
+			}
+			if (browservio_saver.getString("isFirstLaunch", "").equals("2")) {
+				browservio_saver.edit().putString("isFirstLaunch", "").commit();
+				reset = new TimerTask() {
+					@Override
+					public void run() {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Intent i = getIntent();
+								finish();
+								startActivity(i);
+								webview.clearCache(true);
+								webview.clearHistory();
+								reset.cancel();
+								SketchwareUtil.showMessage(getApplicationContext(), "Reset due to error!");
 							}
 						});
 					}
