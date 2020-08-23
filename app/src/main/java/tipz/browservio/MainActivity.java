@@ -721,13 +721,14 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		if (!browservio_saver.getString("configVersion", "").equals("6") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
+		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
 			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
 			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 			browservio_saver.edit().putString("showBrowseBtn", "0").commit();
-			if (!browservio_saver.getString("configVersion", "").equals("6") && !browservio_saver.getString("configVersion", "").equals("")) {
+			browservio_saver.edit().putString("showCustomError", "1").commit();
+			if (!browservio_saver.getString("configVersion", "").equals("7") && !browservio_saver.getString("configVersion", "").equals("")) {
 				_resetduetoup();
 			}
 			if (browservio_saver.getString("isFirstLaunch", "").equals("1")) {
@@ -752,35 +753,14 @@ public class MainActivity extends AppCompatActivity {
 				};
 				_timer.schedule(reset, (int)(2000));
 			}
-			if (browservio_saver.getString("isFirstLaunch", "").equals("2")) {
-				browservio_saver.edit().putString("isFirstLaunch", "").commit();
-				reset = new TimerTask() {
-					@Override
-					public void run() {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								Intent i = getIntent();
-								finish();
-								startActivity(i);
-								webview.clearCache(true);
-								webview.clearHistory();
-								reset.cancel();
-								SketchwareUtil.showMessage(getApplicationContext(), "Reset due to error!");
-							}
-						});
-					}
-				};
-				_timer.schedule(reset, (int)(2000));
-			}
-			if (!browservio_saver.getString("configVersion", "").equals("6") || browservio_saver.getString("isFirstLaunch", "").equals("")) {
+			if (!browservio_saver.getString("configVersion", "").equals("7") || browservio_saver.getString("isFirstLaunch", "").equals("")) {
 				/* Load default homepage.
 
 Current default page: https://www.google.com/ */
 				webview.loadUrl("https://www.google.com/");
 				urledit.setText("https://www.google.com/");
 			}
-			browservio_saver.edit().putString("configVersion", "6").commit();
+			browservio_saver.edit().putString("configVersion", "7").commit();
 			browservio_saver.edit().putString("isFirstLaunch", "0").commit();
 		}
 		// Settings check
@@ -797,6 +777,12 @@ Current default page: https://www.google.com/ */
 		}
 		else {
 			browse.setVisibility(View.GONE);
+		}
+		if (browservio_saver.getString("showCustomError", "").equals("1")) {
+			defaulterror = false;
+		}
+		else {
+			defaulterror = true;
 		}
 	}
 	

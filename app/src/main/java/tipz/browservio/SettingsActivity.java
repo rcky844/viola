@@ -74,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private ImageView imageview1;
 	private LinearLayout linear1_javascript;
 	private LinearLayout linear1_overrideempt;
+	private LinearLayout linear13;
 	private LinearLayout linear1_b1;
 	private CheckBox checkbox1;
 	private TextView textview29;
@@ -82,6 +83,10 @@ public class SettingsActivity extends AppCompatActivity {
 	private CheckBox checkbox2;
 	private TextView textview12;
 	private TextView textview13;
+	private LinearLayout linear14;
+	private CheckBox checkbox4;
+	private TextView textview33;
+	private TextView textview34;
 	private TextView textview17;
 	private ImageView imageview5;
 	private LinearLayout linear_version;
@@ -146,6 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
 		imageview1 = (ImageView) findViewById(R.id.imageview1);
 		linear1_javascript = (LinearLayout) findViewById(R.id.linear1_javascript);
 		linear1_overrideempt = (LinearLayout) findViewById(R.id.linear1_overrideempt);
+		linear13 = (LinearLayout) findViewById(R.id.linear13);
 		linear1_b1 = (LinearLayout) findViewById(R.id.linear1_b1);
 		checkbox1 = (CheckBox) findViewById(R.id.checkbox1);
 		textview29 = (TextView) findViewById(R.id.textview29);
@@ -154,6 +160,10 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox2 = (CheckBox) findViewById(R.id.checkbox2);
 		textview12 = (TextView) findViewById(R.id.textview12);
 		textview13 = (TextView) findViewById(R.id.textview13);
+		linear14 = (LinearLayout) findViewById(R.id.linear14);
+		checkbox4 = (CheckBox) findViewById(R.id.checkbox4);
+		textview33 = (TextView) findViewById(R.id.textview33);
+		textview34 = (TextView) findViewById(R.id.textview34);
 		textview17 = (TextView) findViewById(R.id.textview17);
 		imageview5 = (ImageView) findViewById(R.id.imageview5);
 		linear_version = (LinearLayout) findViewById(R.id.linear_version);
@@ -369,6 +379,18 @@ public class SettingsActivity extends AppCompatActivity {
 			}
 		});
 		
+		linear13.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				if (checkbox4.isChecked()) {
+					checkbox4.setChecked(false);
+				}
+				else {
+					checkbox4.setChecked(true);
+				}
+			}
+		});
+		
 		checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
@@ -391,6 +413,19 @@ public class SettingsActivity extends AppCompatActivity {
 				}
 				else {
 					browservio_saver.edit().putString("overrideEmptyError", "0").commit();
+				}
+			}
+		});
+		
+		checkbox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
+				final boolean _isChecked = _param2;
+				if (_isChecked) {
+					browservio_saver.edit().putString("showCustomError", "1").commit();
+				}
+				else {
+					browservio_saver.edit().putString("showCustomError", "0").commit();
 				}
 			}
 		});
@@ -430,6 +465,9 @@ public class SettingsActivity extends AppCompatActivity {
 		if (browservio_saver.getString("showBrowseBtn", "").equals("1")) {
 			checkbox3.setChecked(true);
 		}
+		if (browservio_saver.getString("showCustomError", "").equals("1")) {
+			checkbox4.setChecked(true);
+		}
 		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
 		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
 		linear_general_open = true;
@@ -462,6 +500,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_setRipple(linear1_javascript);
 		_setRipple(linear1_overrideempt);
 		_setRipple(linear1_b0);
+		_setRipple(linear13);
 		_rippleRoundStroke(linear_general, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_rippleRoundStroke(linear_advenced, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_rippleRoundStroke(linear_about, "#ffffff", "#2196F3", 6, 2, "#2196F3");
@@ -473,6 +512,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_rippleRoundStroke(linear1_javascript, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_rippleRoundStroke(linear1_overrideempt, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_rippleRoundStroke(linear1_b0, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear13, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_ripple(linear_general, "#2196F3");
 		_ripple(linear_advenced, "#2196F3");
 		_ripple(linear_about, "#2196F3");
@@ -484,6 +524,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_ripple(linear1_javascript, "#2196F3");
 		_ripple(linear1_overrideempt, "#2196F3");
 		_ripple(linear1_b0, "#2196F3");
+		_ripple(linear13, "#2196F3");
 	}
 	private void _setRipple (final View _view) {
 		TypedValue typedValue = new TypedValue();
