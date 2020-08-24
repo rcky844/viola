@@ -415,7 +415,7 @@
 							android:paddingLeft="8dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
-							android:text="Browservio 1.3"
+							android:text="Browservio"
 							android:textSize="12sp"
 							android:textColor="#000000"/>
 					</LinearLayout>

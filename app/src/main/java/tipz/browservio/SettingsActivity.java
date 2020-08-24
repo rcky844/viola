@@ -434,7 +434,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				dabt.setTitle("Version information");
-				dabt.setMessage("Version name: 1.3\nVersion technical name: 1.3.0\nVersion code: 10\nVersion build date: 2020-08-24");
+				dabt.setMessage("Version name: ".concat(browservio_saver.getString("versionName", "").concat("\n")).concat("Version technical name: ".concat(browservio_saver.getString("versionTechnical", "").concat("\n"))).concat("Version code: ".concat(browservio_saver.getString("versionCode", "").concat("\n"))).concat("Version build date: ".concat(browservio_saver.getString("versionDate", ""))));
 				dabt.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
@@ -470,6 +470,7 @@ public class SettingsActivity extends AppCompatActivity {
 		}
 		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
 		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
+		textview24.setText("Browservio ".concat(browservio_saver.getString("versionName", "")));
 		linear_general_open = true;
 		linear_advenced_open = true;
 		linear_about_open = true;

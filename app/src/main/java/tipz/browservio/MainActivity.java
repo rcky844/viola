@@ -721,6 +721,10 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
+		browservio_saver.edit().putString("versionName", "1.3").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.3.0").commit();
+		browservio_saver.edit().putString("versionCode", "10").commit();
+		browservio_saver.edit().putString("versionDate", "2020-08-24").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
