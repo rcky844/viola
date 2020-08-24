@@ -37,7 +37,7 @@
 					android:orientation="horizontal"
 					android:layout_gravity="center_horizontal|center_vertical">
 					<TextView
-						android:id="@+id/textview_cool2"
+						android:id="@+id/textview_cool1"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
@@ -196,7 +196,7 @@
 					android:orientation="horizontal"
 					android:layout_gravity="right|center_vertical">
 					<TextView
-						android:id="@+id/textview_cool1"
+						android:id="@+id/textview_cool2"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
@@ -299,7 +299,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Continues to load an empty page when the address bar is empty."
+								android:text="Load an empty page when the address bar is empty instead of showing an error."
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
@@ -346,7 +346,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Show a custom error page with audio effects."
+								android:text="Show a custom error page with audio effects when having trouble connecting to a website."
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
@@ -369,7 +369,7 @@
 					android:orientation="horizontal"
 					android:layout_gravity="center_horizontal|center_vertical">
 					<TextView
-						android:id="@+id/textview17"
+						android:id="@+id/textview_cool3"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
@@ -409,7 +409,7 @@
 							android:textSize="16sp"
 							android:textColor="#000000"/>
 						<TextView
-							android:id="@+id/textview24"
+							android:id="@+id/version_visiable"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"

@@ -54,7 +54,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private LinearLayout linear5;
 	private LinearLayout linear_about;
 	private LinearLayout linear8;
-	private TextView textview_cool2;
+	private TextView textview_cool1;
 	private ImageView imageview4;
 	private LinearLayout linear1_search;
 	private LinearLayout linear1_homepage;
@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private TextView textview32;
 	private TextView textview15;
 	private TextView textview16;
-	private TextView textview_cool1;
+	private TextView textview_cool2;
 	private ImageView imageview1;
 	private LinearLayout linear1_javascript;
 	private LinearLayout linear1_overrideempt;
@@ -87,12 +87,12 @@ public class SettingsActivity extends AppCompatActivity {
 	private CheckBox checkbox4;
 	private TextView textview33;
 	private TextView textview34;
-	private TextView textview17;
+	private TextView textview_cool3;
 	private ImageView imageview5;
 	private LinearLayout linear_version;
 	private LinearLayout linear_feed;
 	private TextView textview23;
-	private TextView textview24;
+	private TextView version_visiable;
 	private TextView textview25;
 	private TextView textview26;
 	
@@ -131,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity {
 		linear5 = (LinearLayout) findViewById(R.id.linear5);
 		linear_about = (LinearLayout) findViewById(R.id.linear_about);
 		linear8 = (LinearLayout) findViewById(R.id.linear8);
-		textview_cool2 = (TextView) findViewById(R.id.textview_cool2);
+		textview_cool1 = (TextView) findViewById(R.id.textview_cool1);
 		imageview4 = (ImageView) findViewById(R.id.imageview4);
 		linear1_search = (LinearLayout) findViewById(R.id.linear1_search);
 		linear1_homepage = (LinearLayout) findViewById(R.id.linear1_homepage);
@@ -147,7 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
 		textview32 = (TextView) findViewById(R.id.textview32);
 		textview15 = (TextView) findViewById(R.id.textview15);
 		textview16 = (TextView) findViewById(R.id.textview16);
-		textview_cool1 = (TextView) findViewById(R.id.textview_cool1);
+		textview_cool2 = (TextView) findViewById(R.id.textview_cool2);
 		imageview1 = (ImageView) findViewById(R.id.imageview1);
 		linear1_javascript = (LinearLayout) findViewById(R.id.linear1_javascript);
 		linear1_overrideempt = (LinearLayout) findViewById(R.id.linear1_overrideempt);
@@ -164,12 +164,12 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox4 = (CheckBox) findViewById(R.id.checkbox4);
 		textview33 = (TextView) findViewById(R.id.textview33);
 		textview34 = (TextView) findViewById(R.id.textview34);
-		textview17 = (TextView) findViewById(R.id.textview17);
+		textview_cool3 = (TextView) findViewById(R.id.textview_cool3);
 		imageview5 = (ImageView) findViewById(R.id.imageview5);
 		linear_version = (LinearLayout) findViewById(R.id.linear_version);
 		linear_feed = (LinearLayout) findViewById(R.id.linear_feed);
 		textview23 = (TextView) findViewById(R.id.textview23);
-		textview24 = (TextView) findViewById(R.id.textview24);
+		version_visiable = (TextView) findViewById(R.id.version_visiable);
 		textview25 = (TextView) findViewById(R.id.textview25);
 		textview26 = (TextView) findViewById(R.id.textview26);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
@@ -324,7 +324,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				drst.setTitle("Are you sure?");
-				drst.setMessage("Once you reset Browservio, your data will be gone forever!");
+				drst.setMessage("You are currently trying to reset Browservio.\n\nNote this option will do the following things:\n• Reset all your settings\n• Clear browser cache and history\n\nARE YOU SURE ABOUT THIS?");
 				drst.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
@@ -470,7 +470,7 @@ public class SettingsActivity extends AppCompatActivity {
 		}
 		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
 		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
-		textview24.setText("Browservio ".concat(browservio_saver.getString("versionName", "")));
+		version_visiable.setText("Browservio ".concat(browservio_saver.getString("versionName", "")));
 		linear_general_open = true;
 		linear_advenced_open = true;
 		linear_about_open = true;
