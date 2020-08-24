@@ -164,38 +164,31 @@ public class MainActivity extends AppCompatActivity {
 					_rippleAnimator("grey", browse);
 					actuallypressedbro = false;
 				}
-				if (urledit.getText().toString().equals("browservio://defaulterror") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
-					defaulterror = true;
-					urledit.setText("browservio://defaulterror");
-					webview.loadUrl("file:///sdcard/Browservio/error/setorerr.html");
+				if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/error.html")) {
+					_errorpage();
 				}
 				else {
-					if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/error.html")) {
-						_errorpage();
+					if (browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
+						_browservio_browse();
 					}
 					else {
-						if (browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
-							_browservio_browse();
+						if (urledit.getText().toString().equals("")) {
+							urledit.setError("This flied cannot be empty");
+							error_defuse = new TimerTask() {
+								@Override
+								public void run() {
+									runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											urledit.setError(null);
+										}
+									});
+								}
+							};
+							_timer.schedule(error_defuse, (int)(3000));
 						}
 						else {
-							if (urledit.getText().toString().equals("")) {
-								urledit.setError("This flied cannot be empty");
-								error_defuse = new TimerTask() {
-									@Override
-									public void run() {
-										runOnUiThread(new Runnable() {
-											@Override
-											public void run() {
-												urledit.setError(null);
-											}
-										});
-									}
-								};
-								_timer.schedule(error_defuse, (int)(3000));
-							}
-							else {
-								_browservio_browse();
-							}
+							_browservio_browse();
 						}
 					}
 				}
@@ -617,7 +610,6 @@ public class MainActivity extends AppCompatActivity {
 				    }
 		});
 		// Default error page
-		FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/Browservio/error/setorerr.html"), "Successfully set error page back to default! (only this session)\n<br> <br>\nClick the back button to return to normal user session.");
 		defaulterror = false;
 		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
 			// Load default homepage.
