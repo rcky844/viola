@@ -183,7 +183,7 @@
 							android:paddingLeft="8dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
-							android:text="This will reset Browservio's settings."
+							android:text="Reset Browservio's settings."
 							android:textSize="12sp"
 							android:textColor="#000000"/>
 					</LinearLayout>
@@ -299,7 +299,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Still continues to load an empty page when the address bar is empty."
+								android:text="Continues to load an empty page when the address bar is empty."
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>

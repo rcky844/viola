@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 				else {
 					// cannot go backwards
-					SketchwareUtil.showMessage(getApplicationContext(), "Already at the first page");
+					SketchwareUtil.showMessage(getApplicationContext(), "Already at the first page!");
 				}
 			}
 		});
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 				else {
 					// cannot go forward
-					SketchwareUtil.showMessage(getApplicationContext(), "Already at the last page");
+					SketchwareUtil.showMessage(getApplicationContext(), "Already at the last page!");
 				}
 			}
 		});

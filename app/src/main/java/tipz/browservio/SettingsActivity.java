@@ -434,7 +434,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				dabt.setTitle("Version information");
-				dabt.setMessage("Version name: 1.2 build 3\nVersion technical name: 1.2.3.3\nVersion code: 9\nVersion build date: 2020-08-17");
+				dabt.setMessage("Version name: 1.3\nVersion technical name: 1.3.0\nVersion code: 10\nVersion build date: 2020-08-24");
 				dabt.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
