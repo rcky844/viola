@@ -12,7 +12,7 @@
 			android:id="@+id/linear_urledit"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="#039BE5"
+			android:background="#3DDC84"
 			android:gravity="center_horizontal|center_vertical"
 			android:orientation="horizontal"
 			android:layout_gravity="center_horizontal|center_vertical">
@@ -66,7 +66,7 @@
 					android:id="@+id/linear_control"
 					android:layout_width="wrap_content"
 					android:layout_height="50dp"
-					android:background="#039BE5"
+					android:background="#3DDC84"
 					android:gravity="center_vertical"
 					android:orientation="horizontal"
 					android:weightSum="1"
