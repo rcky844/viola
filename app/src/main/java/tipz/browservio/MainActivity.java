@@ -637,11 +637,13 @@ public class MainActivity extends AppCompatActivity {
 		});
 		// Default error page
 		defaulterror = false;
-		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
-			// Load default homepage.
-			webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
-			urledit.setText(browservio_saver.getString("defaultHomePage", ""));
-			hist = hist.concat("\n".concat(webview.getUrl()));
+		if (!actuallypaused) {
+			if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
+				// Load default homepage.
+				webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
+				urledit.setText(browservio_saver.getString("defaultHomePage", ""));
+				hist = hist.concat("\n".concat(webview.getUrl()));
+			}
 		}
 	}
 	
@@ -652,21 +654,6 @@ public class MainActivity extends AppCompatActivity {
 			_bottomBarchk();
 			// Settings check
 			_firstLaunch();
-			crrurl = new TimerTask() {
-				@Override
-				public void run() {
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							// Make sure the page is correct
-							if (webview.canGoBack()) {
-								linear_control_b0.performClick();
-							}
-						}
-					});
-				}
-			};
-			_timer.schedule(crrurl, (int)(250));
 			actuallypaused = false;
 		}
 	}
@@ -740,9 +727,9 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.3 predev1").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.3.0.1").commit();
-		browservio_saver.edit().putString("versionCode", "11").commit();
+		browservio_saver.edit().putString("versionName", "1.3 predev2").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.3.0.2").commit();
+		browservio_saver.edit().putString("versionCode", "12").commit();
 		browservio_saver.edit().putString("versionDate", "2020-09-10").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
