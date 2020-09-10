@@ -434,7 +434,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				dabt.setTitle("Version information");
-				dabt.setMessage("Version name: ".concat(browservio_saver.getString("versionName", "").concat("\n")).concat("Version technical name: ".concat(browservio_saver.getString("versionTechnical", "").concat("\n"))).concat("Version code: ".concat(browservio_saver.getString("versionCode", "").concat("\n"))).concat("Version build date: ".concat(browservio_saver.getString("versionDate", ""))));
+				dabt.setMessage("Version name: ".concat(browservio_saver.getString("versionName", "").concat("\n".concat("Version family: ".concat(browservio_saver.getString("versionFamily", "")).concat("\n")))).concat("Version technical name: ".concat(browservio_saver.getString("versionTechnical", "").concat("\n"))).concat("Version code: ".concat(browservio_saver.getString("versionCode", "").concat("\n"))).concat("Version build date: ".concat(browservio_saver.getString("versionDate", ""))).concat(""));
 				dabt.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
