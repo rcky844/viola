@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 	private String beforepauseUrl = "";
 	private boolean actuallypaused = false;
 	private boolean actuallypressedbro = false;
+	private String hist = "";
 	
 	private LinearLayout linear_urledit;
 	private LinearLayout webview_linear;
@@ -76,8 +77,9 @@ public class MainActivity extends AppCompatActivity {
 	private LinearLayout linear_control_b4;
 	private LinearLayout linear_control_b5;
 	private LinearLayout linear_control_b6;
+	private LinearLayout linear_control_b9;
 	private LinearLayout linear_control_b8;
-	private LinearLayout linear5;
+	private LinearLayout linear9;
 	private ImageView back;
 	private ImageView forward;
 	private ImageView reload;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 	private ImageView ic_clear;
 	private ImageView ic_share;
 	private ImageView settings;
+	private ImageView imageview3;
 	private ImageView imageview1;
 	
 	private SharedPreferences browservio_saver;
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 	private TimerTask crrurl;
 	private TimerTask reset;
 	private ObjectAnimator barrrrrr = new ObjectAnimator();
+	private AlertDialog.Builder dhist;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -143,8 +147,9 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b4 = (LinearLayout) findViewById(R.id.linear_control_b4);
 		linear_control_b5 = (LinearLayout) findViewById(R.id.linear_control_b5);
 		linear_control_b6 = (LinearLayout) findViewById(R.id.linear_control_b6);
+		linear_control_b9 = (LinearLayout) findViewById(R.id.linear_control_b9);
 		linear_control_b8 = (LinearLayout) findViewById(R.id.linear_control_b8);
-		linear5 = (LinearLayout) findViewById(R.id.linear5);
+		linear9 = (LinearLayout) findViewById(R.id.linear9);
 		back = (ImageView) findViewById(R.id.back);
 		forward = (ImageView) findViewById(R.id.forward);
 		reload = (ImageView) findViewById(R.id.reload);
@@ -153,9 +158,11 @@ public class MainActivity extends AppCompatActivity {
 		ic_clear = (ImageView) findViewById(R.id.ic_clear);
 		ic_share = (ImageView) findViewById(R.id.ic_share);
 		settings = (ImageView) findViewById(R.id.settings);
+		imageview3 = (ImageView) findViewById(R.id.imageview3);
 		imageview1 = (ImageView) findViewById(R.id.imageview1);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
+		dhist = new AlertDialog.Builder(this);
 		
 		browse.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -192,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
 						}
 					}
 				}
+				hist = hist.concat("\n".concat(webview.getUrl()));
 			}
 		});
 		
@@ -456,6 +464,22 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 		
+		linear_control_b9.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				_rippleAnimator("grey", linear_control_b9);
+				dhist.setTitle("History list");
+				dhist.setMessage(hist);
+				dhist.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						
+					}
+				});
+				dhist.create().show();
+			}
+		});
+		
 		linear_control_b8.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
@@ -518,6 +542,7 @@ public class MainActivity extends AppCompatActivity {
 		// full screen vid
 		_fullScreenVideo();
 		webview.setWebChromeClient(new CustomWebClient());
+		hist = browservio_saver.getString("history", "");
 	}
 	
 	@Override
@@ -576,6 +601,7 @@ public class MainActivity extends AppCompatActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		FileUtil.deleteFile(FileUtil.getExternalStorageDir().concat("/Browservio/error"));
+		browservio_saver.edit().putString("history", hist).commit();
 	}
 	
 	@Override
@@ -615,6 +641,7 @@ public class MainActivity extends AppCompatActivity {
 			// Load default homepage.
 			webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
 			urledit.setText(browservio_saver.getString("defaultHomePage", ""));
+			hist = hist.concat("\n".concat(webview.getUrl()));
 		}
 	}
 	
@@ -713,10 +740,10 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.3").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.3.0").commit();
-		browservio_saver.edit().putString("versionCode", "10").commit();
-		browservio_saver.edit().putString("versionDate", "2020-08-24").commit();
+		browservio_saver.edit().putString("versionName", "1.3 predev1").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.3.0.1").commit();
+		browservio_saver.edit().putString("versionCode", "11").commit();
+		browservio_saver.edit().putString("versionDate", "2020-09-10").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
@@ -845,6 +872,7 @@ Current default page: https://www.google.com/ */
 				}
 			}
 		}
+		hist = hist.concat("\n".concat(webview.getUrl()));
 	}
 	
 	
