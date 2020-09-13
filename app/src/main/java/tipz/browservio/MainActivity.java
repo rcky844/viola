@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 	private LinearLayout linear_control_b6;
 	private LinearLayout linear_control_b9;
 	private LinearLayout linear_control_b8;
-	private LinearLayout linear9;
+	private LinearLayout linear10;
 	private ImageView back;
 	private ImageView forward;
 	private ImageView reload;
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b6 = (LinearLayout) findViewById(R.id.linear_control_b6);
 		linear_control_b9 = (LinearLayout) findViewById(R.id.linear_control_b9);
 		linear_control_b8 = (LinearLayout) findViewById(R.id.linear_control_b8);
-		linear9 = (LinearLayout) findViewById(R.id.linear9);
+		linear10 = (LinearLayout) findViewById(R.id.linear10);
 		back = (ImageView) findViewById(R.id.back);
 		forward = (ImageView) findViewById(R.id.forward);
 		reload = (ImageView) findViewById(R.id.reload);
@@ -458,7 +458,10 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("grey", linear_control_b5);
-				Intent i = new Intent(android.content.Intent.ACTION_SEND); i.setType("text/plain");  i.putExtra(android.content.Intent.EXTRA_TEXT, webview.getUrl()); startActivity(Intent.createChooser(i,"Share URL using"));
+				Intent i = new Intent(android.content.Intent.ACTION_SEND);
+				i.setType("text/plain");
+				i.putExtra(android.content.Intent.EXTRA_TEXT, webview.getUrl());
+				startActivity(Intent.createChooser(i,"Share URL using"));
 				// Show the bottom bar how it was before pausing
 				_bottomBarchk();
 			}
