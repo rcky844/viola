@@ -2,6 +2,6 @@
 	<color	name="colorPrimary">#3DDC84</color>
 	<color	name="colorPrimaryDark">#3DDC2F</color>
 	<color	name="colorAccent">#4285F4</color>
-	<color	name="colorControlHighlight">#008DCD</color>
-	<color	name="colorControlNormal">#57BEEE</color>
+	<color	name="colorControlHighlight">#3DDC84</color>
+	<color	name="colorControlNormal">#4AFF3F</color>
 </resources>

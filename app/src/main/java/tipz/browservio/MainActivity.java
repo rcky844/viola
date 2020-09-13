@@ -40,6 +40,8 @@ import android.view.animation.BounceInterpolator;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.view.View;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import androidx.core.content.ContextCompat;
 import androidx.core.app.ActivityCompat;
 import android.Manifest;
@@ -204,7 +206,9 @@ public class MainActivity extends AppCompatActivity {
 						}
 					}
 				}
-				hist = hist.concat("\n".concat(webview.getUrl()));
+				if (!hist.equals("")) {
+					hist = hist.concat("\n".concat(webview.getUrl()));
+				}
 			}
 		});
 		
@@ -473,15 +477,26 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("grey", linear_control_b9);
-				dhist.setTitle("History list");
-				dhist.setMessage(hist);
-				dhist.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						
-					}
-				});
-				dhist.create().show();
+				if (!hist.equals("")) {
+					dhist.setTitle("History list");
+					dhist.setMessage(hist);
+					dhist.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface _dialog, int _which) {
+							
+						}
+					});
+					dhist.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface _dialog, int _which) {
+							((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", hist));
+						}
+					});
+					dhist.create().show();
+				}
+				else {
+					SketchwareUtil.showMessage(getApplicationContext(), "History is empty!");
+				}
 			}
 		});
 		
@@ -547,7 +562,9 @@ public class MainActivity extends AppCompatActivity {
 		// full screen vid
 		_fullScreenVideo();
 		webview.setWebChromeClient(new CustomWebClient());
-		hist = browservio_saver.getString("history", "");
+		if (!browservio_saver.getString("history", "").equals("")) {
+			hist = browservio_saver.getString("history", "");
+		}
 	}
 	
 	@Override
@@ -717,26 +734,13 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	
-	private void _resetduetoup () {
-		dialog.setTitle("Your settings have been reset!");
-		dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
-		dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface _dialog, int _which) {
-				
-			}
-		});
-		dialog.create().show();
-	}
-	
-	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.3 predev3").commit();
+		browservio_saver.edit().putString("versionName", "1.3 Beta 1").commit();
 		browservio_saver.edit().putString("versionFamily", "1.3").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.3.0.3").commit();
-		browservio_saver.edit().putString("versionCode", "13").commit();
-		browservio_saver.edit().putString("versionDate", "2020-09-10").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.3.0.4").commit();
+		browservio_saver.edit().putString("versionCode", "14").commit();
+		browservio_saver.edit().putString("versionDate", "2020-09-13").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
@@ -744,8 +748,18 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 			browservio_saver.edit().putString("showBrowseBtn", "0").commit();
 			browservio_saver.edit().putString("showCustomError", "1").commit();
+			browservio_saver.edit().putString("lastVersionCode", "14").commit();
+			browservio_saver.edit().putString("lastConfigVersion", "7").commit();
 			if (!browservio_saver.getString("configVersion", "").equals("7") && !browservio_saver.getString("configVersion", "").equals("")) {
-				_resetduetoup();
+				dialog.setTitle("Your settings has been reset!");
+				dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
+				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						
+					}
+				});
+				dialog.create().show();
 			}
 			if (browservio_saver.getString("isFirstLaunch", "").equals("1")) {
 				final ProgressDialog prog = new ProgressDialog(MainActivity.this); prog.setMax(100);prog.setTitle("Resetting"); prog.setMessage("Please wait..."); prog.setIndeterminate(true); prog.setCancelable(false);prog.show();
@@ -761,6 +775,7 @@ public class MainActivity extends AppCompatActivity {
 								startActivity(i);
 								webview.clearCache(true);
 								webview.clearHistory();
+								browservio_saver.edit().putString("history", "").commit();
 								reset.cancel();
 								SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully!");
 							}
@@ -804,11 +819,11 @@ Current default page: https://www.google.com/ */
 	
 	
 	private void _errorpage () {
-		         webview.loadUrl("file:///sdcard/Browservio/error/error.html");
+		webview.loadUrl("file:///sdcard/Browservio/error/error.html");
 		//Setup media player (rewrote 200815-1307)
 		errorsound = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
 		errorsound.start();
-		         urledit.setText("browservio://error");
+		urledit.setText("browservio://error");
 	}
 	
 	
