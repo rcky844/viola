@@ -455,7 +455,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse("https://github.com/browservio-feedback-tracker"));
+				telegrambot.setData(Uri.parse("https://github.com/browservio/browservio-feedback-tracker"));
 				startActivity(telegrambot);
 			}
 		});
@@ -464,7 +464,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse("https://github.com/browservio"));
+				telegrambot.setData(Uri.parse("https://github.com/browservio/browservio"));
 				startActivity(telegrambot);
 			}
 		});
