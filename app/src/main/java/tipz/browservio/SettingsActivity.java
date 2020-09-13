@@ -91,10 +91,13 @@ public class SettingsActivity extends AppCompatActivity {
 	private ImageView imageview5;
 	private LinearLayout linear_version;
 	private LinearLayout linear_feed;
+	private LinearLayout linear_source;
 	private TextView textview23;
 	private TextView version_visiable;
 	private TextView textview25;
 	private TextView textview26;
+	private TextView textview35;
+	private TextView textview36;
 	
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -168,10 +171,13 @@ public class SettingsActivity extends AppCompatActivity {
 		imageview5 = (ImageView) findViewById(R.id.imageview5);
 		linear_version = (LinearLayout) findViewById(R.id.linear_version);
 		linear_feed = (LinearLayout) findViewById(R.id.linear_feed);
+		linear_source = (LinearLayout) findViewById(R.id.linear_source);
 		textview23 = (TextView) findViewById(R.id.textview23);
 		version_visiable = (TextView) findViewById(R.id.version_visiable);
 		textview25 = (TextView) findViewById(R.id.textview25);
 		textview26 = (TextView) findViewById(R.id.textview26);
+		textview35 = (TextView) findViewById(R.id.textview35);
+		textview36 = (TextView) findViewById(R.id.textview36);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dialog1 = new AlertDialog.Builder(this);
@@ -449,7 +455,16 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse("https://t.me/BrowservioBot"));
+				telegrambot.setData(Uri.parse("https://github.com/browservio-feedback-tracker"));
+				startActivity(telegrambot);
+			}
+		});
+		
+		linear_source.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				telegrambot.setAction(Intent.ACTION_VIEW);
+				telegrambot.setData(Uri.parse("https://github.com/browservio"));
 				startActivity(telegrambot);
 			}
 		});
@@ -502,6 +517,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_setRipple(linear1_overrideempt);
 		_setRipple(linear1_b0);
 		_setRipple(linear13);
+		_setRipple(linear_source);
 		_rippleRoundStroke(linear_general, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_rippleRoundStroke(linear_advenced, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_rippleRoundStroke(linear_about, "#ffffff", "#2196F3", 6, 2, "#2196F3");
@@ -514,6 +530,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_rippleRoundStroke(linear1_overrideempt, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_rippleRoundStroke(linear1_b0, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_rippleRoundStroke(linear13, "#ffffff", "#2196F3", 6, 2, "#2196F3");
+		_rippleRoundStroke(linear_source, "#ffffff", "#2196F3", 6, 2, "#2196F3");
 		_ripple(linear_general, "#2196F3");
 		_ripple(linear_advenced, "#2196F3");
 		_ripple(linear_about, "#2196F3");
@@ -526,6 +543,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_ripple(linear1_overrideempt, "#2196F3");
 		_ripple(linear1_b0, "#2196F3");
 		_ripple(linear13, "#2196F3");
+		_ripple(linear_source, "#2196F3");
 	}
 	private void _setRipple (final View _view) {
 		TypedValue typedValue = new TypedValue();
