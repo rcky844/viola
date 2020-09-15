@@ -467,8 +467,6 @@ public class MainActivity extends AppCompatActivity {
 				i.setType("text/plain");
 				i.putExtra(android.content.Intent.EXTRA_TEXT, webview.getUrl());
 				startActivity(Intent.createChooser(i,"Share URL using"));
-				// Show the bottom bar how it was before pausing
-				_bottomBarchk();
 			}
 		});
 		
@@ -673,8 +671,6 @@ public class MainActivity extends AppCompatActivity {
 					
 					    }
 			});
-			// Default error page
-			defaulterror = false;
 			if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
 				// Load default homepage.
 				webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
@@ -706,7 +702,6 @@ public class MainActivity extends AppCompatActivity {
 	public void onResume() {
 		super.onResume();
 		if (actuallypaused) {
-			_bottomBarchk();
 			// Settings check
 			_firstLaunch();
 			actuallypaused = false;
@@ -717,7 +712,6 @@ public class MainActivity extends AppCompatActivity {
 	public void onPause() {
 		super.onPause();
 		actuallypaused = true;
-		_bottomBarchk();
 		funload.cancel();
 	}
 	private void _downloadManager (final WebView _webview) {
@@ -965,14 +959,6 @@ Current default page: https://www.google.com/ */
 	}
 	
 	{
-	}
-	
-	
-	private void _bottomBarchk () {
-		// Show the bottom bar how it was before pausing
-		if (fabstat == 0) {
-			_fab.performClick();
-		}
 	}
 	
 	
