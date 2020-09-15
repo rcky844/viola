@@ -21,6 +21,7 @@ import java.text.*;
 import android.widget.LinearLayout;
 import android.widget.ImageView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.widget.HorizontalScrollView;
@@ -62,12 +63,14 @@ public class MainActivity extends AppCompatActivity {
 	private boolean actuallypaused = false;
 	private boolean actuallypressedbro = false;
 	private String hist = "";
+	private double finload = 0;
 	
 	private LinearLayout linear_urledit;
 	private LinearLayout webview_linear;
 	private LinearLayout linear_urledit_text;
 	private ImageView browse;
 	private EditText urledit;
+	private ProgressBar progmain;
 	private WebView webview;
 	private HorizontalScrollView hscroll_control;
 	private LinearLayout linear_control;
@@ -106,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
 	private TimerTask reset;
 	private ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
+	private TimerTask funload;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -136,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_urledit_text = (LinearLayout) findViewById(R.id.linear_urledit_text);
 		browse = (ImageView) findViewById(R.id.browse);
 		urledit = (EditText) findViewById(R.id.urledit);
+		progmain = (ProgressBar) findViewById(R.id.progmain);
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
 		webview.getSettings().setSupportZoom(true);
@@ -495,6 +500,13 @@ public class MainActivity extends AppCompatActivity {
 							((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", hist));
 						}
 					});
+					dhist.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface _dialog, int _which) {
+							browservio_saver.edit().putString("history", "").commit();
+							hist = "";
+						}
+					});
 					dhist.create().show();
 				}
 				else {
@@ -670,6 +682,24 @@ public class MainActivity extends AppCompatActivity {
 				hist = hist.concat("\n".concat(webview.getUrl()));
 			}
 		}
+		funload = new TimerTask() {
+			@Override
+			public void run() {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						finload = webview.getProgress();
+						if (finload == 100) {
+							progmain.setProgress((int)0);
+						}
+						else {
+							progmain.setProgress((int)finload);
+						}
+					}
+				});
+			}
+		};
+		_timer.scheduleAtFixedRate(funload, (int)(0), (int)(70));
 	}
 	
 	@Override
@@ -688,6 +718,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onPause();
 		actuallypaused = true;
 		_bottomBarchk();
+		funload.cancel();
 	}
 	private void _downloadManager (final WebView _webview) {
 		_webview.setDownloadListener(new DownloadListener() {       
@@ -739,11 +770,11 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.3 Beta 1").commit();
+		browservio_saver.edit().putString("versionName", "1.3 Beta 2").commit();
 		browservio_saver.edit().putString("versionFamily", "1.3").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.3.0.4").commit();
-		browservio_saver.edit().putString("versionCode", "14").commit();
-		browservio_saver.edit().putString("versionDate", "2020-09-13").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.3.0.5").commit();
+		browservio_saver.edit().putString("versionCode", "15").commit();
+		browservio_saver.edit().putString("versionDate", "2020-09-15").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
@@ -751,7 +782,7 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 			browservio_saver.edit().putString("showBrowseBtn", "0").commit();
 			browservio_saver.edit().putString("showCustomError", "1").commit();
-			browservio_saver.edit().putString("lastVersionCode", "14").commit();
+			browservio_saver.edit().putString("lastVersionCode", "15").commit();
 			browservio_saver.edit().putString("lastConfigVersion", "7").commit();
 			if (!browservio_saver.getString("configVersion", "").equals("7") && !browservio_saver.getString("configVersion", "").equals("")) {
 				dialog.setTitle("Your settings has been reset!");
@@ -779,6 +810,7 @@ public class MainActivity extends AppCompatActivity {
 								webview.clearCache(true);
 								webview.clearHistory();
 								browservio_saver.edit().putString("history", "").commit();
+								hist = "";
 								reset.cancel();
 								SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully!");
 							}
