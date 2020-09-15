@@ -240,7 +240,7 @@
 							android:scaleType="center"/>
 					</LinearLayout>
 					<LinearLayout
-						android:id="@+id/linear10"
+						android:id="@+id/linear_control_endp"
 						android:layout_width="250dp"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
@@ -255,5 +255,5 @@
 		android:layout_height="wrap_content"
 		android:layout_margin="16dp"
 		android:layout_gravity="right|bottom"
-		app:srcCompat="@drawable/ic_arrow_up_white"/>
+		app:srcCompat="@drawable/ic_arrow_up_grey"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

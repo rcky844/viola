@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 	private LinearLayout linear_control_b6;
 	private LinearLayout linear_control_b9;
 	private LinearLayout linear_control_b8;
-	private LinearLayout linear10;
+	private LinearLayout linear_control_endp;
 	private ImageView back;
 	private ImageView forward;
 	private ImageView reload;
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b6 = (LinearLayout) findViewById(R.id.linear_control_b6);
 		linear_control_b9 = (LinearLayout) findViewById(R.id.linear_control_b9);
 		linear_control_b8 = (LinearLayout) findViewById(R.id.linear_control_b8);
-		linear10 = (LinearLayout) findViewById(R.id.linear10);
+		linear_control_endp = (LinearLayout) findViewById(R.id.linear_control_endp);
 		back = (ImageView) findViewById(R.id.back);
 		forward = (ImageView) findViewById(R.id.forward);
 		reload = (ImageView) findViewById(R.id.reload);
@@ -651,8 +651,6 @@ public class MainActivity extends AppCompatActivity {
 			desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
 			// Start downloadManager service
 			_downloadManager(webview);
-			// Set default pic for fab 
-			_fab.setImageResource(R.drawable.ic_arrow_up_white);
 			// Set default fab stat
 			linear_control.setVisibility(View.GONE);
 			fabstat = 0;
