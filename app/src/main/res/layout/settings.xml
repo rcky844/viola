@@ -81,9 +81,10 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
+							android:paddingTop="2dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
-							android:text="Current search engine: https://www.google.com/search\?q="
+							android:text="Current search engine: "
 							android:textSize="12sp"
 							android:textColor="#000000"/>
 					</LinearLayout>
@@ -108,9 +109,10 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
+							android:paddingTop="2dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
-							android:text="Current homepage: https://www.google.com/"
+							android:text="Current homepage: "
 							android:textSize="12sp"
 							android:textColor="#000000"/>
 					</LinearLayout>
@@ -182,6 +184,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
+							android:paddingTop="2dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
 							android:text="Reset Browservio's settings."
@@ -440,6 +443,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
+							android:paddingTop="2dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
 							android:text="Giving feedback will help improve the quality of Browservio."
@@ -467,6 +471,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
+							android:paddingTop="2dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
 							android:text="Have a look at Browservio's source code."

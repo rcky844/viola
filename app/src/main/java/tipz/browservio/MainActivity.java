@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 					actuallypressedbro = false;
 				}
 				if (urledit.getText().toString().equals("browservio://no_error")) {
-					throw new RuntimeException("Resource access denied, reason: 'browservio://no_error is a system protected page'");
+					throw new RuntimeException("Resource access denied, reason: 'browservio://no_error is a protected page'");
 				}
 				else {
 					if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///sdcard/Browservio/error/error.html")) {
@@ -438,18 +438,22 @@ public class MainActivity extends AppCompatActivity {
 						switch (item.getTitle().toString()){
 							case "Clear Cache":
 							webview.clearCache(true);
-							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
+							SketchwareUtil.showMessage(getApplicationContext(), "Cache cleared successfully!");
 							linear_control_b2.performClick();
 							break;
 							case "Clear History":
 							webview.clearHistory();
-							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
+							hist = "";
+							browservio_saver.edit().putString("history", "").commit();
+							SketchwareUtil.showMessage(getApplicationContext(), "History cleared successfully!");
 							linear_control_b2.performClick();
 							break;
 							case "Clear All":
 							webview.clearCache(true);
 							webview.clearHistory();
-							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
+							hist = "";
+							browservio_saver.edit().putString("history", "").commit();
+							SketchwareUtil.showMessage(getApplicationContext(), "Everything cleared successfully!");
 							linear_control_b2.performClick();
 							break;}
 						return true;
@@ -766,7 +770,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionFamily", "1.3").commit();
 		browservio_saver.edit().putString("versionTechnical", "1.3.0.5").commit();
 		browservio_saver.edit().putString("versionCode", "15").commit();
-		browservio_saver.edit().putString("versionDate", "2020-09-15").commit();
+		browservio_saver.edit().putString("versionDate", "2020-09-16").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
