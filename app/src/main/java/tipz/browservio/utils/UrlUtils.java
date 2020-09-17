@@ -67,14 +67,29 @@ public class UrlUtils {
      * @return file name including extension
      */
     public static String guessFileName(String url, @Nullable String contentDisposition, @Nullable String mimeType) {
-        String filename = extractFileNameFromUrl(contentDisposition, url);
+        String extractedFileName = extractFileNameFromUrl(contentDisposition, url);
+        String sanitizedMimeType = sanitizeMimeType(mimeType);
 
         // Split filename between base and extension
         // Add an extension if filename does not have one
-        if (filename.contains(".")) {
-            return changeExtension(filename, mimeType);
+        if (extractedFileName.contains(".")) {
+            return changeExtension(extractedFileName, sanitizedMimeType);
         } else {
-            return filename + createExtension(mimeType);
+            return extractedFileName + createExtension(sanitizedMimeType);
+        }
+    }
+
+    // Some site add extra information after the mimetype, for example 'application/pdf; qs=0.001'
+    // we just want to extract the mimeType and ignore the rest.
+    private static String sanitizeMimeType(String mimeType) {
+        if (mimeType != null) {
+            if (mimeType.contains(";")) {
+                return mimeType.substring(0, mimeType.indexOf(";") - 1);
+            } else {
+                return mimeType;
+            }
+        } else {
+            return null;
         }
     }
 
