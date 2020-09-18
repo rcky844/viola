@@ -754,8 +754,6 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionTechnical", "1.3.0.6").commit();
 		browservio_saver.edit().putString("versionCode", "16").commit();
 		browservio_saver.edit().putString("versionDate", "2020-09-18").commit();
-		browservio_saver.edit().putString("lastVersionCode", "16").commit();
-		browservio_saver.edit().putString("lastConfigVersion", "7").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
@@ -827,6 +825,8 @@ public class MainActivity extends AppCompatActivity {
 		else {
 			defaulterror = true;
 		}
+		browservio_saver.edit().putString("lastConfigVersion", "7").commit();
+		browservio_saver.edit().putString("lastVersionCode", "16").commit();
 	}
 	
 	
