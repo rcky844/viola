@@ -486,19 +486,19 @@ public class SettingsActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		_setAllRipple(linear_general, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear_advenced, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear_about, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear_version, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear_feed, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear1_search, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear1_homepage, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear11, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear1_javascript, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear1_overrideempt, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear1_b0, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear13, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
-		_setAllRipple(linear_source, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear_general, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear_advenced, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear_about, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear_version, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear_feed, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear1_search, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear1_homepage, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear11, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear1_javascript, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear1_overrideempt, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear1_b0, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear13, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
+		_setAllRipple(linear_source, "#ffffff", "#403DDC84", 6, 2, "#403DDC84", "#403DDC84");
 	}
 	private void _setRipple (final View _view) {
 		TypedValue typedValue = new TypedValue();
