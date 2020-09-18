@@ -753,7 +753,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionFamily", "1.3").commit();
 		browservio_saver.edit().putString("versionTechnical", "1.3.0.6").commit();
 		browservio_saver.edit().putString("versionCode", "16").commit();
-		browservio_saver.edit().putString("versionDate", "2020-09-16").commit();
+		browservio_saver.edit().putString("versionDate", "2020-09-18").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
@@ -789,10 +789,8 @@ public class MainActivity extends AppCompatActivity {
 			};
 			_timer.schedule(reset, (int)(2000));
 		}
-		if (!browservio_saver.getString("configVersion", "").equals("7") || browservio_saver.getString("isFirstLaunch", "").equals("")) {
-			/* Load default homepage.
-
-Current default page: https://www.google.com/ */
+		if (browservio_saver.getString("defaultHomePage", "").equals("")) {
+			// Load default homepage if first launch
 			webview.loadUrl("https://www.google.com/");
 			urledit.setText("https://www.google.com/");
 		}
