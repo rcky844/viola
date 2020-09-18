@@ -106,6 +106,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private AlertDialog.Builder dabt;
 	private AlertDialog.Builder drst;
 	private Intent telegrambot = new Intent();
+	private Intent re = new Intent();
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -317,12 +318,7 @@ public class SettingsActivity extends AppCompatActivity {
 		linear11.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (checkbox3.isChecked()) {
-					checkbox3.setChecked(false);
-				}
-				else {
-					checkbox3.setChecked(true);
-				}
+				_updateChkbox(checkbox3);
 			}
 		});
 		
@@ -364,36 +360,21 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_javascript.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (checkbox1.isChecked()) {
-					checkbox1.setChecked(false);
-				}
-				else {
-					checkbox1.setChecked(true);
-				}
+				_updateChkbox(checkbox1);
 			}
 		});
 		
 		linear1_overrideempt.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (checkbox2.isChecked()) {
-					checkbox2.setChecked(false);
-				}
-				else {
-					checkbox2.setChecked(true);
-				}
+				_updateChkbox(checkbox2);
 			}
 		});
 		
 		linear13.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (checkbox4.isChecked()) {
-					checkbox4.setChecked(false);
-				}
-				else {
-					checkbox4.setChecked(true);
-				}
+				_updateChkbox(checkbox4);
 			}
 		});
 		
@@ -771,6 +752,16 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 	
 	public void drawableclass() {
+	}
+	
+	
+	private void _updateChkbox (final CheckBox _chk) {
+		if (_chk.isChecked()) {
+			_chk.setChecked(false);
+		}
+		else {
+			_chk.setChecked(true);
+		}
 	}
 	
 	
