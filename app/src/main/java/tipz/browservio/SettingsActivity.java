@@ -486,45 +486,19 @@ public class SettingsActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		_setRipple(linear_general);
-		_setRipple(linear_advenced);
-		_setRipple(linear_about);
-		_setRipple(linear_version);
-		_setRipple(linear_feed);
-		_setRipple(linear1_search);
-		_setRipple(linear1_homepage);
-		_setRipple(linear11);
-		_setRipple(linear1_javascript);
-		_setRipple(linear1_overrideempt);
-		_setRipple(linear1_b0);
-		_setRipple(linear13);
-		_setRipple(linear_source);
-		_rippleRoundStroke(linear_general, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear_advenced, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear_about, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear_version, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear_feed, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear1_search, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear1_homepage, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear11, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear1_javascript, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear1_overrideempt, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear1_b0, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear13, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_rippleRoundStroke(linear_source, "#ffffff", "#2196F3", 6, 2, "#2196F3");
-		_ripple(linear_general, "#2196F3");
-		_ripple(linear_advenced, "#2196F3");
-		_ripple(linear_about, "#2196F3");
-		_ripple(linear_version, "#2196F3");
-		_ripple(linear_feed, "#2196F3");
-		_ripple(linear1_search, "#2196F3");
-		_ripple(linear1_homepage, "#2196F3");
-		_ripple(linear11, "#2196F3");
-		_ripple(linear1_javascript, "#2196F3");
-		_ripple(linear1_overrideempt, "#2196F3");
-		_ripple(linear1_b0, "#2196F3");
-		_ripple(linear13, "#2196F3");
-		_ripple(linear_source, "#2196F3");
+		_setAllRipple(linear_general, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear_advenced, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear_about, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear_version, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear_feed, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear1_search, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear1_homepage, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear11, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear1_javascript, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear1_overrideempt, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear1_b0, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear13, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
+		_setAllRipple(linear_source, "#ffffff", "#2196F3", 6, 2, "#2196F3", "#2196F3");
 	}
 	private void _setRipple (final View _view) {
 		TypedValue typedValue = new TypedValue();
@@ -762,6 +736,13 @@ public class SettingsActivity extends AppCompatActivity {
 		else {
 			_chk.setChecked(true);
 		}
+	}
+	
+	
+	private void _setAllRipple (final View _view, final String _focus, final String _press, final double _round, final double _stroke, final String _colorStroke, final String _color) {
+		_setRipple(_view);
+		_rippleRoundStroke(_view, _focus, _press, _round, _stroke, _colorStroke);
+		_ripple(_view, _color);
 	}
 	
 	
