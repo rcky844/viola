@@ -523,31 +523,25 @@ public class MainActivity extends AppCompatActivity {
 		_fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
+				baranim.setTarget(_fab);
+				barrrrrr.setTarget(hscroll_control);
+				baranim.setPropertyName("rotation");
+				barrrrrr.setPropertyName("alpha");
 				if (linear_control.getVisibility() == View.VISIBLE) {
-					baranim.setTarget(_fab);
-					barrrrrr.setTarget(hscroll_control);
-					baranim.setPropertyName("rotation");
-					barrrrrr.setPropertyName("alpha");
 					baranim.setFloatValues((float)(180), (float)(0));
 					barrrrrr.setFloatValues((float)(1), (float)(0));
 					baranim.setDuration((int)(250));
 					barrrrrr.setDuration((int)(250));
-					baranim.start();
-					barrrrrr.start();
 					linear_control.setVisibility(View.GONE);
 				} else {
-					baranim.setTarget(_fab);
 					linear_control.setVisibility(View.VISIBLE);
-					barrrrrr.setTarget(hscroll_control);
-					baranim.setPropertyName("rotation");
-					barrrrrr.setPropertyName("alpha");
 					baranim.setFloatValues((float)(0), (float)(180));
 					barrrrrr.setFloatValues((float)(0), (float)(1));
 					baranim.setDuration((int)(250));
 					barrrrrr.setDuration((int)(250));
-					baranim.start();
-					barrrrrr.start();
 				}
+				baranim.start();
+				barrrrrr.start();
 			}
 		});
 	}
