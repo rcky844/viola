@@ -754,6 +754,8 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionTechnical", "1.3.0.6").commit();
 		browservio_saver.edit().putString("versionCode", "16").commit();
 		browservio_saver.edit().putString("versionDate", "2020-09-18").commit();
+		browservio_saver.edit().putString("lastVersionCode", "16").commit();
+		browservio_saver.edit().putString("lastConfigVersion", "7").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
@@ -794,10 +796,6 @@ public class MainActivity extends AppCompatActivity {
 			webview.loadUrl("https://www.google.com/");
 			urledit.setText("https://www.google.com/");
 		}
-		browservio_saver.edit().putString("configVersion", "7").commit();
-		browservio_saver.edit().putString("isFirstLaunch", "0").commit();
-		browservio_saver.edit().putString("lastVersionCode", "16").commit();
-		browservio_saver.edit().putString("lastConfigVersion", "7").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
@@ -805,6 +803,8 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 			browservio_saver.edit().putString("showBrowseBtn", "0").commit();
 			browservio_saver.edit().putString("showCustomError", "1").commit();
+			browservio_saver.edit().putString("configVersion", "7").commit();
+			browservio_saver.edit().putString("isFirstLaunch", "0").commit();
 		}
 		// Settings check
 		if (browservio_saver.getString("isJavaScriptEnabled", "").equals("1")) {
