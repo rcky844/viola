@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
 					public boolean onMenuItemClick(MenuItem item){
 						switch (item.getTitle().toString()){
 							case "Desktop":
-							webview.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36");
+							webview.getSettings().setUserAgentString(browservio_saver.getString("cusDeskAgent",""));
 							last_desktop = desktop;
 							desktop = 1;
 							desktop_switch.setImageResource(R.drawable.ic_desktop_black);
@@ -754,7 +754,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionTechnical", "1.3.0.7").commit();
 		browservio_saver.edit().putString("versionCode", "17").commit();
 		browservio_saver.edit().putString("versionDate", "2020-09-18").commit();
-		if (!browservio_saver.getString("configVersion", "").equals("7") && !browservio_saver.getString("configVersion", "").equals("")) {
+		if (!browservio_saver.getString("configVersion", "").equals("8") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
 			dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -794,14 +794,15 @@ public class MainActivity extends AppCompatActivity {
 			webview.loadUrl("https://www.google.com/");
 			urledit.setText("https://www.google.com/");
 		}
-		if (!browservio_saver.getString("configVersion", "").equals("7") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
+		if (!browservio_saver.getString("configVersion", "").equals("8") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
 			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
+			browservio_saver.edit().putString("cusDeskAgent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36").commit();
 			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 			browservio_saver.edit().putString("showBrowseBtn", "0").commit();
 			browservio_saver.edit().putString("showCustomError", "1").commit();
-			browservio_saver.edit().putString("configVersion", "7").commit();
+			browservio_saver.edit().putString("configVersion", "8").commit();
 			browservio_saver.edit().putString("isFirstLaunch", "0").commit();
 		}
 		// Settings check

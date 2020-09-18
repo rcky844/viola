@@ -137,7 +137,6 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:paddingBottom="2dp"
 								android:text="Show browse button"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
@@ -244,7 +243,6 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:paddingBottom="2dp"
 								android:text="Enable JavaScript"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
@@ -291,7 +289,6 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:paddingBottom="2dp"
 								android:text="Override empty error in address bar"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
@@ -338,7 +335,6 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:paddingBottom="2dp"
 								android:text="Show custom error page"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
@@ -363,6 +359,34 @@
 							android:textSize="12sp"
 							android:textColor="#000000"
 							android:layout_gravity="right|center_vertical"/>
+					</LinearLayout>
+					<LinearLayout
+						android:id="@+id/linear0_useragentd1"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:padding="8dp"
+						android:orientation="vertical">
+						<TextView
+							android:id="@+id/textview37"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:paddingLeft="8dp"
+							android:paddingTop="8dp"
+							android:paddingRight="8dp"
+							android:text="Custom desktop user agent"
+							android:textSize="16sp"
+							android:textColor="#000000"/>
+						<TextView
+							android:id="@+id/textview38"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:paddingLeft="8dp"
+							android:paddingTop="2dp"
+							android:paddingRight="8dp"
+							android:paddingBottom="8dp"
+							android:text="Current desktop user agent: "
+							android:textSize="12sp"
+							android:textColor="#000000"/>
 					</LinearLayout>
 				</LinearLayout>
 				<LinearLayout
