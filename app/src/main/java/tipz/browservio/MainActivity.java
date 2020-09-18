@@ -549,6 +549,7 @@ public class MainActivity extends AppCompatActivity {
 		// Welcome to the Browservio (Shrek without Shrek browser)
 		// This browser was originally designed with Sketchware
 		// This project was started on Aug 13 2020
+		// sur wen Sherk browser
 		setTitle("Browservio");
 		_firstLaunch();
 		actuallypaused = false;
@@ -569,6 +570,7 @@ public class MainActivity extends AppCompatActivity {
 				    return false; 
 				  } 
 		});
+		
 	}
 	
 	@Override
@@ -675,6 +677,7 @@ public class MainActivity extends AppCompatActivity {
 						}
 						else {
 							progmain.setProgress((int)finload);
+							urledit.setText(webview.getUrl());
 						}
 					}
 				});
