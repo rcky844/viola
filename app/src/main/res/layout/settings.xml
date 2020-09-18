@@ -44,7 +44,7 @@
 						android:text="General"
 						android:textSize="16sp"
 						android:textStyle="bold"
-						android:textColor="#0288D1"
+						android:textColor="#4285F4"
 						android:layout_weight="1"/>
 					<ImageView
 						android:id="@+id/imageview4"
@@ -207,7 +207,7 @@
 						android:text="Advanced"
 						android:textSize="16sp"
 						android:textStyle="bold"
-						android:textColor="#0288D1"
+						android:textColor="#4285F4"
 						android:singleLine="true"
 						android:layout_weight="1"/>
 					<ImageView
@@ -380,7 +380,7 @@
 						android:text="Help"
 						android:textSize="16sp"
 						android:textStyle="bold"
-						android:textColor="#0288D1"
+						android:textColor="#4285F4"
 						android:singleLine="true"
 						android:layout_weight="1"/>
 					<ImageView
