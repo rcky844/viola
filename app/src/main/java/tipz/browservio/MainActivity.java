@@ -749,10 +749,10 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.3 Beta 3").commit();
+		browservio_saver.edit().putString("versionName", "1.3").commit();
 		browservio_saver.edit().putString("versionFamily", "1.3").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.3.0.6").commit();
-		browservio_saver.edit().putString("versionCode", "16").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.3.0.7").commit();
+		browservio_saver.edit().putString("versionCode", "17").commit();
 		browservio_saver.edit().putString("versionDate", "2020-09-18").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("7") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
@@ -825,8 +825,8 @@ public class MainActivity extends AppCompatActivity {
 		else {
 			defaulterror = true;
 		}
-		browservio_saver.edit().putString("lastConfigVersion", "7").commit();
-		browservio_saver.edit().putString("lastVersionCode", "16").commit();
+		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).commit();
+		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).commit();
 	}
 	
 	
