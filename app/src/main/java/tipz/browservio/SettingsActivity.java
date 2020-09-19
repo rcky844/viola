@@ -404,13 +404,6 @@ public class SettingsActivity extends AppCompatActivity {
 						}
 					}
 				});
-				d2.setNeutralButton("Reset", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						browservio_saver.edit().putString("cusDeskAgent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36").commit();
-						textview38.setText("Current desktop user agent: ".concat("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36"));
-					}
-				});
 				d2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
