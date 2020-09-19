@@ -796,9 +796,9 @@ public class MainActivity extends AppCompatActivity {
 			_timer.schedule(reset, (int)(2000));
 		}
 		if (browservio_saver.getString("defaultHomePage", "").equals("")) {
-			// Load default homepage if first launch
-			webview.loadUrl("https://www.google.com/");
-			urledit.setText("https://www.google.com/");
+			Intent i = getIntent();
+			finish();
+			startActivity(i);
 		}
 		if (!browservio_saver.getString("configVersion", "").equals("8") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
