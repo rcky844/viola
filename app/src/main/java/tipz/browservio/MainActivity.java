@@ -426,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
 				Menu menu2 = popup2.getMenu();
 				menu2.add("Clear Cache");
 				menu2.add("Clear History");
+				menu2.add("Clear Cookies");
 				menu2.add("Clear All");
 				popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
 					@Override
@@ -443,11 +444,18 @@ public class MainActivity extends AppCompatActivity {
 							SketchwareUtil.showMessage(getApplicationContext(), "History cleared successfully!");
 							linear_control_b2.performClick();
 							break;
+							case "Clear Cookies":
+							CookieManager.getInstance().removeAllCookies(null);
+							            CookieManager.getInstance().flush();
+							linear_control_b2.performClick();
+							break;
 							case "Clear All":
 							webview.clearCache(true);
 							webview.clearHistory();
 							hist = "";
 							browservio_saver.edit().putString("history", "").commit();
+							CookieManager.getInstance().removeAllCookies(null);
+							            CookieManager.getInstance().flush();
 							SketchwareUtil.showMessage(getApplicationContext(), "Everything cleared successfully!");
 							linear_control_b2.performClick();
 							break;}
@@ -681,6 +689,7 @@ public class MainActivity extends AppCompatActivity {
 							if (!webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
 								urledit.setText(webview.getUrl());
 							}
+							CookieSyncManager.getInstance().sync();
 						}
 					}
 				});
@@ -774,6 +783,12 @@ public class MainActivity extends AppCompatActivity {
 		if (browservio_saver.getString("isFirstLaunch", "").equals("1")) {
 			final ProgressDialog prog = new ProgressDialog(MainActivity.this); prog.setMax(100);prog.setTitle("Resetting"); prog.setMessage("Please wait..."); prog.setIndeterminate(true); prog.setCancelable(false);prog.show();
 			browservio_saver.edit().putString("isFirstLaunch", "").commit();
+			CookieManager.getInstance().removeAllCookies(null);
+			            CookieManager.getInstance().flush();
+			webview.clearCache(true);
+			webview.clearHistory();
+			browservio_saver.edit().putString("history", "").commit();
+			hist = "";
 			reset = new TimerTask() {
 				@Override
 				public void run() {
@@ -783,12 +798,8 @@ public class MainActivity extends AppCompatActivity {
 							Intent i = getIntent();
 							finish();
 							startActivity(i);
-							webview.clearCache(true);
-							webview.clearHistory();
-							browservio_saver.edit().putString("history", "").commit();
-							hist = "";
-							reset.cancel();
 							SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully!");
+							reset.cancel();
 						}
 					});
 				}
