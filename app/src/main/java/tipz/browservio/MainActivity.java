@@ -633,7 +633,6 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		FileUtil.deleteFile(FileUtil.getExternalStorageDir().concat("/Browservio/error"));
 		browservio_saver.edit().putString("history", hist).commit();
 	}
 	
