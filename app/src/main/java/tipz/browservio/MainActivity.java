@@ -535,18 +535,16 @@ public class MainActivity extends AppCompatActivity {
 				barrrrrr.setTarget(hscroll_control);
 				baranim.setPropertyName("rotation");
 				barrrrrr.setPropertyName("alpha");
+				baranim.setDuration((int)(250));
+				barrrrrr.setDuration((int)(250));
 				if (linear_control.getVisibility() == View.VISIBLE) {
 					baranim.setFloatValues((float)(180), (float)(0));
 					barrrrrr.setFloatValues((float)(1), (float)(0));
-					baranim.setDuration((int)(250));
-					barrrrrr.setDuration((int)(250));
 					linear_control.setVisibility(View.GONE);
 				} else {
 					linear_control.setVisibility(View.VISIBLE);
 					baranim.setFloatValues((float)(0), (float)(180));
 					barrrrrr.setFloatValues((float)(0), (float)(1));
-					baranim.setDuration((int)(250));
-					barrrrrr.setDuration((int)(250));
 				}
 				baranim.start();
 				barrrrrr.start();
