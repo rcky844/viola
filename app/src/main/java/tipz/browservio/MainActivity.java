@@ -778,10 +778,16 @@ public class MainActivity extends AppCompatActivity {
 			dialog.create().show();
 		}
 		if (browservio_saver.getString("isFirstLaunch", "").equals("1")) {
-			final ProgressDialog prog = new ProgressDialog(MainActivity.this); prog.setMax(100);prog.setTitle("Resetting"); prog.setMessage("Please wait..."); prog.setIndeterminate(true); prog.setCancelable(false);prog.show();
+			final ProgressDialog prog = new ProgressDialog(MainActivity.this);
+			prog.setMax(100);
+			prog.setTitle("Resetting");
+			prog.setMessage("Please wait...");
+			prog.setIndeterminate(true);
+			prog.setCancelable(false);
+			prog.show();
 			browservio_saver.edit().putString("isFirstLaunch", "").commit();
 			CookieManager.getInstance().removeAllCookies(null);
-			            CookieManager.getInstance().flush();
+			CookieManager.getInstance().flush();
 			webview.clearCache(true);
 			webview.clearHistory();
 			browservio_saver.edit().putString("history", "").commit();
