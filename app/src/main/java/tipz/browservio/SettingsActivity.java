@@ -400,7 +400,7 @@ public class SettingsActivity extends AppCompatActivity {
 						{
 						} else {
 							browservio_saver.edit().putString("cusDeskAgent", custom_ua1.getText().toString()).commit();
-							textview38.setText("Current desktop user agent: ".concat(browservio_saver.getString("cusDeskAgent", "")));
+							textview38.setText("Current desktop user agent: \n".concat(browservio_saver.getString("cusDeskAgent", "")));
 						}
 					}
 				});
@@ -473,7 +473,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse("https://github.com/browservio/browservio-feedback-tracker"));
+				telegrambot.setData(Uri.parse("https://github.com/Browservio/browservio/issues"));
 				startActivity(telegrambot);
 			}
 		});

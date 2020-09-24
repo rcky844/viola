@@ -670,6 +670,9 @@ public class MainActivity extends AppCompatActivity {
 				urledit.setText(browservio_saver.getString("defaultHomePage", ""));
 				hist = hist.concat("\n".concat(webview.getUrl()));
 			}
+			else {
+				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
+			}
 		}
 		funload = new TimerTask() {
 			@Override
@@ -698,11 +701,9 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (actuallypaused) {
-			// Settings check
-			_firstLaunch();
-			actuallypaused = false;
-		}
+		// Settings check
+		_firstLaunch();
+		actuallypaused = false;
 	}
 	
 	@Override
@@ -760,12 +761,12 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20200922b").commit();
+		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20200924a").commit();
 		browservio_saver.edit().putString("versionCodename", "Beroku").commit();
 		browservio_saver.edit().putString("versionFamily", "1.4").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_2").commit();
-		browservio_saver.edit().putString("versionCode", "20").commit();
-		browservio_saver.edit().putString("versionDate", "2020-09-22").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_3").commit();
+		browservio_saver.edit().putString("versionCode", "21").commit();
+		browservio_saver.edit().putString("versionDate", "2020-09-24").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("8") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");

@@ -300,7 +300,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Load an empty page when the address bar is empty instead of showing an error."
+								android:text="Continues to load a page when the address bar is empty instead of showing an error."
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
