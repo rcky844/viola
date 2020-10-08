@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
 					public boolean onMenuItemClick(MenuItem item){
 						switch (item.getTitle().toString()){
 							case "Desktop":
-							webview.getSettings().setUserAgentString(browservio_saver.getString("cusDeskAgent",""));
+							webview.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Browservio/1.4.0_beroku_dev_4");
 							last_desktop = desktop;
 							desktop = 1;
 							desktop_switch.setImageResource(R.drawable.ic_desktop_black);
@@ -761,12 +761,12 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20200924a").commit();
+		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20201008a").commit();
 		browservio_saver.edit().putString("versionCodename", "Beroku").commit();
 		browservio_saver.edit().putString("versionFamily", "1.4").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_3").commit();
-		browservio_saver.edit().putString("versionCode", "21").commit();
-		browservio_saver.edit().putString("versionDate", "2020-09-24").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_4").commit();
+		browservio_saver.edit().putString("versionCode", "22").commit();
+		browservio_saver.edit().putString("versionDate", "2020-09-26").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("8") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
@@ -820,7 +820,6 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
 			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
-			browservio_saver.edit().putString("cusDeskAgent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36").commit();
 			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 			browservio_saver.edit().putString("showBrowseBtn", "0").commit();
 			browservio_saver.edit().putString("showCustomError", "1").commit();

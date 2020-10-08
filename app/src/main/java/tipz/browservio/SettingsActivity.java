@@ -75,7 +75,6 @@ public class SettingsActivity extends AppCompatActivity {
 	private LinearLayout linear1_javascript;
 	private LinearLayout linear1_overrideempt;
 	private LinearLayout linear13;
-	private LinearLayout linear0_useragentd1;
 	private LinearLayout linear1_b1;
 	private CheckBox checkbox1;
 	private TextView textview29;
@@ -88,8 +87,6 @@ public class SettingsActivity extends AppCompatActivity {
 	private CheckBox checkbox4;
 	private TextView textview33;
 	private TextView textview34;
-	private TextView textview37;
-	private TextView textview38;
 	private TextView textview_cool3;
 	private ImageView imageview5;
 	private LinearLayout linear_version;
@@ -160,7 +157,6 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_javascript = (LinearLayout) findViewById(R.id.linear1_javascript);
 		linear1_overrideempt = (LinearLayout) findViewById(R.id.linear1_overrideempt);
 		linear13 = (LinearLayout) findViewById(R.id.linear13);
-		linear0_useragentd1 = (LinearLayout) findViewById(R.id.linear0_useragentd1);
 		linear1_b1 = (LinearLayout) findViewById(R.id.linear1_b1);
 		checkbox1 = (CheckBox) findViewById(R.id.checkbox1);
 		textview29 = (TextView) findViewById(R.id.textview29);
@@ -173,8 +169,6 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox4 = (CheckBox) findViewById(R.id.checkbox4);
 		textview33 = (TextView) findViewById(R.id.textview33);
 		textview34 = (TextView) findViewById(R.id.textview34);
-		textview37 = (TextView) findViewById(R.id.textview37);
-		textview38 = (TextView) findViewById(R.id.textview38);
 		textview_cool3 = (TextView) findViewById(R.id.textview_cool3);
 		imageview5 = (ImageView) findViewById(R.id.imageview5);
 		linear_version = (LinearLayout) findViewById(R.id.linear_version);
@@ -386,35 +380,6 @@ public class SettingsActivity extends AppCompatActivity {
 			}
 		});
 		
-		linear0_useragentd1.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				d2.setTitle("Custom desktop user agent");
-				d2.setMessage("Current desktop user agent: ".concat(browservio_saver.getString("cusDeskAgent", "")));
-				final EditText custom_ua1 = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
-				custom_ua1.setLayoutParams(lp1); d2.setView(custom_ua1);
-				d2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						if (custom_ua1.getText().toString().equals(""))
-						{
-						} else {
-							browservio_saver.edit().putString("cusDeskAgent", custom_ua1.getText().toString()).commit();
-							textview38.setText("Current desktop user agent: \n".concat(browservio_saver.getString("cusDeskAgent", "")));
-						}
-					}
-				});
-				d2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						
-					}
-				});
-				d2.setCancelable(false);
-				d2.create().show();
-			}
-		});
-		
 		checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
@@ -504,7 +469,6 @@ public class SettingsActivity extends AppCompatActivity {
 		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
 		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
 		version_visiable.setText("Browservio ".concat(browservio_saver.getString("versionName", "")));
-		textview38.setText("Current desktop user agent:  ".concat(browservio_saver.getString("cusDeskAgent", "")));
 		linear_general_open = true;
 		linear_advenced_open = true;
 		linear_about_open = true;
@@ -537,7 +501,6 @@ public class SettingsActivity extends AppCompatActivity {
 		_setAllRipple(linear1_b0, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 		_setAllRipple(linear13, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 		_setAllRipple(linear_source, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear0_useragentd1, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 	}
 	private void _setRipple (final View _view) {
 		TypedValue typedValue = new TypedValue();
