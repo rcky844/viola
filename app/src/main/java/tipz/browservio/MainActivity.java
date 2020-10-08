@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 		browse.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", browse);
+				_rippleAnimator("green", browse);
 				if (urledit.getText().toString().equals("browservio://no_error")) {
 					throw new RuntimeException("Resource access denied, reason: 'browservio://no_error is a protected webpage'");
 				}
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b0.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b0);
+				_rippleAnimator("green", linear_control_b0);
 				// on forward being clicked, either go forward in history
 				if (webview.canGoBack()) {
 					// can go back
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b1);
+				_rippleAnimator("green", linear_control_b1);
 				// on forward being clicked, either go forward in history
 				if (webview.canGoForward()) {
 					// can go forward
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b2);
+				_rippleAnimator("green", linear_control_b2);
 				if (page_before_error.equals("browservio://no_error")) {
 					if (!webview.getUrl().equals("")) {
 						webview.reload();
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b7.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b7);
+				_rippleAnimator("green", linear_control_b7);
 				webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
 				reloadset = new TimerTask() {
 					@Override
@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b3.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b3);
+				_rippleAnimator("green", linear_control_b3);
 				PopupMenu popup1 = new PopupMenu(MainActivity.this, linear_control_b3);
 				Menu menu1 = popup1.getMenu();
 				menu1.add("Desktop");
@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b4.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b4);
+				_rippleAnimator("green", linear_control_b4);
 				PopupMenu popup2 = new PopupMenu(MainActivity.this, linear_control_b3);
 				Menu menu2 = popup2.getMenu();
 				menu2.add("Clear Cache");
@@ -469,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b5.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b5);
+				_rippleAnimator("green", linear_control_b5);
 				Intent i = new Intent(android.content.Intent.ACTION_SEND);
 				i.setType("text/plain");
 				i.putExtra(android.content.Intent.EXTRA_TEXT, webview.getUrl());
@@ -480,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b6.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b6);
+				_rippleAnimator("green", linear_control_b6);
 				i.setClass(getApplicationContext(), SettingsActivity.class);
 				startActivity(i);
 			}
@@ -489,7 +489,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b9.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b9);
+				_rippleAnimator("green", linear_control_b9);
 				if (!hist.equals("")) {
 					dhist.setTitle("History list");
 					dhist.setMessage(hist);
@@ -523,7 +523,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b8.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				_rippleAnimator("grey", linear_control_b8);
+				_rippleAnimator("green", linear_control_b8);
 				finish();
 			}
 		});
