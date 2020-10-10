@@ -576,6 +576,51 @@ public class MainActivity extends AppCompatActivity {
 		});
 	}
 	
+	public class CustomWebClient extends WebChromeClient {
+		private View mCustomView;
+		private WebChromeClient.CustomViewCallback mCustomViewCallback;
+		protected FrameLayout frame;
+		
+		// Initially mOriginalOrientation is set to Landscape
+		private int mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+		private int mOriginalSystemUiVisibility;
+		
+		// Constructor for CustomWebClient
+		public CustomWebClient() {}
+		
+		public Bitmap getDefaultVideoPoster() {
+			if (MainActivity.this == null) {
+				return null; }
+			return BitmapFactory.decodeResource(MainActivity.this.getApplicationContext().getResources(), 2130837573); }
+		
+		public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
+			if (this.mCustomView != null) {
+				onHideCustomView();
+				return; }
+			this.mCustomView = paramView;
+			this.mOriginalSystemUiVisibility = MainActivity.this.getWindow().getDecorView().getSystemUiVisibility();
+			// When CustomView is shown screen orientation changes to mOriginalOrientation (Landscape).
+			MainActivity.this.setRequestedOrientation(this.mOriginalOrientation);
+			// After that mOriginalOrientation is set to portrait.
+			this.mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+			this.mCustomViewCallback = viewCallback; ((FrameLayout)MainActivity.this.getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1)); MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(3846);
+		}
+		
+		public void onHideCustomView() {
+			((FrameLayout)MainActivity.this.getWindow().getDecorView()).removeView(this.mCustomView);
+			this.mCustomView = null;
+			MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(this.mOriginalSystemUiVisibility);
+			// When CustomView is hidden, screen orientation is set to mOriginalOrientation (portrait).
+			MainActivity.this.setRequestedOrientation(this.mOriginalOrientation);
+			// After that mOriginalOrientation is set to landscape.
+			this.mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE; this.mCustomViewCallback.onCustomViewHidden();
+			this.mCustomViewCallback = null;
+		}
+	}
+	
+	{
+	}
+	
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
 		super.onActivityResult(_requestCode, _resultCode, _data);
@@ -880,55 +925,6 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		hist = hist.concat("\n".concat(webview.getUrl()));
-	}
-	
-	
-	private void _fullScreenVideo () {
-	}
-	
-	public class CustomWebClient extends WebChromeClient {
-		private View mCustomView;
-		private WebChromeClient.CustomViewCallback mCustomViewCallback;
-		protected FrameLayout frame;
-		
-		// Initially mOriginalOrientation is set to Landscape
-		private int mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-		private int mOriginalSystemUiVisibility;
-		
-		// Constructor for CustomWebClient
-		public CustomWebClient() {}
-		
-		public Bitmap getDefaultVideoPoster() {
-			if (MainActivity.this == null) {
-				return null; }
-			return BitmapFactory.decodeResource(MainActivity.this.getApplicationContext().getResources(), 2130837573); }
-		
-		public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
-			if (this.mCustomView != null) {
-				onHideCustomView();
-				return; }
-			this.mCustomView = paramView;
-			this.mOriginalSystemUiVisibility = MainActivity.this.getWindow().getDecorView().getSystemUiVisibility();
-			// When CustomView is shown screen orientation changes to mOriginalOrientation (Landscape).
-			MainActivity.this.setRequestedOrientation(this.mOriginalOrientation);
-			// After that mOriginalOrientation is set to portrait.
-			this.mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-			this.mCustomViewCallback = viewCallback; ((FrameLayout)MainActivity.this.getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1)); MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(3846);
-		}
-		
-		public void onHideCustomView() {
-			((FrameLayout)MainActivity.this.getWindow().getDecorView()).removeView(this.mCustomView);
-			this.mCustomView = null;
-			MainActivity.this.getWindow().getDecorView().setSystemUiVisibility(this.mOriginalSystemUiVisibility);
-			// When CustomView is hidden, screen orientation is set to mOriginalOrientation (portrait).
-			MainActivity.this.setRequestedOrientation(this.mOriginalOrientation);
-			// After that mOriginalOrientation is set to landscape.
-			this.mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE; this.mCustomViewCallback.onCustomViewHidden();
-			this.mCustomViewCallback = null;
-		}
-	}
-	
-	{
 	}
 	
 	
