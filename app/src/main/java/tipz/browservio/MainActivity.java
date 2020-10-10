@@ -559,8 +559,6 @@ public class MainActivity extends AppCompatActivity {
 		setTitle("Browservio");
 		_firstLaunch();
 		actuallypaused = false;
-		// full screen vid
-		_fullScreenVideo();
 		webview.setWebChromeClient(new CustomWebClient());
 		if (!browservio_saver.getString("history", "").equals("")) {
 			hist = browservio_saver.getString("history", "");
