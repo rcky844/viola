@@ -99,11 +99,8 @@ public class MainActivity extends AppCompatActivity {
 	private Intent i = new Intent();
 	private MediaPlayer errorsound;
 	private ObjectAnimator baranim = new ObjectAnimator();
-	private TimerTask reloadt;
 	private TimerTask error_defuse;
 	private TimerTask starthome;
-	private TimerTask reloadset;
-	private TimerTask crrurl;
 	private TimerTask reset;
 	private ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
@@ -236,19 +233,6 @@ public class MainActivity extends AppCompatActivity {
 				if (webview.canGoBack()) {
 					// can go back
 					webview.goBack();
-					// Fix URL not showing correctly
-					crrurl = new TimerTask() {
-						@Override
-						public void run() {
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									_URLindentify(1);
-								}
-							});
-						}
-					};
-					_timer.schedule(crrurl, (int)(250));
 				}
 				else {
 					// cannot go backwards
@@ -265,19 +249,6 @@ public class MainActivity extends AppCompatActivity {
 				if (webview.canGoForward()) {
 					// can go forward
 					webview.goForward();
-					// Fix URL not showing correctly
-					crrurl = new TimerTask() {
-						@Override
-						public void run() {
-							runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									_URLindentify(1);
-								}
-							});
-						}
-					};
-					_timer.schedule(crrurl, (int)(250));
 				}
 				else {
 					// cannot go forward
@@ -293,18 +264,6 @@ public class MainActivity extends AppCompatActivity {
 				if (page_before_error.equals("browservio://no_error")) {
 					if (!webview.getUrl().equals("")) {
 						webview.reload();
-						reloadt = new TimerTask() {
-							@Override
-							public void run() {
-								runOnUiThread(new Runnable() {
-									@Override
-									public void run() {
-										_URLindentify(1);
-									}
-								});
-							}
-						};
-						_timer.schedule(reloadt, (int)(250));
 					}
 				}
 				else {
@@ -320,18 +279,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				_rippleAnimator("green", linear_control_b7);
 				webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
-				reloadset = new TimerTask() {
-					@Override
-					public void run() {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								_URLindentify(1);
-							}
-						});
-					}
-				};
-				_timer.schedule(reloadset, (int)(250));
 			}
 		});
 		
@@ -642,29 +589,6 @@ public class MainActivity extends AppCompatActivity {
 			if (webview.canGoBack()) {
 				// Go back
 				webview.goBack();
-				// Fix URL not showing correctly
-				crrurl = new TimerTask() {
-					@Override
-					public void run() {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								if (urledit.getText().toString().equals("file:///sdcard/Browservio/error/setorerr.html")) {
-									urledit.setText("browservio://defaulterror");
-								}
-								else {
-									if (webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
-										urledit.setText("browservio://error");
-									}
-									else {
-										urledit.setText(webview.getUrl());
-									}
-								}
-							}
-						});
-					}
-				};
-				_timer.schedule(crrurl, (int)(250));
 			}
 			else {
 				// Finish activity
@@ -729,9 +653,7 @@ public class MainActivity extends AppCompatActivity {
 						}
 						else {
 							progmain.setProgress((int)finload);
-							if (!webview.getUrl().equals("file:///sdcard/Browservio/error/error.html")) {
-								urledit.setText(webview.getUrl());
-							}
+							_URLindentify(1);
 							CookieSyncManager.getInstance().sync();
 						}
 					}
@@ -809,7 +731,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionFamily", "1.4").commit();
 		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_4").commit();
 		browservio_saver.edit().putString("versionCode", "22").commit();
-		browservio_saver.edit().putString("versionDate", "2020-09-26").commit();
+		browservio_saver.edit().putString("versionDate", "2020-10-12").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("8") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
@@ -824,8 +746,8 @@ public class MainActivity extends AppCompatActivity {
 		if (browservio_saver.getString("isFirstLaunch", "").equals("1")) {
 			final ProgressDialog prog = new ProgressDialog(MainActivity.this);
 			prog.setMax(100);
-			prog.setTitle("Resetting");
-			prog.setMessage("Please wait...");
+			prog.setTitle("Reset");
+			prog.setMessage("Reseting...");
 			prog.setIndeterminate(true);
 			prog.setCancelable(false);
 			prog.show();
