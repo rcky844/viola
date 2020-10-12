@@ -154,7 +154,7 @@
 							android:id="@+id/desktop_switch"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_desktop_black"
+							android:src="@drawable/ic_smartphone_black"
 							android:scaleType="center"/>
 					</LinearLayout>
 					<LinearLayout

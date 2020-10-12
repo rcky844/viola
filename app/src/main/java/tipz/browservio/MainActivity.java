@@ -612,7 +612,6 @@ public class MainActivity extends AppCompatActivity {
 			webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
 			desktop = 0;
 			last_desktop = desktop;
-			desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
 			// Start downloadManager service
 			_downloadManager(webview);
 			// Set default fab stat
