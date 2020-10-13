@@ -634,7 +634,6 @@ public class MainActivity extends AppCompatActivity {
 				}
 				webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
 				urledit.setText(browservio_saver.getString("defaultHomePage", ""));
-				hist = hist.concat("\n".concat(webview.getUrl()));
 			}
 			else {
 				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
@@ -753,10 +752,10 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("isFirstLaunch", "").commit();
 			CookieManager.getInstance().removeAllCookies(null);
 			CookieManager.getInstance().flush();
-			webview.clearCache(true);
-			webview.clearHistory();
 			browservio_saver.edit().putString("history", "").commit();
 			hist = "";
+			webview.clearCache(true);
+			webview.clearHistory();
 			reset = new TimerTask() {
 				@Override
 				public void run() {
