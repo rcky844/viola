@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 	private String beforepauseUrl = "";
 	private String hist = "";
 	private double finload = 0;
+	private boolean pooran = false;
 	
 	private LinearLayout linear_urledit;
 	private LinearLayout webview_linear;
@@ -552,6 +553,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
+		pooran = true;
 	}
 	
 	public class CustomWebClient extends WebChromeClient {
@@ -648,6 +650,7 @@ public class MainActivity extends AppCompatActivity {
 						finload = webview.getProgress();
 						if (finload == 100) {
 							progmain.setProgress((int)0);
+							pooran = true;
 						}
 						else {
 							progmain.setProgress((int)finload);
@@ -828,7 +831,10 @@ public class MainActivity extends AppCompatActivity {
 				urledit.setText(webview.getUrl());
 			}
 		}
-		hist = hist.concat("\n".concat(webview.getUrl()));
+		if (pooran) {
+			hist = hist.concat("\n".concat(webview.getUrl()));
+			pooran = false;
+		}
 	}
 	
 	
