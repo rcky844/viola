@@ -504,7 +504,6 @@ public class MainActivity extends AppCompatActivity {
 		// This project was started on Aug 13 2020
 		// sur wen Sherk browser
 		setTitle("Browservio");
-		_firstLaunch();
 		actuallypaused = false;
 		webview.setWebChromeClient(new CustomWebClient());
 		if (!browservio_saver.getString("history", "").equals("")) {
@@ -521,6 +520,38 @@ public class MainActivity extends AppCompatActivity {
 				    return false; 
 				  } 
 		});
+		// Page stuff
+		page_before_error = "browservio://no_error";
+		// desktopMode init code
+		webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
+		desktop = 0;
+		last_desktop = desktop;
+		// Start downloadManager service
+		_downloadManager(webview);
+		// Set default fab stat
+		linear_control.setVisibility(View.GONE);
+		// Custom error page
+		webview.setWebViewClient(new WebViewClient() {
+			
+			    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+				if (!defaulterror) {
+					page_before_error = urledit.getText().toString();
+					_errorpage();
+				}
+				
+				    }
+		});
+		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
+			// Load default homepage.
+			if (browservio_saver.getString("defaultHomePage", "").contains("browservio://no_error")) {
+				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
+			}
+			webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
+			urledit.setText(browservio_saver.getString("defaultHomePage", ""));
+		}
+		else {
+			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
+		}
 	}
 	
 	public class CustomWebClient extends WebChromeClient {
@@ -604,41 +635,15 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	@Override
+	public void onPause() {
+		super.onPause();
+		funload.cancel();
+	}
+	
+	@Override
 	public void onStart() {
 		super.onStart();
-		if (!actuallypaused) {
-			page_before_error = "browservio://no_error";
-			// desktopMode init code
-			webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
-			desktop = 0;
-			last_desktop = desktop;
-			// Start downloadManager service
-			_downloadManager(webview);
-			// Set default fab stat
-			linear_control.setVisibility(View.GONE);
-			// Custom error page
-			webview.setWebViewClient(new WebViewClient() {
-				
-				    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-					if (!defaulterror) {
-						page_before_error = urledit.getText().toString();
-						_errorpage();
-					}
-					
-					    }
-			});
-			if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
-				// Load default homepage.
-				if (browservio_saver.getString("defaultHomePage", "").contains("browservio://no_error")) {
-					browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
-				}
-				webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
-				urledit.setText(browservio_saver.getString("defaultHomePage", ""));
-			}
-			else {
-				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
-			}
-		}
+		_firstLaunch();
 		funload = new TimerTask() {
 			@Override
 			public void run() {
@@ -651,29 +656,14 @@ public class MainActivity extends AppCompatActivity {
 						}
 						else {
 							progmain.setProgress((int)finload);
-							_URLindentify(1);
 							CookieSyncManager.getInstance().sync();
+							_URLindentify(1);
 						}
 					}
 				});
 			}
 		};
 		_timer.scheduleAtFixedRate(funload, (int)(0), (int)(70));
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		// Settings check
-		_firstLaunch();
-		actuallypaused = false;
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		actuallypaused = true;
-		funload.cancel();
 	}
 	private void _downloadManager (final WebView _webview) {
 		_webview.setDownloadListener(new DownloadListener() {       
@@ -729,7 +719,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionFamily", "1.4").commit();
 		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_4").commit();
 		browservio_saver.edit().putString("versionCode", "22").commit();
-		browservio_saver.edit().putString("versionDate", "2020-10-12").commit();
+		browservio_saver.edit().putString("versionDate", "2020-10-13").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("8") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
