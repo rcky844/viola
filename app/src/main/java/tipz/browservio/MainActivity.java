@@ -553,6 +553,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
+		webview.getSettings().setDisplayZoomControls(false);
 		pooran = true;
 	}
 	
