@@ -550,6 +550,8 @@ public class MainActivity extends AppCompatActivity {
 		else {
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
 		}
+		// zoom stuff - From SCMPNews
+		webview.getSettings().setBuiltInZoomControls(true);
 	}
 	
 	public class CustomWebClient extends WebChromeClient {
