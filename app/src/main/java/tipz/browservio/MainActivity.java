@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
 	private String googleLoad = "";
 	private boolean defaulterror = false;
 	private String beforepauseUrl = "";
-	private boolean actuallypaused = false;
 	private String hist = "";
 	private double finload = 0;
 	
@@ -504,7 +503,6 @@ public class MainActivity extends AppCompatActivity {
 		// This project was started on Aug 13 2020
 		// sur wen Sherk browser
 		setTitle("Browservio");
-		actuallypaused = false;
 		webview.setWebChromeClient(new CustomWebClient());
 		if (!browservio_saver.getString("history", "").equals("")) {
 			hist = browservio_saver.getString("history", "");
@@ -612,19 +610,14 @@ public class MainActivity extends AppCompatActivity {
 	
 	@Override
 	public void onBackPressed() {
-		if (actuallypaused) {
-			
+		// onBackPressed to go back in history or finish activity
+		if (webview.canGoBack()) {
+			// Go back
+			webview.goBack();
 		}
 		else {
-			// onBackPressed to go back in history or finish activity
-			if (webview.canGoBack()) {
-				// Go back
-				webview.goBack();
-			}
-			else {
-				// Finish activity
-				finish();
-			}
+			// Finish activity
+			finish();
 		}
 	}
 	
@@ -714,12 +707,12 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20201008a").commit();
+		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20201020a").commit();
 		browservio_saver.edit().putString("versionCodename", "Beroku").commit();
 		browservio_saver.edit().putString("versionFamily", "1.4").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_4").commit();
-		browservio_saver.edit().putString("versionCode", "22").commit();
-		browservio_saver.edit().putString("versionDate", "2020-10-13").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_5").commit();
+		browservio_saver.edit().putString("versionCode", "23").commit();
+		browservio_saver.edit().putString("versionDate", "2020-10-20").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("8") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
@@ -765,7 +758,6 @@ public class MainActivity extends AppCompatActivity {
 		}
 		if (browservio_saver.getString("defaultHomePage", "").equals("")) {
 			Intent i = getIntent();
-			actuallypaused = false;
 			finish();
 			startActivity(i);
 		}
