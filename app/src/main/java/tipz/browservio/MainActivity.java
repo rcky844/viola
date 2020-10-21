@@ -713,11 +713,11 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20201020a").commit();
+		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20201021a").commit();
 		browservio_saver.edit().putString("versionCodename", "Beroku").commit();
 		browservio_saver.edit().putString("versionFamily", "1.4").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_5").commit();
-		browservio_saver.edit().putString("versionCode", "23").commit();
+		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_6").commit();
+		browservio_saver.edit().putString("versionCode", "24").commit();
 		browservio_saver.edit().putString("versionDate", "2020-10-21").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("9") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
