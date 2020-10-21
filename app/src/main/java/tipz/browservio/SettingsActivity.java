@@ -59,6 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private LinearLayout linear1_search;
 	private LinearLayout linear1_homepage;
 	private LinearLayout linear11;
+	private LinearLayout linear_zoomkeys_b;
 	private LinearLayout linear1_b0;
 	private TextView textview8;
 	private TextView textview9;
@@ -70,6 +71,10 @@ public class SettingsActivity extends AppCompatActivity {
 	private TextView textview32;
 	private TextView textview15;
 	private TextView textview16;
+	private LinearLayout linear_zoomkeys_a;
+	private CheckBox checkbox5;
+	private TextView textview37;
+	private TextView textview38;
 	private TextView textview_cool2;
 	private ImageView imageview1;
 	private LinearLayout linear1_javascript;
@@ -141,6 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_search = (LinearLayout) findViewById(R.id.linear1_search);
 		linear1_homepage = (LinearLayout) findViewById(R.id.linear1_homepage);
 		linear11 = (LinearLayout) findViewById(R.id.linear11);
+		linear_zoomkeys_b = (LinearLayout) findViewById(R.id.linear_zoomkeys_b);
 		linear1_b0 = (LinearLayout) findViewById(R.id.linear1_b0);
 		textview8 = (TextView) findViewById(R.id.textview8);
 		textview9 = (TextView) findViewById(R.id.textview9);
@@ -152,6 +158,10 @@ public class SettingsActivity extends AppCompatActivity {
 		textview32 = (TextView) findViewById(R.id.textview32);
 		textview15 = (TextView) findViewById(R.id.textview15);
 		textview16 = (TextView) findViewById(R.id.textview16);
+		linear_zoomkeys_a = (LinearLayout) findViewById(R.id.linear_zoomkeys_a);
+		checkbox5 = (CheckBox) findViewById(R.id.checkbox5);
+		textview37 = (TextView) findViewById(R.id.textview37);
+		textview38 = (TextView) findViewById(R.id.textview38);
 		textview_cool2 = (TextView) findViewById(R.id.textview_cool2);
 		imageview1 = (ImageView) findViewById(R.id.imageview1);
 		linear1_javascript = (LinearLayout) findViewById(R.id.linear1_javascript);
@@ -324,6 +334,13 @@ public class SettingsActivity extends AppCompatActivity {
 			}
 		});
 		
+		linear_zoomkeys_b.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				_updateChkbox(checkbox5);
+			}
+		});
+		
 		linear1_b0.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
@@ -355,6 +372,19 @@ public class SettingsActivity extends AppCompatActivity {
 				}
 				else {
 					browservio_saver.edit().putString("showBrowseBtn", "0").commit();
+				}
+			}
+		});
+		
+		checkbox5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
+				final boolean _isChecked = _param2;
+				if (_isChecked) {
+					browservio_saver.edit().putString("showZoomKeys", "1").commit();
+				}
+				else {
+					browservio_saver.edit().putString("showZoomKeys", "0").commit();
 				}
 			}
 		});
@@ -463,6 +493,9 @@ public class SettingsActivity extends AppCompatActivity {
 		if (browservio_saver.getString("showBrowseBtn", "").equals("1")) {
 			checkbox3.setChecked(true);
 		}
+		if (browservio_saver.getString("showZoomKeys", "").equals("1")) {
+			checkbox5.setChecked(true);
+		}
 		if (browservio_saver.getString("showCustomError", "").equals("1")) {
 			checkbox4.setChecked(true);
 		}
@@ -501,6 +534,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_setAllRipple(linear1_b0, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 		_setAllRipple(linear13, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 		_setAllRipple(linear_source, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
+		_setAllRipple(linear_zoomkeys_b, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 	}
 	private void _setRipple (final View _view) {
 		TypedValue typedValue = new TypedValue();

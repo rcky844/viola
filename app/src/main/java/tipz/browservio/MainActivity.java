@@ -718,8 +718,8 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionFamily", "1.4").commit();
 		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_5").commit();
 		browservio_saver.edit().putString("versionCode", "23").commit();
-		browservio_saver.edit().putString("versionDate", "2020-10-20").commit();
-		if (!browservio_saver.getString("configVersion", "").equals("8") && !browservio_saver.getString("configVersion", "").equals("")) {
+		browservio_saver.edit().putString("versionDate", "2020-10-21").commit();
+		if (!browservio_saver.getString("configVersion", "").equals("9") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
 			dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -767,14 +767,15 @@ public class MainActivity extends AppCompatActivity {
 			finish();
 			startActivity(i);
 		}
-		if (!browservio_saver.getString("configVersion", "").equals("8") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
+		if (!browservio_saver.getString("configVersion", "").equals("9") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
 			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
 			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
 			browservio_saver.edit().putString("showBrowseBtn", "0").commit();
+			browservio_saver.edit().putString("showZoomKeys", "0").commit();
 			browservio_saver.edit().putString("showCustomError", "1").commit();
-			browservio_saver.edit().putString("configVersion", "8").commit();
+			browservio_saver.edit().putString("configVersion", "9").commit();
 			browservio_saver.edit().putString("isFirstLaunch", "0").commit();
 		}
 		// Settings check
@@ -797,6 +798,12 @@ public class MainActivity extends AppCompatActivity {
 		}
 		else {
 			defaulterror = true;
+		}
+		if (browservio_saver.getString("showZoomKeys", "").equals("1")) {
+			webview.getSettings().setDisplayZoomControls(true);
+		}
+		else {
+			webview.getSettings().setDisplayZoomControls(false);
 		}
 		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).commit();
 		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).commit();

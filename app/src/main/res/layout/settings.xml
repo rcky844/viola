@@ -161,6 +161,52 @@
 							android:layout_gravity="right|center_vertical"/>
 					</LinearLayout>
 					<LinearLayout
+						android:id="@+id/linear_zoomkeys_b"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="right"
+						android:orientation="horizontal"
+						android:layout_gravity="right">
+						<LinearLayout
+							android:id="@+id/linear_zoomkeys_a"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:orientation="vertical"
+							android:layout_weight="1">
+							<TextView
+								android:id="@+id/textview37"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:paddingLeft="8dp"
+								android:paddingTop="8dp"
+								android:paddingRight="8dp"
+								android:text="Show pinch to zoom buttons"
+								android:textSize="16sp"
+								android:textColor="#000000"/>
+							<TextView
+								android:id="@+id/textview38"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:paddingLeft="8dp"
+								android:paddingTop="2dp"
+								android:paddingRight="8dp"
+								android:paddingBottom="8dp"
+								android:text="Show the pinch to zoom control buttons on the far right down."
+								android:textSize="12sp"
+								android:textColor="#000000"/>
+						</LinearLayout>
+						<CheckBox
+							android:id="@+id/checkbox5"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:gravity="right|center_vertical"
+							android:textSize="12sp"
+							android:textColor="#000000"
+							android:layout_gravity="right|center_vertical"/>
+					</LinearLayout>
+					<LinearLayout
 						android:id="@+id/linear1_b0"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
