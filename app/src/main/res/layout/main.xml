@@ -40,9 +40,9 @@
 			<ImageView
 				android:id="@+id/browse"
 				android:layout_width="48dp"
-				android:layout_height="48dp"
+				android:layout_height="45dp"
 				android:src="@drawable/ic_browse_black"
-				android:scaleType="fitXY"/>
+				android:scaleType="fitCenter"/>
 		</LinearLayout>
 		<LinearLayout
 			android:id="@+id/webview_linear"
