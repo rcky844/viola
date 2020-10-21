@@ -70,7 +70,7 @@
 				<LinearLayout
 					android:id="@+id/linear_control"
 					android:layout_width="wrap_content"
-					android:layout_height="50dp"
+					android:layout_height="48dp"
 					android:background="#3DDC84"
 					android:gravity="center_vertical"
 					android:orientation="horizontal"
