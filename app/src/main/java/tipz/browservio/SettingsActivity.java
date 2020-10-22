@@ -42,9 +42,6 @@ public class SettingsActivity extends AppCompatActivity {
 	
 	
 	private Toolbar _toolbar;
-	private boolean linear_general_open = false;
-	private boolean linear_advenced_open = false;
-	private boolean linear_about_open = false;
 	
 	private ScrollView vscroll_back;
 	private LinearLayout linear_back;
@@ -200,72 +197,54 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_general.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (linear_general_open) {
+				stackanim.setTarget(imageview4);
+				stackanim.setPropertyName("rotation");
+				if (linear6.getVisibility() == View.VISIBLE) {
 					linear6.setVisibility(View.GONE);
-					linear_general_open = false;
-					stackanim.setTarget(imageview4);
-					stackanim.setPropertyName("rotation");
 					stackanim.setFloatValues((float)(0), (float)(180));
 					stackanim.setDuration((int)(250));
-					stackanim.start();
-				}
-				else {
+				} else {
 					linear6.setVisibility(View.VISIBLE);
-					linear_general_open = true;
-					stackanim.setTarget(imageview4);
-					stackanim.setPropertyName("rotation");
 					stackanim.setFloatValues((float)(180), (float)(0));
 					stackanim.setDuration((int)(250));
-					stackanim.start();
 				}
+				stackanim.start();
 			}
 		});
 		
 		linear_advenced.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (linear_advenced_open) {
+				stackanim.setTarget(imageview1);
+				stackanim.setPropertyName("rotation");
+				if (linear5.getVisibility() == View.VISIBLE) {
 					linear5.setVisibility(View.GONE);
-					linear_advenced_open = false;
-					stackanim.setTarget(imageview1);
-					stackanim.setPropertyName("rotation");
 					stackanim.setFloatValues((float)(0), (float)(180));
 					stackanim.setDuration((int)(250));
-					stackanim.start();
-				}
-				else {
+				} else {
 					linear5.setVisibility(View.VISIBLE);
-					linear_advenced_open = true;
-					stackanim.setTarget(imageview1);
-					stackanim.setPropertyName("rotation");
 					stackanim.setFloatValues((float)(180), (float)(0));
 					stackanim.setDuration((int)(250));
-					stackanim.start();
 				}
+				stackanim.start();
 			}
 		});
 		
 		linear_about.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (linear_about_open) {
+				stackanim.setTarget(imageview5);
+				stackanim.setPropertyName("rotation");
+				if (linear8.getVisibility() == View.VISIBLE) {
 					linear8.setVisibility(View.GONE);
-					linear_about_open = false;
-					stackanim.setTarget(imageview5);
-					stackanim.setPropertyName("rotation");
 					stackanim.setFloatValues((float)(0), (float)(180));
 					stackanim.setDuration((int)(250));
-					stackanim.start();
-				}
-				else {
+				} else {
 					linear8.setVisibility(View.VISIBLE);
-					linear_about_open = true;
-					stackanim.setTarget(imageview5);
-					stackanim.setPropertyName("rotation");
 					stackanim.setFloatValues((float)(180), (float)(0));
 					stackanim.setDuration((int)(250));
-					stackanim.start();
 				}
+				stackanim.start();
 			}
 		});
 		
@@ -502,9 +481,6 @@ public class SettingsActivity extends AppCompatActivity {
 		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
 		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
 		version_visiable.setText("Browservio ".concat(browservio_saver.getString("versionName", "")));
-		linear_general_open = true;
-		linear_advenced_open = true;
-		linear_about_open = true;
 	}
 	
 	@Override
