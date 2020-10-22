@@ -546,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
 				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
 			}
 			webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
-			urledit.setText(browservio_saver.getString("defaultHomePage", ""));
+			_URLindentify(1);
 		}
 		else {
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
