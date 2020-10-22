@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				_rippleAnimator("green", linear_control_b9);
 				if (!hist.equals("")) {
-					dhist.setTitle("History list");
+					dhist.setTitle("History");
 					dhist.setMessage(hist);
 					dhist.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						@Override
@@ -450,6 +450,7 @@ public class MainActivity extends AppCompatActivity {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 							((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", hist));
+							SketchwareUtil.showMessage(getApplicationContext(), "Copied to clipboard!");
 						}
 					});
 					dhist.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
@@ -457,6 +458,7 @@ public class MainActivity extends AppCompatActivity {
 						public void onClick(DialogInterface _dialog, int _which) {
 							browservio_saver.edit().putString("history", "").commit();
 							hist = "";
+							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
 						}
 					});
 					dhist.create().show();
