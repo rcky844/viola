@@ -110,6 +110,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private Intent telegrambot = new Intent();
 	private Intent re = new Intent();
 	private AlertDialog.Builder d2;
+	private ObjectAnimator Sherlockanimation = new ObjectAnimator();
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -198,17 +199,22 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				stackanim.setTarget(imageview4);
+				Sherlockanimation.setTarget(linear6);
 				stackanim.setPropertyName("rotation");
+				Sherlockanimation.setPropertyName("alpha");
+				stackanim.setDuration((int)(250));
+				Sherlockanimation.setDuration((int)(250));
 				if (linear6.getVisibility() == View.VISIBLE) {
-					linear6.setVisibility(View.GONE);
 					stackanim.setFloatValues((float)(0), (float)(180));
-					stackanim.setDuration((int)(250));
+					Sherlockanimation.setFloatValues((float)(1), (float)(0));
+					linear6.setVisibility(View.GONE);
 				} else {
 					linear6.setVisibility(View.VISIBLE);
 					stackanim.setFloatValues((float)(180), (float)(0));
-					stackanim.setDuration((int)(250));
+					Sherlockanimation.setFloatValues((float)(0), (float)(1));
 				}
 				stackanim.start();
+				Sherlockanimation.start();
 			}
 		});
 		
@@ -216,17 +222,22 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				stackanim.setTarget(imageview1);
+				Sherlockanimation.setTarget(linear5);
 				stackanim.setPropertyName("rotation");
+				Sherlockanimation.setPropertyName("alpha");
+				stackanim.setDuration((int)(250));
+				Sherlockanimation.setDuration((int)(250));
 				if (linear5.getVisibility() == View.VISIBLE) {
-					linear5.setVisibility(View.GONE);
 					stackanim.setFloatValues((float)(0), (float)(180));
-					stackanim.setDuration((int)(250));
+					Sherlockanimation.setFloatValues((float)(1), (float)(0));
+					linear5.setVisibility(View.GONE);
 				} else {
 					linear5.setVisibility(View.VISIBLE);
 					stackanim.setFloatValues((float)(180), (float)(0));
-					stackanim.setDuration((int)(250));
+					Sherlockanimation.setFloatValues((float)(0), (float)(1));
 				}
 				stackanim.start();
+				Sherlockanimation.start();
 			}
 		});
 		
@@ -234,17 +245,22 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				stackanim.setTarget(imageview5);
+				Sherlockanimation.setTarget(linear8);
 				stackanim.setPropertyName("rotation");
+				Sherlockanimation.setPropertyName("alpha");
+				stackanim.setDuration((int)(250));
+				Sherlockanimation.setDuration((int)(250));
 				if (linear8.getVisibility() == View.VISIBLE) {
-					linear8.setVisibility(View.GONE);
 					stackanim.setFloatValues((float)(0), (float)(180));
-					stackanim.setDuration((int)(250));
+					Sherlockanimation.setFloatValues((float)(1), (float)(0));
+					linear8.setVisibility(View.GONE);
 				} else {
 					linear8.setVisibility(View.VISIBLE);
 					stackanim.setFloatValues((float)(180), (float)(0));
-					stackanim.setDuration((int)(250));
+					Sherlockanimation.setFloatValues((float)(0), (float)(1));
 				}
 				stackanim.start();
+				Sherlockanimation.start();
 			}
 		});
 		
