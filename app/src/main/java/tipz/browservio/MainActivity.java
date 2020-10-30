@@ -715,12 +715,14 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void _firstLaunch () {
 		// First launch code
-		browservio_saver.edit().putString("versionName", "1.4.0 Dev 20201025a").commit();
+		// Make versionName and versionTech. using version family
+		// intro. 20201027 with 1.4.0_beroku_dev_8
+		browservio_saver.edit().putString("versionFamily", "1.4.0").commit();
+		browservio_saver.edit().putString("versionName", browservio_saver.getString("versionFamily", "").concat(" Dev 20201027a")).commit();
+		browservio_saver.edit().putString("versionTechnical", browservio_saver.getString("versionFamily", "").concat("_beroku_dev_8")).commit();
 		browservio_saver.edit().putString("versionCodename", "Beroku").commit();
-		browservio_saver.edit().putString("versionFamily", "1.4").commit();
-		browservio_saver.edit().putString("versionTechnical", "1.4.0_beroku_dev_7").commit();
-		browservio_saver.edit().putString("versionCode", "25").commit();
-		browservio_saver.edit().putString("versionDate", "2020-10-25").commit();
+		browservio_saver.edit().putString("versionCode", "26").commit();
+		browservio_saver.edit().putString("versionDate", "2020-10-27").commit();
 		if (!browservio_saver.getString("configVersion", "").equals("9") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
