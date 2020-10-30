@@ -463,7 +463,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse("https://github.com/Browservio/browservio/issues"));
+				telegrambot.setData(Uri.parse("https://gitlab.com/TipzTeam/browservio/-/issues"));
 				startActivity(telegrambot);
 			}
 		});
@@ -472,7 +472,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse("https://github.com/browservio/browservio"));
+				telegrambot.setData(Uri.parse("https://gitlab.com/TipzTeam/browservio"));
 				startActivity(telegrambot);
 			}
 		});
