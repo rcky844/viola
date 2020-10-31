@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
 	private ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private TimerTask funload;
-	private AlertDialog.Builder fav;
 	private SharedPreferences bookmarks;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -171,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dhist = new AlertDialog.Builder(this);
-		fav = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		
 		browse.setOnClickListener(new View.OnClickListener() {
@@ -480,35 +478,34 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b10.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				fav.setTitle("Favourites");
-				fav.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+				_rippleAnimator("green", linear_control_b10);
+				PopupMenu popup3 = new PopupMenu(MainActivity.this, linear_control_b3);
+				Menu menu3 = popup3.getMenu();
+				menu3.add("Add...");
+				menu3.add("Favourites");
+				popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
 					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						if (bookmarks.getString("bookmarked_count", "").equals("")) {
-							bookmarks.edit().putString("bookmarked_count", "0").commit();
-						}
-						else {
-							bookmarks.edit().putString("bookmarked_count", String.valueOf((long)(Double.parseDouble(bookmarks.getString("bookmarked_count", "")) + 1))).commit();
-						}
-						bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")), webview.getUrl()).commit();
-						bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")).concat("_show"), "1").commit();
-						SketchwareUtil.showMessage(getApplicationContext(), "Saved successfully!");
+					public boolean onMenuItemClick(MenuItem item){
+						switch (item.getTitle().toString()){
+							case "Add...":
+							if (bookmarks.getString("bookmarked_count", "").equals("")) {
+								bookmarks.edit().putString("bookmarked_count", "0").commit();
+							}
+							else {
+								bookmarks.edit().putString("bookmarked_count", String.valueOf((long)(Double.parseDouble(bookmarks.getString("bookmarked_count", "")) + 1))).commit();
+							}
+							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")), webview.getUrl()).commit();
+							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")).concat("_show"), "1").commit();
+							SketchwareUtil.showMessage(getApplicationContext(), "Saved successfully!");
+							break;
+							case "Favourites":
+							i.setClass(getApplicationContext(), FavActivity.class);
+							startActivity(i);
+							break;}
+						return true;
 					}
 				});
-				fav.setNeutralButton("List", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						i.setClass(getApplicationContext(), FavActivity.class);
-						startActivity(i);
-					}
-				});
-				fav.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						
-					}
-				});
-				fav.create().show();
+				popup3.show();
 			}
 		});
 		
