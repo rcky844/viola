@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 	private LinearLayout linear_control_b5;
 	private LinearLayout linear_control_b6;
 	private LinearLayout linear_control_b9;
+	private LinearLayout linear_control_b10;
 	private LinearLayout linear_control_b8;
 	private LinearLayout linear_control_endp;
 	private ImageView back;
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 	private ImageView settings;
 	private ImageView history;
 	private ImageView exit;
+	private ImageView imageview1;
 	
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -105,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
 	private ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private TimerTask funload;
+	private AlertDialog.Builder fav;
+	private SharedPreferences bookmarks;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -150,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b5 = (LinearLayout) findViewById(R.id.linear_control_b5);
 		linear_control_b6 = (LinearLayout) findViewById(R.id.linear_control_b6);
 		linear_control_b9 = (LinearLayout) findViewById(R.id.linear_control_b9);
+		linear_control_b10 = (LinearLayout) findViewById(R.id.linear_control_b10);
 		linear_control_b8 = (LinearLayout) findViewById(R.id.linear_control_b8);
 		linear_control_endp = (LinearLayout) findViewById(R.id.linear_control_endp);
 		back = (ImageView) findViewById(R.id.back);
@@ -162,9 +167,12 @@ public class MainActivity extends AppCompatActivity {
 		settings = (ImageView) findViewById(R.id.settings);
 		history = (ImageView) findViewById(R.id.history);
 		exit = (ImageView) findViewById(R.id.exit);
+		imageview1 = (ImageView) findViewById(R.id.imageview1);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dhist = new AlertDialog.Builder(this);
+		fav = new AlertDialog.Builder(this);
+		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		
 		browse.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -466,6 +474,41 @@ public class MainActivity extends AppCompatActivity {
 				else {
 					SketchwareUtil.showMessage(getApplicationContext(), "History is empty!");
 				}
+			}
+		});
+		
+		linear_control_b10.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				fav.setTitle("Favourites");
+				fav.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						if (bookmarks.getString("bookmarked_count", "").equals("")) {
+							bookmarks.edit().putString("bookmarked_count", "0").commit();
+						}
+						else {
+							bookmarks.edit().putString("bookmarked_count", String.valueOf((long)(Double.parseDouble(bookmarks.getString("bookmarked_count", "")) + 1))).commit();
+						}
+						bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")), webview.getUrl()).commit();
+						bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")).concat("_show"), "1").commit();
+						SketchwareUtil.showMessage(getApplicationContext(), "Saved successfully!");
+					}
+				});
+				fav.setNeutralButton("List", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						i.setClass(getApplicationContext(), FavActivity.class);
+						startActivity(i);
+					}
+				});
+				fav.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						
+					}
+				});
+				fav.create().show();
 			}
 		});
 		
