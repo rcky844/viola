@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
 	private ImageView ic_share;
 	private ImageView settings;
 	private ImageView history;
-	private ImageView exit;
 	private ImageView imageview1;
+	private ImageView exit;
 	
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
 		ic_share = (ImageView) findViewById(R.id.ic_share);
 		settings = (ImageView) findViewById(R.id.settings);
 		history = (ImageView) findViewById(R.id.history);
-		exit = (ImageView) findViewById(R.id.exit);
 		imageview1 = (ImageView) findViewById(R.id.imageview1);
+		exit = (ImageView) findViewById(R.id.exit);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dhist = new AlertDialog.Builder(this);
