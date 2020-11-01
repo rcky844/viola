@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 	private String page_before_error = "";
 	private String googleLoad = "";
 	private boolean defaulterror = true;
-	private String beforepauseUrl = "";
 	private double finload = 0;
 	private boolean pooran = true;
 	
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 	private AlertDialog.Builder dialog;
 	private Intent i = new Intent();
 	private MediaPlayer errorsound;
-	private final ObjectAnimator baranim = new ObjectAnimator();
+	private ObjectAnimator baranim = new ObjectAnimator();
 	private TimerTask error_defuse;
 	private TimerTask starthome;
 	private TimerTask reset;
