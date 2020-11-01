@@ -50,7 +50,7 @@ import android.content.pm.PackageManager;
 
 public class MainActivity extends AppCompatActivity {
 	
-	private Timer _timer = new Timer();
+	private final Timer _timer = new Timer();
 	
 	private FloatingActionButton _fab;
 	private double desktop = 0;

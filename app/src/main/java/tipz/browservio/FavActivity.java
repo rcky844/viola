@@ -36,7 +36,7 @@ import android.content.ClipboardManager;
 
 public class FavActivity extends AppCompatActivity {
 	
-	private Timer _timer = new Timer();
+	private final Timer _timer = new Timer();
 	
 	private Toolbar _toolbar;
 	private FloatingActionButton _fab;
