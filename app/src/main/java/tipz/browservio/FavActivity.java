@@ -1,38 +1,31 @@
 package tipz.browservio;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import android.app.*;
-import android.os.*;
-import android.view.*;
-import android.view.View.*;
-import android.widget.*;
-import android.content.*;
-import android.graphics.*;
-import android.media.*;
-import android.net.*;
-import android.text.*;
-import android.util.*;
-import android.webkit.*;
-import android.animation.*;
-import android.view.animation.*;
-import java.util.*;
-import java.text.*;
-import java.util.ArrayList;
-import android.widget.ListView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.app.Activity;
-import android.content.SharedPreferences;
-import java.util.Timer;
-import java.util.TimerTask;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.widget.AdapterView;
-import android.view.View;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FavActivity extends AppCompatActivity {
 	

@@ -1,42 +1,34 @@
 package tipz.browservio;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.app.*;
-import android.os.*;
-import android.view.*;
-import android.view.View.*;
-import android.widget.*;
-import android.content.*;
-import android.graphics.*;
-import android.media.*;
-import android.net.*;
-import android.text.*;
-import android.util.*;
-import android.webkit.*;
-import android.animation.*;
-import android.view.animation.*;
-import java.util.*;
-import java.text.*;
-import android.widget.ScrollView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.ImageView;
-import android.widget.CheckBox;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.animation.ObjectAnimator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.BounceInterpolator;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class SettingsActivity extends AppCompatActivity {
 	
