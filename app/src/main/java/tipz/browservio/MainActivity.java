@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
 					}
 				}
 				if (!browservio_saver.getString("history", "").equals("")) {
-					hist = browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()));
+					browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).commit();
 				}
 			}
 		});
@@ -391,7 +391,6 @@ public class MainActivity extends AppCompatActivity {
 							break;
 							case "Clear History":
 							webview.clearHistory();
-							hist = "";
 							browservio_saver.edit().putString("history", "").commit();
 							SketchwareUtil.showMessage(getApplicationContext(), "History cleared successfully!");
 							linear_control_b2.performClick();
@@ -404,7 +403,6 @@ public class MainActivity extends AppCompatActivity {
 							case "Clear All":
 							webview.clearCache(true);
 							webview.clearHistory();
-							hist = "";
 							browservio_saver.edit().putString("history", "").commit();
 							CookieManager.getInstance().removeAllCookies(null);
 							            CookieManager.getInstance().flush();
@@ -545,9 +543,6 @@ public class MainActivity extends AppCompatActivity {
 		// sur wen Sherk browser
 		setTitle("Browservio");
 		webview.setWebChromeClient(new CustomWebClient());
-		if (!browservio_saver.getString("history", "").equals("")) {
-			
-		}
 		// Keyboard press = browse
 		urledit.setOnEditorActionListener(new EditText.OnEditorActionListener() { 
 			  public boolean
@@ -778,7 +773,6 @@ public class MainActivity extends AppCompatActivity {
 			CookieManager.getInstance().removeAllCookies(null);
 			CookieManager.getInstance().flush();
 			browservio_saver.edit().putString("history", "").commit();
-			hist = "";
 			webview.clearCache(true);
 			webview.clearHistory();
 			reset = new TimerTask() {
@@ -876,7 +870,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		if (pooran) {
-			hist = browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()));
+			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).commit();
 			pooran = false;
 		}
 	}
