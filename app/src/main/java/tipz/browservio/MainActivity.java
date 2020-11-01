@@ -399,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
 							case "Clear History":
 							webview.clearHistory();
 							hist = "";
-							browservio_saver.edit().putString("history", "").commit();
+							browservio_saver.edit().putString("history", "").apply();
 							SketchwareUtil.showMessage(getApplicationContext(), "History cleared successfully!");
 							linear_control_b2.performClick();
 							break;
@@ -412,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
 							webview.clearCache(true);
 							webview.clearHistory();
 							hist = "";
-							browservio_saver.edit().putString("history", "").commit();
+							browservio_saver.edit().putString("history", "").apply();
 							CookieManager.getInstance().removeAllCookies(null);
 							            CookieManager.getInstance().flush();
 							SketchwareUtil.showMessage(getApplicationContext(), "Everything cleared successfully!");
@@ -468,7 +468,7 @@ public class MainActivity extends AppCompatActivity {
 					dhist.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
-							browservio_saver.edit().putString("history", "").commit();
+							browservio_saver.edit().putString("history", "").apply();
 							hist = "";
 							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
 						}
@@ -495,13 +495,13 @@ public class MainActivity extends AppCompatActivity {
 						switch (item.getTitle().toString()){
 							case "Add...":
 							if (bookmarks.getString("bookmarked_count", "").equals("")) {
-								bookmarks.edit().putString("bookmarked_count", "0").commit();
+								bookmarks.edit().putString("bookmarked_count", "0").apply();
 							}
 							else {
-								bookmarks.edit().putString("bookmarked_count", String.valueOf((long)(Double.parseDouble(bookmarks.getString("bookmarked_count", "")) + 1))).commit();
+								bookmarks.edit().putString("bookmarked_count", String.valueOf((long)(Double.parseDouble(bookmarks.getString("bookmarked_count", "")) + 1))).apply();
 							}
-							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")), webview.getUrl()).commit();
-							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")).concat("_show"), "1").commit();
+							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")), webview.getUrl()).apply();
+							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")).concat("_show"), "1").apply();
 							SketchwareUtil.showMessage(getApplicationContext(), "Saved successfully!");
 							break;
 							case "Favourites":
@@ -591,13 +591,13 @@ public class MainActivity extends AppCompatActivity {
 		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
 			// Load default homepage.
 			if (browservio_saver.getString("defaultHomePage", "").contains("browservio://no_error")) {
-				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
+				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
 			}
 			webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
 			_URLindentify(1);
 		}
 		else {
-			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
+			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
 		}
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
@@ -676,7 +676,7 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		browservio_saver.edit().putString("history", hist).commit();
+		browservio_saver.edit().putString("history", hist).apply();
 	}
 	
 	@Override
@@ -762,12 +762,12 @@ public class MainActivity extends AppCompatActivity {
 		// First launch code
 		// Make versionName and versionTech. using version family
 		// intro. 20201027 with 1.4.0_beroku_dev_8
-		browservio_saver.edit().putString("versionFamily", "1.4.0").commit();
-		browservio_saver.edit().putString("versionName", browservio_saver.getString("versionFamily", "").concat(" Dev 20201027a")).commit();
-		browservio_saver.edit().putString("versionTechnical", browservio_saver.getString("versionFamily", "").concat("_beroku_dev_8")).commit();
-		browservio_saver.edit().putString("versionCodename", "Beroku").commit();
-		browservio_saver.edit().putString("versionCode", "26").commit();
-		browservio_saver.edit().putString("versionDate", "2020-10-27").commit();
+		browservio_saver.edit().putString("versionFamily", "1.4.0").apply();
+		browservio_saver.edit().putString("versionName", browservio_saver.getString("versionFamily", "").concat(" Dev 20201027a")).apply();
+		browservio_saver.edit().putString("versionTechnical", browservio_saver.getString("versionFamily", "").concat("_beroku_dev_8")).apply();
+		browservio_saver.edit().putString("versionCodename", "Beroku").apply();
+		browservio_saver.edit().putString("versionCode", "26").apply();
+		browservio_saver.edit().putString("versionDate", "2020-10-27").apply();
 		if (!browservio_saver.getString("configVersion", "").equals("9") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
@@ -787,10 +787,10 @@ public class MainActivity extends AppCompatActivity {
 			prog.setIndeterminate(true);
 			prog.setCancelable(false);
 			prog.show();
-			browservio_saver.edit().putString("isFirstLaunch", "").commit();
+			browservio_saver.edit().putString("isFirstLaunch", "").apply();
 			CookieManager.getInstance().removeAllCookies(null);
 			CookieManager.getInstance().flush();
-			browservio_saver.edit().putString("history", "").commit();
+			browservio_saver.edit().putString("history", "").apply();
 			hist = "";
 			webview.clearCache(true);
 			webview.clearHistory();
@@ -817,15 +817,15 @@ public class MainActivity extends AppCompatActivity {
 			startActivity(i);
 		}
 		if (!browservio_saver.getString("configVersion", "").equals("9") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
-			browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
-			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").commit();
-			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").commit();
-			browservio_saver.edit().putString("overrideEmptyError", "0").commit();
-			browservio_saver.edit().putString("showBrowseBtn", "0").commit();
-			browservio_saver.edit().putString("showZoomKeys", "0").commit();
-			browservio_saver.edit().putString("showCustomError", "1").commit();
-			browservio_saver.edit().putString("configVersion", "9").commit();
-			browservio_saver.edit().putString("isFirstLaunch", "0").commit();
+			browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
+			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
+			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").apply();
+			browservio_saver.edit().putString("overrideEmptyError", "0").apply();
+			browservio_saver.edit().putString("showBrowseBtn", "0").apply();
+			browservio_saver.edit().putString("showZoomKeys", "0").apply();
+			browservio_saver.edit().putString("showCustomError", "1").apply();
+			browservio_saver.edit().putString("configVersion", "9").apply();
+			browservio_saver.edit().putString("isFirstLaunch", "0").apply();
 		}
 		// Settings check
 		if (browservio_saver.getString("isJavaScriptEnabled", "").equals("1")) {
@@ -854,8 +854,8 @@ public class MainActivity extends AppCompatActivity {
 		else {
 			webview.getSettings().setDisplayZoomControls(false);
 		}
-		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).commit();
-		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).commit();
+		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).apply();
+		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).apply();
 	}
 	
 	

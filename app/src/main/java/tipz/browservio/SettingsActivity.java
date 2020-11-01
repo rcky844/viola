@@ -269,7 +269,7 @@ public class SettingsActivity extends AppCompatActivity {
 						if (custom_se.getText().toString().equals(""))
 						{
 						} else {
-							browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).commit();
+							browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).apply();
 							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultSearch", "")));
 						}
 					}
@@ -298,7 +298,7 @@ public class SettingsActivity extends AppCompatActivity {
 						if (custom_hp.getText().toString().equals(""))
 						{
 						} else {
-							browservio_saver.edit().putString("defaultHomePage", custom_hp.getText().toString()).commit();
+							browservio_saver.edit().putString("defaultHomePage", custom_hp.getText().toString()).apply();
 							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
 						}
 					}
@@ -336,7 +336,7 @@ public class SettingsActivity extends AppCompatActivity {
 				drst.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
-						browservio_saver.edit().putString("isFirstLaunch", "1").commit();
+						browservio_saver.edit().putString("isFirstLaunch", "1").apply();
 						finish();
 					}
 				});
@@ -355,10 +355,10 @@ public class SettingsActivity extends AppCompatActivity {
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				final boolean _isChecked = _param2;
 				if (_isChecked) {
-					browservio_saver.edit().putString("showBrowseBtn", "1").commit();
+					browservio_saver.edit().putString("showBrowseBtn", "1").apply();
 				}
 				else {
-					browservio_saver.edit().putString("showBrowseBtn", "0").commit();
+					browservio_saver.edit().putString("showBrowseBtn", "0").apply();
 				}
 			}
 		});
@@ -368,10 +368,10 @@ public class SettingsActivity extends AppCompatActivity {
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				final boolean _isChecked = _param2;
 				if (_isChecked) {
-					browservio_saver.edit().putString("showZoomKeys", "1").commit();
+					browservio_saver.edit().putString("showZoomKeys", "1").apply();
 				}
 				else {
-					browservio_saver.edit().putString("showZoomKeys", "0").commit();
+					browservio_saver.edit().putString("showZoomKeys", "0").apply();
 				}
 			}
 		});
@@ -402,10 +402,10 @@ public class SettingsActivity extends AppCompatActivity {
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				final boolean _isChecked = _param2;
 				if (_isChecked) {
-					browservio_saver.edit().putString("isJavaScriptEnabled", "1").commit();
+					browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
 				}
 				else {
-					browservio_saver.edit().putString("isJavaScriptEnabled", "0").commit();
+					browservio_saver.edit().putString("isJavaScriptEnabled", "0").apply();
 				}
 			}
 		});
@@ -415,10 +415,10 @@ public class SettingsActivity extends AppCompatActivity {
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				final boolean _isChecked = _param2;
 				if (_isChecked) {
-					browservio_saver.edit().putString("overrideEmptyError", "1").commit();
+					browservio_saver.edit().putString("overrideEmptyError", "1").apply();
 				}
 				else {
-					browservio_saver.edit().putString("overrideEmptyError", "0").commit();
+					browservio_saver.edit().putString("overrideEmptyError", "0").apply();
 				}
 			}
 		});
@@ -428,10 +428,10 @@ public class SettingsActivity extends AppCompatActivity {
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				final boolean _isChecked = _param2;
 				if (_isChecked) {
-					browservio_saver.edit().putString("showCustomError", "1").commit();
+					browservio_saver.edit().putString("showCustomError", "1").apply();
 				}
 				else {
-					browservio_saver.edit().putString("showCustomError", "0").commit();
+					browservio_saver.edit().putString("showCustomError", "0").apply();
 				}
 			}
 		});

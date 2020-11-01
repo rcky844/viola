@@ -86,7 +86,7 @@ public class FavActivity extends AppCompatActivity {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						bookmark_list.remove((int)(_position));
-						bookmarks.edit().putString("bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0").commit();
+						bookmarks.edit().putString("bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0").apply();
 						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
 						SketchwareUtil.showMessage(getApplicationContext(), "Deleted successfully!");
 					}
@@ -110,7 +110,7 @@ public class FavActivity extends AppCompatActivity {
 				del_fav.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
-						bookmarks.edit().clear().commit();
+						bookmarks.edit().clear().apply();
 						SketchwareUtil.showMessage(getApplicationContext(), "Wiped successfully!");
 						finish();
 					}
