@@ -2,6 +2,7 @@ package tipz.browservio;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
@@ -150,6 +151,13 @@ public class FavActivity extends AppCompatActivity {
 	public void onStart() {
 		super.onStart();
 		populate_count = 0;
+		final ProgressDialog prog = new ProgressDialog(FavActivity.this);
+		prog.setMax(100);
+		prog.setTitle("Populating");
+		prog.setMessage("Populating entries...");
+		prog.setIndeterminate(true);
+		prog.setCancelable(false);
+		prog.show();
 		populate = new TimerTask() {
 			@Override
 			public void run() {
@@ -160,6 +168,7 @@ public class FavActivity extends AppCompatActivity {
 							if (bookmarks.getString("bookmark_".concat(String.valueOf((long)(populate_count))), "").equals("")) {
 								listview.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, bookmark_list));
 								populate.cancel();
+								prog.dismiss();
 							}
 							else {
 								bookmark_list.add(bookmarks.getString("bookmark_".concat(String.valueOf((long)(populate_count))), ""));
