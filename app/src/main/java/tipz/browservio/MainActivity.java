@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
 	private double last_desktop = 0;
 	private String page_before_error = "";
 	private String googleLoad = "";
-	private boolean defaulterror = false;
+	private boolean defaulterror = true;
 	private String beforepauseUrl = "";
 	private String hist = "";
 	private double finload = 0;
-	private boolean pooran = false;
+	private boolean pooran = true;
 	
 	private LinearLayout linear_urledit;
 	private LinearLayout webview_linear;
@@ -596,7 +596,6 @@ public class MainActivity extends AppCompatActivity {
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
 		webview.getSettings().setDisplayZoomControls(false);
-		pooran = true;
 	}
 	
 	public class CustomWebClient extends WebChromeClient {
