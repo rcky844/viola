@@ -1,0 +1,9 @@
+/local.properties
+/.gradle/
+/buildSrc/.gradle/
+/buildSrc/build/
+/.idea/
+/app/build/
+/app/.gradle/
+/.idea/caches
+/.idea/libraries
