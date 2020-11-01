@@ -112,9 +112,23 @@ public class FavActivity extends AppCompatActivity {
 		_fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				bookmarks.edit().clear().commit();
-				SketchwareUtil.showMessage(getApplicationContext(), "Wiped successfully!");
-				finish();
+				del_fav.setTitle("Delete all entries");
+				del_fav.setMessage("You are about to delete all favourites entries, are you sure about this?");
+				del_fav.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						bookmarks.edit().clear().commit();
+						SketchwareUtil.showMessage(getApplicationContext(), "Wiped successfully!");
+						finish();
+					}
+				});
+				del_fav.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						
+					}
+				});
+				del_fav.create().show();
 			}
 		});
 	}
