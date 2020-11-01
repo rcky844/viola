@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 					}
 				}
 				if (!browservio_saver.getString("history", "").equals("")) {
-					browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).commit();
+					browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).apply();
 				}
 			}
 		});
@@ -397,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
 							break;
 							case "Clear History":
 							webview.clearHistory();
-							browservio_saver.edit().putString("history", "").commit();
+							browservio_saver.edit().putString("history", "").apply();
 							SketchwareUtil.showMessage(getApplicationContext(), "History cleared successfully!");
 							linear_control_b2.performClick();
 							break;
@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity {
 							case "Clear All":
 							webview.clearCache(true);
 							webview.clearHistory();
-							browservio_saver.edit().putString("history", "").commit();
+							browservio_saver.edit().putString("history", "").apply();
 							CookieManager.getInstance().removeAllCookies(null);
 							            CookieManager.getInstance().flush();
 							SketchwareUtil.showMessage(getApplicationContext(), "Everything cleared successfully!");
@@ -465,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
 					dhist.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
-							browservio_saver.edit().putString("history", "").commit();
+							browservio_saver.edit().putString("history", "").apply();
 							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
 						}
 					});
@@ -777,7 +777,7 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("isFirstLaunch", "").apply();
 			CookieManager.getInstance().removeAllCookies(null);
 			CookieManager.getInstance().flush();
-			browservio_saver.edit().putString("history", "").commit();
+			browservio_saver.edit().putString("history", "").apply();
 			webview.clearCache(true);
 			webview.clearHistory();
 			reset = new TimerTask() {
@@ -875,7 +875,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		if (pooran) {
-			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).commit();
+			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).apply();
 			pooran = false;
 		}
 	}
