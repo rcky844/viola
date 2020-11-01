@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
 	private MediaPlayer errorsound;
 	private ObjectAnimator baranim = new ObjectAnimator();
 	private TimerTask error_defuse;
-	private TimerTask starthome;
 	private TimerTask reset;
 	private ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
