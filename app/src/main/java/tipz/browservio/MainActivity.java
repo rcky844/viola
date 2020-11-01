@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
 	private String googleLoad = "";
 	private boolean defaulterror = true;
 	private String beforepauseUrl = "";
-	private String hist = "";
 	private double finload = 0;
 	private boolean pooran = true;
 	
@@ -215,8 +214,8 @@ public class MainActivity extends AppCompatActivity {
 						}
 					}
 				}
-				if (!hist.equals("")) {
-					hist = hist.concat("\n".concat(webview.getUrl()));
+				if (!browservio_saver.getString("history", "").equals("")) {
+					browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).commit();
 				}
 			}
 		});
@@ -398,8 +397,7 @@ public class MainActivity extends AppCompatActivity {
 							break;
 							case "Clear History":
 							webview.clearHistory();
-							hist = "";
-							browservio_saver.edit().putString("history", "").apply();
+							browservio_saver.edit().putString("history", "").commit();
 							SketchwareUtil.showMessage(getApplicationContext(), "History cleared successfully!");
 							linear_control_b2.performClick();
 							break;
@@ -411,8 +409,7 @@ public class MainActivity extends AppCompatActivity {
 							case "Clear All":
 							webview.clearCache(true);
 							webview.clearHistory();
-							hist = "";
-							browservio_saver.edit().putString("history", "").apply();
+							browservio_saver.edit().putString("history", "").commit();
 							CookieManager.getInstance().removeAllCookies(null);
 							            CookieManager.getInstance().flush();
 							SketchwareUtil.showMessage(getApplicationContext(), "Everything cleared successfully!");
@@ -449,9 +446,9 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("green", linear_control_b9);
-				if (!hist.equals("")) {
+				if (!browservio_saver.getString("history", "").equals("")) {
 					dhist.setTitle("History");
-					dhist.setMessage(hist);
+					dhist.setMessage(browservio_saver.getString("history", ""));
 					dhist.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
@@ -461,15 +458,14 @@ public class MainActivity extends AppCompatActivity {
 					dhist.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
-							((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", hist));
+							((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", browservio_saver.getString("history", "")));
 							SketchwareUtil.showMessage(getApplicationContext(), "Copied to clipboard!");
 						}
 					});
 					dhist.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
-							browservio_saver.edit().putString("history", "").apply();
-							hist = "";
+							browservio_saver.edit().putString("history", "").commit();
 							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
 						}
 					});
@@ -553,9 +549,6 @@ public class MainActivity extends AppCompatActivity {
 		// sur wen Sherk browser
 		setTitle("Browservio");
 		webview.setWebChromeClient(new CustomWebClient());
-		if (!browservio_saver.getString("history", "").equals("")) {
-			hist = browservio_saver.getString("history", "");
-		}
 		// Keyboard press = browse
 		urledit.setOnEditorActionListener(new EditText.OnEditorActionListener() { 
 			  public boolean
@@ -672,13 +665,7 @@ public class MainActivity extends AppCompatActivity {
 			finish();
 		}
 	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		browservio_saver.edit().putString("history", hist).apply();
-	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -790,8 +777,7 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("isFirstLaunch", "").apply();
 			CookieManager.getInstance().removeAllCookies(null);
 			CookieManager.getInstance().flush();
-			browservio_saver.edit().putString("history", "").apply();
-			hist = "";
+			browservio_saver.edit().putString("history", "").commit();
 			webview.clearCache(true);
 			webview.clearHistory();
 			reset = new TimerTask() {
@@ -889,7 +875,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		if (pooran) {
-			hist = hist.concat("\n".concat(webview.getUrl()));
+			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).commit();
 			pooran = false;
 		}
 	}
