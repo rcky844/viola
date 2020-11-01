@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
 	private String googleLoad = "";
 	private boolean defaulterror = false;
 	private String beforepauseUrl = "";
-	private String hist = "";
 	private double finload = 0;
 	private boolean pooran = false;
 	
@@ -209,8 +208,8 @@ public class MainActivity extends AppCompatActivity {
 						}
 					}
 				}
-				if (!hist.equals("")) {
-					hist = hist.concat("\n".concat(webview.getUrl()));
+				if (!browservio_saver.getString("history", "").equals("")) {
+					hist = browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()));
 				}
 			}
 		});
@@ -443,9 +442,9 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				_rippleAnimator("green", linear_control_b9);
-				if (!hist.equals("")) {
+				if (!browservio_saver.getString("history", "").equals("")) {
 					dhist.setTitle("History");
-					dhist.setMessage(hist);
+					dhist.setMessage(browservio_saver.getString("history", ""));
 					dhist.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
@@ -455,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
 					dhist.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
-							((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", hist));
+							((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", browservio_saver.getString("history", "")));
 							SketchwareUtil.showMessage(getApplicationContext(), "Copied to clipboard!");
 						}
 					});
@@ -463,7 +462,6 @@ public class MainActivity extends AppCompatActivity {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 							browservio_saver.edit().putString("history", "").commit();
-							hist = "";
 							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
 						}
 					});
@@ -548,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
 		setTitle("Browservio");
 		webview.setWebChromeClient(new CustomWebClient());
 		if (!browservio_saver.getString("history", "").equals("")) {
-			hist = browservio_saver.getString("history", "");
+			
 		}
 		// Keyboard press = browse
 		urledit.setOnEditorActionListener(new EditText.OnEditorActionListener() { 
@@ -666,12 +664,6 @@ public class MainActivity extends AppCompatActivity {
 			// Finish activity
 			finish();
 		}
-	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		browservio_saver.edit().putString("history", hist).commit();
 	}
 	
 	@Override
@@ -884,7 +876,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		if (pooran) {
-			hist = hist.concat("\n".concat(webview.getUrl()));
+			hist = browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()));
 			pooran = false;
 		}
 	}
