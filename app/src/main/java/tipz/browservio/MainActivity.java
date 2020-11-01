@@ -100,12 +100,12 @@ public class MainActivity extends AppCompatActivity {
 	private ImageView history;
 	private ImageView imageview1;
 	private ImageView exit;
-	
+
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
 	private Intent i = new Intent();
 	private MediaPlayer errorsound;
-	private ObjectAnimator baranim = new ObjectAnimator();
+	private final ObjectAnimator baranim = new ObjectAnimator();
 	private TimerTask error_defuse;
 	private TimerTask starthome;
 	private TimerTask reset;

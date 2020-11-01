@@ -95,14 +95,14 @@ public class SettingsActivity extends AppCompatActivity {
 	
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
-	private ObjectAnimator stackanim = new ObjectAnimator();
+	private final ObjectAnimator stackanim = new ObjectAnimator();
 	private AlertDialog.Builder dialog1;
 	private AlertDialog.Builder dabt;
 	private AlertDialog.Builder drst;
-	private Intent telegrambot = new Intent();
-	private Intent re = new Intent();
+	private final Intent telegrambot = new Intent();
+	private final Intent re = new Intent();
 	private AlertDialog.Builder d2;
-	private ObjectAnimator Sherlockanimation = new ObjectAnimator();
+	private final ObjectAnimator Sherlockanimation = new ObjectAnimator();
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
