@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 	private String page_before_error = "";
 	private String googleLoad = "";
 	private boolean defaulterror = false;
-	private String beforepauseUrl = "";
 	private double finload = 0;
 	private boolean pooran = false;
 	
