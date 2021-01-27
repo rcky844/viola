@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,6 +57,16 @@ public class UrlUtils {
     }
 
     /**
+     * Keep aligned with desktop generic content types:
+     * https://searchfox.org/mozilla-central/source/browser/components/downloads/DownloadsCommon.jsm#208
+     */
+    private static final String[] GENERIC_CONTENT_TYPES = {
+            "application/octet-stream",
+            "binary/octet-stream",
+            "application/unknown"
+    };
+
+    /**
      * Guess the name of the file that should be downloaded.
      * <p>
      * This method is largely identical to {@link android.webkit.URLUtil#guessFileName}
@@ -73,7 +84,11 @@ public class UrlUtils {
         // Split filename between base and extension
         // Add an extension if filename does not have one
         if (extractedFileName.contains(".")) {
-            return changeExtension(extractedFileName, sanitizedMimeType);
+            if (Arrays.asList(GENERIC_CONTENT_TYPES).contains(mimeType)) {
+                return extractedFileName;
+            } else {
+                return changeExtension(extractedFileName, sanitizedMimeType);
+            }
         } else {
             return extractedFileName + createExtension(sanitizedMimeType);
         }
