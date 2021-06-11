@@ -31,12 +31,10 @@ import java.util.TimerTask;
 public class FavActivity extends AppCompatActivity {
 	
 	private final Timer _timer = new Timer();
-	
-	private Toolbar _toolbar;
-	private FloatingActionButton _fab;
+
 	private double populate_count = 0;
 	
-	private ArrayList<String> bookmark_list = new ArrayList<>();
+	private final ArrayList<String> bookmark_list = new ArrayList<>();
 	
 	private ListView listview;
 	
@@ -47,13 +45,13 @@ public class FavActivity extends AppCompatActivity {
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.fav);
-		initialize(_savedInstanceState);
+		initialize();
 		initializeLogic();
 	}
 	
-	private void initialize(Bundle _savedInstanceState) {
-		
-		_toolbar = (Toolbar) findViewById(R.id._toolbar);
+	private void initialize() {
+
+		Toolbar _toolbar = findViewById(R.id._toolbar);
 		setSupportActionBar(_toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -63,17 +61,17 @@ public class FavActivity extends AppCompatActivity {
 				onBackPressed();
 			}
 		});
-		_fab = (FloatingActionButton) findViewById(R.id._fab);
+		FloatingActionButton _fab = findViewById(R.id._fab);
 		
-		listview = (ListView) findViewById(R.id.listview);
+		listview = findViewById(R.id.listview);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		del_fav = new AlertDialog.Builder(this);
 		
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
-				final int _position = _param3;
-				((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", bookmark_list.get((int)(_position))));
+				getApplicationContext();
+				((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", bookmark_list.get(_param3)));
 				SketchwareUtil.showMessage(getApplicationContext(), "Copied to clipboard!");
 			}
 		});
@@ -86,7 +84,7 @@ public class FavActivity extends AppCompatActivity {
 				del_fav.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
-						bookmark_list.remove((int)(_position));
+						bookmark_list.remove(_position);
 						bookmarks.edit().putString("bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0").apply();
 						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
 						SketchwareUtil.showMessage(getApplicationContext(), "Deleted successfully!");
@@ -133,12 +131,6 @@ public class FavActivity extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
 		super.onActivityResult(_requestCode, _resultCode, _data);
-		
-		switch (_requestCode) {
-			
-			default:
-			break;
-		}
 	}
 	
 	@Override
@@ -166,7 +158,7 @@ public class FavActivity extends AppCompatActivity {
 					public void run() {
 						if (!bookmarks.getString("bookmark_".concat(String.valueOf((long)(populate_count))).concat("_show"), "").equals("0")) {
 							if (bookmarks.getString("bookmark_".concat(String.valueOf((long)(populate_count))), "").equals("")) {
-								listview.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, bookmark_list));
+								listview.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, bookmark_list));
 								populate.cancel();
 								prog.dismiss();
 							}
@@ -179,7 +171,7 @@ public class FavActivity extends AppCompatActivity {
 				});
 			}
 		};
-		_timer.scheduleAtFixedRate(populate, (int)(0), (int)(2));
+		_timer.scheduleAtFixedRate(populate, 0, 2);
 	}
 	@Deprecated
 	public void showMessage(String _s) {
@@ -188,14 +180,14 @@ public class FavActivity extends AppCompatActivity {
 	
 	@Deprecated
 	public int getLocationX(View _v) {
-		int _location[] = new int[2];
+		int[] _location = new int[2];
 		_v.getLocationInWindow(_location);
 		return _location[0];
 	}
 	
 	@Deprecated
 	public int getLocationY(View _v) {
-		int _location[] = new int[2];
+		int[] _location = new int[2];
 		_v.getLocationInWindow(_location);
 		return _location[1];
 	}
@@ -208,7 +200,7 @@ public class FavActivity extends AppCompatActivity {
 	
 	@Deprecated
 	public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-		ArrayList<Double> _result = new ArrayList<Double>();
+		ArrayList<Double> _result = new ArrayList<>();
 		SparseBooleanArray _arr = _list.getCheckedItemPositions();
 		for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
 			if (_arr.valueAt(_iIdx))

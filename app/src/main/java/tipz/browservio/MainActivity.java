@@ -8,16 +8,13 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,22 +43,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class MainActivity extends AppCompatActivity {
 	
@@ -71,14 +63,10 @@ public class MainActivity extends AppCompatActivity {
 	private double desktop = 0;
 	private double last_desktop = 0;
 	private String page_before_error = "";
-	private String googleLoad = "";
 	private boolean defaulterror = true;
 	private double finload = 0;
 	private boolean pooran = true;
-	
-	private LinearLayout linear_urledit;
-	private LinearLayout webview_linear;
-	private LinearLayout linear_urledit_text;
+
 	private ImageView browse;
 	private EditText urledit;
 	private ProgressBar progmain;
@@ -111,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
 
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
-	private Intent i = new Intent();
+	private final Intent i = new Intent();
 	private MediaPlayer mediaPlayer;
-	private ObjectAnimator baranim = new ObjectAnimator();
+	private final ObjectAnimator baranim = new ObjectAnimator();
 	private TimerTask error_defuse;
 	private TimerTask reset;
-	private ObjectAnimator barrrrrr = new ObjectAnimator();
+	private final ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private TimerTask funload;
 	private SharedPreferences bookmarks;
@@ -137,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		if (requestCode == 1000) {
 			initializeLogic();
@@ -146,42 +134,39 @@ public class MainActivity extends AppCompatActivity {
 	
 	private void initialize(Bundle _savedInstanceState) {
 		
-		_fab = (FloatingActionButton) findViewById(R.id._fab);
-		
-		linear_urledit = (LinearLayout) findViewById(R.id.linear_urledit);
-		webview_linear = (LinearLayout) findViewById(R.id.webview_linear);
-		linear_urledit_text = (LinearLayout) findViewById(R.id.linear_urledit_text);
-		browse = (ImageView) findViewById(R.id.browse);
-		urledit = (EditText) findViewById(R.id.urledit);
-		progmain = (ProgressBar) findViewById(R.id.progmain);
-		webview = (WebView) findViewById(R.id.webview);
+		_fab = findViewById(R.id._fab);
+
+		browse = findViewById(R.id.browse);
+		urledit = findViewById(R.id.urledit);
+		progmain = findViewById(R.id.progmain);
+		webview = findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
 		webview.getSettings().setSupportZoom(true);
-		hscroll_control = (HorizontalScrollView) findViewById(R.id.hscroll_control);
-		linear_control = (LinearLayout) findViewById(R.id.linear_control);
-		linear_control_b0 = (LinearLayout) findViewById(R.id.linear_control_b0);
-		linear_control_b1 = (LinearLayout) findViewById(R.id.linear_control_b1);
-		linear_control_b2 = (LinearLayout) findViewById(R.id.linear_control_b2);
-		linear_control_b7 = (LinearLayout) findViewById(R.id.linear_control_b7);
-		linear_control_b3 = (LinearLayout) findViewById(R.id.linear_control_b3);
-		linear_control_b4 = (LinearLayout) findViewById(R.id.linear_control_b4);
-		linear_control_b5 = (LinearLayout) findViewById(R.id.linear_control_b5);
-		linear_control_b6 = (LinearLayout) findViewById(R.id.linear_control_b6);
-		linear_control_b9 = (LinearLayout) findViewById(R.id.linear_control_b9);
-		linear_control_b10 = (LinearLayout) findViewById(R.id.linear_control_b10);
-		linear_control_b8 = (LinearLayout) findViewById(R.id.linear_control_b8);
-		linear_control_endp = (LinearLayout) findViewById(R.id.linear_control_endp);
-		back = (ImageView) findViewById(R.id.back);
-		forward = (ImageView) findViewById(R.id.forward);
-		reload = (ImageView) findViewById(R.id.reload);
-		homepage_ic = (ImageView) findViewById(R.id.homepage_ic);
-		desktop_switch = (ImageView) findViewById(R.id.desktop_switch);
-		ic_clear = (ImageView) findViewById(R.id.ic_clear);
-		ic_share = (ImageView) findViewById(R.id.ic_share);
-		settings = (ImageView) findViewById(R.id.settings);
-		history = (ImageView) findViewById(R.id.history);
-		imageview1 = (ImageView) findViewById(R.id.imageview1);
-		exit = (ImageView) findViewById(R.id.exit);
+		hscroll_control = findViewById(R.id.hscroll_control);
+		linear_control = findViewById(R.id.linear_control);
+		linear_control_b0 = findViewById(R.id.linear_control_b0);
+		linear_control_b1 = findViewById(R.id.linear_control_b1);
+		linear_control_b2 = findViewById(R.id.linear_control_b2);
+		linear_control_b7 = findViewById(R.id.linear_control_b7);
+		linear_control_b3 = findViewById(R.id.linear_control_b3);
+		linear_control_b4 = findViewById(R.id.linear_control_b4);
+		linear_control_b5 = findViewById(R.id.linear_control_b5);
+		linear_control_b6 = findViewById(R.id.linear_control_b6);
+		linear_control_b9 = findViewById(R.id.linear_control_b9);
+		linear_control_b10 = findViewById(R.id.linear_control_b10);
+		linear_control_b8 = findViewById(R.id.linear_control_b8);
+		linear_control_endp = findViewById(R.id.linear_control_endp);
+		back = findViewById(R.id.back);
+		forward = findViewById(R.id.forward);
+		reload = findViewById(R.id.reload);
+		homepage_ic = findViewById(R.id.homepage_ic);
+		desktop_switch = findViewById(R.id.desktop_switch);
+		ic_clear = findViewById(R.id.ic_clear);
+		ic_share = findViewById(R.id.ic_share);
+		settings = findViewById(R.id.settings);
+		history = findViewById(R.id.history);
+		imageview1 = findViewById(R.id.imageview1);
+		exit = findViewById(R.id.exit);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dhist = new AlertDialog.Builder(this);
@@ -216,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 										});
 									}
 								};
-								_timer.schedule(error_defuse, (int)(3000));
+								_timer.schedule(error_defuse, 3000);
 							}
 							else {
 								_browservio_browse();
@@ -233,15 +218,13 @@ public class MainActivity extends AppCompatActivity {
 		webview.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageStarted(WebView _param1, String _param2, Bitmap _param3) {
-				final String _url = _param2;
-				
+
 				super.onPageStarted(_param1, _param2, _param3);
 			}
 			
 			@Override
 			public void onPageFinished(WebView _param1, String _param2) {
-				final String _url = _param2;
-				
+
 				super.onPageFinished(_param1, _param2);
 			}
 		});
@@ -319,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
 							linear_control_b2.performClick();
 							break;
 							case "Mobile":
-							webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
+							webview.getSettings().setUserAgentString(System.getProperty("http.agent"));
 							last_desktop = desktop;
 							desktop = 0;
 							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
@@ -334,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
 								@Override
 								public void onClick(DialogInterface _dialog, int _which) {
 									if (custom_ua.length() == 0) {
-										webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
+										webview.getSettings().setUserAgentString(System.getProperty("http.agent"));
 										linear_control_b2.performClick();
 										desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
 										desktop = 0;
@@ -459,7 +442,8 @@ public class MainActivity extends AppCompatActivity {
 					dhist.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
-							((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", browservio_saver.getString("history", "")));
+							getApplicationContext();
+							((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", browservio_saver.getString("history", "")));
 							SketchwareUtil.showMessage(getApplicationContext(), "Copied to clipboard!");
 						}
 					});
@@ -525,8 +509,8 @@ public class MainActivity extends AppCompatActivity {
 				barrrrrr.setTarget(hscroll_control);
 				baranim.setPropertyName("rotation");
 				barrrrrr.setPropertyName("alpha");
-				baranim.setDuration((int)(250));
-				barrrrrr.setDuration((int)(250));
+				baranim.setDuration(250);
+				barrrrrr.setDuration(250);
 				if (linear_control.getVisibility() == View.VISIBLE) {
 					baranim.setFloatValues((float)(180), (float)(0));
 					barrrrrr.setFloatValues((float)(1), (float)(0));
@@ -562,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
 		// Page stuff
 		page_before_error = "browservio://no_error";
 		// desktopMode init code
-		webview.getSettings().setUserAgentString(System.getProperty("http.agent").toString());
+		webview.getSettings().setUserAgentString(System.getProperty("http.agent"));
 		desktop = 0;
 		last_desktop = desktop;
 		// Start downloadManager service
@@ -586,7 +570,7 @@ public class MainActivity extends AppCompatActivity {
 				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
 			}
 			webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
-			_URLindentify(1);
+			_URLindentify();
 		}
 		else {
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
@@ -599,8 +583,7 @@ public class MainActivity extends AppCompatActivity {
 	public class CustomWebClient extends WebChromeClient {
 		private View mCustomView;
 		private WebChromeClient.CustomViewCallback mCustomViewCallback;
-		protected FrameLayout frame;
-		
+
 		// Initially mOriginalOrientation is set to Landscape
 		private int mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 		private int mOriginalSystemUiVisibility;
@@ -608,6 +591,7 @@ public class MainActivity extends AppCompatActivity {
 		// Constructor for CustomWebClient
 		public CustomWebClient() {}
 		
+		@Override
 		public Bitmap getDefaultVideoPoster() {
 			if (MainActivity.this == null) {
 				return null; }
@@ -641,12 +625,6 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
 		super.onActivityResult(_requestCode, _resultCode, _data);
-		
-		switch (_requestCode) {
-			
-			default:
-			break;
-		}
 	}
 	
 	@Override
@@ -680,19 +658,19 @@ public class MainActivity extends AppCompatActivity {
 					public void run() {
 						finload = webview.getProgress();
 						if (finload == 100) {
-							progmain.setProgress((int)0);
+							progmain.setProgress(0);
 							pooran = true;
 						}
 						else {
 							progmain.setProgress((int)finload);
 							CookieSyncManager.getInstance().sync();
-							_URLindentify(1);
+							_URLindentify();
 						}
 					}
 				});
 			}
 		};
-		_timer.scheduleAtFixedRate(funload, (int)(0), (int)(70));
+		_timer.scheduleAtFixedRate(funload, 0, 70);
 	}
 	private void _downloadManager (final WebView _webview) {
 		_webview.setDownloadListener(new DownloadListener() {       
@@ -720,7 +698,7 @@ public class MainActivity extends AppCompatActivity {
 			if(URLUtil.isValidUrl(urledit.getText().toString())) {
 				webview.loadUrl(urledit.getText().toString());
 			} else {
-				googleLoad = browservio_saver.getString("defaultSearch", "").concat(urledit.getText().toString());
+				String googleLoad = browservio_saver.getString("defaultSearch", "").concat(urledit.getText().toString());
 				webview.loadUrl(googleLoad);
 				urledit.setText(googleLoad);
 			}
@@ -793,7 +771,7 @@ public class MainActivity extends AppCompatActivity {
 					});
 				}
 			};
-			_timer.schedule(reset, (int)(2000));
+			_timer.schedule(reset, 2000);
 		}
 		if (browservio_saver.getString("defaultHomePage", "").equals("")) {
 			Intent i = getIntent();
@@ -826,18 +804,8 @@ public class MainActivity extends AppCompatActivity {
 		else {
 			browse.setVisibility(View.GONE);
 		}
-		if (browservio_saver.getString("showCustomError", "").equals("1")) {
-			defaulterror = false;
-		}
-		else {
-			defaulterror = true;
-		}
-		if (browservio_saver.getString("showZoomKeys", "").equals("1")) {
-			webview.getSettings().setDisplayZoomControls(true);
-		}
-		else {
-			webview.getSettings().setDisplayZoomControls(false);
-		}
+		defaulterror = !browservio_saver.getString("showCustomError", "").equals("1");
+		webview.getSettings().setDisplayZoomControls(browservio_saver.getString("showZoomKeys", "").equals("1"));
 		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).apply();
 		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).apply();
 	}
@@ -876,10 +844,9 @@ public class MainActivity extends AppCompatActivity {
 		playSong(songPosition);
 		urledit.setText("browservio://error");
 	}
-	
-	
-	private void _URLindentify (final double _type) {
-		if (_type == 1) {
+
+	private void _URLindentify() {
+		if ((double) 1 == 1) {
 			if (webview.getUrl().equals("browservio://error") || webview.getUrl().equals("file:///android_asset/error.html")) {
 				_errorpage();
 			}
@@ -909,14 +876,14 @@ public class MainActivity extends AppCompatActivity {
 	
 	@Deprecated
 	public int getLocationX(View _v) {
-		int _location[] = new int[2];
+		int[] _location = new int[2];
 		_v.getLocationInWindow(_location);
 		return _location[0];
 	}
 	
 	@Deprecated
 	public int getLocationY(View _v) {
-		int _location[] = new int[2];
+		int[] _location = new int[2];
 		_v.getLocationInWindow(_location);
 		return _location[1];
 	}

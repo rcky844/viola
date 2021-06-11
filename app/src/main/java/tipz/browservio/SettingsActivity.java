@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +29,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class SettingsActivity extends AppCompatActivity {
-	
-	
-	private Toolbar _toolbar;
-	
-	private ScrollView vscroll_back;
-	private LinearLayout linear_back;
+
 	private LinearLayout linear_general;
 	private LinearLayout linear6;
 	private LinearLayout linear_advenced;
@@ -112,8 +105,8 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 	
 	private void initialize(Bundle _savedInstanceState) {
-		
-		_toolbar = (Toolbar) findViewById(R.id._toolbar);
+
+		Toolbar _toolbar = findViewById(R.id._toolbar);
 		setSupportActionBar(_toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -123,63 +116,61 @@ public class SettingsActivity extends AppCompatActivity {
 				onBackPressed();
 			}
 		});
-		vscroll_back = (ScrollView) findViewById(R.id.vscroll_back);
-		linear_back = (LinearLayout) findViewById(R.id.linear_back);
-		linear_general = (LinearLayout) findViewById(R.id.linear_general);
-		linear6 = (LinearLayout) findViewById(R.id.linear6);
-		linear_advenced = (LinearLayout) findViewById(R.id.linear_advenced);
-		linear5 = (LinearLayout) findViewById(R.id.linear5);
-		linear_about = (LinearLayout) findViewById(R.id.linear_about);
-		linear8 = (LinearLayout) findViewById(R.id.linear8);
-		textview_cool1 = (TextView) findViewById(R.id.textview_cool1);
-		imageview4 = (ImageView) findViewById(R.id.imageview4);
-		linear1_search = (LinearLayout) findViewById(R.id.linear1_search);
-		linear1_homepage = (LinearLayout) findViewById(R.id.linear1_homepage);
-		linear11 = (LinearLayout) findViewById(R.id.linear11);
-		linear_zoomkeys_b = (LinearLayout) findViewById(R.id.linear_zoomkeys_b);
-		linear1_b0 = (LinearLayout) findViewById(R.id.linear1_b0);
-		textview8 = (TextView) findViewById(R.id.textview8);
-		textview9 = (TextView) findViewById(R.id.textview9);
-		textview4 = (TextView) findViewById(R.id.textview4);
-		textview5 = (TextView) findViewById(R.id.textview5);
-		linear12 = (LinearLayout) findViewById(R.id.linear12);
-		checkbox3 = (CheckBox) findViewById(R.id.checkbox3);
-		textview31 = (TextView) findViewById(R.id.textview31);
-		textview32 = (TextView) findViewById(R.id.textview32);
-		linear_zoomkeys_a = (LinearLayout) findViewById(R.id.linear_zoomkeys_a);
-		checkbox5 = (CheckBox) findViewById(R.id.checkbox5);
-		textview37 = (TextView) findViewById(R.id.textview37);
-		textview38 = (TextView) findViewById(R.id.textview38);
-		textview15 = (TextView) findViewById(R.id.textview15);
-		textview16 = (TextView) findViewById(R.id.textview16);
-		textview_cool2 = (TextView) findViewById(R.id.textview_cool2);
-		imageview1 = (ImageView) findViewById(R.id.imageview1);
-		linear1_javascript = (LinearLayout) findViewById(R.id.linear1_javascript);
-		linear1_overrideempt = (LinearLayout) findViewById(R.id.linear1_overrideempt);
-		linear13 = (LinearLayout) findViewById(R.id.linear13);
-		linear1_b1 = (LinearLayout) findViewById(R.id.linear1_b1);
-		checkbox1 = (CheckBox) findViewById(R.id.checkbox1);
-		textview29 = (TextView) findViewById(R.id.textview29);
-		textview30 = (TextView) findViewById(R.id.textview30);
-		linear1_overrideemp = (LinearLayout) findViewById(R.id.linear1_overrideemp);
-		checkbox2 = (CheckBox) findViewById(R.id.checkbox2);
-		textview12 = (TextView) findViewById(R.id.textview12);
-		textview13 = (TextView) findViewById(R.id.textview13);
-		linear14 = (LinearLayout) findViewById(R.id.linear14);
-		checkbox4 = (CheckBox) findViewById(R.id.checkbox4);
-		textview33 = (TextView) findViewById(R.id.textview33);
-		textview34 = (TextView) findViewById(R.id.textview34);
-		textview_cool3 = (TextView) findViewById(R.id.textview_cool3);
-		imageview5 = (ImageView) findViewById(R.id.imageview5);
-		linear_version = (LinearLayout) findViewById(R.id.linear_version);
-		linear_feed = (LinearLayout) findViewById(R.id.linear_feed);
-		linear_source = (LinearLayout) findViewById(R.id.linear_source);
-		textview23 = (TextView) findViewById(R.id.textview23);
-		version_visiable = (TextView) findViewById(R.id.version_visiable);
-		textview25 = (TextView) findViewById(R.id.textview25);
-		textview26 = (TextView) findViewById(R.id.textview26);
-		textview35 = (TextView) findViewById(R.id.textview35);
-		textview36 = (TextView) findViewById(R.id.textview36);
+		linear_general = findViewById(R.id.linear_general);
+		linear6 = findViewById(R.id.linear6);
+		linear_advenced = findViewById(R.id.linear_advenced);
+		linear5 = findViewById(R.id.linear5);
+		linear_about = findViewById(R.id.linear_about);
+		linear8 = findViewById(R.id.linear8);
+		textview_cool1 = findViewById(R.id.textview_cool1);
+		imageview4 = findViewById(R.id.imageview4);
+		linear1_search = findViewById(R.id.linear1_search);
+		linear1_homepage = findViewById(R.id.linear1_homepage);
+		linear11 = findViewById(R.id.linear11);
+		linear_zoomkeys_b = findViewById(R.id.linear_zoomkeys_b);
+		linear1_b0 = findViewById(R.id.linear1_b0);
+		textview8 = findViewById(R.id.textview8);
+		textview9 = findViewById(R.id.textview9);
+		textview4 = findViewById(R.id.textview4);
+		textview5 = findViewById(R.id.textview5);
+		linear12 = findViewById(R.id.linear12);
+		checkbox3 = findViewById(R.id.checkbox3);
+		textview31 = findViewById(R.id.textview31);
+		textview32 = findViewById(R.id.textview32);
+		linear_zoomkeys_a = findViewById(R.id.linear_zoomkeys_a);
+		checkbox5 = findViewById(R.id.checkbox5);
+		textview37 = findViewById(R.id.textview37);
+		textview38 = findViewById(R.id.textview38);
+		textview15 = findViewById(R.id.textview15);
+		textview16 = findViewById(R.id.textview16);
+		textview_cool2 = findViewById(R.id.textview_cool2);
+		imageview1 = findViewById(R.id.imageview1);
+		linear1_javascript = findViewById(R.id.linear1_javascript);
+		linear1_overrideempt = findViewById(R.id.linear1_overrideempt);
+		linear13 = findViewById(R.id.linear13);
+		linear1_b1 = findViewById(R.id.linear1_b1);
+		checkbox1 = findViewById(R.id.checkbox1);
+		textview29 = findViewById(R.id.textview29);
+		textview30 = findViewById(R.id.textview30);
+		linear1_overrideemp = findViewById(R.id.linear1_overrideemp);
+		checkbox2 = findViewById(R.id.checkbox2);
+		textview12 = findViewById(R.id.textview12);
+		textview13 = findViewById(R.id.textview13);
+		linear14 = findViewById(R.id.linear14);
+		checkbox4 = findViewById(R.id.checkbox4);
+		textview33 = findViewById(R.id.textview33);
+		textview34 = findViewById(R.id.textview34);
+		textview_cool3 = findViewById(R.id.textview_cool3);
+		imageview5 = findViewById(R.id.imageview5);
+		linear_version = findViewById(R.id.linear_version);
+		linear_feed = findViewById(R.id.linear_feed);
+		linear_source = findViewById(R.id.linear_source);
+		textview23 = findViewById(R.id.textview23);
+		version_visiable = findViewById(R.id.version_visiable);
+		textview25 = findViewById(R.id.textview25);
+		textview26 = findViewById(R.id.textview26);
+		textview35 = findViewById(R.id.textview35);
+		textview36 = findViewById(R.id.textview36);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dialog1 = new AlertDialog.Builder(this);
@@ -194,8 +185,8 @@ public class SettingsActivity extends AppCompatActivity {
 				Sherlockanimation.setTarget(linear6);
 				stackanim.setPropertyName("rotation");
 				Sherlockanimation.setPropertyName("alpha");
-				stackanim.setDuration((int)(250));
-				Sherlockanimation.setDuration((int)(250));
+				stackanim.setDuration(250);
+				Sherlockanimation.setDuration(250);
 				if (linear6.getVisibility() == View.VISIBLE) {
 					stackanim.setFloatValues((float)(0), (float)(180));
 					Sherlockanimation.setFloatValues((float)(1), (float)(0));
@@ -217,8 +208,8 @@ public class SettingsActivity extends AppCompatActivity {
 				Sherlockanimation.setTarget(linear5);
 				stackanim.setPropertyName("rotation");
 				Sherlockanimation.setPropertyName("alpha");
-				stackanim.setDuration((int)(250));
-				Sherlockanimation.setDuration((int)(250));
+				stackanim.setDuration(250);
+				Sherlockanimation.setDuration(250);
 				if (linear5.getVisibility() == View.VISIBLE) {
 					stackanim.setFloatValues((float)(0), (float)(180));
 					Sherlockanimation.setFloatValues((float)(1), (float)(0));
@@ -240,8 +231,8 @@ public class SettingsActivity extends AppCompatActivity {
 				Sherlockanimation.setTarget(linear8);
 				stackanim.setPropertyName("rotation");
 				Sherlockanimation.setPropertyName("alpha");
-				stackanim.setDuration((int)(250));
-				Sherlockanimation.setDuration((int)(250));
+				stackanim.setDuration(250);
+				Sherlockanimation.setDuration(250);
 				if (linear8.getVisibility() == View.VISIBLE) {
 					stackanim.setFloatValues((float)(0), (float)(180));
 					Sherlockanimation.setFloatValues((float)(1), (float)(0));
@@ -266,9 +257,8 @@ public class SettingsActivity extends AppCompatActivity {
 				dialog1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
-						if (custom_se.getText().toString().equals(""))
+						if (!custom_se.getText().toString().equals(""))
 						{
-						} else {
 							browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).apply();
 							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultSearch", "")));
 						}
@@ -295,9 +285,8 @@ public class SettingsActivity extends AppCompatActivity {
 				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
-						if (custom_hp.getText().toString().equals(""))
+						if (!custom_hp.getText().toString().equals(""))
 						{
-						} else {
 							browservio_saver.edit().putString("defaultHomePage", custom_hp.getText().toString()).apply();
 							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
 						}
@@ -353,8 +342,7 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
-				final boolean _isChecked = _param2;
-				if (_isChecked) {
+				if (_param2) {
 					browservio_saver.edit().putString("showBrowseBtn", "1").apply();
 				}
 				else {
@@ -366,8 +354,7 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
-				final boolean _isChecked = _param2;
-				if (_isChecked) {
+				if (_param2) {
 					browservio_saver.edit().putString("showZoomKeys", "1").apply();
 				}
 				else {
@@ -400,8 +387,7 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
-				final boolean _isChecked = _param2;
-				if (_isChecked) {
+				if (_param2) {
 					browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
 				}
 				else {
@@ -413,8 +399,7 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
-				final boolean _isChecked = _param2;
-				if (_isChecked) {
+				if (_param2) {
 					browservio_saver.edit().putString("overrideEmptyError", "1").apply();
 				}
 				else {
@@ -426,8 +411,7 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
-				final boolean _isChecked = _param2;
-				if (_isChecked) {
+				if (_param2) {
 					browservio_saver.edit().putString("showCustomError", "1").apply();
 				}
 				else {
@@ -494,12 +478,6 @@ public class SettingsActivity extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
 		super.onActivityResult(_requestCode, _resultCode, _data);
-		
-		switch (_requestCode) {
-			
-			default:
-			break;
-		}
 	}
 	
 	@Override
@@ -550,33 +528,16 @@ public class SettingsActivity extends AppCompatActivity {
 	
 	public static class Drawables {
 		    public static android.graphics.drawable.Drawable getSelectableDrawableFor(int color) {
-			        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-				            android.graphics.drawable.StateListDrawable stateListDrawable = new android.graphics.drawable.StateListDrawable();
-				            stateListDrawable.addState(
-				                new int[]{android.R.attr.state_pressed},
-				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#ffffff"))
-				            );
-				            stateListDrawable.addState(
-				                new int[]{android.R.attr.state_focused},
-				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"))
-				            );
-				            stateListDrawable.addState(
-				                new int[]{},
-				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"))
-				            );
-				            return stateListDrawable;
-				        } else {
-				            android.content.res.ColorStateList pressedColor = android.content.res.ColorStateList.valueOf(color);
-				            android.graphics.drawable.ColorDrawable defaultColor = new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"));
-				            
+				android.content.res.ColorStateList pressedColor = android.content.res.ColorStateList.valueOf(color);
+				android.graphics.drawable.ColorDrawable defaultColor = new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"));
+
 				android.graphics.drawable.Drawable rippleColor = getRippleColor(color);
-				            return new android.graphics.drawable.RippleDrawable(
-				                pressedColor,
-				                defaultColor,
-				                rippleColor
-				            );
-				        }
-			    }
+				return new android.graphics.drawable.RippleDrawable(
+					pressedColor,
+					defaultColor,
+					rippleColor
+				);
+			}
 		
 		    private static android.graphics.drawable.Drawable getRippleColor(int color) {
 			        float[] outerRadii = new float[8];
@@ -588,174 +549,11 @@ public class SettingsActivity extends AppCompatActivity {
 			        shapeDrawable.getPaint().setColor(color);
 			        return shapeDrawable;
 			    }
-		 
-		    private static int lightenOrDarken(int color, double fraction) {
-			        if (canLighten(color, fraction)) {
-				            return lighten(color, fraction);
-				        } else {
-				            return darken(color, fraction);
-				        }
-			    }
-		 
-		    private static int lighten(int color, double fraction) {
-			        int red = Color.red(color);
-			        int green = Color.green(color);
-			        int blue = Color.blue(color);
-			        red = lightenColor(red, fraction);
-			        green = lightenColor(green, fraction);
-			        blue = lightenColor(blue, fraction);
-			        int alpha = Color.alpha(color);
-			        return Color.argb(alpha, red, green, blue);
-			    }
-		 
-		    private static int darken(int color, double fraction) {
-			        int red = Color.red(color);
-			        int green = Color.green(color);
-			        int blue = Color.blue(color);
-			        red = darkenColor(red, fraction);
-			        green = darkenColor(green, fraction);
-			        blue = darkenColor(blue, fraction);
-			        int alpha = Color.alpha(color);
-			 
-			        return Color.argb(alpha, red, green, blue);
-			    }
-		 
-		    private static boolean canLighten(int color, double fraction) {
-			        int red = Color.red(color);
-			        int green = Color.green(color);
-			        int blue = Color.blue(color);
-			        return canLightenComponent(red, fraction)
-			            && canLightenComponent(green, fraction)
-			            && canLightenComponent(blue, fraction);
-			    }
-		 
-		    private static boolean canLightenComponent(int colorComponent, double fraction) {
-			        int red = Color.red(colorComponent);
-			        int green = Color.green(colorComponent);
-			        int blue = Color.blue(colorComponent);
-			        return red + (red * fraction) < 255
-			            && green + (green * fraction) < 255
-			            && blue + (blue * fraction) < 255;
-			    }
-		 
-		    private static int darkenColor(int color, double fraction) {
-			        return (int) Math.max(color - (color * fraction), 0);
-			    }
-		 
-		    private static int lightenColor(int color, double fraction) {
-			        return (int) Math.min(color + (color * fraction), 255);
-			    }
 	}
-	public static class CircleDrawables {
-		    public static android.graphics.drawable.Drawable getSelectableDrawableFor(int color) {
-			        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-				            android.graphics.drawable.StateListDrawable stateListDrawable = new android.graphics.drawable.StateListDrawable();
-				            stateListDrawable.addState(
-				                new int[]{android.R.attr.state_pressed},
-				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#ffffff"))
-				            );
-				            stateListDrawable.addState(
-				                new int[]{android.R.attr.state_focused},
-				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"))
-				            );
-				            stateListDrawable.addState(
-				                new int[]{},
-				                new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"))
-				            );
-				            return stateListDrawable;
-				        } else {
-				            android.content.res.ColorStateList pressedColor = android.content.res.ColorStateList.valueOf(color);
-				            android.graphics.drawable.ColorDrawable defaultColor = new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"));
-				            
-				android.graphics.drawable.Drawable rippleColor = getRippleColor(color);
-				            return new android.graphics.drawable.RippleDrawable(
-				                pressedColor,
-				                defaultColor,
-				                rippleColor
-				            );
-				        }
-			    }
-		
-		    private static android.graphics.drawable.Drawable getRippleColor(int color) {
-			        float[] outerRadii = new float[180];
-			        Arrays.fill(outerRadii, 80);
-			        android.graphics.drawable.shapes.RoundRectShape r = new android.graphics.drawable.shapes.RoundRectShape(outerRadii, null, null);
-			        
-			android.graphics.drawable.ShapeDrawable shapeDrawable = new 
-			android.graphics.drawable.ShapeDrawable(r);
-			        shapeDrawable.getPaint().setColor(color);
-			        return shapeDrawable;
-			    }
-		 
-		    private static int lightenOrDarken(int color, double fraction) {
-			        if (canLighten(color, fraction)) {
-				            return lighten(color, fraction);
-				        } else {
-				            return darken(color, fraction);
-				        }
-			    }
-		 
-		    private static int lighten(int color, double fraction) {
-			        int red = Color.red(color);
-			        int green = Color.green(color);
-			        int blue = Color.blue(color);
-			        red = lightenColor(red, fraction);
-			        green = lightenColor(green, fraction);
-			        blue = lightenColor(blue, fraction);
-			        int alpha = Color.alpha(color);
-			        return Color.argb(alpha, red, green, blue);
-			    }
-		 
-		    private static int darken(int color, double fraction) {
-			        int red = Color.red(color);
-			        int green = Color.green(color);
-			        int blue = Color.blue(color);
-			        red = darkenColor(red, fraction);
-			        green = darkenColor(green, fraction);
-			        blue = darkenColor(blue, fraction);
-			        int alpha = Color.alpha(color);
-			 
-			        return Color.argb(alpha, red, green, blue);
-			    }
-		 
-		    private static boolean canLighten(int color, double fraction) {
-			        int red = Color.red(color);
-			        int green = Color.green(color);
-			        int blue = Color.blue(color);
-			        return canLightenComponent(red, fraction)
-			            && canLightenComponent(green, fraction)
-			            && canLightenComponent(blue, fraction);
-			    }
-		 
-		    private static boolean canLightenComponent(int colorComponent, double fraction) {
-			        int red = Color.red(colorComponent);
-			        int green = Color.green(colorComponent);
-			        int blue = Color.blue(colorComponent);
-			        return red + (red * fraction) < 255
-			            && green + (green * fraction) < 255
-			            && blue + (blue * fraction) < 255;
-			    }
-		 
-		    private static int darkenColor(int color, double fraction) {
-			        return (int) Math.max(color - (color * fraction), 0);
-			    }
-		 
-		    private static int lightenColor(int color, double fraction) {
-			        return (int) Math.min(color + (color * fraction), 255);
-		}
-	}
-	
-	public void drawableclass() {
-	}
-	
-	
+
+
 	private void _updateChkbox (final CheckBox _chk) {
-		if (_chk.isChecked()) {
-			_chk.setChecked(false);
-		}
-		else {
-			_chk.setChecked(true);
-		}
+		_chk.setChecked(!_chk.isChecked());
 	}
 	
 	
@@ -773,14 +571,14 @@ public class SettingsActivity extends AppCompatActivity {
 	
 	@Deprecated
 	public int getLocationX(View _v) {
-		int _location[] = new int[2];
+		int[] _location = new int[2];
 		_v.getLocationInWindow(_location);
 		return _location[0];
 	}
 	
 	@Deprecated
 	public int getLocationY(View _v) {
-		int _location[] = new int[2];
+		int[] _location = new int[2];
 		_v.getLocationInWindow(_location);
 		return _location[1];
 	}
@@ -793,7 +591,7 @@ public class SettingsActivity extends AppCompatActivity {
 	
 	@Deprecated
 	public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-		ArrayList<Double> _result = new ArrayList<Double>();
+		ArrayList<Double> _result = new ArrayList<>();
 		SparseBooleanArray _arr = _list.getCheckedItemPositions();
 		for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
 			if (_arr.valueAt(_iIdx))
