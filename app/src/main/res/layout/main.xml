@@ -42,7 +42,10 @@
 				android:layout_width="48dp"
 				android:layout_height="45dp"
 				android:src="@drawable/ic_browse_black"
-				android:scaleType="fitCenter"/>
+				android:scaleType="fitCenter"
+				android:background="?attr/selectableItemBackgroundBorderless"
+				android:clickable="true"
+				android:focusable="true" />
 		</LinearLayout>
 		<LinearLayout
 			android:id="@+id/webview_linear"
@@ -84,7 +87,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/back"
 							android:layout_width="wrap_content"
@@ -100,7 +106,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/forward"
 							android:layout_width="wrap_content"
@@ -117,7 +126,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/reload"
 							android:layout_width="wrap_content"
@@ -133,7 +145,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/homepage_ic"
 							android:layout_width="wrap_content"
@@ -149,7 +164,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/desktop_switch"
 							android:layout_width="wrap_content"
@@ -165,7 +183,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/ic_clear"
 							android:layout_width="wrap_content"
@@ -181,7 +202,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/ic_share"
 							android:layout_width="wrap_content"
@@ -197,7 +221,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/settings"
 							android:layout_width="wrap_content"
@@ -213,7 +240,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/history"
 							android:layout_width="wrap_content"
@@ -229,7 +259,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/imageview1"
 							android:layout_width="wrap_content"
@@ -245,7 +278,10 @@
 						android:paddingRight="10dp"
 						android:gravity="center_horizontal|center_vertical"
 						android:orientation="vertical"
-						android:layout_gravity="center_horizontal|center_vertical">
+						android:layout_gravity="center_horizontal|center_vertical"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true">
 						<ImageView
 							android:id="@+id/exit"
 							android:layout_width="wrap_content"
