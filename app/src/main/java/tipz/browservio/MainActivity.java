@@ -655,7 +655,7 @@ public class MainActivity extends AppCompatActivity {
 				});
 			}
 		};
-		_timer.scheduleAtFixedRate(funload, 0, 70);
+		_timer.scheduleAtFixedRate(funload, 0, 175);
 	}
 	private void _downloadManager (final WebView _webview) {
 		_webview.setDownloadListener(new DownloadListener() {       
