@@ -581,6 +581,23 @@ public class MainActivity extends AppCompatActivity {
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
 		webview.getSettings().setDisplayZoomControls(false);
+
+		// Share stuff
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		String type = intent.getType();
+
+		if (Intent.ACTION_SEND.equals(action) && type != null) {
+			if ("text/plain".equals(type)) {
+
+				String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+				if (sharedText != null) {
+					urledit.setText(sharedText);
+					_browservio_browse();
+				}
+			}
+		}
 	}
 	
 	public class CustomWebClient extends WebChromeClient {
