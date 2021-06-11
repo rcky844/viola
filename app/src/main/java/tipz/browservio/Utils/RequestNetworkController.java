@@ -1,4 +1,4 @@
-package tipz.browservio;
+package tipz.browservio.Utils;
 
 import com.google.gson.Gson;
 

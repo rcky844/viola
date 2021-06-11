@@ -1,4 +1,4 @@
-package tipz.browservio;
+package tipz.browservio.Utils;
 
 import android.content.Context;
 import android.util.SparseBooleanArray;

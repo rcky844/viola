@@ -1,4 +1,4 @@
-package tipz.browservio;
+package tipz.browservio.Utils;
 
 import android.app.Activity;
 
