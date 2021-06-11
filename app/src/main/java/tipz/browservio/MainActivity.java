@@ -8,9 +8,12 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,10 +52,16 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class MainActivity extends AppCompatActivity {
 	
@@ -628,10 +637,7 @@ public class MainActivity extends AppCompatActivity {
 			this.mCustomViewCallback = null;
 		}
 	}
-	
-	{
-	}
-	
+
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
 		super.onActivityResult(_requestCode, _resultCode, _data);
@@ -725,18 +731,28 @@ public class MainActivity extends AppCompatActivity {
 			page_before_error = "browservio://no_error";
 		}
 	}
-	
-	
+
 	private void _firstLaunch () {
 		// First launch code
 		// Make versionName and versionTech. using version family
 		// intro. 20201027 with 1.4.0_beroku_dev_8
-		browservio_saver.edit().putString("versionFamily", "1.4.0").apply();
-		browservio_saver.edit().putString("versionName", browservio_saver.getString("versionFamily", "").concat(" Dev 20201027a")).apply();
-		browservio_saver.edit().putString("versionTechnical", browservio_saver.getString("versionFamily", "").concat("_beroku_dev_8")).apply();
-		browservio_saver.edit().putString("versionCodename", "Beroku").apply();
-		browservio_saver.edit().putString("versionCode", "26").apply();
-		browservio_saver.edit().putString("versionDate", "2020-10-27").apply();
+
+		// PackageManager for version info
+		PackageManager manager = this.getPackageManager();
+		PackageInfo info = null;
+		try {
+			info = manager.getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		// Get version info for dialog
+		browservio_saver.edit().putString("versionFamily", info.versionName).apply();
+		browservio_saver.edit().putString("versionName", info.versionName.concat(getResources().getString(R.string.versionName_p2))).apply();
+		browservio_saver.edit().putString("versionTechnical", info.versionName.concat(getResources().getString(R.string.versionTechnical_p2))).apply();
+		browservio_saver.edit().putString("versionCodename", getResources().getString(R.string.versionCodename)).apply();
+		browservio_saver.edit().putString("versionCode", String.valueOf(info.versionCode)).apply();
+		browservio_saver.edit().putString("versionDate", getResources().getString(R.string.versionDate)).apply();
 		if (!browservio_saver.getString("configVersion", "").equals("9") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
