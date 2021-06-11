@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
 					public boolean onMenuItemClick(MenuItem item){
 						switch (item.getTitle().toString()){
 							case "Desktop":
-							webview.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Browservio/1.4.0_beroku_dev_4");
+							webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent));
 							last_desktop = desktop;
 							desktop = 1;
 							desktop_switch.setImageResource(R.drawable.ic_desktop_black);

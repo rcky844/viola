@@ -4,4 +4,5 @@
     <string	name="versionTechnical_p2" translatable="false">_beroku_snaps</string>
     <string	name="versionCodename" translatable="false">Beroku</string>
     <string	name="versionDate" translatable="false">2021-06-11</string>
+    <string	name="webUserAgent" translatable="false">"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Browservio/1.4.0_beroku_snaps"</string>
 </resources>
