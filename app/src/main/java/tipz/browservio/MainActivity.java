@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
 	private Intent i = new Intent();
-	private MediaPlayer errorsound;
+	private MediaPlayer mediaPlayer;
 	private ObjectAnimator baranim = new ObjectAnimator();
 	private TimerTask error_defuse;
 	private TimerTask reset;
@@ -111,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
 	private AlertDialog.Builder dhist;
 	private TimerTask funload;
 	private SharedPreferences bookmarks;
+	private final int[] resID = { R.raw.win98_error };
+	int from, to, times, songPosition, timesPosition=0;
+
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 		dialog = new AlertDialog.Builder(this);
 		dhist = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
-		errorsound = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
+		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
 		
 		browse.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -842,12 +845,39 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).apply();
 		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).apply();
 	}
-	
-	
+
+	private void playSong(int position) {
+		if (mediaPlayer != null) {
+			if (mediaPlayer.isPlaying()) {
+				mediaPlayer.stop();
+				mediaPlayer.reset();
+				mediaPlayer.release();
+			}
+		}
+		mediaPlayer = new MediaPlayer();
+		mediaPlayer = MediaPlayer.create(getApplicationContext(), resID[position]);
+		mediaPlayer.start();
+		mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+
+				if (timesPosition<times){
+					if (songPosition <= to){
+						songPosition = songPosition + 1;
+					} else {
+						songPosition = from;
+						songPosition = timesPosition + timesPosition + 1;
+					}
+					playSong(songPosition);
+				}
+			}
+		});
+	}
+
 	private void _errorpage () {
 		webview.loadUrl("file:///android_asset/error.html");
 		//Setup media player (rewrote 200815-1307)
-		errorsound.start();
+		playSong(songPosition);
 		urledit.setText("browservio://error");
 	}
 	
