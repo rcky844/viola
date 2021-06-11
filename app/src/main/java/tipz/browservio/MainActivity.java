@@ -179,42 +179,7 @@ public class MainActivity extends AppCompatActivity {
 		browse.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (urledit.getText().toString().equals("browservio://no_error")) {
-					throw new RuntimeException("Resource access denied, reason: 'browservio://no_error is a protected webpage'");
-				}
-				else {
-					if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///android_asset/error.html")) {
-						_errorpage();
-					}
-					else {
-						if (browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
-							_browservio_browse();
-						}
-						else {
-							if (urledit.getText().toString().equals("")) {
-								urledit.setError("This flied cannot be empty");
-								error_defuse = new TimerTask() {
-									@Override
-									public void run() {
-										runOnUiThread(new Runnable() {
-											@Override
-											public void run() {
-												urledit.setError(null);
-											}
-										});
-									}
-								};
-								_timer.schedule(error_defuse, 3000);
-							}
-							else {
-								_browservio_browse();
-							}
-						}
-					}
-				}
-				if (!browservio_saver.getString("history", "").equals("")) {
-					browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).apply();
-				}
+				_browservio_browse();
 			}
 		});
 		
@@ -540,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
 			  public boolean
 			  onEditorAction(TextView v, int actionId, KeyEvent event) { 
 				    if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
-					        browse.performClick(); 
+				    		_browservio_browse();
 					        return true; 
 					    } 
 				    return false; 
@@ -713,6 +678,36 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void _browservio_browse () {
+		if (urledit.getText().toString().equals("browservio://no_error")) {
+			throw new RuntimeException("Resource access denied, reason: 'browservio://no_error is a protected webpage'");
+		}
+		else {
+			if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///android_asset/error.html")) {
+				_errorpage();
+			}
+			else {
+				if (!browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
+					if (urledit.getText().toString().equals("")) {
+						urledit.setError("This flied cannot be empty");
+						error_defuse = new TimerTask() {
+							@Override
+							public void run() {
+								runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										urledit.setError(null);
+									}
+								});
+							}
+						};
+						_timer.schedule(error_defuse, 3000);
+					}
+				}
+			}
+		}
+		if (!browservio_saver.getString("history", "").equals("")) {
+			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).apply();
+		}
 		if (page_before_error.equals("browservio://no_error")) {
 			// Load URL from editurl
 			if(URLUtil.isValidUrl(urledit.getText().toString())) {
