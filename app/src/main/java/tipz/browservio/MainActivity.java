@@ -179,6 +179,23 @@ public class MainActivity extends AppCompatActivity {
 		browse.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
+				if (!browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
+					if (urledit.getText().toString().equals("")) {
+						urledit.setError("This flied cannot be empty");
+						error_defuse = new TimerTask() {
+							@Override
+							public void run() {
+								runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										urledit.setError(null);
+									}
+								});
+							}
+						};
+						_timer.schedule(error_defuse, 3000);
+					}
+				}
 				_browservio_browse();
 			}
 		});
@@ -234,8 +251,7 @@ public class MainActivity extends AppCompatActivity {
 					if (!webview.getUrl().equals("")) {
 						webview.reload();
 					}
-				}
-				else {
+				} else {
 					webview.loadUrl(page_before_error);
 					urledit.setText(page_before_error);
 					page_before_error = "browservio://no_error";
@@ -537,8 +553,8 @@ public class MainActivity extends AppCompatActivity {
 			if (browservio_saver.getString("defaultHomePage", "").contains("browservio://no_error")) {
 				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
 			}
-			webview.loadUrl(browservio_saver.getString("defaultHomePage", ""));
-			_URLindentify();
+			urledit.setText(browservio_saver.getString("defaultHomePage", ""));
+			_browservio_browse();
 		}
 		else {
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
@@ -647,7 +663,7 @@ public class MainActivity extends AppCompatActivity {
 						else {
 							progmain.setProgress((int)finload);
 							CookieSyncManager.getInstance().sync();
-							_URLindentify();
+							_URLindentify(0);
 						}
 					}
 				});
@@ -675,52 +691,30 @@ public class MainActivity extends AppCompatActivity {
 			    });
 	}
 
-	private void _browservio_browse () {
-		if (urledit.getText().toString().equals("browservio://no_error")) {
-			throw new RuntimeException("Resource access denied, reason: 'browservio://no_error is a protected webpage'");
-		}
-		else {
-			if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///android_asset/error.html")) {
-				_errorpage();
-			}
-			else {
-				if (!browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
-					if (urledit.getText().toString().equals("")) {
-						urledit.setError("This flied cannot be empty");
-						error_defuse = new TimerTask() {
-							@Override
-							public void run() {
-								runOnUiThread(new Runnable() {
-									@Override
-									public void run() {
-										urledit.setError(null);
-									}
-								});
-							}
-						};
-						_timer.schedule(error_defuse, 3000);
-					}
-				}
-			}
-		}
+	private void _history_saviour() {
 		if (!browservio_saver.getString("history", "").equals("")) {
 			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).apply();
 		}
+	}
+
+	private void _browservio_browse () {
 		if (page_before_error.equals("browservio://no_error")) {
 			// Load URL from editurl
-			if(URLUtil.isValidUrl(urledit.getText().toString())) {
+			if (URLUtil.isValidUrl(urledit.getText().toString())) {
 				webview.loadUrl(urledit.getText().toString());
 			} else {
 				String googleLoad = browservio_saver.getString("defaultSearch", "").concat(urledit.getText().toString());
-				webview.loadUrl(googleLoad);
 				urledit.setText(googleLoad);
+				_URLindentify(1);
+				webview.loadUrl(googleLoad);
 			}
-		}
-		else {
-			webview.loadUrl(page_before_error);
+		} else {
 			urledit.setText(page_before_error);
+			_URLindentify(1);
+			webview.loadUrl(page_before_error);
 			page_before_error = "browservio://no_error";
 		}
+		_history_saviour();
 	}
 
 	private void _firstLaunch () {
@@ -859,26 +853,23 @@ public class MainActivity extends AppCompatActivity {
 		urledit.setText("browservio://error");
 	}
 
-	private void _URLindentify() {
-		if ((double) 1 == 1) {
+	private void _URLindentify(double type) {
+		if (type == 0) {
+			// Type 0: getUrl checks
+			if (webview.getUrl().equals("browservio://no_error")) {
+				throw new RuntimeException(getResources().getString(R.string.no_error_elog));
+			}
 			if (webview.getUrl().equals("browservio://error") || webview.getUrl().equals("file:///android_asset/error.html")) {
 				_errorpage();
 			}
-			else {
-				urledit.setText(webview.getUrl());
+		} else if (type == 1) {
+			// Type 1: getText checks
+			if (urledit.getText().toString().equals("browservio://no_error")) {
+				throw new RuntimeException(getResources().getString(R.string.no_error_elog));
 			}
-		}
-		else {
-			if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file://".concat(FileUtil.getExternalStorageDir().concat("/Browservio/error/error.html")))) {
+			if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///android_asset/error.html")) {
 				_errorpage();
 			}
-			else {
-				urledit.setText(webview.getUrl());
-			}
-		}
-		if (pooran) {
-			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).apply();
-			pooran = false;
 		}
 	}
 	
