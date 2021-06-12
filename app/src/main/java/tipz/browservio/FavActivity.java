@@ -74,7 +74,7 @@ public class FavActivity extends AppCompatActivity {
 			public void onItemClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
 				getApplicationContext();
 				((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", bookmark_list.get(_param3)));
-				SketchwareUtil.showMessage(getApplicationContext(), "Copied to clipboard!");
+				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
 			}
 		});
 		
@@ -82,17 +82,17 @@ public class FavActivity extends AppCompatActivity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
 				final int _position = _param3;
-				del_fav.setTitle("Do you want to delete this favourite?");
-				del_fav.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				del_fav.setTitle(getResources().getString(R.string.del_fav_title));
+				del_fav.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						bookmark_list.remove(_position);
 						bookmarks.edit().putString("bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0").apply();
 						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
-						SketchwareUtil.showMessage(getApplicationContext(), "Deleted successfully!");
+						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
 					}
 				});
-				del_fav.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				del_fav.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						
@@ -106,17 +106,17 @@ public class FavActivity extends AppCompatActivity {
 		_fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				del_fav.setTitle("Delete all entries");
-				del_fav.setMessage("You are about to delete all favourites entries, are you sure about this?");
-				del_fav.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				del_fav.setTitle(getResources().getString(R.string.del_fav2_title));
+				del_fav.setMessage(getResources().getString(R.string.del_fav2_message));
+				del_fav.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						bookmarks.edit().clear().apply();
-						SketchwareUtil.showMessage(getApplicationContext(), "Wiped successfully!");
+						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
 						finish();
 					}
 				});
-				del_fav.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				del_fav.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						
@@ -127,7 +127,7 @@ public class FavActivity extends AppCompatActivity {
 		});
 	}
 	private void initializeLogic() {
-		setTitle("Favourites");
+		setTitle(getResources().getString(R.string.fav));
 	}
 	
 	@Override
@@ -147,8 +147,7 @@ public class FavActivity extends AppCompatActivity {
 		populate_count = 0;
 		final ProgressDialog prog = new ProgressDialog(FavActivity.this);
 		prog.setMax(100);
-		prog.setTitle("Populating");
-		prog.setMessage("Populating entries...");
+		prog.setMessage(getResources().getString(R.string.populating_dialog_message));
 		prog.setIndeterminate(true);
 		prog.setCancelable(false);
 		prog.show();

@@ -1,4 +1,101 @@
 <resources>
 	<string	name="app_name"	translatable="false">Browservio</string>
+
+	<!--
+		Main
+			-->
+	<!-- Error logs -->
 	<string	name="no_error_elog" translatable="false">"Resource access denied, reason: \"browservio://no_error\" is a protected webpage."</string>
+	<string	name="last_desktop_range_elog" translatable="false">"last_desktop out of possible range 0-2."</string>
+
+	<!-- Field can't be empty -->
+	<string	name="error_field_empty">"This field cannot be empty."</string>
+
+	<!-- Move pages string -->
+	<string	name="error_already_page">"Already at the %s page!."</string>
+	<string	name="first">first</string>
+	<string	name="last">last</string>
+
+	<!-- Custom user agent or default ua selector -->
+	<string	name="linear_control_b3_desk">Desktop</string>
+	<string	name="linear_control_b3_mobi">Mobile</string>
+	<string	name="linear_control_b3_cus">Custom</string>
+	<string	name="ua">"User agent"</string>
+	<string	name="cus_ua_choose">"Please set the custom user agent of your choosing:"</string>
+
+	<!-- Toast shown when file starts downloading -->
+	<string	name="downloading_toast">"Downloading file…"</string>
+
+	<!-- Dialog shown when the app is reset after updating -->
+	<string	name="dialog_reset_title">"Your settings has been reset!"</string>
+	<string	name="dialog_reset_message">"To ensure stability, we've reset your settings to default because you've just installed an update."</string>
+
+	<!-- Dialog shown when the app is resetting -->
+	<string name="dialog_resetting_message">"Resetting…"</string>
+
+	<!-- Clear stuff selector -->
+	<string name="clear">"Clear %s"</string>
+	<string name="cache">"Cache"</string>
+	<string name="history">"History"</string>
+	<string name="cookies">"Cookies"</string>
+	<string name="all">"All"</string>
+	<string name="cleared_toast">"%s cleared successfully!"</string>
+
+	<!-- Share URL -->
+	<string name="linear_control_b5_title">"Share URL using"</string>
+
+	<!-- History Menu -->
+	<string name="copied_clipboard">"Copied to clipboard!"</string>
+	<string name="hist_empty">"History is empty!"</string>
+
+	<!-- Favourites -->
+	<string name="favs">"Favourites"</string>
+	<string name="add_dot">"Add…"</string>
+	<string name="saved_su">"Saved successfully!"</string>
+
+
+	<!--
+    	Settings
+        		-->
+	<string name="settings">Settings</string>
+
+	<!-- Search Engine -->
+	<string name="search_engine">"Search engine"</string>
+	<string name="search_engine_dialog_message">"Insert {term} into where the search term should be.\n%s"</string>
+	<string name="search_engine_current">"Current search engine: %s"</string>
+
+	<!-- Homepage -->
+	<string name="homepage">"Homepage"</string>
+	<string name="homepage_current">"Current homepage: %s"</string>
+
+	<!-- Action Bar End Padding -->
+	<string name="action_bar_endp">"Action Bar End Padding"</string>
+	<string name="restart_app_q">"Restart?"</string>
+	<string name="restart_app_qmsg">"A restart is required for this feature to work."</string>
+	<string name="restart_app_now">"Restart Now"</string>
+
+	<!-- Reset Dialog -->
+	<string name="are_you_sure_q">"Are you sure?"</string>
+	<string name="dialog_set_reset_message">"You are currently trying to reset Browservio.\n\nNote this option will do the following things:\n• Reset all your settings\n• Clear browser cache and history\n\nARE YOU SURE ABOUT THIS?"</string>
+
+	<!-- Version Info -->
+	<string name="version_info_title">"Version information"</string>
+	<string name="version_info_message">"Version name: %s\nVersion codename: %s\nVersion technical name: %s\nVersion family: %s\nVersion code: %s\nVersion build date: %s\nConfig version: %s</string>
+
+	<!--
+    	Favourites
+            		-->
+	<string name="fav">Favourites</string>
+
+	<!-- Delete favourite dialog -->
+	<string name="del_fav_title">"Do you want to delete this favourite?"</string>
+	<string name="del_success">"Deleted successfully!"</string>
+
+	<!-- Delete everything dialog -->
+	<string name="del_fav2_title">"Delete all entries"</string>
+	<string name="del_fav2_message">"You are about to delete all favourites entries, are you sure about this?"</string>
+	<string name="wiped_success">"Wiped successfully!"</string>
+
+	<!-- Populating dialog -->
+	<string name="populating_dialog_message">Populating entries…</string>
 </resources>

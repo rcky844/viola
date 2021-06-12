@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				if (!browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
 					if (urledit.getText().toString().equals("")) {
-						urledit.setError("This field cannot be empty");
+						urledit.setError(getResources().getString(R.string.error_field_empty));
 						error_defuse = new TimerTask() {
 							@Override
 							public void run() {
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 				else {
 					// cannot go backwards
-					SketchwareUtil.showMessage(getApplicationContext(), "Already at the first page!");
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
 				}
 			}
 		});
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 				else {
 					// cannot go forward
-					SketchwareUtil.showMessage(getApplicationContext(), "Already at the last page!");
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
 				}
 			}
 		});
@@ -245,14 +245,14 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (page_before_error.equals("browservio://no_error")) {
+				if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 					if (!webview.getUrl().equals("")) {
 						webview.reload();
 					}
 				} else {
 					webview.loadUrl(page_before_error);
 					urledit.setText(page_before_error);
-					page_before_error = "browservio://no_error";
+					page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 				}
 			}
 		});
@@ -269,33 +269,32 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				PopupMenu popup1 = new PopupMenu(MainActivity.this, linear_control_b3);
 				Menu menu1 = popup1.getMenu();
-				menu1.add("Desktop");
-				menu1.add("Mobile");
-				menu1.add("Custom");
+				menu1.add(getResources().getString(R.string.linear_control_b3_desk));
+				menu1.add(getResources().getString(R.string.linear_control_b3_mobi));
+				menu1.add(getResources().getString(R.string.linear_control_b3_cus));
 				popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
 					@Override
-					public boolean onMenuItemClick(MenuItem item){
-						switch (item.getTitle().toString()){
-							case "Desktop":
+					public boolean onMenuItemClick(MenuItem item) {
+						if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk))) {
 							webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent));
 							last_desktop = desktop;
 							desktop = 1;
 							desktop_switch.setImageResource(R.drawable.ic_desktop_black);
 							linear_control_b2.performClick();
-							break;
-							case "Mobile":
+						} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
 							webview.getSettings().setUserAgentString(System.getProperty("http.agent"));
 							last_desktop = desktop;
 							desktop = 0;
 							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
 							linear_control_b2.performClick();
-							break;
-							case "Custom":
-							dialog.setTitle("User agent");
-							dialog.setMessage("Please set the custom user agent of your choosing:");
-							final EditText custom_ua = new EditText(MainActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
-							custom_ua.setLayoutParams(lp); dialog.setView(custom_ua);
-							dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
+							dialog.setTitle(getResources().getString(R.string.ua));
+							dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
+							final EditText custom_ua = new EditText(MainActivity.this);
+							LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+							custom_ua.setLayoutParams(lp);
+							dialog.setView(custom_ua);
+							dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface _dialog, int _which) {
 									if (custom_ua.length() == 0) {
@@ -309,25 +308,22 @@ public class MainActivity extends AppCompatActivity {
 									}
 								}
 							});
-							dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+							dialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface _dialog, int _which) {
 									if (last_desktop == 0) {
 										desktop = last_desktop;
 										desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
-									}
-									else {
+									} else {
 										if (last_desktop == 1) {
 											desktop = last_desktop;
 											desktop_switch.setImageResource(R.drawable.ic_desktop_black);
-										}
-										else {
+										} else {
 											if (last_desktop == 2) {
 												desktop = last_desktop;
 												desktop_switch.setImageResource(R.drawable.ic_edit_black);
-											}
-											else {
-												throw new RuntimeException("last_desktop out of possible range 0-2");
+											} else {
+												throw new RuntimeException(getResources().getString(R.string.last_desktop_range_elog));
 											}
 										}
 									}
@@ -338,8 +334,8 @@ public class MainActivity extends AppCompatActivity {
 							last_desktop = desktop;
 							desktop = 2;
 							desktop_switch.setImageResource(R.drawable.ic_edit_black);
-							break;}
-						return true;
+						}
+						return false;
 					}
 				});
 				popup1.show();
@@ -351,40 +347,37 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				PopupMenu popup2 = new PopupMenu(MainActivity.this, linear_control_b3);
 				Menu menu2 = popup2.getMenu();
-				menu2.add("Clear Cache");
-				menu2.add("Clear History");
-				menu2.add("Clear Cookies");
-				menu2.add("Clear All");
+				menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
+				menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
+				menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
+				menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.all)));
 				popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
 					@Override
 					public boolean onMenuItemClick(MenuItem item){
-						switch (item.getTitle().toString()){
-							case "Clear Cache":
+						if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
 							webview.clearCache(true);
-							SketchwareUtil.showMessage(getApplicationContext(), "Cache cleared successfully!");
+							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
 							linear_control_b2.performClick();
-							break;
-							case "Clear History":
+						} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
 							webview.clearHistory();
 							browservio_saver.edit().putString("history", "").apply();
-							SketchwareUtil.showMessage(getApplicationContext(), "History cleared successfully!");
+							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
 							linear_control_b2.performClick();
-							break;
-							case "Clear Cookies":
+						} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
 							CookieManager.getInstance().removeAllCookies(null);
-							            CookieManager.getInstance().flush();
+							CookieManager.getInstance().flush();
+							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
 							linear_control_b2.performClick();
-							break;
-							case "Clear All":
+						} else if (item.getTitle().toString().contains(getResources().getString(R.string.all))) {
 							webview.clearCache(true);
 							webview.clearHistory();
 							browservio_saver.edit().putString("history", "").apply();
 							CookieManager.getInstance().removeAllCookies(null);
 							            CookieManager.getInstance().flush();
-							SketchwareUtil.showMessage(getApplicationContext(), "Everything cleared successfully!");
+							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.all)));
 							linear_control_b2.performClick();
-							break;}
-						return true;
+						}
+						return false;
 					}
 				});
 				popup2.show();
@@ -397,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
 				Intent i = new Intent(android.content.Intent.ACTION_SEND);
 				i.setType("text/plain");
 				i.putExtra(android.content.Intent.EXTRA_TEXT, webview.getUrl());
-				startActivity(Intent.createChooser(i,"Share URL using"));
+				startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
 			}
 		});
 		
@@ -413,33 +406,33 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				if (!browservio_saver.getString("history", "").equals("")) {
-					dhist.setTitle("History");
+					dhist.setTitle(getResources().getString(R.string.history));
 					dhist.setMessage(browservio_saver.getString("history", ""));
-					dhist.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					dhist.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 							
 						}
 					});
-					dhist.setNeutralButton("Copy", new DialogInterface.OnClickListener() {
+					dhist.setNeutralButton(android.R.string.copy, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 							getApplicationContext();
 							((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", browservio_saver.getString("history", "")));
-							SketchwareUtil.showMessage(getApplicationContext(), "Copied to clipboard!");
+							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
 						}
 					});
-					dhist.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+					dhist.setNegativeButton(getResources().getString(R.string.clear, ""), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 							browservio_saver.edit().putString("history", "").apply();
-							SketchwareUtil.showMessage(getApplicationContext(), "Cleared successfully!");
+							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
 						}
 					});
 					dhist.create().show();
 				}
 				else {
-					SketchwareUtil.showMessage(getApplicationContext(), "History is empty!");
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
 				}
 			}
 		});
@@ -449,28 +442,25 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				PopupMenu popup3 = new PopupMenu(MainActivity.this, linear_control_b3);
 				Menu menu3 = popup3.getMenu();
-				menu3.add("Add...");
-				menu3.add("Favourites");
+				menu3.add(getResources().getString(R.string.add_dot));
+				menu3.add(getResources().getString(R.string.favs));
 				popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
 					@Override
 					public boolean onMenuItemClick(MenuItem item){
-						switch (item.getTitle().toString()){
-							case "Add...":
+						if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
 							if (bookmarks.getString("bookmarked_count", "").equals("")) {
 								bookmarks.edit().putString("bookmarked_count", "0").apply();
-							}
-							else {
-								bookmarks.edit().putString("bookmarked_count", String.valueOf((long)(Double.parseDouble(bookmarks.getString("bookmarked_count", "")) + 1))).apply();
+							} else {
+								bookmarks.edit().putString("bookmarked_count", String.valueOf((long) (Double.parseDouble(bookmarks.getString("bookmarked_count", "")) + 1))).apply();
 							}
 							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")), webview.getUrl()).apply();
 							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")).concat("_show"), "1").apply();
-							SketchwareUtil.showMessage(getApplicationContext(), "Saved successfully!");
-							break;
-							case "Favourites":
+							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
+						} else if (item.getTitle().toString().equals(getResources().getString(R.string.favs))) {
 							i.setClass(getApplicationContext(), FavActivity.class);
 							startActivity(i);
-							break;}
-						return true;
+						}
+						return false;
 					}
 				});
 				popup3.show();
@@ -512,7 +502,7 @@ public class MainActivity extends AppCompatActivity {
 		// This browser was originally designed with Sketchware
 		// This project was started on Aug 13 2020
 		// sur wen Sherk browser
-		setTitle("Browservio");
+		setTitle(getResources().getString(R.string.app_name));
 		webview.setWebChromeClient(new CustomWebClient());
 		// Keyboard press = browse
 		urledit.setOnEditorActionListener(new EditText.OnEditorActionListener() { 
@@ -526,7 +516,7 @@ public class MainActivity extends AppCompatActivity {
 				  } 
 		});
 		// Page stuff
-		page_before_error = "browservio://no_error";
+		page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 		// desktopMode init code
 		webview.getSettings().setUserAgentString(System.getProperty("http.agent"));
 		desktop = 0;
@@ -548,14 +538,14 @@ public class MainActivity extends AppCompatActivity {
 		});
 		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
 			// Load default homepage.
-			if (browservio_saver.getString("defaultHomePage", "").contains("browservio://no_error")) {
-				browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
+			if (browservio_saver.getString("defaultHomePage", "").contains(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
+				browservio_saver.edit().putString("defaultHomePage", getResources().getString(R.string.url_default_homepage)).apply();
 			}
 			urledit.setText(browservio_saver.getString("defaultHomePage", ""));
 			_browservio_browse();
 		}
 		else {
-			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
+			browservio_saver.edit().putString("defaultHomePage", getResources().getString(R.string.url_default_homepage)).apply();
 		}
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
@@ -681,7 +671,7 @@ public class MainActivity extends AppCompatActivity {
 				            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
 				            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
 				            dm.enqueue(request);
-				SketchwareUtil.showMessage(getApplicationContext(), "Downloading file...");
+				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.downloading_toast));
 				        }
 			    });
 	}
@@ -695,9 +685,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void _browservio_browse () {
-		if (page_before_error.equals("browservio://no_error")) {
+		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			// Load URL from editurl
-			if (URLUtil.isValidUrl(urledit.getText().toString()) || urledit.getText().toString().startsWith("browservio://")) {
+			if (URLUtil.isValidUrl(urledit.getText().toString()) || urledit.getText().toString().startsWith(getResources().getString(R.string.url_prefix, ""))) {
 				_URLindentify(1);
 				webview.loadUrl(urledit.getText().toString());
 			} else {
@@ -710,7 +700,7 @@ public class MainActivity extends AppCompatActivity {
 			urledit.setText(page_before_error);
 			_URLindentify(1);
 			webview.loadUrl(page_before_error);
-			page_before_error = "browservio://no_error";
+			page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 		}
 		_history_saviour();
 	}
@@ -744,9 +734,9 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionCode", String.valueOf(info.versionCode)).apply();
 		browservio_saver.edit().putString("versionDate", getResources().getString(R.string.versionDate)).apply();
 		if (!browservio_saver.getString("configVersion", "").equals("10") && !browservio_saver.getString("configVersion", "").equals("")) {
-			dialog.setTitle("Your settings has been reset!");
-			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
-			dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			dialog.setTitle(getResources().getString(R.string.dialog_reset_title));
+			dialog.setMessage(getResources().getString(R.string.dialog_reset_message));
+			dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface _dialog, int _which) {
 					
@@ -757,8 +747,7 @@ public class MainActivity extends AppCompatActivity {
 		if (browservio_saver.getString("isFirstLaunch", "").equals("1")) {
 			final ProgressDialog prog = new ProgressDialog(MainActivity.this);
 			prog.setMax(100);
-			prog.setTitle("Reset");
-			prog.setMessage("Reseting...");
+			prog.setMessage(getResources().getString(R.string.dialog_resetting_message));
 			prog.setIndeterminate(true);
 			prog.setCancelable(false);
 			prog.show();
@@ -792,8 +781,8 @@ public class MainActivity extends AppCompatActivity {
 		}
 		if (!browservio_saver.getString("configVersion", "").equals("10") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
-			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
-			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q={term}").apply();
+			browservio_saver.edit().putString("defaultHomePage", getResources().getString(R.string.url_default_homepage, "")).apply();
+			browservio_saver.edit().putString("defaultSearch", getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix))).apply();
 			browservio_saver.edit().putString("endpPadding", "500").apply();
 			browservio_saver.edit().putString("overrideEmptyError", "0").apply();
 			browservio_saver.edit().putString("showBrowseBtn", "0").apply();
@@ -856,27 +845,27 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void _errorpage () {
-		webview.loadUrl("file:///android_asset/error.html");
+		webview.loadUrl(getResources().getString(R.string.url_error_real));
 		//Setup media player (rewrote 200815-1307)
 		playSong(songPosition);
-		urledit.setText("browservio://error");
+		urledit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
 	}
 
 	private void _URLindentify(double type) {
 		if (type == 0) {
 			// Type 0: getUrl checks
-			if (webview.getUrl().equals("browservio://no_error")) {
+			if (webview.getUrl().equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 				throw new RuntimeException(getResources().getString(R.string.no_error_elog));
 			}
-			if (webview.getUrl().equals("browservio://error") || webview.getUrl().equals("file:///android_asset/error.html")) {
+			if (webview.getUrl().equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || webview.getUrl().equals(getResources().getString(R.string.url_error_real))) {
 				_errorpage();
 			}
 		} else if (type == 1) {
 			// Type 1: getText checks
-			if (urledit.getText().toString().equals("browservio://no_error")) {
+			if (urledit.getText().toString().equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 				throw new RuntimeException(getResources().getString(R.string.no_error_elog));
 			}
-			if (urledit.getText().toString().equals("browservio://error") || urledit.getText().toString().equals("file:///android_asset/error.html")) {
+			if (urledit.getText().toString().equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || urledit.getText().toString().equals(getResources().getString(R.string.url_error_real))) {
 				_errorpage();
 			}
 		}

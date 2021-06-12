@@ -259,21 +259,21 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_search.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				dialog1.setTitle("Search engine");
-				dialog1.setMessage("Insert {term} into where the search term should be.\nCurrent search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
+				dialog1.setTitle(getResources().getString(R.string.search_engine));
+				dialog1.setMessage(getResources().getString(R.string.search_engine_dialog_message, getResources().getString(R.string.search_engine_current, browservio_saver.getString("defaultSearch", ""))));
 				final EditText custom_se = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
 				custom_se.setLayoutParams(lp2); dialog1.setView(custom_se);
-				dialog1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				dialog1.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						if (!custom_se.getText().toString().equals("") && custom_se.getText().toString().contains("{term}"))
 						{
 							browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).apply();
-							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultSearch", "")));
+							textview5.setText(getResources().getString(R.string.search_engine_current, browservio_saver.getString("defaultSearch", "")));
 						}
 					}
 				});
-				dialog1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				dialog1.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						
@@ -287,24 +287,24 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_homepage.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				dialog.setTitle("Homepage");
-				dialog.setMessage("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
+				dialog.setTitle(getResources().getString(R.string.homepage));
+				dialog.setMessage(getResources().getString(R.string.homepage_current, browservio_saver.getString("defaultHomePage", "")));
 				final EditText custom_hp = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
 				custom_hp.setLayoutParams(lp); dialog.setView(custom_hp);
-				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						if (!custom_hp.getText().toString().equals(""))
 						{
 							browservio_saver.edit().putString("defaultHomePage", custom_hp.getText().toString()).apply();
-							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
+							textview5.setText(getResources().getString(R.string.homepage_current, browservio_saver.getString("defaultHomePage", "")));
 						}
 					}
 				});
-				dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				dialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
-						
+
 					}
 				});
 				dialog.setCancelable(false);
@@ -329,13 +329,13 @@ public class SettingsActivity extends AppCompatActivity {
 		linearendp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-					dialogendp.setTitle("Action Bar End Padding");
+					dialogendp.setTitle(getResources().getString(R.string.action_bar_endp));
 					dialogendp.setMessage(browservio_saver.getString("endpPadding", "").concat("dp"));
 					final EditText custom_hp2 = new EditText(SettingsActivity.this);
 					LinearLayout.LayoutParams lpdnep = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 					custom_hp2.setLayoutParams(lpdnep);
 					dialogendp.setView(custom_hp2);
-					dialogendp.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					dialogendp.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 							if (!custom_hp2.getText().toString().equals("")) {
@@ -344,7 +344,7 @@ public class SettingsActivity extends AppCompatActivity {
 							}
 						}
 					});
-					dialogendp.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					dialogendp.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 
@@ -358,16 +358,16 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_b0.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				drst.setTitle("Are you sure?");
-				drst.setMessage("You are currently trying to reset Browservio.\n\nNote this option will do the following things:\n• Reset all your settings\n• Clear browser cache and history\n\nARE YOU SURE ABOUT THIS?");
-				drst.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				drst.setTitle(getResources().getString(R.string.are_you_sure_q));
+				drst.setMessage(getResources().getString(R.string.dialog_set_reset_message));
+				drst.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						browservio_saver.edit().putString("isFirstLaunch", "1").apply();
 						finish();
 					}
 				});
-				drst.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				drst.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						
@@ -399,16 +399,16 @@ public class SettingsActivity extends AppCompatActivity {
 					browservio_saver.edit().putString("showZoomKeys", "0").apply();
 				}
 				if (!writingScreen) {
-					diazoomrestart.setTitle("Restart?");
-					diazoomrestart.setMessage("A restart is required for this feature to work.");
-					diazoomrestart.setPositiveButton("Restart Now", new DialogInterface.OnClickListener() {
+					diazoomrestart.setTitle(getResources().getString(R.string.restart_app_q));
+					diazoomrestart.setMessage(getResources().getString(R.string.restart_app_qmsg));
+					diazoomrestart.setPositiveButton(getResources().getString(R.string.restart_app_now), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 							browservio_saver.edit().putString("needRestart", "1").apply();
 							finish();
 						}
 					});
-					diazoomrestart.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					diazoomrestart.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 
@@ -479,9 +479,9 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_version.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				dabt.setTitle("Version information");
-				dabt.setMessage("Version name: ".concat(browservio_saver.getString("versionName", "").concat("\n")).concat("Version codename: ".concat(browservio_saver.getString("versionCodename", "").concat("\n")).concat("Version technical name: ".concat(browservio_saver.getString("versionTechnical", "").concat("\n")).concat("Version family: ".concat(browservio_saver.getString("versionFamily", "")).concat("\n").concat("Version code: ".concat(browservio_saver.getString("versionCode", "").concat("\n")).concat("Version build date: ".concat(browservio_saver.getString("versionDate", "")).concat("\n")))))).concat("Config version: ".concat(browservio_saver.getString("configVersion", "")).concat("\n")));
-				dabt.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				dabt.setTitle(getResources().getString(R.string.version_info_title));
+				dabt.setMessage(getResources().getString(R.string.version_info_message, browservio_saver.getString("versionName", ""), browservio_saver.getString("versionCodename", ""), browservio_saver.getString("versionTechnical", ""), browservio_saver.getString("versionFamily", ""), browservio_saver.getString("versionCode", ""), browservio_saver.getString("versionDate", ""), browservio_saver.getString("configVersion", "")));
+				dabt.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						
@@ -495,7 +495,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse("https://gitlab.com/TipzTeam/browservio/-/issues"));
+				telegrambot.setData(Uri.parse(getResources().getString(R.string.url_bug_report)));
 				startActivity(telegrambot);
 			}
 		});
@@ -504,13 +504,13 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse("https://gitlab.com/TipzTeam/browservio"));
+				telegrambot.setData(Uri.parse(getResources().getString(R.string.url_source_code)));
 				startActivity(telegrambot);
 			}
 		});
 	}
 	private void initializeLogic() {
-		setTitle("Settings");
+		setTitle(getResources().getString(R.string.settings));
 		if (browservio_saver.getString("isJavaScriptEnabled", "").equals("1")) {
 			checkbox1.setChecked(true);
 		}
@@ -526,10 +526,10 @@ public class SettingsActivity extends AppCompatActivity {
 		if (browservio_saver.getString("showCustomError", "").equals("1")) {
 			checkbox4.setChecked(true);
 		}
-		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
-		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
+		textview5.setText(getResources().getString(R.string.homepage_current, browservio_saver.getString("defaultHomePage", "")));
+		textview9.setText(getResources().getString(R.string.search_engine_current, browservio_saver.getString("defaultSearch", "")));
 		textviewendp2.setText(browservio_saver.getString("endpPadding", "").concat("dp"));
-		version_visiable.setText("Browservio ".concat(browservio_saver.getString("versionName", "")));
+		version_visiable.setText(getResources().getString(R.string.app_name).concat(browservio_saver.getString("versionName", "")));
 		writingScreen = false;
 	}
 	
