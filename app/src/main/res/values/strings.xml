@@ -12,7 +12,7 @@
 	<string	name="error_field_empty">"This field cannot be empty."</string>
 
 	<!-- Move pages string -->
-	<string	name="error_already_page">"Already at the %s page!."</string>
+	<string	name="error_already_page">"Already at the %s page!"</string>
 	<string	name="first">first</string>
 	<string	name="last">last</string>
 
@@ -21,14 +21,14 @@
 	<string	name="linear_control_b3_mobi">Mobile</string>
 	<string	name="linear_control_b3_cus">Custom</string>
 	<string	name="ua">"User agent"</string>
-	<string	name="cus_ua_choose">"Please set the custom user agent of your choosing:"</string>
+	<string	name="cus_ua_choose">"Please set the custom user agent of your choosing"</string>
 
 	<!-- Toast shown when file starts downloading -->
 	<string	name="downloading_toast">"Downloading file…"</string>
 
 	<!-- Dialog shown when the app is reset after updating -->
 	<string	name="dialog_reset_title">"Your settings has been reset!"</string>
-	<string	name="dialog_reset_message">"To ensure stability, we've reset your settings to default because you've just installed an update."</string>
+	<string	name="dialog_reset_message">"To ensure stability, we've reset your settings to default because you've just installed an update that added a new config."</string>
 
 	<!-- Dialog shown when the app is resetting -->
 	<string name="dialog_resetting_message">"Resetting…"</string>
@@ -52,7 +52,6 @@
 	<string name="favs">"Favourites"</string>
 	<string name="add_dot">"Add…"</string>
 	<string name="saved_su">"Saved successfully!"</string>
-
 
 	<!--
     	Settings

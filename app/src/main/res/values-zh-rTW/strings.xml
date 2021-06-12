@@ -1,0 +1,94 @@
+<resources>
+	<!--
+		Main
+			-->
+	<!-- Field can't be empty -->
+	<string	name="error_field_empty">此欄不能為空</string>
+
+	<!-- Move pages string -->
+	<string	name="error_already_page">已經在%s頁!</string>
+	<string	name="first">第一</string>
+	<string	name="last">最後一</string>
+
+	<!-- Custom user agent or default ua selector -->
+	<string	name="linear_control_b3_desk">台式電腦</string>
+	<string	name="linear_control_b3_mobi">移動設備</string>
+	<string	name="linear_control_b3_cus">自定義</string>
+	<string	name="ua">用戶代理</string>
+	<string	name="cus_ua_choose">請選擇自定義用戶代理</string>
+
+	<!-- Toast shown when file starts downloading -->
+	<string	name="downloading_toast">下載文件中…</string>
+
+	<!-- Dialog shown when the app is reset after updating -->
+	<string	name="dialog_reset_title">您的程式已被重置!</string>
+	<string	name="dialog_reset_message">"為了確保穩定性, 我們已將您的設置重置為默認值, 因為您剛剛安裝了添加新配置的更新"</string>
+
+	<!-- Dialog shown when the app is resetting -->
+	<string name="dialog_resetting_message">重置中…</string>
+
+	<!-- Clear stuff selector -->
+	<string name="clear">清除%s</string>
+	<string name="cache">緩存</string>
+	<string name="history">歷史記錄</string>
+	<string name="cookies">Cookie設置</string>
+	<string name="all">全部</string>
+	<string name="cleared_toast">成功清除%s!</string>
+
+	<!-- Share URL -->
+	<string name="linear_control_b5_title">分享URL</string>
+
+	<!-- History Menu -->
+	<string name="copied_clipboard">成功複製到了剪貼板!</string>
+	<string name="hist_empty">歷史記錄是空的!</string>
+
+	<!-- Favourites -->
+	<string name="favs">收藏夾</string>
+	<string name="add_dot">添加…</string>
+	<string name="saved_su">添加成功!</string>
+
+	<!--
+    	Settings
+        		-->
+	<string name="settings">設置</string>
+
+	<!-- Search Engine -->
+	<string name="search_engine">搜索引擎</string>
+	<string name="search_engine_dialog_message">插入{term}到搜索詞應該在的地方\n%s</string>
+	<string name="search_engine_current">"當前的搜索引擎: %s"</string>
+
+	<!-- Homepage -->
+	<string name="homepage">主頁</string>
+	<string name="homepage_current">"當前的主頁: %s"</string>
+
+	<!-- Action Bar End Padding -->
+	<string name="action_bar_endp">操作欄結尾填充</string>
+	<string name="restart_app_q">重啟應用?</string>
+	<string name="restart_app_qmsg">此功能需要重啟才能工作</string>
+	<string name="restart_app_now">馬上重啟</string>
+
+	<!-- Reset Dialog -->
+	<string name="are_you_sure_q">您確定嗎?</string>
+	<string name="dialog_set_reset_message">您當前正在嘗試重置 Browservio\n\注意這個選項會做以下的這些事情:\n• 重置所有設置\n• 清除瀏覽器緩存和歷史記錄\n\n您確定要重置嗎?</string>
+
+	<!-- Version Info -->
+	<string name="version_info_title">版本信息</string>
+	<string name="version_info_message">"版本名稱: %s\n版本代號: %s\n版本技術名稱: %s\n版本系列: %s\n版本代碼: %s\n版本構建日期: %s\n設置版本: %s</string>
+
+	<!--
+    	Favourites
+            		-->
+	<string name="fav">收藏夾</string>
+
+	<!-- Delete favourite dialog -->
+	<string name="del_fav_title">您想刪除這個收藏嗎?</string>
+	<string name="del_success">刪除成功!"</string>
+
+	<!-- Delete everything dialog -->
+	<string name="del_fav2_title">刪除所有收藏</string>
+	<string name="del_fav2_message">"您將要刪除所有收藏, 您確定要這樣做嗎?"</string>
+	<string name="wiped_success">清除成功!</string>
+
+	<!-- Populating dialog -->
+	<string name="populating_dialog_message">填充收藏中…</string>
+</resources>
