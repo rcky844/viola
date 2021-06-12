@@ -250,13 +250,13 @@ public class MainActivity extends AppCompatActivity {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk))) {
-							webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent));
+							webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent, getResources().getString(R.string.webUserAgent_end)));
 							last_desktop = desktop;
 							desktop = 1;
 							desktop_switch.setImageResource(R.drawable.ic_desktop_black);
 							linear_control_b2.performClick();
 						} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
-							webview.getSettings().setUserAgentString(System.getProperty("http.agent"));
+							webview.getSettings().setUserAgentString(System.getProperty("http.agent").concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
 							last_desktop = desktop;
 							desktop = 0;
 							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
 								@Override
 								public void onClick(DialogInterface _dialog, int _which) {
 									if (custom_ua.length() == 0) {
-										webview.getSettings().setUserAgentString(System.getProperty("http.agent"));
+										webview.getSettings().setUserAgentString(System.getProperty("http.agent").concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
 										linear_control_b2.performClick();
 										desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
 										desktop = 0;
@@ -492,7 +492,7 @@ public class MainActivity extends AppCompatActivity {
 		// Page stuff
 		page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 		// desktopMode init code
-		webview.getSettings().setUserAgentString(System.getProperty("http.agent"));
+		webview.getSettings().setUserAgentString(System.getProperty("http.agent").concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
 		desktop = 0;
 		last_desktop = desktop;
 		// Start downloadManager service
@@ -614,21 +614,21 @@ public class MainActivity extends AppCompatActivity {
 		_firstLaunch();
 	}
 	private void _downloadManager (final WebView _webview) {
-		_webview.setDownloadListener(new DownloadListener() {       
+		_webview.setDownloadListener(new DownloadListener() {
 			    @Override
 			    public void onDownloadStart(String url, String userAgent,
 			                                    String contentDisposition, String mimetype,
 			                                    long contentLength) {
 				            DownloadManager.Request request = new DownloadManager.Request(
 				                    Uri.parse(url));
-				
+
 				            request.allowScanningByMediaScanner();
 				            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
 				            final String filename= URLUtil.guessFileName(url, contentDisposition, mimetype);
 				            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
 				            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
 				            dm.enqueue(request);
-				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.downloading_toast));
+
 				        }
 			    });
 	}
