@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
 	private TimerTask reset;
 	private final ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
-	private TimerTask funload;
 	private SharedPreferences bookmarks;
 	private final int[] resID = { R.raw.win98_error };
 	int from, to, times, songPosition, timesPosition=0;
@@ -498,14 +497,22 @@ public class MainActivity extends AppCompatActivity {
 		linear_control.setVisibility(View.GONE);
 		// Custom error page
 		webview.setWebViewClient(new WebViewClient() {
-			
-			    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				if (!defaulterror) {
 					page_before_error = urledit.getText().toString();
 					_errorpage();
 				}
-				
-				    }
+			}
+		});
+		webview.setWebChromeClient(new WebChromeClient() {
+			public void onProgressChanged(WebView view, int progress) {
+				if (progress == 100) {
+					progmain.setProgress(0);
+				} else {
+					progmain.setProgress(progress);
+					CookieSyncManager.getInstance().sync();
+				}
+			}
 		});
 		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
 			// Load default homepage.
@@ -598,34 +605,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		funload.cancel();
-	}
-	
-	@Override
 	public void onStart() {
 		super.onStart();
 		_firstLaunch();
-		funload = new TimerTask() {
-			@Override
-			public void run() {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						finload = webview.getProgress();
-						if (finload == 100) {
-							progmain.setProgress(0);
-						}
-						else {
-							progmain.setProgress((int)finload);
-							CookieSyncManager.getInstance().sync();
-						}
-					}
-				});
-			}
-		};
-		_timer.scheduleAtFixedRate(funload, 0, 175);
 	}
 	private void _downloadManager (final WebView _webview) {
 		_webview.setDownloadListener(new DownloadListener() {       
