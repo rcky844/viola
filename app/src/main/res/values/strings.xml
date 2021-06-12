@@ -4,6 +4,7 @@
 	<!--
 		Main
 			-->
+	<!-- JAVA -->
 	<!-- Error logs -->
 	<string	name="no_error_elog" translatable="false">"Resource access denied, reason: \"browservio://no_error\" is a protected webpage."</string>
 	<string	name="last_desktop_range_elog" translatable="false">"last_desktop out of possible range 0-2."</string>
@@ -53,9 +54,13 @@
 	<string name="add_dot">"Add…"</string>
 	<string name="saved_su">"Saved successfully!"</string>
 
+	<!-- LAYOUT -->
+	<string name="address_bar_hint">"Search or type web address…"</string>
+
 	<!--
     	Settings
         		-->
+	<!-- JAVA -->
 	<string name="settings">Settings</string>
 
 	<!-- Search Engine -->
@@ -80,6 +85,33 @@
 	<!-- Version Info -->
 	<string name="version_info_title">"Version information"</string>
 	<string name="version_info_message">"Version name: %s\nVersion codename: %s\nVersion technical name: %s\nVersion family: %s\nVersion code: %s\nVersion build date: %s\nConfig version: %s</string>
+
+	<!-- LAYOUT -->
+	<!-- General -->
+	<string name="general">General</string>
+	<string name="show_browse_btn">"Show browse button"</string>
+	<string name="show_browse_btn_desp">"Show a browse button next to the address bar."</string>
+	<string name="show_pinch_btn">"Show pinch to zoom buttons"</string>
+	<string name="show_pinch_btn_desp">"Show the pinch to zoom control buttons on the right down corner.\n(A restart is required)"</string>
+	<string name="reset_btn">"Reset to default"</string>
+	<string name="reset_btn_desp">"Reset Browservio's settings to default."</string>
+
+	<!-- Advanced -->
+	<string name="advanced">Advanced</string>
+	<string name="javascript">"Enable JavaScript"</string>
+	<string name="javascript_desp">"Enabling JavaScript will give you a better browsing experience."</string>
+	<string name="goto_home">"Go to homepage when address bar is empty"</string>
+	<string name="goto_home_desp">"Go to homepage when the address bar is empty instead of showing an error."</string>
+	<string name="show_cus_error">"Show custom error page"</string>
+	<string name="show_cus_error_desp">"Show a custom error page with audio effects when having trouble connecting to a website."</string>
+
+	<!-- Help -->
+	<string name="help">Help</string>
+	<string name="version">Version</string>
+	<string name="feedback">Feedback</string>
+	<string name="feedback_desp">"Giving feedback will help improve the quality of Browservio."</string>
+	<string name="source_code">"Source code"</string>
+	<string name="source_code_desp">"Have a look at Browservio\'s source code."</string>
 
 	<!--
     	Favourites

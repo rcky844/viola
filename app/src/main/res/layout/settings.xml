@@ -39,7 +39,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:text="General"
+						android:text="@string/general"
 						android:textSize="16sp"
 						android:textStyle="bold"
 						android:textColor="#4285F4"
@@ -71,7 +71,7 @@
 							android:paddingLeft="8dp"
 							android:paddingTop="8dp"
 							android:paddingRight="8dp"
-							android:text="Search engine"
+							android:text="@string/search_engine"
 							android:textSize="16sp"
 							android:textColor="#000000"/>
 						<TextView
@@ -98,7 +98,7 @@
 							android:paddingLeft="8dp"
 							android:paddingTop="8dp"
 							android:paddingRight="8dp"
-							android:text="Homepage"
+							android:text="@string/homepage"
 							android:textSize="16sp"
 							android:textColor="#000000"/>
 						<TextView
@@ -125,7 +125,7 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:text="Action Bar End Padding"
+								android:text="@string/action_bar_endp"
 								android:textColor="#000000"
 								android:textSize="16sp" />
 							<TextView
@@ -160,7 +160,7 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:text="Show browse button"
+								android:text="@string/show_browse_btn"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
 							<TextView
@@ -171,7 +171,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Show a browse button next to the address bar."
+								android:text="@string/show_browse_btn_desp"
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
@@ -206,7 +206,7 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:text="Show pinch to zoom buttons"
+								android:text="@string/show_pinch_btn"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
 							<TextView
@@ -217,7 +217,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Show the pinch to zoom control buttons on the right down corner.\n(A restart is required)"
+								android:text="@string/show_pinch_btn_desp"
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
@@ -244,7 +244,7 @@
 							android:paddingLeft="8dp"
 							android:paddingTop="8dp"
 							android:paddingRight="8dp"
-							android:text="Reset to default"
+							android:text="@string/reset_btn"
 							android:textSize="16sp"
 							android:textColor="#000000"/>
 						<TextView
@@ -255,7 +255,7 @@
 							android:paddingTop="2dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
-							android:text="Reset Browservio's settings."
+							android:text="@string/reset_btn_desp"
 							android:textSize="12sp"
 							android:textColor="#000000"/>
 					</LinearLayout>
@@ -272,7 +272,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:text="Advanced"
+						android:text="@string/advanced"
 						android:textSize="16sp"
 						android:textStyle="bold"
 						android:textColor="#4285F4"
@@ -312,7 +312,7 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:text="Enable JavaScript"
+								android:text="@string/javascript"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
 							<TextView
@@ -323,7 +323,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Enabling JavaScript will give you a better browsing experience."
+								android:text="@string/javascript_desp"
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
@@ -358,7 +358,7 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:text="Go to homepage when address bar is empty"
+								android:text="@string/goto_home"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
 							<TextView
@@ -369,7 +369,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Go to homepage when the address bar is empty instead of showing an error."
+								android:text="@string/goto_home_desp"
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
@@ -404,7 +404,7 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:text="Show custom error page"
+								android:text="@string/show_cus_error"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
 							<TextView
@@ -415,7 +415,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Show a custom error page with audio effects when having trouble connecting to a website."
+								android:text="@string/show_cus_error_desp"
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
@@ -442,7 +442,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:text="Help"
+						android:text="@string/help"
 						android:textSize="16sp"
 						android:textStyle="bold"
 						android:textColor="#4285F4"
@@ -474,7 +474,7 @@
 							android:paddingLeft="8dp"
 							android:paddingTop="8dp"
 							android:paddingRight="8dp"
-							android:text="Browservio version"
+							android:text="@string/version"
 							android:textSize="16sp"
 							android:textColor="#000000"/>
 						<TextView
@@ -500,7 +500,7 @@
 							android:paddingLeft="8dp"
 							android:paddingTop="8dp"
 							android:paddingRight="8dp"
-							android:text="Feedback"
+							android:text="@string/feedback"
 							android:textSize="16sp"
 							android:textColor="#000000"/>
 						<TextView
@@ -511,7 +511,7 @@
 							android:paddingTop="2dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
-							android:text="Giving feedback will help improve the quality of Browservio."
+							android:text="@string/feedback_desp"
 							android:textSize="12sp"
 							android:textColor="#000000"/>
 					</LinearLayout>
@@ -528,7 +528,7 @@
 							android:paddingLeft="8dp"
 							android:paddingTop="8dp"
 							android:paddingRight="8dp"
-							android:text="Source code"
+							android:text="@string/source_code"
 							android:textSize="16sp"
 							android:textColor="#000000"/>
 						<TextView
@@ -539,7 +539,7 @@
 							android:paddingTop="2dp"
 							android:paddingRight="8dp"
 							android:paddingBottom="8dp"
-							android:text="Have a look at Browservio's source code."
+							android:text="@string/source_code_desp"
 							android:textSize="12sp"
 							android:textColor="#000000"/>
 					</LinearLayout>

@@ -2,6 +2,7 @@
 	<!--
 		Main
 			-->
+	<!-- JAVA -->
 	<!-- Field can't be empty -->
 	<string	name="error_field_empty">此欄不能為空</string>
 
@@ -47,9 +48,13 @@
 	<string name="add_dot">添加…</string>
 	<string name="saved_su">添加成功!</string>
 
+	<!-- LAYOUT -->
+	<string name="address_bar_hint">"搜索或輸入網址…"</string>
+
 	<!--
     	Settings
         		-->
+	<!-- JAVA -->
 	<string name="settings">設置</string>
 
 	<!-- Search Engine -->
@@ -74,6 +79,33 @@
 	<!-- Version Info -->
 	<string name="version_info_title">版本信息</string>
 	<string name="version_info_message">"版本名稱: %s\n版本代號: %s\n版本技術名稱: %s\n版本系列: %s\n版本代碼: %s\n版本構建日期: %s\n設置版本: %s</string>
+
+	<!-- LAYOUT -->
+	<!-- General -->
+	<string name="general">基本</string>
+	<string name="show_browse_btn">顯示瀏覽按鈕</string>
+	<string name="show_browse_btn_desp">在地址欄旁邊顯示一個瀏覽按鈕</string>
+	<string name="show_pinch_btn">顯示雙指縮放按鈕</string>
+	<string name="show_pinch_btn_desp">在右下角顯示雙指縮放控制按鈕\n(需要重啟應用)</string>
+	<string name="reset_btn">重置为默认值</string>
+	<string name="reset_btn_desp">將Browservio的設置重置為默認值</string>
+
+	<!-- Advanced -->
+	<string name="advanced">進階</string>
+	<string name="javascript">啟用JavaScript</string>
+	<string name="javascript_desp">啟用JavaScript將為您提供更好的瀏覽體驗</string>
+	<string name="goto_home">地址欄為空時轉到主頁</string>
+	<string name="goto_home_desp">當地址欄為空而不是顯示錯誤時轉到主頁</string>
+	<string name="show_cus_error">顯示自定義錯誤頁面</string>
+	<string name="show_cus_error_desp">在無法連接到網站時顯示帶有音頻效果的自定義錯誤頁面</string>
+
+	<!-- Help -->
+	<string name="help">幫助</string>
+	<string name="version">版本</string>
+	<string name="feedback">反饋</string>
+	<string name="feedback_desp">提供反饋將有助於提高Browservio的質量</string>
+	<string name="source_code">源代碼</string>
+	<string name="source_code_desp">看一下Browservio的源代碼</string>
 
 	<!--
     	Favourites

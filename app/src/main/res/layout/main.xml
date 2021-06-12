@@ -1,7 +1,5 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	<LinearLayout
@@ -30,7 +28,7 @@
 					android:gravity="center_vertical"
 					android:textSize="12sp"
 					android:textColor="#000000"
-					android:hint="Search or type web address..."
+					android:hint="@string/address_bar_hint"
 					android:textColorHint="#607D8B"
 					android:singleLine="true"
 					android:imeOptions="actionGo"
