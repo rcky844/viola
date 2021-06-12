@@ -64,12 +64,12 @@
 	<!-- Action Bar End Padding -->
 	<string name="action_bar_endp">操作欄結尾填充</string>
 	<string name="restart_app_q">重啟應用?</string>
-	<string name="restart_app_qmsg">此功能需要重啟才能工作</string>
+	<string name="restart_app_qmsg">此功能需要重啟應用才能工作</string>
 	<string name="restart_app_now">馬上重啟</string>
 
 	<!-- Reset Dialog -->
 	<string name="are_you_sure_q">您確定嗎?</string>
-	<string name="dialog_set_reset_message">您當前正在嘗試重置 Browservio\n\注意這個選項會做以下的這些事情:\n• 重置所有設置\n• 清除瀏覽器緩存和歷史記錄\n\n您確定要重置嗎?</string>
+	<string name="dialog_set_reset_message">您當前正在嘗試重置Browservio\n\n注意這個選項會做以下的這些事情:\n• 重置所有設置\n• 清除瀏覽器緩存和歷史記錄\n\n您確定要重置嗎?</string>
 
 	<!-- Version Info -->
 	<string name="version_info_title">版本信息</string>
