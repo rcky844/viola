@@ -25,9 +25,11 @@
 
 				<ImageView
 					android:id="@+id/favicon"
-					android:layout_width="24dp"
+					android:layout_width="28dp"
 					android:layout_height="match_parent"
 					android:layout_weight="0"
+					android:paddingLeft="2dp"
+					android:paddingRight="2dp"
 					app:srcCompat="@drawable/outline_public_24" />
 
 				<EditText
