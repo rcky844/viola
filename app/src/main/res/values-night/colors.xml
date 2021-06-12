@@ -6,4 +6,5 @@
 	<color	name="colorControlNormal">#37E81B</color>
 	<color	name="colorBackground">#000000</color>
 	<color	name="icon_tint">#FFFFFF</color>
+	<color	name="text_color">#FFFFFF</color>
 </resources>
