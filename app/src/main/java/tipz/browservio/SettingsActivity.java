@@ -260,13 +260,13 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				dialog1.setTitle("Search engine");
-				dialog1.setMessage("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
+				dialog1.setMessage("Insert {term} into where the search term should be.\nCurrent search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
 				final EditText custom_se = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
 				custom_se.setLayoutParams(lp2); dialog1.setView(custom_se);
 				dialog1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
-						if (!custom_se.getText().toString().equals(""))
+						if (!custom_se.getText().toString().equals("") && custom_se.getText().toString().contains("{term}"))
 						{
 							browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).apply();
 							textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultSearch", "")));

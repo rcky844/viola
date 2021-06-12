@@ -701,7 +701,7 @@ public class MainActivity extends AppCompatActivity {
 				_URLindentify(1);
 				webview.loadUrl(urledit.getText().toString());
 			} else {
-				String googleLoad = browservio_saver.getString("defaultSearch", "").concat(urledit.getText().toString());
+				String googleLoad = browservio_saver.getString("defaultSearch", "").replace("{term}",urledit.getText().toString());
 				urledit.setText(googleLoad);
 				_URLindentify(1);
 				webview.loadUrl(googleLoad);
@@ -793,7 +793,7 @@ public class MainActivity extends AppCompatActivity {
 		if (!browservio_saver.getString("configVersion", "").equals("10") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
-			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").apply();
+			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q={term}").apply();
 			browservio_saver.edit().putString("endpPadding", "500").apply();
 			browservio_saver.edit().putString("overrideEmptyError", "0").apply();
 			browservio_saver.edit().putString("showBrowseBtn", "0").apply();
