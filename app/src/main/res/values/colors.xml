@@ -7,5 +7,6 @@
 	<color	name="colorBackground">#FFFFFF</color>
 	<color	name="fab_icon_tint">#FFFFFF</color>
 	<color	name="icon_tint">#000000</color>
+	<color	name="icon_tint2">#000000</color>
 	<color	name="text_color">#000000</color>
 </resources>

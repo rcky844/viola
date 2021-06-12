@@ -5,6 +5,7 @@
 	<color	name="colorControlHighlight">#1E9D42</color>
 	<color	name="colorControlNormal">#37E81B</color>
 	<color	name="colorBackground">#000000</color>
-	<color	name="icon_tint">#FFFFFF</color>
+	<color	name="fab_icon_tint">#000000</color>
+	<color	name="icon_tint2">#FFFFFF</color>
 	<color	name="text_color">#FFFFFF</color>
 </resources>
