@@ -688,7 +688,7 @@ public class MainActivity extends AppCompatActivity {
 		// Restart code
 		if (browservio_saver.getString("needRestart", "").equals("1")) {
 			browservio_saver.edit().putString("needRestart", "0").apply();
-			finish();
+			restart_app();
 		}
 
 		// Dark mode
@@ -751,22 +751,8 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("history", "").apply();
 			webview.clearCache(true);
 			webview.clearHistory();
-			reset = new TimerTask() {
-				@Override
-				public void run() {
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							Intent i = getIntent();
-							finish();
-							startActivity(i);
-							SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully!");
-							reset.cancel();
-						}
-					});
-				}
-			};
-			_timer.schedule(reset, 2000);
+			restart_app();
+			SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully!");
 		}
 		if (browservio_saver.getString("defaultHomePage", "").equals("")) {
 			Intent i = getIntent();
@@ -808,6 +794,24 @@ public class MainActivity extends AppCompatActivity {
 		webview.getSettings().setDisplayZoomControls(browservio_saver.getString("showZoomKeys", "").equals("1"));
 		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).apply();
 		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).apply();
+	}
+
+	private void restart_app() {
+		reset = new TimerTask() {
+			@Override
+			public void run() {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Intent i = getIntent();
+						finish();
+						startActivity(i);
+						reset.cancel();
+					}
+				});
+			}
+		};
+		_timer.schedule(reset, 0, 3000);
 	}
 
 	private void playSong(int position) {
