@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 	private String page_before_error = "";
 	private boolean defaulterror = true;
 	private double finload = 0;
-	private boolean pooran = true;
 
 	private ImageView browse;
 	private EditText urledit;
@@ -658,12 +657,10 @@ public class MainActivity extends AppCompatActivity {
 						finload = webview.getProgress();
 						if (finload == 100) {
 							progmain.setProgress(0);
-							pooran = true;
 						}
 						else {
 							progmain.setProgress((int)finload);
 							CookieSyncManager.getInstance().sync();
-							_URLindentify(0);
 						}
 					}
 				});
@@ -692,8 +689,10 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void _history_saviour() {
-		if (!browservio_saver.getString("history", "").equals("")) {
-			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n".concat(webview.getUrl()))).apply();
+		if (browservio_saver.getString("history", "").equals("")) {
+			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat(webview.getUrl())).apply();
+		} else {
+			browservio_saver.edit().putString("history", browservio_saver.getString("history", "").concat("\n").concat(webview.getUrl())).apply();
 		}
 	}
 
