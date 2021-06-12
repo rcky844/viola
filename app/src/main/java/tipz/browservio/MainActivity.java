@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View _view) {
 				if (!browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
 					if (urledit.getText().toString().equals("")) {
-						urledit.setError("This flied cannot be empty");
+						urledit.setError("This field cannot be empty");
 						error_defuse = new TimerTask() {
 							@Override
 							public void run() {
