@@ -14,26 +14,36 @@
 			android:gravity="center_horizontal|center_vertical"
 			android:orientation="horizontal"
 			android:layout_gravity="center_horizontal|center_vertical">
+
 			<LinearLayout
 				android:id="@+id/linear_urledit_text"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:padding="4dp"
-				android:orientation="vertical"
+				android:orientation="horizontal"
 				android:layout_weight="1">
+
+				<ImageView
+					android:id="@+id/favicon"
+					android:layout_width="24dp"
+					android:layout_height="match_parent"
+					android:layout_weight="0"
+					app:srcCompat="@drawable/outline_public_24" />
+
 				<EditText
 					android:id="@+id/urledit"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
-					android:gravity="center_vertical"
-					android:textSize="12sp"
-					android:textColor="#000000"
-					android:hint="@string/address_bar_hint"
-					android:textColorHint="#607D8B"
-					android:singleLine="true"
-					android:imeOptions="actionGo"
 					android:layout_gravity="center_horizontal"
-					android:layout_weight="1"/>
+					android:layout_weight="0"
+					android:drawableTint="@android:color/darker_gray"
+					android:gravity="center_vertical"
+					android:hint="@string/address_bar_hint"
+					android:imeOptions="actionGo"
+					android:singleLine="true"
+					android:textColor="#000000"
+					android:textColorHint="#607D8B"
+					android:textSize="12sp" />
 			</LinearLayout>
 			<ImageView
 				android:id="@+id/browse"

@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 	private LinearLayout linear_control_b3;
 	private LinearLayout linear_control_endp;
 	private ImageView desktop_switch;
+	private ImageView favicon;
 
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -95,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
 	private SharedPreferences bookmarks;
 	private final int[] resID = { R.raw.win98_error };
 	int from, to, times, songPosition, timesPosition=0;
+
+	boolean bitmipUpdated_q = false;
 
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -142,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 		LinearLayout linear_control_b8 = findViewById(R.id.linear_control_b8);
 		linear_control_endp = findViewById(R.id.linear_control_endp);
 		desktop_switch = findViewById(R.id.desktop_switch);
+		favicon = findViewById(R.id.favicon);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dhist = new AlertDialog.Builder(this);
@@ -505,7 +509,11 @@ public class MainActivity extends AppCompatActivity {
 				urledit.setText(url);
 			}
 			public void onPageFinished (WebView view, String url) {
+				if (bitmipUpdated_q) {
+					favicon.setImageResource(R.drawable.outline_public_24);
+				}
 				urledit.setText(url);
+				bitmipUpdated_q = false;
 			}
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				if (!defaulterror) {
@@ -522,6 +530,10 @@ public class MainActivity extends AppCompatActivity {
 					progmain.setProgress(progress);
 					CookieSyncManager.getInstance().sync();
 				}
+			}
+			public void onReceivedIcon(WebView view, Bitmap icon) {
+				bitmipUpdated_q = true;
+				favicon.setImageBitmap(icon);
 			}
 		});
 		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {
