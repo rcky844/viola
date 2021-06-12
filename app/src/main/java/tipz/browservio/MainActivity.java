@@ -501,6 +501,12 @@ public class MainActivity extends AppCompatActivity {
 		linear_control.setVisibility(View.GONE);
 		// Custom error page
 		webview.setWebViewClient(new WebViewClient() {
+			public void onPageStarted (WebView view, String url, Bitmap favicon) {
+				urledit.setText(url);
+			}
+			public void onPageFinished (WebView view, String url) {
+				urledit.setText(url);
+			}
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				if (!defaulterror) {
 					page_before_error = urledit.getText().toString();
