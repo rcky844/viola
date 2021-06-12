@@ -217,7 +217,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Show the pinch to zoom control buttons on the right down corner.\n(A restart might be required)"
+								android:text="Show the pinch to zoom control buttons on the right down corner.\n(A restart is required)"
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
