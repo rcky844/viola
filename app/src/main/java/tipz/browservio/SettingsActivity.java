@@ -26,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -93,22 +94,20 @@ public class SettingsActivity extends AppCompatActivity {
 	private AlertDialog.Builder dabt;
 	private AlertDialog.Builder drst;
 	private final Intent telegrambot = new Intent();
-	private final Intent re = new Intent();
-	private AlertDialog.Builder d2;
 	private final ObjectAnimator Sherlockanimation = new ObjectAnimator();
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.settings);
-		initialize(_savedInstanceState);
+		initialize();
 		initializeLogic();
 	}
 	
-	private void initialize(Bundle _savedInstanceState) {
+	private void initialize() {
 
 		Toolbar _toolbar = findViewById(R.id._toolbar);
 		setSupportActionBar(_toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override
@@ -176,7 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
 		dialog1 = new AlertDialog.Builder(this);
 		dabt = new AlertDialog.Builder(this);
 		drst = new AlertDialog.Builder(this);
-		d2 = new AlertDialog.Builder(this);
+		AlertDialog.Builder d2 = new AlertDialog.Builder(this);
 		
 		linear_general.setOnClickListener(new View.OnClickListener() {
 			@Override

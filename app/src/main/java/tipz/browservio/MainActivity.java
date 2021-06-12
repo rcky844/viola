@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.main);
-		initialize(_savedInstanceState);
+		initialize();
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
 		|| ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
 			ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 	
-	private void initialize(Bundle _savedInstanceState) {
+	private void initialize() {
 		
 		_fab = findViewById(R.id._fab);
 
@@ -578,9 +578,7 @@ public class MainActivity extends AppCompatActivity {
 		
 		@Override
 		public Bitmap getDefaultVideoPoster() {
-			if (MainActivity.this == null) {
-				return null; }
-			return BitmapFactory.decodeResource(MainActivity.this.getApplicationContext().getResources(), 2130837573); }
+            return BitmapFactory.decodeResource(MainActivity.this.getApplicationContext().getResources(), 2130837573); }
 		
 		public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
 			if (this.mCustomView != null) {
@@ -740,7 +738,8 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		// Get version info for dialog
-		browservio_saver.edit().putString("versionFamily", info.versionName).apply();
+        assert info != null;
+        browservio_saver.edit().putString("versionFamily", info.versionName).apply();
 		browservio_saver.edit().putString("versionName", info.versionName.concat(getResources().getString(R.string.versionName_p2))).apply();
 		browservio_saver.edit().putString("versionTechnical", info.versionName.concat(getResources().getString(R.string.versionTechnical_p2))).apply();
 		browservio_saver.edit().putString("versionCodename", getResources().getString(R.string.versionCodename)).apply();
@@ -911,7 +910,7 @@ public class MainActivity extends AppCompatActivity {
 	
 	@Deprecated
 	public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-		ArrayList<Double> _result = new ArrayList<Double>();
+		ArrayList<Double> _result = new ArrayList<>();
 		SparseBooleanArray _arr = _list.getCheckedItemPositions();
 		for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
 			if (_arr.valueAt(_iIdx))
