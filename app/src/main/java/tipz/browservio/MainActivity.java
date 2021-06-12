@@ -697,7 +697,8 @@ public class MainActivity extends AppCompatActivity {
 	private void _browservio_browse () {
 		if (page_before_error.equals("browservio://no_error")) {
 			// Load URL from editurl
-			if (URLUtil.isValidUrl(urledit.getText().toString())) {
+			if (URLUtil.isValidUrl(urledit.getText().toString()) || urledit.getText().toString().startsWith("browservio://")) {
+				_URLindentify(1);
 				webview.loadUrl(urledit.getText().toString());
 			} else {
 				String googleLoad = browservio_saver.getString("defaultSearch", "").concat(urledit.getText().toString());
