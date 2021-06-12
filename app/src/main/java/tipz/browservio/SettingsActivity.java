@@ -476,7 +476,7 @@ public class SettingsActivity extends AppCompatActivity {
 		textview5.setText(getResources().getString(R.string.homepage_current, browservio_saver.getString("defaultHomePage", "")));
 		textview9.setText(getResources().getString(R.string.search_engine_current, browservio_saver.getString("defaultSearch", "")));
 		textviewendp2.setText(browservio_saver.getString("endpPadding", "").concat("dp"));
-		version_visiable.setText(getResources().getString(R.string.app_name).concat(browservio_saver.getString("versionName", "")));
+		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(browservio_saver.getString("versionName", "")));
 		writingScreen = false;
 	}
 	
