@@ -55,6 +55,7 @@ import androidx.webkit.WebViewFeature;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 	private double last_desktop = 0;
 	private String page_before_error = "";
 	private boolean defaulterror = true;
-	private double finload = 0;
 
 	private ImageView browse;
 	private EditText urledit;
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
 							desktop_switch.setImageResource(R.drawable.ic_desktop_black);
 							linear_control_b2.performClick();
 						} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
-							webview.getSettings().setUserAgentString(System.getProperty("http.agent").concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
+							webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
 							last_desktop = desktop;
 							desktop = 0;
 							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
 								@Override
 								public void onClick(DialogInterface _dialog, int _which) {
 									if (custom_ua.length() == 0) {
-										webview.getSettings().setUserAgentString(System.getProperty("http.agent").concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
+										webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
 										linear_control_b2.performClick();
 										desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
 										desktop = 0;
@@ -496,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
 		// Page stuff
 		page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 		// desktopMode init code
-		webview.getSettings().setUserAgentString(System.getProperty("http.agent").concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
+		webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
 		desktop = 0;
 		last_desktop = desktop;
 		// Start downloadManager service
