@@ -113,6 +113,33 @@
 							android:textColor="#000000"/>
 					</LinearLayout>
 					<LinearLayout
+						android:id="@+id/linearendp"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:padding="8dp"
+						android:orientation="vertical">
+							<TextView
+								android:id="@+id/textviewendp"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:paddingLeft="8dp"
+								android:paddingTop="8dp"
+								android:paddingRight="8dp"
+								android:text="Action Bar End Padding"
+								android:textColor="#000000"
+								android:textSize="16sp" />
+							<TextView
+								android:id="@+id/textviewendp2"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:paddingLeft="8dp"
+								android:paddingTop="2dp"
+								android:paddingRight="8dp"
+								android:paddingBottom="8dp"
+								android:textSize="12sp"
+								android:textColor="#000000"/>
+					</LinearLayout>
+					<LinearLayout
 						android:id="@+id/linear11"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"

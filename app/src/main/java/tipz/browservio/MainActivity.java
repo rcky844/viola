@@ -55,7 +55,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import tipz.browservio.Utils.FileUtil;
 import tipz.browservio.Utils.SketchwareUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -738,7 +737,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionCodename", getResources().getString(R.string.versionCodename)).apply();
 		browservio_saver.edit().putString("versionCode", String.valueOf(info.versionCode)).apply();
 		browservio_saver.edit().putString("versionDate", getResources().getString(R.string.versionDate)).apply();
-		if (!browservio_saver.getString("configVersion", "").equals("9") && !browservio_saver.getString("configVersion", "").equals("")) {
+		if (!browservio_saver.getString("configVersion", "").equals("10") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle("Your settings has been reset!");
 			dialog.setMessage("To ensure stability, we've reset your settings to default because you've just installed an update.");
 			dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -785,15 +784,16 @@ public class MainActivity extends AppCompatActivity {
 			finish();
 			startActivity(i);
 		}
-		if (!browservio_saver.getString("configVersion", "").equals("9") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
+		if (!browservio_saver.getString("configVersion", "").equals("10") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
 			browservio_saver.edit().putString("defaultHomePage", "https://www.google.com/").apply();
 			browservio_saver.edit().putString("defaultSearch", "https://www.google.com/search?q=").apply();
+			browservio_saver.edit().putString("endpPadding", "500").apply();
 			browservio_saver.edit().putString("overrideEmptyError", "0").apply();
 			browservio_saver.edit().putString("showBrowseBtn", "0").apply();
 			browservio_saver.edit().putString("showZoomKeys", "0").apply();
 			browservio_saver.edit().putString("showCustomError", "1").apply();
-			browservio_saver.edit().putString("configVersion", "9").apply();
+			browservio_saver.edit().putString("configVersion", "10").apply();
 			browservio_saver.edit().putString("isFirstLaunch", "0").apply();
 		}
 		// Settings check
@@ -811,6 +811,10 @@ public class MainActivity extends AppCompatActivity {
 		else {
 			browse.setVisibility(View.GONE);
 		}
+		// Code to modify the action bar end padding
+		linear_control_endp.getLayoutParams().width = Integer.parseInt(browservio_saver.getString("endpPadding", ""));
+		linear_control_endp.requestLayout();
+
 		defaulterror = !browservio_saver.getString("showCustomError", "").equals("1");
 		webview.getSettings().setDisplayZoomControls(browservio_saver.getString("showZoomKeys", "").equals("1"));
 		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).apply();

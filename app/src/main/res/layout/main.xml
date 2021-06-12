@@ -291,7 +291,7 @@
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_endp"
-						android:layout_width="250dp"
+						android:layout_width="500dp"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:orientation="horizontal"/>

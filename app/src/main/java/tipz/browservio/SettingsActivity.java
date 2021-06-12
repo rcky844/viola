@@ -43,6 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private LinearLayout linear1_homepage;
 	private LinearLayout linear11;
 	private LinearLayout linear_zoomkeys_b;
+	private LinearLayout linearendp;
 	private LinearLayout linear1_b0;
 	private TextView textview8;
 	private TextView textview9;
@@ -86,11 +87,13 @@ public class SettingsActivity extends AppCompatActivity {
 	private TextView textview26;
 	private TextView textview35;
 	private TextView textview36;
-	
+	private TextView textviewendp2;
+
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
 	private final ObjectAnimator stackanim = new ObjectAnimator();
 	private AlertDialog.Builder dialog1;
+	private AlertDialog.Builder dialogendp;
 	private AlertDialog.Builder dabt;
 	private AlertDialog.Builder drst;
 	private final Intent telegrambot = new Intent();
@@ -127,6 +130,7 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_homepage = findViewById(R.id.linear1_homepage);
 		linear11 = findViewById(R.id.linear11);
 		linear_zoomkeys_b = findViewById(R.id.linear_zoomkeys_b);
+		linearendp = findViewById(R.id.linearendp);
 		linear1_b0 = findViewById(R.id.linear1_b0);
 		textview8 = findViewById(R.id.textview8);
 		textview9 = findViewById(R.id.textview9);
@@ -170,13 +174,14 @@ public class SettingsActivity extends AppCompatActivity {
 		textview26 = findViewById(R.id.textview26);
 		textview35 = findViewById(R.id.textview35);
 		textview36 = findViewById(R.id.textview36);
+		textviewendp2 = findViewById(R.id.textviewendp2);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dialog1 = new AlertDialog.Builder(this);
+		dialogendp = new AlertDialog.Builder(this);
 		dabt = new AlertDialog.Builder(this);
 		drst = new AlertDialog.Builder(this);
-		AlertDialog.Builder d2 = new AlertDialog.Builder(this);
-		
+
 		linear_general.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
@@ -308,14 +313,43 @@ public class SettingsActivity extends AppCompatActivity {
 				_updateChkbox(checkbox3);
 			}
 		});
-		
+
 		linear_zoomkeys_b.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
 				_updateChkbox(checkbox5);
 			}
 		});
-		
+
+		linearendp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+					dialogendp.setTitle("Action Bar End Padding");
+					dialogendp.setMessage(browservio_saver.getString("endpPadding", "").concat("dp"));
+					final EditText custom_hp2 = new EditText(SettingsActivity.this);
+					LinearLayout.LayoutParams lpdnep = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+					custom_hp2.setLayoutParams(lpdnep);
+					dialogendp.setView(custom_hp2);
+					dialogendp.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface _dialog, int _which) {
+							if (!custom_hp2.getText().toString().equals("")) {
+								browservio_saver.edit().putString("endpPadding", custom_hp2.getText().toString()).apply();
+								textview5.setText(browservio_saver.getString("endpPadding", "").concat("dp"));
+							}
+						}
+					});
+					dialogendp.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface _dialog, int _which) {
+
+						}
+					});
+					dialogendp.setCancelable(false);
+					dialogendp.create().show();
+			}
+		});
+
 		linear1_b0.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
@@ -471,6 +505,7 @@ public class SettingsActivity extends AppCompatActivity {
 		}
 		textview5.setText("Current homepage: ".concat(browservio_saver.getString("defaultHomePage", "")));
 		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
+		textviewendp2.setText(browservio_saver.getString("endpPadding", "").concat("dp"));
 		version_visiable.setText("Browservio ".concat(browservio_saver.getString("versionName", "")));
 	}
 	
@@ -496,6 +531,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_setAllRipple(linear13, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 		_setAllRipple(linear_source, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 		_setAllRipple(linear_zoomkeys_b, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
+		_setAllRipple(linearendp, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
 	}
 	private void _setRipple (final View _view) {
 		TypedValue typedValue = new TypedValue();
