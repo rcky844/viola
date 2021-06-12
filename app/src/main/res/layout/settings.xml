@@ -358,7 +358,7 @@
 								android:paddingLeft="8dp"
 								android:paddingTop="8dp"
 								android:paddingRight="8dp"
-								android:text="Override empty error in address bar"
+								android:text="Go to homepage when address bar is empty"
 								android:textSize="16sp"
 								android:textColor="#000000"/>
 							<TextView
@@ -369,7 +369,7 @@
 								android:paddingTop="2dp"
 								android:paddingRight="8dp"
 								android:paddingBottom="8dp"
-								android:text="Continues to load a page when the address bar is empty instead of showing an error."
+								android:text="Go to homepage when the address bar is empty instead of showing an error."
 								android:textSize="12sp"
 								android:textColor="#000000"/>
 						</LinearLayout>
