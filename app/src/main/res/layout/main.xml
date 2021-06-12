@@ -93,7 +93,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_arrow_back_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b1"
@@ -113,7 +114,8 @@
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_arrow_back_black"
 							android:scaleType="center"
-							android:rotation="180"/>
+							android:rotation="180"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b2"
@@ -132,7 +134,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_reload_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b7"
@@ -151,7 +154,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_home_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b3"
@@ -170,7 +174,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_smartphone_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b4"
@@ -189,7 +194,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_delete_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b5"
@@ -208,7 +214,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_share_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b6"
@@ -227,7 +234,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_settings_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b9"
@@ -246,7 +254,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_history_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b10"
@@ -265,7 +274,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_favorite_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b8"
@@ -284,7 +294,8 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:src="@drawable/ic_close_black"
-							android:scaleType="center"/>
+							android:scaleType="center"
+							app:tint="@color/icon_tint"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_endp"
@@ -302,5 +313,7 @@
 		android:layout_height="wrap_content"
 		android:layout_margin="16dp"
 		android:layout_gravity="right|bottom"
+		android:backgroundTint="@color/colorAccent"
+		app:tint="@color/fab_icon_tint"
 		app:srcCompat="@drawable/ic_arrow_up_grey"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

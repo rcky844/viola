@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -45,8 +46,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.webkit.WebSettingsCompat;
+import androidx.webkit.WebViewFeature;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -667,6 +671,25 @@ public class MainActivity extends AppCompatActivity {
 		if (browservio_saver.getString("needRestart", "").equals("1")) {
 			browservio_saver.edit().putString("needRestart", "0").apply();
 			finish();
+		}
+
+		// Dark mode
+		switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+			case Configuration.UI_MODE_NIGHT_YES:
+				// Darken web content in WebView
+				if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+					WebSettingsCompat.setForceDark(webview.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
+				}
+				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+				break;
+			case Configuration.UI_MODE_NIGHT_UNDEFINED:
+			case Configuration.UI_MODE_NIGHT_NO:
+				// Darken web content in WebView
+				if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+					WebSettingsCompat.setForceDark(webview.getSettings(), WebSettingsCompat.FORCE_DARK_OFF);
+				}
+				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+				break;
 		}
 
 		// PackageManager for version info
