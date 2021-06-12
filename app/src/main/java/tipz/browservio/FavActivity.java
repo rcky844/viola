@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,7 +56,7 @@ public class FavActivity extends AppCompatActivity {
 
 		Toolbar _toolbar = findViewById(R.id._toolbar);
 		setSupportActionBar(_toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override
