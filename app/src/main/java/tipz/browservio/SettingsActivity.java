@@ -96,8 +96,12 @@ public class SettingsActivity extends AppCompatActivity {
 	private AlertDialog.Builder dialogendp;
 	private AlertDialog.Builder dabt;
 	private AlertDialog.Builder drst;
+	private AlertDialog.Builder diazoomrestart;
 	private final Intent telegrambot = new Intent();
 	private final ObjectAnimator Sherlockanimation = new ObjectAnimator();
+
+	boolean writingScreen = true;
+
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -181,6 +185,7 @@ public class SettingsActivity extends AppCompatActivity {
 		dialogendp = new AlertDialog.Builder(this);
 		dabt = new AlertDialog.Builder(this);
 		drst = new AlertDialog.Builder(this);
+		diazoomrestart = new AlertDialog.Builder(this);
 
 		linear_general.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -393,6 +398,24 @@ public class SettingsActivity extends AppCompatActivity {
 				else {
 					browservio_saver.edit().putString("showZoomKeys", "0").apply();
 				}
+				if (!writingScreen) {
+					diazoomrestart.setTitle("Restart?");
+					diazoomrestart.setMessage("A restart is required for this feature to work.");
+					diazoomrestart.setPositiveButton("Restart Now", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface _dialog, int _which) {
+							browservio_saver.edit().putString("needRestart", "1").apply();
+							finish();
+						}
+					});
+					diazoomrestart.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface _dialog, int _which) {
+
+						}
+					});
+					diazoomrestart.create().show();
+				}
 			}
 		});
 		
@@ -507,6 +530,7 @@ public class SettingsActivity extends AppCompatActivity {
 		textview9.setText("Current search engine: ".concat(browservio_saver.getString("defaultSearch", "")));
 		textviewendp2.setText(browservio_saver.getString("endpPadding", "").concat("dp"));
 		version_visiable.setText("Browservio ".concat(browservio_saver.getString("versionName", "")));
+		writingScreen = false;
 	}
 	
 	@Override

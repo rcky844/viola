@@ -719,6 +719,12 @@ public class MainActivity extends AppCompatActivity {
 		// Make versionName and versionTech. using version family
 		// intro. 20201027 with 1.4.0_beroku_dev_8
 
+		// Restart code
+		if (browservio_saver.getString("needRestart", "").equals("1")) {
+			browservio_saver.edit().putString("needRestart", "0").apply();
+			finish();
+		}
+
 		// PackageManager for version info
 		PackageManager manager = this.getPackageManager();
 		PackageInfo info = null;
