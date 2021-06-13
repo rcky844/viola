@@ -61,6 +61,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import tipz.browservio.Utils.SketchwareUtil;
+import tipz.browservio.Utils.UrlUtils;
 
 public class MainActivity extends AppCompatActivity {
 	
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 	int from, to, times, songPosition, timesPosition=0;
 
 	boolean bitmipUpdated_q = false;
+	String checkedUrl;
 
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 						_timer.schedule(error_defuse, 3000);
 					}
 				}
-				_browservio_browse();
+				_browservio_browse(urledit.getText().toString());
 			}
 		});
 		
@@ -487,7 +489,7 @@ public class MainActivity extends AppCompatActivity {
 			  public boolean
 			  onEditorAction(TextView v, int actionId, KeyEvent event) { 
 				    if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
-				    		_browservio_browse();
+				    		_browservio_browse(urledit.getText().toString());
 					        return true; 
 					    } 
 				    return false; 
@@ -541,8 +543,7 @@ public class MainActivity extends AppCompatActivity {
 			if (browservio_saver.getString("defaultHomePage", "").contains(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 				browservio_saver.edit().putString("defaultHomePage", getResources().getString(R.string.url_default_homepage)).apply();
 			}
-			urledit.setText(browservio_saver.getString("defaultHomePage", ""));
-			_browservio_browse();
+			_browservio_browse(browservio_saver.getString("defaultHomePage", ""));
 		}
 		else {
 			browservio_saver.edit().putString("defaultHomePage", getResources().getString(R.string.url_default_homepage)).apply();
@@ -561,8 +562,7 @@ public class MainActivity extends AppCompatActivity {
 				String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
 
 				if (sharedText != null) {
-					urledit.setText(sharedText);
-					_browservio_browse();
+					_browservio_browse(sharedText);
 				}
 			}
 		}
@@ -659,21 +659,27 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-	private void _browservio_browse () {
+	private void _browservio_browse(String url) {
+		checkedUrl = UrlUtils.UrlUtils(url, true);
 		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
-			// Load URL from editurl
-			if (URLUtil.isValidUrl(urledit.getText().toString()) || urledit.getText().toString().startsWith(getResources().getString(R.string.url_prefix, ""))) {
-				_URLindentify(1);
-				webview.loadUrl(urledit.getText().toString());
+			// Load URL
+			if (url.startsWith(getResources().getString(R.string.url_prefix, ""))) {
+				_URLindentify(url);
 			} else {
-				String googleLoad = browservio_saver.getString("defaultSearch", "").replace("{term}",urledit.getText().toString());
-				urledit.setText(googleLoad);
-				_URLindentify(1);
-				webview.loadUrl(googleLoad);
+				if (checkedUrl.startsWith("{se}")) {
+					String searchLoad = browservio_saver.getString("defaultSearch", "").replace("{term}", url);
+					_URLindentify(searchLoad);
+					urledit.setText(searchLoad);
+					webview.loadUrl(searchLoad);
+				} else {
+					_URLindentify(checkedUrl);
+				    urledit.setText(checkedUrl);
+				    webview.loadUrl(checkedUrl);
+				}
 			}
 		} else {
+			_URLindentify(page_before_error);
 			urledit.setText(page_before_error);
-			_URLindentify(1);
 			webview.loadUrl(page_before_error);
 			page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 		}
@@ -849,23 +855,12 @@ public class MainActivity extends AppCompatActivity {
 		urledit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
 	}
 
-	private void _URLindentify(double type) {
-		if (type == 0) {
-			// Type 0: getUrl checks
-			if (webview.getUrl().equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
-				throw new RuntimeException(getResources().getString(R.string.no_error_elog));
-			}
-			if (webview.getUrl().equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || webview.getUrl().equals(getResources().getString(R.string.url_error_real))) {
-				_errorpage();
-			}
-		} else if (type == 1) {
-			// Type 1: getText checks
-			if (urledit.getText().toString().equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
-				throw new RuntimeException(getResources().getString(R.string.no_error_elog));
-			}
-			if (urledit.getText().toString().equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || urledit.getText().toString().equals(getResources().getString(R.string.url_error_real))) {
-				_errorpage();
-			}
+	private void _URLindentify(String url) {
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
+			throw new RuntimeException(getResources().getString(R.string.no_error_elog));
+		}
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || urledit.getText().toString().equals(getResources().getString(R.string.url_error_real))) {
+			_errorpage();
 		}
 	}
 	
