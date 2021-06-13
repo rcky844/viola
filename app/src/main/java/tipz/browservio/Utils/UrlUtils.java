@@ -8,7 +8,7 @@ public class UrlUtils {
     private static final String BASIC_URL_REGEX = "^((https?|ftp)://)?(www\\.)?([\\w]+\\.)+[\u200C\u200B\\w]{2,63}/?.*$";
     private static final Pattern p = Pattern.compile(BASIC_URL_REGEX);
 
-    public static String UrlUtils(String url, boolean canBeSearch) {
+    public static String UrlChecker(String url, boolean canBeSearch) {
         Matcher m = p.matcher(url);
         if (m.find()) {
             if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://")) {

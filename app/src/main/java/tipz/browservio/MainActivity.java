@@ -544,6 +544,7 @@ public class MainActivity extends AppCompatActivity {
 					urledit.setText(url);
 				}
 				bitmipUpdated_q = false;
+				CookieSyncManager.getInstance().sync();
 			}
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				if (!defaulterror) {
@@ -558,7 +559,6 @@ public class MainActivity extends AppCompatActivity {
 					progmain.setProgress(0);
 				} else {
 					progmain.setProgress(progress);
-					CookieSyncManager.getInstance().sync();
 				}
 			}
 			public void onReceivedIcon(WebView view, Bitmap icon) {
@@ -691,7 +691,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void _browservio_browse(String url) {
-		checkedUrl = UrlUtils.UrlUtils(url, true);
+		checkedUrl = UrlUtils.UrlChecker(url, true);
 		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			// Load URL
 			if (url.startsWith(getResources().getString(R.string.url_prefix, ""))) {
