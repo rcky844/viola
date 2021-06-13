@@ -90,6 +90,7 @@ public class FavActivity extends AppCompatActivity {
 						bookmarks.edit().putString("bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0").apply();
 						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
 						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
+						isEmptyCheck(bookmark_list, bookmarks);
 					}
 				});
 				del_fav.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -162,6 +163,7 @@ public class FavActivity extends AppCompatActivity {
 								listview.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, bookmark_list));
 								populate.cancel();
 								prog.dismiss();
+								isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration
 							}
 							else {
 								bookmark_list.add(bookmarks.getString("bookmark_".concat(String.valueOf((long)(populate_count))), ""));
@@ -174,6 +176,16 @@ public class FavActivity extends AppCompatActivity {
 		};
 		_timer.scheduleAtFixedRate(populate, 0, 2);
 	}
+
+	private void isEmptyCheck(ArrayList<String> list, SharedPreferences out) {
+		// Placed here for old data migration
+		if (list.isEmpty()) {
+			out.edit().clear().apply();
+			SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+			finish();
+		}
+	}
+
 	@Deprecated
 	public void showMessage(String _s) {
 		Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();
