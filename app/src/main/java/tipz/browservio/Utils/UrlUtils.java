@@ -22,6 +22,9 @@ public class UrlUtils {
                 return url;
             }
         } else {
+            if (url.startsWith("file://")) {
+                return url;
+            }
             if (canBeSearch) {
                 return "{se}" + url;
             }
