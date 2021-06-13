@@ -562,6 +562,7 @@ public class MainActivity extends AppCompatActivity {
 		Intent intent = getIntent();
 		String action = intent.getAction();
 		String type = intent.getType();
+		String scheme = intent.getScheme();
 
 		if (Intent.ACTION_SEND.equals(action) && type != null) {
 			if ("text/plain".equals(type)) {
@@ -571,6 +572,11 @@ public class MainActivity extends AppCompatActivity {
 				if (sharedText != null) {
 					_browservio_browse(sharedText);
 				}
+			}
+		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			if ("text/html".equals(type) || "text/plain".equals(type) || "application/xhtml+xml".equals(type) || "application/vnd.wap.xhtml+xml".equals(type) || "http".equals(scheme) || "https".equals(scheme) || "ftp".equals(scheme) || "file".equals(scheme)) {
+				Uri uri = intent != null ? getIntent().getData() : null;
+				_browservio_browse(uri.toString());
 			}
 		}
 	}
