@@ -13,9 +13,11 @@ public class UrlUtils {
         m = p.matcher(url);
         if (m.find()) {
             if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://")) {
+                /*
                 if (url.startsWith("http://")) {
                     return url.replaceFirst("http://", "https://");
                 }
+                */
                 return "https://" + url;
             } else {
                 return url;
