@@ -423,8 +423,13 @@ public class MainActivity extends AppCompatActivity {
 							bookmarks.edit().putString("bookmark_".concat(bookmarks.getString("bookmarked_count", "")).concat("_show"), "1").apply();
 							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
 						} else if (item.getTitle().toString().equals(getResources().getString(R.string.favs))) {
-							i.setClass(getApplicationContext(), FavActivity.class);
-							startActivity(i);
+							if (bookmarks.getAll().size() == 0) {
+								SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+							} else {
+								i.setClass(getApplicationContext(), FavActivity.class);
+								startActivity(i);
+							}
+
 						}
 						return false;
 					}
