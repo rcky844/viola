@@ -833,7 +833,10 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).apply();
 
 		// Need load
-		_browservio_browse(browservio_saver.getString("needLoad", ""));
+		String needLoad = browservio_saver.getString("needLoad", "");
+		if (!needLoad.isEmpty() || !(needLoad == null)) {
+			_browservio_browse(needLoad);
+		}
 	}
 
 	private void restart_app() {
