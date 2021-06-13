@@ -16,6 +16,9 @@ public class UrlUtils {
         if (m.find()) {
             return "https://" + url;
         } else {
+            if (url.endsWith("/") || url.endsWith("\\")) {
+                return "https://" + url;
+            }
             if (canBeSearch) {
                 return "{se}" + url;
             }
