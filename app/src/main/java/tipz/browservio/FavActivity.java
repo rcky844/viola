@@ -73,7 +73,8 @@ public class FavActivity extends AppCompatActivity {
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
-				browservio_saver.edit().putString("needLoad", bookmarks.getString("bookmark_".concat(String.valueOf((long)(_param3))), "")).apply();
+				browservio_saver.edit().putString("needLoad", "1").apply();
+				browservio_saver.edit().putString("needLoadUrl", bookmarks.getString("bookmark_".concat(String.valueOf((long)(_param3))), "")).apply();
 				finish();
 			}
 		});
