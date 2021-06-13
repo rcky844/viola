@@ -17,7 +17,7 @@
 
 			<LinearLayout
 				android:id="@+id/linear_urledit_text"
-				android:layout_width="382dp"
+				android:layout_width="0dp"
 				android:layout_height="match_parent"
 				android:layout_weight="1"
 				android:orientation="horizontal"
@@ -39,10 +39,11 @@
 					android:layout_height="match_parent"
 					android:layout_gravity="center_horizontal"
 					android:layout_weight="0"
-					android:drawableTint="@android:color/darker_gray"
 					android:gravity="center_vertical"
 					android:hint="@string/address_bar_hint"
 					android:imeOptions="actionGo"
+					android:importantForAutofill="no"
+					android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
 					android:singleLine="true"
 					android:textColor="@color/text_color"
 					android:textColorHint="#607D8B"
@@ -60,51 +61,56 @@
 				android:scaleType="fitCenter"
 				android:src="@drawable/ic_browse_black" />
 		</LinearLayout>
+
 		<LinearLayout
 			android:id="@+id/webview_linear"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical"
-			android:layout_weight="1">
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:orientation="vertical">
+
 			<ProgressBar
 				android:id="@+id/progmain"
+				style="?android:progressBarStyleHorizontal"
 				android:layout_width="match_parent"
 				android:layout_height="2dp"
 				android:background="#3DDC2F"
-				android:indeterminate="false"
-				style="?android:progressBarStyleHorizontal"/>
+				android:indeterminate="false" />
 
 			<WebView
 				android:id="@+id/webview"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
+				android:layout_height="0dp"
 				android:layout_weight="1" />
+
 			<HorizontalScrollView
 				android:id="@+id/hscroll_control"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:background="@color/colorPrimary">
+
 				<LinearLayout
 					android:id="@+id/linear_control"
 					android:layout_width="wrap_content"
 					android:layout_height="48dp"
+					android:layout_gravity="center_vertical"
 					android:background="@color/colorPrimary"
 					android:gravity="center_vertical"
 					android:orientation="horizontal"
-					android:weightSum="1"
-					android:layout_gravity="center_vertical">
+					android:weightSum="1">
+
 					<LinearLayout
 						android:id="@+id/linear_control_b0"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/back"
@@ -115,18 +121,19 @@
 							android:src="@drawable/ic_arrow_back_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b1"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/forward"
@@ -138,18 +145,19 @@
 							android:src="@drawable/ic_arrow_back_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b2"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/reload"
@@ -160,18 +168,19 @@
 							android:src="@drawable/ic_reload_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b7"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/homepage_ic"
@@ -182,18 +191,19 @@
 							android:src="@drawable/ic_home_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b3"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/desktop_switch"
@@ -204,18 +214,19 @@
 							android:src="@drawable/ic_smartphone_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b4"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/ic_clear"
@@ -226,18 +237,19 @@
 							android:src="@drawable/ic_delete_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b5"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/ic_share"
@@ -248,18 +260,19 @@
 							android:src="@drawable/ic_share_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b6"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/settings"
@@ -270,18 +283,19 @@
 							android:src="@drawable/ic_settings_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b9"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/history"
@@ -292,18 +306,19 @@
 							android:src="@drawable/ic_history_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b10"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/imageview1"
@@ -314,18 +329,19 @@
 							android:src="@drawable/ic_favorite_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_b8"
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
-						android:paddingLeft="10dp"
-						android:paddingRight="10dp"
-						android:gravity="center_horizontal|center_vertical"
-						android:orientation="vertical"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:focusable="true">
+						android:focusable="true"
+						android:gravity="center_horizontal|center_vertical"
+						android:orientation="vertical"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp">
 
 						<ImageView
 							android:id="@+id/exit"
@@ -336,12 +352,13 @@
 							android:src="@drawable/ic_close_black"
 							app:tint="@color/icon_tint" />
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/linear_control_endp"
 						android:layout_width="500dp"
 						android:layout_height="wrap_content"
-						android:padding="8dp"
-						android:orientation="horizontal"/>
+						android:orientation="horizontal"
+						android:padding="8dp" />
 				</LinearLayout>
 			</HorizontalScrollView>
 		</LinearLayout>
@@ -349,9 +366,9 @@
 
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
 		android:id="@+id/_fab"
-		android:layout_width="wrap_content"
+		android:layout_width="69dp"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|bottom"
+		android:layout_gravity="end|bottom"
 		android:layout_margin="16dp"
 		android:backgroundTint="@color/colorAccent"
 		android:contentDescription="@string/fab_desp"

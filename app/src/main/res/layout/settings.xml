@@ -39,7 +39,7 @@
 					android:layout_gravity="center_horizontal|center_vertical">
 					<TextView
 						android:id="@+id/textview_cool1"
-						android:layout_width="match_parent"
+						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:text="@string/general"
@@ -47,14 +47,15 @@
 						android:textStyle="bold"
 						android:textColor="@color/colorAccent"
 						android:layout_weight="1"/>
+
 					<ImageView
 						android:id="@+id/imageview4"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:src="@drawable/ic_arrow_up_grey"
-						android:scaleType="center"
 						android:layout_gravity="center_horizontal|center_vertical"
-						app:tint="@color/icon_tint2"/>
+						android:scaleType="center"
+						android:src="@drawable/ic_arrow_up_grey"
+						app:tint="@color/icon_tint2" />
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear6"
@@ -147,12 +148,12 @@
 						android:id="@+id/linear11"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:gravity="right"
+						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="right">
+						android:layout_gravity="end">
 						<LinearLayout
 							android:id="@+id/linear12"
-							android:layout_width="match_parent"
+							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
@@ -184,21 +185,21 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
-							android:gravity="right|center_vertical"
+							android:gravity="end|center_vertical"
 							android:textSize="12sp"
 							android:textColor="@color/text_color"
-							android:layout_gravity="right|center_vertical"/>
+							android:layout_gravity="end|center_vertical"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_zoomkeys_b"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:gravity="right"
+						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="right">
+						android:layout_gravity="end">
 						<LinearLayout
 							android:id="@+id/linear_zoomkeys_a"
-							android:layout_width="match_parent"
+							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
@@ -230,10 +231,10 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
-							android:gravity="right|center_vertical"
+							android:gravity="end|center_vertical"
 							android:textSize="12sp"
 							android:textColor="@color/text_color"
-							android:layout_gravity="right|center_vertical"/>
+							android:layout_gravity="end|center_vertical"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear1_b0"
@@ -268,12 +269,12 @@
 					android:id="@+id/linear_advenced"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:gravity="right|center_vertical"
+					android:gravity="end|center_vertical"
 					android:orientation="horizontal"
-					android:layout_gravity="right|center_vertical">
+					android:layout_gravity="end|center_vertical">
 					<TextView
 						android:id="@+id/textview_cool2"
-						android:layout_width="match_parent"
+						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:text="@string/advanced"
@@ -300,12 +301,12 @@
 						android:id="@+id/linear1_javascript"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:gravity="right"
+						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="right">
+						android:layout_gravity="end">
 						<LinearLayout
 							android:id="@+id/linear1_b1"
-							android:layout_width="match_parent"
+							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
@@ -337,21 +338,21 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
-							android:gravity="right|center_vertical"
+							android:gravity="end|center_vertical"
 							android:textSize="12sp"
 							android:textColor="@color/text_color"
-							android:layout_gravity="right|center_vertical"/>
+							android:layout_gravity="end|center_vertical"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear1_overrideempt"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:gravity="right"
+						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="right">
+						android:layout_gravity="end">
 						<LinearLayout
 							android:id="@+id/linear1_overrideemp"
-							android:layout_width="match_parent"
+							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
@@ -383,21 +384,21 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
-							android:gravity="right|center_vertical"
+							android:gravity="end|center_vertical"
 							android:textSize="12sp"
 							android:textColor="@color/text_color"
-							android:layout_gravity="right|center_vertical"/>
+							android:layout_gravity="end|center_vertical"/>
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear13"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:gravity="right"
+						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="right">
+						android:layout_gravity="end">
 						<LinearLayout
 							android:id="@+id/linear14"
-							android:layout_width="match_parent"
+							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
@@ -429,10 +430,10 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
-							android:gravity="right|center_vertical"
+							android:gravity="end|center_vertical"
 							android:textSize="12sp"
 							android:textColor="@color/text_color"
-							android:layout_gravity="right|center_vertical"/>
+							android:layout_gravity="end|center_vertical"/>
 					</LinearLayout>
 				</LinearLayout>
 				<LinearLayout
@@ -444,7 +445,7 @@
 					android:layout_gravity="center_horizontal|center_vertical">
 					<TextView
 						android:id="@+id/textview_cool3"
-						android:layout_width="match_parent"
+						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:text="@string/help"
@@ -453,13 +454,14 @@
 						android:textColor="@color/colorAccent"
 						android:singleLine="true"
 						android:layout_weight="1"/>
+
 					<ImageView
 						android:id="@+id/imageview5"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:src="@drawable/ic_arrow_up_grey"
 						android:scaleType="center"
-						app:tint="@color/icon_tint2"/>
+						android:src="@drawable/ic_arrow_up_grey"
+						app:tint="@color/icon_tint2" />
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear8"
