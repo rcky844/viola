@@ -28,6 +28,7 @@
 					android:layout_width="28dp"
 					android:layout_height="match_parent"
 					android:layout_weight="0"
+					android:contentDescription="@string/favicon_desp"
 					android:paddingLeft="2dp"
 					android:paddingRight="2dp"
 					app:srcCompat="@drawable/outline_public_24" />
@@ -54,6 +55,7 @@
 				android:layout_height="match_parent"
 				android:background="?attr/selectableItemBackgroundBorderless"
 				android:clickable="true"
+				android:contentDescription="@string/browse_desp"
 				android:focusable="true"
 				android:scaleType="fitCenter"
 				android:src="@drawable/ic_browse_black" />
@@ -103,13 +105,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/back"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_arrow_back_black"
+							android:contentDescription="@string/back_desp"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_arrow_back_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b1"
@@ -123,14 +127,16 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/forward"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_arrow_back_black"
-							android:scaleType="center"
+							android:contentDescription="@string/forward_desp"
 							android:rotation="180"
-							app:tint="@color/icon_tint"/>
+							android:scaleType="center"
+							android:src="@drawable/ic_arrow_back_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b2"
@@ -144,13 +150,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/reload"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_reload_black"
+							android:contentDescription="@string/reload_desp"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_reload_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b7"
@@ -164,13 +172,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/homepage_ic"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_home_black"
+							android:contentDescription="@string/history"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_home_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b3"
@@ -184,13 +194,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/desktop_switch"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_smartphone_black"
+							android:contentDescription="@string/desktop_desp"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_smartphone_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b4"
@@ -204,13 +216,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/ic_clear"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_delete_black"
+							android:contentDescription="@string/clear_desp"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_delete_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b5"
@@ -224,13 +238,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/ic_share"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_share_black"
+							android:contentDescription="@string/share_desp"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_share_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b6"
@@ -244,13 +260,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/settings"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_settings_black"
+							android:contentDescription="@string/settings"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_settings_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b9"
@@ -264,13 +282,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/history"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_history_black"
+							android:contentDescription="@string/history"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_history_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b10"
@@ -284,13 +304,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/imageview1"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_favorite_black"
+							android:contentDescription="@string/fav"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_favorite_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_b8"
@@ -304,13 +326,15 @@
 						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
 						android:focusable="true">
+
 						<ImageView
 							android:id="@+id/exit"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_close_black"
+							android:contentDescription="@string/exit_desp"
 							android:scaleType="center"
-							app:tint="@color/icon_tint"/>
+							android:src="@drawable/ic_close_black"
+							app:tint="@color/icon_tint" />
 					</LinearLayout>
 					<LinearLayout
 						android:id="@+id/linear_control_endp"
@@ -322,13 +346,15 @@
 			</HorizontalScrollView>
 		</LinearLayout>
 	</LinearLayout>
+
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
 		android:id="@+id/_fab"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_margin="16dp"
 		android:layout_gravity="right|bottom"
+		android:layout_margin="16dp"
 		android:backgroundTint="@color/colorAccent"
-		app:tint="@color/fab_icon_tint"
-		app:srcCompat="@drawable/ic_arrow_up_grey"/>
+		android:contentDescription="@string/fab_desp"
+		app:srcCompat="@drawable/ic_arrow_up_grey"
+		app:tint="@color/fab_icon_tint" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
