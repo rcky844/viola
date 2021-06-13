@@ -3,14 +3,12 @@ package tipz.browservio;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -58,12 +56,7 @@ public class FavActivity extends AppCompatActivity {
 		setSupportActionBar(_toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _v) {
-				onBackPressed();
-			}
-		});
+		_toolbar.setNavigationOnClickListener(_v -> onBackPressed());
 		FloatingActionButton _fab = findViewById(R.id._fab);
 		
 		listview = findViewById(R.id.listview);
@@ -71,62 +64,41 @@ public class FavActivity extends AppCompatActivity {
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		del_fav = new AlertDialog.Builder(this);
 		
-		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
-				BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_param3)))));
+		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
+			BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
+			BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_param3)))));
+			finish();
+		});
+		
+		listview.setOnItemLongClickListener((_param1, _param2, _param3, _param4) -> {
+			final int _position = _param3;
+			del_fav.setTitle(getResources().getString(R.string.del_fav_title));
+			del_fav.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
+				bookmark_list.remove(_position);
+				BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0");
+				((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
+				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
+				isEmptyCheck(bookmark_list, bookmarks);
+			});
+			del_fav.setNegativeButton(android.R.string.no, (_dialog, _which) -> {
+
+			});
+			del_fav.create().show();
+			return true;
+		});
+		
+		_fab.setOnClickListener(_view -> {
+			del_fav.setTitle(getResources().getString(R.string.del_fav2_title));
+			del_fav.setMessage(getResources().getString(R.string.del_fav2_message));
+			del_fav.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
+				bookmarks.edit().clear().apply();
+				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
 				finish();
-			}
-		});
-		
-		listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
-				final int _position = _param3;
-				del_fav.setTitle(getResources().getString(R.string.del_fav_title));
-				del_fav.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						bookmark_list.remove(_position);
-						BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0");
-						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
-						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
-						isEmptyCheck(bookmark_list, bookmarks);
-					}
-				});
-				del_fav.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						
-					}
-				});
-				del_fav.create().show();
-				return true;
-			}
-		});
-		
-		_fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				del_fav.setTitle(getResources().getString(R.string.del_fav2_title));
-				del_fav.setMessage(getResources().getString(R.string.del_fav2_message));
-				del_fav.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						bookmarks.edit().clear().apply();
-						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
-						finish();
-					}
-				});
-				del_fav.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						
-					}
-				});
-				del_fav.create().show();
-			}
+			});
+			del_fav.setNegativeButton(android.R.string.no, (_dialog, _which) -> {
+
+			});
+			del_fav.create().show();
 		});
 	}
 	private void initializeLogic() {
@@ -157,22 +129,19 @@ public class FavActivity extends AppCompatActivity {
 		populate = new TimerTask() {
 			@Override
 			public void run() {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						if (!BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_show")).equals("0")) {
-							if (BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))).equals("")) {
-								listview.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, bookmark_list));
-								populate.cancel();
-								prog.dismiss();
-								isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration
-							}
-							else {
-								bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))));
-							}
+				runOnUiThread(() -> {
+					if (!BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_show")).equals("0")) {
+						if (BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))).equals("")) {
+							listview.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, bookmark_list));
+							populate.cancel();
+							prog.dismiss();
+							isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration
 						}
-						populate_count++;
+						else {
+							bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))));
+						}
 					}
+					populate_count++;
 				});
 			}
 		};

@@ -8,7 +8,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -18,13 +17,13 @@ Toast.makeText(_context, _s, Toast.LENGTH_SHORT).show();
 }
 
 public static int getLocationX(View _v) {
-int _location[] = new int[2];
+int[] _location = new int[2];
 _v.getLocationInWindow(_location);
 return _location[0];
 }
 
 public static int getLocationY(View _v) {
-int _location[] = new int[2];
+int[] _location = new int[2];
 _v.getLocationInWindow(_location);
 return _location[1];
 }
@@ -35,7 +34,7 @@ return random.nextInt(_max - _min + 1) + _min;
 }
 
 public static ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-ArrayList<Double> _result = new ArrayList<Double>();
+ArrayList<Double> _result = new ArrayList<>();
 SparseBooleanArray _arr = _list.getCheckedItemPositions();
 for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
 if (_arr.valueAt(_iIdx))
@@ -62,10 +61,9 @@ output.clear();
 
 if (map == null || map.size() <= 0) return;
 
-Iterator itr = map.entrySet().iterator();
-while (itr.hasNext()) {
-Map.Entry<String, String> entry = (Map.Entry) itr.next();
-output.add(entry.getKey());
-}
+    for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
+        Map.Entry<String, String> entry = (Map.Entry) stringObjectEntry;
+        output.add(entry.getKey());
+    }
 }
 }

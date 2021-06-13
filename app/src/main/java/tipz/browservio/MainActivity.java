@@ -8,7 +8,6 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -22,13 +21,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import android.webkit.DownloadListener;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -41,7 +37,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -58,9 +53,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+import tipz.browservio.Utils.BrowservioSaverUtils;
 import tipz.browservio.Utils.SketchwareUtil;
 import tipz.browservio.Utils.UrlUtils;
-import tipz.browservio.Utils.BrowservioSaverUtils;
 
 public class MainActivity extends AppCompatActivity {
 	
@@ -152,329 +147,251 @@ public class MainActivity extends AppCompatActivity {
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
 		
-		browse.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				_browservio_browse(urledit.getText().toString());
-			}
-		});
+		browse.setOnClickListener(_view -> _browservio_browse(urledit.getText().toString()));
 
-		linear_control_b0.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				// on forward being clicked, either go forward in history
-				if (webview.canGoBack()) {
-					// can go back
-					webview.goBack();
-				}
-				else {
-					// cannot go backwards
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
-				}
+		linear_control_b0.setOnClickListener(_view -> {
+			// on forward being clicked, either go forward in history
+			if (webview.canGoBack()) {
+				// can go back
+				webview.goBack();
+			}
+			else {
+				// cannot go backwards
+				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
 			}
 		});
 		
-		linear_control_b1.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				// on forward being clicked, either go forward in history
-				if (webview.canGoForward()) {
-					// can go forward
-					webview.goForward();
-				}
-				else {
-					// cannot go forward
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
-				}
+		linear_control_b1.setOnClickListener(_view -> {
+			// on forward being clicked, either go forward in history
+			if (webview.canGoForward()) {
+				// can go forward
+				webview.goForward();
+			}
+			else {
+				// cannot go forward
+				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
 			}
 		});
 		
-		linear_control_b2.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
-					if (!webview.getUrl().equals("")) {
-						webview.reload();
-					}
-				} else {
-					webview.loadUrl(page_before_error);
-					urledit.setText(page_before_error);
-					page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
+		linear_control_b2.setOnClickListener(_view -> {
+			if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
+				if (!webview.getUrl().equals("")) {
+					webview.reload();
 				}
+			} else {
+				webview.loadUrl(page_before_error);
+				urledit.setText(page_before_error);
+				page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 			}
 		});
 		
-		linear_control_b7.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
-			}
-		});
+		linear_control_b7.setOnClickListener(_view -> _browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
 		
-		linear_control_b3.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				PopupMenu popup1 = new PopupMenu(MainActivity.this, linear_control_b3);
-				Menu menu1 = popup1.getMenu();
-				menu1.add(getResources().getString(R.string.linear_control_b3_desk));
-				menu1.add(getResources().getString(R.string.linear_control_b3_mobi));
-				menu1.add(getResources().getString(R.string.linear_control_b3_cus));
-				popup1.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-					@Override
-					public boolean onMenuItemClick(MenuItem item) {
-						if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk))) {
-							webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent, getResources().getString(R.string.webUserAgent_end)));
-							last_desktop = desktop;
-							desktop = 1;
-							desktop_switch.setImageResource(R.drawable.ic_desktop_black);
-							linear_control_b2.performClick();
-						} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
+		linear_control_b3.setOnClickListener(_view -> {
+			PopupMenu popup1 = new PopupMenu(MainActivity.this, linear_control_b3);
+			Menu menu1 = popup1.getMenu();
+			menu1.add(getResources().getString(R.string.linear_control_b3_desk));
+			menu1.add(getResources().getString(R.string.linear_control_b3_mobi));
+			menu1.add(getResources().getString(R.string.linear_control_b3_cus));
+			popup1.setOnMenuItemClickListener(item -> {
+				if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk))) {
+					webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent, getResources().getString(R.string.webUserAgent_end)));
+					last_desktop = desktop;
+					desktop = 1;
+					desktop_switch.setImageResource(R.drawable.ic_desktop_black);
+					linear_control_b2.performClick();
+				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
+					webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
+					last_desktop = desktop;
+					desktop = 0;
+					desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
+					linear_control_b2.performClick();
+				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
+					dialog.setTitle(getResources().getString(R.string.ua));
+					dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
+					final EditText custom_ua = new EditText(MainActivity.this);
+					LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+					custom_ua.setLayoutParams(lp);
+					dialog.setView(custom_ua);
+					dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+						if (custom_ua.length() == 0) {
 							webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
-							last_desktop = desktop;
-							desktop = 0;
+							linear_control_b2.performClick();
 							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
+							desktop = 0;
+						} else {
+							webview.getSettings().setUserAgentString(custom_ua.getText().toString());
 							linear_control_b2.performClick();
-						} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
-							dialog.setTitle(getResources().getString(R.string.ua));
-							dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
-							final EditText custom_ua = new EditText(MainActivity.this);
-							LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-							custom_ua.setLayoutParams(lp);
-							dialog.setView(custom_ua);
-							dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface _dialog, int _which) {
-									if (custom_ua.length() == 0) {
-										webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
-										linear_control_b2.performClick();
-										desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
-										desktop = 0;
-									} else {
-										webview.getSettings().setUserAgentString(custom_ua.getText().toString());
-										linear_control_b2.performClick();
-									}
-								}
-							});
-							dialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface _dialog, int _which) {
-									if (last_desktop == 0) {
-										desktop = last_desktop;
-										desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
-									} else {
-										if (last_desktop == 1) {
-											desktop = last_desktop;
-											desktop_switch.setImageResource(R.drawable.ic_desktop_black);
-										} else {
-											if (last_desktop == 2) {
-												desktop = last_desktop;
-												desktop_switch.setImageResource(R.drawable.ic_edit_black);
-											} else {
-												throw new RuntimeException(getResources().getString(R.string.last_desktop_range_elog));
-											}
-										}
-									}
-								}
-							});
-							dialog.setCancelable(false);
-							dialog.create().show();
-							last_desktop = desktop;
-							desktop = 2;
-							desktop_switch.setImageResource(R.drawable.ic_edit_black);
-						}
-						return false;
-					}
-				});
-				popup1.show();
-			}
-		});
-		
-		linear_control_b4.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				PopupMenu popup2 = new PopupMenu(MainActivity.this, linear_control_b3);
-				Menu menu2 = popup2.getMenu();
-				menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
-				menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
-				menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
-				menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.all)));
-				popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-					@Override
-					public boolean onMenuItemClick(MenuItem item){
-						if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
-							webview.clearCache(true);
-							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
-							linear_control_b2.performClick();
-						} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
-							webview.clearHistory();
-							BrowservioSaverUtils.setPref(browservio_saver, "history", "");
-							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
-							linear_control_b2.performClick();
-						} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-							CookieManager.getInstance().removeAllCookies(null);
-							CookieManager.getInstance().flush();
-							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
-							linear_control_b2.performClick();
-						} else if (item.getTitle().toString().contains(getResources().getString(R.string.all))) {
-							webview.clearCache(true);
-							webview.clearHistory();
-							BrowservioSaverUtils.setPref(browservio_saver, "history", "");
-							CookieManager.getInstance().removeAllCookies(null);
-							            CookieManager.getInstance().flush();
-							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.all)));
-							linear_control_b2.performClick();
-						}
-						return false;
-					}
-				});
-				popup2.show();
-			}
-		});
-		
-		linear_control_b5.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				Intent i = new Intent(android.content.Intent.ACTION_SEND);
-				i.setType("text/plain");
-				i.putExtra(android.content.Intent.EXTRA_TEXT, webview.getUrl());
-				startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
-			}
-		});
-		
-		linear_control_b6.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				i.setClass(getApplicationContext(), SettingsActivity.class);
-				startActivity(i);
-			}
-		});
-		
-		linear_control_b9.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				if (!BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
-					dhist.setTitle(getResources().getString(R.string.history));
-					dhist.setMessage(BrowservioSaverUtils.getPref(browservio_saver, "history"));
-					dhist.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface _dialog, int _which) {
-							
 						}
 					});
-					dhist.setNeutralButton(android.R.string.copy, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface _dialog, int _which) {
-							getApplicationContext();
-							((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(browservio_saver, "history")));
-							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
-						}
-					});
-					dhist.setNegativeButton(getResources().getString(R.string.clear, ""), new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface _dialog, int _which) {
-							BrowservioSaverUtils.setPref(browservio_saver, "history", "");
-							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
-						}
-					});
-					dhist.create().show();
-				}
-				else {
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
-				}
-			}
-		});
-		
-		linear_control_b10.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				PopupMenu popup3 = new PopupMenu(MainActivity.this, linear_control_b3);
-				Menu menu3 = popup3.getMenu();
-				menu3.add(getResources().getString(R.string.add_dot));
-				menu3.add(getResources().getString(R.string.favs));
-				popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-					@Override
-					public boolean onMenuItemClick(MenuItem item){
-						if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
-							if (BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count").equals("")) {
-								BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", "0");
+					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
+						if (last_desktop == 0) {
+							desktop = last_desktop;
+							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
+						} else {
+							if (last_desktop == 1) {
+								desktop = last_desktop;
+								desktop_switch.setImageResource(R.drawable.ic_desktop_black);
 							} else {
-								BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")) + 1)));
+								if (last_desktop == 2) {
+									desktop = last_desktop;
+									desktop_switch.setImageResource(R.drawable.ic_edit_black);
+								} else {
+									throw new RuntimeException(getResources().getString(R.string.last_desktop_range_elog));
+								}
 							}
-							BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")), webview.getUrl());
-							BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_show"), "1");
-							SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
-						} else if (item.getTitle().toString().equals(getResources().getString(R.string.favs))) {
-							if (bookmarks.getAll().size() == 0) {
-								SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
-							} else {
-								i.setClass(getApplicationContext(), FavActivity.class);
-								startActivity(i);
-							}
-
 						}
-						return false;
-					}
-				});
-				popup3.show();
-			}
-		});
-		
-		linear_control_b8.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				finish();
-			}
-		});
-
-		favicon.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				favicondialog.setTitle(getResources().getString(R.string.favicondialog_title));
-				favicondialog.setMessage(UrlTitle);
-				favicondialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-
-					}
-				});
-				favicondialog.setNeutralButton(android.R.string.copy, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-						getApplicationContext();
-						((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
-						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
-					}
-				});
-				/*favicondialog.setNegativeButton(getResources().getString(, ""), new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface _dialog, int _which) {
-					}
-				});*/
-				favicondialog.create().show();
-			}
-		});
-		
-		_fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				baranim.setTarget(_fab);
-				barrrrrr.setTarget(hscroll_control);
-				baranim.setPropertyName("rotation");
-				barrrrrr.setPropertyName("alpha");
-				baranim.setDuration(250);
-				barrrrrr.setDuration(250);
-				if (linear_control.getVisibility() == View.VISIBLE) {
-					baranim.setFloatValues((float)(180), (float)(0));
-					barrrrrr.setFloatValues((float)(1), (float)(0));
-					linear_control.setVisibility(View.GONE);
-				} else {
-					linear_control.setVisibility(View.VISIBLE);
-					baranim.setFloatValues((float)(0), (float)(180));
-					barrrrrr.setFloatValues((float)(0), (float)(1));
+					});
+					dialog.setCancelable(false);
+					dialog.create().show();
+					last_desktop = desktop;
+					desktop = 2;
+					desktop_switch.setImageResource(R.drawable.ic_edit_black);
 				}
-				baranim.start();
-				barrrrrr.start();
+				return false;
+			});
+			popup1.show();
+		});
+		
+		linear_control_b4.setOnClickListener(_view -> {
+			PopupMenu popup2 = new PopupMenu(MainActivity.this, linear_control_b3);
+			Menu menu2 = popup2.getMenu();
+			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
+			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
+			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
+			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.all)));
+			popup2.setOnMenuItemClickListener(item -> {
+				if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
+					webview.clearCache(true);
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
+					linear_control_b2.performClick();
+				} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
+					webview.clearHistory();
+					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+					linear_control_b2.performClick();
+				} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
+					CookieManager.getInstance().removeAllCookies(null);
+					CookieManager.getInstance().flush();
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
+					linear_control_b2.performClick();
+				} else if (item.getTitle().toString().contains(getResources().getString(R.string.all))) {
+					webview.clearCache(true);
+					webview.clearHistory();
+					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
+					CookieManager.getInstance().removeAllCookies(null);
+								CookieManager.getInstance().flush();
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.all)));
+					linear_control_b2.performClick();
+				}
+				return false;
+			});
+			popup2.show();
+		});
+		
+		linear_control_b5.setOnClickListener(_view -> {
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.setType("text/plain");
+			i.putExtra(Intent.EXTRA_TEXT, webview.getUrl());
+			startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
+		});
+		
+		linear_control_b6.setOnClickListener(_view -> {
+			i.setClass(getApplicationContext(), SettingsActivity.class);
+			startActivity(i);
+		});
+		
+		linear_control_b9.setOnClickListener(_view -> {
+			if (!BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
+				dhist.setTitle(getResources().getString(R.string.history));
+				dhist.setMessage(BrowservioSaverUtils.getPref(browservio_saver, "history"));
+				dhist.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+
+				});
+				dhist.setNeutralButton(android.R.string.copy, (_dialog, _which) -> {
+					getApplicationContext();
+					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(browservio_saver, "history")));
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+				});
+				dhist.setNegativeButton(getResources().getString(R.string.clear, ""), (_dialog, _which) -> {
+					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+				});
+				dhist.create().show();
 			}
+			else {
+				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
+			}
+		});
+		
+		linear_control_b10.setOnClickListener(_view -> {
+			PopupMenu popup3 = new PopupMenu(MainActivity.this, linear_control_b3);
+			Menu menu3 = popup3.getMenu();
+			menu3.add(getResources().getString(R.string.add_dot));
+			menu3.add(getResources().getString(R.string.favs));
+			popup3.setOnMenuItemClickListener(item -> {
+				if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
+					if (BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count").equals("")) {
+						BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", "0");
+					} else {
+						BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")) + 1)));
+					}
+					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")), webview.getUrl());
+					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_show"), "1");
+					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
+				} else if (item.getTitle().toString().equals(getResources().getString(R.string.favs))) {
+					if (bookmarks.getAll().size() == 0) {
+						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+					} else {
+						i.setClass(getApplicationContext(), FavActivity.class);
+						startActivity(i);
+					}
+
+				}
+				return false;
+			});
+			popup3.show();
+		});
+		
+		linear_control_b8.setOnClickListener(_view -> finish());
+
+		favicon.setOnClickListener(_view -> {
+			favicondialog.setTitle(getResources().getString(R.string.favicondialog_title));
+			favicondialog.setMessage(UrlTitle);
+			favicondialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+
+			});
+			favicondialog.setNeutralButton(android.R.string.copy, (_dialog, _which) -> {
+				getApplicationContext();
+				((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
+				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+			});
+			/*favicondialog.setNegativeButton(getResources().getString(, ""), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface _dialog, int _which) {
+				}
+			});*/
+			favicondialog.create().show();
+		});
+		
+		_fab.setOnClickListener(_view -> {
+			baranim.setTarget(_fab);
+			barrrrrr.setTarget(hscroll_control);
+			baranim.setPropertyName("rotation");
+			barrrrrr.setPropertyName("alpha");
+			baranim.setDuration(250);
+			barrrrrr.setDuration(250);
+			if (linear_control.getVisibility() == View.VISIBLE) {
+				baranim.setFloatValues((float)(180), (float)(0));
+				barrrrrr.setFloatValues((float)(1), (float)(0));
+				linear_control.setVisibility(View.GONE);
+			} else {
+				linear_control.setVisibility(View.VISIBLE);
+				baranim.setFloatValues((float)(0), (float)(180));
+				barrrrrr.setFloatValues((float)(0), (float)(1));
+			}
+			baranim.start();
+			barrrrrr.start();
 		});
 	}
 	private void initializeLogic() {
@@ -485,16 +402,13 @@ public class MainActivity extends AppCompatActivity {
 		setTitle(getResources().getString(R.string.app_name));
 		webview.setWebChromeClient(new CustomWebClient());
 		// Keyboard press = browse
-		urledit.setOnEditorActionListener(new EditText.OnEditorActionListener() { 
-			  public boolean
-			  onEditorAction(TextView v, int actionId, KeyEvent event) { 
-				    if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
-				    		_browservio_browse(urledit.getText().toString());
-					        return true; 
-					    } 
-				    return false; 
-				  } 
-		});
+		urledit.setOnEditorActionListener((v, actionId, event) -> {
+			  if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
+					  _browservio_browse(urledit.getText().toString());
+					  return true;
+				  }
+			  return false;
+			});
 		// Page stuff
 		page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 		// desktopMode init code
@@ -575,7 +489,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 			if ("text/html".equals(type) || "text/plain".equals(type) || "application/xhtml+xml".equals(type) || "application/vnd.wap.xhtml+xml".equals(type) || "http".equals(scheme) || "https".equals(scheme) || "ftp".equals(scheme) || "file".equals(scheme)) {
-				Uri uri = intent != null ? getIntent().getData() : null;
+				Uri uri = getIntent().getData();
 				_browservio_browse(uri.toString());
 			}
 		}
@@ -645,23 +559,18 @@ public class MainActivity extends AppCompatActivity {
 		_firstLaunch();
 	}
 	private void _downloadManager (final WebView _webview) {
-		_webview.setDownloadListener(new DownloadListener() {
-			    @Override
-			    public void onDownloadStart(String url, String userAgent,
-			                                    String contentDisposition, String mimetype,
-			                                    long contentLength) {
-				            DownloadManager.Request request = new DownloadManager.Request(
-				                    Uri.parse(url));
+		_webview.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+					DownloadManager.Request request = new DownloadManager.Request(
+							Uri.parse(url));
 
-				            request.allowScanningByMediaScanner();
-				            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-				            final String filename= URLUtil.guessFileName(url, contentDisposition, mimetype);
-				            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-				            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-				            dm.enqueue(request);
+					request.allowScanningByMediaScanner();
+					request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+					final String filename= URLUtil.guessFileName(url, contentDisposition, mimetype);
+					request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+					DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+					dm.enqueue(request);
 
-				        }
-			    });
+				});
 	}
 
 	private void _history_saviour() {
@@ -832,19 +741,16 @@ public class MainActivity extends AppCompatActivity {
 		mediaPlayer = new MediaPlayer();
 		mediaPlayer = MediaPlayer.create(getApplicationContext(), resID[position]);
 		mediaPlayer.start();
-		mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-			@Override
-			public void onCompletion(MediaPlayer mp) {
+		mediaPlayer.setOnCompletionListener(mp -> {
 
-				if (timesPosition<times){
-					if (songPosition <= to){
-						songPosition = songPosition + 1;
-					} else {
-						songPosition = from;
-						songPosition = timesPosition + timesPosition + 1;
-					}
-					playSong(songPosition);
+			if (timesPosition<times){
+				if (songPosition <= to){
+					songPosition = songPosition + 1;
+				} else {
+					songPosition = from;
+					songPosition = timesPosition + timesPosition + 1;
 				}
+				playSong(songPosition);
 			}
 		});
 	}
