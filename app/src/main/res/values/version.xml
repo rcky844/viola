@@ -6,4 +6,5 @@
     <string	name="versionDate" translatable="false">2021-06-13</string>
     <string	name="webUserAgent" translatable="false">"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 %s"</string>
     <string name="webUserAgent_end" translatable="false">Browservio/1.4.0_beroku_snaps_20210613a</string>
+    <string name="configVersion" translatable="false">11</string>
 </resources>

@@ -741,7 +741,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionCodename", getResources().getString(R.string.versionCodename)).apply();
 		browservio_saver.edit().putString("versionCode", String.valueOf(info.versionCode)).apply();
 		browservio_saver.edit().putString("versionDate", getResources().getString(R.string.versionDate)).apply();
-		if (!browservio_saver.getString("configVersion", "").equals("11") && !browservio_saver.getString("configVersion", "").equals("")) {
+		if (!getResources().getString(R.string.configVersion).equals("11")) {
 			dialog.setTitle(getResources().getString(R.string.dialog_reset_title));
 			dialog.setMessage(getResources().getString(R.string.dialog_reset_message));
 			dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -773,7 +773,7 @@ public class MainActivity extends AppCompatActivity {
 			finish();
 			startActivity(i);
 		}
-		if (!browservio_saver.getString("configVersion", "").equals("11") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
+		if (!getResources().getString(R.string.configVersion).equals("11") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
 			browservio_saver.edit().putString("defaultHomePage", getResources().getString(R.string.url_default_homepage, "")).apply();
 			browservio_saver.edit().putString("defaultSearch", getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix))).apply();
@@ -782,7 +782,6 @@ public class MainActivity extends AppCompatActivity {
 			browservio_saver.edit().putString("showBrowseBtn", "0").apply();
 			browservio_saver.edit().putString("showZoomKeys", "0").apply();
 			browservio_saver.edit().putString("showCustomError", "1").apply();
-			browservio_saver.edit().putString("configVersion", "11").apply();
 			browservio_saver.edit().putString("isFirstLaunch", "0").apply();
 		}
 		// Settings check
@@ -812,7 +811,7 @@ public class MainActivity extends AppCompatActivity {
 
 		defaulterror = !browservio_saver.getString("showCustomError", "").equals("1");
 		webview.getSettings().setDisplayZoomControls(browservio_saver.getString("showZoomKeys", "").equals("1"));
-		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).apply();
+		browservio_saver.edit().putString("lastConfigVersion", getResources().getString(R.string.configVersion)).apply();
 		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).apply();
 
 		// Need load

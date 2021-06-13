@@ -425,7 +425,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				dabt.setTitle(getResources().getString(R.string.version_info_title));
-				dabt.setMessage(getResources().getString(R.string.version_info_message, browservio_saver.getString("versionName", ""), browservio_saver.getString("versionCodename", ""), browservio_saver.getString("versionTechnical", ""), browservio_saver.getString("versionFamily", ""), browservio_saver.getString("versionCode", ""), browservio_saver.getString("versionDate", ""), browservio_saver.getString("configVersion", "")));
+				dabt.setMessage(getResources().getString(R.string.version_info_message, browservio_saver.getString("versionName", ""), browservio_saver.getString("versionCodename", ""), browservio_saver.getString("versionTechnical", ""), browservio_saver.getString("versionFamily", ""), browservio_saver.getString("versionCode", ""), browservio_saver.getString("versionDate", ""), getResources().getString(R.string.configVersion)));
 				dabt.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
