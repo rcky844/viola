@@ -835,7 +835,7 @@ public class MainActivity extends AppCompatActivity {
 		// Need load
 		if (browservio_saver.getString("needLoad", "0").equals("1")) {
 			_browservio_browse(browservio_saver.getString("needLoadUrl", ""));
-			browservio_saver.edit().putInt("needLoad", 0).apply();
+			browservio_saver.edit().putString("needLoad", "0").apply();
 		}
 	}
 
