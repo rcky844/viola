@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -70,7 +69,6 @@ public class SettingsActivity extends AppCompatActivity {
 	private AlertDialog.Builder dabt;
 	private AlertDialog.Builder drst;
 	private AlertDialog.Builder diazoomrestart;
-	private final Intent telegrambot = new Intent();
 	private final ObjectAnimator Sherlockanimation = new ObjectAnimator();
 
 	boolean writingScreen = true;
@@ -441,18 +439,18 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_feed.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse(getResources().getString(R.string.url_bug_report)));
-				startActivity(telegrambot);
+				browservio_saver.edit().putString("needLoad", "1").apply();
+				browservio_saver.edit().putString("needLoadUrl", getResources().getString(R.string.url_bug_report)).apply();
+				finish();
 			}
 		});
 		
 		linear_source.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				telegrambot.setAction(Intent.ACTION_VIEW);
-				telegrambot.setData(Uri.parse(getResources().getString(R.string.url_source_code)));
-				startActivity(telegrambot);
+				browservio_saver.edit().putString("needLoad", "1").apply();
+				browservio_saver.edit().putString("needLoadUrl", getResources().getString(R.string.url_source_code)).apply();
+				finish();
 			}
 		});
 	}
