@@ -494,7 +494,9 @@ public class MainActivity extends AppCompatActivity {
 		// Custom error page
 		webview.setWebViewClient(new WebViewClient() {
 			public void onPageStarted (WebView view, String url, Bitmap favicon) {
-				urledit.setText(url);
+				if (!urledit.getText().toString().equals(url)) {
+					urledit.setText(url);
+				}
 			}
 			public void onPageFinished (WebView view, String url) {
 				if (bitmipUpdated_q) {
