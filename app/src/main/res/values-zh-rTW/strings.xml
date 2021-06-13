@@ -129,6 +129,7 @@
             		-->
 	<string name="fav">收藏夾</string>
 
+	<!-- JAVA -->
 	<!-- Delete favourite dialog -->
 	<string name="del_fav_title">您想刪除這個收藏嗎?</string>
 	<string name="del_success">刪除成功!"</string>
@@ -140,4 +141,7 @@
 
 	<!-- Populating dialog -->
 	<string name="populating_dialog_message">填充收藏中…</string>
+
+	<!-- ACCESSIBILITY DESCRIPTION -->
+	<string name="fav_del_fab_desp">刪除所有收藏</string>
 </resources>
