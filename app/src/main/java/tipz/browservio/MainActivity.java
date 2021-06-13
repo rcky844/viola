@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
+	private AlertDialog.Builder favicondialog;
 	private final Intent i = new Intent();
 	private MediaPlayer mediaPlayer;
 	private final ObjectAnimator baranim = new ObjectAnimator();
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
 	boolean bitmipUpdated_q = false;
 	String checkedUrl;
+	String UrlTitle;
 
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -151,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dhist = new AlertDialog.Builder(this);
+		favicondialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
 		
@@ -444,6 +447,36 @@ public class MainActivity extends AppCompatActivity {
 				finish();
 			}
 		});
+
+		favicon.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				favicondialog.setTitle(getResources().getString(R.string.favicondialog_title));
+				favicondialog.setMessage(UrlTitle);
+				favicondialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+
+					}
+				});
+				favicondialog.setNeutralButton(android.R.string.copy, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						getApplicationContext();
+						((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
+						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+					}
+				});
+				/*favicondialog.setNegativeButton(getResources().getString(, ""), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface _dialog, int _which) {
+						browservio_saver.edit().putString("history", "").apply();
+						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+					}
+				});*/
+				favicondialog.create().show();
+			}
+		});
 		
 		_fab.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -531,6 +564,9 @@ public class MainActivity extends AppCompatActivity {
 			public void onReceivedIcon(WebView view, Bitmap icon) {
 				bitmipUpdated_q = true;
 				favicon.setImageBitmap(icon);
+			}
+			public void onReceivedTitle (WebView view, String title) {
+				UrlTitle = title;
 			}
 		});
 		if (!browservio_saver.getString("defaultHomePage", "").equals("")) {

@@ -49,6 +49,9 @@
 	<string name="saved_su">添加成功!</string>
 	<string name="fav_list_empty">沒有已添加的收藏</string>
 
+	<!-- Favicon -->
+	<string name="favicondialog_title">網站標題</string>
+
 	<!-- LAYOUT -->
 	<string name="address_bar_hint">"搜索或輸入網址…"</string>
 
