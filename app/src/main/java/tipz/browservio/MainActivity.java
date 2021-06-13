@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
 	private MediaPlayer mediaPlayer;
 	private final ObjectAnimator baranim = new ObjectAnimator();
 	private TimerTask error_defuse;
-	private TimerTask reset;
 	private final ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private SharedPreferences bookmarks;
@@ -840,21 +839,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void restart_app() {
-		reset = new TimerTask() {
-			@Override
-			public void run() {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Intent i = getIntent();
-						finish();
-						startActivity(i);
-						reset.cancel();
-					}
-				});
-			}
-		};
-		_timer.schedule(reset, 0, 3000);
+		Intent i = getIntent();
+		finish();
+		startActivity(i);
 	}
 
 	private void playSong(int position) {
