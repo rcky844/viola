@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b7.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				webview.loadUrl(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
+				_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
 			}
 		});
 		
