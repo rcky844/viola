@@ -790,6 +790,9 @@ public class MainActivity extends AppCompatActivity {
 		webview.getSettings().setDisplayZoomControls(browservio_saver.getString("showZoomKeys", "").equals("1"));
 		browservio_saver.edit().putString("lastConfigVersion", browservio_saver.getString("configVersion", "")).apply();
 		browservio_saver.edit().putString("lastVersionCode", browservio_saver.getString("versionCode", "")).apply();
+
+		// Need load
+		_browservio_browse(browservio_saver.getString("needLoad", ""));
 	}
 
 	private void restart_app() {
