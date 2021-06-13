@@ -500,7 +500,9 @@ public class MainActivity extends AppCompatActivity {
 				if (bitmipUpdated_q) {
 					favicon.setImageResource(R.drawable.outline_public_24);
 				}
-				urledit.setText(url);
+				if (!urledit.getText().toString().equals(url)) {
+					urledit.setText(url);
+				}
 				bitmipUpdated_q = false;
 			}
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
