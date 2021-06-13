@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
+import tipz.browservio.Utils.BrowservioSaverUtils;
+
 public class SettingsActivity extends AppCompatActivity {
 
 	private LinearLayout linear_general;
@@ -205,7 +207,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				dialog1.setTitle(getResources().getString(R.string.search_engine));
-				dialog1.setMessage(getResources().getString(R.string.search_engine_dialog_message, getResources().getString(R.string.search_engine_current, browservio_saver.getString("defaultSearch", ""))));
+				dialog1.setMessage(getResources().getString(R.string.search_engine_dialog_message, getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch"))));
 				final EditText custom_se = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
 				custom_se.setLayoutParams(lp2); dialog1.setView(custom_se);
 				dialog1.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -213,8 +215,8 @@ public class SettingsActivity extends AppCompatActivity {
 					public void onClick(DialogInterface _dialog, int _which) {
 						if (!custom_se.getText().toString().equals("") && custom_se.getText().toString().contains("{term}"))
 						{
-							browservio_saver.edit().putString("defaultSearch", custom_se.getText().toString()).apply();
-							textview5.setText(getResources().getString(R.string.search_engine_current, browservio_saver.getString("defaultSearch", "")));
+							BrowservioSaverUtils.setPref(browservio_saver, "defaultSearch", custom_se.getText().toString());
+							textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
 						}
 					}
 				});
@@ -233,7 +235,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				dialog.setTitle(getResources().getString(R.string.homepage));
-				dialog.setMessage(getResources().getString(R.string.homepage_current, browservio_saver.getString("defaultHomePage", "")));
+				dialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
 				final EditText custom_hp = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT); 
 				custom_hp.setLayoutParams(lp); dialog.setView(custom_hp);
 				dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -241,8 +243,8 @@ public class SettingsActivity extends AppCompatActivity {
 					public void onClick(DialogInterface _dialog, int _which) {
 						if (!custom_hp.getText().toString().equals(""))
 						{
-							browservio_saver.edit().putString("defaultHomePage", custom_hp.getText().toString()).apply();
-							textview5.setText(getResources().getString(R.string.homepage_current, browservio_saver.getString("defaultHomePage", "")));
+							BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", custom_hp.getText().toString());
+							textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
 						}
 					}
 				});
@@ -275,7 +277,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 					dialogendp.setTitle(getResources().getString(R.string.action_bar_endp));
-					dialogendp.setMessage(browservio_saver.getString("endpPadding", "").concat("dp"));
+					dialogendp.setMessage(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding").concat("dp"));
 					final EditText custom_hp2 = new EditText(SettingsActivity.this);
 					LinearLayout.LayoutParams lpdnep = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 					custom_hp2.setLayoutParams(lpdnep);
@@ -284,8 +286,8 @@ public class SettingsActivity extends AppCompatActivity {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
 							if (!custom_hp2.getText().toString().equals("")) {
-								browservio_saver.edit().putString("endpPadding", custom_hp2.getText().toString()).apply();
-								textview5.setText(browservio_saver.getString("endpPadding", "").concat("dp"));
+								BrowservioSaverUtils.setPref(browservio_saver, "endpPadding", custom_hp2.getText().toString());
+								textview5.setText(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding").concat("dp"));
 							}
 						}
 					});
@@ -308,7 +310,7 @@ public class SettingsActivity extends AppCompatActivity {
 				drst.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
-						browservio_saver.edit().putString("isFirstLaunch", "1").apply();
+						BrowservioSaverUtils.setPref(browservio_saver, "isFirstLaunch", "1");
 						finish();
 					}
 				});
@@ -326,10 +328,10 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				if (_param2) {
-					browservio_saver.edit().putString("showBrowseBtn", "1").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "showBrowseBtn", "1");
 				}
 				else {
-					browservio_saver.edit().putString("showBrowseBtn", "0").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "showBrowseBtn", "0");
 				}
 			}
 		});
@@ -338,10 +340,10 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				if (_param2) {
-					browservio_saver.edit().putString("showZoomKeys", "1").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "showZoomKeys", "1");
 				}
 				else {
-					browservio_saver.edit().putString("showZoomKeys", "0").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "showZoomKeys", "0");
 				}
 				if (!writingScreen) {
 					diazoomrestart.setTitle(getResources().getString(R.string.restart_app_q));
@@ -349,7 +351,7 @@ public class SettingsActivity extends AppCompatActivity {
 					diazoomrestart.setPositiveButton(getResources().getString(R.string.restart_app_now), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface _dialog, int _which) {
-							browservio_saver.edit().putString("needRestart", "1").apply();
+							BrowservioSaverUtils.setPref(browservio_saver, "needRestart", "1");
 							finish();
 						}
 					});
@@ -389,10 +391,10 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				if (_param2) {
-					browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "isJavaScriptEnabled", "1");
 				}
 				else {
-					browservio_saver.edit().putString("isJavaScriptEnabled", "0").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "isJavaScriptEnabled", "0");
 				}
 			}
 		});
@@ -401,10 +403,10 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				if (_param2) {
-					browservio_saver.edit().putString("showFavicon", "1").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "showFavicon", "1");
 				}
 				else {
-					browservio_saver.edit().putString("showFavicon", "0").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "showFavicon", "0");
 				}
 			}
 		});
@@ -413,10 +415,10 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				if (_param2) {
-					browservio_saver.edit().putString("showCustomError", "1").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "showCustomError", "1");
 				}
 				else {
-					browservio_saver.edit().putString("showCustomError", "0").apply();
+					BrowservioSaverUtils.setPref(browservio_saver, "showCustomError", "0");
 				}
 			}
 		});
@@ -425,7 +427,7 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				dabt.setTitle(getResources().getString(R.string.version_info_title));
-				dabt.setMessage(getResources().getString(R.string.version_info_message, browservio_saver.getString("versionName", ""), browservio_saver.getString("versionCodename", ""), browservio_saver.getString("versionTechnical", ""), browservio_saver.getString("versionFamily", ""), browservio_saver.getString("versionCode", ""), browservio_saver.getString("versionDate", ""), getResources().getString(R.string.configVersion)));
+				dabt.setMessage(getResources().getString(R.string.version_info_message, BrowservioSaverUtils.getPref(browservio_saver, "versionName"), BrowservioSaverUtils.getPref(browservio_saver, "versionCodename"), BrowservioSaverUtils.getPref(browservio_saver, "versionTechnical"), BrowservioSaverUtils.getPref(browservio_saver, "versionFamily"), BrowservioSaverUtils.getPref(browservio_saver, "versionCode"), BrowservioSaverUtils.getPref(browservio_saver, "versionDate"), getResources().getString(R.string.configVersion)));
 				dabt.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
@@ -439,8 +441,8 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_feed.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				browservio_saver.edit().putString("needLoad", "1").apply();
-				browservio_saver.edit().putString("needLoadUrl", getResources().getString(R.string.url_bug_report)).apply();
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", getResources().getString(R.string.url_bug_report));
 				finish();
 			}
 		});
@@ -448,33 +450,33 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_source.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				browservio_saver.edit().putString("needLoad", "1").apply();
-				browservio_saver.edit().putString("needLoadUrl", getResources().getString(R.string.url_source_code)).apply();
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", getResources().getString(R.string.url_source_code));
 				finish();
 			}
 		});
 	}
 	private void initializeLogic() {
 		setTitle(getResources().getString(R.string.settings));
-		if (browservio_saver.getString("isJavaScriptEnabled", "").equals("1")) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1")) {
 			checkbox1.setChecked(true);
 		}
-		if (browservio_saver.getString("showFavicon", "").equals("1")) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, "showFavicon").equals("1")) {
 			checkbox2.setChecked(true);
 		}
-		if (browservio_saver.getString("showBrowseBtn", "").equals("1")) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, "showBrowseBtn").equals("1")) {
 			checkbox3.setChecked(true);
 		}
-		if (browservio_saver.getString("showZoomKeys", "").equals("1")) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, "showZoomKeys").equals("1")) {
 			checkbox5.setChecked(true);
 		}
-		if (browservio_saver.getString("showCustomError", "").equals("1")) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1")) {
 			checkbox4.setChecked(true);
 		}
-		textview5.setText(getResources().getString(R.string.homepage_current, browservio_saver.getString("defaultHomePage", "")));
-		textview9.setText(getResources().getString(R.string.search_engine_current, browservio_saver.getString("defaultSearch", "")));
-		textviewendp2.setText(browservio_saver.getString("endpPadding", "").concat("dp"));
-		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(browservio_saver.getString("versionName", "")));
+		textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
+		textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
+		textviewendp2.setText(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding").concat("dp"));
+		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(BrowservioSaverUtils.getPref(browservio_saver, "versionName")));
 		writingScreen = false;
 	}
 	

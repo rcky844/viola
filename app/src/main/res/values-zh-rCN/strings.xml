@@ -21,10 +21,6 @@
 	<!-- Toast shown when file starts downloading -->
 	<string	name="downloading_toast">下载文件中…</string>
 
-	<!-- Dialog shown when the app is reset after updating -->
-	<string	name="dialog_reset_title">您的程式已被重置!</string>
-	<string	name="dialog_reset_message">"为了确保稳定性, 我们已将您的设置重置为默认值, 因为您刚刚安装了添加新配置的更新"</string>
-
 	<!-- Dialog shown when the app is resetting -->
 	<string name="dialog_resetting_message">重置中…</string>
 

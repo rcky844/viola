@@ -27,6 +27,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import tipz.browservio.Utils.BrowservioSaverUtils;
 import tipz.browservio.Utils.SketchwareUtil;
 
 public class FavActivity extends AppCompatActivity {
@@ -73,8 +74,8 @@ public class FavActivity extends AppCompatActivity {
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
-				browservio_saver.edit().putString("needLoad", "1").apply();
-				browservio_saver.edit().putString("needLoadUrl", bookmarks.getString("bookmark_".concat(String.valueOf((long)(_param3))), "")).apply();
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_param3)))));
 				finish();
 			}
 		});
@@ -88,7 +89,7 @@ public class FavActivity extends AppCompatActivity {
 					@Override
 					public void onClick(DialogInterface _dialog, int _which) {
 						bookmark_list.remove(_position);
-						bookmarks.edit().putString("bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0").apply();
+						BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0");
 						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
 						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
 						isEmptyCheck(bookmark_list, bookmarks);
@@ -159,15 +160,15 @@ public class FavActivity extends AppCompatActivity {
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						if (!bookmarks.getString("bookmark_".concat(String.valueOf((long)(populate_count))).concat("_show"), "").equals("0")) {
-							if (bookmarks.getString("bookmark_".concat(String.valueOf((long)(populate_count))), "").equals("")) {
+						if (!BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_show")).equals("0")) {
+							if (BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))).equals("")) {
 								listview.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, bookmark_list));
 								populate.cancel();
 								prog.dismiss();
 								isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration
 							}
 							else {
-								bookmark_list.add(bookmarks.getString("bookmark_".concat(String.valueOf((long)(populate_count))), ""));
+								bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))));
 							}
 						}
 						populate_count++;

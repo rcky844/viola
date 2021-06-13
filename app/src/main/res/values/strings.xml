@@ -27,10 +27,6 @@
 	<!-- Toast shown when file starts downloading -->
 	<string	name="downloading_toast">"Downloading file…"</string>
 
-	<!-- Dialog shown when the app is reset after updating -->
-	<string	name="dialog_reset_title">"Your settings has been reset!"</string>
-	<string	name="dialog_reset_message">"To ensure stability, we've reset your settings to default because you've just installed an update that added a new config."</string>
-
 	<!-- Dialog shown when the app is resetting -->
 	<string name="dialog_resetting_message">"Resetting…"</string>
 
