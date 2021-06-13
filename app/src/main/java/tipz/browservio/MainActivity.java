@@ -767,7 +767,7 @@ public class MainActivity extends AppCompatActivity {
 			finish();
 			startActivity(i);
 		}
-		if (!getResources().getString(R.string.configVersion).equals("11") || (BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("") || BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1"))) {
+		if ((BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("") || BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1"))) {
 			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1");
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isJavaScriptEnabled", "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);
