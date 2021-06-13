@@ -768,15 +768,16 @@ public class MainActivity extends AppCompatActivity {
 			startActivity(i);
 		}
 		if (!getResources().getString(R.string.configVersion).equals("11") || (BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("") || BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1"))) {
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isJavaScriptEnabled", "1");
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""));
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultSearch", getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix)));
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "endpPadding", "500");
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showFavicon", "1");
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showBrowseBtn", "0");
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showZoomKeys", "0");
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showCustomError", "1");
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isFirstLaunch", "0");
+			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1");
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isJavaScriptEnabled", "1", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultSearch", getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix)), isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "endpPadding", "500", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showFavicon", "1", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showBrowseBtn", "0", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showZoomKeys", "0", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showCustomError", "1", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isFirstLaunch", "0", isEqualToOneFirstLaunch);
 		}
 		// Settings check
 		if (BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1")) {
