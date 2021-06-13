@@ -806,7 +806,6 @@ public class MainActivity extends AppCompatActivity {
 
 		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1");
 		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, "showZoomKeys").equals("1"));
-		BrowservioSaverUtils.setPref(browservio_saver, "lastConfigVersion", getResources().getString(R.string.configVersion));
 		BrowservioSaverUtils.setPref(browservio_saver, "lastVersionCode", BrowservioSaverUtils.getPref(browservio_saver, "versionCode"));
 
 		// Need load

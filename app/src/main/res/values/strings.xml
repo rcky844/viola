@@ -97,7 +97,7 @@
 
 	<!-- Version Info -->
 	<string name="version_info_title">"Version information"</string>
-	<string name="version_info_message">"Version name: %s\nVersion codename: %s\nVersion technical name: %s\nVersion family: %s\nVersion code: %s\nVersion build date: %s\nConfig version: %s</string>
+	<string name="version_info_message">"Version name: %s\nVersion codename: %s\nVersion technical name: %s\nVersion family: %s\nVersion code: %s\nVersion build date: %s</string>
 
 	<!-- LAYOUT -->
 	<!-- General -->
