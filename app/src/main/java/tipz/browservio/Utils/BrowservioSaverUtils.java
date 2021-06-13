@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 public class BrowservioSaverUtils {
     public static void checkIfEmpty(SharedPreferences perf, String tag, String defaultValue, boolean mustSet) {
         if (perf.getString(tag, "").equals("") || mustSet) {
-            perf.edit().putString(tag, defaultValue).apply();
+            setPref(perf, tag, defaultValue);
         }
     }
 
