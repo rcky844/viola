@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class UrlUtils {
 
-    private static final String BASIC_URL_REGEX = "^((https?|ftp)://)?(www\\.)?([\\w]+\\.)+[\u200C\u200B\\w]{2,63}/?.*$";
+    private static final String BASIC_URL_REGEX = "^((https?|ftp|file)://).*$";
     private static final Pattern p = Pattern.compile(BASIC_URL_REGEX);
 
     public static String UrlChecker(String url, boolean canBeSearch) {
@@ -14,14 +14,7 @@ public class UrlUtils {
             return url;
         }
         if (m.find()) {
-            if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://")) {
-                /*
-                if (url.startsWith("http://")) {
-                    return url.replaceFirst("http://", "https://");
-                }
-                */
-                return "https://" + url;
-            }
+            return "https://" + url;
         } else {
             if (canBeSearch) {
                 return "{se}" + url;
