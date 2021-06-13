@@ -378,21 +378,21 @@ public class SettingsActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		_setAllRipple(linear_general, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear_advenced, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear_about, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear_version, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear_feed, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear1_search, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear1_homepage, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear11, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear1_javascript, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear1_overrideempt, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear1_b0, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear13, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear_source, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linear_zoomkeys_b, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
-		_setAllRipple(linearendp, "#ffffff", "#3DDC84", 6, 2, "#3DDC84", "#3DDC84");
+		_setAllRipple(linear_general, "#ffffff", 6, 2);
+		_setAllRipple(linear_advenced, "#ffffff", 6, 2);
+		_setAllRipple(linear_about, "#ffffff", 6, 2);
+		_setAllRipple(linear_version, "#ffffff", 6, 2);
+		_setAllRipple(linear_feed, "#ffffff", 6, 2);
+		_setAllRipple(linear1_search, "#ffffff", 6, 2);
+		_setAllRipple(linear1_homepage, "#ffffff", 6, 2);
+		_setAllRipple(linear11, "#ffffff", 6, 2);
+		_setAllRipple(linear1_javascript, "#ffffff", 6, 2);
+		_setAllRipple(linear1_overrideempt, "#ffffff", 6, 2);
+		_setAllRipple(linear1_b0, "#ffffff", 6, 2);
+		_setAllRipple(linear13, "#ffffff", 6, 2);
+		_setAllRipple(linear_source, "#ffffff", 6, 2);
+		_setAllRipple(linear_zoomkeys_b, "#ffffff", 6, 2);
+		_setAllRipple(linearendp, "#ffffff", 6, 2);
 	}
 	private void _setRipple (final View _view) {
 		TypedValue typedValue = new TypedValue();
@@ -453,10 +453,11 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 	
 	
-	private void _setAllRipple (final View _view, final String _focus, final String _press, final double _round, final double _stroke, final String _colorStroke, final String _color) {
+	private void _setAllRipple(final View _view, final String _focus, final double _round, final double _stroke) {
+		String colorControlHighlight = String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorControlHighlight)));
 		_setRipple(_view);
-		_rippleRoundStroke(_view, _focus, _press, _round, _stroke, _colorStroke);
-		_ripple(_view, _color);
+		_rippleRoundStroke(_view, _focus, colorControlHighlight, _round, _stroke, colorControlHighlight);
+		_ripple(_view, colorControlHighlight);
 	}
 	
 	
