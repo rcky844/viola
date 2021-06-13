@@ -3,8 +3,6 @@ package tipz.browservio;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +39,7 @@ public class FavActivity extends AppCompatActivity {
 	
 	private ListView listview;
 	
+	private SharedPreferences browservio_saver;
 	private SharedPreferences bookmarks;
 	private TimerTask populate;
 	private AlertDialog.Builder del_fav;
@@ -67,15 +66,16 @@ public class FavActivity extends AppCompatActivity {
 		FloatingActionButton _fab = findViewById(R.id._fab);
 		
 		listview = findViewById(R.id.listview);
+		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		del_fav = new AlertDialog.Builder(this);
 		
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
-				getApplicationContext();
-				((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", bookmark_list.get(_param3)));
-				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+				final int _position = _param3;
+				browservio_saver.edit().putString("needLoad", bookmarks.getString("bookmark_".concat(String.valueOf((long)(_position))), "")).apply();
+				finish();
 			}
 		});
 		
