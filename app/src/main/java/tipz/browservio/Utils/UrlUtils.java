@@ -10,6 +10,9 @@ public class UrlUtils {
 
     public static String UrlChecker(String url, boolean canBeSearch) {
         Matcher m = p.matcher(url);
+        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("ftp://") || url.startsWith("file://")) {
+            return url;
+        }
         if (m.find()) {
             if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://")) {
                 /*
@@ -18,13 +21,8 @@ public class UrlUtils {
                 }
                 */
                 return "https://" + url;
-            } else {
-                return url;
             }
         } else {
-            if (url.startsWith("file://")) {
-                return url;
-            }
             if (canBeSearch) {
                 return "{se}" + url;
             }
