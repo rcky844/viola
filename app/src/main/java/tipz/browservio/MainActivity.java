@@ -177,21 +177,7 @@ public class MainActivity extends AppCompatActivity {
 				_browservio_browse(urledit.getText().toString());
 			}
 		});
-		
-		webview.setWebViewClient(new WebViewClient() {
-			@Override
-			public void onPageStarted(WebView _param1, String _param2, Bitmap _param3) {
 
-				super.onPageStarted(_param1, _param2, _param3);
-			}
-			
-			@Override
-			public void onPageFinished(WebView _param1, String _param2) {
-
-				super.onPageFinished(_param1, _param2);
-			}
-		});
-		
 		linear_control_b0.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
