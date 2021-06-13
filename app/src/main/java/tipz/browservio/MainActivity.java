@@ -57,15 +57,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import tipz.browservio.Utils.SketchwareUtil;
 import tipz.browservio.Utils.UrlUtils;
 
 public class MainActivity extends AppCompatActivity {
-	
-	private final Timer _timer = new Timer();
 	
 	private FloatingActionButton _fab;
 	private double desktop = 0;
@@ -91,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
 	private final Intent i = new Intent();
 	private MediaPlayer mediaPlayer;
 	private final ObjectAnimator baranim = new ObjectAnimator();
-	private TimerTask error_defuse;
 	private final ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private SharedPreferences bookmarks;
@@ -159,23 +154,6 @@ public class MainActivity extends AppCompatActivity {
 		browse.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (!browservio_saver.getString("overrideEmptyError", "").equals("1") && urledit.getText().toString().equals("")) {
-					if (urledit.getText().toString().equals("")) {
-						urledit.setError(getResources().getString(R.string.error_field_empty));
-						error_defuse = new TimerTask() {
-							@Override
-							public void run() {
-								runOnUiThread(new Runnable() {
-									@Override
-									public void run() {
-										urledit.setError(null);
-									}
-								});
-							}
-						};
-						_timer.schedule(error_defuse, 3000);
-					}
-				}
 				_browservio_browse(urledit.getText().toString());
 			}
 		});
@@ -763,7 +741,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver.edit().putString("versionCodename", getResources().getString(R.string.versionCodename)).apply();
 		browservio_saver.edit().putString("versionCode", String.valueOf(info.versionCode)).apply();
 		browservio_saver.edit().putString("versionDate", getResources().getString(R.string.versionDate)).apply();
-		if (!browservio_saver.getString("configVersion", "").equals("10") && !browservio_saver.getString("configVersion", "").equals("")) {
+		if (!browservio_saver.getString("configVersion", "").equals("11") && !browservio_saver.getString("configVersion", "").equals("")) {
 			dialog.setTitle(getResources().getString(R.string.dialog_reset_title));
 			dialog.setMessage(getResources().getString(R.string.dialog_reset_message));
 			dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -795,16 +773,16 @@ public class MainActivity extends AppCompatActivity {
 			finish();
 			startActivity(i);
 		}
-		if (!browservio_saver.getString("configVersion", "").equals("10") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
+		if (!browservio_saver.getString("configVersion", "").equals("11") || (browservio_saver.getString("isFirstLaunch", "").equals("") || browservio_saver.getString("isFirstLaunch", "").equals("1"))) {
 			browservio_saver.edit().putString("isJavaScriptEnabled", "1").apply();
 			browservio_saver.edit().putString("defaultHomePage", getResources().getString(R.string.url_default_homepage, "")).apply();
 			browservio_saver.edit().putString("defaultSearch", getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix))).apply();
 			browservio_saver.edit().putString("endpPadding", "500").apply();
-			browservio_saver.edit().putString("overrideEmptyError", "0").apply();
+			browservio_saver.edit().putString("showFavicon", "1").apply();
 			browservio_saver.edit().putString("showBrowseBtn", "0").apply();
 			browservio_saver.edit().putString("showZoomKeys", "0").apply();
 			browservio_saver.edit().putString("showCustomError", "1").apply();
-			browservio_saver.edit().putString("configVersion", "10").apply();
+			browservio_saver.edit().putString("configVersion", "11").apply();
 			browservio_saver.edit().putString("isFirstLaunch", "0").apply();
 		}
 		// Settings check
@@ -821,6 +799,12 @@ public class MainActivity extends AppCompatActivity {
 		}
 		else {
 			browse.setVisibility(View.GONE);
+		}
+		if (browservio_saver.getString("showFavicon", "").equals("1")) {
+			favicon.setVisibility(View.VISIBLE);
+		}
+		else {
+			favicon.setVisibility(View.GONE);
 		}
 		// Code to modify the action bar end padding
 		linear_control_endp.getLayoutParams().width = Integer.parseInt(browservio_saver.getString("endpPadding", ""));

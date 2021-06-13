@@ -191,6 +191,52 @@
 							android:layout_gravity="end|center_vertical"/>
 					</LinearLayout>
 					<LinearLayout
+						android:id="@+id/linear1_overrideempt"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="end"
+						android:orientation="horizontal"
+						android:layout_gravity="end">
+						<LinearLayout
+							android:id="@+id/linear1_overrideemp"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:orientation="vertical"
+							android:layout_weight="1">
+							<TextView
+								android:id="@+id/textview12"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:paddingLeft="8dp"
+								android:paddingTop="8dp"
+								android:paddingRight="8dp"
+								android:text="@string/show_favicon"
+								android:textSize="16sp"
+								android:textColor="@color/text_color"/>
+							<TextView
+								android:id="@+id/textview13"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:paddingLeft="8dp"
+								android:paddingTop="2dp"
+								android:paddingRight="8dp"
+								android:paddingBottom="8dp"
+								android:text="@string/show_favicon_desp"
+								android:textSize="12sp"
+								android:textColor="@color/text_color"/>
+						</LinearLayout>
+						<CheckBox
+							android:id="@+id/checkbox2"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:gravity="end|center_vertical"
+							android:textSize="12sp"
+							android:textColor="@color/text_color"
+							android:layout_gravity="end|center_vertical"/>
+					</LinearLayout>
+					<LinearLayout
 						android:id="@+id/linear_zoomkeys_b"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -335,52 +381,6 @@
 						</LinearLayout>
 						<CheckBox
 							android:id="@+id/checkbox1"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:padding="8dp"
-							android:gravity="end|center_vertical"
-							android:textSize="12sp"
-							android:textColor="@color/text_color"
-							android:layout_gravity="end|center_vertical"/>
-					</LinearLayout>
-					<LinearLayout
-						android:id="@+id/linear1_overrideempt"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:gravity="end"
-						android:orientation="horizontal"
-						android:layout_gravity="end">
-						<LinearLayout
-							android:id="@+id/linear1_overrideemp"
-							android:layout_width="0dp"
-							android:layout_height="wrap_content"
-							android:padding="8dp"
-							android:orientation="vertical"
-							android:layout_weight="1">
-							<TextView
-								android:id="@+id/textview12"
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:paddingLeft="8dp"
-								android:paddingTop="8dp"
-								android:paddingRight="8dp"
-								android:text="@string/goto_home"
-								android:textSize="16sp"
-								android:textColor="@color/text_color"/>
-							<TextView
-								android:id="@+id/textview13"
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:paddingLeft="8dp"
-								android:paddingTop="2dp"
-								android:paddingRight="8dp"
-								android:paddingBottom="8dp"
-								android:text="@string/goto_home_desp"
-								android:textSize="12sp"
-								android:textColor="@color/text_color"/>
-						</LinearLayout>
-						<CheckBox
-							android:id="@+id/checkbox2"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:padding="8dp"

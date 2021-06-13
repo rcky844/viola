@@ -401,10 +401,10 @@ public class SettingsActivity extends AppCompatActivity {
 			@Override
 			public void onCheckedChanged(CompoundButton _param1, boolean _param2)  {
 				if (_param2) {
-					browservio_saver.edit().putString("overrideEmptyError", "1").apply();
+					browservio_saver.edit().putString("showFavicon", "1").apply();
 				}
 				else {
-					browservio_saver.edit().putString("overrideEmptyError", "0").apply();
+					browservio_saver.edit().putString("showFavicon", "0").apply();
 				}
 			}
 		});
@@ -459,7 +459,7 @@ public class SettingsActivity extends AppCompatActivity {
 		if (browservio_saver.getString("isJavaScriptEnabled", "").equals("1")) {
 			checkbox1.setChecked(true);
 		}
-		if (browservio_saver.getString("overrideEmptyError", "").equals("1")) {
+		if (browservio_saver.getString("showFavicon", "").equals("1")) {
 			checkbox2.setChecked(true);
 		}
 		if (browservio_saver.getString("showBrowseBtn", "").equals("1")) {

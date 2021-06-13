@@ -117,8 +117,8 @@
 	<string name="advanced">Advanced</string>
 	<string name="javascript">"Enable JavaScript"</string>
 	<string name="javascript_desp">"Enabling JavaScript will give you a better browsing experience."</string>
-	<string name="goto_home">"Go to homepage when address bar is empty"</string>
-	<string name="goto_home_desp">"Go to homepage when the address bar is empty instead of showing an error."</string>
+	<string name="show_favicon">"Show favicon"</string>
+	<string name="show_favicon_desp">"Show the favicon of the webpage next to the address bar."</string>
 	<string name="show_cus_error">"Show custom error page"</string>
 	<string name="show_cus_error_desp">"Show a custom error page with audio effects when having trouble connecting to a website."</string>
 

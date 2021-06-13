@@ -111,8 +111,8 @@
 	<string name="advanced">進階</string>
 	<string name="javascript">啟用JavaScript</string>
 	<string name="javascript_desp">啟用JavaScript將為您提供更好的瀏覽體驗</string>
-	<string name="goto_home">地址欄為空時轉到主頁</string>
-	<string name="goto_home_desp">當地址欄為空而不是顯示錯誤時轉到主頁</string>
+	<string name="show_favicon">顯示網站圖標</string>
+	<string name="show_favicon_desp">在地址欄旁邊顯示網站的圖標</string>
 	<string name="show_cus_error">顯示自定義錯誤頁面</string>
 	<string name="show_cus_error_desp">在無法連接到網站時顯示帶有音頻效果的自定義錯誤頁面</string>
 
