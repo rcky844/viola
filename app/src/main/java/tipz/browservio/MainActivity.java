@@ -2,6 +2,7 @@ package tipz.browservio;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -56,6 +57,7 @@ import tipz.browservio.Utils.BrowservioSaverUtils;
 import tipz.browservio.Utils.SketchwareUtil;
 import tipz.browservio.Utils.UrlUtils;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
 	
 	private FloatingActionButton _fab;
