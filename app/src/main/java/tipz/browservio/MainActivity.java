@@ -41,7 +41,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.webkit.WebSettingsCompat;
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 			initializeLogic();
 		}
 	}
-	
+
 	private void initialize() {
 		
 		_fab = findViewById(R.id._fab);
@@ -622,7 +621,6 @@ public class MainActivity extends AppCompatActivity {
 				if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
 					WebSettingsCompat.setForceDark(webview.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
 				}
-				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 				break;
 			case Configuration.UI_MODE_NIGHT_UNDEFINED:
 			case Configuration.UI_MODE_NIGHT_NO:
@@ -630,7 +628,6 @@ public class MainActivity extends AppCompatActivity {
 				if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
 					WebSettingsCompat.setForceDark(webview.getSettings(), WebSettingsCompat.FORCE_DARK_OFF);
 				}
-				AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 				break;
 		}
 
