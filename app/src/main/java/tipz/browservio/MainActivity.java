@@ -745,6 +745,11 @@ public class MainActivity extends AppCompatActivity {
 			BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "0");
 		}
 
+		// HTML5 API flags
+		webview.getSettings().setAppCacheEnabled(true);
+		webview.getSettings().setDatabaseEnabled(true);
+		webview.getSettings().setDomStorageEnabled(true);
+
 		// Location
 		webview.getSettings().setGeolocationDatabasePath(getApplicationContext().getFilesDir().getPath());
 	}
