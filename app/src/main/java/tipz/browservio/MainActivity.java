@@ -662,7 +662,6 @@ public class MainActivity extends AppCompatActivity {
 			prog.setIndeterminate(true);
 			prog.setCancelable(false);
 			prog.show();
-			BrowservioSaverUtils.setPref(browservio_saver, "isFirstLaunch", "");
 			CookieManager.getInstance().removeAllCookies(null);
 			CookieManager.getInstance().flush();
 			BrowservioSaverUtils.setPref(browservio_saver, "history", "");
