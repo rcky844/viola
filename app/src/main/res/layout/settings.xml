@@ -1,5 +1,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	<com.google.android.material.appbar.AppBarLayout
@@ -55,7 +56,8 @@
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:scaleType="center"
 						android:src="@drawable/ic_arrow_up_grey"
-						app:tint="@color/icon_tint2" />
+						app:tint="@color/icon_tint2"
+						tools:ignore="ContentDescription" />
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear6"
@@ -335,7 +337,8 @@
 						android:layout_height="wrap_content"
 						android:src="@drawable/ic_arrow_up_grey"
 						android:scaleType="center"
-						app:tint="@color/icon_tint2"/>
+						app:tint="@color/icon_tint2"
+						tools:ignore="ContentDescription" />
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear5"
@@ -461,7 +464,8 @@
 						android:layout_height="wrap_content"
 						android:scaleType="center"
 						android:src="@drawable/ic_arrow_up_grey"
-						app:tint="@color/icon_tint2" />
+						app:tint="@color/icon_tint2"
+						tools:ignore="ContentDescription" />
 				</LinearLayout>
 				<LinearLayout
 					android:id="@+id/linear8"
