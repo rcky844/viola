@@ -282,7 +282,10 @@ public class SettingsActivity extends AppCompatActivity {
 		
 		linear13.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox4));
 		
-		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "isJavaScriptEnabled", _param2, false));
+		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> {
+			BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "isJavaScriptEnabled", _param2, false);
+			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "1");
+		});
 		
 		checkbox2.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showFavicon", _param2, false));
 		

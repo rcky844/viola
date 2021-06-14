@@ -690,13 +690,17 @@ public class MainActivity extends AppCompatActivity {
 		if (BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1")) {
 			webview.getSettings().setJavaScriptEnabled(true);
 			webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-			linear_control_b2.performClick();
 		}
 		else {
 			webview.getSettings().setJavaScriptEnabled(false);
 			webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
-			linear_control_b2.performClick();
 		}
+
+		if (BrowservioSaverUtils.getPref(browservio_saver, "needReload").equals("1")) {
+			linear_control_b2.performClick();
+			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "0");
+		}
+
 		if (BrowservioSaverUtils.getPref(browservio_saver, "showBrowseBtn").equals("1")) {
 			browse.setVisibility(View.VISIBLE);
 		}
