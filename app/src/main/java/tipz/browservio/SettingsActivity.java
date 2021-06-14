@@ -262,22 +262,10 @@ public class SettingsActivity extends AppCompatActivity {
 			drst.create().show();
 		});
 		
-		checkbox3.setOnCheckedChangeListener((_param1, _param2) -> {
-			if (_param2) {
-				BrowservioSaverUtils.setPref(browservio_saver, "showBrowseBtn", "1");
-			}
-			else {
-				BrowservioSaverUtils.setPref(browservio_saver, "showBrowseBtn", "0");
-			}
-		});
+		checkbox3.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showBrowseBtn", _param2, false));
 		
 		checkbox5.setOnCheckedChangeListener((_param1, _param2) -> {
-			if (_param2) {
-				BrowservioSaverUtils.setPref(browservio_saver, "showZoomKeys", "1");
-			}
-			else {
-				BrowservioSaverUtils.setPref(browservio_saver, "showZoomKeys", "0");
-			}
+			BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showZoomKeys", _param2, false);
 			if (!writingScreen) {
 				diazoomrestart.setTitle(getResources().getString(R.string.restart_app_q));
 				diazoomrestart.setMessage(getResources().getString(R.string.restart_app_qmsg));
@@ -298,32 +286,11 @@ public class SettingsActivity extends AppCompatActivity {
 		
 		linear13.setOnClickListener(_view -> _updateChkbox(checkbox4));
 		
-		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> {
-			if (_param2) {
-				BrowservioSaverUtils.setPref(browservio_saver, "isJavaScriptEnabled", "1");
-			}
-			else {
-				BrowservioSaverUtils.setPref(browservio_saver, "isJavaScriptEnabled", "0");
-			}
-		});
+		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "isJavaScriptEnabled", _param2, false));
 		
-		checkbox2.setOnCheckedChangeListener((_param1, _param2) -> {
-			if (_param2) {
-				BrowservioSaverUtils.setPref(browservio_saver, "showFavicon", "1");
-			}
-			else {
-				BrowservioSaverUtils.setPref(browservio_saver, "showFavicon", "0");
-			}
-		});
+		checkbox2.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showFavicon", _param2, false));
 		
-		checkbox4.setOnCheckedChangeListener((_param1, _param2) -> {
-			if (_param2) {
-				BrowservioSaverUtils.setPref(browservio_saver, "showCustomError", "1");
-			}
-			else {
-				BrowservioSaverUtils.setPref(browservio_saver, "showCustomError", "0");
-			}
-		});
+		checkbox4.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showCustomError", _param2, false));
 		
 		linear_version.setOnClickListener(_view -> {
 			dabt.setTitle(getResources().getString(R.string.version_info_title));

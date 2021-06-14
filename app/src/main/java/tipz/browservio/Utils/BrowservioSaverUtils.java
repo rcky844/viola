@@ -9,6 +9,14 @@ public class BrowservioSaverUtils {
         }
     }
 
+    public static void setPrefStringBoolAccBool(SharedPreferences pref, String tag, boolean bool, boolean flip) {
+        if (bool) {
+            setPref(pref, tag, (flip) ? "0" : "1");
+        } else {
+            setPref(pref, tag, (flip) ? "1" : "0");
+        }
+    }
+
     public static void setPref(SharedPreferences pref, String tag, String value) {
         pref.edit().putString(tag, value).apply();
     }
