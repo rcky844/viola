@@ -655,23 +655,6 @@ public class MainActivity extends AppCompatActivity {
 				break;
 		}
 
-		// PackageManager for version info
-		PackageManager manager = this.getPackageManager();
-		PackageInfo info = null;
-		try {
-			info = manager.getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);
-		} catch (PackageManager.NameNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		// Get version info for dialog
-        assert info != null;
-		BrowservioSaverUtils.setPref(browservio_saver, "versionFamily", info.versionName);
-		BrowservioSaverUtils.setPref(browservio_saver, "versionName", info.versionName.concat(getResources().getString(R.string.versionName_p2)));
-		BrowservioSaverUtils.setPref(browservio_saver, "versionTechnical", info.versionName.concat(getResources().getString(R.string.versionTechnical_p2)));
-		BrowservioSaverUtils.setPref(browservio_saver, "versionCodename", getResources().getString(R.string.versionCodename));
-		BrowservioSaverUtils.setPref(browservio_saver, "versionCode", String.valueOf(info.versionCode));
-		BrowservioSaverUtils.setPref(browservio_saver, "versionDate", getResources().getString(R.string.versionDate));
 		if (BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1")) {
 			final ProgressDialog prog = new ProgressDialog(MainActivity.this);
 			prog.setMax(100);
@@ -737,7 +720,6 @@ public class MainActivity extends AppCompatActivity {
 
 		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1");
 		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, "showZoomKeys").equals("1"));
-		BrowservioSaverUtils.setPref(browservio_saver, "lastVersionCode", BrowservioSaverUtils.getPref(browservio_saver, "versionCode"));
 
 		// Need load
 		if (BrowservioSaverUtils.getPref(browservio_saver, "needLoad").equals("1")) {

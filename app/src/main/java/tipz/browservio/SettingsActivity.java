@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -122,6 +124,17 @@ public class SettingsActivity extends AppCompatActivity {
 		dabt = new AlertDialog.Builder(this);
 		drst = new AlertDialog.Builder(this);
 		diazoomrestart = new AlertDialog.Builder(this);
+
+		// PackageManager for version info
+		PackageManager manager = this.getPackageManager();
+		PackageInfo info = null;
+		try {
+			info = manager.getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		assert info != null;
+		PackageInfo finalInfo = info;
 
 		linear_general.setOnClickListener(_view -> {
 			stackanim.setTarget(imageview4);
@@ -290,10 +303,16 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox2.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showFavicon", _param2, false));
 		
 		checkbox4.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showCustomError", _param2, false));
-		
+
 		linear_version.setOnClickListener(_view -> {
 			dabt.setTitle(getResources().getString(R.string.version_info_title));
-			dabt.setMessage(getResources().getString(R.string.version_info_message, BrowservioSaverUtils.getPref(browservio_saver, "versionName"), BrowservioSaverUtils.getPref(browservio_saver, "versionCodename"), BrowservioSaverUtils.getPref(browservio_saver, "versionTechnical"), BrowservioSaverUtils.getPref(browservio_saver, "versionFamily"), BrowservioSaverUtils.getPref(browservio_saver, "versionCode"), BrowservioSaverUtils.getPref(browservio_saver, "versionDate")));
+			dabt.setMessage(getResources().getString(R.string.version_info_message,
+					finalInfo.versionName.concat(getResources().getString(R.string.versionName_p2)),
+					getResources().getString(R.string.versionCodename),
+					finalInfo.versionName.concat(getResources().getString(R.string.versionTechnical_p2)),
+					finalInfo.versionName,
+					String.valueOf(finalInfo.versionCode),
+					getResources().getString(R.string.versionDate)));
 			dabt.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 
 			});
