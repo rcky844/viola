@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,42 +18,26 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Arrays;
 import java.util.Objects;
 
-import tipz.browservio.Utils.BrowservioSaverUtils;
 import tipz.browservio.Utils.BrowservioBasicUtil;
+import tipz.browservio.Utils.BrowservioSaverUtils;
 
 public class SettingsActivity extends AppCompatActivity {
 
-	private LinearLayout linear_general;
 	private LinearLayout linear6;
-	private LinearLayout linear_advenced;
 	private LinearLayout linear5;
-	private LinearLayout linear_about;
 	private LinearLayout linear8;
 	private ImageView imageview4;
-	private LinearLayout linear1_search;
-	private LinearLayout linear1_homepage;
-	private LinearLayout linear11;
-	private LinearLayout linear_zoomkeys_b;
-	private LinearLayout linearendp;
-	private LinearLayout linear1_b0;
 	private TextView textview9;
 	private TextView textview5;
 	private CheckBox checkbox3;
 	private CheckBox checkbox5;
 	private ImageView imageview1;
-	private LinearLayout linear1_javascript;
-	private LinearLayout linear1_overrideempt;
-	private LinearLayout linear13;
 	private CheckBox checkbox1;
 	private CheckBox checkbox2;
 	private CheckBox checkbox4;
 	private ImageView imageview5;
-	private LinearLayout linear_version;
-	private LinearLayout linear_feed;
-	private LinearLayout linear_source;
 	private TextView version_visiable;
 	private TextView textviewendp2;
 
@@ -86,35 +68,35 @@ public class SettingsActivity extends AppCompatActivity {
 		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		_toolbar.setNavigationOnClickListener(_v -> onBackPressed());
-		linear_general = findViewById(R.id.linear_general);
+		LinearLayout linear_general = findViewById(R.id.linear_general);
 		linear6 = findViewById(R.id.linear6);
-		linear_advenced = findViewById(R.id.linear_advenced);
+		LinearLayout linear_advenced = findViewById(R.id.linear_advenced);
 		linear5 = findViewById(R.id.linear5);
-		linear_about = findViewById(R.id.linear_about);
+		LinearLayout linear_about = findViewById(R.id.linear_about);
 		linear8 = findViewById(R.id.linear8);
 		imageview4 = findViewById(R.id.imageview4);
-		linear1_search = findViewById(R.id.linear1_search);
-		linear1_homepage = findViewById(R.id.linear1_homepage);
-		linear11 = findViewById(R.id.linear11);
-		linear_zoomkeys_b = findViewById(R.id.linear_zoomkeys_b);
-		linearendp = findViewById(R.id.linearendp);
-		linear1_b0 = findViewById(R.id.linear1_b0);
+		LinearLayout linear1_search = findViewById(R.id.linear1_search);
+		LinearLayout linear1_homepage = findViewById(R.id.linear1_homepage);
+		LinearLayout linear11 = findViewById(R.id.linear11);
+		LinearLayout linear_zoomkeys_b = findViewById(R.id.linear_zoomkeys_b);
+		LinearLayout linearendp = findViewById(R.id.linearendp);
+		LinearLayout linear1_b0 = findViewById(R.id.linear1_b0);
 		findViewById(R.id.textview8);
 		textview9 = findViewById(R.id.textview9);
 		textview5 = findViewById(R.id.textview5);
 		checkbox3 = findViewById(R.id.checkbox3);
 		checkbox5 = findViewById(R.id.checkbox5);
 		imageview1 = findViewById(R.id.imageview1);
-		linear1_javascript = findViewById(R.id.linear1_javascript);
-		linear1_overrideempt = findViewById(R.id.linear1_overrideempt);
-		linear13 = findViewById(R.id.linear13);
+		LinearLayout linear1_javascript = findViewById(R.id.linear1_javascript);
+		LinearLayout linear1_overrideempt = findViewById(R.id.linear1_overrideempt);
+		LinearLayout linear13 = findViewById(R.id.linear13);
 		checkbox1 = findViewById(R.id.checkbox1);
 		checkbox2 = findViewById(R.id.checkbox2);
 		checkbox4 = findViewById(R.id.checkbox4);
 		imageview5 = findViewById(R.id.imageview5);
-		linear_version = findViewById(R.id.linear_version);
-		linear_feed = findViewById(R.id.linear_feed);
-		linear_source = findViewById(R.id.linear_source);
+		LinearLayout linear_version = findViewById(R.id.linear_version);
+		LinearLayout linear_feed = findViewById(R.id.linear_feed);
+		LinearLayout linear_source = findViewById(R.id.linear_source);
 		version_visiable = findViewById(R.id.version_visiable);
 		textviewendp2 = findViewById(R.id.textviewendp2);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
@@ -363,79 +345,5 @@ public class SettingsActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		_setAllRipple(linear_general, 6, 2);
-		_setAllRipple(linear_advenced, 6, 2);
-		_setAllRipple(linear_about, 6, 2);
-		_setAllRipple(linear_version, 6, 2);
-		_setAllRipple(linear_feed, 6, 2);
-		_setAllRipple(linear1_search, 6, 2);
-		_setAllRipple(linear1_homepage, 6, 2);
-		_setAllRipple(linear11, 6, 2);
-		_setAllRipple(linear1_javascript, 6, 2);
-		_setAllRipple(linear1_overrideempt, 6, 2);
-		_setAllRipple(linear1_b0, 6, 2);
-		_setAllRipple(linear13, 6, 2);
-		_setAllRipple(linear_source, 6, 2);
-		_setAllRipple(linear_zoomkeys_b, 6, 2);
-		_setAllRipple(linearendp, 6, 2);
-	}
-	private void _setRipple (final View _view) {
-		TypedValue typedValue = new TypedValue();
-		
-		getApplicationContext().getTheme().resolveAttribute(16843868, typedValue, true);
-		
-		_view.setBackgroundResource(typedValue.resourceId);
-		
-		_view.setClickable(true);
-	}
-	
-	
-	private void _rippleRoundStroke (final View _view, final String _focus, final String _pressed, final double _round, final double _stroke, final String _strokeclr) {
-		android.graphics.drawable.GradientDrawable GG = new android.graphics.drawable.GradientDrawable();
-		GG.setColor(Color.parseColor(_focus));
-		GG.setCornerRadius((float)_round);
-		GG.setStroke((int) _stroke,
-		Color.parseColor("#" + _strokeclr.replace("#", "")));
-		android.graphics.drawable.RippleDrawable RE = new android.graphics.drawable.RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{ Color.parseColor(_pressed)}), GG, null);
-		_view.setBackground(RE);
-	}
-	
-	
-	private void _ripple (final View _view, final String _c) {
-		_view.setBackground(Drawables.getSelectableDrawableFor(Color.parseColor(_c)));
-		_view.setClickable(true);
-		
-	}
-	
-	public static class Drawables {
-		    public static android.graphics.drawable.Drawable getSelectableDrawableFor(int color) {
-				android.content.res.ColorStateList pressedColor = android.content.res.ColorStateList.valueOf(color);
-				android.graphics.drawable.ColorDrawable defaultColor = new android.graphics.drawable.ColorDrawable(Color.parseColor("#00ffffff"));
-
-				android.graphics.drawable.Drawable rippleColor = getRippleColor(color);
-				return new android.graphics.drawable.RippleDrawable(
-					pressedColor,
-					defaultColor,
-					rippleColor
-				);
-			}
-		
-		    private static android.graphics.drawable.Drawable getRippleColor(int color) {
-			        float[] outerRadii = new float[8];
-			        Arrays.fill(outerRadii, 0);
-			        android.graphics.drawable.shapes.RoundRectShape r = new android.graphics.drawable.shapes.RoundRectShape(outerRadii, null, null);
-			        
-			android.graphics.drawable.ShapeDrawable shapeDrawable = new 
-			android.graphics.drawable.ShapeDrawable(r);
-			        shapeDrawable.getPaint().setColor(color);
-			        return shapeDrawable;
-			    }
-	}
-	
-	private void _setAllRipple(final View _view, final double _round, final double _stroke) {
-		String colorControlHighlight = String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorControlHighlight)));
-		_setRipple(_view);
-		_rippleRoundStroke(_view, colorControlHighlight, colorControlHighlight, _round, _stroke, colorControlHighlight);
-		_ripple(_view, colorControlHighlight);
 	}
 }

@@ -37,7 +37,8 @@
 					android:layout_height="wrap_content"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="horizontal"
-					android:layout_gravity="center_horizontal|center_vertical">
+					android:layout_gravity="center_horizontal|center_vertical"
+					android:background="@drawable/list_ripple">
 					<TextView
 						android:id="@+id/textview_cool1"
 						android:layout_width="0dp"
@@ -70,7 +71,8 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						android:background="@drawable/list_ripple">
 						<TextView
 							android:id="@+id/textview8"
 							android:layout_width="wrap_content"
@@ -97,7 +99,8 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						android:background="@drawable/list_ripple">
 						<TextView
 							android:id="@+id/textview4"
 							android:layout_width="wrap_content"
@@ -124,7 +127,8 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						android:background="@drawable/list_ripple">
 							<TextView
 								android:id="@+id/textviewendp"
 								android:layout_width="wrap_content"
@@ -152,7 +156,8 @@
 						android:layout_height="wrap_content"
 						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="end">
+						android:layout_gravity="end"
+						android:background="@drawable/list_ripple">
 						<LinearLayout
 							android:id="@+id/linear12"
 							android:layout_width="0dp"
@@ -198,7 +203,8 @@
 						android:layout_height="wrap_content"
 						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="end">
+						android:layout_gravity="end"
+						android:background="@drawable/list_ripple">
 						<LinearLayout
 							android:id="@+id/linear1_overrideemp"
 							android:layout_width="0dp"
@@ -244,7 +250,8 @@
 						android:layout_height="wrap_content"
 						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="end">
+						android:layout_gravity="end"
+						android:background="@drawable/list_ripple">
 						<LinearLayout
 							android:id="@+id/linear_zoomkeys_a"
 							android:layout_width="0dp"
@@ -289,7 +296,8 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						android:background="@drawable/list_ripple">
 						<TextView
 							android:id="@+id/textview15"
 							android:layout_width="wrap_content"
@@ -319,7 +327,8 @@
 					android:layout_height="wrap_content"
 					android:gravity="end|center_vertical"
 					android:orientation="horizontal"
-					android:layout_gravity="end|center_vertical">
+					android:layout_gravity="end|center_vertical"
+					android:background="@drawable/list_ripple">
 					<TextView
 						android:id="@+id/textview_cool2"
 						android:layout_width="0dp"
@@ -352,7 +361,8 @@
 						android:layout_height="wrap_content"
 						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="end">
+						android:layout_gravity="end"
+						android:background="@drawable/list_ripple">
 						<LinearLayout
 							android:id="@+id/linear1_b1"
 							android:layout_width="0dp"
@@ -398,7 +408,8 @@
 						android:layout_height="wrap_content"
 						android:gravity="end"
 						android:orientation="horizontal"
-						android:layout_gravity="end">
+						android:layout_gravity="end"
+						android:background="@drawable/list_ripple">
 						<LinearLayout
 							android:id="@+id/linear14"
 							android:layout_width="0dp"
@@ -445,7 +456,8 @@
 					android:layout_height="wrap_content"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="horizontal"
-					android:layout_gravity="center_horizontal|center_vertical">
+					android:layout_gravity="center_horizontal|center_vertical"
+					android:background="@drawable/list_ripple">
 					<TextView
 						android:id="@+id/textview_cool3"
 						android:layout_width="0dp"
@@ -478,7 +490,8 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						android:background="@drawable/list_ripple">
 						<TextView
 							android:id="@+id/textview23"
 							android:layout_width="wrap_content"
@@ -504,7 +517,8 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						android:background="@drawable/list_ripple">
 						<TextView
 							android:id="@+id/textview25"
 							android:layout_width="wrap_content"
@@ -532,7 +546,8 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						android:background="@drawable/list_ripple">
 						<TextView
 							android:id="@+id/textview35"
 							android:layout_width="wrap_content"
