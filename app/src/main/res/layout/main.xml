@@ -58,7 +58,8 @@
 				android:contentDescription="@string/browse_desp"
 				android:focusable="true"
 				android:scaleType="fitCenter"
-				android:src="@drawable/ic_browse_black" />
+				android:src="@drawable/outline_search_24"
+				app:tint="@color/icon_tint" />
 		</LinearLayout>
 
 		<ProgressBar
@@ -117,7 +118,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/back_desp"
 						android:scaleType="center"
-						android:src="@drawable/ic_arrow_back_black"
+						android:src="@drawable/outline_arrow_back_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -141,7 +142,7 @@
 						android:contentDescription="@string/forward_desp"
 						android:rotation="180"
 						android:scaleType="center"
-						android:src="@drawable/ic_arrow_back_black"
+						android:src="@drawable/outline_arrow_back_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -164,7 +165,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/reload_desp"
 						android:scaleType="center"
-						android:src="@drawable/ic_reload_black"
+						android:src="@drawable/outline_refresh_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -187,7 +188,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/history"
 						android:scaleType="center"
-						android:src="@drawable/ic_home_black"
+						android:src="@drawable/outline_home_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -210,7 +211,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/desktop_desp"
 						android:scaleType="center"
-						android:src="@drawable/ic_smartphone_black"
+						android:src="@drawable/outline_smartphone_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -233,7 +234,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/clear_desp"
 						android:scaleType="center"
-						android:src="@drawable/ic_delete_black"
+						android:src="@drawable/outline_delete_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -256,7 +257,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/share_desp"
 						android:scaleType="center"
-						android:src="@drawable/ic_share_black"
+						android:src="@drawable/outline_share_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -279,7 +280,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/settings"
 						android:scaleType="center"
-						android:src="@drawable/ic_settings_black"
+						android:src="@drawable/outline_settings_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -302,7 +303,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/history"
 						android:scaleType="center"
-						android:src="@drawable/ic_history_black"
+						android:src="@drawable/outline_history_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -325,7 +326,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/fav"
 						android:scaleType="center"
-						android:src="@drawable/ic_favorite_black"
+						android:src="@drawable/outline_favorite_border_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -348,7 +349,7 @@
 						android:layout_height="wrap_content"
 						android:contentDescription="@string/exit_desp"
 						android:scaleType="center"
-						android:src="@drawable/ic_close_black"
+						android:src="@drawable/outline_close_24"
 						app:tint="@color/icon_tint" />
 				</LinearLayout>
 
@@ -370,6 +371,6 @@
 		android:layout_margin="16dp"
 		android:backgroundTint="@color/colorAccent"
 		android:contentDescription="@string/fab_desp"
-		app:srcCompat="@drawable/ic_arrow_up_grey"
+		app:srcCompat="@drawable/outline_arrow_up_24"
 		app:tint="@color/fab_icon_tint" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

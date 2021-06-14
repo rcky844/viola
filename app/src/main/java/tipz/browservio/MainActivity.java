@@ -194,13 +194,13 @@ public class MainActivity extends AppCompatActivity {
 					webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent, getResources().getString(R.string.webUserAgent_end)));
 					last_desktop = desktop;
 					desktop = 1;
-					desktop_switch.setImageResource(R.drawable.ic_desktop_black);
+					desktop_switch.setImageResource(R.drawable.outline_desktop_windows_24);
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
 					webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
 					last_desktop = desktop;
 					desktop = 0;
-					desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
+					desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
 					dialog.setTitle(getResources().getString(R.string.ua));
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 						if (custom_ua.length() == 0) {
 							webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
 							linear_control_b2.performClick();
-							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
+							desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
 							desktop = 0;
 						} else {
 							webview.getSettings().setUserAgentString(custom_ua.getText().toString());
@@ -223,15 +223,15 @@ public class MainActivity extends AppCompatActivity {
 					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
 						if (last_desktop == 0) {
 							desktop = last_desktop;
-							desktop_switch.setImageResource(R.drawable.ic_smartphone_black);
+							desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
 						} else {
 							if (last_desktop == 1) {
 								desktop = last_desktop;
-								desktop_switch.setImageResource(R.drawable.ic_desktop_black);
+								desktop_switch.setImageResource(R.drawable.outline_desktop_windows_24);
 							} else {
 								if (last_desktop == 2) {
 									desktop = last_desktop;
-									desktop_switch.setImageResource(R.drawable.ic_edit_black);
+									desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
 								} else {
 									throw new RuntimeException(getResources().getString(R.string.last_desktop_range_elog));
 								}
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 					dialog.create().show();
 					last_desktop = desktop;
 					desktop = 2;
-					desktop_switch.setImageResource(R.drawable.ic_edit_black);
+					desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
 				}
 				return false;
 			});
