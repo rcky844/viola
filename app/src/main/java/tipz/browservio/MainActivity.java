@@ -480,12 +480,8 @@ public class MainActivity extends AppCompatActivity {
 
 		if (Intent.ACTION_SEND.equals(action) && type != null) {
 			if ("text/plain".equals(type)) {
-
 				String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-
-				if (sharedText != null) {
-					_browservio_browse(sharedText);
-				}
+				_browservio_browse(sharedText != null ? sharedText : "");
 			}
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 			if ("text/html".equals(type) || "text/plain".equals(type) || "application/xhtml+xml".equals(type) || "application/vnd.wap.xhtml+xml".equals(type) || "http".equals(scheme) || "https".equals(scheme) || "ftp".equals(scheme) || "file".equals(scheme)) {
