@@ -3,17 +3,17 @@ package tipz.browservio.Utils;
 import android.content.SharedPreferences;
 
 public class BrowservioSaverUtils {
-    public static void checkIfEmpty(SharedPreferences perf, String tag, String defaultValue, boolean mustSet) {
-        if (perf.getString(tag, "").equals("") || mustSet) {
-            setPref(perf, tag, defaultValue);
+    public static void checkIfEmpty(SharedPreferences pref, String tag, String defaultValue, boolean mustSet) {
+        if (getPref(pref, tag).equals("") || mustSet) {
+            setPref(pref, tag, defaultValue);
         }
     }
 
-    public static void setPref(SharedPreferences perf, String tag, String value) {
-        perf.edit().putString(tag, value).apply();
+    public static void setPref(SharedPreferences pref, String tag, String value) {
+        pref.edit().putString(tag, value).apply();
     }
 
-    public static String getPref(SharedPreferences perf, String tag) {
-        return perf.getString(tag, "");
+    public static String getPref(SharedPreferences pref, String tag) {
+        return pref.getString(tag, "");
     }
 }
