@@ -11,7 +11,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -48,8 +47,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
-import tipz.browservio.Utils.BrowservioSaverUtils;
 import tipz.browservio.Utils.BrowservioBasicUtil;
+import tipz.browservio.Utils.BrowservioSaverUtils;
 import tipz.browservio.Utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
