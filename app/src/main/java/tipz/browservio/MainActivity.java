@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -94,8 +95,9 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.main);
 		initialize();
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-		|| ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-			ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+		|| ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+		|| ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+			ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
 		}
 		else {
 			initializeLogic();
@@ -452,6 +454,9 @@ public class MainActivity extends AppCompatActivity {
 			public void onReceivedTitle (WebView view, String title) {
 				UrlTitle = title;
 			}
+			public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+				callback.invoke(origin, true, false);
+			}
 		});
 		if (!BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage").equals("")) {
 			// Load default homepage.
@@ -726,6 +731,9 @@ public class MainActivity extends AppCompatActivity {
 			_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "needLoadUrl"));
 			BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "0");
 		}
+
+		// Location
+		webview.getSettings().setGeolocationDatabasePath(getApplicationContext().getFilesDir().getPath());
 	}
 
 	private void restart_app() {
