@@ -78,7 +78,6 @@
 
 	<!-- Search Engine -->
 	<string name="search_engine">"Search engine"</string>
-	<string name="search_engine_dialog_message">"Insert {term} into where the search term should be.\n%s"</string>
 	<string name="search_engine_current">"Current search engine: %s"</string>
 
 	<!-- Homepage -->

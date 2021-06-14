@@ -7,26 +7,22 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Random;
 
 import tipz.browservio.Utils.BrowservioSaverUtils;
+import tipz.browservio.Utils.BrowservioBasicUtil;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -189,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity {
 		
 		linear1_search.setOnClickListener(_view -> {
 			dialog1.setTitle(getResources().getString(R.string.search_engine));
-			dialog1.setMessage(getResources().getString(R.string.search_engine_dialog_message, getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch"))));
+			dialog1.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
 			final EditText custom_se = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 			custom_se.setLayoutParams(lp2); dialog1.setView(custom_se);
 			dialog1.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
@@ -225,9 +221,9 @@ public class SettingsActivity extends AppCompatActivity {
 			dialog.create().show();
 		});
 		
-		linear11.setOnClickListener(_view -> _updateChkbox(checkbox3));
+		linear11.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox3));
 
-		linear_zoomkeys_b.setOnClickListener(_view -> _updateChkbox(checkbox5));
+		linear_zoomkeys_b.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox5));
 
 		linearendp.setOnClickListener(_view -> {
 				dialogendp.setTitle(getResources().getString(R.string.action_bar_endp));
@@ -280,11 +276,11 @@ public class SettingsActivity extends AppCompatActivity {
 			}
 		});
 		
-		linear1_javascript.setOnClickListener(_view -> _updateChkbox(checkbox1));
+		linear1_javascript.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox1));
 		
-		linear1_overrideempt.setOnClickListener(_view -> _updateChkbox(checkbox2));
+		linear1_overrideempt.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox2));
 		
-		linear13.setOnClickListener(_view -> _updateChkbox(checkbox4));
+		linear13.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox4));
 		
 		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "isJavaScriptEnabled", _param2, false));
 		
@@ -413,12 +409,6 @@ public class SettingsActivity extends AppCompatActivity {
 			        return shapeDrawable;
 			    }
 	}
-
-
-	private void _updateChkbox (final CheckBox _chk) {
-		_chk.setChecked(!_chk.isChecked());
-	}
-	
 	
 	private void _setAllRipple(final View _view, final String _focus, final double _round, final double _stroke) {
 		String colorControlHighlight = String.format("#%06X", (0xFFFFFF & getResources().getColor(R.color.colorControlHighlight)));
@@ -426,57 +416,4 @@ public class SettingsActivity extends AppCompatActivity {
 		_rippleRoundStroke(_view, _focus, colorControlHighlight, _round, _stroke, colorControlHighlight);
 		_ripple(_view, colorControlHighlight);
 	}
-	
-	
-	@Deprecated
-	public void showMessage(String _s) {
-		Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();
-	}
-	
-	@Deprecated
-	public int getLocationX(View _v) {
-		int[] _location = new int[2];
-		_v.getLocationInWindow(_location);
-		return _location[0];
-	}
-	
-	@Deprecated
-	public int getLocationY(View _v) {
-		int[] _location = new int[2];
-		_v.getLocationInWindow(_location);
-		return _location[1];
-	}
-	
-	@Deprecated
-	public int getRandom(int _min, int _max) {
-		Random random = new Random();
-		return random.nextInt(_max - _min + 1) + _min;
-	}
-	
-	@Deprecated
-	public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-		ArrayList<Double> _result = new ArrayList<>();
-		SparseBooleanArray _arr = _list.getCheckedItemPositions();
-		for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
-			if (_arr.valueAt(_iIdx))
-			_result.add((double)_arr.keyAt(_iIdx));
-		}
-		return _result;
-	}
-	
-	@Deprecated
-	public float getDip(int _input){
-		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());
-	}
-	
-	@Deprecated
-	public int getDisplayWidthPixels(){
-		return getResources().getDisplayMetrics().widthPixels;
-	}
-	
-	@Deprecated
-	public int getDisplayHeightPixels(){
-		return getResources().getDisplayMetrics().heightPixels;
-	}
-	
 }

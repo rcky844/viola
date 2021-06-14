@@ -20,8 +20,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.SparseBooleanArray;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -35,10 +33,8 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,12 +45,10 @@ import androidx.webkit.WebViewFeature;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 import tipz.browservio.Utils.BrowservioSaverUtils;
-import tipz.browservio.Utils.SketchwareUtil;
+import tipz.browservio.Utils.BrowservioBasicUtil;
 import tipz.browservio.Utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -157,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 			else {
 				// cannot go backwards
-				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
+				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
 			}
 		});
 		
@@ -169,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 			else {
 				// cannot go forward
-				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
+				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
 			}
 		});
 		
@@ -263,17 +257,17 @@ public class MainActivity extends AppCompatActivity {
 			popup2.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
 					webview.clearCache(true);
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
 					webview.clearHistory();
 					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
 					CookieManager.getInstance().removeAllCookies(null);
 					CookieManager.getInstance().flush();
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.all))) {
 					webview.clearCache(true);
@@ -281,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
 					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
 					CookieManager.getInstance().removeAllCookies(null);
 								CookieManager.getInstance().flush();
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.all)));
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.all)));
 					linear_control_b2.performClick();
 				}
 				return false;
@@ -311,16 +305,16 @@ public class MainActivity extends AppCompatActivity {
 				dhist.setNeutralButton(android.R.string.copy, (_dialog, _which) -> {
 					getApplicationContext();
 					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(browservio_saver, "history")));
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
 				});
 				dhist.setNegativeButton(getResources().getString(R.string.clear, ""), (_dialog, _which) -> {
 					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
 				});
 				dhist.create().show();
 			}
 			else {
-				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
+				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
 			}
 		});
 		
@@ -338,10 +332,10 @@ public class MainActivity extends AppCompatActivity {
 					}
 					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")), webview.getUrl());
 					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_show"), "1");
-					SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.favs))) {
 					if (bookmarks.getAll().size() == 0) {
-						SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+						BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
 					} else {
 						i.setClass(getApplicationContext(), FavActivity.class);
 						startActivity(i);
@@ -364,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
 			favicondialog.setNeutralButton(android.R.string.copy, (_dialog, _which) -> {
 				getApplicationContext();
 				((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
-				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
 			});
 			/*favicondialog.setNegativeButton(getResources().getString(, ""), new DialogInterface.OnClickListener() {
 				@Override
@@ -552,23 +546,33 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		_firstLaunch();
-	}
-	private void _downloadManager (final WebView _webview) {
-		_webview.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
-					DownloadManager.Request request = new DownloadManager.Request(
-							Uri.parse(url));
-
-					request.allowScanningByMediaScanner();
-					request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-					final String filename= URLUtil.guessFileName(url, contentDisposition, mimetype);
-					request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-					DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-					dm.enqueue(request);
-
-				});
+		_configChecker();
 	}
 
+	/**
+	 * Download Manager
+	 *
+	 * Module to monitor downloads from a webview.
+	 *
+	 * @param webview to monitor
+	 */
+	private void _downloadManager (final WebView webview) {
+		webview.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+			request.allowScanningByMediaScanner();
+			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
+			final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
+			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+			DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+			dm.enqueue(request);
+		});
+	}
+
+	/**
+	 * History Saviour
+	 *
+	 * Module to save history into a SharedPref.
+	 */
 	private void _history_saviour() {
 		if (BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
 			BrowservioSaverUtils.setPref(browservio_saver, "history", BrowservioSaverUtils.getPref(browservio_saver, "history").concat(webview.getUrl()));
@@ -577,23 +581,22 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * Config Checker
+	 *
+	 * Used to check if anything has been changed
+	 * after resume of restart.
+	 */
 	private void _browservio_browse(String url) {
-		checkedUrl = UrlUtils.UrlChecker(url, true);
+		checkedUrl = UrlUtils.UrlChecker(url, true, browservio_saver, "defaultSearch");
 		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			// Load URL
 			if (url.startsWith(getResources().getString(R.string.url_prefix, ""))) {
 				_URLindentify(url);
 			} else {
-				if (checkedUrl.startsWith("{se}")) {
-					String searchLoad = BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch").replace("{term}", url);
-					_URLindentify(searchLoad);
-					urledit.setText(searchLoad);
-					webview.loadUrl(searchLoad);
-				} else {
-					_URLindentify(checkedUrl);
-				    urledit.setText(checkedUrl);
-				    webview.loadUrl(checkedUrl);
-				}
+				_URLindentify(checkedUrl);
+				urledit.setText(checkedUrl);
+				webview.loadUrl(checkedUrl);
 			}
 		} else {
 			_URLindentify(page_before_error);
@@ -604,11 +607,13 @@ public class MainActivity extends AppCompatActivity {
 		_history_saviour();
 	}
 
-	private void _firstLaunch () {
-		// First launch code
-		// Make versionName and versionTech. using version family
-		// intro. 20201027 with 1.4.0_beroku_dev_8
-
+	/**
+	 * Config Checker
+	 *
+	 * Used to check if anything has been changed
+	 * after resume of restart.
+	 */
+	private void _configChecker() {
 		// Restart code
 		if (BrowservioSaverUtils.getPref(browservio_saver, "needRestart").equals("1")) {
 			BrowservioSaverUtils.setPref(browservio_saver, "needRestart", "0");
@@ -662,7 +667,7 @@ public class MainActivity extends AppCompatActivity {
 			webview.clearCache(true);
 			webview.clearHistory();
 			restart_app();
-			SketchwareUtil.showMessage(getApplicationContext(), "Reset successfully!");
+			BrowservioBasicUtil.showMessage(getApplicationContext(), "Reset successfully!");
 		}
 		if (BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage").equals("")) {
 			Intent i = getIntent();
@@ -763,57 +768,4 @@ public class MainActivity extends AppCompatActivity {
 			_errorpage();
 		}
 	}
-	
-	
-	@Deprecated
-	public void showMessage(String _s) {
-		Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();
-	}
-	
-	@Deprecated
-	public int getLocationX(View _v) {
-		int[] _location = new int[2];
-		_v.getLocationInWindow(_location);
-		return _location[0];
-	}
-	
-	@Deprecated
-	public int getLocationY(View _v) {
-		int[] _location = new int[2];
-		_v.getLocationInWindow(_location);
-		return _location[1];
-	}
-	
-	@Deprecated
-	public int getRandom(int _min, int _max) {
-		Random random = new Random();
-		return random.nextInt(_max - _min + 1) + _min;
-	}
-	
-	@Deprecated
-	public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-		ArrayList<Double> _result = new ArrayList<>();
-		SparseBooleanArray _arr = _list.getCheckedItemPositions();
-		for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
-			if (_arr.valueAt(_iIdx))
-			_result.add((double)_arr.keyAt(_iIdx));
-		}
-		return _result;
-	}
-	
-	@Deprecated
-	public float getDip(int _input){
-		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());
-	}
-	
-	@Deprecated
-	public int getDisplayWidthPixels(){
-		return getResources().getDisplayMetrics().widthPixels;
-	}
-	
-	@Deprecated
-	public int getDisplayHeightPixels(){
-		return getResources().getDisplayMetrics().heightPixels;
-	}
-	
 }

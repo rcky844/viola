@@ -6,13 +6,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
-import android.util.TypedValue;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,12 +17,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import tipz.browservio.Utils.BrowservioSaverUtils;
-import tipz.browservio.Utils.SketchwareUtil;
+import tipz.browservio.Utils.BrowservioBasicUtil;
 
 public class FavActivity extends AppCompatActivity {
 	
@@ -77,7 +72,7 @@ public class FavActivity extends AppCompatActivity {
 				bookmark_list.remove(_position);
 				BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0");
 				((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
-				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
+				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
 				isEmptyCheck(bookmark_list, bookmarks);
 			});
 			del_fav.setNegativeButton(android.R.string.no, (_dialog, _which) -> {
@@ -92,7 +87,7 @@ public class FavActivity extends AppCompatActivity {
 			del_fav.setMessage(getResources().getString(R.string.del_fav2_message));
 			del_fav.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
 				bookmarks.edit().clear().apply();
-				SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
+				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
 				finish();
 			});
 			del_fav.setNegativeButton(android.R.string.no, (_dialog, _which) -> {
@@ -152,60 +147,8 @@ public class FavActivity extends AppCompatActivity {
 		// Placed here for old data migration
 		if (list.isEmpty()) {
 			out.edit().clear().apply();
-			SketchwareUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
 			finish();
 		}
 	}
-
-	@Deprecated
-	public void showMessage(String _s) {
-		Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();
-	}
-	
-	@Deprecated
-	public int getLocationX(View _v) {
-		int[] _location = new int[2];
-		_v.getLocationInWindow(_location);
-		return _location[0];
-	}
-	
-	@Deprecated
-	public int getLocationY(View _v) {
-		int[] _location = new int[2];
-		_v.getLocationInWindow(_location);
-		return _location[1];
-	}
-	
-	@Deprecated
-	public int getRandom(int _min, int _max) {
-		Random random = new Random();
-		return random.nextInt(_max - _min + 1) + _min;
-	}
-	
-	@Deprecated
-	public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-		ArrayList<Double> _result = new ArrayList<>();
-		SparseBooleanArray _arr = _list.getCheckedItemPositions();
-		for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
-			if (_arr.valueAt(_iIdx))
-			_result.add((double)_arr.keyAt(_iIdx));
-		}
-		return _result;
-	}
-	
-	@Deprecated
-	public float getDip(int _input){
-		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());
-	}
-	
-	@Deprecated
-	public int getDisplayWidthPixels(){
-		return getResources().getDisplayMetrics().widthPixels;
-	}
-	
-	@Deprecated
-	public int getDisplayHeightPixels(){
-		return getResources().getDisplayMetrics().heightPixels;
-	}
-	
 }
