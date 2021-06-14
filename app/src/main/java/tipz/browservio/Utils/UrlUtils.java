@@ -11,11 +11,16 @@ public class UrlUtils {
 
     private static final String BASIC_URL_REGEX = "^((https?|ftp)://)?(www\\.)?([\\w]+\\.)+[\u200C\u200B\\w]{2,63}/?.*$";
     private static final Pattern p = Pattern.compile(BASIC_URL_REGEX);
+    private static final String[] startsWithMatch = {
+            "http:", "https:", "ftp:", "file:",
+            "about:", "javascript:", "blob:", "data:"};
 
     public static String UrlChecker(String url, boolean canBeSearch, SharedPreferences pref, String defaultSearchPerf) {
         Matcher m = p.matcher(url);
-        if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("ftp://") || url.startsWith("file://")) {
-            return url;
+        for (String match : startsWithMatch) {
+            if (url.startsWith(match)) {
+                return url;
+            }
         }
         if (m.find()) {
             return "https://" + url;
