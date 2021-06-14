@@ -438,6 +438,19 @@ public class MainActivity extends AppCompatActivity {
 					_errorpage();
 				}
 			}
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				if(URLUtil.isNetworkUrl(url)) {
+					return false;
+				}
+				if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url)) {
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+					startActivity(intent);
+				} else {
+					BrowservioBasicUtil.showMessage(getApplicationContext(), "Application is not installed.");
+				}
+				return true;
+			}
 		});
 		webview.setWebChromeClient(new WebChromeClient() {
 			public void onProgressChanged(WebView view, int progress) {

@@ -54,6 +54,9 @@
 	<!-- Favicon -->
 	<string name="favicondialog_title">"Website Title"</string>
 
+	<!-- App Webview Intent -->
+	<string name="app_not_installed">"Application is not installed."</string>
+
 	<!-- LAYOUT -->
 	<string name="address_bar_hint">"Search or type web address…"</string>
 

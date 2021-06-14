@@ -48,6 +48,9 @@
 	<!-- Favicon -->
 	<string name="favicondialog_title">网站标题</string>
 
+	<!-- App Webview Intent -->
+	<string name="app_not_installed">应用程序未安装</string>
+
 	<!-- LAYOUT -->
 	<string name="address_bar_hint">"搜索或输入网址…"</string>
 
