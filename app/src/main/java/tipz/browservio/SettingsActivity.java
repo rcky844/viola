@@ -300,6 +300,8 @@ public class SettingsActivity extends AppCompatActivity {
 			});
 			dabt.create().show();
 		});
+
+		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(finalInfo.versionName.concat(getResources().getString(R.string.versionName_p2))));
 		
 		linear_feed.setOnClickListener(_view -> {
 			BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
@@ -333,7 +335,6 @@ public class SettingsActivity extends AppCompatActivity {
 		textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
 		textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
 		textviewendp2.setText(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding").concat("dp"));
-		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(BrowservioSaverUtils.getPref(browservio_saver, "versionName")));
 		writingScreen = false;
 	}
 	
