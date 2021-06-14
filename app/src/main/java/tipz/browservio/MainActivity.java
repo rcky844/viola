@@ -771,7 +771,6 @@ public class MainActivity extends AppCompatActivity {
 		webview.loadUrl(getResources().getString(R.string.url_error_real));
 		//Setup media player (rewrote 200815-1307)
 		playSong(songPosition);
-		urledit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
 	}
 
 	private void _URLindentify(String url) {
