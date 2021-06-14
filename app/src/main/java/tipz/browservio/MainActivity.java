@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
 		urledit = findViewById(R.id.urledit);
 		progmain = findViewById(R.id.progmain);
 		webview = findViewById(R.id.webview);
-		webview.getSettings().setJavaScriptEnabled(true);
 		webview.getSettings().setSupportZoom(true);
 		hscroll_control = findViewById(R.id.hscroll_control);
 		linear_control = findViewById(R.id.linear_control);
