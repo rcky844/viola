@@ -690,10 +690,12 @@ public class MainActivity extends AppCompatActivity {
 		if (BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1")) {
 			webview.getSettings().setJavaScriptEnabled(true);
 			webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+			linear_control_b2.performClick();
 		}
 		else {
 			webview.getSettings().setJavaScriptEnabled(false);
 			webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
+			linear_control_b2.performClick();
 		}
 		if (BrowservioSaverUtils.getPref(browservio_saver, "showBrowseBtn").equals("1")) {
 			browse.setVisibility(View.VISIBLE);
