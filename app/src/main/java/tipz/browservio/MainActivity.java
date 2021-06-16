@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
 	private AlertDialog.Builder favicondialog;
 	private final Intent i = new Intent();
 	private MediaPlayer mediaPlayer;
+	private final ObjectAnimator fabanim = new ObjectAnimator();
 	private final ObjectAnimator baranim = new ObjectAnimator();
-	private final ObjectAnimator barrrrrr = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private SharedPreferences bookmarks;
 	private final int[] resID = { R.raw.win98_error };
@@ -370,23 +370,23 @@ public class MainActivity extends AppCompatActivity {
 		});
 		
 		_fab.setOnClickListener(_view -> {
-			baranim.setTarget(_fab);
-			barrrrrr.setTarget(hscroll_control);
-			baranim.setPropertyName("rotation");
-			barrrrrr.setPropertyName("alpha");
+			fabanim.setTarget(_fab);
+			baranim.setTarget(hscroll_control);
+			fabanim.setPropertyName("rotation");
+			baranim.setPropertyName("alpha");
+			fabanim.setDuration(250);
 			baranim.setDuration(250);
-			barrrrrr.setDuration(250);
 			if (linear_control.getVisibility() == View.VISIBLE) {
-				baranim.setFloatValues((float)(180), (float)(0));
-				barrrrrr.setFloatValues((float)(1), (float)(0));
+				fabanim.setFloatValues((float)(180), (float)(0));
+				baranim.setFloatValues((float)(1), (float)(0));
 				linear_control.setVisibility(View.GONE);
 			} else {
 				linear_control.setVisibility(View.VISIBLE);
-				baranim.setFloatValues((float)(0), (float)(180));
-				barrrrrr.setFloatValues((float)(0), (float)(1));
+				fabanim.setFloatValues((float)(0), (float)(180));
+				baranim.setFloatValues((float)(0), (float)(1));
 			}
 			baranim.start();
-			barrrrrr.start();
+			fabanim.start();
 		});
 	}
 	private void initializeLogic() {
