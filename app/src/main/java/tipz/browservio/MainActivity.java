@@ -88,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
 	String checkedUrl;
 	String UrlTitle;
 
+	private static final String[] TypeCchemeMatch = {
+			"text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
+			"http", "https", "ftp", "file"};
+
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -495,9 +499,11 @@ public class MainActivity extends AppCompatActivity {
 				_browservio_browse(sharedText != null ? sharedText : "");
 			}
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			if ("text/html".equals(type) || "text/plain".equals(type) || "application/xhtml+xml".equals(type) || "application/vnd.wap.xhtml+xml".equals(type) || "http".equals(scheme) || "https".equals(scheme) || "ftp".equals(scheme) || "file".equals(scheme)) {
-				Uri uri = getIntent().getData();
-				_browservio_browse(uri.toString());
+			for (String match : TypeCchemeMatch) {
+				if (match.equals(type) || match.equals(scheme)) {
+					Uri uri = getIntent().getData();
+					_browservio_browse(uri.toString());
+				}
 			}
 		}
 	}
