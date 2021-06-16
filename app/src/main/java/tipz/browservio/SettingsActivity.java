@@ -38,7 +38,6 @@ public class SettingsActivity extends AppCompatActivity {
 	private CheckBox checkbox2;
 	private CheckBox checkbox4;
 	private ImageView imageview5;
-	private TextView version_visiable;
 	private TextView textviewendp2;
 
 	private SharedPreferences browservio_saver;
@@ -97,7 +96,7 @@ public class SettingsActivity extends AppCompatActivity {
 		LinearLayout linear_version = findViewById(R.id.linear_version);
 		LinearLayout linear_feed = findViewById(R.id.linear_feed);
 		LinearLayout linear_source = findViewById(R.id.linear_source);
-		version_visiable = findViewById(R.id.version_visiable);
+		TextView version_visiable = findViewById(R.id.version_visiable);
 		textviewendp2 = findViewById(R.id.textviewendp2);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
