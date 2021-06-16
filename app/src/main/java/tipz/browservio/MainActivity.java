@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 	private final ObjectAnimator baranim = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private SharedPreferences bookmarks;
-	private final int[] resID = { R.raw.win98_error };
+	private final int errorID = R.raw.win98_error ;
 	int from, to, times, songPosition, timesPosition=0;
 
 	boolean bitmipUpdated_q = false;
@@ -741,7 +741,7 @@ public class MainActivity extends AppCompatActivity {
 		startActivity(i);
 	}
 
-	private void playSong(int position) {
+	private void playSong() {
 		if (mediaPlayer != null) {
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.stop();
@@ -750,7 +750,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		mediaPlayer = new MediaPlayer();
-		mediaPlayer = MediaPlayer.create(getApplicationContext(), resID[position]);
+		mediaPlayer = MediaPlayer.create(getApplicationContext(), errorID);
 		mediaPlayer.start();
 		mediaPlayer.setOnCompletionListener(mp -> {
 
@@ -761,7 +761,7 @@ public class MainActivity extends AppCompatActivity {
 					songPosition = from;
 					songPosition = timesPosition + timesPosition + 1;
 				}
-				playSong(songPosition);
+				playSong();
 			}
 		});
 	}
@@ -769,7 +769,7 @@ public class MainActivity extends AppCompatActivity {
 	private void _errorpage () {
 		webview.loadUrl(getResources().getString(R.string.url_error_real));
 		//Setup media player (rewrote 200815-1307)
-		playSong(songPosition);
+		playSong();
 	}
 
 	private void _URLindentify(String url) {
