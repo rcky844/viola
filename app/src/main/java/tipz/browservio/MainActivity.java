@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 	private final ObjectAnimator baranim = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private SharedPreferences bookmarks;
-	private final int errorID = R.raw.win98_error ;
 	int from, to, times, songPosition, timesPosition=0;
 
 	boolean bitmipUpdated_q = false;
@@ -756,6 +755,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		mediaPlayer = new MediaPlayer();
+		int errorID = R.raw.win98_error;
 		mediaPlayer = MediaPlayer.create(getApplicationContext(), errorID);
 		mediaPlayer.start();
 		mediaPlayer.setOnCompletionListener(mp -> {
