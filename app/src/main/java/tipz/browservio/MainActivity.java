@@ -422,6 +422,7 @@ public class MainActivity extends AppCompatActivity {
 			public void onPageStarted (WebView view, String url, Bitmap favicon) {
 				if (!urledit.getText().toString().equals(url)) {
 					urledit.setText(url);
+					_history_saviour();
 				}
 			}
 			public void onPageFinished (WebView view, String url) {
@@ -430,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 				if (!urledit.getText().toString().equals(url)) {
 					urledit.setText(url);
+					_history_saviour();
 				}
 				bitmipUpdated_q = false;
 				CookieSyncManager.getInstance().sync();
