@@ -615,10 +615,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Config Checker
+	 * Browservio Browse URL checker & loader
 	 *
-	 * Used to check if anything has been changed
-	 * after resume of restart.
+	 * @param url is for strings of URL to check and load
 	 */
 	private void _browservio_browse(String url) {
 		checkedUrl = UrlUtils.UrlChecker(url, true, browservio_saver, "defaultSearch");
