@@ -475,16 +475,9 @@ public class MainActivity extends AppCompatActivity {
 				callback.invoke(origin, true, false);
 			}
 		});
-		if (!BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage").equals("")) {
-			// Load default homepage.
-			if (BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage").contains(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
-				BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""));
-			}
-			_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
-		}
-		else {
-			BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""));
-		}
+
+		// Load default webpage automatically
+		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
 
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
@@ -676,11 +669,6 @@ public class MainActivity extends AppCompatActivity {
 			webview.clearHistory();
 			restart_app();
 			BrowservioBasicUtil.showMessage(getApplicationContext(), "Reset successfully!");
-		}
-		if (BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage").equals("")) {
-			Intent i = getIntent();
-			finish();
-			startActivity(i);
 		}
 		if ((BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("") || BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1"))) {
 			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1");
