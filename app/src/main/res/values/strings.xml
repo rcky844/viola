@@ -29,6 +29,7 @@
 
 	<!-- Dialog shown when the app is resetting -->
 	<string name="dialog_resetting_message">"Resetting…"</string>
+	<string name="reset_complete">"Reset completed successfully."</string>
 
 	<!-- Clear stuff selector -->
 	<string name="clear">"Clear %s"</string>

@@ -676,7 +676,7 @@ public class MainActivity extends AppCompatActivity {
 			mainClearCache();
 			mainClearCookies();
 			restart_app();
-			BrowservioBasicUtil.showMessage(getApplicationContext(), "Reset successfully!");
+			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
 		}
 		if ((BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("") || BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1"))) {
 			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1");

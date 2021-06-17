@@ -23,6 +23,7 @@
 
 	<!-- Dialog shown when the app is resetting -->
 	<string name="dialog_resetting_message">重置中…</string>
+	<string name="reset_complete">重置已成功完成</string>
 
 	<!-- Clear stuff selector -->
 	<string name="clear">清除%s</string>
