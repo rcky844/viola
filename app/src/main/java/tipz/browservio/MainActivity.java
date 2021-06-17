@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
 		urledit = findViewById(R.id.urledit);
 		progmain = findViewById(R.id.progmain);
 		webview = findViewById(R.id.webview);
-		webview.getSettings().setSupportZoom(true);
 		hscroll_control = findViewById(R.id.hscroll_control);
 		linear_control = findViewById(R.id.linear_control);
 		LinearLayout linear_control_b0 = findViewById(R.id.linear_control_b0);
@@ -196,12 +195,18 @@ public class MainActivity extends AppCompatActivity {
 			popup1.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk))) {
 					webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent, getResources().getString(R.string.webUserAgent_end)));
+					webview.getSettings().setLoadWithOverviewMode(true);
+					webview.getSettings().setUseWideViewPort(true);
+					webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 					last_desktop = desktop;
 					desktop = 1;
 					desktop_switch.setImageResource(R.drawable.outline_desktop_windows_24);
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
 					webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
+					webview.getSettings().setLoadWithOverviewMode(false);
+					webview.getSettings().setUseWideViewPort(false);
+					webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 					last_desktop = desktop;
 					desktop = 0;
 					desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
@@ -432,8 +437,11 @@ public class MainActivity extends AppCompatActivity {
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
 
 		// zoom stuff - From SCMPNews
+		webview.getSettings().setSupportZoom(true);
 		webview.getSettings().setBuiltInZoomControls(true);
 		webview.getSettings().setDisplayZoomControls(false);
+
+		webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
 		// Share stuff
 		Intent intent = getIntent();
