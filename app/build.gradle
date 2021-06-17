@@ -8,8 +8,8 @@ android {
 		applicationId "tipz.browservio"
 		minSdkVersion 21
 		targetSdkVersion 30
-		versionCode 38
-		versionName "1.4.1"
+		versionCode 39
+		versionName "1.4.2"
 	}
 	buildTypes {
 		release {
