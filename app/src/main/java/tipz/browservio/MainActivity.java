@@ -478,13 +478,14 @@ public class MainActivity extends AppCompatActivity {
 		if (!BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage").equals("")) {
 			// Load default homepage.
 			if (BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage").contains(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
-				BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage));
+				BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""));
 			}
 			_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
 		}
 		else {
-			BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage));
+			BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""));
 		}
+
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
 
