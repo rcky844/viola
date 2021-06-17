@@ -93,7 +93,6 @@
 	<string name="dialog_set_reset_message">您當前正在嘗試重置Browservio\n\n注意這個選項會做以下的這些事情:\n• 重置所有設置\n• 清除瀏覽器緩存和歷史記錄\n\n您確定要重置嗎?</string>
 
 	<!-- Version Info -->
-	<string name="version_info_title">版本信息</string>
 	<string name="version_info_message">"版本名稱: %1$s\n版本代號: %2$s\n版本技術名稱: %3$s\n版本系列: %4$s\n版本代碼: %5$s\n版本構建日期: %6$s</string>
 
 	<!-- LAYOUT -->

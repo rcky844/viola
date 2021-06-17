@@ -279,14 +279,16 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox4.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showCustomError", _param2, false));
 
 		linear_version.setOnClickListener(_view -> {
-			dabt.setTitle(getResources().getString(R.string.version_info_title));
-			dabt.setMessage(getResources().getString(R.string.version_info_message,
+			View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
+			TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
+			dialog_text.setText(getResources().getString(R.string.version_info_message,
 					finalInfo.versionName.concat(getResources().getString(R.string.versionName_p2)),
 					getResources().getString(R.string.versionCodename),
 					finalInfo.versionName.concat(getResources().getString(R.string.versionTechnical_p2)),
 					finalInfo.versionName,
 					String.valueOf(finalInfo.versionCode),
 					getResources().getString(R.string.versionDate)));
+			dabt.setView(dialogView);
 			dabt.setPositiveButton(android.R.string.ok, null);
 			dabt.create().show();
 		});
