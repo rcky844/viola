@@ -460,7 +460,8 @@ public class MainActivity extends AppCompatActivity {
 
 	// WebViewClient
 	public class WebClient extends WebViewClient {
-		public void onPageStarted (WebView view, String url, Bitmap favicon) {
+		public void onPageStarted (WebView view, String url, Bitmap icon) {
+			favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
 			if (!urledit.getText().toString().equals(url)) {
 				urledit.setText(url);
 				_history_saviour();
