@@ -398,7 +398,8 @@ public class MainActivity extends AppCompatActivity {
 		// This project was started on Aug 13 2020
 		// sur wen Sherk browser
 		setTitle(getResources().getString(R.string.app_name));
-		webview.setWebChromeClient(new CustomWebClient());
+		webview.setWebViewClient(new WebClient());
+		webview.setWebChromeClient(new ChromeWebClient());
 		// Keyboard press = browse
 		urledit.setOnEditorActionListener((v, actionId, event) -> {
 			  if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
@@ -417,64 +418,6 @@ public class MainActivity extends AppCompatActivity {
 		_downloadManager(webview);
 		// Set default fab stat
 		linear_control.setVisibility(View.GONE);
-		// Custom error page
-		webview.setWebViewClient(new WebViewClient() {
-			public void onPageStarted (WebView view, String url, Bitmap favicon) {
-				if (!urledit.getText().toString().equals(url)) {
-					urledit.setText(url);
-					_history_saviour();
-				}
-			}
-			public void onPageFinished (WebView view, String url) {
-				if (bitmipUpdated_q) {
-					favicon.setImageResource(R.drawable.outline_public_24);
-				}
-				if (!urledit.getText().toString().equals(url)) {
-					urledit.setText(url);
-					_history_saviour();
-				}
-				bitmipUpdated_q = false;
-				CookieSyncManager.getInstance().sync();
-			}
-			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-				if (!defaulterror) {
-					page_before_error = urledit.getText().toString();
-					_errorpage();
-				}
-			}
-			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				if(URLUtil.isNetworkUrl(url)) {
-					return false;
-				}
-				if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url)) {
-					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-					startActivity(intent);
-				} else {
-					BrowservioBasicUtil.showMessage(getApplicationContext(), "Application is not installed.");
-				}
-				return true;
-			}
-		});
-		webview.setWebChromeClient(new WebChromeClient() {
-			public void onProgressChanged(WebView view, int progress) {
-				if (progress == 100) {
-					progmain.setProgress(0);
-				} else {
-					progmain.setProgress(progress);
-				}
-			}
-			public void onReceivedIcon(WebView view, Bitmap icon) {
-				bitmipUpdated_q = true;
-				favicon.setImageBitmap(icon);
-			}
-			public void onReceivedTitle (WebView view, String title) {
-				UrlTitle = title;
-			}
-			public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-				callback.invoke(origin, true, false);
-			}
-		});
 
 		// Load default webpage automatically
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
@@ -503,8 +446,49 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 	}
-	
-	public class CustomWebClient extends WebChromeClient {
+
+	// WebViewClient
+	public class WebClient extends WebViewClient {
+		public void onPageStarted (WebView view, String url, Bitmap favicon) {
+			if (!urledit.getText().toString().equals(url)) {
+				urledit.setText(url);
+				_history_saviour();
+			}
+		}
+		public void onPageFinished (WebView view, String url) {
+			if (bitmipUpdated_q) {
+				favicon.setImageResource(R.drawable.outline_public_24);
+			}
+			if (!urledit.getText().toString().equals(url)) {
+				urledit.setText(url);
+				_history_saviour();
+			}
+			bitmipUpdated_q = false;
+			CookieSyncManager.getInstance().sync();
+		}
+		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+			if (!defaulterror) {
+				page_before_error = urledit.getText().toString();
+				_errorpage();
+			}
+		}
+		@Override
+		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			if(URLUtil.isNetworkUrl(url)) {
+				return false;
+			}
+			if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url)) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				startActivity(intent);
+			} else {
+				BrowservioBasicUtil.showMessage(getApplicationContext(), "Application is not installed.");
+			}
+			return true;
+		}
+	}
+
+	// WebChromeClient
+	public class ChromeWebClient extends WebChromeClient {
 		private View mCustomView;
 		private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
@@ -512,8 +496,8 @@ public class MainActivity extends AppCompatActivity {
 		private int mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 		private int mOriginalSystemUiVisibility;
 		
-		// Constructor for CustomWebClient
-		public CustomWebClient() {}
+		// Constructor for ChromeWebClient
+		public ChromeWebClient() {}
 		
 		@Override
 		public Bitmap getDefaultVideoPoster() {
@@ -541,6 +525,24 @@ public class MainActivity extends AppCompatActivity {
 			// After that mOriginalOrientation is set to landscape.
 			this.mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE; this.mCustomViewCallback.onCustomViewHidden();
 			this.mCustomViewCallback = null;
+		}
+
+		public void onProgressChanged(WebView view, int progress) {
+			if (progress == 100) {
+				progmain.setProgress(0);
+			} else {
+				progmain.setProgress(progress);
+			}
+		}
+		public void onReceivedIcon(WebView view, Bitmap icon) {
+			bitmipUpdated_q = true;
+			favicon.setImageBitmap(icon);
+		}
+		public void onReceivedTitle (WebView view, String title) {
+			UrlTitle = title;
+		}
+		public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+			callback.invoke(origin, true, false);
 		}
 	}
 
