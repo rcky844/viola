@@ -260,25 +260,21 @@ public class MainActivity extends AppCompatActivity {
 			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.all)));
 			popup2.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
-					webview.clearCache(true);
+					mainClearCache();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
-					webview.clearHistory();
-					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
+					mainClearHistory();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-					CookieManager.getInstance().removeAllCookies(null);
-					CookieManager.getInstance().flush();
+					mainClearCookies();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
 					linear_control_b2.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.all))) {
-					webview.clearCache(true);
-					webview.clearHistory();
-					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
-					CookieManager.getInstance().removeAllCookies(null);
-								CookieManager.getInstance().flush();
+					mainClearCache();
+					mainClearHistory();
+					mainClearCookies();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.all)));
 					linear_control_b2.performClick();
 				}
@@ -388,6 +384,21 @@ public class MainActivity extends AppCompatActivity {
 			fabanim.start();
 		});
 	}
+
+	private void mainClearCache() {
+		webview.clearCache(true);
+	}
+
+	private void mainClearHistory() {
+		webview.clearHistory();
+		BrowservioSaverUtils.setPref(browservio_saver, "history", "");
+	}
+
+	private void mainClearCookies() {
+		CookieManager.getInstance().removeAllCookies(null);
+		CookieManager.getInstance().flush();
+	}
+
 	private void initializeLogic() {
 		// Welcome to the Browservio (Shrek without Shrek browser)
 		// This browser was originally designed with Sketchware
