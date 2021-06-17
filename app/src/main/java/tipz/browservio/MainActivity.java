@@ -303,9 +303,7 @@ public class MainActivity extends AppCompatActivity {
 			if (!BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
 				dhist.setTitle(getResources().getString(R.string.history));
 				dhist.setMessage(BrowservioSaverUtils.getPref(browservio_saver, "history"));
-				dhist.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-
-				});
+				dhist.setPositiveButton(android.R.string.ok, null);
 				dhist.setNeutralButton(android.R.string.copy, (_dialog, _which) -> {
 					getApplicationContext();
 					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(browservio_saver, "history")));
@@ -356,9 +354,7 @@ public class MainActivity extends AppCompatActivity {
 		favicon.setOnClickListener(_view -> {
 			favicondialog.setTitle(getResources().getString(R.string.favicondialog_title));
 			favicondialog.setMessage(UrlTitle);
-			favicondialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-
-			});
+			favicondialog.setPositiveButton(android.R.string.ok, null);
 			favicondialog.setNeutralButton(android.R.string.copy, (_dialog, _which) -> {
 				getApplicationContext();
 				((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));

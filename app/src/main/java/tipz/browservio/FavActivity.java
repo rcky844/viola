@@ -75,9 +75,7 @@ public class FavActivity extends AppCompatActivity {
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
 				isEmptyCheck(bookmark_list, bookmarks);
 			});
-			del_fav.setNegativeButton(android.R.string.no, (_dialog, _which) -> {
-
-			});
+			del_fav.setNegativeButton(android.R.string.no, null);
 			del_fav.create().show();
 			return true;
 		});
@@ -90,9 +88,7 @@ public class FavActivity extends AppCompatActivity {
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
 				finish();
 			});
-			del_fav.setNegativeButton(android.R.string.no, (_dialog, _which) -> {
-
-			});
+			del_fav.setNegativeButton(android.R.string.no, null);
 			del_fav.create().show();
 		});
 	}

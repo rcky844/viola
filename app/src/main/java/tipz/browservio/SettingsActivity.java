@@ -189,9 +189,7 @@ public class SettingsActivity extends AppCompatActivity {
 					textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
 				}
 			});
-			dialog1.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
-
-			});
+			dialog1.setNegativeButton(android.R.string.cancel, null);
 			dialog1.setCancelable(false);
 			dialog1.create().show();
 		});
@@ -208,9 +206,7 @@ public class SettingsActivity extends AppCompatActivity {
 					textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
 				}
 			});
-			dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
-
-			});
+			dialog.setNegativeButton(android.R.string.cancel, null);
 			dialog.setCancelable(false);
 			dialog.create().show();
 		});
@@ -232,9 +228,7 @@ public class SettingsActivity extends AppCompatActivity {
 						textview5.setText(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding").concat("dp"));
 					}
 				});
-				dialogendp.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
-
-				});
+				dialogendp.setNegativeButton(android.R.string.cancel, null);
 				dialogendp.setCancelable(false);
 				dialogendp.create().show();
 		});
@@ -246,9 +240,7 @@ public class SettingsActivity extends AppCompatActivity {
 				BrowservioSaverUtils.setPref(browservio_saver, "isFirstLaunch", "1");
 				finish();
 			});
-			drst.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
-
-			});
+			drst.setNegativeButton(android.R.string.cancel, null);
 			drst.create().show();
 		});
 		
@@ -263,9 +255,7 @@ public class SettingsActivity extends AppCompatActivity {
 					BrowservioSaverUtils.setPref(browservio_saver, "needRestart", "1");
 					finish();
 				});
-				diazoomrestart.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
-
-				});
+				diazoomrestart.setNegativeButton(android.R.string.cancel, null);
 				diazoomrestart.create().show();
 			}
 		});
@@ -294,9 +284,7 @@ public class SettingsActivity extends AppCompatActivity {
 					finalInfo.versionName,
 					String.valueOf(finalInfo.versionCode),
 					getResources().getString(R.string.versionDate)));
-			dabt.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-
-			});
+			dabt.setPositiveButton(android.R.string.ok, null);
 			dabt.create().show();
 		});
 
