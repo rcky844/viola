@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -439,10 +440,13 @@ public class MainActivity extends AppCompatActivity {
 		String type = intent.getType();
 		String scheme = intent.getScheme();
 
-		if (Intent.ACTION_SEND.equals(action) && type != null) {
-			if ("text/plain".equals(type)) {
-				String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-				_browservio_browse(sharedText != null ? sharedText : "");
+		if (Intent.ACTION_SEND.equals(action)
+			|| NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+			if (type != null) {
+				if ("text/plain".equals(type)) {
+					String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+					_browservio_browse(sharedText != null ? sharedText : "");
+				}
 			}
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 			for (String match : TypeCchemeMatch) {
@@ -502,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
 		// Initially mOriginalOrientation is set to Landscape
 		private int mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 		private int mOriginalSystemUiVisibility;
-		
+
 		// Constructor for ChromeWebClient
 		public ChromeWebClient() {}
 		

@@ -44,6 +44,12 @@
 				<data android:mimeType="application/xhtml+xml"/>
 				<data android:mimeType="application/vnd.wap.xhtml+xml"/>
 			</intent-filter>
+			<!-- Accept inbound NFC URLs at a low priority -->
+			<intent-filter android:priority="-101">
+				<action android:name="android.nfc.action.NDEF_DISCOVERED" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:scheme="text/plain" />
+			</intent-filter>
 		</activity>
 		<activity
 			android:name=".SettingsActivity"
