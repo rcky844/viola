@@ -93,7 +93,7 @@
 
 	<!-- Version Info -->
 	<string name="version_info_title">版本信息</string>
-	<string name="version_info_message">"版本名称: %s\n版本代号: %s\n版本技术名称: %s\n版本系列: %s\n版本代码: %s\n版本构建日期: %s\n设置版本: %s</string>
+	<string name="version_info_message">"版本名称: %1$s\n版本代号: %2$s\n版本技术名称: %3$s\n版本系列: %4$s\n版本代码: %5$s\n版本构建日期: %6$s</string>
 
 	<!-- LAYOUT -->
 	<!-- General -->
