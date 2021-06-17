@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,9 +23,7 @@ import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.BrowservioSaverUtils;
 
 public class HistoryActivity extends AppCompatActivity {
-	
-	private final Timer _timer = new Timer();
-	
+
 	private ArrayList<String> history_list = new ArrayList<>();
 	
 	private ListView listview;
@@ -62,21 +61,25 @@ public class HistoryActivity extends AppCompatActivity {
 			finish();
 		});
 
-		/*
 		listview.setOnItemLongClickListener((_param1, _param2, _param3, _param4) -> {
 			final int _position = _param3;
 			del_hist.setTitle(getResources().getString(R.string.del_hist_title));
 			del_hist.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
 				history_list.remove(_position);
-				BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0");
+				StringBuilder out = new StringBuilder();
+				for (Object o : history_list) {
+					out.append(o.toString());
+					out.append(System.lineSeparator());
+				}
+				BrowservioSaverUtils.setPref(browservio_saver, "history", out.toString().trim());
 				((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
-				isEmptyCheck(bookmark_list, bookmarks);
+				isEmptyCheck();
 			});
-			del_fav.setNegativeButton(android.R.string.no, null);
-			del_fav.create().show();
+			del_hist.setNegativeButton(android.R.string.no, null);
+			del_hist.create().show();
 			return true;
-		}); */
+		});
 		
 		_fab.setOnClickListener(_view -> {
 			del_hist.setTitle(getResources().getString(R.string.del_fav2_title));
@@ -109,18 +112,14 @@ public class HistoryActivity extends AppCompatActivity {
 		super.onStart();
 			history_list = new ArrayList<>(Arrays.asList(BrowservioSaverUtils.getPref(browservio_saver, "history").split("\n")));
 			listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, history_list));
+			isEmptyCheck();
 	}
 
-	private void isEmptyCheck(ArrayList<String> list, SharedPreferences out) {
+	private void isEmptyCheck() {
 		// Placed here for old data migration
-		if (list.isEmpty()) {
-			out.edit().clear().apply();
-			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+		if (BrowservioSaverUtils.getPref(browservio_saver, "history").isEmpty()) {
+			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
 			finish();
 		}
-	}
-
-	public void setDel_hist(AlertDialog.Builder del_hist) {
-		this.del_hist = del_hist;
 	}
 }
