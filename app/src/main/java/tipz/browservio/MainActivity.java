@@ -82,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
 	private final ObjectAnimator baranim = new ObjectAnimator();
 	private AlertDialog.Builder dhist;
 	private SharedPreferences bookmarks;
-	int from, to, times, songPosition, timesPosition=0;
+	int from, to, times, songPosition;
+	final int timesPosition = 0;
 
 	boolean bitmipUpdated_q = false;
 	String checkedUrl;
@@ -780,7 +781,7 @@ public class MainActivity extends AppCompatActivity {
 		mediaPlayer.start();
 		mediaPlayer.setOnCompletionListener(mp -> {
 
-			if (timesPosition<times) {
+			if (timesPosition < times) {
 				if (songPosition <= to) {
 					songPosition = songPosition + 1;
 				} else {
