@@ -88,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
 	String checkedUrl;
 	String UrlTitle;
 
-	private static final String[] TypeCchemeMatch = {
+	/**
+	 * An array used for intent filtering
+	 */
+	private static final String[] TypeSchemeMatch = {
 			"text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
 			"http", "https", "ftp", "file"};
 
@@ -114,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * Initialize function
+	 */
 	private void initialize() {
 		
 		_fab = findViewById(R.id._fab);
@@ -449,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 			}
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			for (String match : TypeCchemeMatch) {
+			for (String match : TypeSchemeMatch) {
 				if (match.equals(type) || match.equals(scheme)) {
 					Uri uri = getIntent().getData();
 					_browservio_browse(uri.toString());
@@ -458,7 +464,9 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-	// WebViewClient
+	/**
+	 * WebViewClient
+	 */
 	public class WebClient extends WebViewClient {
 		public void onPageStarted (WebView view, String url, Bitmap icon) {
 			favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
@@ -499,7 +507,9 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-	// WebChromeClient
+	/**
+	 * WebChromeClient
+	 */
 	public class ChromeWebClient extends WebChromeClient {
 		private View mCustomView;
 		private WebChromeClient.CustomViewCallback mCustomViewCallback;
@@ -742,13 +752,21 @@ public class MainActivity extends AppCompatActivity {
 		webview.getSettings().setGeolocationDatabasePath(getApplicationContext().getFilesDir().getPath());
 	}
 
+	/**
+	 * Restarts the application
+	 */
 	private void restart_app() {
 		Intent i = getIntent();
 		finish();
 		startActivity(i);
 	}
 
-	private void playSong() {
+	/**
+	 * Audio Player for Error Page Loader
+	 *
+	 * Plays audio for Error Page Loader.
+	 */
+	private void playAudio() {
 		if (mediaPlayer != null) {
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.stop();
@@ -762,24 +780,35 @@ public class MainActivity extends AppCompatActivity {
 		mediaPlayer.start();
 		mediaPlayer.setOnCompletionListener(mp -> {
 
-			if (timesPosition<times){
-				if (songPosition <= to){
+			if (timesPosition<times) {
+				if (songPosition <= to) {
 					songPosition = songPosition + 1;
 				} else {
 					songPosition = from;
 					songPosition = timesPosition + timesPosition + 1;
 				}
-				playSong();
+				playAudio();
 			}
 		});
 	}
 
+	/**
+	 * Error Page Loader
+	 */
 	private void _errorpage () {
 		webview.loadUrl(getResources().getString(R.string.url_error_real));
 		//Setup media player (rewrote 200815-1307)
-		playSong();
+		playAudio();
 	}
 
+	/**
+	 * URL identify module
+	 *
+	 * This module/function identifies a supplied
+	 * URL to check for it's nature.
+	 *
+	 * @param url is supplied for the url to check
+	 */
 	private void _URLindentify(String url) {
 		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			throw new RuntimeException(getResources().getString(R.string.no_error_elog));

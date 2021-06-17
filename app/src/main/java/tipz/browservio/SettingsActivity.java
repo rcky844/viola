@@ -59,7 +59,10 @@ public class SettingsActivity extends AppCompatActivity {
 		initialize();
 		initializeLogic();
 	}
-	
+
+	/**
+	 * Initialize function
+	 */
 	private void initialize() {
 
 		Toolbar _toolbar = findViewById(R.id._toolbar);

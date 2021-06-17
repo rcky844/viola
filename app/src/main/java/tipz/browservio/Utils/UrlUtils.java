@@ -17,6 +17,17 @@ public class UrlUtils {
             "http:", "https:", "ftp:", "file:",
             "about:", "javascript:", "blob:", "data:"};
 
+    /**
+     * URL Checker
+     *
+     * Checks if URL is valid, if not, make it a search term.
+     *
+     * @param url is supplied as the URL to check.
+     * @param canBeSearch sets if it should be changed to a search term when the supplied URL isn't valid.
+     * @param pref as the SharedPreference to get the default search engine from.
+     * @param defaultSearchPerf as the tag to get the default search engine from pref.
+     * @return result
+     */
     @Nullable
     public static String UrlChecker(String url, boolean canBeSearch, SharedPreferences pref, String defaultSearchPerf) {
         Matcher m = p.matcher(url);
