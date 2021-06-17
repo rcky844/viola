@@ -481,6 +481,7 @@ public class MainActivity extends AppCompatActivity {
 
 		// zoom stuff - From SCMPNews
 		webview.getSettings().setBuiltInZoomControls(true);
+		webview.getSettings().setDisplayZoomControls(false);
 
 		// Share stuff
 		Intent intent = getIntent();
@@ -714,7 +715,6 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_endp.requestLayout();
 
 		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1");
-		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, "showZoomKeys").equals("1"));
 
 		// Need load
 		if (BrowservioSaverUtils.getPref(browservio_saver, "needLoad").equals("1")) {
