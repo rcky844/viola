@@ -126,7 +126,7 @@ public class FavActivity extends AppCompatActivity {
 				runOnUiThread(() -> {
 					if (!BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_show")).equals("0")) {
 						if (BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))).equals("")) {
-							listview.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, bookmark_list));
+							listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, bookmark_list));
 							populate.cancel();
 							prog.dismiss();
 							isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration

@@ -108,7 +108,7 @@ public class HistoryActivity extends AppCompatActivity {
 	public void onStart() {
 		super.onStart();
 			history_list = new ArrayList<>(Arrays.asList(BrowservioSaverUtils.getPref(browservio_saver, "history").split("\n")));
-			listview.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, history_list));
+			listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, history_list));
 	}
 
 	private void isEmptyCheck(ArrayList<String> list, SharedPreferences out) {
