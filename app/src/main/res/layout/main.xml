@@ -9,11 +9,20 @@
 		<LinearLayout
 			android:id="@+id/linear_urledit"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="32dp"
 			android:background="@color/colorPrimary"
 			android:gravity="center_horizontal|center_vertical"
 			android:orientation="horizontal"
 			android:layout_gravity="center_horizontal|center_vertical">
+
+			<ImageView
+				android:id="@+id/favicon"
+				android:layout_width="32dp"
+				android:layout_height="32dp"
+				android:contentDescription="@string/favicon_desp"
+				android:paddingStart="8dp"
+				android:paddingEnd="2dp"
+				app:srcCompat="@drawable/outline_public_24" />
 
 			<LinearLayout
 				android:id="@+id/linear_urledit_text"
@@ -22,15 +31,6 @@
 				android:layout_weight="1"
 				android:orientation="horizontal"
 				android:padding="4dp">
-
-				<ImageView
-					android:id="@+id/favicon"
-					android:layout_width="28dp"
-					android:layout_height="match_parent"
-					android:contentDescription="@string/favicon_desp"
-					android:paddingLeft="2dp"
-					android:paddingRight="2dp"
-					app:srcCompat="@drawable/outline_public_24" />
 
 				<EditText
 					android:id="@+id/urledit"
@@ -46,7 +46,8 @@
 					android:singleLine="true"
 					android:textColor="@color/text_color"
 					android:textColorHint="#607D8B"
-					android:textSize="12sp" />
+					android:textSize="12sp"
+					android:background="@drawable/urledit_bg" />
 			</LinearLayout>
 
 			<ImageView
@@ -67,7 +68,7 @@
 			style="?android:progressBarStyleHorizontal"
 			android:layout_width="match_parent"
 			android:layout_height="2dp"
-			android:background="#3DDC2F"
+			android:background="@color/colorPrimary"
 			android:indeterminate="false" />
 
 		<LinearLayout
