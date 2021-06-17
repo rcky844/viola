@@ -269,17 +269,17 @@ public class SettingsActivity extends AppCompatActivity {
 				diazoomrestart.create().show();
 			}
 		});
-		
-		linear1_javascript.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox1));
+
+		linear1_javascript.setOnClickListener(_view -> {
+			BrowservioBasicUtil.updateChkbox(checkbox1);
+			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "1");
+		});
 		
 		linear1_overrideempt.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox2));
 		
 		linear13.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox4));
 		
-		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> {
-			BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "isJavaScriptEnabled", _param2, false);
-			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "1");
-		});
+		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "isJavaScriptEnabled", _param2, false));
 		
 		checkbox2.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showFavicon", _param2, false));
 		
