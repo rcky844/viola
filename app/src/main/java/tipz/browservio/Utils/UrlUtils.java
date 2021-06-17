@@ -2,6 +2,8 @@ package tipz.browservio.Utils;
 
 import android.content.SharedPreferences;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,7 @@ public class UrlUtils {
             "http:", "https:", "ftp:", "file:",
             "about:", "javascript:", "blob:", "data:"};
 
+    @Nullable
     public static String UrlChecker(String url, boolean canBeSearch, SharedPreferences pref, String defaultSearchPerf) {
         Matcher m = p.matcher(url);
         for (String match : startsWithMatch) {
