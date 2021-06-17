@@ -142,4 +142,19 @@
 
 	<!-- ACCESSIBILITY DESCRIPTION -->
 	<string name="fav_del_fab_desp">删除所有收藏</string>
+
+	<!--
+    	History
+            	-->
+	<string name="hist">历史记录</string>
+
+	<!-- JAVA -->
+	<!-- Delete history dialog -->
+	<string name="del_hist_title">您想删除这个历史记录吗?</string>
+
+	<!-- Delete everything dialog -->
+	<string name="del_hist_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
+
+	<!-- ACCESSIBILITY DESCRIPTION -->
+	<string name="del_hist_fab_desp">删除所有历史记录</string>
 </resources>

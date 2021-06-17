@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 		});
 		
 		linear_control_b9.setOnClickListener(_view -> {
-			if (!BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
+			/*if (!BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
 				dhist.setTitle(getResources().getString(R.string.history));
 				dhist.setMessage(BrowservioSaverUtils.getPref(browservio_saver, "history"));
 				dhist.setPositiveButton(android.R.string.ok, null);
@@ -320,7 +320,9 @@ public class MainActivity extends AppCompatActivity {
 			}
 			else {
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
-			}
+			}*/
+			i.setClass(getApplicationContext(), HistoryActivity.class);
+			startActivity(i);
 		});
 		
 		linear_control_b10.setOnClickListener(_view -> {

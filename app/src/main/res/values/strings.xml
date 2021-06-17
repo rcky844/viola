@@ -148,4 +148,19 @@
 
 	<!-- ACCESSIBILITY DESCRIPTION -->
 	<string name="fav_del_fab_desp">"Delete all entries"</string>
+
+	<!--
+    	History
+            	-->
+	<string name="hist">History</string>
+
+	<!-- JAVA -->
+	<!-- Delete history dialog -->
+	<string name="del_hist_title">"Do you want to delete this history?"</string>
+
+	<!-- Delete everything dialog -->
+	<string name="del_hist_message">"You are about to delete all history entries, are you sure about this?"</string>
+
+	<!-- ACCESSIBILITY DESCRIPTION -->
+	<string name="del_hist_fab_desp">"Delete all history"</string>
 </resources>
