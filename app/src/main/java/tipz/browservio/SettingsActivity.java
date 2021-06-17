@@ -38,7 +38,6 @@ public class SettingsActivity extends AppCompatActivity {
 	private CheckBox checkbox2;
 	private CheckBox checkbox4;
 	private ImageView imageview5;
-	private TextView textviewendp2;
 
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -81,7 +80,6 @@ public class SettingsActivity extends AppCompatActivity {
 		LinearLayout linear1_homepage = findViewById(R.id.linear1_homepage);
 		LinearLayout linear11 = findViewById(R.id.linear11);
 		LinearLayout linear_zoomkeys_b = findViewById(R.id.linear_zoomkeys_b);
-		LinearLayout linearendp = findViewById(R.id.linearendp);
 		LinearLayout linear1_b0 = findViewById(R.id.linear1_b0);
 		findViewById(R.id.textview8);
 		textview9 = findViewById(R.id.textview9);
@@ -100,7 +98,6 @@ public class SettingsActivity extends AppCompatActivity {
 		LinearLayout linear_feed = findViewById(R.id.linear_feed);
 		LinearLayout linear_source = findViewById(R.id.linear_source);
 		TextView version_visiable = findViewById(R.id.version_visiable);
-		textviewendp2 = findViewById(R.id.textviewendp2);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dialog1 = new AlertDialog.Builder(this);
@@ -218,24 +215,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 		linear_zoomkeys_b.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox5));
 
-		linearendp.setOnClickListener(_view -> {
-				dialogendp.setTitle(getResources().getString(R.string.action_bar_endp));
-				dialogendp.setMessage(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding").concat("dp"));
-				final EditText custom_hp2 = new EditText(SettingsActivity.this);
-				LinearLayout.LayoutParams lpdnep = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-				custom_hp2.setLayoutParams(lpdnep);
-				dialogendp.setView(custom_hp2);
-				dialogendp.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-					if (!custom_hp2.getText().toString().equals("")) {
-						BrowservioSaverUtils.setPref(browservio_saver, "endpPadding", custom_hp2.getText().toString());
-						textview5.setText(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding").concat("dp"));
-					}
-				});
-				dialogendp.setNegativeButton(android.R.string.cancel, null);
-				dialogendp.setCancelable(false);
-				dialogendp.create().show();
-		});
-
 		linear1_b0.setOnClickListener(_view -> {
 			drst.setTitle(getResources().getString(R.string.are_you_sure_q));
 			drst.setMessage(getResources().getString(R.string.dialog_set_reset_message));
@@ -326,7 +305,6 @@ public class SettingsActivity extends AppCompatActivity {
 		}
 		textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
 		textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
-		textviewendp2.setText(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding").concat("dp"));
 		writingScreen = false;
 	}
 	

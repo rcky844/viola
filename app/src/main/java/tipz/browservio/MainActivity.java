@@ -44,8 +44,6 @@ import androidx.core.content.ContextCompat;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.Objects;
 
 import tipz.browservio.utils.BrowservioBasicUtil;
@@ -54,8 +52,7 @@ import tipz.browservio.utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
-	
-	private FloatingActionButton _fab;
+
 	private double desktop = 0;
 	private double last_desktop = 0;
 	private String page_before_error = "";
@@ -69,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 	private LinearLayout linear_control;
 	private LinearLayout linear_control_b2;
 	private LinearLayout linear_control_b3;
-	private LinearLayout linear_control_endp;
 	private ImageView desktop_switch;
 	private ImageView favicon;
 
@@ -122,9 +118,8 @@ public class MainActivity extends AppCompatActivity {
 	 * Initialize function
 	 */
 	private void initialize() {
-		
-		_fab = findViewById(R.id._fab);
 
+		ImageView fab = findViewById(R.id.fab);
 		browse = findViewById(R.id.browse);
 		urledit = findViewById(R.id.urledit);
 		progmain = findViewById(R.id.progmain);
@@ -143,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
 		LinearLayout linear_control_b9 = findViewById(R.id.linear_control_b9);
 		LinearLayout linear_control_b10 = findViewById(R.id.linear_control_b10);
 		LinearLayout linear_control_b8 = findViewById(R.id.linear_control_b8);
-		linear_control_endp = findViewById(R.id.linear_control_endp);
 		desktop_switch = findViewById(R.id.desktop_switch);
 		favicon = findViewById(R.id.favicon);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
@@ -372,8 +366,8 @@ public class MainActivity extends AppCompatActivity {
 			favicondialog.create().show();
 		});
 		
-		_fab.setOnClickListener(_view -> {
-			fabanim.setTarget(_fab);
+		fab.setOnClickListener(_view -> {
+			fabanim.setTarget(fab);
 			baranim.setTarget(hscroll_control);
 			fabanim.setPropertyName("rotation");
 			baranim.setPropertyName("alpha");
@@ -698,7 +692,6 @@ public class MainActivity extends AppCompatActivity {
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isJavaScriptEnabled", "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultSearch", getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix)), isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "endpPadding", "500", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showFavicon", "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showBrowseBtn", "0", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showZoomKeys", "0", isEqualToOneFirstLaunch);
@@ -732,9 +725,6 @@ public class MainActivity extends AppCompatActivity {
 		else {
 			favicon.setVisibility(View.GONE);
 		}
-		// Code to modify the action bar end padding
-		linear_control_endp.getLayoutParams().width = Integer.parseInt(BrowservioSaverUtils.getPref(browservio_saver, "endpPadding"));
-		linear_control_endp.requestLayout();
 
 		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1");
 
