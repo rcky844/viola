@@ -672,11 +672,9 @@ public class MainActivity extends AppCompatActivity {
 			prog.setIndeterminate(true);
 			prog.setCancelable(false);
 			prog.show();
-			CookieManager.getInstance().removeAllCookies(null);
-			CookieManager.getInstance().flush();
-			BrowservioSaverUtils.setPref(browservio_saver, "history", "");
-			webview.clearCache(true);
-			webview.clearHistory();
+			mainClearHistory();
+			mainClearCache();
+			mainClearCookies();
 			restart_app();
 			BrowservioBasicUtil.showMessage(getApplicationContext(), "Reset successfully!");
 		}
