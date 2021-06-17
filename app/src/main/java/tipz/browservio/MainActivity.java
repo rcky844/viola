@@ -605,7 +605,7 @@ public class MainActivity extends AppCompatActivity {
 		if (BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
 			BrowservioSaverUtils.setPref(browservio_saver, "history", BrowservioSaverUtils.getPref(browservio_saver, "history").concat(webview.getUrl()));
 		} else {
-			BrowservioSaverUtils.setPref(browservio_saver, "history", BrowservioSaverUtils.getPref(browservio_saver, "history").concat("\n").concat(webview.getUrl()));
+			BrowservioSaverUtils.setPref(browservio_saver, "history", BrowservioSaverUtils.getPref(browservio_saver, "history").concat(System.lineSeparator()).concat(webview.getUrl()));
 		}
 	}
 
