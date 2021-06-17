@@ -1,4 +1,4 @@
-package tipz.browservio.Utils;
+package tipz.browservio.utils;
 
 import android.content.SharedPreferences;
 
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static tipz.browservio.Utils.BrowservioSaverUtils.getPref;
+import static tipz.browservio.utils.BrowservioSaverUtils.getPref;
 
 public class UrlUtils {
 

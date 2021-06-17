@@ -48,9 +48,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
-import tipz.browservio.Utils.BrowservioBasicUtil;
-import tipz.browservio.Utils.BrowservioSaverUtils;
-import tipz.browservio.Utils.UrlUtils;
+import tipz.browservio.utils.BrowservioBasicUtil;
+import tipz.browservio.utils.BrowservioSaverUtils;
+import tipz.browservio.utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {

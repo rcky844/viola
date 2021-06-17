@@ -20,8 +20,8 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import tipz.browservio.Utils.BrowservioSaverUtils;
-import tipz.browservio.Utils.BrowservioBasicUtil;
+import tipz.browservio.utils.BrowservioSaverUtils;
+import tipz.browservio.utils.BrowservioBasicUtil;
 
 public class FavActivity extends AppCompatActivity {
 	

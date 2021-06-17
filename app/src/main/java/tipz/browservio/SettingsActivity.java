@@ -20,8 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.Objects;
 
-import tipz.browservio.Utils.BrowservioBasicUtil;
-import tipz.browservio.Utils.BrowservioSaverUtils;
+import tipz.browservio.utils.BrowservioBasicUtil;
+import tipz.browservio.utils.BrowservioSaverUtils;
 
 public class SettingsActivity extends AppCompatActivity {
 
