@@ -63,6 +63,7 @@ public class HistoryActivity extends AppCompatActivity {
 
 		listview.setOnItemLongClickListener((_param1, _param2, _param3, _param4) -> {
 			final int _position = _param3;
+			del_hist.setTitle(getResources().getString(R.string.del_hist_title));
 			del_hist.setMessage(getResources().getString(R.string.del_hist_title));
 			del_hist.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
 				history_list.remove(_position);
@@ -83,7 +84,7 @@ public class HistoryActivity extends AppCompatActivity {
 		
 		_fab.setOnClickListener(_view -> {
 			del_hist.setTitle(getResources().getString(R.string.del_fav2_title));
-			del_hist.setMessage(getResources().getString(R.string.del_hist_title));
+			del_hist.setMessage(getResources().getString(R.string.del_hist_message));
 			del_hist.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
 				BrowservioSaverUtils.setPref(browservio_saver, "history", "");
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));

@@ -70,6 +70,7 @@ public class FavActivity extends AppCompatActivity {
 		
 		listview.setOnItemLongClickListener((_param1, _param2, _param3, _param4) -> {
 			final int _position = _param3;
+			del_fav.setTitle(getResources().getString(R.string.del_fav_title));
 			del_fav.setMessage(getResources().getString(R.string.del_fav_title));
 			del_fav.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
 				bookmark_list.remove(_position);
