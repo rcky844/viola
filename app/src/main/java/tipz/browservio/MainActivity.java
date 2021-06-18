@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 	private MediaPlayer mediaPlayer;
 	private final ObjectAnimator fabanim = new ObjectAnimator();
 	private final ObjectAnimator baranim = new ObjectAnimator();
-	private AlertDialog.Builder dhist;
 	private SharedPreferences bookmarks;
 	int from, to, times, songPosition;
 	final int timesPosition = 0;
@@ -140,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
 		favicon = findViewById(R.id.favicon);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
-		dhist = new AlertDialog.Builder(this);
 		favicondialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
@@ -302,24 +300,6 @@ public class MainActivity extends AppCompatActivity {
 		});
 		
 		linear_control_b9.setOnClickListener(_view -> {
-			/*if (!BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
-				dhist.setTitle(getResources().getString(R.string.history));
-				dhist.setMessage(BrowservioSaverUtils.getPref(browservio_saver, "history"));
-				dhist.setPositiveButton(android.R.string.ok, null);
-				dhist.setNeutralButton(android.R.string.copy, (_dialog, _which) -> {
-					getApplicationContext();
-					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(browservio_saver, "history")));
-					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
-				});
-				dhist.setNegativeButton(getResources().getString(R.string.clear, ""), (_dialog, _which) -> {
-					BrowservioSaverUtils.setPref(browservio_saver, "history", "");
-					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
-				});
-				dhist.create().show();
-			}
-			else {
-				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
-			}*/
 			i.setClass(getApplicationContext(), HistoryActivity.class);
 			startActivity(i);
 		});
