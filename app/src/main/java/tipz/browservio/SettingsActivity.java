@@ -43,7 +43,6 @@ public class SettingsActivity extends AppCompatActivity {
 	private AlertDialog.Builder dialog;
 	private final ObjectAnimator stackanim = new ObjectAnimator();
 	private AlertDialog.Builder dialog1;
-	private AlertDialog.Builder dialogendp;
 	private AlertDialog.Builder dabt;
 	private AlertDialog.Builder drst;
 	private AlertDialog.Builder diazoomrestart;
@@ -101,7 +100,6 @@ public class SettingsActivity extends AppCompatActivity {
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dialog1 = new AlertDialog.Builder(this);
-		dialogendp = new AlertDialog.Builder(this);
 		dabt = new AlertDialog.Builder(this);
 		drst = new AlertDialog.Builder(this);
 		diazoomrestart = new AlertDialog.Builder(this);

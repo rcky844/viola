@@ -89,7 +89,6 @@
 	<string name="homepage_current">"Current homepage: %s"</string>
 
 	<!-- Action Bar End Padding -->
-	<string name="action_bar_endp">"Action Bar End Padding"</string>
 	<string name="restart_app_q">"Restart?"</string>
 	<string name="restart_app_qmsg">"A restart is required for this feature to work."</string>
 	<string name="restart_app_now">"Restart Now"</string>

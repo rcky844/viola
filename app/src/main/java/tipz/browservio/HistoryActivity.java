@@ -17,7 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Timer;
 
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.BrowservioSaverUtils;

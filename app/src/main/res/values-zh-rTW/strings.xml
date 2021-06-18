@@ -83,7 +83,6 @@
 	<string name="homepage_current">"當前的主頁: %s"</string>
 
 	<!-- Action Bar End Padding -->
-	<string name="action_bar_endp">操作欄結尾填充</string>
 	<string name="restart_app_q">重啟應用?</string>
 	<string name="restart_app_qmsg">此功能需要重啟應用才能工作</string>
 	<string name="restart_app_now">馬上重啟</string>
