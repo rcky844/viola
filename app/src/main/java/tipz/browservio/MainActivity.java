@@ -23,7 +23,6 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
@@ -489,7 +488,7 @@ public class MainActivity extends AppCompatActivity {
 				_history_saviour();
 			}
 			bitmipUpdated_q = false;
-			CookieSyncManager.getInstance().sync();
+			CookieManager.getInstance().flush();
 		}
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 			if (!defaulterror) {
