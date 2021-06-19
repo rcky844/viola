@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
 		});
 		
 		linear_control_b4.setOnClickListener(_view -> {
-			PopupMenu popup2 = new PopupMenu(MainActivity.this, linear_control_b3);
+			PopupMenu popup2 = new PopupMenu(MainActivity.this, linear_control_b4);
 			Menu menu2 = popup2.getMenu();
 			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
 			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
 		});
 		
 		linear_control_b10.setOnClickListener(_view -> {
-			PopupMenu popup3 = new PopupMenu(MainActivity.this, linear_control_b3);
+			PopupMenu popup3 = new PopupMenu(MainActivity.this, linear_control_b10);
 			Menu menu3 = popup3.getMenu();
 			menu3.add(getResources().getString(R.string.add_dot));
 			menu3.add(getResources().getString(R.string.favs));
