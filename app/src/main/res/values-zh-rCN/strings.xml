@@ -153,6 +153,9 @@
 	<string name="del_hist">删除这个历史记录</string>
 	<string name="del_hist_title">您想删除这个历史记录吗?</string>
 
+	<!-- Add to favourites -->
+	<string name="add_to_fav">保存到收藏夹</string>
+
 	<!-- Delete everything dialog -->
 	<string name="del_hist_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
 

@@ -32,6 +32,7 @@ public class HistoryActivity extends AppCompatActivity {
 	private ListView listview;
 	
 	private SharedPreferences browservio_saver;
+	private SharedPreferences bookmarks;
 	private AlertDialog.Builder del_hist;
 
 	private Boolean popup;
@@ -58,6 +59,7 @@ public class HistoryActivity extends AppCompatActivity {
 		
 		listview = findViewById(R.id.listview);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
+		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		del_hist = new AlertDialog.Builder(this);
 		
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
@@ -76,6 +78,7 @@ public class HistoryActivity extends AppCompatActivity {
 			Menu menu1 = popup1.getMenu();
 			menu1.add(getResources().getString(R.string.del_hist));
 			menu1.add(getResources().getString(android.R.string.copyUrl));
+			menu1.add(getResources().getString(R.string.add_to_fav));
 			popup1.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.del_hist))) {
 					final int _position = _param3;
@@ -100,6 +103,16 @@ public class HistoryActivity extends AppCompatActivity {
 					getApplicationContext();
 					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", (String) listview.getItemAtPosition(_param3)));
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+					return true;
+				} else if (item.getTitle().toString().equals(getResources().getString(R.string.add_to_fav))) {
+					if (BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count").equals("")) {
+						BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", "0");
+					} else {
+						BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")) + 1)));
+					}
+					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")), (String) listview.getItemAtPosition(_param3));
+					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_show"), "1");
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
 					return true;
 				}
 				return false;
