@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,6 +31,8 @@ public class HistoryActivity extends AppCompatActivity {
 	
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder del_hist;
+
+	private Boolean popup;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -55,30 +59,45 @@ public class HistoryActivity extends AppCompatActivity {
 		del_hist = new AlertDialog.Builder(this);
 		
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
-			BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-			BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", (String) listview.getItemAtPosition(_param3));
-			finish();
+			if (!popup) {
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", (String) listview.getItemAtPosition(_param3));
+				finish();
+			} else {
+				popup = false;
+			}
 		});
 
 		listview.setOnItemLongClickListener((_param1, _param2, _param3, _param4) -> {
-			final int _position = _param3;
-			del_hist.setTitle(getResources().getString(R.string.del_hist_title));
-			del_hist.setMessage(getResources().getString(R.string.del_hist_title));
-			del_hist.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
-				history_list.remove(_position);
-				StringBuilder out = new StringBuilder();
-				for (Object o : history_list) {
-					out.append(o.toString());
-					out.append(System.lineSeparator());
+			popup = true;
+			PopupMenu popup1 = new PopupMenu(HistoryActivity.this, _param2);
+			Menu menu1 = popup1.getMenu();
+			menu1.add(getResources().getString(R.string.del_hist));
+			popup1.setOnMenuItemClickListener(item -> {
+				if (item.getTitle().toString().equals(getResources().getString(R.string.del_hist))) {
+					final int _position = _param3;
+					del_hist.setTitle(getResources().getString(R.string.del_hist_title));
+					del_hist.setMessage(getResources().getString(R.string.del_hist_title));
+					del_hist.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
+						history_list.remove(_position);
+						StringBuilder out = new StringBuilder();
+						for (Object o : history_list) {
+							out.append(o.toString());
+							out.append(System.lineSeparator());
+						}
+						BrowservioSaverUtils.setPref(browservio_saver, "history", out.toString().trim());
+						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
+						BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
+						isEmptyCheck();
+					});
+					del_hist.setNegativeButton(android.R.string.no, null);
+					del_hist.create().show();
+					return true;
 				}
-				BrowservioSaverUtils.setPref(browservio_saver, "history", out.toString().trim());
-				((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
-				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
-				isEmptyCheck();
+				return false;
 			});
-			del_hist.setNegativeButton(android.R.string.no, null);
-			del_hist.create().show();
-			return true;
+			popup1.show();
+			return false;
 		});
 		
 		_fab.setOnClickListener(_view -> {

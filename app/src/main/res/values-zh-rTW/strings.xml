@@ -149,6 +149,7 @@
 
 	<!-- JAVA -->
 	<!-- Delete history dialog -->
+	<string name="del_hist">刪除這個歷史記錄</string>
 	<string name="del_hist_title">您想刪除這個歷史記錄嗎?</string>
 
 	<!-- Delete everything dialog -->
