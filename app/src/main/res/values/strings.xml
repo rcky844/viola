@@ -134,6 +134,7 @@
 
 	<!-- JAVA -->
 	<!-- Delete favourite dialog -->
+	<string name="del_fav">"Delete this favourite"</string>
 	<string name="del_fav_title">"Do you want to delete this favourite?"</string>
 	<string name="del_success">"Deleted successfully!"</string>
 

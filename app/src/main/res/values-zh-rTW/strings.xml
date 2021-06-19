@@ -128,6 +128,7 @@
 
 	<!-- JAVA -->
 	<!-- Delete favourite dialog -->
+	<string name="del_fav">"刪除這個收藏"</string>
 	<string name="del_fav_title">您想刪除這個收藏嗎?</string>
 	<string name="del_success">刪除成功!"</string>
 
