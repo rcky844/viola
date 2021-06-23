@@ -85,7 +85,7 @@ public class FavActivity extends AppCompatActivity {
 			menu1.add(getResources().getString(R.string.del_fav));
 			menu1.add(getResources().getString(android.R.string.copyUrl));
 			popup1.setOnMenuItemClickListener(item -> {
-				if (item.getTitle().toString().equals(getResources().getString(R.string.del_hist))) {
+				if (item.getTitle().toString().equals(getResources().getString(R.string.del_fav))) {
 					final int _position = _param3;
 					del_fav.setTitle(getResources().getString(R.string.del_fav_title));
 					del_fav.setMessage(getResources().getString(R.string.del_fav_title));
