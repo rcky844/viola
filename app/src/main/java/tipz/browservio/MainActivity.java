@@ -361,12 +361,12 @@ public class MainActivity extends AppCompatActivity {
 			fabanim.setDuration(250);
 			baranim.setDuration(250);
 			if (linear_control.getVisibility() == View.VISIBLE) {
-				fabanim.setFloatValues((float)(180), (float)(0));
+				fabanim.setFloatValues((float)(0), (float)(180));
 				baranim.setFloatValues((float)(1), (float)(0));
 				linear_control.setVisibility(View.GONE);
 			} else {
 				linear_control.setVisibility(View.VISIBLE);
-				fabanim.setFloatValues((float)(0), (float)(180));
+				fabanim.setFloatValues((float)(180), (float)(0));
 				baranim.setFloatValues((float)(0), (float)(1));
 			}
 			baranim.start();

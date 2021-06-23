@@ -73,41 +73,21 @@
 				android:clickable="true"
 				android:background="?attr/selectableItemBackgroundBorderless"
 				android:layout_marginStart="2dp"
-				android:layout_marginEnd="4dp" />
-		</LinearLayout>
-
-		<ProgressBar
-			android:id="@+id/progmain"
-			style="?android:progressBarStyleHorizontal"
-			android:layout_width="match_parent"
-			android:layout_height="2dp"
-			android:background="@color/colorPrimary"
-			android:indeterminate="false" />
-
-		<LinearLayout
-			android:id="@+id/webview_linear"
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1"
-			android:orientation="vertical">
-
-			<WebView
-				android:id="@+id/webview"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:hardwareAccelerated="true" />
+				android:layout_marginEnd="4dp"
+				android:rotation="180" />
 		</LinearLayout>
 
 		<HorizontalScrollView
 			android:id="@+id/hscroll_control"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@color/colorPrimary">
+			android:background="@color/colorPrimary"
+			android:scrollbars="none" >
 
 			<LinearLayout
 				android:id="@+id/linear_control"
 				android:layout_width="wrap_content"
-				android:layout_height="48dp"
+				android:layout_height="32dp"
 				android:layout_gravity="center_vertical"
 				android:background="@color/colorPrimary"
 				android:gravity="center_vertical"
@@ -369,5 +349,27 @@
 				</LinearLayout>
 			</LinearLayout>
 		</HorizontalScrollView>
+
+		<ProgressBar
+			android:id="@+id/progmain"
+			style="?android:progressBarStyleHorizontal"
+			android:layout_width="match_parent"
+			android:layout_height="2dp"
+			android:background="@color/colorPrimary"
+			android:indeterminate="false" />
+
+		<LinearLayout
+			android:id="@+id/webview_linear"
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:orientation="vertical">
+
+			<WebView
+				android:id="@+id/webview"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:hardwareAccelerated="true" />
+		</LinearLayout>
 	</LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
