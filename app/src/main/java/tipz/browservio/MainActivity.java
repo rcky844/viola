@@ -317,6 +317,7 @@ public class MainActivity extends AppCompatActivity {
 						BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")) + 1)));
 					}
 					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")), webview.getUrl());
+					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_title"), UrlTitle);
 					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_show"), "1");
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.favs))) {

@@ -71,7 +71,7 @@ public class FavActivity extends AppCompatActivity {
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
 			if (!popup) {
 				BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_param3)))));
+				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf(_param3))));
 				finish();
 			} else {
 				popup = false;
@@ -101,7 +101,7 @@ public class FavActivity extends AppCompatActivity {
 					return true;
 				} else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
 					getApplicationContext();
-					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", (String) listview.getItemAtPosition(_param3)));
+					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf(_param3)))));
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
 					return true;
 				}
@@ -160,7 +160,11 @@ public class FavActivity extends AppCompatActivity {
 							isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration
 						}
 						else {
-							bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))));
+							if (BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_title")).equals("")) {
+								bookmark_list.add(getResources().getString(android.R.string.untitled));
+							} else {
+								bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_title")));
+							}
 						}
 					}
 					populate_count++;

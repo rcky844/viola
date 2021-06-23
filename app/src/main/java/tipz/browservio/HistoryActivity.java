@@ -111,6 +111,7 @@ public class HistoryActivity extends AppCompatActivity {
 						BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")) + 1)));
 					}
 					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")), (String) listview.getItemAtPosition(_param3));
+					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_title"), getResources().getString(android.R.string.untitled));
 					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_show"), "1");
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
 					return true;
