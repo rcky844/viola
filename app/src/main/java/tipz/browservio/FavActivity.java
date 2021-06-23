@@ -42,7 +42,7 @@ public class FavActivity extends AppCompatActivity {
 	private TimerTask populate;
 	private AlertDialog.Builder del_fav;
 
-	private Boolean popup;
+	private Boolean popup = false;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);

@@ -35,7 +35,7 @@ public class HistoryActivity extends AppCompatActivity {
 	private SharedPreferences bookmarks;
 	private AlertDialog.Builder del_hist;
 
-	private Boolean popup;
+	private Boolean popup = false;
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
