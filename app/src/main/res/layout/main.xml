@@ -104,8 +104,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/back"
@@ -127,8 +127,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/forward"
@@ -151,8 +151,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/reload"
@@ -174,8 +174,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/homepage_ic"
@@ -197,8 +197,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/desktop_switch"
@@ -220,8 +220,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/ic_clear"
@@ -243,8 +243,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/ic_share"
@@ -266,8 +266,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/settings"
@@ -289,8 +289,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/history"
@@ -312,8 +312,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/imageview1"
@@ -335,8 +335,8 @@
 					android:focusable="true"
 					android:gravity="center_horizontal|center_vertical"
 					android:orientation="vertical"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp">
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp">
 
 					<ImageView
 						android:id="@+id/exit"
