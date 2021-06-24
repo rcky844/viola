@@ -135,14 +135,14 @@ public class HistoryActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		history_list = new ArrayList<>(Arrays.asList(BrowservioSaverUtils.getPref(browservio_saver, "history").split("\n")));
+		history_list = new ArrayList<>(Arrays.asList(BrowservioSaverUtils.getPref(browservio_saver, "history").trim().split("\n")));
 		listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, history_list));
 		isEmptyCheck();
 	}
 
 	private void isEmptyCheck() {
 		// Placed here for old data migration
-		if (BrowservioSaverUtils.getPref(browservio_saver, "history").isEmpty()) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, "history").trim().isEmpty()) {
 			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
 			finish();
 		}
