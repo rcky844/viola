@@ -411,8 +411,6 @@ public class MainActivity extends AppCompatActivity {
 		last_desktop = desktop;
 		// Start downloadManager service
 		_downloadManager(webview);
-		// Set default fab stat
-		linear_control.setVisibility(View.GONE);
 
 		// Load default webpage automatically
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));

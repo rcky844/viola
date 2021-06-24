@@ -92,7 +92,8 @@
 				android:background="@color/colorPrimary"
 				android:gravity="center_vertical"
 				android:orientation="horizontal"
-				android:weightSum="1">
+				android:weightSum="1"
+				android:visibility="gone" >
 
 				<LinearLayout
 					android:id="@+id/linear_control_b0"
