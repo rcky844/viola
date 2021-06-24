@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
 			PopupMenu popup4 = new PopupMenu(MainActivity.this, favicon);
 			Menu menu4 = popup4.getMenu();
 			menu4.add(UrlTitle).setEnabled(false);
-			menu4.add(getResources().getString(android.R.string.copy));
+			menu4.add(getResources().getString(android.R.string.copy).concat(" ").concat(getResources().getString(R.string.favicondialog_title)));
 			popup4.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(android.R.string.copy))) {
 					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
