@@ -389,7 +389,6 @@ public class MainActivity extends AppCompatActivity {
 		// This browser was originally designed with Sketchware
 		// This project was started on Aug 13 2020
 		// sur wen Sherk browser
-		setTitle(getResources().getString(R.string.app_name));
 		webview.setWebViewClient(new WebClient());
 		webview.setWebChromeClient(new ChromeWebClient());
 		// Keyboard press = browse
