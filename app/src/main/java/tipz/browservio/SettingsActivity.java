@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +19,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Objects;
 
 import tipz.browservio.utils.BrowservioBasicUtil;
@@ -258,6 +263,7 @@ public class SettingsActivity extends AppCompatActivity {
 		linear_version.setOnClickListener(_view -> {
 			View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
 			TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
+			Button update_btn = dialogView.findViewById(R.id.update_btn);
 			dialog_text.setText(getResources().getString(R.string.version_info_message,
 					finalInfo.versionName.concat(getResources().getString(R.string.versionName_p2)),
 					getResources().getString(R.string.versionCodename),
@@ -265,6 +271,45 @@ public class SettingsActivity extends AppCompatActivity {
 					finalInfo.versionName,
 					String.valueOf(finalInfo.versionCode),
 					getResources().getString(R.string.versionDate)));
+			update_btn.setOnClickListener(_update_btn -> new Thread() {
+				@Override
+				public void run() {
+					String path = "https://gitlab.com/TipzTeam/browservio/-/raw/master/update_files/latest.cfg";
+					URL u;
+					try {
+						u = new URL(path);
+						HttpURLConnection c = (HttpURLConnection) u.openConnection();
+						c.setRequestMethod("GET");
+						c.connect();
+						final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+						byte[] buffer = new byte[1024];
+						c.getInputStream().read(buffer);
+						bo.write(buffer);
+
+						runOnUiThread(() -> {
+							int position = 0;
+							String[] array = bo.toString().split(System.lineSeparator());
+							for (String obj : array) {
+								if (position == 1) {
+									BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
+									BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", obj);
+									finish();
+								}
+								position += 1;
+							}
+							try {
+								bo.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						});
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}.start());
 			dabt.setView(dialogView);
 			dabt.setPositiveButton(android.R.string.ok, null);
 			dabt.create().show();

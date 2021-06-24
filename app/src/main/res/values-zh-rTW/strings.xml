@@ -93,6 +93,7 @@
 
 	<!-- Version Info -->
 	<string name="version_info_message">"版本名稱: %1$s\n版本代號: %2$s\n版本技術名稱: %3$s\n版本系列: %4$s\n版本代碼: %5$s\n版本構建日期: %6$s</string>
+    <string name="update_btn">檢查更新</string>
 
 	<!-- LAYOUT -->
 	<!-- General -->
