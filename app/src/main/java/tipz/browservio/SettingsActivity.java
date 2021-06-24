@@ -344,23 +344,19 @@ public class SettingsActivity extends AppCompatActivity {
 		});
 	}
 	private void initializeLogic() {
-		if (BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1")) {
-			checkbox1.setChecked(true);
-		}
-		if (BrowservioSaverUtils.getPref(browservio_saver, "showFavicon").equals("1")) {
-			checkbox2.setChecked(true);
-		}
-		if (BrowservioSaverUtils.getPref(browservio_saver, "showBrowseBtn").equals("1")) {
-			checkbox3.setChecked(true);
-		}
-		if (BrowservioSaverUtils.getPref(browservio_saver, "showZoomKeys").equals("1")) {
-			checkbox5.setChecked(true);
-		}
-		if (BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1")) {
-			checkbox4.setChecked(true);
-		}
+		checkIfPrefIntIsTrue("isJavaScriptEnabled", checkbox1);
+		checkIfPrefIntIsTrue("showFavicon", checkbox2);
+		checkIfPrefIntIsTrue("showBrowseBtn", checkbox3);
+		checkIfPrefIntIsTrue("showCustomError", checkbox4);
+		checkIfPrefIntIsTrue("showZoomKeys", checkbox5);
 		textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
 		textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
 		writingScreen = false;
+	}
+
+	private void checkIfPrefIntIsTrue(String tag, CheckBox checkBox) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, tag).equals("1")) {
+			checkBox.setChecked(true);
+		}
 	}
 }
