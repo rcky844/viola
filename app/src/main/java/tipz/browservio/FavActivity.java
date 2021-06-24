@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,8 +23,8 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import tipz.browservio.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
+import tipz.browservio.utils.BrowservioSaverUtils;
 
 public class FavActivity extends AppCompatActivity {
 	
@@ -48,7 +47,7 @@ public class FavActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.fav);
 		initialize();
-		initializeLogic();
+		setTitle(getResources().getString(R.string.fav));
 	}
 
 	/**
@@ -123,15 +122,7 @@ public class FavActivity extends AppCompatActivity {
 			del_fav.create().show();
 		});
 	}
-	private void initializeLogic() {
-		setTitle(getResources().getString(R.string.fav));
-	}
-	
-	@Override
-	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
-		super.onActivityResult(_requestCode, _resultCode, _data);
-	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();

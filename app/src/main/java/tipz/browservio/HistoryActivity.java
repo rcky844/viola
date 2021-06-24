@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,7 +40,7 @@ public class HistoryActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.fav);
 		initialize();
-		initializeLogic();
+		setTitle(getResources().getString(R.string.hist));
 	}
 
 	/**
@@ -132,26 +131,13 @@ public class HistoryActivity extends AppCompatActivity {
 			del_hist.create().show();
 		});
 	}
-	private void initializeLogic() {
-		setTitle(getResources().getString(R.string.hist));
-	}
-	
-	@Override
-	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
-		super.onActivityResult(_requestCode, _resultCode, _data);
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
-			history_list = new ArrayList<>(Arrays.asList(BrowservioSaverUtils.getPref(browservio_saver, "history").split("\n")));
-			listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, history_list));
-			isEmptyCheck();
+		history_list = new ArrayList<>(Arrays.asList(BrowservioSaverUtils.getPref(browservio_saver, "history").split("\n")));
+		listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, history_list));
+		isEmptyCheck();
 	}
 
 	private void isEmptyCheck() {
