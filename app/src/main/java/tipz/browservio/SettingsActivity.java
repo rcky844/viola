@@ -293,6 +293,7 @@ public class SettingsActivity extends AppCompatActivity {
 								if (position == 1) {
 									BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
 									BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", obj);
+									BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrlIsApk", "1");
 									finish();
 								}
 								position += 1;
