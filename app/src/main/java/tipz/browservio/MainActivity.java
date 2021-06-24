@@ -453,21 +453,23 @@ public class MainActivity extends AppCompatActivity {
 	 * WebViewClient
 	 */
 	public class WebClient extends WebViewClient {
-		public void onPageStarted (WebView view, String url, Bitmap icon) {
-			favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
-			if (!urledit.getText().toString().equals(url)) {
+		private void UrlSet(String url) {
+			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || urledit.getText().toString().equals(getResources().getString(R.string.url_error_real))) {
+				urledit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
+			} else if (!urledit.getText().toString().equals(url)) {
 				urledit.setText(url);
 				_history_saviour();
 			}
+		}
+		public void onPageStarted (WebView view, String url, Bitmap icon) {
+			favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
+			UrlSet(url);
 		}
 		public void onPageFinished (WebView view, String url) {
 			if (bitmipUpdated_q) {
 				favicon.setImageResource(R.drawable.outline_public_24);
 			}
-			if (!urledit.getText().toString().equals(url)) {
-				urledit.setText(url);
-				_history_saviour();
-			}
+			UrlSet(url);
 			bitmipUpdated_q = false;
 			CookieManager.getInstance().flush();
 		}
