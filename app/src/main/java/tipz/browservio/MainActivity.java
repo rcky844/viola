@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
-		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
+		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.chord);
 		
 		browse.setOnClickListener(_view -> _browservio_browse(urledit.getText().toString()));
 
@@ -759,7 +759,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		mediaPlayer = new MediaPlayer();
-		int errorID = R.raw.win98_error;
+		int errorID = R.raw.chord;
 		mediaPlayer = MediaPlayer.create(getApplicationContext(), errorID);
 		mediaPlayer.start();
 		mediaPlayer.setOnCompletionListener(mp -> {
