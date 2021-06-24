@@ -27,6 +27,7 @@ import java.util.Objects;
 
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.BrowservioSaverUtils;
+import tipz.browservio.utils.InternetAvailable;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -271,53 +272,59 @@ public class SettingsActivity extends AppCompatActivity {
 					finalInfo.versionName,
 					String.valueOf(finalInfo.versionCode),
 					getResources().getString(R.string.versionDate)));
-			update_btn.setOnClickListener(_update_btn -> new Thread() {
-				@Override
-				public void run() {
-					String path = "https://gitlab.com/TipzTeam/browservio/-/raw/master/update_files/latest.cfg";
-					URL u;
-					try {
-						u = new URL(path);
-						HttpURLConnection c = (HttpURLConnection) u.openConnection();
-						c.setRequestMethod("GET");
-						c.connect();
-						final ByteArrayOutputStream bo = new ByteArrayOutputStream();
-						byte[] buffer = new byte[1024];
-						c.getInputStream().read(buffer);
-						bo.write(buffer);
-
-						runOnUiThread(() -> {
-							int position = 0;
-							boolean isLatest = false;
-							String[] array = bo.toString().split(System.lineSeparator());
-							for (String obj : array) {
-								if (position == 0) {
-									if (obj.equals(String.valueOf(finalInfo.versionCode))) {
-										isLatest = true;
-										BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.version_latest_toast));
-									}
-								}
-								if (position == 1 && !isLatest) {
-									BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-									BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", obj);
-									BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrlIsApk", "1");
-									finish();
-								}
-								position += 1;
-							}
+			update_btn.setOnClickListener(_update_btn -> {
+				if (!InternetAvailable.isNetworkAvailable(getApplicationContext())) {
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.network_unavailable_toast));
+				} else {
+					new Thread() {
+						@Override
+						public void run() {
+							String path = "https://gitlab.com/TipzTeam/browservio/-/raw/master/update_files/latest.cfg";
+							URL u;
 							try {
-								bo.close();
+								u = new URL(path);
+								HttpURLConnection c = (HttpURLConnection) u.openConnection();
+								c.setRequestMethod("GET");
+								c.connect();
+								final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+								byte[] buffer = new byte[1024];
+								c.getInputStream().read(buffer);
+								bo.write(buffer);
+
+								runOnUiThread(() -> {
+									int position = 0;
+									boolean isLatest = false;
+									String[] array = bo.toString().split(System.lineSeparator());
+									for (String obj : array) {
+										if (position == 0) {
+											if (obj.equals(String.valueOf(finalInfo.versionCode))) {
+												isLatest = true;
+												BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.version_latest_toast));
+											}
+										}
+										if (position == 1 && !isLatest) {
+											BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
+											BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", obj);
+											BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrlIsApk", "1");
+											finish();
+										}
+										position += 1;
+									}
+									try {
+										bo.close();
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								});
+
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
-						});
 
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
+						}
+					}.start();
 				}
-			}.start());
+			});
 			dabt.setView(dialogView);
 			dabt.setPositiveButton(android.R.string.ok, null);
 			dabt.create().show();

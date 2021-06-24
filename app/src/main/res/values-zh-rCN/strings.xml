@@ -95,6 +95,7 @@
 	<string name="version_info_message">"版本名称: %1$s\n版本代号: %2$s\n版本技术名称: %3$s\n版本系列: %4$s\n版本代码: %5$s\n版本构建日期: %6$s</string>
 	<string name="update_btn">检查更新</string>
 	<string name="version_latest_toast">您当前运行的是最新版本的Browservio</string>
+	<string name="network_unavailable_toast">网络不可用</string>
 
 	<!-- LAYOUT -->
 	<!-- General -->
