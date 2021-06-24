@@ -100,7 +100,6 @@ public class HistoryActivity extends AppCompatActivity {
 					del_hist.create().show();
 					return true;
 				} else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
-					getApplicationContext();
 					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", (String) listview.getItemAtPosition(_param3)));
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
 					return true;
