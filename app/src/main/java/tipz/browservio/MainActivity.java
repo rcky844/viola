@@ -385,13 +385,17 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initializeLogic() {
-		// Welcome to the Browservio (Shrek without Shrek browser)
-		// This browser was originally designed with Sketchware
-		// This project was started on Aug 13 2020
-		// sur wen Sherk browser
+		/*
+		 * Welcome to the Browservio (The Shrek Browser without Shrek)
+		 * This browser was originally designed with Sketchware
+		 * This project was started on Aug 13 2020
+		 *
+		 * sur wen real Sherk browser plssssssssssssssssssssssssssssss
+		 */
 		webview.setWebViewClient(new WebClient());
 		webview.setWebChromeClient(new ChromeWebClient());
-		// Keyboard press = browse
+
+		/* Code for detecting return key presses */
 		urledit.setOnEditorActionListener((v, actionId, event) -> {
 			  if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
 					  _browservio_browse(urledit.getText().toString());
@@ -399,40 +403,47 @@ public class MainActivity extends AppCompatActivity {
 				  }
 			  return false;
 			});
-		// Page stuff
-		page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
-		// desktopMode init code
-		webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
+
+		/* Page reloading stuff */
+		page_before_error = getResources().getString(R.string.url_prefix,
+				getResources().getString(R.string.url_subfix_no_error));
+
+		/* User agent init code */
+		webview.getSettings().setUserAgentString(
+				Objects.requireNonNull(System.getProperty("http.agent"))
+				.concat(" ")
+				.concat(getResources().getString(R.string.webUserAgent_end)));
 		desktop = 0;
 		last_desktop = desktop;
-		// Start downloadManager service
-		_downloadManager(webview);
 
-		// Load default webpage automatically
-		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage"));
+		_downloadManager(webview); /* Start the download manager service */
+		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")); /* Load default webpage */
 
-		// zoom stuff - From SCMPNews
+		/* zoom related stuff - From SCMPNews project */
 		webview.getSettings().setSupportZoom(true);
 		webview.getSettings().setBuiltInZoomControls(true);
 		webview.getSettings().setDisplayZoomControls(false);
 
-		webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+		webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); /* Setting the style of the scroll bar */
 
-		// Share stuff
+		/*
+		 * Getting information from intents, either from
+		 * sharing menu or default browser launch.
+		 */
 		Intent intent = getIntent();
 		String action = intent.getAction();
 		String type = intent.getType();
 		String scheme = intent.getScheme();
 
-		if (Intent.ACTION_SEND.equals(action)
-			|| NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+		if (Intent.ACTION_SEND.equals(action) /* From share menu */
+			|| NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) { /* NFC sharing */
 			if (type != null) {
 				if ("text/plain".equals(type)) {
 					String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
 					_browservio_browse(sharedText != null ? sharedText : "");
 				}
 			}
-		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) { /* From default browser */
 			for (String match : TypeSchemeMatch) {
 				if (match.equals(type) || match.equals(scheme)) {
 					Uri uri = getIntent().getData();
