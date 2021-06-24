@@ -345,7 +345,6 @@ public class SettingsActivity extends AppCompatActivity {
 		});
 	}
 	private void initializeLogic() {
-		setTitle(getResources().getString(R.string.settings));
 		if (BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1")) {
 			checkbox1.setChecked(true);
 		}
