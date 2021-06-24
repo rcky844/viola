@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
-	private AlertDialog.Builder favicondialog;
 	private final Intent i = new Intent();
 	private MediaPlayer mediaPlayer;
 	private final ObjectAnimator fabanim = new ObjectAnimator();
@@ -139,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
 		favicon = findViewById(R.id.favicon);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
-		favicondialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.win98_error);
 		
@@ -336,20 +334,19 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b8.setOnClickListener(_view -> finish());
 
 		favicon.setOnClickListener(_view -> {
-			favicondialog.setTitle(getResources().getString(R.string.favicondialog_title));
-			favicondialog.setMessage(UrlTitle);
-			favicondialog.setPositiveButton(android.R.string.ok, null);
-			favicondialog.setNeutralButton(android.R.string.copy, (_dialog, _which) -> {
-				getApplicationContext();
-				((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
-				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
-			});
-			/*favicondialog.setNegativeButton(getResources().getString(, ""), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface _dialog, int _which) {
+			PopupMenu popup4 = new PopupMenu(MainActivity.this, favicon);
+			Menu menu4 = popup4.getMenu();
+			menu4.add(UrlTitle).setEnabled(false);
+			menu4.add(getResources().getString(android.R.string.copy));
+			popup4.setOnMenuItemClickListener(item -> {
+				if (item.getTitle().toString().equals(getResources().getString(android.R.string.copy))) {
+					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+					return true;
 				}
-			});*/
-			favicondialog.create().show();
+				return false;
+			});
+			popup4.show();
 		});
 		
 		fab.setOnClickListener(_view -> {
