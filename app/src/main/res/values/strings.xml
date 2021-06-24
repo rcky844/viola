@@ -100,6 +100,7 @@
 	<!-- Version Info -->
 	<string name="version_info_message">"Version name: %1$s\nVersion codename: %2$s\nVersion technical name: %3$s\nVersion family: %4$s\nVersion code: %5$s\nVersion build date: %6$s</string>
 	<string name="update_btn">Check for Updates</string>
+	<string name="version_latest_toast">"You are currently running the latest version of Browservio."</string>
 
 	<!-- LAYOUT -->
 	<!-- General -->

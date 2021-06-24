@@ -288,9 +288,16 @@ public class SettingsActivity extends AppCompatActivity {
 
 						runOnUiThread(() -> {
 							int position = 0;
+							boolean isLatest = false;
 							String[] array = bo.toString().split(System.lineSeparator());
 							for (String obj : array) {
-								if (position == 1) {
+								if (position == 0) {
+									if (obj.equals(String.valueOf(finalInfo.versionCode))) {
+										isLatest = true;
+										BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.version_latest_toast));
+									}
+								}
+								if (position == 1 && !isLatest) {
 									BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
 									BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", obj);
 									BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrlIsApk", "1");
