@@ -560,11 +560,6 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
-		super.onActivityResult(_requestCode, _resultCode, _data);
-	}
-	
-	@Override
 	public void onBackPressed() {
 		// onBackPressed to go back in history or finish activity
 		if (webview.canGoBack()) {
