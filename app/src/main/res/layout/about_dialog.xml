@@ -36,8 +36,8 @@
         android:id="@+id/dialog_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:textColor="@color/text_color"
         android:textSize="12sp" />
 
