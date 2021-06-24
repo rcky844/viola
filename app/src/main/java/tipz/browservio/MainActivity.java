@@ -458,7 +458,7 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	public class WebClient extends WebViewClient {
 		private void UrlSet(String url) {
-			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || urledit.getText().toString().equals(getResources().getString(R.string.url_error_real))) {
+			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.toString().equals(getResources().getString(R.string.url_error_real))) {
 				urledit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
 			} else if (!urledit.getText().toString().equals(url)) {
 				urledit.setText(url);
