@@ -193,7 +193,6 @@ public class SettingsActivity extends AppCompatActivity {
 				}
 			});
 			dialog1.setNegativeButton(android.R.string.cancel, null);
-			dialog1.setCancelable(false);
 			dialog1.create().show();
 		});
 		
@@ -210,7 +209,6 @@ public class SettingsActivity extends AppCompatActivity {
 				}
 			});
 			dialog.setNegativeButton(android.R.string.cancel, null);
-			dialog.setCancelable(false);
 			dialog.create().show();
 		});
 		
