@@ -478,7 +478,7 @@ public class MainActivity extends AppCompatActivity {
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 				startActivity(intent);
 			} else {
-				BrowservioBasicUtil.showMessage(getApplicationContext(), "Application is not installed.");
+				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
 			}
 			return true;
 		}
