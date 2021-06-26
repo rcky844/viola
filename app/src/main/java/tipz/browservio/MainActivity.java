@@ -693,14 +693,8 @@ public class MainActivity extends AppCompatActivity {
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isFirstLaunch", "0", isEqualToOneFirstLaunch);
 		}
 		// Settings check
-		if (BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1")) {
-			webview.getSettings().setJavaScriptEnabled(true);
-			webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-		}
-		else {
-			webview.getSettings().setJavaScriptEnabled(false);
-			webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
-		}
+		webview.getSettings().setJavaScriptEnabled(BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1"));
+		webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1"));
 
 		if (BrowservioSaverUtils.getPref(browservio_saver, "needReload").equals("1")) {
 			linear_control_b2.performClick();
