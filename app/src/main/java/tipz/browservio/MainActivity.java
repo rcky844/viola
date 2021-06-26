@@ -624,18 +624,19 @@ public class MainActivity extends AppCompatActivity {
 		checkedUrl = UrlUtils.UrlChecker(url, true, browservio_saver, "defaultSearch");
 		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			// Load URL
-			if (url.startsWith(getResources().getString(R.string.url_prefix, ""))) {
+			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
 				_URLindentify(url);
 			} else {
 				_URLindentify(checkedUrl);
 				webview.loadUrl(checkedUrl);
+				_history_saviour();
 			}
 		} else {
 			_URLindentify(page_before_error);
 			webview.loadUrl(page_before_error);
 			page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
+			_history_saviour();
 		}
-		_history_saviour();
 	}
 
 	/**
