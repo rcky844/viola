@@ -424,7 +424,6 @@ public class MainActivity extends AppCompatActivity {
 		/* zoom related stuff - From SCMPNews project */
 		webview.getSettings().setSupportZoom(true);
 		webview.getSettings().setBuiltInZoomControls(true);
-		webview.getSettings().setDisplayZoomControls(false);
 
 		webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); /* Setting the style of the scroll bar */
 
@@ -720,6 +719,7 @@ public class MainActivity extends AppCompatActivity {
 		else {
 			favicon.setVisibility(View.GONE);
 		}
+		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, "showZoomKeys").equals("1"));
 
 		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1");
 
