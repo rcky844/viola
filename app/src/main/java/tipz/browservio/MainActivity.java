@@ -9,6 +9,7 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,6 +21,7 @@ import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -38,6 +40,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.webkit.WebSettingsCompat;
@@ -647,6 +650,18 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	/**
+	 * Set Dark Mode for WebView
+	 *
+	 * @param webview WebView to set
+	 * @param turnOn Turn on or off the WebView dark mode
+	 */
+	private void setDarkModeWebView(WebView webview, Boolean turnOn) {
+		if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+			WebSettingsCompat.setForceDark(webview.getSettings(), turnOn ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
+		}
+	}
+
+	/**
 	 * Config Checker
 	 *
 	 * Used to check if anything has been changed
@@ -662,18 +677,18 @@ public class MainActivity extends AppCompatActivity {
 		// Dark mode
 		switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
 			case Configuration.UI_MODE_NIGHT_YES:
-				// Darken web content in WebView
-				if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
-					WebSettingsCompat.setForceDark(webview.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
-				}
+				setDarkModeWebView(webview, true);
 				break;
 			case Configuration.UI_MODE_NIGHT_UNDEFINED:
 			case Configuration.UI_MODE_NIGHT_NO:
-				// Darken web content in WebView
-				if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
-					WebSettingsCompat.setForceDark(webview.getSettings(), WebSettingsCompat.FORCE_DARK_OFF);
-				}
+				setDarkModeWebView(webview, false);
 				break;
+		}
+
+		AppCompatDelegate.setDefaultNightMode(android.os.Build.VERSION.SDK_INT <= 27 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		if (android.os.Build.VERSION.SDK_INT <= 27) {
+			setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 		}
 
 		if (BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1")) {
