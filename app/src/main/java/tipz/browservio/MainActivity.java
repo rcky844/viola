@@ -170,9 +170,11 @@ public class MainActivity extends AppCompatActivity {
 		linear_control_b2.setOnClickListener(_view -> {
 			if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 				if (!webview.getUrl().equals("")) {
+					_URLindentify(webview.getUrl());
 					webview.reload();
 				}
 			} else {
+				_URLindentify(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
 				webview.loadUrl(page_before_error);
 				page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 			}
