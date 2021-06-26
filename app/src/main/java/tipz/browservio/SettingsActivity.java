@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -340,8 +339,7 @@ public class SettingsActivity extends AppCompatActivity {
 												DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
 												request.allowScanningByMediaScanner();
 												request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-												String filename = URLUtil.guessFileName(obj, "attachment; filename=\"browservio-update.apk\"", "application/vnd.android.package-archive");
-												request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+												request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
 												DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
 												downloadID = dm.enqueue(request);
 											} else {
