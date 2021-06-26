@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string	name="versionName_p2" translatable="false">" SNAPSHOT 20210626a"</string>
-    <string	name="versionTechnical_p2" translatable="false">_snaps_20210626a</string>
-    <string	name="versionCodename" translatable="false">Burton</string>
-    <string	name="versionDate" translatable="false">2021-06-26</string>
-    <string	name="webUserAgent" translatable="false">"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 %s"</string>
-    <string name="webUserAgent_end" translatable="false">Browservio/1.4.3_snaps_20210626a</string>
-</resources>

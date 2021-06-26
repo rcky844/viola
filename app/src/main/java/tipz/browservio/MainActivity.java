@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 	String checkedUrl;
 	String UrlTitle;
 
+	String userAgent_prefix = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15";
+	String userAgent_subfix = "Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA);
+
 	/**
 	 * An array used for intent filtering
 	 */
@@ -122,11 +125,11 @@ public class MainActivity extends AppCompatActivity {
 	private void deskModeSet(double mode) {
 		if (mode == 0) {
 			setDesktopMode(false,
-					Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)),
+					Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(userAgent_subfix),
 					R.drawable.outline_smartphone_24);
 		} else if (mode == 1) {
 			setDesktopMode(true,
-					getResources().getString(R.string.webUserAgent, getResources().getString(R.string.webUserAgent_end)),
+					userAgent_prefix.concat(" ").concat(userAgent_subfix),
 					R.drawable.outline_desktop_windows_24);
 		}
 
@@ -398,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
 		webview.getSettings().setUserAgentString(
 				Objects.requireNonNull(System.getProperty("http.agent"))
 				.concat(" ")
-				.concat(getResources().getString(R.string.webUserAgent_end)));
+				.concat(userAgent_subfix));
 
 		_downloadManager(webview); /* Start the download manager service */
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")); /* Load default webpage */

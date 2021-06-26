@@ -10,6 +10,10 @@ android {
 		targetSdkVersion 30
 		versionCode 43
 		versionName "1.4.3"
+		buildConfigField "String", "VERSION_NAME_EXTRA", "\" SNAPSHOT 20210626a\""
+		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_snaps_20210626a\""
+		buildConfigField "String", "VERSION_CODENAME", "\"Burton\""
+		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyyy-MM-dd HH:mm:ss") + "\""
 	}
 	buildTypes {
 		release {

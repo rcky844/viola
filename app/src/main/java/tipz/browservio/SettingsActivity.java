@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -150,17 +148,6 @@ public class SettingsActivity extends AppCompatActivity {
 		dabt = new AlertDialog.Builder(this);
 		drst = new AlertDialog.Builder(this);
 		diazoomrestart = new AlertDialog.Builder(this);
-
-		// PackageManager for version info
-		PackageManager manager = this.getPackageManager();
-		PackageInfo info = null;
-		try {
-			info = manager.getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);
-		} catch (PackageManager.NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		assert info != null;
-		PackageInfo finalInfo = info;
 
 		linear_general.setOnClickListener(_view -> {
 			stackanim.setTarget(imageview4);
@@ -305,12 +292,12 @@ public class SettingsActivity extends AppCompatActivity {
 			TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
 			Button update_btn = dialogView.findViewById(R.id.update_btn);
 			dialog_text.setText(getResources().getString(R.string.version_info_message,
-					finalInfo.versionName.concat(getResources().getString(R.string.versionName_p2)),
-					getResources().getString(R.string.versionCodename),
-					finalInfo.versionName.concat(getResources().getString(R.string.versionTechnical_p2)),
-					finalInfo.versionName,
-					String.valueOf(finalInfo.versionCode),
-					getResources().getString(R.string.versionDate)));
+					BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
+					BuildConfig.VERSION_CODENAME,
+					BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_TECHNICAL_EXTRA),
+					BuildConfig.VERSION_NAME,
+					String.valueOf(BuildConfig.VERSION_CODE),
+					BuildConfig.VERSION_BUILD_DATE));
 			update_btn.setOnClickListener(_update_btn -> {
 				if (!isNetworkAvailable(getApplicationContext())) {
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.network_unavailable_toast));
@@ -336,7 +323,7 @@ public class SettingsActivity extends AppCompatActivity {
 									String[] array = bo.toString().split(System.lineSeparator());
 									for (String obj : array) {
 										if (position == 0) {
-											if (obj.equals(String.valueOf(finalInfo.versionCode))) {
+											if (obj.equals(String.valueOf(BuildConfig.VERSION_CODE))) {
 												isLatest = true;
 												BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.version_latest_toast));
 											}
@@ -376,7 +363,7 @@ public class SettingsActivity extends AppCompatActivity {
 			dabt.create().show();
 		});
 
-		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(finalInfo.versionName.concat(getResources().getString(R.string.versionName_p2))));
+		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
 
 		linear_feed.setOnClickListener(_view -> needLoad(getResources().getString(R.string.url_source_code,
 				getResources().getString(R.string.url_bug_report_subfix))));
