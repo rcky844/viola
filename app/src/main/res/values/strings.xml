@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 	<string	name="app_name"	translatable="false">Browservio</string>
 
 	<!--
@@ -7,10 +7,9 @@
 	<!-- JAVA -->
 	<!-- Error logs -->
 	<string	name="no_error_elog" translatable="false">"Resource access denied, reason: \"browservio://no_error\" is a protected webpage."</string>
-	<string	name="last_desktop_range_elog" translatable="false">"last_desktop out of possible range 0-2."</string>
 
 	<!-- Field can't be empty -->
-	<string	name="error_field_empty" tools:keep="@string/error_field_empty">"This field cannot be empty."</string>
+	<string	name="error_field_empty">"This field cannot be empty."</string>
 
 	<!-- Move pages string -->
 	<string	name="error_already_page">"Already at the %s page!"</string>
@@ -25,7 +24,7 @@
 	<string	name="cus_ua_choose">"Please set the custom user agent of your choosing"</string>
 
 	<!-- Toast shown when file starts downloading -->
-	<string	name="downloading_toast" tools:keep="@string/downloading_toast">"Downloading file…"</string>
+	<string	name="downloading_toast">"Downloading file…"</string>
 
 	<!-- Dialog shown when the app is resetting -->
 	<string name="dialog_resetting_message">"Resetting…"</string>
@@ -56,7 +55,7 @@
 	<string name="favicondialog_title">"Website Title"</string>
 
 	<!-- App Webview Intent -->
-	<string name="app_not_installed" tools:keep="@string/app_not_installed">"Application is not installed."</string>
+	<string name="app_not_installed">"Application is not installed."</string>
 
 	<!-- LAYOUT -->
 	<string name="address_bar_hint">"Search or type web address…"</string>
@@ -67,7 +66,7 @@
 	<string name="back_desp">Backwards</string>
 	<string name="forward_desp">Forward</string>
 	<string name="reload_desp">Reload</string>
-	<string name="homepage_desp" tools:keep="@string/homepage_desp">Go to homepage</string>
+	<string name="homepage_desp">Go to homepage</string>
 	<string name="desktop_desp">"Choose the user agent to use."</string>
 	<string name="clear_desp">"Clear cache, cookies, or history."</string>
 	<string name="share_desp">"Share this website."</string>
