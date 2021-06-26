@@ -223,25 +223,8 @@ public class MainActivity extends AppCompatActivity {
 							linear_control_b2.performClick();
 						}
 					});
-					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
-						if (last_desktop == 0) {
-							desktop = last_desktop;
-							desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
-						} else {
-							if (last_desktop == 1) {
-								desktop = last_desktop;
-								desktop_switch.setImageResource(R.drawable.outline_desktop_windows_24);
-							} else {
-								if (last_desktop == 2) {
-									desktop = last_desktop;
-									desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
-								} else {
-									throw new RuntimeException(getResources().getString(R.string.last_desktop_range_elog));
-								}
-							}
-						}
-					});
-					dialog.setCancelable(false);
+					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> last_desk_set());
+					dialog.setOnDismissListener((_dialog) -> last_desk_set());
 					dialog.create().show();
 					last_desktop = desktop;
 					desktop = 2;
@@ -368,6 +351,25 @@ public class MainActivity extends AppCompatActivity {
 			baranim.start();
 			fabanim.start();
 		});
+	}
+
+	private void last_desk_set() {
+		if (last_desktop == 0) {
+			desktop = last_desktop;
+			desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
+		} else {
+			if (last_desktop == 1) {
+				desktop = last_desktop;
+				desktop_switch.setImageResource(R.drawable.outline_desktop_windows_24);
+			} else {
+				if (last_desktop == 2) {
+					desktop = last_desktop;
+					desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
+				} else {
+					throw new RuntimeException(getResources().getString(R.string.last_desktop_range_elog));
+				}
+			}
+		}
 	}
 
 	private void mainClearCache() {
