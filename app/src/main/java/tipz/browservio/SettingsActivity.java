@@ -377,19 +377,20 @@ public class SettingsActivity extends AppCompatActivity {
 		});
 
 		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(finalInfo.versionName.concat(getResources().getString(R.string.versionName_p2))));
+
+		linear_feed.setOnClickListener(_view -> needLoad(getResources().getString(R.string.url_source_code,
+				getResources().getString(R.string.url_bug_report_subfix))));
 		
-		linear_feed.setOnClickListener(_view -> {
-			BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-			BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", getResources().getString(R.string.url_bug_report));
-			finish();
-		});
-		
-		linear_source.setOnClickListener(_view -> {
-			BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-			BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", getResources().getString(R.string.url_source_code));
-			finish();
-		});
+		linear_source.setOnClickListener(_view -> needLoad(getResources().getString(R.string.url_source_code,
+				"")));
 	}
+
+	private void needLoad(String Url) {
+		BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
+		BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", Url);
+		finish();
+	}
+
 	private void initializeLogic() {
 		checkIfPrefIntIsTrue("isJavaScriptEnabled", checkbox1);
 		checkIfPrefIntIsTrue("showFavicon", checkbox2);
