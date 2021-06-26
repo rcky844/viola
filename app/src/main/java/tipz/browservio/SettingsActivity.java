@@ -11,6 +11,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,7 +37,6 @@ import java.util.Objects;
 
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.BrowservioSaverUtils;
-import tipz.browservio.utils.InternetAvailable;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -95,6 +96,13 @@ public class SettingsActivity extends AppCompatActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(onDownloadComplete);
+	}
+
+	private boolean isNetworkAvailable(Context context) {
+		ConnectivityManager connectivityManager
+				= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 	/**
@@ -304,7 +312,7 @@ public class SettingsActivity extends AppCompatActivity {
 					String.valueOf(finalInfo.versionCode),
 					getResources().getString(R.string.versionDate)));
 			update_btn.setOnClickListener(_update_btn -> {
-				if (!InternetAvailable.isNetworkAvailable(getApplicationContext())) {
+				if (!isNetworkAvailable(getApplicationContext())) {
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.network_unavailable_toast));
 				} else {
 					new Thread() {
