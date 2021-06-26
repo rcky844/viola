@@ -335,6 +335,7 @@ public class SettingsActivity extends AppCompatActivity {
 											}
 										}
 										if (position == 1 && !isLatest) {
+											BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.new_update_detect_toast));
 											if (apkFile.delete() || !apkFile.exists()) {
 												DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
 												request.allowScanningByMediaScanner();
@@ -343,6 +344,8 @@ public class SettingsActivity extends AppCompatActivity {
 												request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
 												DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
 												downloadID = dm.enqueue(request);
+											} else {
+												BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.update_down_failed_toast));
 											}
 										}
 										position += 1;

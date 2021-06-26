@@ -96,6 +96,8 @@
     <string name="update_btn">檢查更新</string>
 	<string name="version_latest_toast">您當前運行的是最新版本的Browservio</string>
 	<string name="network_unavailable_toast">網絡不可用</string>
+	<string name="new_update_detect_toast">"已檢測到新的版本, 正在下載中…"</string>
+	<string name="update_down_failed_toast">更新下載失敗!</string>
 
 	<!-- LAYOUT -->
 	<!-- General -->
