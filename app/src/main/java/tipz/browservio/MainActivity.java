@@ -55,8 +55,6 @@ import tipz.browservio.utils.UrlUtils;
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
 
-	private double desktop = 0;
-	private double last_desktop = 0;
 	private String page_before_error = "";
 	private boolean defaulterror = true;
 
@@ -112,6 +110,28 @@ public class MainActivity extends AppCompatActivity {
 		if (requestCode == 1000) {
 			initializeLogic();
 		}
+	}
+
+	private void setDesktopMode(Boolean enableDesktop, String ua, Integer image) {
+		webview.getSettings().setUserAgentString(ua);
+		webview.getSettings().setLoadWithOverviewMode(enableDesktop);
+		webview.getSettings().setUseWideViewPort(enableDesktop);
+		webview.setScrollBarStyle(enableDesktop ? WebView.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);
+		desktop_switch.setImageResource(image);
+		linear_control_b2.performClick();
+	}
+
+	private void deskModeSet(double mode) {
+		if (mode == 0) {
+			setDesktopMode(false,
+					Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)),
+					R.drawable.outline_smartphone_24);
+		} else if (mode == 1) {
+			setDesktopMode(true,
+					getResources().getString(R.string.webUserAgent, getResources().getString(R.string.webUserAgent_end)),
+					R.drawable.outline_desktop_windows_24);
+		}
+
 	}
 
 	/**
@@ -184,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 		});
 		
 		linear_control_b7.setOnClickListener(_view -> _browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
-		
+
 		linear_control_b3.setOnClickListener(_view -> {
 			PopupMenu popup1 = new PopupMenu(MainActivity.this, linear_control_b3);
 			Menu menu1 = popup1.getMenu();
@@ -193,23 +213,9 @@ public class MainActivity extends AppCompatActivity {
 			menu1.add(getResources().getString(R.string.linear_control_b3_cus));
 			popup1.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk))) {
-					webview.getSettings().setUserAgentString(getResources().getString(R.string.webUserAgent, getResources().getString(R.string.webUserAgent_end)));
-					webview.getSettings().setLoadWithOverviewMode(true);
-					webview.getSettings().setUseWideViewPort(true);
-					webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-					last_desktop = desktop;
-					desktop = 1;
-					desktop_switch.setImageResource(R.drawable.outline_desktop_windows_24);
-					linear_control_b2.performClick();
+					deskModeSet(1);
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
-					webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
-					webview.getSettings().setLoadWithOverviewMode(false);
-					webview.getSettings().setUseWideViewPort(false);
-					webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-					last_desktop = desktop;
-					desktop = 0;
-					desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
-					linear_control_b2.performClick();
+					deskModeSet(0);
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
 					dialog.setTitle(getResources().getString(R.string.ua));
 					dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
@@ -219,20 +225,15 @@ public class MainActivity extends AppCompatActivity {
 					dialog.setView(custom_ua);
 					dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 						if (custom_ua.length() == 0) {
-							webview.getSettings().setUserAgentString(Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(getResources().getString(R.string.webUserAgent_end)));
-							linear_control_b2.performClick();
-							desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
-							desktop = 0;
+							deskModeSet(0);
 						} else {
 							webview.getSettings().setUserAgentString(custom_ua.getText().toString());
 							linear_control_b2.performClick();
 						}
 					});
-					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> last_desk_set());
-					dialog.setOnDismissListener((_dialog) -> last_desk_set());
+					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> deskModeSet(0));
+					dialog.setOnDismissListener((_dialog) -> deskModeSet(0));
 					dialog.create().show();
-					last_desktop = desktop;
-					desktop = 2;
 					desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
 				}
 				return false;
@@ -358,25 +359,6 @@ public class MainActivity extends AppCompatActivity {
 		});
 	}
 
-	private void last_desk_set() {
-		if (last_desktop == 0) {
-			desktop = last_desktop;
-			desktop_switch.setImageResource(R.drawable.outline_smartphone_24);
-		} else {
-			if (last_desktop == 1) {
-				desktop = last_desktop;
-				desktop_switch.setImageResource(R.drawable.outline_desktop_windows_24);
-			} else {
-				if (last_desktop == 2) {
-					desktop = last_desktop;
-					desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
-				} else {
-					throw new RuntimeException(getResources().getString(R.string.last_desktop_range_elog));
-				}
-			}
-		}
-	}
-
 	private void mainClearCache() {
 		webview.clearCache(true);
 	}
@@ -420,8 +402,6 @@ public class MainActivity extends AppCompatActivity {
 				Objects.requireNonNull(System.getProperty("http.agent"))
 				.concat(" ")
 				.concat(getResources().getString(R.string.webUserAgent_end)));
-		desktop = 0;
-		last_desktop = desktop;
 
 		_downloadManager(webview); /* Start the download manager service */
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")); /* Load default webpage */
