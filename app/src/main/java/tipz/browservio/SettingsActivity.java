@@ -65,9 +65,9 @@ public class SettingsActivity extends AppCompatActivity {
 
 	boolean writingScreen = true;
 	long downloadID;
-	File apkFile = new File(Environment.getExternalStorageDirectory().toString().concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk"));
+	final File apkFile = new File(Environment.getExternalStorageDirectory().toString().concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk"));
 
-	BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+	final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
