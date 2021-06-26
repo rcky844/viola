@@ -796,7 +796,7 @@ public class MainActivity extends AppCompatActivity {
 		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			throw new RuntimeException(getResources().getString(R.string.no_error_elog));
 		}
-		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || urledit.getText().toString().equals(getResources().getString(R.string.url_error_real))) {
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
 			_errorpage();
 		}
 	}
