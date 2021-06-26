@@ -701,20 +701,9 @@ public class MainActivity extends AppCompatActivity {
 			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "0");
 		}
 
-		if (BrowservioSaverUtils.getPref(browservio_saver, "showBrowseBtn").equals("1")) {
-			browse.setVisibility(View.VISIBLE);
-		}
-		else {
-			browse.setVisibility(View.GONE);
-		}
-		if (BrowservioSaverUtils.getPref(browservio_saver, "showFavicon").equals("1")) {
-			favicon.setVisibility(View.VISIBLE);
-		}
-		else {
-			favicon.setVisibility(View.GONE);
-		}
+		browse.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, "showBrowseBtn").equals("1") ? View.VISIBLE : View.GONE);
+		favicon.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, "showFavicon").equals("1") ? View.VISIBLE : View.GONE);
 		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, "showZoomKeys").equals("1"));
-
 		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1");
 
 		// Need load
