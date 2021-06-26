@@ -29,7 +29,6 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -44,6 +43,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.webkit.WebSettingsCompat;
+import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
 
 import java.util.Objects;
@@ -439,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
 	/**
 	 * WebViewClient
 	 */
-	public class WebClient extends WebViewClient {
+	public class WebClient extends WebViewClientCompat {
 		private void UrlSet(String url) {
 			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
 				urledit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
