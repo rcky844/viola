@@ -3,11 +3,19 @@ package tipz.browservio;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -17,8 +25,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -54,6 +64,24 @@ public class SettingsActivity extends AppCompatActivity {
 	private final ObjectAnimator Sherlockanimation = new ObjectAnimator();
 
 	boolean writingScreen = true;
+	long downloadID;
+	File apkFile = new File(Environment.getExternalStorageDirectory().toString().concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk"));
+
+	BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+			if (downloadID == id) {
+				Intent installIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+				Uri photoURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", apkFile);
+				installIntent.setData(photoURI);
+				installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+				installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+				startActivity(installIntent);
+			}
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -61,6 +89,13 @@ public class SettingsActivity extends AppCompatActivity {
 		setContentView(R.layout.settings);
 		initialize();
 		initializeLogic();
+		registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(onDownloadComplete);
 	}
 
 	/**
@@ -300,10 +335,15 @@ public class SettingsActivity extends AppCompatActivity {
 											}
 										}
 										if (position == 1 && !isLatest) {
-											BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-											BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", obj);
-											BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrlIsApk", "1");
-											finish();
+											if (apkFile.delete() || !apkFile.exists()) {
+												DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
+												request.allowScanningByMediaScanner();
+												request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+												String filename = URLUtil.guessFileName(obj, "attachment; filename=\"browservio-update.apk\"", "application/vnd.android.package-archive");
+												request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+												DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+												downloadID = dm.enqueue(request);
+											}
 										}
 										position += 1;
 									}
