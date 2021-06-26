@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
 	private final ObjectAnimator fabanim = new ObjectAnimator();
 	private final ObjectAnimator baranim = new ObjectAnimator();
 	private SharedPreferences bookmarks;
-	int from, to, times, songPosition;
-	final int timesPosition = 0;
 
 	boolean bitmipUpdated_q = false;
 	String checkedUrl;
@@ -162,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
-		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.chord);
 		
 		browse.setOnClickListener(_view -> _browservio_browse(urledit.getText().toString()));
 
@@ -745,11 +742,11 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Audio Player for Error Page Loader
-	 *
-	 * Plays audio for Error Page Loader.
+	 * Error Page Loader
 	 */
-	private void playAudio() {
+	private void _errorpage () {
+		webview.loadUrl(getResources().getString(R.string.url_error_real));
+		// Media player
 		if (mediaPlayer != null) {
 			if (mediaPlayer.isPlaying()) {
 				mediaPlayer.stop();
@@ -758,30 +755,8 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		mediaPlayer = new MediaPlayer();
-		int errorID = R.raw.chord;
-		mediaPlayer = MediaPlayer.create(getApplicationContext(), errorID);
+		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.chord);
 		mediaPlayer.start();
-		mediaPlayer.setOnCompletionListener(mp -> {
-
-			if (timesPosition < times) {
-				if (songPosition <= to) {
-					songPosition = songPosition + 1;
-				} else {
-					songPosition = from;
-					songPosition = timesPosition + timesPosition + 1;
-				}
-				playAudio();
-			}
-		});
-	}
-
-	/**
-	 * Error Page Loader
-	 */
-	private void _errorpage () {
-		webview.loadUrl(getResources().getString(R.string.url_error_real));
-		//Setup media player (rewrote 200815-1307)
-		playAudio();
 	}
 
 	/**
