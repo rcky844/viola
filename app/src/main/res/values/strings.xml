@@ -97,7 +97,7 @@
 	<string name="dialog_set_reset_message">"You are currently trying to reset Browservio.\n\nNote this option will do the following things:\n• Reset all your settings\n• Clear browser cache and history\n\nARE YOU SURE ABOUT THIS?"</string>
 
 	<!-- Version Info -->
-	<string name="version_info_message">"Version name: %1$s\nVersion codename: %2$s\nVersion technical name: %3$s\nVersion family: %4$s\nVersion code: %5$s\nVersion build date: %6$s</string>
+	<string name="version_info_message">"Version Name: %1$s\nVersion Codename: %2$s\nVersion Technical Name: %3$s\nVersion Family: %4$s\nVersion Code: %5$s\nVersion Build Date: %6$s</string>
 	<string name="update_btn">Check for Updates</string>
 	<string name="version_latest_toast">"You are currently running the latest version of Browservio."</string>
 	<string name="network_unavailable_toast">"Network is unavailable."</string>
