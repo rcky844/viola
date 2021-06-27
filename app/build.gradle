@@ -13,7 +13,7 @@ android {
 		buildConfigField "String", "VERSION_NAME_EXTRA", "\" SNAPSHOT 20210626b\""
 		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_snaps_20210626b\""
 		buildConfigField "String", "VERSION_CODENAME", "\"Burton\""
-		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyyy-MM-dd HH:mm:ss") + "\""
+		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("EEE MMM d HH:mm:ss z yyyy") + "\""
 	}
 	buildTypes {
 		release {
