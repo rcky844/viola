@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
 	String checkedUrl;
 	String UrlTitle;
 
-	String userAgent_prefix = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15";
-	String userAgent_subfix = "Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA);
+	final String userAgent_prefix = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15";
+	final String userAgent_subfix = "Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA);
 
 	/**
 	 * An array used for intent filtering
