@@ -33,7 +33,7 @@
 		android:layout_margin="16dp"
 		android:layout_gravity="end|bottom"
 		android:backgroundTint="@color/colorAccent"
-		app:tint="@color/fab_icon_tint"
+		app:tint="@android:color/black"
 		app:srcCompat="@drawable/outline_close_24"
 		android:contentDescription="@string/fav_del_fab_desp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

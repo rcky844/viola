@@ -44,7 +44,7 @@
 					android:importantForAutofill="no"
 					android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
 					android:singleLine="true"
-					android:textColor="@color/text_color"
+					android:textColor="@color/colorBackground_inverted"
 					android:textColorHint="#607D8B"
 					android:textSize="12sp"
 					android:background="@drawable/urledit_bg" />
@@ -60,7 +60,7 @@
 				android:focusable="true"
 				android:scaleType="fitCenter"
 				android:src="@drawable/outline_search_24"
-				app:tint="@color/icon_tint" />
+				app:tint="@android:color/black" />
 
 			<ImageView
 				android:id="@+id/fab"
@@ -68,7 +68,7 @@
 				android:layout_height="wrap_content"
 				android:contentDescription="@string/fab_desp"
 				app:srcCompat="@drawable/outline_arrow_up_24"
-				app:tint="@color/fab_icon_tint"
+				app:tint="@color/colorBackground"
 				android:focusable="true"
 				android:clickable="true"
 				android:background="?attr/selectableItemBackgroundBorderless"
@@ -115,7 +115,7 @@
 						android:contentDescription="@string/back_desp"
 						android:scaleType="center"
 						android:src="@drawable/outline_arrow_back_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -139,7 +139,7 @@
 						android:rotation="180"
 						android:scaleType="center"
 						android:src="@drawable/outline_arrow_back_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -162,7 +162,7 @@
 						android:contentDescription="@string/reload_desp"
 						android:scaleType="center"
 						android:src="@drawable/outline_refresh_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -185,7 +185,7 @@
 						android:contentDescription="@string/history"
 						android:scaleType="center"
 						android:src="@drawable/outline_home_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -208,7 +208,7 @@
 						android:contentDescription="@string/desktop_desp"
 						android:scaleType="center"
 						android:src="@drawable/outline_smartphone_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -231,7 +231,7 @@
 						android:contentDescription="@string/clear_desp"
 						android:scaleType="center"
 						android:src="@drawable/outline_delete_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -254,7 +254,7 @@
 						android:contentDescription="@string/share_desp"
 						android:scaleType="center"
 						android:src="@drawable/outline_share_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -277,7 +277,7 @@
 						android:contentDescription="@string/settings"
 						android:scaleType="center"
 						android:src="@drawable/outline_settings_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -300,7 +300,7 @@
 						android:contentDescription="@string/history"
 						android:scaleType="center"
 						android:src="@drawable/outline_history_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -323,7 +323,7 @@
 						android:contentDescription="@string/fav"
 						android:scaleType="center"
 						android:src="@drawable/outline_favorite_border_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 
 				<LinearLayout
@@ -346,7 +346,7 @@
 						android:contentDescription="@string/exit_desp"
 						android:scaleType="center"
 						android:src="@drawable/outline_close_24"
-						app:tint="@color/icon_tint" />
+						app:tint="@android:color/black" />
 				</LinearLayout>
 			</LinearLayout>
 		</HorizontalScrollView>
