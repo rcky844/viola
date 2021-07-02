@@ -45,7 +45,6 @@
 					android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
 					android:singleLine="true"
 					android:textColor="@color/colorBackground_inverted"
-					android:textColorHint="#607D8B"
 					android:textSize="12sp"
 					android:background="@drawable/urledit_bg" />
 			</LinearLayout>
