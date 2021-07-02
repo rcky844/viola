@@ -1,9 +1,9 @@
 <resources>
-	<color	name="colorPrimary">#3DDC2F</color>
-	<color	name="colorPrimaryDark">#3DDC2F</color>
+	<color	name="colorPrimary">#3DAA2F</color>
+	<color	name="colorPrimaryDark">#3DAA2F</color>
 	<color	name="colorAccent">#4285F4</color>
-	<color	name="colorControlHighlight">#3DDC84</color>
-	<color	name="colorControlNormal">#4AFF3F</color>
+	<color	name="colorControlHighlight">#3DBC84</color>
+	<color	name="colorControlNormal">#4ACF3F</color>
 	<color	name="colorBackground">#FFFFFF</color>
 	<color	name="colorBackground_inverted">#000000</color>
 </resources>
