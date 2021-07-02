@@ -465,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 			if (!defaulterror) {
-				page_before_error = urledit.getText().toString();
+				page_before_error = webview.getUrl();
 				_errorpage();
 			}
 		}
