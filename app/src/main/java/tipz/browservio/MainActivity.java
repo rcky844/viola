@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 					webview.reload();
 				}
 			} else {
-				_URLindentify(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
+				_URLindentify(page_before_error);
 				webview.loadUrl(page_before_error);
 				page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 			}
