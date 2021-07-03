@@ -471,8 +471,10 @@ public class MainActivity extends AppCompatActivity {
 		}
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			if(URLUtil.isNetworkUrl(url)) {
-				return false;
+			if (url != null) {
+				if (url.length() != 0) {
+					return false;
+				}
 			}
 			if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url)) {
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
