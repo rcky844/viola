@@ -583,10 +583,6 @@ public class MainActivity extends AppCompatActivity {
 			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 			request.allowScanningByMediaScanner();
 			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
-			if (BrowservioSaverUtils.getPref(browservio_saver, "needLoadUrlIsApk").equals("1")) {
-				mimetype = "application/vnd.android.package-archive";
-				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrlIsApk", "0");
-			}
 			final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
 			DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
