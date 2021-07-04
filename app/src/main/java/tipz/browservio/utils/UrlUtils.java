@@ -2,8 +2,6 @@ package tipz.browservio.utils;
 
 import android.webkit.URLUtil;
 
-import androidx.annotation.Nullable;
-
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {
@@ -20,7 +18,6 @@ public class UrlUtils {
      * @param searchUrl as the Url supplied for search.
      * @return result
      */
-    @Nullable
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
         for (String match : startsWithMatch) {
             if (url.startsWith(match)) {
@@ -37,6 +34,6 @@ public class UrlUtils {
                 return searchUrl + url;
             }
         }
-        return null;
+        return url;
     }
 }
