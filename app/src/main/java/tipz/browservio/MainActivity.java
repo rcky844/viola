@@ -55,7 +55,7 @@ import tipz.browservio.utils.UrlUtils;
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
 
-	private String page_before_error = "";
+	private String page_before_error;
 	private boolean defaulterror = true;
 
 	private ImageView browse;
