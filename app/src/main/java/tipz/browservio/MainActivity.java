@@ -111,24 +111,28 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-	private void setDesktopMode(Boolean enableDesktop, String ua, Integer image) {
+	private void setDesktopMode(Boolean enableDesktop, String ua, Integer image, boolean noReload) {
 		webview.getSettings().setUserAgentString(ua);
 		webview.getSettings().setLoadWithOverviewMode(enableDesktop);
 		webview.getSettings().setUseWideViewPort(enableDesktop);
 		webview.setScrollBarStyle(enableDesktop ? WebView.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);
 		desktop_switch.setImageResource(image);
-		linear_control_b2.performClick();
+		if (!noReload) {
+			linear_control_b2.performClick();
+		}
 	}
 
-	private void deskModeSet(double mode) {
+	private void deskModeSet(double mode, boolean noReload) {
 		if (mode == 0) {
 			setDesktopMode(false,
 					userAgent_full("Linux; Android 11"),
-					R.drawable.outline_smartphone_24);
+					R.drawable.outline_smartphone_24,
+					noReload);
 		} else if (mode == 1) {
 			setDesktopMode(true,
 					userAgent_full("X11; Linux x86_64"),
-					R.drawable.outline_desktop_windows_24);
+					R.drawable.outline_desktop_windows_24,
+					noReload);
 		}
 
 	}
@@ -211,9 +215,9 @@ public class MainActivity extends AppCompatActivity {
 			menu1.add(getResources().getString(R.string.linear_control_b3_cus));
 			popup1.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk))) {
-					deskModeSet(1);
+					deskModeSet(1, false);
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
-					deskModeSet(0);
+					deskModeSet(0, false);
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
 					dialog.setTitle(getResources().getString(R.string.ua));
 					dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
@@ -223,14 +227,14 @@ public class MainActivity extends AppCompatActivity {
 					dialog.setView(custom_ua);
 					dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 						if (custom_ua.length() == 0) {
-							deskModeSet(0);
+							deskModeSet(0, false);
 						} else {
 							webview.getSettings().setUserAgentString(custom_ua.getText().toString());
 							linear_control_b2.performClick();
 						}
 					});
-					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> deskModeSet(0));
-					dialog.setOnDismissListener((_dialog) -> deskModeSet(0));
+					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> deskModeSet(0, false));
+					dialog.setOnDismissListener((_dialog) -> deskModeSet(0, false));
 					dialog.create().show();
 					desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
 				}
@@ -395,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
 		page_before_error = getResources().getString(R.string.url_prefix,
 				getResources().getString(R.string.url_subfix_no_error));
 
-		deskModeSet(0); /* User agent init code */
+		deskModeSet(0, true); /* User agent init code */
 
 		_downloadManager(webview); /* Start the download manager service */
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")); /* Load default webpage */
