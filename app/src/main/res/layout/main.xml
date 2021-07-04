@@ -79,19 +79,19 @@
 		<HorizontalScrollView
 			android:id="@+id/hscroll_control"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:scrollbars="none" >
+			android:layout_height="32dp"
+			android:scrollbars="none"
+			android:visibility="gone"
+			android:background="@color/colorPrimary"
+			android:weightSum="1" >
 
 			<androidx.appcompat.widget.LinearLayoutCompat
 				android:id="@+id/linear_control"
 				android:layout_width="wrap_content"
-				android:layout_height="32dp"
+				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical"
-				android:background="@color/colorPrimary"
 				android:gravity="center_vertical"
-				android:orientation="horizontal"
-				android:weightSum="1"
-				android:visibility="gone" >
+				android:orientation="horizontal" >
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/back"

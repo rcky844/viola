@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 	private ProgressBar progmain;
 	private WebView webview;
 	private HorizontalScrollView hscroll_control;
-	private LinearLayoutCompat linear_control;
 	private AppCompatImageView reload;
 	private AppCompatImageView desktop_switch;
 	private AppCompatImageView favicon;
@@ -149,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
 		progmain = findViewById(R.id.progmain);
 		webview = findViewById(R.id.webview);
 		hscroll_control = findViewById(R.id.hscroll_control);
-		linear_control = findViewById(R.id.linear_control);
 		AppCompatImageView back = findViewById(R.id.back);
 		AppCompatImageView forward = findViewById(R.id.forward);
 		reload = findViewById(R.id.reload);
@@ -347,12 +345,12 @@ public class MainActivity extends AppCompatActivity {
 			baranim.setPropertyName("alpha");
 			fabanim.setDuration(250);
 			baranim.setDuration(250);
-			if (linear_control.getVisibility() == View.VISIBLE) {
+			if (hscroll_control.getVisibility() == View.VISIBLE) {
 				fabanim.setFloatValues((float)(0), (float)(180));
 				baranim.setFloatValues((float)(1), (float)(0));
-				linear_control.setVisibility(View.GONE);
+				hscroll_control.setVisibility(View.GONE);
 			} else {
-				linear_control.setVisibility(View.VISIBLE);
+				hscroll_control.setVisibility(View.VISIBLE);
 				fabanim.setFloatValues((float)(180), (float)(0));
 				baranim.setFloatValues((float)(0), (float)(1));
 			}
