@@ -79,12 +79,8 @@ public class MainActivity extends AppCompatActivity {
 	String checkedUrl;
 	String UrlTitle;
 
-	final String userAgent_mozilla = "Mozilla/5.0 (";
-	final String userAgent_desk = "X11; Linux x86_64";
-	final String userAgent_mobi = "Linux; Android 11";
-	final String userAgent_end = ") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
-	final String userAgent_full(String mid) {
-		return userAgent_mozilla.concat(mid).concat(userAgent_end);
+	private String userAgent_full(String mid) {
+		return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
 	}
 
 	/**
@@ -128,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
 	private void deskModeSet(double mode) {
 		if (mode == 0) {
 			setDesktopMode(false,
-					userAgent_full(userAgent_mobi),
+					userAgent_full("Linux; Android 11"),
 					R.drawable.outline_smartphone_24);
 		} else if (mode == 1) {
 			setDesktopMode(true,
-					userAgent_full(userAgent_desk),
+					userAgent_full("X11; Linux x86_64"),
 					R.drawable.outline_desktop_windows_24);
 		}
 
