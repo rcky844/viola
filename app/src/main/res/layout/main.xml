@@ -93,259 +93,138 @@
 				android:weightSum="1"
 				android:visibility="gone" >
 
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b0"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/back"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/back_desp"
+					android:scaleType="center"
+					android:src="@drawable/outline_arrow_back_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/back"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/back_desp"
-						android:scaleType="center"
-						android:src="@drawable/outline_arrow_back_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b1"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/forward"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/forward_desp"
+					android:rotation="180"
+					android:scaleType="center"
+					android:src="@drawable/outline_arrow_back_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/forward"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/forward_desp"
-						android:rotation="180"
-						android:scaleType="center"
-						android:src="@drawable/outline_arrow_back_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b2"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/reload"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/reload_desp"
+					android:scaleType="center"
+					android:src="@drawable/outline_refresh_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/reload"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/reload_desp"
-						android:scaleType="center"
-						android:src="@drawable/outline_refresh_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b7"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/homepage"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/history"
+					android:scaleType="center"
+					android:src="@drawable/outline_home_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/homepage_ic"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/history"
-						android:scaleType="center"
-						android:src="@drawable/outline_home_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b3"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/desktop_switch"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/desktop_desp"
+					android:scaleType="center"
+					android:src="@drawable/outline_smartphone_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/desktop_switch"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/desktop_desp"
-						android:scaleType="center"
-						android:src="@drawable/outline_smartphone_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b4"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/clear"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/clear_desp"
+					android:scaleType="center"
+					android:src="@drawable/outline_delete_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/ic_clear"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/clear_desp"
-						android:scaleType="center"
-						android:src="@drawable/outline_delete_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b5"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/share"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/share_desp"
+					android:scaleType="center"
+					android:src="@drawable/outline_share_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/ic_share"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/share_desp"
-						android:scaleType="center"
-						android:src="@drawable/outline_share_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b6"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/settings"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/settings"
+					android:scaleType="center"
+					android:src="@drawable/outline_settings_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/settings"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/settings"
-						android:scaleType="center"
-						android:src="@drawable/outline_settings_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b9"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/history"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/history"
+					android:scaleType="center"
+					android:src="@drawable/outline_history_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/history"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/history"
-						android:scaleType="center"
-						android:src="@drawable/outline_history_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b10"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/fav"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/fav"
+					android:scaleType="center"
+					android:src="@drawable/outline_favorite_border_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/imageview1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/fav"
-						android:scaleType="center"
-						android:src="@drawable/outline_favorite_border_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
-
-				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_control_b8"
+				<androidx.appcompat.widget.AppCompatImageView
+					android:id="@+id/exit"
 					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_horizontal|center_vertical"
+					android:layout_height="wrap_content"
+					android:contentDescription="@string/exit_desp"
+					android:scaleType="center"
+					android:src="@drawable/outline_close_24"
 					android:background="?attr/selectableItemBackgroundBorderless"
-					android:clickable="true"
-					android:focusable="true"
-					android:gravity="center_horizontal|center_vertical"
-					android:orientation="vertical"
 					android:paddingLeft="8dp"
-					android:paddingRight="8dp">
-
-					<androidx.appcompat.widget.AppCompatImageView
-						android:id="@+id/exit"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:contentDescription="@string/exit_desp"
-						android:scaleType="center"
-						android:src="@drawable/outline_close_24"
-						app:tint="@android:color/black" />
-				</androidx.appcompat.widget.LinearLayoutCompat>
+					android:paddingRight="8dp"
+					app:tint="@android:color/black" />
 			</androidx.appcompat.widget.LinearLayoutCompat>
 		</HorizontalScrollView>
 

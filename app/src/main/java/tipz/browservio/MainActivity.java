@@ -64,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
 	private WebView webview;
 	private HorizontalScrollView hscroll_control;
 	private LinearLayoutCompat linear_control;
-	private LinearLayoutCompat linear_control_b2;
-	private LinearLayoutCompat linear_control_b3;
+	private AppCompatImageView reload;
 	private AppCompatImageView desktop_switch;
 	private AppCompatImageView favicon;
 
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 		webview.setScrollBarStyle(enableDesktop ? WebView.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);
 		desktop_switch.setImageResource(image);
 		if (!noReload) {
-			linear_control_b2.performClick();
+			reload.performClick();
 		}
 	}
 
@@ -151,17 +150,16 @@ public class MainActivity extends AppCompatActivity {
 		webview = findViewById(R.id.webview);
 		hscroll_control = findViewById(R.id.hscroll_control);
 		linear_control = findViewById(R.id.linear_control);
-		LinearLayoutCompat linear_control_b0 = findViewById(R.id.linear_control_b0);
-		LinearLayoutCompat linear_control_b1 = findViewById(R.id.linear_control_b1);
-		linear_control_b2 = findViewById(R.id.linear_control_b2);
-		LinearLayoutCompat linear_control_b7 = findViewById(R.id.linear_control_b7);
-		linear_control_b3 = findViewById(R.id.linear_control_b3);
-		LinearLayoutCompat linear_control_b4 = findViewById(R.id.linear_control_b4);
-		LinearLayoutCompat linear_control_b5 = findViewById(R.id.linear_control_b5);
-		LinearLayoutCompat linear_control_b6 = findViewById(R.id.linear_control_b6);
-		LinearLayoutCompat linear_control_b9 = findViewById(R.id.linear_control_b9);
-		LinearLayoutCompat linear_control_b10 = findViewById(R.id.linear_control_b10);
-		LinearLayoutCompat linear_control_b8 = findViewById(R.id.linear_control_b8);
+		AppCompatImageView back = findViewById(R.id.back);
+		AppCompatImageView forward = findViewById(R.id.forward);
+		reload = findViewById(R.id.reload);
+		AppCompatImageView homepage = findViewById(R.id.homepage);
+		AppCompatImageView clear = findViewById(R.id.clear);
+		AppCompatImageView share = findViewById(R.id.share);
+		AppCompatImageView settings = findViewById(R.id.settings);
+		AppCompatImageView history = findViewById(R.id.history);
+		AppCompatImageView fav = findViewById(R.id.fav);
+		AppCompatImageView exit = findViewById(R.id.exit);
 		desktop_switch = findViewById(R.id.desktop_switch);
 		favicon = findViewById(R.id.favicon);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
@@ -170,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 		
 		browse.setOnClickListener(_view -> _browservio_browse(Objects.requireNonNull(urledit.getText()).toString()));
 
-		linear_control_b0.setOnClickListener(_view -> {
+		back.setOnClickListener(_view -> {
 			// on forward being clicked, either go forward in history
 			if (webview.canGoBack()) {
 				// can go back
@@ -181,8 +179,8 @@ public class MainActivity extends AppCompatActivity {
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
 			}
 		});
-		
-		linear_control_b1.setOnClickListener(_view -> {
+
+		forward.setOnClickListener(_view -> {
 			// on forward being clicked, either go forward in history
 			if (webview.canGoForward()) {
 				// can go forward
@@ -193,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
 			}
 		});
-		
-		linear_control_b2.setOnClickListener(_view -> {
+
+		reload.setOnClickListener(_view -> {
 			if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 				if (!webview.getUrl().equals("")) {
 					_URLindentify(webview.getUrl());
@@ -206,11 +204,11 @@ public class MainActivity extends AppCompatActivity {
 				page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 			}
 		});
-		
-		linear_control_b7.setOnClickListener(_view -> _browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
 
-		linear_control_b3.setOnClickListener(_view -> {
-			PopupMenu popup1 = new PopupMenu(MainActivity.this, linear_control_b3);
+		homepage.setOnClickListener(_view -> _browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
+
+		desktop_switch.setOnClickListener(_view -> {
+			PopupMenu popup1 = new PopupMenu(MainActivity.this, desktop_switch);
 			Menu menu1 = popup1.getMenu();
 			menu1.add(getResources().getString(R.string.linear_control_b3_desk));
 			menu1.add(getResources().getString(R.string.linear_control_b3_mobi));
@@ -232,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
 							deskModeSet(0, false);
 						} else {
 							webview.getSettings().setUserAgentString(Objects.requireNonNull(custom_ua.getText()).toString());
-							linear_control_b2.performClick();
+							reload.performClick();
 						}
 					});
 					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> deskModeSet(0, false));
@@ -244,9 +242,9 @@ public class MainActivity extends AppCompatActivity {
 			});
 			popup1.show();
 		});
-		
-		linear_control_b4.setOnClickListener(_view -> {
-			PopupMenu popup2 = new PopupMenu(MainActivity.this, linear_control_b4);
+
+		clear.setOnClickListener(_view -> {
+			PopupMenu popup2 = new PopupMenu(MainActivity.this, clear);
 			Menu menu2 = popup2.getMenu();
 			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
 			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
@@ -256,46 +254,46 @@ public class MainActivity extends AppCompatActivity {
 				if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
 					mainClearCache();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
-					linear_control_b2.performClick();
+					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
 					mainClearHistory();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
-					linear_control_b2.performClick();
+					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
 					mainClearCookies();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
-					linear_control_b2.performClick();
+					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.all))) {
 					mainClearCache();
 					mainClearHistory();
 					mainClearCookies();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.all)));
-					linear_control_b2.performClick();
+					reload.performClick();
 				}
 				return false;
 			});
 			popup2.show();
 		});
-		
-		linear_control_b5.setOnClickListener(_view -> {
+
+		share.setOnClickListener(_view -> {
 			Intent i = new Intent(Intent.ACTION_SEND);
 			i.setType("text/plain");
 			i.putExtra(Intent.EXTRA_TEXT, webview.getUrl());
 			startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
 		});
-		
-		linear_control_b6.setOnClickListener(_view -> {
+
+		settings.setOnClickListener(_view -> {
 			i.setClass(getApplicationContext(), SettingsActivity.class);
 			startActivity(i);
 		});
-		
-		linear_control_b9.setOnClickListener(_view -> {
+
+		history.setOnClickListener(_view -> {
 			i.setClass(getApplicationContext(), HistoryActivity.class);
 			startActivity(i);
 		});
-		
-		linear_control_b10.setOnClickListener(_view -> {
-			PopupMenu popup3 = new PopupMenu(MainActivity.this, linear_control_b10);
+
+		fav.setOnClickListener(_view -> {
+			PopupMenu popup3 = new PopupMenu(MainActivity.this, fav);
 			Menu menu3 = popup3.getMenu();
 			menu3.add(getResources().getString(R.string.add_dot));
 			menu3.add(getResources().getString(R.string.favs));
@@ -323,8 +321,8 @@ public class MainActivity extends AppCompatActivity {
 			});
 			popup3.show();
 		});
-		
-		linear_control_b8.setOnClickListener(_view -> finish());
+
+		exit.setOnClickListener(_view -> finish());
 
 		favicon.setOnClickListener(_view -> {
 			PopupMenu popup4 = new PopupMenu(MainActivity.this, favicon);
@@ -698,7 +696,7 @@ public class MainActivity extends AppCompatActivity {
 		webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1"));
 
 		if (BrowservioSaverUtils.getPref(browservio_saver, "needReload").equals("1")) {
-			linear_control_b2.performClick();
+			reload.performClick();
 			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "0");
 		}
 
