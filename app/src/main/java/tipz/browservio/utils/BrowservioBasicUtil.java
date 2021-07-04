@@ -2,8 +2,9 @@ package tipz.browservio.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.widget.CheckBox;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.AppCompatCheckBox;
 
 public class BrowservioBasicUtil {
     /**
@@ -22,7 +23,7 @@ public class BrowservioBasicUtil {
      *
      * @param chk is supplied as the CheckBox to update
      */
-    public static void updateChkbox(final CheckBox chk) {
+    public static void updateChkbox(final AppCompatCheckBox chk) {
         chk.setChecked(!chk.isChecked());
     }
 

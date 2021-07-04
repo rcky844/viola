@@ -2,11 +2,11 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
-	<LinearLayout
+	<androidx.appcompat.widget.LinearLayoutCompat
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
-		<LinearLayout
+		<androidx.appcompat.widget.LinearLayoutCompat
 			android:id="@+id/linear_urledit"
 			android:layout_width="match_parent"
 			android:layout_height="32dp"
@@ -15,7 +15,7 @@
 			android:orientation="horizontal"
 			android:layout_gravity="center_horizontal|center_vertical">
 
-			<ImageView
+			<androidx.appcompat.widget.AppCompatImageView
 				android:id="@+id/favicon"
 				android:layout_width="32dp"
 				android:layout_height="32dp"
@@ -24,7 +24,7 @@
 				android:paddingEnd="2dp"
 				app:srcCompat="@drawable/outline_public_24" />
 
-			<LinearLayout
+			<androidx.appcompat.widget.LinearLayoutCompat
 				android:id="@+id/linear_urledit_text"
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
@@ -32,7 +32,7 @@
 				android:orientation="horizontal"
 				android:padding="4dp">
 
-				<EditText
+				<androidx.appcompat.widget.AppCompatEditText
 					android:id="@+id/urledit"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
@@ -47,9 +47,9 @@
 					android:textColor="@color/colorBackground_inverted"
 					android:textSize="12sp"
 					android:background="@drawable/urledit_bg" />
-			</LinearLayout>
+			</androidx.appcompat.widget.LinearLayoutCompat>
 
-			<ImageView
+			<androidx.appcompat.widget.AppCompatImageView
 				android:id="@+id/browse"
 				android:layout_width="36dp"
 				android:layout_height="match_parent"
@@ -61,7 +61,7 @@
 				android:src="@drawable/outline_search_24"
 				app:tint="@android:color/black" />
 
-			<ImageView
+			<androidx.appcompat.widget.AppCompatImageView
 				android:id="@+id/fab"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
 				android:layout_marginStart="2dp"
 				android:layout_marginEnd="4dp"
 				android:rotation="180" />
-		</LinearLayout>
+		</androidx.appcompat.widget.LinearLayoutCompat>
 
 		<HorizontalScrollView
 			android:id="@+id/hscroll_control"
@@ -82,7 +82,7 @@
 			android:layout_height="wrap_content"
 			android:scrollbars="none" >
 
-			<LinearLayout
+			<androidx.appcompat.widget.LinearLayoutCompat
 				android:id="@+id/linear_control"
 				android:layout_width="wrap_content"
 				android:layout_height="32dp"
@@ -93,7 +93,7 @@
 				android:weightSum="1"
 				android:visibility="gone" >
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b0"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -106,7 +106,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/back"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -114,9 +114,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_arrow_back_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b1"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -129,7 +129,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/forward"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -138,9 +138,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_arrow_back_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b2"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -153,7 +153,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/reload"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -161,9 +161,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_refresh_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b7"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -176,7 +176,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/homepage_ic"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -184,9 +184,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_home_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b3"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -199,7 +199,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/desktop_switch"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -207,9 +207,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_smartphone_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b4"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -222,7 +222,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/ic_clear"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -230,9 +230,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_delete_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b5"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -245,7 +245,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/ic_share"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -253,9 +253,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_share_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b6"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -268,7 +268,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/settings"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -276,9 +276,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_settings_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b9"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -291,7 +291,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/history"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -299,9 +299,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_history_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b10"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -314,7 +314,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/imageview1"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -322,9 +322,9 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_favorite_border_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
 
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_control_b8"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
@@ -337,7 +337,7 @@
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp">
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/exit"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -345,8 +345,8 @@
 						android:scaleType="center"
 						android:src="@drawable/outline_close_24"
 						app:tint="@android:color/black" />
-				</LinearLayout>
-			</LinearLayout>
+				</androidx.appcompat.widget.LinearLayoutCompat>
+			</androidx.appcompat.widget.LinearLayoutCompat>
 		</HorizontalScrollView>
 
 		<ProgressBar
@@ -357,7 +357,7 @@
 			android:background="@color/colorPrimary"
 			android:indeterminate="false" />
 
-		<LinearLayout
+		<androidx.appcompat.widget.LinearLayoutCompat
 			android:id="@+id/webview_linear"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
@@ -369,6 +369,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:hardwareAccelerated="true" />
-		</LinearLayout>
-	</LinearLayout>
+		</androidx.appcompat.widget.LinearLayoutCompat>
+	</androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -15,7 +15,7 @@
 			app:title="@string/settings"
 			app:popupTheme="@style/AppTheme.PopupOverlay"/>
 	</com.google.android.material.appbar.AppBarLayout>
-	<LinearLayout
+	<androidx.appcompat.widget.LinearLayoutCompat
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
@@ -26,13 +26,13 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:background="@color/colorBackground">
-			<LinearLayout
+			<androidx.appcompat.widget.LinearLayoutCompat
 				android:id="@+id/linear_back"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
 				android:background="@color/colorBackground">
-				<LinearLayout
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_general"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
 					android:orientation="horizontal"
 					android:layout_gravity="center_horizontal|center_vertical"
 					android:background="@drawable/list_ripple">
-					<TextView
+					<androidx.appcompat.widget.AppCompatTextView
 						android:id="@+id/textview_cool1"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
 						android:textColor="@color/colorAccent"
 						android:layout_weight="1"/>
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/imageview4"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -60,21 +60,21 @@
 						android:src="@drawable/outline_arrow_up_24"
 						app:tint="@color/colorBackground_inverted"
 						tools:ignore="ContentDescription" />
-				</LinearLayout>
-				<LinearLayout
+				</androidx.appcompat.widget.LinearLayoutCompat>
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear6"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:padding="8dp"
 					android:orientation="vertical">
-					<LinearLayout
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear1_search"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview8"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
 							android:text="@string/search_engine"
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview9"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -94,15 +94,15 @@
 							android:paddingBottom="8dp"
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"/>
-					</LinearLayout>
-					<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear1_homepage"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview4"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
 							android:text="@string/homepage"
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview5"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -122,8 +122,8 @@
 							android:paddingBottom="8dp"
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"/>
-					</LinearLayout>
-					<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear11"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -131,14 +131,14 @@
 						android:orientation="horizontal"
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
-						<LinearLayout
+						<androidx.appcompat.widget.LinearLayoutCompat
 							android:id="@+id/linear12"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview31"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
 								android:text="@string/show_browse_btn"
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview32"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -159,8 +159,8 @@
 								android:text="@string/show_browse_btn_desp"
 								android:textSize="12sp"
 								android:textColor="@color/colorBackground_inverted"/>
-						</LinearLayout>
-						<CheckBox
+						</androidx.appcompat.widget.LinearLayoutCompat>
+						<androidx.appcompat.widget.AppCompatCheckBox
 							android:id="@+id/checkbox3"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -169,8 +169,8 @@
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"
 							android:layout_gravity="end|center_vertical"/>
-					</LinearLayout>
-					<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear1_overrideempt"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -178,14 +178,14 @@
 						android:orientation="horizontal"
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
-						<LinearLayout
+						<androidx.appcompat.widget.LinearLayoutCompat
 							android:id="@+id/linear1_overrideemp"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview12"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -195,7 +195,7 @@
 								android:text="@string/show_favicon"
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview13"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -206,8 +206,8 @@
 								android:text="@string/show_favicon_desp"
 								android:textSize="12sp"
 								android:textColor="@color/colorBackground_inverted"/>
-						</LinearLayout>
-						<CheckBox
+						</androidx.appcompat.widget.LinearLayoutCompat>
+						<androidx.appcompat.widget.AppCompatCheckBox
 							android:id="@+id/checkbox2"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -216,8 +216,8 @@
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"
 							android:layout_gravity="end|center_vertical"/>
-					</LinearLayout>
-					<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear_zoomkeys_b"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -225,14 +225,14 @@
 						android:orientation="horizontal"
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
-						<LinearLayout
+						<androidx.appcompat.widget.LinearLayoutCompat
 							android:id="@+id/linear_zoomkeys_a"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview37"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -242,7 +242,7 @@
 								android:text="@string/show_pinch_btn"
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview38"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -253,8 +253,8 @@
 								android:text="@string/show_pinch_btn_desp"
 								android:textSize="12sp"
 								android:textColor="@color/colorBackground_inverted"/>
-						</LinearLayout>
-						<CheckBox
+						</androidx.appcompat.widget.LinearLayoutCompat>
+						<androidx.appcompat.widget.AppCompatCheckBox
 							android:id="@+id/checkbox5"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -263,15 +263,15 @@
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"
 							android:layout_gravity="end|center_vertical"/>
-					</LinearLayout>
-					<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear1_b0"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview15"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -281,7 +281,7 @@
 							android:text="@string/reset_btn"
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview16"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -292,9 +292,9 @@
 							android:text="@string/reset_btn_desp"
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"/>
-					</LinearLayout>
-				</LinearLayout>
-				<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+				</androidx.appcompat.widget.LinearLayoutCompat>
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_advenced"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -302,7 +302,7 @@
 					android:orientation="horizontal"
 					android:layout_gravity="end|center_vertical"
 					android:background="@drawable/list_ripple">
-					<TextView
+					<androidx.appcompat.widget.AppCompatTextView
 						android:id="@+id/textview_cool2"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
@@ -313,7 +313,7 @@
 						android:textColor="@color/colorAccent"
 						android:singleLine="true"
 						android:layout_weight="1"/>
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/imageview1"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -321,14 +321,14 @@
 						android:scaleType="center"
 						app:tint="@color/colorBackground_inverted"
 						tools:ignore="ContentDescription" />
-				</LinearLayout>
-				<LinearLayout
+				</androidx.appcompat.widget.LinearLayoutCompat>
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear5"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:padding="8dp"
 					android:orientation="vertical">
-					<LinearLayout
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear1_javascript"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -336,14 +336,14 @@
 						android:orientation="horizontal"
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
-						<LinearLayout
+						<androidx.appcompat.widget.LinearLayoutCompat
 							android:id="@+id/linear1_b1"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview29"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -353,7 +353,7 @@
 								android:text="@string/javascript"
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview30"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -364,8 +364,8 @@
 								android:text="@string/javascript_desp"
 								android:textSize="12sp"
 								android:textColor="@color/colorBackground_inverted"/>
-						</LinearLayout>
-						<CheckBox
+						</androidx.appcompat.widget.LinearLayoutCompat>
+						<androidx.appcompat.widget.AppCompatCheckBox
 							android:id="@+id/checkbox1"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -374,8 +374,8 @@
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"
 							android:layout_gravity="end|center_vertical"/>
-					</LinearLayout>
-					<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear13"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -383,14 +383,14 @@
 						android:orientation="horizontal"
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
-						<LinearLayout
+						<androidx.appcompat.widget.LinearLayoutCompat
 							android:id="@+id/linear14"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview33"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -400,7 +400,7 @@
 								android:text="@string/show_cus_error"
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
-							<TextView
+							<androidx.appcompat.widget.AppCompatTextView
 								android:id="@+id/textview34"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -411,8 +411,8 @@
 								android:text="@string/show_cus_error_desp"
 								android:textSize="12sp"
 								android:textColor="@color/colorBackground_inverted"/>
-						</LinearLayout>
-						<CheckBox
+						</androidx.appcompat.widget.LinearLayoutCompat>
+						<androidx.appcompat.widget.AppCompatCheckBox
 							android:id="@+id/checkbox4"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -421,9 +421,9 @@
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"
 							android:layout_gravity="end|center_vertical"/>
-					</LinearLayout>
-				</LinearLayout>
-				<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+				</androidx.appcompat.widget.LinearLayoutCompat>
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_about"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -431,7 +431,7 @@
 					android:orientation="horizontal"
 					android:layout_gravity="center_horizontal|center_vertical"
 					android:background="@drawable/list_ripple">
-					<TextView
+					<androidx.appcompat.widget.AppCompatTextView
 						android:id="@+id/textview_cool3"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
@@ -443,7 +443,7 @@
 						android:singleLine="true"
 						android:layout_weight="1"/>
 
-					<ImageView
+					<androidx.appcompat.widget.AppCompatImageView
 						android:id="@+id/imageview5"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -451,21 +451,21 @@
 						android:src="@drawable/outline_arrow_up_24"
 						app:tint="@color/colorBackground_inverted"
 						tools:ignore="ContentDescription" />
-				</LinearLayout>
-				<LinearLayout
+				</androidx.appcompat.widget.LinearLayoutCompat>
+				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear8"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:padding="8dp"
 					android:orientation="vertical">
-					<LinearLayout
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear_version"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview23"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -475,7 +475,7 @@
 							android:text="@string/version"
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/version_visiable"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -484,15 +484,15 @@
 							android:paddingBottom="8dp"
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"/>
-					</LinearLayout>
-					<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear_feed"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview25"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -502,7 +502,7 @@
 							android:text="@string/feedback"
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview26"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -513,15 +513,15 @@
 							android:text="@string/feedback_desp"
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"/>
-					</LinearLayout>
-					<LinearLayout
+					</androidx.appcompat.widget.LinearLayoutCompat>
+					<androidx.appcompat.widget.LinearLayoutCompat
 						android:id="@+id/linear_source"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview35"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -531,7 +531,7 @@
 							android:text="@string/source_code"
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
-						<TextView
+						<androidx.appcompat.widget.AppCompatTextView
 							android:id="@+id/textview36"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -542,9 +542,9 @@
 							android:text="@string/source_code_desp"
 							android:textSize="12sp"
 							android:textColor="@color/colorBackground_inverted"/>
-					</LinearLayout>
-				</LinearLayout>
-			</LinearLayout>
+					</androidx.appcompat.widget.LinearLayoutCompat>
+				</androidx.appcompat.widget.LinearLayoutCompat>
+			</androidx.appcompat.widget.LinearLayoutCompat>
 		</ScrollView>
-	</LinearLayout>
+	</androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

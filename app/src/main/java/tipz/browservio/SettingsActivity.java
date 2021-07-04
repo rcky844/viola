@@ -15,14 +15,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
@@ -38,19 +38,19 @@ import tipz.browservio.utils.BrowservioSaverUtils;
 
 public class SettingsActivity extends AppCompatActivity {
 
-	private LinearLayout linear6;
-	private LinearLayout linear5;
-	private LinearLayout linear8;
-	private ImageView imageview4;
-	private TextView textview9;
-	private TextView textview5;
-	private CheckBox checkbox3;
-	private CheckBox checkbox5;
-	private ImageView imageview1;
-	private CheckBox checkbox1;
-	private CheckBox checkbox2;
-	private CheckBox checkbox4;
-	private ImageView imageview5;
+	private LinearLayoutCompat linear6;
+	private LinearLayoutCompat linear5;
+	private LinearLayoutCompat linear8;
+	private AppCompatImageView imageview4;
+	private AppCompatTextView textview9;
+	private AppCompatTextView textview5;
+	private AppCompatCheckBox checkbox3;
+	private AppCompatCheckBox checkbox5;
+	private AppCompatImageView imageview1;
+	private AppCompatCheckBox checkbox1;
+	private AppCompatCheckBox checkbox2;
+	private AppCompatCheckBox checkbox4;
+	private AppCompatImageView imageview5;
 
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -113,35 +113,35 @@ public class SettingsActivity extends AppCompatActivity {
 		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		_toolbar.setNavigationOnClickListener(_v -> onBackPressed());
-		LinearLayout linear_general = findViewById(R.id.linear_general);
+		LinearLayoutCompat linear_general = findViewById(R.id.linear_general);
 		linear6 = findViewById(R.id.linear6);
-		LinearLayout linear_advenced = findViewById(R.id.linear_advenced);
+		LinearLayoutCompat linear_advenced = findViewById(R.id.linear_advenced);
 		linear5 = findViewById(R.id.linear5);
-		LinearLayout linear_about = findViewById(R.id.linear_about);
+		LinearLayoutCompat linear_about = findViewById(R.id.linear_about);
 		linear8 = findViewById(R.id.linear8);
 		imageview4 = findViewById(R.id.imageview4);
-		LinearLayout linear1_search = findViewById(R.id.linear1_search);
-		LinearLayout linear1_homepage = findViewById(R.id.linear1_homepage);
-		LinearLayout linear11 = findViewById(R.id.linear11);
-		LinearLayout linear_zoomkeys_b = findViewById(R.id.linear_zoomkeys_b);
-		LinearLayout linear1_b0 = findViewById(R.id.linear1_b0);
+		LinearLayoutCompat linear1_search = findViewById(R.id.linear1_search);
+		LinearLayoutCompat linear1_homepage = findViewById(R.id.linear1_homepage);
+		LinearLayoutCompat linear11 = findViewById(R.id.linear11);
+		LinearLayoutCompat linear_zoomkeys_b = findViewById(R.id.linear_zoomkeys_b);
+		LinearLayoutCompat linear1_b0 = findViewById(R.id.linear1_b0);
 		findViewById(R.id.textview8);
 		textview9 = findViewById(R.id.textview9);
 		textview5 = findViewById(R.id.textview5);
 		checkbox3 = findViewById(R.id.checkbox3);
 		checkbox5 = findViewById(R.id.checkbox5);
 		imageview1 = findViewById(R.id.imageview1);
-		LinearLayout linear1_javascript = findViewById(R.id.linear1_javascript);
-		LinearLayout linear1_overrideempt = findViewById(R.id.linear1_overrideempt);
-		LinearLayout linear13 = findViewById(R.id.linear13);
+		LinearLayoutCompat linear1_javascript = findViewById(R.id.linear1_javascript);
+		LinearLayoutCompat linear1_overrideempt = findViewById(R.id.linear1_overrideempt);
+		LinearLayoutCompat linear13 = findViewById(R.id.linear13);
 		checkbox1 = findViewById(R.id.checkbox1);
 		checkbox2 = findViewById(R.id.checkbox2);
 		checkbox4 = findViewById(R.id.checkbox4);
 		imageview5 = findViewById(R.id.imageview5);
-		LinearLayout linear_version = findViewById(R.id.linear_version);
-		LinearLayout linear_feed = findViewById(R.id.linear_feed);
-		LinearLayout linear_source = findViewById(R.id.linear_source);
-		TextView version_visiable = findViewById(R.id.version_visiable);
+		LinearLayoutCompat linear_version = findViewById(R.id.linear_version);
+		LinearLayoutCompat linear_feed = findViewById(R.id.linear_feed);
+		LinearLayoutCompat linear_source = findViewById(R.id.linear_source);
+		AppCompatTextView version_visiable = findViewById(R.id.version_visiable);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dialog1 = new AlertDialog.Builder(this);
@@ -212,10 +212,10 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_search.setOnClickListener(_view -> {
 			dialog1.setTitle(getResources().getString(R.string.search_engine));
 			dialog1.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
-			final EditText custom_se = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+			final AppCompatEditText custom_se = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp2 = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
 			custom_se.setLayoutParams(lp2); dialog1.setView(custom_se);
 			dialog1.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-				if (!custom_se.getText().toString().equals("") && custom_se.getText().toString().contains("{term}"))
+				if (!Objects.requireNonNull(custom_se.getText()).toString().equals("") && custom_se.getText().toString().contains("{term}"))
 				{
 					BrowservioSaverUtils.setPref(browservio_saver, "defaultSearch", custom_se.getText().toString());
 					textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
@@ -228,10 +228,10 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_homepage.setOnClickListener(_view -> {
 			dialog.setTitle(getResources().getString(R.string.homepage));
 			dialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
-			final EditText custom_hp = new EditText(SettingsActivity.this); LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+			final AppCompatEditText custom_hp = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
 			custom_hp.setLayoutParams(lp); dialog.setView(custom_hp);
 			dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-				if (!custom_hp.getText().toString().equals(""))
+				if (!Objects.requireNonNull(custom_hp.getText()).toString().equals(""))
 				{
 					BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", custom_hp.getText().toString());
 					textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
@@ -289,8 +289,8 @@ public class SettingsActivity extends AppCompatActivity {
 
 		linear_version.setOnClickListener(_view -> {
 			View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
-			TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
-			Button update_btn = dialogView.findViewById(R.id.update_btn);
+			AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
+			AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
 			dialog_text.setText(getResources().getString(R.string.version_info_message,
 					BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
 					BuildConfig.VERSION_CODENAME,
@@ -389,7 +389,7 @@ public class SettingsActivity extends AppCompatActivity {
 		writingScreen = false;
 	}
 
-	private void checkIfPrefIntIsTrue(String tag, CheckBox checkBox) {
+	private void checkIfPrefIntIsTrue(String tag, AppCompatCheckBox checkBox) {
 		if (BrowservioSaverUtils.getPref(browservio_saver, tag).equals("1")) {
 			checkBox.setChecked(true);
 		}

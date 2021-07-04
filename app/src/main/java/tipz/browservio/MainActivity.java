@@ -29,22 +29,24 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
+
+import java.util.Objects;
 
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.BrowservioSaverUtils;
@@ -56,16 +58,16 @@ public class MainActivity extends AppCompatActivity {
 	private String page_before_error;
 	private boolean defaulterror = true;
 
-	private ImageView browse;
-	private EditText urledit;
+	private AppCompatImageView browse;
+	private AppCompatEditText urledit;
 	private ProgressBar progmain;
 	private WebView webview;
 	private HorizontalScrollView hscroll_control;
-	private LinearLayout linear_control;
-	private LinearLayout linear_control_b2;
-	private LinearLayout linear_control_b3;
-	private ImageView desktop_switch;
-	private ImageView favicon;
+	private LinearLayoutCompat linear_control;
+	private LinearLayoutCompat linear_control_b2;
+	private LinearLayoutCompat linear_control_b3;
+	private AppCompatImageView desktop_switch;
+	private AppCompatImageView favicon;
 
 	private SharedPreferences browservio_saver;
 	private AlertDialog.Builder dialog;
@@ -142,31 +144,31 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void initialize() {
 
-		ImageView fab = findViewById(R.id.fab);
+		AppCompatImageView fab = findViewById(R.id.fab);
 		browse = findViewById(R.id.browse);
 		urledit = findViewById(R.id.urledit);
 		progmain = findViewById(R.id.progmain);
 		webview = findViewById(R.id.webview);
 		hscroll_control = findViewById(R.id.hscroll_control);
 		linear_control = findViewById(R.id.linear_control);
-		LinearLayout linear_control_b0 = findViewById(R.id.linear_control_b0);
-		LinearLayout linear_control_b1 = findViewById(R.id.linear_control_b1);
+		LinearLayoutCompat linear_control_b0 = findViewById(R.id.linear_control_b0);
+		LinearLayoutCompat linear_control_b1 = findViewById(R.id.linear_control_b1);
 		linear_control_b2 = findViewById(R.id.linear_control_b2);
-		LinearLayout linear_control_b7 = findViewById(R.id.linear_control_b7);
+		LinearLayoutCompat linear_control_b7 = findViewById(R.id.linear_control_b7);
 		linear_control_b3 = findViewById(R.id.linear_control_b3);
-		LinearLayout linear_control_b4 = findViewById(R.id.linear_control_b4);
-		LinearLayout linear_control_b5 = findViewById(R.id.linear_control_b5);
-		LinearLayout linear_control_b6 = findViewById(R.id.linear_control_b6);
-		LinearLayout linear_control_b9 = findViewById(R.id.linear_control_b9);
-		LinearLayout linear_control_b10 = findViewById(R.id.linear_control_b10);
-		LinearLayout linear_control_b8 = findViewById(R.id.linear_control_b8);
+		LinearLayoutCompat linear_control_b4 = findViewById(R.id.linear_control_b4);
+		LinearLayoutCompat linear_control_b5 = findViewById(R.id.linear_control_b5);
+		LinearLayoutCompat linear_control_b6 = findViewById(R.id.linear_control_b6);
+		LinearLayoutCompat linear_control_b9 = findViewById(R.id.linear_control_b9);
+		LinearLayoutCompat linear_control_b10 = findViewById(R.id.linear_control_b10);
+		LinearLayoutCompat linear_control_b8 = findViewById(R.id.linear_control_b8);
 		desktop_switch = findViewById(R.id.desktop_switch);
 		favicon = findViewById(R.id.favicon);
 		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
 		
-		browse.setOnClickListener(_view -> _browservio_browse(urledit.getText().toString()));
+		browse.setOnClickListener(_view -> _browservio_browse(Objects.requireNonNull(urledit.getText()).toString()));
 
 		linear_control_b0.setOnClickListener(_view -> {
 			// on forward being clicked, either go forward in history
@@ -221,15 +223,15 @@ public class MainActivity extends AppCompatActivity {
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
 					dialog.setTitle(getResources().getString(R.string.ua));
 					dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
-					final EditText custom_ua = new EditText(MainActivity.this);
-					LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+					final AppCompatEditText custom_ua = new AppCompatEditText(MainActivity.this);
+					LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
 					custom_ua.setLayoutParams(lp);
 					dialog.setView(custom_ua);
 					dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 						if (custom_ua.length() == 0) {
 							deskModeSet(0, false);
 						} else {
-							webview.getSettings().setUserAgentString(custom_ua.getText().toString());
+							webview.getSettings().setUserAgentString(Objects.requireNonNull(custom_ua.getText()).toString());
 							linear_control_b2.performClick();
 						}
 					});
@@ -389,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
 		/* Code for detecting return key presses */
 		urledit.setOnEditorActionListener((v, actionId, event) -> {
 			  if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
-					  _browservio_browse(urledit.getText().toString());
+					  _browservio_browse(Objects.requireNonNull(urledit.getText()).toString());
 					  return true;
 				  }
 			  return false;
@@ -444,7 +446,7 @@ public class MainActivity extends AppCompatActivity {
 		private void UrlSet(String url) {
 			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
 				urledit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
-			} else if (!urledit.getText().toString().equals(url)) {
+			} else if (!Objects.requireNonNull(urledit.getText()).toString().equals(url)) {
 				urledit.setText(url);
 				_history_saviour();
 			}

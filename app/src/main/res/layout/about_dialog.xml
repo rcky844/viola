@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="240dp"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="fill_parent"
         android:layout_height="69dp"
         android:layout_gravity="center_horizontal|center_vertical"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="44dp"
             android:layout_height="36dp"
             android:contentDescription="@string/app_name"
@@ -20,7 +20,7 @@
             android:paddingEnd="4dp"
             app:srcCompat="@mipmap/ic_launcher_round" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="4dp"
@@ -30,9 +30,9 @@
             android:textSize="24sp"
             android:typeface="sans" />
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/dialog_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:textColor="@color/colorBackground_inverted"
         android:textSize="12sp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/update_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,4 +50,4 @@
         android:background="@drawable/list_ripple"
         app:backgroundTint="#00000000" />
 
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
