@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
 	private SharedPreferences bookmarks;
 
 	boolean bitmipUpdated_q = false;
-	String checkedUrl;
 	String UrlTitle;
 
 	private String userAgent_full(String mid) {
@@ -604,7 +603,7 @@ public class MainActivity extends AppCompatActivity {
 	 * @param url is for strings of URL to check and load
 	 */
 	private void _browservio_browse(String url) {
-		checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch"));
+		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch"));
 		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			// Load URL
 			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
