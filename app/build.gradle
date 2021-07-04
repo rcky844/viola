@@ -8,18 +8,12 @@ android {
 		applicationId "tipz.browservio"
 		minSdkVersion 21
 		targetSdkVersion 30
-		versionCode 46
+		versionCode 47
 		versionName "1.4.3"
-		buildConfigField "String", "VERSION_NAME_EXTRA", "\" Release Candidate 2\""
-		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_rc2\""
+		buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
+		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_gm\""
 		buildConfigField "String", "VERSION_CODENAME", "\"Burton\""
 		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("EEE MMM d HH:mm:ss z yyyy") + "\""
-	}
-	buildTypes {
-		release {
-			minifyEnabled true
-			shrinkResources true
-		}
 	}
 }
 
