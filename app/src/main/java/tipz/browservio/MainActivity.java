@@ -83,8 +83,9 @@ public class MainActivity extends AppCompatActivity {
 	final String userAgent_desk = "X11; Linux x86_64";
 	final String userAgent_mobi = "Linux; Android 11";
 	final String userAgent_end = ") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
-	final String userAgent_desk_full = userAgent_mozilla.concat(userAgent_desk).concat(userAgent_end);
-	final String userAgent_mobi_full = userAgent_mozilla.concat(userAgent_mobi).concat(userAgent_end);
+	final String userAgent_full(String mid) {
+		return userAgent_mozilla.concat(mid).concat(userAgent_end);
+	}
 
 	/**
 	 * An array used for intent filtering
@@ -127,11 +128,11 @@ public class MainActivity extends AppCompatActivity {
 	private void deskModeSet(double mode) {
 		if (mode == 0) {
 			setDesktopMode(false,
-					userAgent_mobi_full,
+					userAgent_full(userAgent_mobi),
 					R.drawable.outline_smartphone_24);
 		} else if (mode == 1) {
 			setDesktopMode(true,
-					userAgent_desk_full,
+					userAgent_full(userAgent_desk),
 					R.drawable.outline_desktop_windows_24);
 		}
 
@@ -400,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
 				getResources().getString(R.string.url_subfix_no_error));
 
 		/* User agent init code */
-		webview.getSettings().setUserAgentString(userAgent_mobi_full);
+		webview.getSettings().setUserAgentString(userAgent_full(userAgent_mobi));
 
 		_downloadManager(webview); /* Start the download manager service */
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")); /* Load default webpage */
