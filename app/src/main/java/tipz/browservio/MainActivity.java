@@ -46,8 +46,6 @@ import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
 
-import java.util.Objects;
-
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.UrlUtils;
@@ -81,8 +79,12 @@ public class MainActivity extends AppCompatActivity {
 	String checkedUrl;
 	String UrlTitle;
 
-	final String userAgent_prefix = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15";
-	final String userAgent_subfix = "Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA);
+	final String userAgent_mozilla = "Mozilla/5.0 (";
+	final String userAgent_desk = "X11; Linux x86_64";
+	final String userAgent_mobi = "Linux; Android 11";
+	final String userAgent_end = ") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
+	final String userAgent_desk_full = userAgent_mozilla.concat(userAgent_desk).concat(userAgent_end);
+	final String userAgent_mobi_full = userAgent_mozilla.concat(userAgent_mobi).concat(userAgent_end);
 
 	/**
 	 * An array used for intent filtering
@@ -125,11 +127,11 @@ public class MainActivity extends AppCompatActivity {
 	private void deskModeSet(double mode) {
 		if (mode == 0) {
 			setDesktopMode(false,
-					Objects.requireNonNull(System.getProperty("http.agent")).concat(" ").concat(userAgent_subfix),
+					userAgent_mobi_full,
 					R.drawable.outline_smartphone_24);
 		} else if (mode == 1) {
 			setDesktopMode(true,
-					userAgent_prefix.concat(" ").concat(userAgent_subfix),
+					userAgent_desk_full,
 					R.drawable.outline_desktop_windows_24);
 		}
 
@@ -398,10 +400,7 @@ public class MainActivity extends AppCompatActivity {
 				getResources().getString(R.string.url_subfix_no_error));
 
 		/* User agent init code */
-		webview.getSettings().setUserAgentString(
-				Objects.requireNonNull(System.getProperty("http.agent"))
-				.concat(" ")
-				.concat(userAgent_subfix));
+		webview.getSettings().setUserAgentString(userAgent_mobi_full);
 
 		_downloadManager(webview); /* Start the download manager service */
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")); /* Load default webpage */
