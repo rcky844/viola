@@ -91,7 +91,8 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical"
 				android:gravity="center_vertical"
-				android:orientation="horizontal" >
+				android:orientation="horizontal"
+				android:background="@color/colorPrimary" >
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/back"
