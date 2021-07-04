@@ -400,8 +400,7 @@ public class MainActivity extends AppCompatActivity {
 		page_before_error = getResources().getString(R.string.url_prefix,
 				getResources().getString(R.string.url_subfix_no_error));
 
-		/* User agent init code */
-		webview.getSettings().setUserAgentString(userAgent_full(userAgent_mobi));
+		deskModeSet(0); /* User agent init code */
 
 		_downloadManager(webview); /* Start the download manager service */
 		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")); /* Load default webpage */
