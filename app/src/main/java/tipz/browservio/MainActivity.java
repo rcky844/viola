@@ -531,11 +531,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		public void onProgressChanged(WebView view, int progress) {
-			if (progress == 100) {
-				progmain.setProgress(0);
-			} else {
-				progmain.setProgress(progress);
-			}
+			progmain.setProgress(progress == 100 ? 0 : progress);
 		}
 		public void onReceivedIcon(WebView view, Bitmap icon) {
 			bitmipUpdated_q = true;
@@ -593,11 +589,8 @@ public class MainActivity extends AppCompatActivity {
 	 * Module to save history into a SharedPref.
 	 */
 	private void _history_saviour() {
-		if (BrowservioSaverUtils.getPref(browservio_saver, "history").equals("")) {
-			BrowservioSaverUtils.setPref(browservio_saver, "history", BrowservioSaverUtils.getPref(browservio_saver, "history").concat(webview.getUrl()));
-		} else {
-			BrowservioSaverUtils.setPref(browservio_saver, "history", BrowservioSaverUtils.getPref(browservio_saver, "history").concat(System.lineSeparator()).concat(webview.getUrl()));
-		}
+		String history_data = BrowservioSaverUtils.getPref(browservio_saver, "history");
+		BrowservioSaverUtils.setPref(browservio_saver, "history", (history_data.concat(history_data.equals("") ? "" : System.lineSeparator()).concat(webview.getUrl())));
 	}
 
 	/**
