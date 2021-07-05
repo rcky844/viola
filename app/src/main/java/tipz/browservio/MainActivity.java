@@ -48,8 +48,9 @@ import androidx.webkit.WebViewFeature;
 
 import java.util.Objects;
 
+import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.utils.BrowservioBasicUtil;
-import tipz.browservio.utils.BrowservioSaverUtils;
+import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -161,9 +162,9 @@ public class MainActivity extends AppCompatActivity {
 		AppCompatImageView exit = findViewById(R.id.exit);
 		desktop_switch = findViewById(R.id.desktop_switch);
 		favicon = findViewById(R.id.favicon);
-		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
+		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
-		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
+		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		
 		browse.setOnClickListener(_view -> _browservio_browse(Objects.requireNonNull(urledit.getText()).toString()));
 
@@ -204,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
-		homepage.setOnClickListener(_view -> _browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
+		homepage.setOnClickListener(_view -> _browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
 
 		desktop_switch.setOnClickListener(_view -> {
 			PopupMenu popup1 = new PopupMenu(MainActivity.this, desktop_switch);
@@ -298,14 +299,10 @@ public class MainActivity extends AppCompatActivity {
 			menu3.add(getResources().getString(R.string.favs));
 			popup3.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
-					if (BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count").equals("")) {
-						BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", "0");
-					} else {
-						BrowservioSaverUtils.setPref(bookmarks, "bookmarked_count", String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")) + 1)));
-					}
-					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")), webview.getUrl());
-					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_title"), UrlTitle);
-					BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(BrowservioSaverUtils.getPref(bookmarks, "bookmarked_count")).concat("_show"), "1");
+					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count).equals("") ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)) + 1)));
+					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)), webview.getUrl());
+					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_title), UrlTitle);
+					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.favs))) {
 					if (bookmarks.getAll().size() == 0) {
@@ -366,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private void mainClearHistory() {
 		webview.clearHistory();
-		BrowservioSaverUtils.setPref(browservio_saver, "history", "");
+		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, "");
 	}
 
 	private void mainClearCookies() {
@@ -401,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
 		deskModeSet(0, true); /* User agent init code */
 
 		_downloadManager(webview); /* Start the download manager service */
-		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")); /* Load default webpage */
+		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)); /* Load default webpage */
 
 		/* zoom related stuff - From SCMPNews project */
 		webview.getSettings().setSupportZoom(true);
@@ -589,8 +586,8 @@ public class MainActivity extends AppCompatActivity {
 	 * Module to save history into a SharedPref.
 	 */
 	private void _history_saviour() {
-		String history_data = BrowservioSaverUtils.getPref(browservio_saver, "history");
-		BrowservioSaverUtils.setPref(browservio_saver, "history", (history_data.concat(history_data.equals("") ? "" : System.lineSeparator()).concat(webview.getUrl())));
+		String history_data = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history);
+		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.equals("") ? "" : System.lineSeparator()).concat(webview.getUrl())));
 	}
 
 	/**
@@ -600,7 +597,7 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void _browservio_browse(String url) {
 		beforeNextUrl = webview.getUrl();
-		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch"));
+		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch));
 		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			// Load URL
 			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
@@ -638,8 +635,8 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void _configChecker() {
 		// Restart code
-		if (BrowservioSaverUtils.getPref(browservio_saver, "needRestart").equals("1")) {
-			BrowservioSaverUtils.setPref(browservio_saver, "needRestart", "0");
+		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needRestart).equals("1")) {
+			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needRestart, "0");
 			restart_app();
 		}
 
@@ -660,7 +657,7 @@ public class MainActivity extends AppCompatActivity {
 			setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 		}
 
-		if (BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1")) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1")) {
 			final ProgressDialog prog = new ProgressDialog(MainActivity.this);
 			prog.setMax(100);
 			prog.setMessage(getResources().getString(R.string.dialog_resetting_message));
@@ -673,35 +670,35 @@ public class MainActivity extends AppCompatActivity {
 			restart_app();
 			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
 		}
-		if ((BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("") || BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1"))) {
-			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, "isFirstLaunch").equals("1");
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isJavaScriptEnabled", "1", isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultHomePage", getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "defaultSearch", getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix)), isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showFavicon", "1", isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showBrowseBtn", "0", isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showZoomKeys", "0", isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "showCustomError", "1", isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, "isFirstLaunch", "0", isEqualToOneFirstLaunch);
+		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("") || BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1"))) {
+			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1");
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix)), isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showBrowseBtn, "0", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showZoomKeys, "0", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showCustomError, "1", isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isFirstLaunch, "0", isEqualToOneFirstLaunch);
 		}
 		// Settings check
-		webview.getSettings().setJavaScriptEnabled(BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1"));
-		webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioSaverUtils.getPref(browservio_saver, "isJavaScriptEnabled").equals("1"));
+		webview.getSettings().setJavaScriptEnabled(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled).equals("1"));
+		webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled).equals("1"));
 
-		if (BrowservioSaverUtils.getPref(browservio_saver, "needReload").equals("1")) {
+		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needReload).equals("1")) {
 			reload.performClick();
-			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "0");
+			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needReload, "0");
 		}
 
-		browse.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, "showBrowseBtn").equals("1") ? View.VISIBLE : View.GONE);
-		favicon.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, "showFavicon").equals("1") ? View.VISIBLE : View.GONE);
-		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, "showZoomKeys").equals("1"));
-		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, "showCustomError").equals("1");
+		browse.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showBrowseBtn).equals("1") ? View.VISIBLE : View.GONE);
+		favicon.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showFavicon).equals("1") ? View.VISIBLE : View.GONE);
+		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showZoomKeys).equals("1"));
+		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showCustomError).equals("1");
 
 		// Need load
-		if (BrowservioSaverUtils.getPref(browservio_saver, "needLoad").equals("1")) {
-			_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, "needLoadUrl"));
-			BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "0");
+		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needLoad).equals("1")) {
+			_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needLoadUrl));
+			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoad, "0");
 		}
 
 		// HTML5 API flags

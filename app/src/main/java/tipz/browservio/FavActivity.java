@@ -23,8 +23,9 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.utils.BrowservioBasicUtil;
-import tipz.browservio.utils.BrowservioSaverUtils;
+import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 
 public class FavActivity extends AppCompatActivity {
 	
@@ -63,14 +64,14 @@ public class FavActivity extends AppCompatActivity {
 		FloatingActionButton _fab = findViewById(R.id._fab);
 		
 		listview = findViewById(R.id.listview);
-		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
-		bookmarks = getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
+		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
+		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		del_fav = new AlertDialog.Builder(this);
 		
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
 			if (!popup) {
-				BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-				BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf(_param3))));
+				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoad, "1");
+				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoadUrl, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf(_param3))));
 				finish();
 			} else {
 				popup = false;
@@ -90,7 +91,7 @@ public class FavActivity extends AppCompatActivity {
 					del_fav.setMessage(getResources().getString(R.string.del_fav_title));
 					del_fav.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
 						bookmark_list.remove(_position);
-						BrowservioSaverUtils.setPref(bookmarks, "bookmark_".concat(String.valueOf((long)(_position))).concat("_show"), "0");
+						BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(_position))).concat(AllPrefs.bookmarked_count_show), "0");
 						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
 						BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
 						isEmptyCheck(bookmark_list, bookmarks);
@@ -99,7 +100,7 @@ public class FavActivity extends AppCompatActivity {
 					del_fav.create().show();
 					return true;
 				} else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
-					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf(_param3)))));
+					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf(_param3)))));
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
 					return true;
 				}
@@ -142,18 +143,18 @@ public class FavActivity extends AppCompatActivity {
 			@Override
 			public void run() {
 				runOnUiThread(() -> {
-					if (!BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_show")).equals("0")) {
-						if (BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count)))).equals("")) {
+					if (!BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count))).concat(AllPrefs.bookmarked_count_show)).equals("0")) {
+						if (BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count)))).equals("")) {
 							listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, bookmark_list));
 							populate.cancel();
 							prog.dismiss();
 							isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration
 						}
 						else {
-							if (BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_title")).equals("")) {
+							if (BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count))).concat(AllPrefs.bookmarked_count_title)).equals("")) {
 								bookmark_list.add(getResources().getString(android.R.string.untitled));
 							} else {
-								bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, "bookmark_".concat(String.valueOf((long)(populate_count))).concat("_title")));
+								bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count))).concat(AllPrefs.bookmarked_count_title)));
 							}
 						}
 					}

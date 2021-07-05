@@ -33,8 +33,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
 
+import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.utils.BrowservioBasicUtil;
-import tipz.browservio.utils.BrowservioSaverUtils;
+import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -142,7 +143,7 @@ public class SettingsActivity extends AppCompatActivity {
 		LinearLayoutCompat linear_feed = findViewById(R.id.linear_feed);
 		LinearLayoutCompat linear_source = findViewById(R.id.linear_source);
 		AppCompatTextView version_visiable = findViewById(R.id.version_visiable);
-		browservio_saver = getSharedPreferences("browservio.cfg", Activity.MODE_PRIVATE);
+		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		dialog1 = new AlertDialog.Builder(this);
 		dabt = new AlertDialog.Builder(this);
@@ -211,14 +212,14 @@ public class SettingsActivity extends AppCompatActivity {
 		
 		linear1_search.setOnClickListener(_view -> {
 			dialog1.setTitle(getResources().getString(R.string.search_engine));
-			dialog1.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
+			dialog1.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
 			final AppCompatEditText custom_se = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp2 = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
 			custom_se.setLayoutParams(lp2); dialog1.setView(custom_se);
 			dialog1.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				if (!Objects.requireNonNull(custom_se.getText()).toString().equals("") && custom_se.getText().toString().contains("{term}"))
 				{
-					BrowservioSaverUtils.setPref(browservio_saver, "defaultSearch", custom_se.getText().toString());
-					textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
+					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.defaultSearch, custom_se.getText().toString());
+					textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
 				}
 			});
 			dialog1.setNegativeButton(android.R.string.cancel, null);
@@ -227,14 +228,14 @@ public class SettingsActivity extends AppCompatActivity {
 		
 		linear1_homepage.setOnClickListener(_view -> {
 			dialog.setTitle(getResources().getString(R.string.homepage));
-			dialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
+			dialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
 			final AppCompatEditText custom_hp = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
 			custom_hp.setLayoutParams(lp); dialog.setView(custom_hp);
 			dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				if (!Objects.requireNonNull(custom_hp.getText()).toString().equals(""))
 				{
-					BrowservioSaverUtils.setPref(browservio_saver, "defaultHomePage", custom_hp.getText().toString());
-					textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
+					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.defaultHomePage, custom_hp.getText().toString());
+					textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
 				}
 			});
 			dialog.setNegativeButton(android.R.string.cancel, null);
@@ -250,22 +251,22 @@ public class SettingsActivity extends AppCompatActivity {
 			drst.setTitle(getResources().getString(R.string.are_you_sure_q));
 			drst.setMessage(getResources().getString(R.string.dialog_set_reset_message));
 			drst.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-				BrowservioSaverUtils.setPref(browservio_saver, "isFirstLaunch", "1");
+				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.isFirstLaunch, "1");
 				finish();
 			});
 			drst.setNegativeButton(android.R.string.cancel, null);
 			drst.create().show();
 		});
 		
-		checkbox3.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showBrowseBtn", _param2, false));
+		checkbox3.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showBrowseBtn, _param2, false));
 		
 		checkbox5.setOnCheckedChangeListener((_param1, _param2) -> {
-			BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showZoomKeys", _param2, false);
+			BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showZoomKeys, _param2, false);
 			if (!writingScreen) {
 				diazoomrestart.setTitle(getResources().getString(R.string.restart_app_q));
 				diazoomrestart.setMessage(getResources().getString(R.string.restart_app_qmsg));
 				diazoomrestart.setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) -> {
-					BrowservioSaverUtils.setPref(browservio_saver, "needRestart", "1");
+					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needRestart, "1");
 					finish();
 				});
 				diazoomrestart.setNegativeButton(android.R.string.cancel, null);
@@ -275,14 +276,14 @@ public class SettingsActivity extends AppCompatActivity {
 
 		linear1_javascript.setOnClickListener(_view -> {
 			BrowservioBasicUtil.updateChkbox(checkbox1);
-			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "1");
+			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needReload, "1");
 		});
 		
-		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "isJavaScriptEnabled", _param2, false));
+		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.isJavaScriptEnabled, _param2, false));
 		
-		checkbox2.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showFavicon", _param2, false));
+		checkbox2.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showFavicon, _param2, false));
 		
-		checkbox4.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "showCustomError", _param2, false));
+		checkbox4.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showCustomError, _param2, false));
 
 		linear_version.setOnClickListener(_view -> {
 			View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
@@ -370,8 +371,8 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 
 	private void needLoad(String Url) {
-		BrowservioSaverUtils.setPref(browservio_saver, "needLoad", "1");
-		BrowservioSaverUtils.setPref(browservio_saver, "needLoadUrl", Url);
+		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoad, "1");
+		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoadUrl, Url);
 		finish();
 	}
 
@@ -381,8 +382,8 @@ public class SettingsActivity extends AppCompatActivity {
 		checkIfPrefIntIsTrue("showBrowseBtn", checkbox3);
 		checkIfPrefIntIsTrue("showCustomError", checkbox4);
 		checkIfPrefIntIsTrue("showZoomKeys", checkbox5);
-		textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultHomePage")));
-		textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch")));
+		textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
+		textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
 		writingScreen = false;
 	}
 

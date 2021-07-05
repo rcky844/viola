@@ -1,4 +1,4 @@
-package tipz.browservio.utils;
+package tipz.browservio.sharedprefs.utils;
 
 import android.content.SharedPreferences;
 
