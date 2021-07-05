@@ -312,42 +312,45 @@ public class SettingsActivity extends AppCompatActivity {
 								c.connect();
 								final ByteArrayOutputStream bo = new ByteArrayOutputStream();
 								byte[] buffer = new byte[1024];
-								c.getInputStream().read(buffer);
-								bo.write(buffer);
+								int inputStreamTest = c.getInputStream().read(buffer);
+								if (inputStreamTest >= 5) {
+									bo.write(buffer);
 
-								runOnUiThread(() -> {
-									int position = 0;
-									boolean isLatest = false;
-									String[] array = bo.toString().split(System.lineSeparator());
-									for (String obj : array) {
-										if (position == 0) {
-											if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE) {
-												isLatest = true;
-												BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.version_latest_toast));
+									runOnUiThread(() -> {
+										int position = 0;
+										boolean isLatest = false;
+										String[] array = bo.toString().split(System.lineSeparator());
+										for (String obj : array) {
+											if (position == 0) {
+												if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE) {
+													isLatest = true;
+													BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.version_latest_toast));
+												}
 											}
-										}
-										if (position == 1 && !isLatest) {
-											BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.new_update_detect_toast));
-											if (apkFile.delete() || !apkFile.exists()) {
-												DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
-												request.allowScanningByMediaScanner();
-												request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-												request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
-												DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-												downloadID = dm.enqueue(request);
-											} else {
-												BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.update_down_failed_toast));
+											if (position == 1 && !isLatest) {
+												BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.new_update_detect_toast));
+												if (apkFile.delete() || !apkFile.exists()) {
+													DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
+													request.allowScanningByMediaScanner();
+													request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+													request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
+													DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+													downloadID = dm.enqueue(request);
+												} else {
+													BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.update_down_failed_toast));
+												}
 											}
+											position += 1;
 										}
-										position += 1;
-									}
-									try {
-										bo.close();
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								});
-
+										try {
+											bo.close();
+										} catch (IOException e) {
+											e.printStackTrace();
+										}
+									});
+								} else {
+									BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.update_down_failed_toast));
+								}
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
