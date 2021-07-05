@@ -67,7 +67,7 @@
 				android:layout_height="wrap_content"
 				android:contentDescription="@string/fab_desp"
 				app:srcCompat="@drawable/outline_arrow_up_24"
-				app:tint="@color/colorBackground"
+				app:tint="@android:color/black"
 				android:focusable="true"
 				android:clickable="true"
 				android:background="?attr/selectableItemBackgroundBorderless"
