@@ -28,7 +28,7 @@ public class UrlUtils {
             return url;
         } else {
             if (url.endsWith("/") || url.endsWith("\\") || url.contains(".")) {
-                return "https://" + url;
+                return "http://" + url;
             }
             if (canBeSearch) {
                 return searchUrl + url;
