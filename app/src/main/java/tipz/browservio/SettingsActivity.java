@@ -321,7 +321,7 @@ public class SettingsActivity extends AppCompatActivity {
 									String[] array = bo.toString().split(System.lineSeparator());
 									for (String obj : array) {
 										if (position == 0) {
-											if (obj.equals(String.valueOf(BuildConfig.VERSION_CODE))) {
+											if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE) {
 												isLatest = true;
 												BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.version_latest_toast));
 											}
