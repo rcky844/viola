@@ -5,7 +5,7 @@ import android.webkit.URLUtil;
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {
-            "http://", "https://", "ftp://", "file://",
+            "http:", "https:", "ftp:", "file:",
             "about:", "javascript:", "blob:", "data:"};
 
     /**
