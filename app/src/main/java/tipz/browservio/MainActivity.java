@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
 	boolean bitmipUpdated_q = false;
 	String UrlTitle;
+	String beforeNextUrl;
 
 	private String userAgent_full(String mid) {
 		return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
@@ -461,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
 		}
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 			if (!defaulterror) {
-				page_before_error = webview.getUrl();
+				page_before_error = beforeNextUrl;
 				_errorpage();
 			}
 		}
@@ -605,6 +606,7 @@ public class MainActivity extends AppCompatActivity {
 	 * @param url is for strings of URL to check and load
 	 */
 	private void _browservio_browse(String url) {
+		beforeNextUrl = webview.getUrl();
 		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, "defaultSearch"));
 		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			// Load URL
