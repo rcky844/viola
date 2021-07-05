@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -240,10 +241,11 @@ public class SettingsActivity extends AppCompatActivity {
 			dialog.setNegativeButton(android.R.string.cancel, null);
 			dialog.create().show();
 		});
-		
-		linear11.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox3));
 
-		linear_zoomkeys_b.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox5));
+		onClickChangeChkBox(linear11, checkbox3);
+		onClickChangeChkBox(linear_zoomkeys_b, checkbox5);
+		onClickChangeChkBox(linear1_overrideempt, checkbox2);
+		onClickChangeChkBox(linear13, checkbox4);
 
 		linear1_b0.setOnClickListener(_view -> {
 			drst.setTitle(getResources().getString(R.string.are_you_sure_q));
@@ -276,10 +278,6 @@ public class SettingsActivity extends AppCompatActivity {
 			BrowservioBasicUtil.updateChkbox(checkbox1);
 			BrowservioSaverUtils.setPref(browservio_saver, "needReload", "1");
 		});
-		
-		linear1_overrideempt.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox2));
-		
-		linear13.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkbox4));
 		
 		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, "isJavaScriptEnabled", _param2, false));
 		
@@ -390,8 +388,10 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 
 	private void checkIfPrefIntIsTrue(String tag, AppCompatCheckBox checkBox) {
-		if (BrowservioSaverUtils.getPref(browservio_saver, tag).equals("1")) {
-			checkBox.setChecked(true);
-		}
+		checkBox.setChecked(BrowservioSaverUtils.getPref(browservio_saver, tag).equals("1"));
+	}
+
+	public void onClickChangeChkBox(View view, AppCompatCheckBox chkbox) {
+		view.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(chkbox));
 	}
 }
