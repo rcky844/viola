@@ -88,7 +88,7 @@
 			<androidx.appcompat.widget.LinearLayoutCompat
 				android:id="@+id/linear_control"
 				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_height="match_parent"
 				android:layout_gravity="center_vertical"
 				android:gravity="center_vertical"
 				android:orientation="horizontal"
@@ -97,7 +97,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/back"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/back_desp"
 					android:scaleType="center"
 					android:src="@drawable/outline_arrow_back_24"
@@ -110,7 +110,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/forward"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/forward_desp"
 					android:rotation="180"
 					android:scaleType="center"
@@ -124,7 +124,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/reload"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/reload_desp"
 					android:scaleType="center"
 					android:src="@drawable/outline_refresh_24"
@@ -137,7 +137,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/homepage"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/history"
 					android:scaleType="center"
 					android:src="@drawable/outline_home_24"
@@ -150,7 +150,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/desktop_switch"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/desktop_desp"
 					android:scaleType="center"
 					android:src="@drawable/outline_smartphone_24"
@@ -163,7 +163,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/clear"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/clear_desp"
 					android:scaleType="center"
 					android:src="@drawable/outline_delete_24"
@@ -176,7 +176,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/share"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/share_desp"
 					android:scaleType="center"
 					android:src="@drawable/outline_share_24"
@@ -189,7 +189,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/settings"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/settings"
 					android:scaleType="center"
 					android:src="@drawable/outline_settings_24"
@@ -202,7 +202,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/history"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/history"
 					android:scaleType="center"
 					android:src="@drawable/outline_history_24"
@@ -215,7 +215,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/fav"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/fav"
 					android:scaleType="center"
 					android:src="@drawable/outline_favorite_border_24"
@@ -228,7 +228,7 @@
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/exit"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:contentDescription="@string/exit_desp"
 					android:scaleType="center"
 					android:src="@drawable/outline_close_24"
