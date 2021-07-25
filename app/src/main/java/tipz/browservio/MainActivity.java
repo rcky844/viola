@@ -659,7 +659,6 @@ public class MainActivity extends AppCompatActivity {
 
 		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1")) {
 			final ProgressDialog prog = new ProgressDialog(MainActivity.this);
-			prog.setMax(100);
 			prog.setMessage(getResources().getString(R.string.dialog_resetting_message));
 			prog.setIndeterminate(true);
 			prog.setCancelable(false);
