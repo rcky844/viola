@@ -23,10 +23,12 @@
 		android:usesCleartextTraffic="true"
 		android:supportsRtl="true"
 		android:fullBackupContent="@xml/backup_descriptor"
-		tools:targetApi="m">
+		android:dataExtractionRules="@xml/data_extraction_rules"
+		tools:targetApi="s">
 		<activity
 			android:name=".MainActivity"
-			android:configChanges="orientation|screenSize">
+			android:configChanges="orientation|screenSize"
+			android:exported="true">
 			<intent-filter>
 				<action	android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
