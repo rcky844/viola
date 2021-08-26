@@ -27,6 +27,7 @@ import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -462,14 +463,14 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		@Override
-		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			if (url != null) {
-				if (url.length() != 0) {
+		public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
+			if (request.getUrl() != null) {
+				if (request.getUrl().toString().length() != 0) {
 					return false;
 				}
 			}
-			if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url)) {
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), request.getUrl().toString())) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
 				startActivity(intent);
 			} else {
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
