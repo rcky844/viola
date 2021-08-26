@@ -344,13 +344,13 @@ public class MainActivity extends AppCompatActivity {
 			fabanim.setDuration(250);
 			baranim.setDuration(250);
 			if (hscroll_control.getVisibility() == View.VISIBLE) {
-				fabanim.setFloatValues((float)(0), (float)(180));
-				baranim.setFloatValues((float)(1), (float)(0));
+				fabanim.setFloatValues(0, 180);
+				baranim.setFloatValues(1, 0);
 				hscroll_control.setVisibility(View.GONE);
 			} else {
 				hscroll_control.setVisibility(View.VISIBLE);
-				fabanim.setFloatValues((float)(180), (float)(0));
-				baranim.setFloatValues((float)(0), (float)(1));
+				fabanim.setFloatValues(180, 0);
+				baranim.setFloatValues(0, 1);
 			}
 			baranim.start();
 			fabanim.start();

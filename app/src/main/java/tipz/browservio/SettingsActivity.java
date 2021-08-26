@@ -158,13 +158,13 @@ public class SettingsActivity extends AppCompatActivity {
 			stackanim.setDuration(250);
 			Sherlockanimation.setDuration(250);
 			if (linear6.getVisibility() == View.VISIBLE) {
-				stackanim.setFloatValues((float)(0), (float)(180));
-				Sherlockanimation.setFloatValues((float)(1), (float)(0));
+				stackanim.setFloatValues(0, 180);
+				Sherlockanimation.setFloatValues(1, 0);
 				linear6.setVisibility(View.GONE);
 			} else {
 				linear6.setVisibility(View.VISIBLE);
-				stackanim.setFloatValues((float)(180), (float)(0));
-				Sherlockanimation.setFloatValues((float)(0), (float)(1));
+				stackanim.setFloatValues(180, 0);
+				Sherlockanimation.setFloatValues(0, 1);
 			}
 			stackanim.start();
 			Sherlockanimation.start();
@@ -178,13 +178,13 @@ public class SettingsActivity extends AppCompatActivity {
 			stackanim.setDuration(250);
 			Sherlockanimation.setDuration(250);
 			if (linear5.getVisibility() == View.VISIBLE) {
-				stackanim.setFloatValues((float)(0), (float)(180));
-				Sherlockanimation.setFloatValues((float)(1), (float)(0));
+				stackanim.setFloatValues(0, 180);
+				Sherlockanimation.setFloatValues(1, 0);
 				linear5.setVisibility(View.GONE);
 			} else {
 				linear5.setVisibility(View.VISIBLE);
-				stackanim.setFloatValues((float)(180), (float)(0));
-				Sherlockanimation.setFloatValues((float)(0), (float)(1));
+				stackanim.setFloatValues(180, 0);
+				Sherlockanimation.setFloatValues(0, 1);
 			}
 			stackanim.start();
 			Sherlockanimation.start();
@@ -198,13 +198,13 @@ public class SettingsActivity extends AppCompatActivity {
 			stackanim.setDuration(250);
 			Sherlockanimation.setDuration(250);
 			if (linear8.getVisibility() == View.VISIBLE) {
-				stackanim.setFloatValues((float)(0), (float)(180));
-				Sherlockanimation.setFloatValues((float)(1), (float)(0));
+				stackanim.setFloatValues(0, 180);
+				Sherlockanimation.setFloatValues(1, 0);
 				linear8.setVisibility(View.GONE);
 			} else {
 				linear8.setVisibility(View.VISIBLE);
-				stackanim.setFloatValues((float)(180), (float)(0));
-				Sherlockanimation.setFloatValues((float)(0), (float)(1));
+				stackanim.setFloatValues(180, 0);
+				Sherlockanimation.setFloatValues(0, 1);
 			}
 			stackanim.start();
 			Sherlockanimation.start();
