@@ -8,11 +8,11 @@ android {
 		applicationId "tipz.browservio"
 		minSdkVersion 21
 		targetSdkVersion 31
-		versionCode 48
-		versionName "1.4.3"
-		buildConfigField "String", "VERSION_NAME_EXTRA", "\" Supplemental Update 1\""
-		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_su1\""
-		buildConfigField "String", "VERSION_CODENAME", "\"Burton\""
+		versionCode 49
+		versionName "1.4.4"
+		buildConfigField "String", "VERSION_NAME_EXTRA", "\" Beta 1\""
+		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_b1\""
+		buildConfigField "String", "VERSION_CODENAME", "\"Bowling\""
 		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("EEE MMM d HH:mm:ss z yyyy") + "\""
 	}
 	buildTypes {
