@@ -7,7 +7,6 @@
 		android:layout_height="match_parent"
 		android:orientation="vertical">
 		<androidx.appcompat.widget.LinearLayoutCompat
-			android:id="@+id/linear_urledit"
 			android:layout_width="match_parent"
 			android:layout_height="32dp"
 			android:background="@color/colorPrimary"
@@ -25,7 +24,6 @@
 				app:srcCompat="@drawable/outline_public_24" />
 
 			<androidx.appcompat.widget.LinearLayoutCompat
-				android:id="@+id/linear_urledit_text"
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
 				android:layout_weight="1"
@@ -33,7 +31,7 @@
 				android:padding="4dp">
 
 				<androidx.appcompat.widget.AppCompatEditText
-					android:id="@+id/urledit"
+					android:id="@+id/UrlEdit"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:layout_gravity="center_horizontal"
@@ -46,7 +44,7 @@
 					android:singleLine="true"
 					android:textColor="@color/colorBackground_inverted"
 					android:textSize="12sp"
-					android:background="@drawable/urledit_bg" />
+					android:background="@drawable/url_edit_bg" />
 			</androidx.appcompat.widget.LinearLayoutCompat>
 
 			<androidx.appcompat.widget.AppCompatImageView
@@ -86,7 +84,6 @@
 			android:weightSum="1" >
 
 			<androidx.appcompat.widget.LinearLayoutCompat
-				android:id="@+id/linear_control"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_gravity="center_vertical"
@@ -241,7 +238,7 @@
 		</HorizontalScrollView>
 
 		<ProgressBar
-			android:id="@+id/progmain"
+			android:id="@+id/MainProg"
 			style="?android:progressBarStyleHorizontal"
 			android:layout_width="match_parent"
 			android:layout_height="2dp"
@@ -249,7 +246,6 @@
 			android:indeterminate="false" />
 
 		<androidx.appcompat.widget.LinearLayoutCompat
-			android:id="@+id/webview_linear"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="1"

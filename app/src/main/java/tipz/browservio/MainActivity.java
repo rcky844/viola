@@ -57,11 +57,11 @@ import tipz.browservio.utils.UrlUtils;
 public class MainActivity extends AppCompatActivity {
 
 	private String page_before_error;
-	private boolean defaulterror = true;
+	private boolean defaultError = true;
 
 	private AppCompatImageView browse;
-	private AppCompatEditText urledit;
-	private ProgressBar progmain;
+	private AppCompatEditText UrlEdit;
+	private ProgressBar MainProg;
 	private WebView webview;
 	private HorizontalScrollView hscroll_control;
 	private AppCompatImageView reload;
@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
 	private AlertDialog.Builder dialog;
 	private final Intent i = new Intent();
 	private MediaPlayer mediaPlayer;
-	private final ObjectAnimator fabanim = new ObjectAnimator();
-	private final ObjectAnimator baranim = new ObjectAnimator();
+	private final ObjectAnimator fabAnimate = new ObjectAnimator();
+	private final ObjectAnimator barAnimate = new ObjectAnimator();
 	private SharedPreferences bookmarks;
 
-	boolean bitmipUpdated_q = false;
+	boolean bitmapUpdated_q = false;
 	String UrlTitle;
 	String beforeNextUrl;
 
@@ -145,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
 
 		AppCompatImageView fab = findViewById(R.id.fab);
 		browse = findViewById(R.id.browse);
-		urledit = findViewById(R.id.urledit);
-		progmain = findViewById(R.id.progmain);
+		UrlEdit = findViewById(R.id.UrlEdit);
+		MainProg = findViewById(R.id.MainProg);
 		webview = findViewById(R.id.webview);
 		hscroll_control = findViewById(R.id.hscroll_control);
 		AppCompatImageView back = findViewById(R.id.back);
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 		dialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		
-		browse.setOnClickListener(_view -> _browservio_browse(Objects.requireNonNull(urledit.getText()).toString()));
+		browse.setOnClickListener(_view -> _browservio_browse(Objects.requireNonNull(UrlEdit.getText()).toString()));
 
 		back.setOnClickListener(_view -> {
 			// on forward being clicked, either go forward in history
@@ -194,11 +194,11 @@ public class MainActivity extends AppCompatActivity {
 		reload.setOnClickListener(_view -> {
 			if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 				if (!webview.getUrl().equals("")) {
-					_URLindentify(webview.getUrl());
+					URLIdentify(webview.getUrl());
 					webview.reload();
 				}
 			} else {
-				_URLindentify(page_before_error);
+				URLIdentify(page_before_error);
 				webview.loadUrl(page_before_error);
 				page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 			}
@@ -336,23 +336,23 @@ public class MainActivity extends AppCompatActivity {
 		});
 		
 		fab.setOnClickListener(_view -> {
-			fabanim.setTarget(fab);
-			baranim.setTarget(hscroll_control);
-			fabanim.setPropertyName("rotation");
-			baranim.setPropertyName("alpha");
-			fabanim.setDuration(250);
-			baranim.setDuration(250);
+			fabAnimate.setTarget(fab);
+			barAnimate.setTarget(hscroll_control);
+			fabAnimate.setPropertyName("rotation");
+			barAnimate.setPropertyName("alpha");
+			fabAnimate.setDuration(250);
+			barAnimate.setDuration(250);
 			if (hscroll_control.getVisibility() == View.VISIBLE) {
-				fabanim.setFloatValues(0, 180);
-				baranim.setFloatValues(1, 0);
+				fabAnimate.setFloatValues(0, 180);
+				barAnimate.setFloatValues(1, 0);
 				hscroll_control.setVisibility(View.GONE);
 			} else {
 				hscroll_control.setVisibility(View.VISIBLE);
-				fabanim.setFloatValues(180, 0);
-				baranim.setFloatValues(0, 1);
+				fabAnimate.setFloatValues(180, 0);
+				barAnimate.setFloatValues(0, 1);
 			}
-			baranim.start();
-			fabanim.start();
+			barAnimate.start();
+			fabAnimate.start();
 		});
 	}
 
@@ -376,15 +376,15 @@ public class MainActivity extends AppCompatActivity {
 		 * This browser was originally designed with Sketchware
 		 * This project was started on Aug 13 2020
 		 *
-		 * sur wen real Sherk browser plssssssssssssssssssssssssssssss
+		 * sur wen real Shrek browser pls sand me sum
 		 */
 		webview.setWebViewClient(new WebClient());
 		webview.setWebChromeClient(new ChromeWebClient());
 
 		/* Code for detecting return key presses */
-		urledit.setOnEditorActionListener((v, actionId, event) -> {
+		UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
 			if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
-				_browservio_browse(Objects.requireNonNull(urledit.getText()).toString());
+				_browservio_browse(Objects.requireNonNull(UrlEdit.getText()).toString());
 				return true;
 			}
 			return false;
@@ -438,9 +438,9 @@ public class MainActivity extends AppCompatActivity {
 	public class WebClient extends WebViewClientCompat {
 		private void UrlSet(String url) {
 			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
-				urledit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
-			} else if (!Objects.requireNonNull(urledit.getText()).toString().equals(url)) {
-				urledit.setText(url);
+				UrlEdit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
+			} else if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)) {
+				UrlEdit.setText(url);
 				_history_saviour();
 			}
 		}
@@ -449,17 +449,17 @@ public class MainActivity extends AppCompatActivity {
 			UrlSet(url);
 		}
 		public void onPageFinished (WebView view, String url) {
-			if (bitmipUpdated_q) {
+			if (bitmapUpdated_q) {
 				favicon.setImageResource(R.drawable.outline_public_24);
 			}
 			UrlSet(url);
-			bitmipUpdated_q = false;
+			bitmapUpdated_q = false;
 			CookieManager.getInstance().flush();
 		}
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-			if (!defaulterror) {
+			if (!defaultError) {
 				page_before_error = beforeNextUrl;
-				_errorpage();
+				errorPage();
 			}
 		}
 		@Override
@@ -527,10 +527,10 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		public void onProgressChanged(WebView view, int progress) {
-			progmain.setProgress(progress == 100 ? 0 : progress);
+			MainProg.setProgress(progress == 100 ? 0 : progress);
 		}
 		public void onReceivedIcon(WebView view, Bitmap icon) {
-			bitmipUpdated_q = true;
+			bitmapUpdated_q = true;
 			favicon.setImageBitmap(icon);
 		}
 		public void onReceivedTitle (WebView view, String title) {
@@ -599,14 +599,14 @@ public class MainActivity extends AppCompatActivity {
 		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			// Load URL
 			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
-				_URLindentify(url);
+				URLIdentify(url);
 			} else {
-				_URLindentify(checkedUrl);
+				URLIdentify(checkedUrl);
 				webview.loadUrl(checkedUrl);
 				_history_saviour();
 			}
 		} else {
-			_URLindentify(page_before_error);
+			URLIdentify(page_before_error);
 			webview.loadUrl(page_before_error);
 			page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
 			_history_saviour();
@@ -656,11 +656,11 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1")) {
-			final ProgressDialog prog = new ProgressDialog(MainActivity.this);
-			prog.setMessage(getResources().getString(R.string.dialog_resetting_message));
-			prog.setIndeterminate(true);
-			prog.setCancelable(false);
-			prog.show();
+			final ProgressDialog ResetProg = new ProgressDialog(MainActivity.this);
+			ResetProg.setMessage(getResources().getString(R.string.dialog_resetting_message));
+			ResetProg.setIndeterminate(true);
+			ResetProg.setCancelable(false);
+			ResetProg.show();
 			mainClearHistory();
 			mainClearCache();
 			mainClearCookies();
@@ -692,7 +692,7 @@ public class MainActivity extends AppCompatActivity {
 		browse.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showBrowseBtn).equals("1") ? View.VISIBLE : View.GONE);
 		favicon.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showFavicon).equals("1") ? View.VISIBLE : View.GONE);
 		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showZoomKeys).equals("1"));
-		defaulterror = !BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showCustomError).equals("1");
+		defaultError = !BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showCustomError).equals("1");
 
 		// Need load
 		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needLoad).equals("1")) {
@@ -721,7 +721,7 @@ public class MainActivity extends AppCompatActivity {
 	/**
 	 * Error Page Loader
 	 */
-	private void _errorpage () {
+	private void errorPage() {
 		webview.loadUrl(getResources().getString(R.string.url_error_real));
 		// Media player
 		if (mediaPlayer != null) {
@@ -744,12 +744,12 @@ public class MainActivity extends AppCompatActivity {
 	 *
 	 * @param url is supplied for the url to check
 	 */
-	private void _URLindentify(String url) {
+	private void URLIdentify(String url) {
 		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
 			throw new RuntimeException(getResources().getString(R.string.no_error_elog));
 		}
 		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
-			_errorpage();
+			errorPage();
 		}
 	}
 }

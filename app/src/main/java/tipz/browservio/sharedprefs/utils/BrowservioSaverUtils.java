@@ -27,7 +27,7 @@ public class BrowservioSaverUtils {
      * @param pref as the SharedPreference to get the value from.
      * @param tag as the tag to get the value from.
      * @param bool as the bool to check.
-     * @param flip if the value needs to be fliped.
+     * @param flip if the value needs to be flipped.
      */
     public static void setPrefStringBoolAccBool(SharedPreferences pref, String tag, boolean bool, boolean flip) {
         if (bool) {

@@ -54,13 +54,13 @@ public class SettingsActivity extends AppCompatActivity {
 	private AppCompatImageView imageview5;
 
 	private SharedPreferences browservio_saver;
-	private AlertDialog.Builder dialog;
-	private final ObjectAnimator stackanim = new ObjectAnimator();
-	private AlertDialog.Builder dialog1;
-	private AlertDialog.Builder dabt;
-	private AlertDialog.Builder drst;
-	private AlertDialog.Builder diazoomrestart;
-	private final ObjectAnimator Sherlockanimation = new ObjectAnimator();
+	private AlertDialog.Builder HomepageSettingsDialog;
+	private final ObjectAnimator StackAnimate = new ObjectAnimator();
+	private AlertDialog.Builder SearchSettingsDialog;
+	private AlertDialog.Builder InfoDialog;
+	private AlertDialog.Builder ResetDialog;
+	private AlertDialog.Builder ZoomUpdateDialog;
+	private final ObjectAnimator ArrowAnimate = new ObjectAnimator();
 
 	boolean writingScreen = true;
 	long downloadID;
@@ -116,7 +116,7 @@ public class SettingsActivity extends AppCompatActivity {
 		_toolbar.setNavigationOnClickListener(_v -> onBackPressed());
 		LinearLayoutCompat linear_general = findViewById(R.id.linear_general);
 		linear6 = findViewById(R.id.linear6);
-		LinearLayoutCompat linear_advenced = findViewById(R.id.linear_advenced);
+		LinearLayoutCompat linear_advanced = findViewById(R.id.linear_advanced);
 		linear5 = findViewById(R.id.linear5);
 		LinearLayoutCompat linear_about = findViewById(R.id.linear_about);
 		linear8 = findViewById(R.id.linear8);
@@ -124,16 +124,15 @@ public class SettingsActivity extends AppCompatActivity {
 		LinearLayoutCompat linear1_search = findViewById(R.id.linear1_search);
 		LinearLayoutCompat linear1_homepage = findViewById(R.id.linear1_homepage);
 		LinearLayoutCompat linear11 = findViewById(R.id.linear11);
-		LinearLayoutCompat linear_zoomkeys_b = findViewById(R.id.linear_zoomkeys_b);
-		LinearLayoutCompat linear1_b0 = findViewById(R.id.linear1_b0);
-		findViewById(R.id.textview8);
+		LinearLayoutCompat linear_zoomkeys = findViewById(R.id.linear_zoomkeys);
+		LinearLayoutCompat linear1_reset = findViewById(R.id.linear1_reset);
 		textview9 = findViewById(R.id.textview9);
 		textview5 = findViewById(R.id.textview5);
 		checkbox3 = findViewById(R.id.checkbox3);
 		checkbox5 = findViewById(R.id.checkbox5);
 		imageview1 = findViewById(R.id.imageview1);
 		LinearLayoutCompat linear1_javascript = findViewById(R.id.linear1_javascript);
-		LinearLayoutCompat linear1_overrideempt = findViewById(R.id.linear1_overrideempt);
+		LinearLayoutCompat linear1_override_empty = findViewById(R.id.linear1_override_empty);
 		LinearLayoutCompat linear13 = findViewById(R.id.linear13);
 		checkbox1 = findViewById(R.id.checkbox1);
 		checkbox2 = findViewById(R.id.checkbox2);
@@ -142,120 +141,120 @@ public class SettingsActivity extends AppCompatActivity {
 		LinearLayoutCompat linear_version = findViewById(R.id.linear_version);
 		LinearLayoutCompat linear_feed = findViewById(R.id.linear_feed);
 		LinearLayoutCompat linear_source = findViewById(R.id.linear_source);
-		AppCompatTextView version_visiable = findViewById(R.id.version_visiable);
+		AppCompatTextView version_visible = findViewById(R.id.version_visible);
 		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
-		dialog = new AlertDialog.Builder(this);
-		dialog1 = new AlertDialog.Builder(this);
-		dabt = new AlertDialog.Builder(this);
-		drst = new AlertDialog.Builder(this);
-		diazoomrestart = new AlertDialog.Builder(this);
+		HomepageSettingsDialog = new AlertDialog.Builder(this);
+		SearchSettingsDialog = new AlertDialog.Builder(this);
+		InfoDialog = new AlertDialog.Builder(this);
+		ResetDialog = new AlertDialog.Builder(this);
+		ZoomUpdateDialog = new AlertDialog.Builder(this);
 
 		linear_general.setOnClickListener(_view -> {
-			stackanim.setTarget(imageview4);
-			Sherlockanimation.setTarget(linear6);
-			stackanim.setPropertyName("rotation");
-			Sherlockanimation.setPropertyName("alpha");
-			stackanim.setDuration(250);
-			Sherlockanimation.setDuration(250);
+			StackAnimate.setTarget(imageview4);
+			ArrowAnimate.setTarget(linear6);
+			StackAnimate.setPropertyName("rotation");
+			ArrowAnimate.setPropertyName("alpha");
+			StackAnimate.setDuration(250);
+			ArrowAnimate.setDuration(250);
 			if (linear6.getVisibility() == View.VISIBLE) {
-				stackanim.setFloatValues(0, 180);
-				Sherlockanimation.setFloatValues(1, 0);
+				StackAnimate.setFloatValues(0, 180);
+				ArrowAnimate.setFloatValues(1, 0);
 				linear6.setVisibility(View.GONE);
 			} else {
 				linear6.setVisibility(View.VISIBLE);
-				stackanim.setFloatValues(180, 0);
-				Sherlockanimation.setFloatValues(0, 1);
+				StackAnimate.setFloatValues(180, 0);
+				ArrowAnimate.setFloatValues(0, 1);
 			}
-			stackanim.start();
-			Sherlockanimation.start();
+			StackAnimate.start();
+			ArrowAnimate.start();
 		});
 		
-		linear_advenced.setOnClickListener(_view -> {
-			stackanim.setTarget(imageview1);
-			Sherlockanimation.setTarget(linear5);
-			stackanim.setPropertyName("rotation");
-			Sherlockanimation.setPropertyName("alpha");
-			stackanim.setDuration(250);
-			Sherlockanimation.setDuration(250);
+		linear_advanced.setOnClickListener(_view -> {
+			StackAnimate.setTarget(imageview1);
+			ArrowAnimate.setTarget(linear5);
+			StackAnimate.setPropertyName("rotation");
+			ArrowAnimate.setPropertyName("alpha");
+			StackAnimate.setDuration(250);
+			ArrowAnimate.setDuration(250);
 			if (linear5.getVisibility() == View.VISIBLE) {
-				stackanim.setFloatValues(0, 180);
-				Sherlockanimation.setFloatValues(1, 0);
+				StackAnimate.setFloatValues(0, 180);
+				ArrowAnimate.setFloatValues(1, 0);
 				linear5.setVisibility(View.GONE);
 			} else {
 				linear5.setVisibility(View.VISIBLE);
-				stackanim.setFloatValues(180, 0);
-				Sherlockanimation.setFloatValues(0, 1);
+				StackAnimate.setFloatValues(180, 0);
+				ArrowAnimate.setFloatValues(0, 1);
 			}
-			stackanim.start();
-			Sherlockanimation.start();
+			StackAnimate.start();
+			ArrowAnimate.start();
 		});
 		
 		linear_about.setOnClickListener(_view -> {
-			stackanim.setTarget(imageview5);
-			Sherlockanimation.setTarget(linear8);
-			stackanim.setPropertyName("rotation");
-			Sherlockanimation.setPropertyName("alpha");
-			stackanim.setDuration(250);
-			Sherlockanimation.setDuration(250);
+			StackAnimate.setTarget(imageview5);
+			ArrowAnimate.setTarget(linear8);
+			StackAnimate.setPropertyName("rotation");
+			ArrowAnimate.setPropertyName("alpha");
+			StackAnimate.setDuration(250);
+			ArrowAnimate.setDuration(250);
 			if (linear8.getVisibility() == View.VISIBLE) {
-				stackanim.setFloatValues(0, 180);
-				Sherlockanimation.setFloatValues(1, 0);
+				StackAnimate.setFloatValues(0, 180);
+				ArrowAnimate.setFloatValues(1, 0);
 				linear8.setVisibility(View.GONE);
 			} else {
 				linear8.setVisibility(View.VISIBLE);
-				stackanim.setFloatValues(180, 0);
-				Sherlockanimation.setFloatValues(0, 1);
+				StackAnimate.setFloatValues(180, 0);
+				ArrowAnimate.setFloatValues(0, 1);
 			}
-			stackanim.start();
-			Sherlockanimation.start();
+			StackAnimate.start();
+			ArrowAnimate.start();
 		});
 		
 		linear1_search.setOnClickListener(_view -> {
-			dialog1.setTitle(getResources().getString(R.string.search_engine));
-			dialog1.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
+			SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
+			SearchSettingsDialog.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
 			final AppCompatEditText custom_se = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp2 = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-			custom_se.setLayoutParams(lp2); dialog1.setView(custom_se);
-			dialog1.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+			custom_se.setLayoutParams(lp2); SearchSettingsDialog.setView(custom_se);
+			SearchSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				if (!Objects.requireNonNull(custom_se.getText()).toString().equals("") && custom_se.getText().toString().contains("{term}"))
 				{
 					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.defaultSearch, custom_se.getText().toString());
 					textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
 				}
 			});
-			dialog1.setNegativeButton(android.R.string.cancel, null);
-			dialog1.create().show();
+			SearchSettingsDialog.setNegativeButton(android.R.string.cancel, null);
+			SearchSettingsDialog.create().show();
 		});
 		
 		linear1_homepage.setOnClickListener(_view -> {
-			dialog.setTitle(getResources().getString(R.string.homepage));
-			dialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
+			HomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
+			HomepageSettingsDialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
 			final AppCompatEditText custom_hp = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-			custom_hp.setLayoutParams(lp); dialog.setView(custom_hp);
-			dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+			custom_hp.setLayoutParams(lp); HomepageSettingsDialog.setView(custom_hp);
+			HomepageSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				if (!Objects.requireNonNull(custom_hp.getText()).toString().equals(""))
 				{
 					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.defaultHomePage, custom_hp.getText().toString());
 					textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
 				}
 			});
-			dialog.setNegativeButton(android.R.string.cancel, null);
-			dialog.create().show();
+			HomepageSettingsDialog.setNegativeButton(android.R.string.cancel, null);
+			HomepageSettingsDialog.create().show();
 		});
 
 		onClickChangeChkBox(linear11, checkbox3);
-		onClickChangeChkBox(linear_zoomkeys_b, checkbox5);
-		onClickChangeChkBox(linear1_overrideempt, checkbox2);
+		onClickChangeChkBox(linear_zoomkeys, checkbox5);
+		onClickChangeChkBox(linear1_override_empty, checkbox2);
 		onClickChangeChkBox(linear13, checkbox4);
 
-		linear1_b0.setOnClickListener(_view -> {
-			drst.setTitle(getResources().getString(R.string.are_you_sure_q));
-			drst.setMessage(getResources().getString(R.string.dialog_set_reset_message));
-			drst.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+		linear1_reset.setOnClickListener(_view -> {
+			ResetDialog.setTitle(getResources().getString(R.string.are_you_sure_q));
+			ResetDialog.setMessage(getResources().getString(R.string.dialog_set_reset_message));
+			ResetDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.isFirstLaunch, "1");
 				finish();
 			});
-			drst.setNegativeButton(android.R.string.cancel, null);
-			drst.create().show();
+			ResetDialog.setNegativeButton(android.R.string.cancel, null);
+			ResetDialog.create().show();
 		});
 		
 		checkbox3.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showBrowseBtn, _param2, false));
@@ -263,14 +262,14 @@ public class SettingsActivity extends AppCompatActivity {
 		checkbox5.setOnCheckedChangeListener((_param1, _param2) -> {
 			BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showZoomKeys, _param2, false);
 			if (!writingScreen) {
-				diazoomrestart.setTitle(getResources().getString(R.string.restart_app_q));
-				diazoomrestart.setMessage(getResources().getString(R.string.restart_app_qmsg));
-				diazoomrestart.setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) -> {
+				ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q));
+				ZoomUpdateDialog.setMessage(getResources().getString(R.string.restart_app_qmsg));
+				ZoomUpdateDialog.setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) -> {
 					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needRestart, "1");
 					finish();
 				});
-				diazoomrestart.setNegativeButton(android.R.string.cancel, null);
-				diazoomrestart.create().show();
+				ZoomUpdateDialog.setNegativeButton(android.R.string.cancel, null);
+				ZoomUpdateDialog.create().show();
 			}
 		});
 
@@ -360,12 +359,12 @@ public class SettingsActivity extends AppCompatActivity {
 					}.start();
 				}
 			});
-			dabt.setView(dialogView);
-			dabt.setPositiveButton(android.R.string.ok, null);
-			dabt.create().show();
+			InfoDialog.setView(dialogView);
+			InfoDialog.setPositiveButton(android.R.string.ok, null);
+			InfoDialog.create().show();
 		});
 
-		version_visiable.setText(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
+		version_visible.setText(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
 
 		linear_feed.setOnClickListener(_view -> needLoad(getResources().getString(R.string.url_source_code,
 				getResources().getString(R.string.url_bug_report_subfix))));
@@ -395,7 +394,7 @@ public class SettingsActivity extends AppCompatActivity {
 		checkBox.setChecked(BrowservioSaverUtils.getPref(browservio_saver, tag).equals("1"));
 	}
 
-	public void onClickChangeChkBox(View view, AppCompatCheckBox chkbox) {
-		view.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(chkbox));
+	public void onClickChangeChkBox(View view, AppCompatCheckBox checkBox) {
+		view.setOnClickListener(_view -> BrowservioBasicUtil.updateChkbox(checkBox));
 	}
 }

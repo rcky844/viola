@@ -22,12 +22,10 @@
 		app:layout_behavior="@string/appbar_scrolling_view_behavior"
 		android:background="@color/colorBackground">
 		<ScrollView
-			android:id="@+id/vscroll_back"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:background="@color/colorBackground">
 			<androidx.appcompat.widget.LinearLayoutCompat
-				android:id="@+id/linear_back"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
@@ -41,7 +39,6 @@
 					android:layout_gravity="center_horizontal|center_vertical"
 					android:background="@drawable/list_ripple">
 					<androidx.appcompat.widget.AppCompatTextView
-						android:id="@+id/textview_cool1"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
@@ -75,7 +72,6 @@
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview8"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -103,7 +99,6 @@
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview4"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -132,14 +127,12 @@
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.LinearLayoutCompat
-							android:id="@+id/linear12"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview31"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -149,7 +142,6 @@
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview32"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -171,7 +163,7 @@
 							android:layout_gravity="end|center_vertical"/>
 					</androidx.appcompat.widget.LinearLayoutCompat>
 					<androidx.appcompat.widget.LinearLayoutCompat
-						android:id="@+id/linear1_overrideempt"
+						android:id="@+id/linear1_override_empty"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:gravity="end"
@@ -179,14 +171,12 @@
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.LinearLayoutCompat
-							android:id="@+id/linear1_overrideemp"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview12"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -196,7 +186,6 @@
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview13"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -218,7 +207,7 @@
 							android:layout_gravity="end|center_vertical"/>
 					</androidx.appcompat.widget.LinearLayoutCompat>
 					<androidx.appcompat.widget.LinearLayoutCompat
-						android:id="@+id/linear_zoomkeys_b"
+						android:id="@+id/linear_zoomkeys"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:gravity="end"
@@ -226,14 +215,12 @@
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.LinearLayoutCompat
-							android:id="@+id/linear_zoomkeys_a"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview37"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -243,7 +230,6 @@
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview38"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -265,14 +251,13 @@
 							android:layout_gravity="end|center_vertical"/>
 					</androidx.appcompat.widget.LinearLayoutCompat>
 					<androidx.appcompat.widget.LinearLayoutCompat
-						android:id="@+id/linear1_b0"
+						android:id="@+id/linear1_reset"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview15"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -282,7 +267,6 @@
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview16"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -295,7 +279,7 @@
 					</androidx.appcompat.widget.LinearLayoutCompat>
 				</androidx.appcompat.widget.LinearLayoutCompat>
 				<androidx.appcompat.widget.LinearLayoutCompat
-					android:id="@+id/linear_advenced"
+					android:id="@+id/linear_advanced"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:gravity="end|center_vertical"
@@ -303,7 +287,6 @@
 					android:layout_gravity="end|center_vertical"
 					android:background="@drawable/list_ripple">
 					<androidx.appcompat.widget.AppCompatTextView
-						android:id="@+id/textview_cool2"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
@@ -337,14 +320,12 @@
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.LinearLayoutCompat
-							android:id="@+id/linear1_b1"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview29"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -354,7 +335,6 @@
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview30"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -384,14 +364,12 @@
 						android:layout_gravity="end"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.LinearLayoutCompat
-							android:id="@+id/linear14"
 							android:layout_width="0dp"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
 							android:orientation="vertical"
 							android:layout_weight="1">
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview33"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -401,7 +379,6 @@
 								android:textSize="16sp"
 								android:textColor="@color/colorBackground_inverted"/>
 							<androidx.appcompat.widget.AppCompatTextView
-								android:id="@+id/textview34"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:paddingLeft="8dp"
@@ -432,7 +409,6 @@
 					android:layout_gravity="center_horizontal|center_vertical"
 					android:background="@drawable/list_ripple">
 					<androidx.appcompat.widget.AppCompatTextView
-						android:id="@+id/textview_cool3"
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:padding="8dp"
@@ -466,7 +442,6 @@
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview23"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -476,7 +451,7 @@
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/version_visiable"
+							android:id="@+id/version_visible"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -493,7 +468,6 @@
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview25"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -503,7 +477,6 @@
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview26"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -522,7 +495,6 @@
 						android:orientation="vertical"
 						android:background="@drawable/list_ripple">
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview35"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"
@@ -532,7 +504,6 @@
 							android:textSize="16sp"
 							android:textColor="@color/colorBackground_inverted"/>
 						<androidx.appcompat.widget.AppCompatTextView
-							android:id="@+id/textview36"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:paddingLeft="8dp"

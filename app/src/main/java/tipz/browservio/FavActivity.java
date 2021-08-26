@@ -133,12 +133,12 @@ public class FavActivity extends AppCompatActivity {
 	public void onStart() {
 		super.onStart();
 		populate_count = 0;
-		final ProgressDialog prog = new ProgressDialog(FavActivity.this);
-		prog.setMax(100);
-		prog.setMessage(getResources().getString(R.string.populating_dialog_message));
-		prog.setIndeterminate(true);
-		prog.setCancelable(false);
-		prog.show();
+		final ProgressDialog PopulationProg = new ProgressDialog(FavActivity.this);
+		PopulationProg.setMax(100);
+		PopulationProg.setMessage(getResources().getString(R.string.populating_dialog_message));
+		PopulationProg.setIndeterminate(true);
+		PopulationProg.setCancelable(false);
+		PopulationProg.show();
 		populate = new TimerTask() {
 			@Override
 			public void run() {
@@ -147,7 +147,7 @@ public class FavActivity extends AppCompatActivity {
 						if (BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count)))).equals("")) {
 							listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, bookmark_list));
 							populate.cancel();
-							prog.dismiss();
+							PopulationProg.dismiss();
 							isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration
 						}
 						else {
