@@ -1,5 +1,7 @@
 package tipz.browservio;
 
+import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
+
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -149,65 +151,11 @@ public class SettingsActivity extends AppCompatActivity {
 		ResetDialog = new AlertDialog.Builder(this);
 		ZoomUpdateDialog = new AlertDialog.Builder(this);
 
-		linear_general.setOnClickListener(_view -> {
-			StackAnimate.setTarget(imageview4);
-			ArrowAnimate.setTarget(linear6);
-			StackAnimate.setPropertyName("rotation");
-			ArrowAnimate.setPropertyName("alpha");
-			StackAnimate.setDuration(250);
-			ArrowAnimate.setDuration(250);
-			if (linear6.getVisibility() == View.VISIBLE) {
-				StackAnimate.setFloatValues(0, 180);
-				ArrowAnimate.setFloatValues(1, 0);
-				linear6.setVisibility(View.GONE);
-			} else {
-				linear6.setVisibility(View.VISIBLE);
-				StackAnimate.setFloatValues(180, 0);
-				ArrowAnimate.setFloatValues(0, 1);
-			}
-			StackAnimate.start();
-			ArrowAnimate.start();
-		});
-		
-		linear_advanced.setOnClickListener(_view -> {
-			StackAnimate.setTarget(imageview1);
-			ArrowAnimate.setTarget(linear5);
-			StackAnimate.setPropertyName("rotation");
-			ArrowAnimate.setPropertyName("alpha");
-			StackAnimate.setDuration(250);
-			ArrowAnimate.setDuration(250);
-			if (linear5.getVisibility() == View.VISIBLE) {
-				StackAnimate.setFloatValues(0, 180);
-				ArrowAnimate.setFloatValues(1, 0);
-				linear5.setVisibility(View.GONE);
-			} else {
-				linear5.setVisibility(View.VISIBLE);
-				StackAnimate.setFloatValues(180, 0);
-				ArrowAnimate.setFloatValues(0, 1);
-			}
-			StackAnimate.start();
-			ArrowAnimate.start();
-		});
-		
-		linear_about.setOnClickListener(_view -> {
-			StackAnimate.setTarget(imageview5);
-			ArrowAnimate.setTarget(linear8);
-			StackAnimate.setPropertyName("rotation");
-			ArrowAnimate.setPropertyName("alpha");
-			StackAnimate.setDuration(250);
-			ArrowAnimate.setDuration(250);
-			if (linear8.getVisibility() == View.VISIBLE) {
-				StackAnimate.setFloatValues(0, 180);
-				ArrowAnimate.setFloatValues(1, 0);
-				linear8.setVisibility(View.GONE);
-			} else {
-				linear8.setVisibility(View.VISIBLE);
-				StackAnimate.setFloatValues(180, 0);
-				ArrowAnimate.setFloatValues(0, 1);
-			}
-			StackAnimate.start();
-			ArrowAnimate.start();
-		});
+		linear_general.setOnClickListener(_view -> RotateAlphaAnim(StackAnimate, ArrowAnimate, imageview4, linear6));
+
+		linear_advanced.setOnClickListener(_view -> RotateAlphaAnim(StackAnimate, ArrowAnimate, imageview1, linear5));
+
+		linear_about.setOnClickListener(_view -> RotateAlphaAnim(StackAnimate, ArrowAnimate, imageview5, linear8));
 		
 		linear1_search.setOnClickListener(_view -> {
 			SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));

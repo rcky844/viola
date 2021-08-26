@@ -1,5 +1,7 @@
 package tipz.browservio;
 
+import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
+
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -336,25 +338,7 @@ public class MainActivity extends AppCompatActivity {
 			popup4.show();
 		});
 		
-		fab.setOnClickListener(_view -> {
-			fabAnimate.setTarget(fab);
-			barAnimate.setTarget(hscroll_control);
-			fabAnimate.setPropertyName("rotation");
-			barAnimate.setPropertyName("alpha");
-			fabAnimate.setDuration(250);
-			barAnimate.setDuration(250);
-			if (hscroll_control.getVisibility() == View.VISIBLE) {
-				fabAnimate.setFloatValues(0, 180);
-				barAnimate.setFloatValues(1, 0);
-				hscroll_control.setVisibility(View.GONE);
-			} else {
-				hscroll_control.setVisibility(View.VISIBLE);
-				fabAnimate.setFloatValues(180, 0);
-				barAnimate.setFloatValues(0, 1);
-			}
-			barAnimate.start();
-			fabAnimate.start();
-		});
+		fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, hscroll_control));
 	}
 
 	private void mainClearCache() {
