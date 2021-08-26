@@ -64,7 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 	boolean writingScreen = true;
 	long downloadID;
-	final File apkFile = new File(Environment.getExternalStorageDirectory().toString().concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk"));
+	File apkFile;
 
 	final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
 		@Override
@@ -388,6 +388,8 @@ public class SettingsActivity extends AppCompatActivity {
 		textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
 		textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
 		writingScreen = false;
+
+		apkFile = new File(getExternalFilesDir(null).toString().concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk"));
 	}
 
 	private void checkIfPrefIntIsTrue(String tag, AppCompatCheckBox checkBox) {
