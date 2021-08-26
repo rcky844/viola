@@ -569,7 +569,6 @@ public class MainActivity extends AppCompatActivity {
 	private void _downloadManager (final WebView webview) {
 		webview.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
 			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-			request.allowScanningByMediaScanner();
 			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
 			final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);

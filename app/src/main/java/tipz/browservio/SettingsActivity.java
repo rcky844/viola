@@ -331,7 +331,6 @@ public class SettingsActivity extends AppCompatActivity {
 												BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.new_update_detect_toast));
 												if (apkFile.delete() || !apkFile.exists()) {
 													DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
-													request.allowScanningByMediaScanner();
 													request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 													request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
 													DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
