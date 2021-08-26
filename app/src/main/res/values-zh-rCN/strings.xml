@@ -4,7 +4,6 @@
 			-->
 	<!-- JAVA -->
 	<!-- Field can't be empty -->
-	<string	name="error_field_empty">此栏不能为空</string>
 
 	<!-- Move pages string -->
 	<string	name="error_already_page">已经在%s页!</string>
@@ -19,10 +18,8 @@
 	<string	name="cus_ua_choose">请选择自定义用户代理</string>
 
 	<!-- Toast shown when file starts downloading -->
-	<string	name="downloading_toast">下载文件中…</string>
 
 	<!-- Dialog shown when the app is resetting -->
-	<string name="dialog_resetting_message">重置中…</string>
 	<string name="reset_complete">重置已成功完成</string>
 
 	<!-- Clear stuff selector -->
@@ -60,7 +57,6 @@
 	<string name="back_desp">向后</string>
 	<string name="forward_desp">向前</string>
 	<string name="reload_desp">重新加载</string>
-	<string name="homepage_desp">去首页</string>
 	<string name="desktop_desp">选择要使用的用户代理</string>
 	<string name="clear_desp">清除缓存、Cookies或历史记录</string>
 	<string name="share_desp">分享这个网站</string>
@@ -142,7 +138,6 @@
 	<string name="wiped_success">清除成功!</string>
 
 	<!-- Populating dialog -->
-	<string name="populating_dialog_message">填充收藏中…</string>
 
 	<!-- ACCESSIBILITY DESCRIPTION -->
 	<string name="fav_del_fab_desp">删除所有收藏</string>

@@ -4,9 +4,8 @@
 			-->
 	<!-- JAVA -->
 	<!-- Field can't be empty -->
-	<string	name="error_field_empty">此欄不能為空</string>
 
-	<!-- Move pages string -->
+    <!-- Move pages string -->
 	<string	name="error_already_page">已經在%s頁!</string>
 	<string	name="first">第一</string>
 	<string	name="last">最後一</string>
@@ -19,11 +18,9 @@
 	<string	name="cus_ua_choose">請選擇自定義用戶代理</string>
 
 	<!-- Toast shown when file starts downloading -->
-	<string	name="downloading_toast">下載文件中…</string>
 
-	<!-- Dialog shown when the app is resetting -->
-	<string name="dialog_resetting_message">重置中…</string>
-	<string name="reset_complete">重置已成功完成</string>
+    <!-- Dialog shown when the app is resetting -->
+    <string name="reset_complete">重置已成功完成</string>
 
 	<!-- Clear stuff selector -->
 	<string name="clear">清除%s</string>
@@ -60,8 +57,7 @@
 	<string name="back_desp">向後</string>
 	<string name="forward_desp">向前</string>
 	<string name="reload_desp">重新加載</string>
-	<string name="homepage_desp">去首頁</string>
-	<string name="desktop_desp">選擇要使用的用戶代理</string>
+    <string name="desktop_desp">選擇要使用的用戶代理</string>
 	<string name="clear_desp">清除緩存、Cookies或歷史記錄</string>
 	<string name="share_desp">分享這個網站</string>
 	<string name="exit_desp">退出</string>
@@ -142,9 +138,8 @@
 	<string name="wiped_success">清除成功!</string>
 
 	<!-- Populating dialog -->
-	<string name="populating_dialog_message">填充收藏中…</string>
 
-	<!-- ACCESSIBILITY DESCRIPTION -->
+    <!-- ACCESSIBILITY DESCRIPTION -->
 	<string name="fav_del_fab_desp">刪除所有收藏</string>
 
 	<!--
