@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -638,6 +637,14 @@ public class MainActivity extends AppCompatActivity {
 			restart_app();
 		}
 
+		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1")) {
+			mainClearHistory();
+			mainClearCache();
+			mainClearCookies();
+			restart_app();
+			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
+		}
+
 		// Dark mode
 		switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
 			case Configuration.UI_MODE_NIGHT_YES:
@@ -653,19 +660,6 @@ public class MainActivity extends AppCompatActivity {
 		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		if (android.os.Build.VERSION.SDK_INT <= 27) {
 			setDarkModeWebView(webview, powerManager.isPowerSaveMode());
-		}
-
-		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1")) {
-			final ProgressDialog ResetProg = new ProgressDialog(MainActivity.this);
-			ResetProg.setMessage(getResources().getString(R.string.dialog_resetting_message));
-			ResetProg.setIndeterminate(true);
-			ResetProg.setCancelable(false);
-			ResetProg.show();
-			mainClearHistory();
-			mainClearCache();
-			mainClearCookies();
-			restart_app();
-			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
 		}
 
 		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("") || BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1"))) {
