@@ -20,18 +20,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import tipz.browservio.sharedprefs.AllPrefs;
-import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
+import tipz.browservio.utils.BrowservioBasicUtil;
 
 public class FavActivity extends AppCompatActivity {
-	
-	private final Timer _timer = new Timer();
-
-	private double populate_count = 0;
 	
 	private final ArrayList<String> bookmark_list = new ArrayList<>();
 	
@@ -39,7 +33,6 @@ public class FavActivity extends AppCompatActivity {
 	
 	private SharedPreferences browservio_saver;
 	private SharedPreferences bookmarks;
-	private TimerTask populate;
 	private AlertDialog.Builder del_fav;
 
 	private Boolean popup = false;
@@ -122,47 +115,35 @@ public class FavActivity extends AppCompatActivity {
 			del_fav.create().show();
 		});
 	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		populate_count = 0;
-	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
-		populate_count = 0;
+		int populate_count = 0;
+		boolean loopComplete = false;
 		final ProgressDialog PopulationProg = new ProgressDialog(FavActivity.this);
 		PopulationProg.setMax(100);
 		PopulationProg.setMessage(getResources().getString(R.string.populating_dialog_message));
 		PopulationProg.setIndeterminate(true);
 		PopulationProg.setCancelable(false);
 		PopulationProg.show();
-		populate = new TimerTask() {
-			@Override
-			public void run() {
-				runOnUiThread(() -> {
-					if (!BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count))).concat(AllPrefs.bookmarked_count_show)).equals("0")) {
-						if (BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count)))).equals("")) {
-							listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, bookmark_list));
-							populate.cancel();
-							PopulationProg.dismiss();
-							isEmptyCheck(bookmark_list, bookmarks); // Place here for old data migration
-						}
-						else {
-							if (BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count))).concat(AllPrefs.bookmarked_count_title)).equals("")) {
-								bookmark_list.add(getResources().getString(android.R.string.untitled));
-							} else {
-								bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long)(populate_count))).concat(AllPrefs.bookmarked_count_title)));
-							}
-						}
-					}
-					populate_count++;
-				});
+		while (!loopComplete) {
+			String shouldShow = BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_show));
+			if (!shouldShow.equals("0")) {
+				if (shouldShow.equals("")) {
+					loopComplete = true;
+					isEmptyCheck(bookmark_list, bookmarks);
+					listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, bookmark_list));
+					PopulationProg.dismiss();
+				} else {
+					String bookmarkTitle = AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_title);
+						bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, bookmarkTitle).equals("") ?
+								BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked.concat(Integer.toString(populate_count))) :
+								BrowservioSaverUtils.getPref(bookmarks, bookmarkTitle));
+				}
 			}
-		};
-		_timer.scheduleAtFixedRate(populate, 0, 2);
+			populate_count++;
+		}
 	}
 
 	private void isEmptyCheck(ArrayList<String> list, SharedPreferences out) {
