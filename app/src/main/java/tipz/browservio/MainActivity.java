@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 					R.drawable.outline_desktop_windows_24,
 					noReload);
 		}
-
 	}
 
 	/**
@@ -384,12 +383,12 @@ public class MainActivity extends AppCompatActivity {
 
 		/* Code for detecting return key presses */
 		urledit.setOnEditorActionListener((v, actionId, event) -> {
-			  if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
-					  _browservio_browse(Objects.requireNonNull(urledit.getText()).toString());
-					  return true;
-				  }
-			  return false;
-			});
+			if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
+				_browservio_browse(Objects.requireNonNull(urledit.getText()).toString());
+				return true;
+			}
+			return false;
+		});
 
 		/* Page reloading stuff */
 		page_before_error = getResources().getString(R.string.url_prefix,
@@ -548,8 +547,7 @@ public class MainActivity extends AppCompatActivity {
 		if (webview.canGoBack()) {
 			// Go back
 			webview.goBack();
-		}
-		else {
+		} else {
 			// Finish activity
 			finish();
 		}
@@ -669,6 +667,7 @@ public class MainActivity extends AppCompatActivity {
 			restart_app();
 			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
 		}
+
 		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("") || BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1"))) {
 			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1");
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
@@ -680,6 +679,7 @@ public class MainActivity extends AppCompatActivity {
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showCustomError, "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isFirstLaunch, "0", isEqualToOneFirstLaunch);
 		}
+
 		// Settings check
 		webview.getSettings().setJavaScriptEnabled(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled).equals("1"));
 		webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled).equals("1"));
