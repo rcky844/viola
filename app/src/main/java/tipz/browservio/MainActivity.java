@@ -698,9 +698,6 @@ public class MainActivity extends AppCompatActivity {
 		webview.getSettings().setAppCacheEnabled(true);
 		webview.getSettings().setDatabaseEnabled(true);
 		webview.getSettings().setDomStorageEnabled(true);
-
-		// Location
-		webview.getSettings().setGeolocationDatabasePath(getApplicationContext().getFilesDir().getPath());
 	}
 
 	/**
