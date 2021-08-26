@@ -84,7 +84,7 @@ public class HistoryActivity extends AppCompatActivity {
 					final int _position = _param3;
 					del_hist.setTitle(getResources().getString(R.string.del_hist_title));
 					del_hist.setMessage(getResources().getString(R.string.del_hist_title));
-					del_hist.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
+					del_hist.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 						history_list.remove(_position);
 						StringBuilder out = new StringBuilder();
 						for (Object o : history_list) {
@@ -96,7 +96,7 @@ public class HistoryActivity extends AppCompatActivity {
 						BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
 						isEmptyCheck();
 					});
-					del_hist.setNegativeButton(android.R.string.no, null);
+					del_hist.setNegativeButton(android.R.string.cancel, null);
 					del_hist.create().show();
 					return true;
 				} else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
@@ -119,12 +119,12 @@ public class HistoryActivity extends AppCompatActivity {
 		_fab.setOnClickListener(_view -> {
 			del_hist.setTitle(getResources().getString(R.string.del_fav2_title));
 			del_hist.setMessage(getResources().getString(R.string.del_hist_message));
-			del_hist.setPositiveButton(android.R.string.yes, (_dialog, _which) -> {
+			del_hist.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, "");
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
 				finish();
 			});
-			del_hist.setNegativeButton(android.R.string.no, null);
+			del_hist.setNegativeButton(android.R.string.cancel, null);
 			del_hist.create().show();
 		});
 	}
