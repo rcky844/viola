@@ -2,15 +2,16 @@ package tipz.browservio;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
@@ -34,6 +35,7 @@ public class FavActivity extends AppCompatActivity {
 	private SharedPreferences browservio_saver;
 	private SharedPreferences bookmarks;
 	private AlertDialog.Builder del_fav;
+	private ProgressBar PopulationProg;
 
 	private Boolean popup = false;
 	@Override
@@ -60,6 +62,7 @@ public class FavActivity extends AppCompatActivity {
 		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
 		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		del_fav = new AlertDialog.Builder(this);
+		PopulationProg = findViewById(R.id.PopulationProg);
 		
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
 			if (!popup) {
@@ -119,14 +122,9 @@ public class FavActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
+		PopulationProg.setVisibility(View.VISIBLE);
 		int populate_count = 0;
 		boolean loopComplete = false;
-		final ProgressDialog PopulationProg = new ProgressDialog(FavActivity.this);
-		PopulationProg.setMax(100);
-		PopulationProg.setMessage(getResources().getString(R.string.populating_dialog_message));
-		PopulationProg.setIndeterminate(true);
-		PopulationProg.setCancelable(false);
-		PopulationProg.show();
 		while (!loopComplete) {
 			String shouldShow = BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_show));
 			if (!shouldShow.equals("0")) {
@@ -134,7 +132,7 @@ public class FavActivity extends AppCompatActivity {
 					loopComplete = true;
 					isEmptyCheck(bookmark_list, bookmarks);
 					listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, bookmark_list));
-					PopulationProg.dismiss();
+					PopulationProg.setVisibility(View.GONE);
 				} else {
 					String bookmarkTitle = AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_title);
 						bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, bookmarkTitle).equals("") ?
