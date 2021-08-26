@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
 			PopupMenu popup3 = new PopupMenu(MainActivity.this, fav);
 			Menu menu3 = popup3.getMenu();
 			menu3.add(getResources().getString(R.string.add_dot));
-			menu3.add(getResources().getString(R.string.favs));
+			menu3.add(getResources().getString(R.string.fav));
 			popup3.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
 					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count).equals("") ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)) + 1)));
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_title), UrlTitle);
 					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
-				} else if (item.getTitle().toString().equals(getResources().getString(R.string.favs))) {
+				} else if (item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
 					if (bookmarks.getAll().size() == 0) {
 						BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
 					} else {

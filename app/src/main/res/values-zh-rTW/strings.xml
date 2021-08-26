@@ -41,7 +41,6 @@
 	<string name="hist_empty">歷史記錄是空的!</string>
 
 	<!-- Favourites -->
-	<string name="favs">收藏夾</string>
 	<string name="add_dot">添加…</string>
 	<string name="saved_su">添加成功!</string>
 	<string name="fav_list_empty">沒有已添加的收藏</string>

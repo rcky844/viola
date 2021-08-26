@@ -47,7 +47,6 @@
     <string name="hist_empty">"History is empty!"</string>
 
     <!-- Favourites -->
-    <string name="favs">"Favorites"</string>
     <string name="add_dot">"Add…"</string>
     <string name="saved_su">"Saved successfully!"</string>
     <string name="fav_list_empty">"There are no favourites saved."</string>
