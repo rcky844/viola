@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Favourites
+                    -->
+    <string name="fav">Favourites</string>
+
+    <!-- JAVA -->
+    <!-- Delete favourite dialog -->
+    <string name="del_fav">"Delete this favourite"</string>
+    <string name="del_fav_title">"Do you want to delete this favourite?"</string>
+
+    <!-- Delete everything dialog -->
+    <string name="del_fav2_message">"You are about to delete all favourites entries, are you sure about this?"</string>
+
+    <!--
+        History
+                -->
+    <!-- Add to favourites -->
+    <string name="add_to_fav">"Save to favourites"</string>
+</resources>
