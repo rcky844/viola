@@ -6,6 +6,7 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.ClipData;
@@ -254,25 +255,21 @@ public class MainActivity extends AppCompatActivity {
 			menu2.add(getResources().getString(R.string.reset_btn));
 			popup2.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
-					mainClearCache();
+					webview.clearCache(true);
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
 					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
-					mainClearHistory();
+					webview.clearHistory();
+					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, "");
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
 					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-					mainClearCookies();
+					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, "");
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
 					reload.performClick();
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
-					mainClearHistory();
-					mainClearCache();
-					mainClearCookies();
-					bookmarks.edit().clear().apply();
-					browservio_saver.edit().clear().apply();
-					restart_app();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
+					((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
 				}
 
 				return false;
@@ -342,20 +339,6 @@ public class MainActivity extends AppCompatActivity {
 		});
 		
 		fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, hscroll_control));
-	}
-
-	private void mainClearCache() {
-		webview.clearCache(true);
-	}
-
-	private void mainClearHistory() {
-		webview.clearHistory();
-		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, "");
-	}
-
-	private void mainClearCookies() {
-		CookieManager.getInstance().removeAllCookies(null);
-		CookieManager.getInstance().flush();
 	}
 
 	private void initializeLogic() {
