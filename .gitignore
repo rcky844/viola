@@ -6,6 +6,7 @@
 /.idea/
 /app/build/
 /app/release/
+/app/debug/
 /app/.gradle/
 /.idea/caches
 /.idea/libraries
