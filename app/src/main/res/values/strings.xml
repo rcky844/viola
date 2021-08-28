@@ -88,8 +88,6 @@
     <string name="restart_app_now">"Restart Now"</string>
 
     <!-- Reset Dialog -->
-    <string name="are_you_sure_q">"Are you sure?"</string>
-    <string name="dialog_set_reset_message">"You are currently trying to reset Browservio.\n\nNote this option will do the following things:\n• Reset all your settings\n• Clear browser cache and history\n\nARE YOU SURE ABOUT THIS?"</string>
 
     <!-- Version Info -->
     <string name="version_info_message">"Version Name: %1$s\nVersion Codename: %2$s\nVersion Technical Name: %3$s\nVersion Family: %4$s\nVersion Code: %5$s\nBuild Date: %6$s\nBuild Type: %7$s</string>
@@ -107,7 +105,6 @@
     <string name="show_pinch_btn">"Show pinch to zoom buttons"</string>
     <string name="show_pinch_btn_desp">"Show the pinch to zoom control buttons on the right down corner.\n(A restart is required)"</string>
     <string name="reset_btn">"Reset to default"</string>
-    <string name="reset_btn_desp">"Reset Browservio's settings to default."</string>
 
     <!-- Advanced -->
     <string name="advanced">Advanced</string>

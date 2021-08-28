@@ -250,33 +250,6 @@
 							android:textColor="@color/colorBackground_inverted"
 							android:layout_gravity="end|center_vertical"/>
 					</androidx.appcompat.widget.LinearLayoutCompat>
-					<androidx.appcompat.widget.LinearLayoutCompat
-						android:id="@+id/linear1_reset"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:padding="8dp"
-						android:orientation="vertical"
-						android:background="@drawable/list_ripple">
-						<androidx.appcompat.widget.AppCompatTextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:paddingLeft="8dp"
-							android:paddingTop="8dp"
-							android:paddingRight="8dp"
-							android:text="@string/reset_btn"
-							android:textSize="16sp"
-							android:textColor="@color/colorBackground_inverted"/>
-						<androidx.appcompat.widget.AppCompatTextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:paddingLeft="8dp"
-							android:paddingTop="2dp"
-							android:paddingRight="8dp"
-							android:paddingBottom="8dp"
-							android:text="@string/reset_btn_desp"
-							android:textSize="12sp"
-							android:textColor="@color/colorBackground_inverted"/>
-					</androidx.appcompat.widget.LinearLayoutCompat>
 				</androidx.appcompat.widget.LinearLayoutCompat>
 				<androidx.appcompat.widget.LinearLayoutCompat
 					android:id="@+id/linear_advanced"

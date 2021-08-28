@@ -83,10 +83,8 @@
 	<string name="restart_app_now">马上重启</string>
 
 	<!-- Reset Dialog -->
-	<string name="are_you_sure_q">您確定嗎?</string>
-	<string name="dialog_set_reset_message">您当前正在尝试重置Browservio\n\n注意这个选项会做以下的这些事情:\n• 重置所有设置\n• 清除浏览器缓存和历史记录\n\n您确定要重置吗?</string>
 
-	<!-- Version Info -->
+    <!-- Version Info -->
 	<string name="version_info_message">"版本名称: %1$s\n版本代号: %2$s\n版本技术名称: %3$s\n版本系列: %4$s\n版本代码: %5$s\n构建日期: %6$s\n构建类型: %7$s</string>
 	<string name="update_btn">检查更新</string>
 	<string name="version_latest_toast">您当前运行的是最新版本的Browservio</string>
@@ -102,9 +100,8 @@
 	<string name="show_pinch_btn">显示双指缩放按钮</string>
 	<string name="show_pinch_btn_desp">在右下角显示双指缩放控制按钮\n(需要重啟應用)</string>
 	<string name="reset_btn">重置为默认值</string>
-	<string name="reset_btn_desp">将Browservio的设置重置为默认值</string>
 
-	<!-- Advanced -->
+    <!-- Advanced -->
 	<string name="advanced">进阶</string>
 	<string name="javascript">启用JavaScript</string>
 	<string name="javascript_desp">启用JavaScript将为您提供更好的浏览体验</string>

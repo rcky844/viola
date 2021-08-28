@@ -60,7 +60,6 @@ public class SettingsActivity extends AppCompatActivity {
 	private final ObjectAnimator StackAnimate = new ObjectAnimator();
 	private AlertDialog.Builder SearchSettingsDialog;
 	private AlertDialog.Builder InfoDialog;
-	private AlertDialog.Builder ResetDialog;
 	private AlertDialog.Builder ZoomUpdateDialog;
 	private final ObjectAnimator ArrowAnimate = new ObjectAnimator();
 
@@ -127,7 +126,6 @@ public class SettingsActivity extends AppCompatActivity {
 		LinearLayoutCompat linear1_homepage = findViewById(R.id.linear1_homepage);
 		LinearLayoutCompat linear11 = findViewById(R.id.linear11);
 		LinearLayoutCompat linear_zoomkeys = findViewById(R.id.linear_zoomkeys);
-		LinearLayoutCompat linear1_reset = findViewById(R.id.linear1_reset);
 		textview9 = findViewById(R.id.textview9);
 		textview5 = findViewById(R.id.textview5);
 		checkbox3 = findViewById(R.id.checkbox3);
@@ -148,7 +146,6 @@ public class SettingsActivity extends AppCompatActivity {
 		HomepageSettingsDialog = new AlertDialog.Builder(this);
 		SearchSettingsDialog = new AlertDialog.Builder(this);
 		InfoDialog = new AlertDialog.Builder(this);
-		ResetDialog = new AlertDialog.Builder(this);
 		ZoomUpdateDialog = new AlertDialog.Builder(this);
 
 		linear_general.setOnClickListener(_view -> RotateAlphaAnim(StackAnimate, ArrowAnimate, imageview4, linear6));
@@ -193,17 +190,6 @@ public class SettingsActivity extends AppCompatActivity {
 		onClickChangeChkBox(linear_zoomkeys, checkbox5);
 		onClickChangeChkBox(linear1_override_empty, checkbox2);
 		onClickChangeChkBox(linear13, checkbox4);
-
-		linear1_reset.setOnClickListener(_view -> {
-			ResetDialog.setTitle(getResources().getString(R.string.are_you_sure_q));
-			ResetDialog.setMessage(getResources().getString(R.string.dialog_set_reset_message));
-			ResetDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.isFirstLaunch, "1");
-				finish();
-			});
-			ResetDialog.setNegativeButton(android.R.string.cancel, null);
-			ResetDialog.create().show();
-		});
 		
 		checkbox3.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showBrowseBtn, _param2, false));
 		

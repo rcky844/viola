@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
 			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
 			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
 			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
-			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.all)));
+			menu2.add(getResources().getString(R.string.reset_btn));
 			popup2.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
 					mainClearCache();
@@ -265,13 +265,16 @@ public class MainActivity extends AppCompatActivity {
 					mainClearCookies();
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
 					reload.performClick();
-				} else if (item.getTitle().toString().contains(getResources().getString(R.string.all))) {
-					mainClearCache();
+				} else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
 					mainClearHistory();
+					mainClearCache();
 					mainClearCookies();
-					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.all)));
-					reload.performClick();
+					bookmarks.edit().clear().apply();
+					browservio_saver.edit().clear().apply();
+					restart_app();
+					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
 				}
+
 				return false;
 			});
 			popup2.show();
@@ -620,14 +623,6 @@ public class MainActivity extends AppCompatActivity {
 		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needRestart).equals("1")) {
 			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needRestart, "0");
 			restart_app();
-		}
-
-		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1")) {
-			mainClearHistory();
-			mainClearCache();
-			mainClearCookies();
-			restart_app();
-			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
 		}
 
 		// Dark mode
