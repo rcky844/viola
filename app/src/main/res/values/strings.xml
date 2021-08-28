@@ -32,7 +32,6 @@
     <string name="cache">"Cache"</string>
     <string name="history">"History"</string>
     <string name="cookies">"Cookies"</string>
-    <string name="all">"All"</string>
     <string name="cleared_toast">"%s cleared successfully!"</string>
 
     <!-- Share URL -->

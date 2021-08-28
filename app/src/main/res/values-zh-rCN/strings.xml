@@ -27,7 +27,6 @@
 	<string name="cache">缓存</string>
 	<string name="history">历史记录</string>
 	<string name="cookies">Cookie设置</string>
-	<string name="all">全部</string>
 	<string name="cleared_toast">成功清除%s!</string>
 
 	<!-- Share URL -->
