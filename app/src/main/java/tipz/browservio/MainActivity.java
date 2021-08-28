@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 	private void deskModeSet(double mode, boolean noReload) {
 		if (mode == 0) {
 			setDesktopMode(false,
-					userAgent_full("Linux; Android 11"),
+					userAgent_full("Linux; Android 12"),
 					R.drawable.outline_smartphone_24,
 					noReload);
 		} else if (mode == 1) {
