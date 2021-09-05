@@ -1,6 +1,5 @@
 <resources>
 	<color	name="colorPrimary">#3DAA2F</color>
-	<color	name="colorPrimaryDark">#3DAA2F</color>
 	<color	name="colorAccent">#4285F4</color>
 	<color	name="colorControlHighlight">#3DBC84</color>
 	<color	name="colorControlNormal">#4ACF3F</color>
