@@ -44,7 +44,7 @@
     <!-- Favourites -->
     <string name="add_dot">"Add…"</string>
     <string name="saved_su">"Saved successfully!"</string>
-    <string name="fav_list_empty">"There are no favourites saved."</string>
+    <string name="fav_list_empty">"There are no favorites saved."</string>
 
     <!-- Favicon -->
     <string name="favicondialog_title">"Website Title"</string>
