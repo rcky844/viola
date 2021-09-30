@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +29,7 @@ import android.view.Menu;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
+import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -52,8 +54,8 @@ import androidx.webkit.WebViewFeature;
 import java.util.Objects;
 
 import tipz.browservio.sharedprefs.AllPrefs;
-import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
+import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -444,6 +446,43 @@ public class MainActivity extends AppCompatActivity {
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
 			}
 			return true;
+		}
+		@SuppressLint("WebViewClientOnReceivedSslError")
+		@Override
+		public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
+			final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+			String message = "SSL Certificate error.";
+			switch (error.getPrimaryError()) {
+				case SslError.SSL_DATE_INVALID:
+					message = "The date of the certificate is invalid.";
+					break;
+				case SslError.SSL_INVALID:
+					message = "A generic SSL error occurred.";
+					break;
+				case SslError.SSL_EXPIRED:
+					message = "The certificate has expired.";
+					break;
+				case SslError.SSL_IDMISMATCH:
+					message = "The certificate hostname mismatch.";
+					break;
+				case SslError.SSL_NOTYETVALID:
+					message = "The certificate is not yet valid.";
+					break;
+				case SslError.SSL_UNTRUSTED:
+					message = "The certificate authority is not trusted.";
+					break;
+				case -1:
+					message = "An unknown SSL error occurred.";
+					break;
+			}
+			message += " Do you want to continue anyway?";
+
+			builder.setTitle("SSL Certificate Error");
+			builder.setMessage(message);
+			builder.setPositiveButton(getResources().getString(android.R.string.ok), (dialog, which) -> handler.proceed());
+			builder.setNegativeButton(getResources().getString(android.R.string.no), (dialog, which) -> handler.cancel());
+			final AlertDialog dialog = builder.create();
+			dialog.show();
 		}
 	}
 
