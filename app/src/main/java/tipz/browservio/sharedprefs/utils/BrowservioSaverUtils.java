@@ -14,7 +14,7 @@ public class BrowservioSaverUtils {
      * @param mustSet set it regardless.
      */
     public static void checkIfEmpty(SharedPreferences pref, String tag, String defaultValue, boolean mustSet) {
-        if (getPref(pref, tag).equals("") || mustSet)
+        if (getPref(pref, tag).isEmpty() || mustSet)
             setPref(pref, tag, defaultValue);
     }
 

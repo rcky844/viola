@@ -128,14 +128,14 @@ public class FavActivity extends AppCompatActivity {
 		while (!loopComplete) {
 			String shouldShow = BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_show));
 			if (!shouldShow.equals("0")) {
-				if (shouldShow.equals("")) {
+				if (shouldShow.isEmpty()) {
 					loopComplete = true;
 					isEmptyCheck(bookmark_list, bookmarks);
 					listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, bookmark_list));
 					PopulationProg.setVisibility(View.GONE);
 				} else {
 					String bookmarkTitle = AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_title);
-						bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, bookmarkTitle).equals("") ?
+						bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, bookmarkTitle).isEmpty() ?
 								BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked.concat(Integer.toString(populate_count))) :
 								BrowservioSaverUtils.getPref(bookmarks, bookmarkTitle));
 				}

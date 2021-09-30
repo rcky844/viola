@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
 		reload.setOnClickListener(_view -> {
 			if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
-				if (!webview.getUrl().equals("")) {
+				if (!webview.getUrl().isEmpty()) {
 					URLIdentify(webview.getUrl());
 					webview.reload();
 				}
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 			menu3.add(getResources().getString(R.string.fav));
 			popup3.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
-					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count).equals("") ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)) + 1)));
+					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)) + 1)));
 					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)), webview.getUrl());
 					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_title), UrlTitle);
 					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
@@ -591,7 +591,7 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void _history_saviour() {
 		String history_data = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history);
-		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.equals("") ? "" : System.lineSeparator()).concat(webview.getUrl())));
+		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? "" : System.lineSeparator()).concat(webview.getUrl())));
 	}
 
 	/**
@@ -661,7 +661,7 @@ public class MainActivity extends AppCompatActivity {
 			setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 		}
 
-		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("") || BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1"))) {
+		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).isEmpty() || BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1"))) {
 			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1");
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);

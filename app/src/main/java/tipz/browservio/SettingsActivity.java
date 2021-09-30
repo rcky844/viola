@@ -160,7 +160,7 @@ public class SettingsActivity extends AppCompatActivity {
 			final AppCompatEditText custom_se = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp2 = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
 			custom_se.setLayoutParams(lp2); SearchSettingsDialog.setView(custom_se);
 			SearchSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-				if (!Objects.requireNonNull(custom_se.getText()).toString().equals("") && custom_se.getText().toString().contains("{term}"))
+				if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty() && custom_se.getText().toString().contains("{term}"))
 				{
 					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.defaultSearch, custom_se.getText().toString());
 					textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
@@ -176,7 +176,7 @@ public class SettingsActivity extends AppCompatActivity {
 			final AppCompatEditText custom_hp = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
 			custom_hp.setLayoutParams(lp); HomepageSettingsDialog.setView(custom_hp);
 			HomepageSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-				if (!Objects.requireNonNull(custom_hp.getText()).toString().equals(""))
+				if (!Objects.requireNonNull(custom_hp.getText()).toString().isEmpty())
 				{
 					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.defaultHomePage, custom_hp.getText().toString());
 					textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
