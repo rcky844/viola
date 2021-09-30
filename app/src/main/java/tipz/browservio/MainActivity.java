@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 		});
 
 		reload.setOnClickListener(_view -> {
-			if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
+			if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
 				if (!webview.getUrl().equals("")) {
 					URLIdentify(webview.getUrl());
 					webview.reload();
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 			} else {
 				URLIdentify(page_before_error);
 				webview.loadUrl(page_before_error);
-				page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
+				page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
 			}
 		});
 
@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
 
 		/* Page reloading stuff */
 		page_before_error = getResources().getString(R.string.url_prefix,
-				getResources().getString(R.string.url_subfix_no_error));
+				getResources().getString(R.string.url_suffix_no_error));
 
 		deskModeSet(0, true); /* User agent init code */
 
@@ -408,8 +408,8 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	public class WebClient extends WebViewClientCompat {
 		private void UrlSet(String url) {
-			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
-				UrlEdit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error)));
+			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
+				UrlEdit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error)));
 			} else if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)) {
 				UrlEdit.setText(url);
 				_history_saviour();
@@ -420,9 +420,8 @@ public class MainActivity extends AppCompatActivity {
 			UrlSet(url);
 		}
 		public void onPageFinished (WebView view, String url) {
-			if (bitmapUpdated_q) {
+			if (bitmapUpdated_q)
 				favicon.setImageResource(R.drawable.outline_public_24);
-			}
 			UrlSet(url);
 			bitmapUpdated_q = false;
 			CookieManager.getInstance().flush();
@@ -435,11 +434,9 @@ public class MainActivity extends AppCompatActivity {
 		}
 		@Override
 		public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
-			if (request.getUrl() != null) {
-				if (request.getUrl().toString().length() != 0) {
+			if (request.getUrl() != null)
+				if (request.getUrl().toString().length() != 0)
 					return false;
-				}
-			}
 			if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), request.getUrl().toString())) {
 				Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
 				startActivity(intent);
@@ -566,9 +563,9 @@ public class MainActivity extends AppCompatActivity {
 	private void _browservio_browse(String url) {
 		beforeNextUrl = url;
 		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch));
-		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
+		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
 			// Load URL
-			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
+			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
 				URLIdentify(url);
 			} else {
 				URLIdentify(checkedUrl);
@@ -578,7 +575,7 @@ public class MainActivity extends AppCompatActivity {
 		} else {
 			URLIdentify(page_before_error);
 			webview.loadUrl(page_before_error);
-			page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error));
+			page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
 			_history_saviour();
 		}
 	}
@@ -629,7 +626,7 @@ public class MainActivity extends AppCompatActivity {
 			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1");
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_subfix)), isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_suffix)), isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showBrowseBtn, "0", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showZoomKeys, "0", isEqualToOneFirstLaunch);
@@ -699,10 +696,10 @@ public class MainActivity extends AppCompatActivity {
 	 * @param url is supplied for the url to check
 	 */
 	private void URLIdentify(String url) {
-		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_no_error)))) {
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
 			throw new RuntimeException(getResources().getString(R.string.no_error_elog));
 		}
-		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_subfix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
 			errorPage();
 		}
 	}

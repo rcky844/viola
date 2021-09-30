@@ -14,9 +14,8 @@ public class BrowservioSaverUtils {
      * @param mustSet set it regardless.
      */
     public static void checkIfEmpty(SharedPreferences pref, String tag, String defaultValue, boolean mustSet) {
-        if (getPref(pref, tag).equals("") || mustSet) {
+        if (getPref(pref, tag).equals("") || mustSet)
             setPref(pref, tag, defaultValue);
-        }
     }
 
     /**
@@ -30,11 +29,10 @@ public class BrowservioSaverUtils {
      * @param flip if the value needs to be flipped.
      */
     public static void setPrefStringBoolAccBool(SharedPreferences pref, String tag, boolean bool, boolean flip) {
-        if (bool) {
+        if (bool)
             setPref(pref, tag, (flip) ? "0" : "1");
-        } else {
+        else
             setPref(pref, tag, (flip) ? "1" : "0");
-        }
     }
 
     /**

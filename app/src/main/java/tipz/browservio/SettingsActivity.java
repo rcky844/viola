@@ -300,7 +300,7 @@ public class SettingsActivity extends AppCompatActivity {
 		version_visible.setText(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
 
 		linear_feed.setOnClickListener(_view -> needLoad(getResources().getString(R.string.url_source_code,
-				getResources().getString(R.string.url_bug_report_subfix))));
+				getResources().getString(R.string.url_bug_report_suffix))));
 		
 		linear_source.setOnClickListener(_view -> needLoad(getResources().getString(R.string.url_source_code,
 				"")));
