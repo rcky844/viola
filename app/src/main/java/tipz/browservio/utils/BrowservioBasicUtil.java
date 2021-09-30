@@ -67,4 +67,8 @@ public class BrowservioBasicUtil {
         anim1.start();
         anim2.start();
     }
+
+    public static boolean isIntStrOne(Object obj) {
+        return obj.equals("1");
+    }
 }

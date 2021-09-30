@@ -326,7 +326,7 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 
 	private void checkIfPrefIntIsTrue(String tag, AppCompatCheckBox checkBox) {
-		checkBox.setChecked(BrowservioSaverUtils.getPref(browservio_saver, tag).equals("1"));
+		checkBox.setChecked(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, tag)));
 	}
 
 	public void onClickChangeChkBox(View view, AppCompatCheckBox checkBox) {

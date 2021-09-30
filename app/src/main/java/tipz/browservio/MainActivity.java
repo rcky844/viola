@@ -639,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void _configChecker() {
 		// Restart code
-		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needRestart).equals("1")) {
+		if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needRestart))) {
 			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needRestart, "0");
 			restart_app();
 		}
@@ -661,8 +661,8 @@ public class MainActivity extends AppCompatActivity {
 			setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 		}
 
-		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).isEmpty() || BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1"))) {
-			boolean isEqualToOneFirstLaunch = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).equals("1");
+		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).isEmpty() || BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch)))) {
+			boolean isEqualToOneFirstLaunch = BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch));
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_suffix)), isEqualToOneFirstLaunch);
@@ -674,21 +674,21 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		// Settings check
-		webview.getSettings().setJavaScriptEnabled(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled).equals("1"));
-		webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled).equals("1"));
+		webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled)));
+		webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled)));
 
-		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needReload).equals("1")) {
+		if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needReload))) {
 			reload.performClick();
 			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needReload, "0");
 		}
 
-		browse.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showBrowseBtn).equals("1") ? View.VISIBLE : View.GONE);
-		favicon.setVisibility(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showFavicon).equals("1") ? View.VISIBLE : View.GONE);
-		webview.getSettings().setDisplayZoomControls(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showZoomKeys).equals("1"));
-		defaultError = !BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showCustomError).equals("1");
+		browse.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showBrowseBtn)) ? View.VISIBLE : View.GONE);
+		favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
+		webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showZoomKeys)));
+		defaultError = !BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showCustomError));
 
 		// Need load
-		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needLoad).equals("1")) {
+		if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needLoad))) {
 			_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needLoadUrl));
 			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoad, "0");
 		}
