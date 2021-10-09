@@ -54,7 +54,7 @@
 						android:layout_height="wrap_content"
 						android:layout_gravity="center_horizontal|center_vertical"
 						android:scaleType="center"
-						android:src="@drawable/outline_arrow_up_24"
+						app:srcCompat="@drawable/outline_arrow_up_24"
 						app:tint="@color/colorBackground_inverted"
 						tools:ignore="ContentDescription" />
 				</androidx.appcompat.widget.LinearLayoutCompat>
@@ -273,7 +273,7 @@
 						android:id="@+id/imageview1"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:src="@drawable/outline_arrow_up_24"
+						app:srcCompat="@drawable/outline_arrow_up_24"
 						android:scaleType="center"
 						app:tint="@color/colorBackground_inverted"
 						tools:ignore="ContentDescription" />
@@ -397,7 +397,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:scaleType="center"
-						android:src="@drawable/outline_arrow_up_24"
+						app:srcCompat="@drawable/outline_arrow_up_24"
 						app:tint="@color/colorBackground_inverted"
 						tools:ignore="ContentDescription" />
 				</androidx.appcompat.widget.LinearLayoutCompat>
