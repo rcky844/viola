@@ -101,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
+
+		// Don't allow the app to start if the API_TYPE is unknown
+		if (BrowservioBasicUtil.API_TYPE().equals("unknown"))
+			finish();
+
 		setContentView(R.layout.main);
 		initialize();
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED

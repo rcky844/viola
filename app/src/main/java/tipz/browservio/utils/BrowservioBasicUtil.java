@@ -19,6 +19,18 @@ public class BrowservioBasicUtil {
         }
     }
 
+    public static String API_TYPE() {
+        if (android.os.Build.VERSION.SDK_INT <= 19) {
+            return "legacy";
+        } else if (android.os.Build.VERSION.SDK_INT <= 22) {
+            return "legacy-v21";
+        } else if (android.os.Build.VERSION.SDK_INT <= 31) {
+            return "modern";
+        } else {
+            return "unknown";
+        }
+    }
+
     /**
      * Show Toast
      *
