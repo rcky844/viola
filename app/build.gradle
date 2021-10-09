@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+def getGitHash = { ->
+	def stdout = new ByteArrayOutputStream()
+	exec {
+		commandLine 'git', 'rev-parse', '--short', 'HEAD'
+		standardOutput = stdout
+	}
+	return stdout.toString().trim()
+}
+
 android {
 	useLibrary 'org.apache.http.legacy'
 	compileSdkVersion 31
@@ -19,6 +28,11 @@ android {
 		release {
 			minifyEnabled true
 			shrinkResources true
+		}
+
+		debug {
+			buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
+			buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
 		}
 	}
 }
