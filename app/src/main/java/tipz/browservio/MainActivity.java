@@ -353,6 +353,7 @@ public class MainActivity extends AppCompatActivity {
 		 */
 		webview.setWebViewClient(new WebClient());
 		webview.setWebChromeClient(new ChromeWebClient());
+		webview.setWebChromeClient(new FullScreenVideoClient());
 
 		/* Code for detecting return key presses */
 		UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
@@ -490,6 +491,22 @@ public class MainActivity extends AppCompatActivity {
 	 * WebChromeClient
 	 */
 	public class ChromeWebClient extends WebChromeClient {
+		public void onProgressChanged(WebView view, int progress) {
+			MainProg.setProgress(progress == 100 ? 0 : progress);
+		}
+		public void onReceivedIcon(WebView view, Bitmap icon) {
+			bitmapUpdated_q = true;
+			favicon.setImageBitmap(icon);
+		}
+		public void onReceivedTitle (WebView view, String title) {
+			UrlTitle = title;
+		}
+		public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+			callback.invoke(origin, true, false);
+		}
+	}
+
+	public class FullScreenVideoClient extends WebChromeClient {
 		private View mCustomView;
 		private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
@@ -498,13 +515,13 @@ public class MainActivity extends AppCompatActivity {
 		private int mOriginalSystemUiVisibility;
 
 		// Constructor for ChromeWebClient
-		public ChromeWebClient() {}
-		
+		public FullScreenVideoClient() {}
+
 		@Override
 		public Bitmap getDefaultVideoPoster() {
-            return BitmapFactory.decodeResource(getApplicationContext().getResources(), 2130837573);
+			return BitmapFactory.decodeResource(getApplicationContext().getResources(), 2130837573);
 		}
-		
+
 		public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
 			if (mCustomView != null) {
 				onHideCustomView();
@@ -520,7 +537,7 @@ public class MainActivity extends AppCompatActivity {
 			((FrameLayout) getWindow().getDecorView()).addView(mCustomView, new FrameLayout.LayoutParams(-1, -1));
 			getWindow().getDecorView().setSystemUiVisibility(3846);
 		}
-		
+
 		public void onHideCustomView() {
 			((FrameLayout) getWindow().getDecorView()).removeView(mCustomView);
 			mCustomView = null;
@@ -531,20 +548,6 @@ public class MainActivity extends AppCompatActivity {
 			mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 			mCustomViewCallback.onCustomViewHidden();
 			mCustomViewCallback = null;
-		}
-
-		public void onProgressChanged(WebView view, int progress) {
-			MainProg.setProgress(progress == 100 ? 0 : progress);
-		}
-		public void onReceivedIcon(WebView view, Bitmap icon) {
-			bitmapUpdated_q = true;
-			favicon.setImageBitmap(icon);
-		}
-		public void onReceivedTitle (WebView view, String title) {
-			UrlTitle = title;
-		}
-		public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-			callback.invoke(origin, true, false);
 		}
 	}
 
