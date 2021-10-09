@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatCheckBox;
 
 public class BrowservioBasicUtil {
+    public static final String EMPTY_STRING = "";
+
     /**
      * Show Toast
      *

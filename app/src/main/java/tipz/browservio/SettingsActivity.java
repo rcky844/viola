@@ -303,7 +303,7 @@ public class SettingsActivity extends AppCompatActivity {
 				getResources().getString(R.string.url_bug_report_suffix))));
 		
 		linear_source.setOnClickListener(_view -> needLoad(getResources().getString(R.string.url_source_code,
-				"")));
+				BrowservioBasicUtil.EMPTY_STRING)));
 	}
 
 	private void needLoad(String Url) {

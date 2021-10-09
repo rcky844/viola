@@ -263,11 +263,11 @@ public class MainActivity extends AppCompatActivity {
 					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
 					webview.clearHistory();
-					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, "");
+					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, BrowservioBasicUtil.EMPTY_STRING);
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
 					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, "");
+					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, BrowservioBasicUtil.EMPTY_STRING);
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
 					reload.performClick();
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
 			if (type != null) {
 				if ("text/plain".equals(type)) {
 					String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-					_browservio_browse(sharedText != null ? sharedText : "");
+					_browservio_browse(sharedText != null ? sharedText : BrowservioBasicUtil.EMPTY_STRING);
 				}
 			}
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) { /* From default browser */
@@ -601,7 +601,7 @@ public class MainActivity extends AppCompatActivity {
 	private void _history_saviour() {
 		String history_data = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history);
 		if (android.os.Build.VERSION.SDK_INT > 20)
-			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? "" : System.lineSeparator()).concat(webview.getUrl())));
+			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? BrowservioBasicUtil.EMPTY_STRING : System.lineSeparator()).concat(webview.getUrl())));
 	}
 
 	/**
@@ -676,7 +676,7 @@ public class MainActivity extends AppCompatActivity {
 		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).isEmpty() || BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch)))) {
 			boolean isEqualToOneFirstLaunch = BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch));
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
-			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, ""), isEqualToOneFirstLaunch);
+			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, BrowservioBasicUtil.EMPTY_STRING), isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_suffix)), isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
 			BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showBrowseBtn, "0", isEqualToOneFirstLaunch);

@@ -120,7 +120,7 @@ public class HistoryActivity extends AppCompatActivity {
 			del_hist.setTitle(getResources().getString(R.string.del_fav2_title));
 			del_hist.setMessage(getResources().getString(R.string.del_hist_message));
 			del_hist.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, "");
+				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, BrowservioBasicUtil.EMPTY_STRING);
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
 				finish();
 			});
