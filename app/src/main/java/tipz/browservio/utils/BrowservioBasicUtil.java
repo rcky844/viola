@@ -3,6 +3,7 @@ package tipz.browservio.utils;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,7 +13,7 @@ public class BrowservioBasicUtil {
     public static final String EMPTY_STRING = "";
 
     public static String LINE_SEPARATOR() {
-        if (android.os.Build.VERSION.SDK_INT <= 18) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             return System.getProperty("line.separator");
         } else {
             return System.lineSeparator();
@@ -20,11 +21,11 @@ public class BrowservioBasicUtil {
     }
 
     public static String API_TYPE() {
-        if (android.os.Build.VERSION.SDK_INT <= 19) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             return "legacy";
-        } else if (android.os.Build.VERSION.SDK_INT <= 22) {
+        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
             return "legacy-v21";
-        } else if (android.os.Build.VERSION.SDK_INT <= 31) {
+        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             return "modern";
         } else {
             return "unknown";

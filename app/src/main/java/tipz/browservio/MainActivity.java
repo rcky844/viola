@@ -22,6 +22,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 		|| ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
 		|| ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
 		|| ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
-			if (android.os.Build.VERSION.SDK_INT > 15)
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
 				ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
 
 			ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
@@ -249,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 						}
 					});
 					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> deskModeSet(0, false));
-					if (android.os.Build.VERSION.SDK_INT > 16)
+					if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN)
 						dialog.setOnDismissListener((_dialog) -> deskModeSet(0, false));
 					dialog.create().show();
 					desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
@@ -282,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
 					reload.performClick();
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
-					if (android.os.Build.VERSION.SDK_INT >= 19) {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 						((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
 					} else {
 						String packageName = getApplicationContext().getPackageName();
@@ -447,7 +448,7 @@ public class MainActivity extends AppCompatActivity {
 				favicon.setImageResource(R.drawable.outline_public_24);
 			UrlSet(url);
 			bitmapUpdated_q = false;
-			if (android.os.Build.VERSION.SDK_INT <= 20) {
+			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
 				android.webkit.CookieSyncManager.getInstance().sync();
 			} else {
 				CookieManager.getInstance().flush();
@@ -605,7 +606,7 @@ public class MainActivity extends AppCompatActivity {
 
 			// Let this downloaded file be scanned by MediaScanner - so that it can
 			// show up in Gallery app, for example.
-			if (android.os.Build.VERSION.SDK_INT < 29)
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
 				request.allowScanningByMediaScanner();
 
 			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
@@ -623,7 +624,7 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void _history_saviour() {
 		String history_data = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history);
-		if (android.os.Build.VERSION.SDK_INT > 20)
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH)
 			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? BrowservioBasicUtil.EMPTY_STRING : BrowservioBasicUtil.LINE_SEPARATOR()).concat(webview.getUrl())));
 	}
 
@@ -688,11 +689,11 @@ public class MainActivity extends AppCompatActivity {
 				break;
 		}
 
-		AppCompatDelegate.setDefaultNightMode(android.os.Build.VERSION.SDK_INT <= 27 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+		AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		if (android.os.Build.VERSION.SDK_INT <= 20) {
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
 			setDarkModeWebView(webview, false);
-		} else if (android.os.Build.VERSION.SDK_INT <= 27) {
+		} else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) {
 			setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 		}
 
