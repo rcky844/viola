@@ -22,7 +22,6 @@
 				android:paddingStart="8dp"
 				android:paddingEnd="2dp"
 				app:srcCompat="@drawable/outline_public_24"
-				app:tint="@android:color/darker_gray"
                 android:paddingLeft="8dp"
 				android:paddingRight="2dp" />
 
