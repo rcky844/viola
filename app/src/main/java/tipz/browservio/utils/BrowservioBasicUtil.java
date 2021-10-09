@@ -20,18 +20,6 @@ public class BrowservioBasicUtil {
         }
     }
 
-    public static String API_TYPE() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            return "legacy";
-        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            return "legacy-v21";
-        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-            return "modern";
-        } else {
-            return "unknown";
-        }
-    }
-
     /**
      * Show Toast
      *

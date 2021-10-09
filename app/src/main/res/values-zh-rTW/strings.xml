@@ -84,7 +84,7 @@
 	<!-- Reset Dialog -->
 
     <!-- Version Info -->
-	<string name="version_info_message">"版本名稱: %1$s\n版本代號: %2$s\n版本技術名稱: %3$s\n版本系列: %4$s\n版本代碼: %5$s\n構建日期: %6$s\n構建類型: %7$s\nAPI類型: %8$s</string>
+	<string name="version_info_message">"版本名稱: %1$s\n版本代號: %2$s\n版本技術名稱: %3$s\n版本系列: %4$s\n版本代碼: %5$s\n構建日期: %6$s\n構建類型: %7$s</string>
     <string name="update_btn">檢查更新</string>
 	<string name="version_latest_toast">您當前運行的是最新版本的Browservio</string>
 	<string name="network_unavailable_toast">網絡不可用</string>
