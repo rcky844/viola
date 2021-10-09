@@ -34,6 +34,12 @@ android {
 			buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
 			buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
 		}
+
+		snapshot {
+			initWith(buildTypes.debug)
+			minifyEnabled true
+			shrinkResources true
+		}
 	}
 }
 
