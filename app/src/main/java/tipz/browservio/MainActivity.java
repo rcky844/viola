@@ -39,6 +39,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -427,7 +428,11 @@ public class MainActivity extends AppCompatActivity {
 				favicon.setImageResource(R.drawable.outline_public_24);
 			UrlSet(url);
 			bitmapUpdated_q = false;
-			CookieManager.getInstance().flush();
+			if (android.os.Build.VERSION.SDK_INT <= 20) {
+				android.webkit.CookieSyncManager.getInstance().sync();
+			} else {
+				CookieManager.getInstance().flush();
+			}
 		}
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 			if (!defaultError) {
@@ -436,6 +441,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		@Override
+		@RequiresApi(21)
 		public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
 			if (request.getUrl() != null)
 				if (request.getUrl().toString().length() != 0)
@@ -594,7 +600,8 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void _history_saviour() {
 		String history_data = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history);
-		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? "" : System.lineSeparator()).concat(webview.getUrl())));
+		if (android.os.Build.VERSION.SDK_INT > 20)
+			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? "" : System.lineSeparator()).concat(webview.getUrl())));
 	}
 
 	/**
@@ -660,7 +667,9 @@ public class MainActivity extends AppCompatActivity {
 
 		AppCompatDelegate.setDefaultNightMode(android.os.Build.VERSION.SDK_INT <= 27 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		if (android.os.Build.VERSION.SDK_INT <= 27) {
+		if (android.os.Build.VERSION.SDK_INT <= 20) {
+			setDarkModeWebView(webview, false);
+		} else if (android.os.Build.VERSION.SDK_INT <= 27) {
 			setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 		}
 
