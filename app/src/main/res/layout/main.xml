@@ -21,7 +21,10 @@
 				android:contentDescription="@string/favicon_desp"
 				android:paddingStart="8dp"
 				android:paddingEnd="2dp"
-				app:srcCompat="@drawable/outline_public_24"/>
+				app:srcCompat="@drawable/outline_public_24"
+				app:tint="@android:color/darker_gray"
+                android:paddingLeft="8dp"
+				android:paddingRight="2dp" />
 
 			<androidx.appcompat.widget.LinearLayoutCompat
 				android:layout_width="0dp"
