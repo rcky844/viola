@@ -436,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
 				UrlEdit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error)));
 			} else if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)) {
 				UrlEdit.setText(url);
-				_history_saviour();
+				_history_saviour(url);
 			}
 		}
 		public void onPageStarted (WebView view, String url, Bitmap icon) {
@@ -622,10 +622,9 @@ public class MainActivity extends AppCompatActivity {
 	 *
 	 * Module to save history into a SharedPref.
 	 */
-	private void _history_saviour() {
+	private void _history_saviour(String url) {
 		String history_data = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history);
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH)
-			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? BrowservioBasicUtil.EMPTY_STRING : BrowservioBasicUtil.LINE_SEPARATOR()).concat(webview.getUrl())));
+		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? BrowservioBasicUtil.EMPTY_STRING : BrowservioBasicUtil.LINE_SEPARATOR()).concat(url)));
 	}
 
 	/**
@@ -643,13 +642,11 @@ public class MainActivity extends AppCompatActivity {
 			} else {
 				URLIdentify(checkedUrl);
 				webview.loadUrl(checkedUrl);
-				_history_saviour();
 			}
 		} else {
 			URLIdentify(page_before_error);
 			webview.loadUrl(page_before_error);
 			page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
-			_history_saviour();
 		}
 	}
 
