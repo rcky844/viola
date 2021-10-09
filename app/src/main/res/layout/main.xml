@@ -21,7 +21,7 @@
 				android:contentDescription="@string/favicon_desp"
 				android:paddingStart="8dp"
 				android:paddingEnd="2dp"
-				app:srcCompat="@drawable/outline_public_24" />
+				app:srcCompat="@drawable/outline_public_24"/>
 
 			<androidx.appcompat.widget.LinearLayoutCompat
 				android:layout_width="0dp"
@@ -56,8 +56,7 @@
 				android:contentDescription="@string/browse_desp"
 				android:focusable="true"
 				android:scaleType="fitCenter"
-				android:src="@drawable/outline_search_24"
-				app:tint="@android:color/black" />
+				android:src="@drawable/outline_search_24" />
 
 			<androidx.appcompat.widget.AppCompatImageView
 				android:id="@+id/fab"
@@ -65,7 +64,6 @@
 				android:layout_height="wrap_content"
 				android:contentDescription="@string/fab_desp"
 				app:srcCompat="@drawable/outline_arrow_up_24"
-				app:tint="@android:color/black"
 				android:focusable="true"
 				android:clickable="true"
 				android:background="?attr/selectableItemBackgroundBorderless"
@@ -101,8 +99,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/forward"
@@ -115,8 +112,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/reload"
@@ -128,8 +124,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/homepage"
@@ -141,8 +136,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/desktop_switch"
@@ -154,8 +148,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/clear"
@@ -167,8 +160,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/share"
@@ -180,8 +172,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/settings"
@@ -193,8 +184,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/history"
@@ -206,8 +196,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/fav"
@@ -219,8 +208,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 
 				<androidx.appcompat.widget.AppCompatImageView
 					android:id="@+id/exit"
@@ -232,8 +220,7 @@
 					android:background="?attr/selectableItemBackgroundBorderless"
 					android:paddingLeft="8dp"
 					android:paddingRight="8dp"
-					android:hardwareAccelerated="true"
-					app:tint="@android:color/black" />
+					android:hardwareAccelerated="true" />
 			</androidx.appcompat.widget.LinearLayoutCompat>
 		</HorizontalScrollView>
 
