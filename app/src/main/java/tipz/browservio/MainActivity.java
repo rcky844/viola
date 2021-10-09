@@ -602,6 +602,12 @@ public class MainActivity extends AppCompatActivity {
 	private void _downloadManager (final WebView webview) {
 		webview.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
 			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+
+			// Let this downloaded file be scanned by MediaScanner - so that it can
+			// show up in Gallery app, for example.
+			if (android.os.Build.VERSION.SDK_INT < 29)
+				request.allowScanningByMediaScanner();
+
 			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
 			final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
