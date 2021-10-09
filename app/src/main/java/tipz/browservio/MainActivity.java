@@ -52,6 +52,7 @@ import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import tipz.browservio.sharedprefs.AllPrefs;
@@ -240,7 +241,8 @@ public class MainActivity extends AppCompatActivity {
 						}
 					});
 					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> deskModeSet(0, false));
-					dialog.setOnDismissListener((_dialog) -> deskModeSet(0, false));
+					if (android.os.Build.VERSION.SDK_INT > 16)
+						dialog.setOnDismissListener((_dialog) -> deskModeSet(0, false));
 					dialog.create().show();
 					desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
 				}
@@ -272,7 +274,17 @@ public class MainActivity extends AppCompatActivity {
 					reload.performClick();
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
-					((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+					if (android.os.Build.VERSION.SDK_INT >= 19) {
+						((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+					} else {
+						String packageName = getApplicationContext().getPackageName();
+						Runtime runtime = Runtime.getRuntime();
+						try {
+							runtime.exec("pm clear " + packageName);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 
 				return false;
@@ -601,7 +613,7 @@ public class MainActivity extends AppCompatActivity {
 	private void _history_saviour() {
 		String history_data = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history);
 		if (android.os.Build.VERSION.SDK_INT > 20)
-			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? BrowservioBasicUtil.EMPTY_STRING : System.lineSeparator()).concat(webview.getUrl())));
+			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? BrowservioBasicUtil.EMPTY_STRING : BrowservioBasicUtil.LINE_SEPARATOR()).concat(webview.getUrl())));
 	}
 
 	/**

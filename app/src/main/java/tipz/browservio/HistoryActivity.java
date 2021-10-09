@@ -89,7 +89,7 @@ public class HistoryActivity extends AppCompatActivity {
 						StringBuilder out = new StringBuilder();
 						for (Object o : history_list) {
 							out.append(o.toString());
-							out.append(System.lineSeparator());
+							out.append(BrowservioBasicUtil.LINE_SEPARATOR());
 						}
 						BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, out.toString().trim());
 						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();

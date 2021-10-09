@@ -11,6 +11,14 @@ import androidx.appcompat.widget.AppCompatCheckBox;
 public class BrowservioBasicUtil {
     public static final String EMPTY_STRING = "";
 
+    public static String LINE_SEPARATOR() {
+        if (android.os.Build.VERSION.SDK_INT <= 18) {
+            return System.getProperty("line.separator");
+        } else {
+            return System.lineSeparator();
+        }
+    }
+
     /**
      * Show Toast
      *

@@ -253,7 +253,7 @@ public class SettingsActivity extends AppCompatActivity {
 									runOnUiThread(() -> {
 										int position = 0;
 										boolean isLatest = false;
-										String[] array = bo.toString().split(System.lineSeparator());
+										String[] array = bo.toString().split(BrowservioBasicUtil.LINE_SEPARATOR());
 										for (String obj : array) {
 											if (position == 0) {
 												if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE) {
