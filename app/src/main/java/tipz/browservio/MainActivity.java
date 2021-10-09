@@ -480,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
 			builder.setTitle("SSL Certificate Error");
 			builder.setMessage(message);
 			builder.setPositiveButton(getResources().getString(android.R.string.ok), (dialog, which) -> handler.proceed());
-			builder.setNegativeButton(getResources().getString(android.R.string.no), (dialog, which) -> handler.cancel());
+			builder.setNegativeButton(getResources().getString(android.R.string.cancel), (dialog, which) -> handler.cancel());
 			final AlertDialog dialog = builder.create();
 			dialog.show();
 		}
