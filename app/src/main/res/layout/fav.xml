@@ -42,7 +42,7 @@
 		android:layout_margin="16dp"
 		android:layout_gravity="end|bottom"
 		android:backgroundTint="@color/colorAccent"
-		app:srcCompat="@drawable/outline_close_24"
+		app:srcCompat="@drawable/outline_delete_24"
 		android:contentDescription="@string/fav_del_fab_desp"
 		tools:targetApi="lollipop" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
