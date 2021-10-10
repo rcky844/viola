@@ -240,15 +240,13 @@ public class MainActivity extends AppCompatActivity {
 						if (custom_ua.length() == 0) {
 							deskModeSet(0, false);
 						} else {
+							desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
 							webview.getSettings().setUserAgentString(Objects.requireNonNull(custom_ua.getText()).toString());
 							reload.performClick();
 						}
 					});
-					dialog.setNegativeButton(android.R.string.cancel, (_dialog, _which) -> deskModeSet(0, false));
-					if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN)
-						dialog.setOnDismissListener((_dialog) -> deskModeSet(0, false));
+					dialog.setNegativeButton(android.R.string.cancel, null);
 					dialog.create().show();
-					desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
 				}
 				return false;
 			});
