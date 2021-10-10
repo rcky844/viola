@@ -33,14 +33,12 @@ import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -454,13 +452,12 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		@Override
-		@RequiresApi(21)
-		public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
-			if (request.getUrl() != null)
-				if (request.getUrl().toString().length() != 0)
+		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			if (url != null)
+				if (url.length() != 0)
 					return false;
-			if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), request.getUrl().toString())) {
-				Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+			if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url)) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 				startActivity(intent);
 			} else {
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
