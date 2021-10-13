@@ -54,6 +54,8 @@ import androidx.webkit.WebViewFeature;
 import java.io.IOException;
 import java.util.Objects;
 
+import tipz.browservio.history.HistoryInit;
+import tipz.browservio.history.HistoryReader;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 	private AppCompatImageView favicon;
 
 	private SharedPreferences browservio_saver;
+	private SharedPreferences historyPref;
 	private AlertDialog.Builder dialog;
 	private final Intent i = new Intent();
 	private MediaPlayer mediaPlayer;
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 	private SharedPreferences bookmarks;
 
 	boolean bitmapUpdated_q = false;
-	String UrlTitle;
+	private String UrlTitle;
 	String beforeNextUrl;
 
 	private String userAgent_full(String mid) {
@@ -172,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
 		desktop_switch = findViewById(R.id.desktop_switch);
 		favicon = findViewById(R.id.favicon);
 		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
+		historyPref = getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
 		dialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		
@@ -265,11 +269,11 @@ public class MainActivity extends AppCompatActivity {
 					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
 					webview.clearHistory();
-					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, BrowservioBasicUtil.EMPTY_STRING);
+					HistoryReader.clear(historyPref);
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
 					reload.performClick();
 				} else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, BrowservioBasicUtil.EMPTY_STRING);
+					HistoryReader.clear(historyPref);
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
 					reload.performClick();
 				} else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
@@ -416,6 +420,8 @@ public class MainActivity extends AppCompatActivity {
 				}
 			}
 		}
+
+		new HistoryInit(browservio_saver, historyPref);
 	}
 
 	/**
@@ -427,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
 				UrlEdit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error)));
 			} else if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)) {
 				UrlEdit.setText(url);
-				_history_saviour(url);
+				HistoryReader.appendData(historyPref, url);
 			}
 		}
 		public void onPageStarted (WebView view, String url, Bitmap icon) {
@@ -605,16 +611,6 @@ public class MainActivity extends AppCompatActivity {
 			DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
 			dm.enqueue(request);
 		});
-	}
-
-	/**
-	 * History Saviour
-	 *
-	 * Module to save history into a SharedPref.
-	 */
-	private void _history_saviour(String url) {
-		String history_data = BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history);
-		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, (history_data.concat(history_data.isEmpty() ? BrowservioBasicUtil.EMPTY_STRING : BrowservioBasicUtil.LINE_SEPARATOR()).concat(url)));
 	}
 
 	/**

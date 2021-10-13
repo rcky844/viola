@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+import tipz.browservio.history.HistoryReader;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
@@ -30,9 +31,10 @@ public class HistoryActivity extends AppCompatActivity {
 	private ArrayList<String> history_list = new ArrayList<>();
 	
 	private ListView listview;
-	
+
 	private SharedPreferences browservio_saver;
 	private SharedPreferences bookmarks;
+	private SharedPreferences historyPref;
 	private AlertDialog.Builder del_hist;
 
 	private Boolean popup = false;
@@ -60,6 +62,7 @@ public class HistoryActivity extends AppCompatActivity {
 		listview = findViewById(R.id.listview);
 		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
 		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
+		historyPref = getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
 		del_hist = new AlertDialog.Builder(this);
 		
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
@@ -91,7 +94,7 @@ public class HistoryActivity extends AppCompatActivity {
 							out.append(o.toString());
 							out.append(BrowservioBasicUtil.LINE_SEPARATOR());
 						}
-						BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, out.toString().trim());
+						HistoryReader.write(historyPref, out.toString().trim());
 						((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
 						BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
 						isEmptyCheck();
@@ -120,7 +123,7 @@ public class HistoryActivity extends AppCompatActivity {
 			del_hist.setTitle(getResources().getString(R.string.del_fav2_title));
 			del_hist.setMessage(getResources().getString(R.string.del_hist_message));
 			del_hist.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.history, BrowservioBasicUtil.EMPTY_STRING);
+				HistoryReader.clear(historyPref);
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
 				finish();
 			});
@@ -132,14 +135,13 @@ public class HistoryActivity extends AppCompatActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		history_list = new ArrayList<>(Arrays.asList(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history).trim().split("\n")));
+		history_list = new ArrayList<>(Arrays.asList(HistoryReader.history_data(historyPref).trim().split("\n")));
 		listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, history_list));
 		isEmptyCheck();
 	}
 
 	private void isEmptyCheck() {
-		// Placed here for old data migration
-		if (BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.history).trim().isEmpty()) {
+		if (HistoryReader.isEmptyCheck(historyPref)) {
 			BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
 			finish();
 		}

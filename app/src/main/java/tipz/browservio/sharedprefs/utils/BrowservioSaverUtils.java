@@ -36,7 +36,7 @@ public class BrowservioSaverUtils {
     }
 
     /**
-     * Set a preference
+     * Set a preference to a string
      *
      * @param pref as the SharedPreference to get the value from.
      * @param tag as the tag to get the value from.
@@ -47,7 +47,18 @@ public class BrowservioSaverUtils {
     }
 
     /**
-     * Get a preference
+     * Set a preference to a number
+     *
+     * @param pref as the SharedPreference to get the value from.
+     * @param tag as the tag to get the value from.
+     * @param value as the value to set
+     */
+    public static void setPrefNum(SharedPreferences pref, String tag, int value) {
+        pref.edit().putInt(tag, value).apply();
+    }
+
+    /**
+     * Get a string preference
      *
      * @param pref as the SharedPreference to get the value from.
      * @param tag as the tag to get the value from.
@@ -55,5 +66,16 @@ public class BrowservioSaverUtils {
      */
     public static String getPref(SharedPreferences pref, String tag) {
         return pref.getString(tag, "");
+    }
+
+    /**
+     * Get a number preference
+     *
+     * @param pref as the SharedPreference to get the value from.
+     * @param tag as the tag to get the value from.
+     * @return the perf asked for.
+     */
+    public static int getPrefNum(SharedPreferences pref, String tag) {
+        return pref.getInt(tag, 0);
     }
 }
