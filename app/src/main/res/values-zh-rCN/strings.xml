@@ -84,7 +84,7 @@
 	<!-- Reset Dialog -->
 
     <!-- Version Info -->
-	<string name="version_info_message">"版本名称: %1$s\n版本代号: %2$s\n版本技术名称: %3$s\n版本系列: %4$s\n版本代码: %5$s\n构建日期: %6$s\n构建类型: %7$s</string>
+	<string name="version_info_message">"%1$s\n版本 %2$s (内部版本号 %3$s : %4$s)\n版权所有 © 2020-%5$s Tipz Team\n\n本产品已获得 GNU GPLv3 许可</string>
 	<string name="update_btn">检查更新</string>
 	<string name="version_latest_toast">您当前运行的是最新版本的Browservio</string>
 	<string name="network_unavailable_toast">网络不可用</string>

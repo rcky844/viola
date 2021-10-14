@@ -223,13 +223,11 @@ public class SettingsActivity extends AppCompatActivity {
 			AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
 			AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
 			dialog_text.setText(getResources().getString(R.string.version_info_message,
+					getResources().getString(R.string.app_name),
 					BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
+					String.valueOf(BuildConfig.VERSION_CODE).concat(".").concat(BuildConfig.BUILD_TYPE).concat(".").concat(BuildConfig.VERSION_BUILD_DATE),
 					BuildConfig.VERSION_CODENAME,
-					BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_TECHNICAL_EXTRA),
-					BuildConfig.VERSION_NAME,
-					String.valueOf(BuildConfig.VERSION_CODE),
-					BuildConfig.VERSION_BUILD_DATE,
-					BuildConfig.BUILD_TYPE));
+					BuildConfig.VERSION_BUILD_YEAR));
 			update_btn.setOnClickListener(_update_btn -> {
 				if (!isNetworkAvailable(getApplicationContext())) {
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.network_unavailable_toast));

@@ -21,9 +21,9 @@ android {
 		versionName "1.4.4"
 
 		buildConfigField "String", "VERSION_NAME_EXTRA", "\" Beta 1\""
-		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_b1\""
 		buildConfigField "String", "VERSION_CODENAME", "\"Bowling\""
-		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("EEE MMM d HH:mm:ss z yyyy") + "\""
+		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
+		buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
 		vectorDrawables.useSupportLibrary = true
 	}
