@@ -6,4 +6,7 @@
     <include
         domain="sharedpref"
         path="bookmarks.cfg.xml" />
+    <include
+        domain="sharedpref"
+        path="history.cfg.xml" />
 </full-backup-content>

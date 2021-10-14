@@ -7,5 +7,8 @@
         <include
             domain="sharedpref"
             path="bookmarks.cfg.xml" />
+        <include
+            domain="sharedpref"
+            path="history.cfg.xml" />
     </cloud-backup>
 </data-extraction-rules>
