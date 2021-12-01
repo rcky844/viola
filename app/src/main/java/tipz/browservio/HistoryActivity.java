@@ -35,7 +35,7 @@ public class HistoryActivity extends AppCompatActivity {
 
 	private SharedPreferences bookmarks;
 	private SharedPreferences historyPref;
-	private AlertDialog.Builder del_hist;
+	private AlertDialog.Builder deleteHistory;
 
 	private Boolean popup = false;
 	@Override
@@ -62,7 +62,7 @@ public class HistoryActivity extends AppCompatActivity {
 		listview = findViewById(R.id.listview);
 		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		historyPref = getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
-		del_hist = new AlertDialog.Builder(this);
+		deleteHistory = new AlertDialog.Builder(this);
 		
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
 			if (!popup) {
@@ -85,9 +85,9 @@ public class HistoryActivity extends AppCompatActivity {
 			popup1.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.del_hist))) {
 					final int _position = _param3;
-					del_hist.setTitle(getResources().getString(R.string.del_hist_title));
-					del_hist.setMessage(getResources().getString(R.string.del_hist_title));
-					del_hist.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+					deleteHistory.setTitle(getResources().getString(R.string.del_hist_title));
+					deleteHistory.setMessage(getResources().getString(R.string.del_hist_title));
+					deleteHistory.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 						history_list.remove(_position);
 						StringBuilder out = new StringBuilder();
 						for (Object o : history_list) {
@@ -99,8 +99,8 @@ public class HistoryActivity extends AppCompatActivity {
 						BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
 						isEmptyCheck();
 					});
-					del_hist.setNegativeButton(android.R.string.cancel, null);
-					del_hist.create().show();
+					deleteHistory.setNegativeButton(android.R.string.cancel, null);
+					deleteHistory.create().show();
 					return true;
 				} else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
 					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", (String) listview.getItemAtPosition(_param3)));
@@ -120,15 +120,15 @@ public class HistoryActivity extends AppCompatActivity {
 		});
 		
 		_fab.setOnClickListener(_view -> {
-			del_hist.setTitle(getResources().getString(R.string.del_fav2_title));
-			del_hist.setMessage(getResources().getString(R.string.del_hist_message));
-			del_hist.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+			deleteHistory.setTitle(getResources().getString(R.string.del_fav2_title));
+			deleteHistory.setMessage(getResources().getString(R.string.del_hist_message));
+			deleteHistory.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				HistoryReader.clear(historyPref);
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
 				finish();
 			});
-			del_hist.setNegativeButton(android.R.string.cancel, null);
-			del_hist.create().show();
+			deleteHistory.setNegativeButton(android.R.string.cancel, null);
+			deleteHistory.create().show();
 		});
 	}
 

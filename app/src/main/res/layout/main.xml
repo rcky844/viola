@@ -75,7 +75,7 @@
 		</androidx.appcompat.widget.LinearLayoutCompat>
 
 		<HorizontalScrollView
-			android:id="@+id/hscroll_control"
+			android:id="@+id/actionBar"
 			android:layout_width="match_parent"
 			android:layout_height="32dp"
 			android:scrollbars="none"

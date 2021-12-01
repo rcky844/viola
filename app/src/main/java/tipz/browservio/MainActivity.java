@@ -66,14 +66,14 @@ import tipz.browservio.utils.UrlUtils;
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
 
-	private String page_before_error;
+	private String pageBeforeError;
 	private boolean defaultError = true;
 
 	private AppCompatImageView browse;
 	private AppCompatEditText UrlEdit;
 	private ProgressBar MainProg;
 	private WebView webview;
-	private HorizontalScrollView hscroll_control;
+	private HorizontalScrollView actionBar;
 	private AppCompatImageView reload;
 	private AppCompatImageView desktop_switch;
 	private AppCompatImageView favicon;
@@ -86,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
 	private final ObjectAnimator barAnimate = new ObjectAnimator();
 	private SharedPreferences bookmarks;
 
-	boolean bitmapUpdated_q = false;
+	boolean isBitMapUpdated = false;
 	private String UrlTitle;
-	String beforeNextUrl;
+	String previousUrl;
 
-	private String userAgent_full(String mid) {
+	private String userAgentFull(String mid) {
 		return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
 	}
 
@@ -138,15 +138,15 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-	private void deskModeSet(double mode, boolean noReload) {
+	private void setDeskMode(double mode, boolean noReload) {
 		if (mode == 0) {
 			setDesktopMode(false,
-					userAgent_full("Linux; Android 12"),
+					userAgentFull("Linux; Android 12"),
 					R.drawable.outline_smartphone_24,
 					noReload);
 		} else if (mode == 1) {
 			setDesktopMode(true,
-					userAgent_full("X11; Linux x86_64"),
+					userAgentFull("X11; Linux x86_64"),
 					R.drawable.outline_desktop_windows_24,
 					noReload);
 		}
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 		UrlEdit = findViewById(R.id.UrlEdit);
 		MainProg = findViewById(R.id.MainProg);
 		webview = findViewById(R.id.webview);
-		hscroll_control = findViewById(R.id.hscroll_control);
+		actionBar = findViewById(R.id.actionBar);
 		AppCompatImageView back = findViewById(R.id.back);
 		AppCompatImageView forward = findViewById(R.id.forward);
 		reload = findViewById(R.id.reload);
@@ -180,71 +180,66 @@ public class MainActivity extends AppCompatActivity {
 		dialog = new AlertDialog.Builder(this);
 		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		
-		browse.setOnClickListener(_view -> _browservio_browse(Objects.requireNonNull(UrlEdit.getText()).toString()));
+		browse.setOnClickListener(_view -> browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString()));
 
+		/*
+		  On back button being clicked, go backwards in history
+		 */
 		back.setOnClickListener(_view -> {
-			// on forward being clicked, either go forward in history
-			if (webview.canGoBack()) {
-				// can go back
+			if (webview.canGoBack()) // can go back
 				webview.goBack();
-			}
-			else {
-				// cannot go backwards
+			else // cannot go backwards
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
-			}
 		});
 
+		/*
+		  On forward button being clicked, go forward in history
+		 */
 		forward.setOnClickListener(_view -> {
-			// on forward being clicked, either go forward in history
-			if (webview.canGoForward()) {
-				// can go forward
+			if (webview.canGoForward()) // can go forward
 				webview.goForward();
-			}
-			else {
-				// cannot go forward
+			else // cannot go forward
 				BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
-			}
 		});
 
 		reload.setOnClickListener(_view -> {
-			if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
-				if (!webview.getUrl().isEmpty()) {
-					URLIdentify(webview.getUrl());
-					webview.reload();
-				}
+			if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))
+					&& !webview.getUrl().isEmpty()) {
+				URLIdentify(webview.getUrl());
+				webview.reload();
 			} else {
-				URLIdentify(page_before_error);
-				webview.loadUrl(page_before_error);
-				page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
+				URLIdentify(pageBeforeError);
+				webview.loadUrl(pageBeforeError);
+				pageBeforeError = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
 			}
 		});
 
-		homepage.setOnClickListener(_view -> _browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
+		homepage.setOnClickListener(_view -> browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
 
 		desktop_switch.setOnClickListener(_view -> {
-			PopupMenu popup1 = new PopupMenu(MainActivity.this, desktop_switch);
-			Menu menu1 = popup1.getMenu();
-			menu1.add(getResources().getString(R.string.linear_control_b3_desk));
-			menu1.add(getResources().getString(R.string.linear_control_b3_mobi));
-			menu1.add(getResources().getString(R.string.linear_control_b3_cus));
-			popup1.setOnMenuItemClickListener(item -> {
-				if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk))) {
-					deskModeSet(1, false);
-				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi))) {
-					deskModeSet(0, false);
-				} else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
+			PopupMenu popupMenu = new PopupMenu(MainActivity.this, desktop_switch);
+			Menu menu = popupMenu.getMenu();
+			menu.add(getResources().getString(R.string.linear_control_b3_desk));
+			menu.add(getResources().getString(R.string.linear_control_b3_mobi));
+			menu.add(getResources().getString(R.string.linear_control_b3_cus));
+			popupMenu.setOnMenuItemClickListener(item -> {
+				if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk)))
+					setDeskMode(1, false);
+				else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi)))
+					setDeskMode(0, false);
+				else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
 					dialog.setTitle(getResources().getString(R.string.ua));
 					dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
-					final AppCompatEditText custom_ua = new AppCompatEditText(MainActivity.this);
+					final AppCompatEditText customUserAgent = new AppCompatEditText(MainActivity.this);
 					LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-					custom_ua.setLayoutParams(lp);
-					dialog.setView(custom_ua);
+					customUserAgent.setLayoutParams(lp);
+					dialog.setView(customUserAgent);
 					dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-						if (custom_ua.length() == 0) {
-							deskModeSet(0, false);
+						if (customUserAgent.length() == 0) {
+							setDeskMode(0, false);
 						} else {
 							desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
-							webview.getSettings().setUserAgentString(Objects.requireNonNull(custom_ua.getText()).toString());
+							webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
 							reload.performClick();
 						}
 					});
@@ -253,17 +248,17 @@ public class MainActivity extends AppCompatActivity {
 				}
 				return false;
 			});
-			popup1.show();
+			popupMenu.show();
 		});
 
 		clear.setOnClickListener(_view -> {
-			PopupMenu popup2 = new PopupMenu(MainActivity.this, clear);
-			Menu menu2 = popup2.getMenu();
-			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
-			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
-			menu2.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
-			menu2.add(getResources().getString(R.string.reset_btn));
-			popup2.setOnMenuItemClickListener(item -> {
+			PopupMenu popupMenu = new PopupMenu(MainActivity.this, clear);
+			Menu menu = popupMenu.getMenu();
+			menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
+			menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
+			menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
+			menu.add(getResources().getString(R.string.reset_btn));
+			popupMenu.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
 					webview.clearCache(true);
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
@@ -294,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
 
 				return false;
 			});
-			popup2.show();
+			popupMenu.show();
 		});
 
 		share.setOnClickListener(_view -> {
@@ -315,11 +310,11 @@ public class MainActivity extends AppCompatActivity {
 		});
 
 		fav.setOnClickListener(_view -> {
-			PopupMenu popup3 = new PopupMenu(MainActivity.this, fav);
-			Menu menu3 = popup3.getMenu();
-			menu3.add(getResources().getString(R.string.add_dot));
-			menu3.add(getResources().getString(R.string.fav));
-			popup3.setOnMenuItemClickListener(item -> {
+			PopupMenu popupMenu = new PopupMenu(MainActivity.this, fav);
+			Menu menu = popupMenu.getMenu();
+			menu.add(getResources().getString(R.string.add_dot));
+			menu.add(getResources().getString(R.string.fav));
+			popupMenu.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
 					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)) + 1)));
 					BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)), webview.getUrl());
@@ -333,21 +328,20 @@ public class MainActivity extends AppCompatActivity {
 						Intent intent = new Intent(this, FavActivity.class);
 						mGetNeedLoad.launch(intent);
 					}
-
 				}
 				return false;
 			});
-			popup3.show();
+			popupMenu.show();
 		});
 
 		exit.setOnClickListener(_view -> finish());
 
 		favicon.setOnClickListener(_view -> {
-			PopupMenu popup4 = new PopupMenu(MainActivity.this, favicon);
-			Menu menu4 = popup4.getMenu();
-			menu4.add(UrlTitle).setEnabled(false);
-			menu4.add(getResources().getString(android.R.string.copy).concat(" ").concat(getResources().getString(R.string.favicondialog_title)));
-			popup4.setOnMenuItemClickListener(item -> {
+			PopupMenu popupMenu = new PopupMenu(MainActivity.this, favicon);
+			Menu menu = popupMenu.getMenu();
+			menu.add(UrlTitle).setEnabled(false);
+			menu.add(getResources().getString(android.R.string.copy).concat(" ").concat(getResources().getString(R.string.favicondialog_title)));
+			popupMenu.setOnMenuItemClickListener(item -> {
 				if (item.getTitle().toString().equals(getResources().getString(android.R.string.copy).concat(" ").concat(getResources().getString(R.string.favicondialog_title)))) {
 					((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
 					BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
@@ -355,40 +349,40 @@ public class MainActivity extends AppCompatActivity {
 				}
 				return false;
 			});
-			popup4.show();
+			popupMenu.show();
 		});
 		
-		fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, hscroll_control));
+		fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, actionBar));
 	}
 
+	/**
+	 * Welcome to the Browservio (The Shrek Browser)
+	 * This browser was originally designed with Sketchware
+	 * This project was started on Aug 13 2020
+	 *
+	 * sur wen reel Sherk brower pls sand meme sum
+	 */
 	private void initializeLogic() {
-		/*
-		 * Welcome to the Browservio (The Shrek Browser without Shrek)
-		 * This browser was originally designed with Sketchware
-		 * This project was started on Aug 13 2020
-		 *
-		 * sur wen real Shrek browser pls sand me sum
-		 */
 		webview.setWebViewClient(new WebClient());
 		webview.setWebChromeClient(new ChromeWebClient());
 
 		/* Code for detecting return key presses */
 		UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
 			if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
-				_browservio_browse(Objects.requireNonNull(UrlEdit.getText()).toString());
+				browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString());
 				return true;
 			}
 			return false;
 		});
 
 		/* Page reloading stuff */
-		page_before_error = getResources().getString(R.string.url_prefix,
+		pageBeforeError = getResources().getString(R.string.url_prefix,
 				getResources().getString(R.string.url_suffix_no_error));
 
-		deskModeSet(0, true); /* User agent init code */
+		setDeskMode(0, true); /* User agent init code */
 
-		_downloadManager(webview); /* Start the download manager service */
-		_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)); /* Load default webpage */
+		downloadManager(webview); /* Start the download manager service */
+		browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)); /* Load default webpage */
 
 		/* zoom related stuff - From SCMPNews project */
 		webview.getSettings().setSupportZoom(true);
@@ -410,14 +404,14 @@ public class MainActivity extends AppCompatActivity {
 			if (type != null) {
 				if ("text/plain".equals(type)) {
 					String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-					_browservio_browse(sharedText != null ? sharedText : BrowservioBasicUtil.EMPTY_STRING);
+					browservioBrowse(sharedText != null ? sharedText : BrowservioBasicUtil.EMPTY_STRING);
 				}
 			}
 		} else if (Intent.ACTION_VIEW.equals(intent.getAction())) { /* From default browser */
 			for (String match : TypeSchemeMatch) {
 				if (match.equals(type) || match.equals(scheme)) {
 					Uri uri = getIntent().getData();
-					_browservio_browse(uri.toString());
+					browservioBrowse(uri.toString());
 				}
 			}
 		}
@@ -437,27 +431,31 @@ public class MainActivity extends AppCompatActivity {
 				HistoryReader.appendData(historyPref, url);
 			}
 		}
+
 		public void onPageStarted (WebView view, String url, Bitmap icon) {
 			favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
 			UrlSet(url);
 		}
+
 		public void onPageFinished (WebView view, String url) {
-			if (bitmapUpdated_q)
+			if (isBitMapUpdated)
 				favicon.setImageResource(R.drawable.outline_public_24);
 			UrlSet(url);
-			bitmapUpdated_q = false;
+			isBitMapUpdated = false;
 			if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
 				android.webkit.CookieSyncManager.getInstance().sync();
 			} else {
 				CookieManager.getInstance().flush();
 			}
 		}
+
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 			if (!defaultError) {
-				page_before_error = beforeNextUrl;
+				pageBeforeError = previousUrl;
 				errorPage();
 			}
 		}
+
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (url != null)
@@ -471,6 +469,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 			return true;
 		}
+
 		@SuppressLint("WebViewClientOnReceivedSslError")
 		@Override
 		public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
@@ -560,28 +559,30 @@ public class MainActivity extends AppCompatActivity {
 		public void onProgressChanged(WebView view, int progress) {
 			MainProg.setProgress(progress == 100 ? 0 : progress);
 		}
+
 		public void onReceivedIcon(WebView view, Bitmap icon) {
-			bitmapUpdated_q = true;
+			isBitMapUpdated = true;
 			favicon.setImageBitmap(icon);
 		}
+
 		public void onReceivedTitle (WebView view, String title) {
 			UrlTitle = title;
 		}
+
 		public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
 			callback.invoke(origin, true, false);
 		}
 	}
 
+	/**
+	 * When back button is pressed, go back in history or finish activity
+ 	 */
 	@Override
 	public void onBackPressed() {
-		// onBackPressed to go back in history or finish activity
-		if (webview.canGoBack()) {
-			// Go back
+		if (webview.canGoBack()) // can go back
 			webview.goBack();
-		} else {
-			// Finish activity
+		else // finish activity
 			finish();
-		}
 	}
 
 	@Override
@@ -597,7 +598,7 @@ public class MainActivity extends AppCompatActivity {
 	 *
 	 * @param webview to monitor
 	 */
-	private void _downloadManager (final WebView webview) {
+	private void downloadManager(final WebView webview) {
 		webview.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
 			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
@@ -619,10 +620,10 @@ public class MainActivity extends AppCompatActivity {
 	 *
 	 * @param url is for strings of URL to check and load
 	 */
-	private void _browservio_browse(String url) {
-		beforeNextUrl = url;
+	private void browservioBrowse(String url) {
+		previousUrl = url;
 		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch));
-		if (page_before_error.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
+		if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
 			// Load URL
 			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
 				URLIdentify(url);
@@ -631,9 +632,9 @@ public class MainActivity extends AppCompatActivity {
 				webview.loadUrl(checkedUrl);
 			}
 		} else {
-			URLIdentify(page_before_error);
-			webview.loadUrl(page_before_error);
-			page_before_error = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
+			URLIdentify(pageBeforeError);
+			webview.loadUrl(pageBeforeError);
+			pageBeforeError = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
 		}
 	}
 
@@ -644,9 +645,8 @@ public class MainActivity extends AppCompatActivity {
 	 * @param turnOn Turn on or off the WebView dark mode
 	 */
 	private void setDarkModeWebView(WebView webview, Boolean turnOn) {
-		if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+		if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
 			WebSettingsCompat.setForceDark(webview.getSettings(), turnOn ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
-		}
 	}
 
 	/**
@@ -655,7 +655,7 @@ public class MainActivity extends AppCompatActivity {
 	 * Receive needLoadUrl for loading.
 	 */
 	ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-			result -> _browservio_browse(Objects.requireNonNull(result.getData()).getStringExtra("needLoadUrl")));
+			result -> browservioBrowse(Objects.requireNonNull(result.getData()).getStringExtra("needLoadUrl")));
 
 	/**
 	 * Config Checker
@@ -683,11 +683,10 @@ public class MainActivity extends AppCompatActivity {
 
 		AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
 			setDarkModeWebView(webview, false);
-		} else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) {
+		else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
 			setDarkModeWebView(webview, powerManager.isPowerSaveMode());
-		}
 
 		if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).isEmpty() || BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch)))) {
 			boolean isEqualToOneFirstLaunch = BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch));
@@ -757,11 +756,10 @@ public class MainActivity extends AppCompatActivity {
 	 * @param url is supplied for the url to check
 	 */
 	private void URLIdentify(String url) {
-		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error))))
 			throw new RuntimeException(getResources().getString(R.string.no_error_elog));
-		}
-		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
+
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real)))
 			errorPage();
-		}
 	}
 }
