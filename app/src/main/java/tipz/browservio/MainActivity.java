@@ -38,6 +38,8 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ProgressBar;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -79,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 	private SharedPreferences browservio_saver;
 	private SharedPreferences historyPref;
 	private AlertDialog.Builder dialog;
-	private final Intent i = new Intent();
 	private MediaPlayer mediaPlayer;
 	private final ObjectAnimator fabAnimate = new ObjectAnimator();
 	private final ObjectAnimator barAnimate = new ObjectAnimator();
@@ -304,13 +305,13 @@ public class MainActivity extends AppCompatActivity {
 		});
 
 		settings.setOnClickListener(_view -> {
-			i.setClass(getApplicationContext(), SettingsActivity.class);
-			startActivity(i);
+			Intent intent = new Intent(this, SettingsActivity.class);
+			mGetNeedLoad.launch(intent);
 		});
 
 		history.setOnClickListener(_view -> {
-			i.setClass(getApplicationContext(), HistoryActivity.class);
-			startActivity(i);
+			Intent intent = new Intent(this, HistoryActivity.class);
+			mGetNeedLoad.launch(intent);
 		});
 
 		fav.setOnClickListener(_view -> {
@@ -329,8 +330,8 @@ public class MainActivity extends AppCompatActivity {
 					if (bookmarks.getAll().size() == 0) {
 						BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
 					} else {
-						i.setClass(getApplicationContext(), FavActivity.class);
-						startActivity(i);
+						Intent intent = new Intent(this, FavActivity.class);
+						mGetNeedLoad.launch(intent);
 					}
 
 				}
@@ -649,6 +650,14 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	/**
+	 * Need Load Info Receiver
+	 *
+	 * Receive needLoadUrl for loading.
+	 */
+	ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+			result -> _browservio_browse(Objects.requireNonNull(result.getData()).getStringExtra("needLoadUrl")));
+
+	/**
 	 * Config Checker
 	 *
 	 * Used to check if anything has been changed
@@ -705,12 +714,6 @@ public class MainActivity extends AppCompatActivity {
 		favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
 		webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showZoomKeys)));
 		defaultError = !BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showCustomError));
-
-		// Need load
-		if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needLoad))) {
-			_browservio_browse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needLoadUrl));
-			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoad, "0");
-		}
 
 		// HTML5 API flags
 		webview.getSettings().setAppCacheEnabled(true);

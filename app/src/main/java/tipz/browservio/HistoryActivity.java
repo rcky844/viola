@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,7 +33,6 @@ public class HistoryActivity extends AppCompatActivity {
 	
 	private ListView listview;
 
-	private SharedPreferences browservio_saver;
 	private SharedPreferences bookmarks;
 	private SharedPreferences historyPref;
 	private AlertDialog.Builder del_hist;
@@ -60,15 +60,15 @@ public class HistoryActivity extends AppCompatActivity {
 		_fab.setContentDescription(getResources().getString(R.string.del_hist_fab_desp));
 		
 		listview = findViewById(R.id.listview);
-		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
 		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		historyPref = getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
 		del_hist = new AlertDialog.Builder(this);
 		
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
 			if (!popup) {
-				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoad, "1");
-				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoadUrl, (String) listview.getItemAtPosition(_param3));
+				Intent needLoad = new Intent();
+				needLoad.putExtra("needLoadUrl", _param3);
+				setResult(0, needLoad);
 				finish();
 			} else {
 				popup = false;

@@ -305,8 +305,9 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 
 	private void needLoad(String Url) {
-		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoad, "1");
-		BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoadUrl, Url);
+		Intent needLoad = new Intent();
+		needLoad.putExtra("needLoadUrl", Url);
+		setResult(0, needLoad);
 		finish();
 	}
 

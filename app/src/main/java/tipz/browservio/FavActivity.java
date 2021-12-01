@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,8 +32,7 @@ public class FavActivity extends AppCompatActivity {
 	private final ArrayList<String> bookmark_list = new ArrayList<>();
 	
 	private ListView listview;
-	
-	private SharedPreferences browservio_saver;
+
 	private SharedPreferences bookmarks;
 	private AlertDialog.Builder del_fav;
 	private ProgressBar PopulationProg;
@@ -59,15 +59,15 @@ public class FavActivity extends AppCompatActivity {
 		FloatingActionButton _fab = findViewById(R.id._fab);
 		
 		listview = findViewById(R.id.listview);
-		browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
 		bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 		del_fav = new AlertDialog.Builder(this);
 		PopulationProg = findViewById(R.id.PopulationProg);
 		
 		listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
 			if (!popup) {
-				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoad, "1");
-				BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needLoadUrl, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf(_param3))));
+				Intent needLoad = new Intent();
+				needLoad.putExtra("needLoadUrl", _param3);
+				setResult(0, needLoad);
 				finish();
 			} else {
 				popup = false;
