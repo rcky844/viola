@@ -621,6 +621,8 @@ public class MainActivity extends AppCompatActivity {
 	 * @param url is for strings of URL to check and load
 	 */
 	private void browservioBrowse(String url) {
+		if (url == null)
+			return;
 		previousUrl = url;
 		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch));
 		if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
@@ -655,7 +657,7 @@ public class MainActivity extends AppCompatActivity {
 	 * Receive needLoadUrl for loading.
 	 */
 	ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-			result -> browservioBrowse(Objects.requireNonNull(result.getData()).getStringExtra("needLoadUrl")));
+			result -> browservioBrowse(result.getData() != null ? result.getData().getStringExtra("needLoadUrl") : null));
 
 	/**
 	 * Config Checker
