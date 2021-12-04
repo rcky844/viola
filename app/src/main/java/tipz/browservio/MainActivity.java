@@ -706,11 +706,6 @@ public class MainActivity extends AppCompatActivity {
 		webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled)));
 		webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled)));
 
-		if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needReload))) {
-			reload.performClick();
-			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needReload, "0");
-		}
-
 		browse.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showBrowseBtn)) ? View.VISIBLE : View.GONE);
 		favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
 		webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showZoomKeys)));
@@ -763,5 +758,9 @@ public class MainActivity extends AppCompatActivity {
 
 		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real)))
 			errorPage();
+
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload)))) {
+			reload.performClick();
+		}
 	}
 }

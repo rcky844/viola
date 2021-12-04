@@ -5,7 +5,6 @@ public class AllPrefs {
     public static final String browservio_saver = "browservio.cfg";
     public static final String defaultHomePage = "defaultHomePage";
     public static final String defaultSearch = "defaultSearch";
-    public static final String needReload = "needReload";
     public static final String needRestart = "needRestart";
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String isJavaScriptEnabled = "isJavaScriptEnabled";

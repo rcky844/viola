@@ -64,6 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
 	private final ObjectAnimator ArrowAnimate = new ObjectAnimator();
 
 	boolean writingScreen = true;
+	boolean needReload = false;
 	long downloadID;
 	File apkFile;
 
@@ -96,6 +97,12 @@ public class SettingsActivity extends AppCompatActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(onDownloadComplete);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (needReload)
+			needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload)));
 	}
 
 	private boolean isNetworkAvailable(Context context) {
@@ -209,7 +216,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 		linear1_javascript.setOnClickListener(_view -> {
 			BrowservioBasicUtil.updateChkbox(checkbox1);
-			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needReload, "1");
+			needReload = true;
 		});
 		
 		checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.isJavaScriptEnabled, _param2, false));
