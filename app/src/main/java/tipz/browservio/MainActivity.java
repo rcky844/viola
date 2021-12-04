@@ -628,8 +628,7 @@ public class MainActivity extends AppCompatActivity {
 		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch));
 		if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
 			// Load URL
-			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error)))
-					|| url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload)))
+			if (url.startsWith(getResources().getString(R.string.url_prefix, ""))
 					|| url.equals(getResources().getString(R.string.url_error_real))) {
 				URLIdentify(url);
 			} else {
@@ -669,12 +668,6 @@ public class MainActivity extends AppCompatActivity {
 	 * after resume of restart.
 	 */
 	private void _configChecker() {
-		// Restart code
-		if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.needRestart))) {
-			BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needRestart, "0");
-			restart_app();
-		}
-
 		// Dark mode
 		switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
 			case Configuration.UI_MODE_NIGHT_YES:
@@ -721,15 +714,6 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Restarts the application
-	 */
-	private void restart_app() {
-		Intent i = getIntent();
-		finish();
-		startActivity(i);
-	}
-
-	/**
 	 * Error Page Loader
 	 */
 	private void errorPage() {
@@ -762,8 +746,13 @@ public class MainActivity extends AppCompatActivity {
 		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real)))
 			errorPage();
 
-		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload)))) {
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload))))
 			reload.performClick();
+
+		if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_restart)))) {
+			Intent i = getIntent();
+			finish();
+			startActivity(i);
 		}
 	}
 }
