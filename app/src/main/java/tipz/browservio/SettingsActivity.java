@@ -205,10 +205,8 @@ public class SettingsActivity extends AppCompatActivity {
 			if (!writingScreen) {
 				ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q));
 				ZoomUpdateDialog.setMessage(getResources().getString(R.string.restart_app_qmsg));
-				ZoomUpdateDialog.setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) -> {
-					BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.needRestart, "1");
-					finish();
-				});
+				ZoomUpdateDialog.setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) ->
+					needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_restart))));
 				ZoomUpdateDialog.setNegativeButton(android.R.string.cancel, null);
 				ZoomUpdateDialog.create().show();
 			}

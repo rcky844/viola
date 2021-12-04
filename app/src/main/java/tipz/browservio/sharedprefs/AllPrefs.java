@@ -5,7 +5,6 @@ public class AllPrefs {
     public static final String browservio_saver = "browservio.cfg";
     public static final String defaultHomePage = "defaultHomePage";
     public static final String defaultSearch = "defaultSearch";
-    public static final String needRestart = "needRestart";
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String isJavaScriptEnabled = "isJavaScriptEnabled";
     public static final String showFavicon = "showFavicon";
@@ -23,6 +22,6 @@ public class AllPrefs {
 
     /* history */
     public static final String history_cfg = "history.cfg";
-    public static final String history = "history"; // Also used by browservio_saver
+    public static final String history = "history";
     public static final String historyApi = "historyApi";
 }
