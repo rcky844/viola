@@ -424,9 +424,10 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	public class WebClient extends WebViewClientCompat {
 		private void UrlSet(String url) {
-			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
-				UrlEdit.setText(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error)));
-			} else if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)) {
+			if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
+					&& !(url.startsWith(getResources().getString(R.string.url_prefix, ""))
+						|| url.equals("about:blank")
+						|| url.equals(getResources().getString(R.string.url_error_real)))) {
 				UrlEdit.setText(url);
 				HistoryReader.appendData(historyPref, url);
 			}
@@ -627,7 +628,9 @@ public class MainActivity extends AppCompatActivity {
 		String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch));
 		if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
 			// Load URL
-			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real))) {
+			if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error)))
+					|| url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload)))
+					|| url.equals(getResources().getString(R.string.url_error_real))) {
 				URLIdentify(url);
 			} else {
 				URLIdentify(checkedUrl);
