@@ -84,7 +84,7 @@
 	<!-- Reset Dialog -->
 
     <!-- Version Info -->
-	<string name="version_info_message">"%1$s\n版本 %2$s (內部版本號 %3$s : %4$s)\n版權所有 © 2020-%5$s Tipz Team\n\n本產品已獲得 GNU GPLv3 許可</string>
+	<string name="version_info_message">"%1$s\n版本 %2$s (內部版本號 %3$s : %4$s)\n版權所有 © 2020-%5$s Tipz Team\n\n本產品已獲得 Apache 許可</string>
     <string name="update_btn">檢查更新</string>
 	<string name="version_latest_toast">您當前運行的是最新版本的Browservio</string>
 	<string name="network_unavailable_toast">網絡不可用</string>
