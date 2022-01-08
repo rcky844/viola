@@ -11,7 +11,7 @@ import tipz.browservio.utils.BrowservioBasicUtil;
 public class HistoryApi {
     private final static int LATEST_API = 1;
     public final static String current_history_pref = AllPrefs.history;
-    
+
     public static void HistoryApi_VerAdapter(SharedPreferences oldPref, SharedPreferences pref) throws IOException {
         if (BrowservioSaverUtils.getPrefNum(pref, AllPrefs.historyApi) == 0) {
             BrowservioSaverUtils.setPrefNum(pref, AllPrefs.historyApi, LATEST_API);

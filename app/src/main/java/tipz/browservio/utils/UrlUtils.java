@@ -10,12 +10,12 @@ public class UrlUtils {
 
     /**
      * URL Checker
-     *
+     * <p>
      * Checks if URL is valid, if not, make it a search term.
      *
-     * @param url is supplied as the URL to check.
+     * @param url         is supplied as the URL to check.
      * @param canBeSearch sets if it should be changed to a search term when the supplied URL isn't valid.
-     * @param searchUrl as the Url supplied for search.
+     * @param searchUrl   as the Url supplied for search.
      * @return result
      */
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
