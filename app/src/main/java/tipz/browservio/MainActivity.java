@@ -28,6 +28,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
@@ -36,6 +37,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -72,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
 	private AppCompatImageView browse;
 	private AppCompatEditText UrlEdit;
 	private ProgressBar MainProg;
+	private ImageView fab;
 	private WebView webview;
 	private HorizontalScrollView actionBar;
 	private AppCompatImageView reload;
 	private AppCompatImageView desktop_switch;
 	private AppCompatImageView favicon;
+	private LinearLayoutCompat addressBarLinear;
 
 	private SharedPreferences browservio_saver;
 	private SharedPreferences historyPref;
@@ -157,11 +161,12 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void initialize() {
 
-		AppCompatImageView fab = findViewById(R.id.fab);
+		fab = findViewById(R.id.fab);
 		browse = findViewById(R.id.browse);
 		UrlEdit = findViewById(R.id.UrlEdit);
 		MainProg = findViewById(R.id.MainProg);
 		webview = findViewById(R.id.webview);
+		addressBarLinear = findViewById(R.id.addressBarLinear);
 		actionBar = findViewById(R.id.actionBar);
 		AppCompatImageView back = findViewById(R.id.back);
 		AppCompatImageView forward = findViewById(R.id.forward);
@@ -366,9 +371,24 @@ public class MainActivity extends AppCompatActivity {
 		webview.setWebViewClient(new WebClient());
 		webview.setWebChromeClient(new ChromeWebClient());
 
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+			webview.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+				int contentHeight = webview.getContentHeight();
+
+				if ((scrollY < oldScrollY && (oldScrollY - scrollY) > 64) || scrollY < 64)
+					addressBarLinear.setVisibility(View.VISIBLE);
+				else if ((scrollY > oldScrollY && (scrollY - oldScrollY) > 64) || scrollY <= contentHeight)
+					addressBarLinear.setVisibility(View.GONE);
+
+				if (actionBar.getVisibility() == View.VISIBLE
+						&& addressBarLinear.getVisibility() == View.GONE)
+					fab.performClick();
+			});
+		}
+
 		/* Code for detecting return key presses */
 		UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
-			if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_GO) {
+			if (actionId == EditorInfo.IME_ACTION_GO) {
 				browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString());
 				return true;
 			}
