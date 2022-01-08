@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
 	private final ObjectAnimator barAnimate = new ObjectAnimator();
 	private SharedPreferences bookmarks;
 
-	boolean isBitMapUpdated = false;
+	private boolean isBitMapUpdated = false;
 	private String UrlTitle;
-	String previousUrl;
+	private String previousUrl;
 
 	private String userAgentFull(String mid) {
 		return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
