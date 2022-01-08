@@ -242,7 +242,7 @@ public class SettingsActivity extends AppCompatActivity {
                     new Thread() {
                         @Override
                         public void run() {
-                            String path = "https://gitlab.com/TipzTeam/browservio/-/raw/master/update_files/latest.cfg";
+                            String path = "https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg";
                             URL u;
                             try {
                                 u = new URL(path);
