@@ -408,8 +408,6 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setSupportZoom(true);
         webview.getSettings().setBuiltInZoomControls(true);
 
-        webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); /* Setting the style of the scroll bar */
-
         /*
          * Getting information from intents, either from
          * sharing menu or default browser launch.

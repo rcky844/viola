@@ -247,7 +247,8 @@
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hardwareAccelerated="true" />
+                android:hardwareAccelerated="true"
+                android:scrollbarStyle="insideOverlay" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
