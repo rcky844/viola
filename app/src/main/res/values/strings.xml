@@ -25,7 +25,6 @@
     <string name="app_not_installed">"Application is not installed."</string>
     <string name="address_bar_hint">"Search or type web address…"</string>
     <string name="favicon_desp">"Icon of the webpage, clicking on me will open a dialog with the webpage's title."</string>
-    <string name="browse_desp">"Used to go to webpages."</string>
     <string name="back_desp">Backwards</string>
     <string name="forward_desp">Forward</string>
     <string name="reload_desp">Reload</string>

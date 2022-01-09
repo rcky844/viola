@@ -23,7 +23,6 @@
     <string name="app_not_installed">应用程序未安装</string>
     <string name="address_bar_hint">"搜索或输入网址…"</string>
     <string name="favicon_desp">"网页的图标, 点击我将㑹打开一个带有网页标题的对话框"</string>
-    <string name="browse_desp">用于访问网页</string>
     <string name="back_desp">向后</string>
     <string name="forward_desp">向前</string>
     <string name="reload_desp">重新加载</string>

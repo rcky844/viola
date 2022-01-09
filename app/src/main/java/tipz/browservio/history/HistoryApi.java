@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.io.IOException;
-
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
