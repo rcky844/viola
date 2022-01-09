@@ -1,5 +1,7 @@
 package tipz.browservio;
 
+import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
+import static tipz.browservio.utils.ApkInstaller.installApplication;
 import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
 
 import android.animation.ObjectAnimator;
@@ -24,7 +26,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,9 +35,6 @@ import java.net.URL;
 import java.util.Objects;
 
 import tipz.browservio.sharedprefs.AllPrefs;
-
-import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
-
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
 
@@ -66,20 +64,15 @@ public class SettingsActivity extends AppCompatActivity {
     boolean writingScreen = true;
     boolean needReload = false;
     long downloadID;
-    File apkFile;
+    private final String updateDownloadPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+            .concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk");
 
     final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
             if (downloadID == id) {
-                Intent installIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-                Uri photoURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", apkFile);
-                installIntent.setData(photoURI);
-                installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(installIntent);
+                installApplication(SettingsActivity.this, updateDownloadPath);
             }
         }
     };
@@ -246,6 +239,7 @@ public class SettingsActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             String path = "https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg";
+                            File apkFile = new File(updateDownloadPath);
                             URL u;
                             try {
                                 u = new URL(path);
@@ -271,7 +265,11 @@ public class SettingsActivity extends AppCompatActivity {
                                             }
                                             if (position == 1 && !isLatest) {
                                                 BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.new_update_detect_toast));
-                                                if (apkFile.delete() || !apkFile.exists()) {
+
+                                                if (apkFile.exists())
+                                                    apkFile.delete();
+
+                                                if (!apkFile.exists()) {
                                                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
                                                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                                                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
@@ -330,8 +328,6 @@ public class SettingsActivity extends AppCompatActivity {
         textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultHomePage)));
         textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultSearch)));
         writingScreen = false;
-
-        apkFile = new File(getExternalFilesDir(null).toString().concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk"));
     }
 
     private void checkIfPrefIntIsTrue(String tag, AppCompatCheckBox checkBox) {
