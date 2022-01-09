@@ -95,8 +95,6 @@
     <!-- LAYOUT -->
     <!-- General -->
     <string name="general">基本</string>
-    <string name="show_browse_btn">显示浏览按钮</string>
-    <string name="show_browse_btn_desp">在地址栏旁边显示一个浏览按钮</string>
     <string name="show_pinch_btn">显示双指缩放按钮</string>
     <string name="show_pinch_btn_desp">在右下角显示双指缩放控制按钮\n(需要重啟應用)</string>
     <string name="reset_btn">重置为默认值</string>

@@ -95,8 +95,6 @@
     <!-- LAYOUT -->
     <!-- General -->
     <string name="general">基本</string>
-    <string name="show_browse_btn">顯示瀏覽按鈕</string>
-    <string name="show_browse_btn_desp">在地址欄旁邊顯示一個瀏覽按鈕</string>
     <string name="show_pinch_btn">顯示雙指縮放按鈕</string>
     <string name="show_pinch_btn_desp">在右下角顯示雙指縮放控制按鈕\n(需要重啟應用)</string>
     <string name="reset_btn">重置为默认值</string>

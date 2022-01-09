@@ -99,8 +99,6 @@
     <!-- LAYOUT -->
     <!-- General -->
     <string name="general">General</string>
-    <string name="show_browse_btn">"Show browse button"</string>
-    <string name="show_browse_btn_desp">"Show a browse button next to the address bar."</string>
     <string name="show_pinch_btn">"Show pinch to zoom buttons"</string>
     <string name="show_pinch_btn_desp">"Show the pinch to zoom control buttons on the right down corner.\n(A restart is required)"</string>
     <string name="reset_btn">"Reset to default"</string>

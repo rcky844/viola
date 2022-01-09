@@ -10,10 +10,6 @@
             android:summary=""
             android:title="@string/homepage" />
         <CheckBoxPreference
-            android:key="show_browse_btn"
-            android:summary="@string/show_browse_btn_desp"
-            android:title="@string/show_browse_btn" />
-        <CheckBoxPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
             android:title="@string/show_favicon" />

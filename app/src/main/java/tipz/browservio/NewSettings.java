@@ -51,7 +51,6 @@ public class NewSettings extends PreferenceFragmentCompat {
 
     private Preference search_engine;
     private Preference homepage;
-    private CheckBoxPreference show_browse_btn;
     private CheckBoxPreference show_favicon;
     private CheckBoxPreference show_pinch_btn;
     private CheckBoxPreference javascript;
@@ -107,7 +106,6 @@ public class NewSettings extends PreferenceFragmentCompat {
     private void initializeGeneral() {
         search_engine = Objects.requireNonNull(findPreference("search_engine"));
         homepage = Objects.requireNonNull(findPreference("homepage"));
-        show_browse_btn = Objects.requireNonNull(findPreference("show_browse_btn"));
         show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
         show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
 
@@ -148,12 +146,6 @@ public class NewSettings extends PreferenceFragmentCompat {
             });
             HomepageSettingsDialog.setNegativeButton(android.R.string.cancel, null);
             HomepageSettingsDialog.create().show();
-            return true;
-        });
-
-        show_browse_btn.setOnPreferenceClickListener(preference -> {
-            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
-                    AllPrefs.showBrowseBtn, show_browse_btn.isChecked(), false);
             return true;
         });
 
@@ -307,7 +299,6 @@ public class NewSettings extends PreferenceFragmentCompat {
     }
 
     private void initializeLogic() {
-        checkIfPrefIntIsTrue("showBrowseBtn", show_browse_btn);
         checkIfPrefIntIsTrue("showFavicon", show_favicon);
         checkIfPrefIntIsTrue("showZoomKeys", show_pinch_btn);
         checkIfPrefIntIsTrue("isJavaScriptEnabled", javascript);

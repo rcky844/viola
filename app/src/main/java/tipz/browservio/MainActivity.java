@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
     private String pageBeforeError;
     private boolean defaultError = true;
 
-    private AppCompatImageView browse;
     private AppCompatEditText UrlEdit;
     private ProgressBar MainProg;
     private ImageView fab;
@@ -160,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
     private void initialize() {
 
         fab = findViewById(R.id.fab);
-        browse = findViewById(R.id.browse);
         UrlEdit = findViewById(R.id.UrlEdit);
         MainProg = findViewById(R.id.MainProg);
         webview = findViewById(R.id.webview);
@@ -179,8 +177,6 @@ public class MainActivity extends AppCompatActivity {
         desktop_switch = findViewById(R.id.desktop_switch);
         favicon = findViewById(R.id.favicon);
         dialog = new AlertDialog.Builder(this);
-
-        browse.setOnClickListener(_view -> browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString()));
 
 		/*
 		  On back button being clicked, go backwards in history
@@ -705,7 +701,6 @@ public class MainActivity extends AppCompatActivity {
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, BrowservioBasicUtil.EMPTY_STRING), isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_suffix)), isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showBrowseBtn, "0", isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys, "0", isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showCustomError, "1", isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch, "0", isEqualToOneFirstLaunch);
@@ -715,7 +710,6 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
 
-        browse.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showBrowseBtn)) ? View.VISIBLE : View.GONE);
         favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
         webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys)));
         defaultError = !BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showCustomError));
