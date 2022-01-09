@@ -24,16 +24,17 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBackground">
+            android:background="@color/colorBackground"
+            android:scrollbars="vertical">
 
-            <FrameLayout
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
