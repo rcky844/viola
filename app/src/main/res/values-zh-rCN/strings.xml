@@ -1,56 +1,27 @@
 <resources>
-    <!--
-        Main
-            -->
-    <!-- JAVA -->
-    <!-- Field can't be empty -->
-
-    <!-- Move pages string -->
     <string name="error_already_page">已经在%s页!</string>
     <string name="first">第一</string>
     <string name="last">最后一</string>
-
-    <!-- Custom user agent or default ua selector -->
     <string name="linear_control_b3_desk">台式电脑</string>
     <string name="linear_control_b3_mobi">移动设备</string>
     <string name="linear_control_b3_cus">自定义</string>
     <string name="ua">用户代理</string>
     <string name="cus_ua_choose">请选择自定义用户代理</string>
-
-    <!-- Toast shown when file starts downloading -->
-
-    <!-- Dialog shown when the app is resetting -->
     <string name="reset_complete">重置已成功完成</string>
-
-    <!-- Clear stuff selector -->
     <string name="clear">清除%s</string>
     <string name="cache">缓存</string>
     <string name="history">历史记录</string>
     <string name="cookies">Cookie设置</string>
     <string name="cleared_toast">成功清除%s!</string>
-
-    <!-- Share URL -->
     <string name="linear_control_b5_title">分享URL</string>
-
-    <!-- History Menu -->
     <string name="copied_clipboard">成功复制到了剪贴板!</string>
     <string name="hist_empty">历史记录是空的!</string>
-
-    <!-- Favourites -->
     <string name="add_dot">添加…</string>
     <string name="saved_su">添加成功!</string>
     <string name="fav_list_empty">没有已添加的收藏</string>
-
-    <!-- Favicon -->
     <string name="favicondialog_title">网站标题</string>
-
-    <!-- App Webview Intent -->
     <string name="app_not_installed">应用程序未安装</string>
-
-    <!-- LAYOUT -->
     <string name="address_bar_hint">"搜索或输入网址…"</string>
-
-    <!-- ACCESSIBILITY DESCRIPTION -->
     <string name="favicon_desp">"网页的图标, 点击我将㑹打开一个带有网页标题的对话框"</string>
     <string name="browse_desp">用于访问网页</string>
     <string name="back_desp">向后</string>
@@ -61,29 +32,14 @@
     <string name="share_desp">分享这个网站</string>
     <string name="exit_desp">退出</string>
     <string name="fab_desp">单击按钮时将显示或关闭操作栏</string>
-
-    <!--
-        Settings
-                -->
-    <!-- JAVA -->
     <string name="settings">设置</string>
-
-    <!-- Search Engine -->
     <string name="search_engine">搜索引擎</string>
     <string name="search_engine_current">"当前的搜索引擎: %s"</string>
-
-    <!-- Homepage -->
     <string name="homepage">主页</string>
     <string name="homepage_current">"当前的主页: %s"</string>
-
-    <!-- Action Bar End Padding -->
     <string name="restart_app_q">重启应用?</string>
     <string name="restart_app_qmsg">此功能需要重启应用才能工作</string>
     <string name="restart_app_now">马上重启</string>
-
-    <!-- Reset Dialog -->
-
-    <!-- Version Info -->
     <string name="version_info_message">"%1$s\n版本 %2$s (内部版本号 %3$s : %4$s)\n版权所有 © 2020-%5$s Tipz Team\n\n本产品已获得 Apache 许可</string>
     <string name="update_btn">检查更新</string>
     <string name="version_latest_toast">您当前运行的是最新版本的Browservio</string>
@@ -91,15 +47,10 @@
     <string name="new_update_detect_toast">"已检测到新的版本, 正在下载中…"</string>
     <string name="update_down_failed_toast">更新下载失败!</string>
     <string name="download_title">"Browservio 更新"</string>
-
-    <!-- LAYOUT -->
-    <!-- General -->
     <string name="general">基本</string>
     <string name="show_pinch_btn">显示双指缩放按钮</string>
     <string name="show_pinch_btn_desp">在右下角显示双指缩放控制按钮\n(需要重啟應用)</string>
     <string name="reset_btn">重置为默认值</string>
-
-    <!-- Advanced -->
     <string name="advanced">进阶</string>
     <string name="javascript">启用JavaScript</string>
     <string name="javascript_desp">启用JavaScript将为您提供更好的浏览体验</string>
@@ -107,52 +58,24 @@
     <string name="show_favicon_desp">在地址栏旁边显示网站的图标</string>
     <string name="show_cus_error">显示自定义错误页面</string>
     <string name="show_cus_error_desp">在无法连接到网站时显示带有音频效果的自定义错误页面</string>
-
-    <!-- Help -->
     <string name="help">帮助</string>
     <string name="version">版本</string>
     <string name="feedback">反馈</string>
     <string name="feedback_desp">提供反馈将有助于提高Browservio的质量</string>
     <string name="source_code">源代码</string>
     <string name="source_code_desp">看一下Browservio的源代码</string>
-
-    <!--
-        Favourites
-                    -->
     <string name="fav">收藏夹</string>
-
-    <!-- JAVA -->
-    <!-- Delete favourite dialog -->
     <string name="del_fav">"删除这个收藏"</string>
     <string name="del_fav_title">您想删除这个收藏吗?</string>
     <string name="del_success">删除成功!"</string>
-
-    <!-- Delete everything dialog -->
     <string name="del_fav2_title">刪除所有收藏</string>
     <string name="del_fav2_message">"您将要删除所有收藏, 您确定要这样做吗?"</string>
     <string name="wiped_success">清除成功!</string>
-
-    <!-- Populating dialog -->
-
-    <!-- ACCESSIBILITY DESCRIPTION -->
     <string name="fav_del_fab_desp">删除所有收藏</string>
-
-    <!--
-        History
-                -->
     <string name="hist">历史记录</string>
-
-    <!-- JAVA -->
-    <!-- Delete history dialog -->
     <string name="del_hist">删除这个历史记录</string>
     <string name="del_hist_title">您想删除这个历史记录吗?</string>
-
-    <!-- Add to favourites -->
     <string name="add_to_fav">保存到收藏夹</string>
-
-    <!-- Delete everything dialog -->
     <string name="del_hist_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
-
-    <!-- ACCESSIBILITY DESCRIPTION -->
     <string name="del_hist_fab_desp">删除所有历史记录</string>
 </resources>
