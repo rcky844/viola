@@ -27,6 +27,21 @@ public class BrowservioSaverUtils {
     }
 
     /**
+     * Check if SharedPreferences is empty
+     * <p>
+     * Check if SharedPreferences is empty, and set it if it is.
+     *
+     * @param pref         as the SharedPreference to get the value from.
+     * @param tag          as the tag to get the value from.
+     * @param defaultValue as the value to set if empty.
+     * @param mustSet      set it regardless.
+     */
+    public static void checkIfEmpty(SharedPreferences pref, String tag, int defaultValue, boolean mustSet) {
+        if (getPref(pref, tag).isEmpty() || mustSet)
+            setPrefNum(pref, tag, defaultValue);
+    }
+
+    /**
      * Set the tag as string bool according to boolean
      * <p>
      * Sets the string bool according to the boolean.

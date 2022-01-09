@@ -80,4 +80,11 @@
     <string name="add_to_fav">"Save to favorites"</string>
     <string name="del_hist_message">"You are about to delete all history entries, are you sure about this?"</string>
     <string name="del_hist_fab_desp">"Delete all history"</string>
+    <string name="google_search">"Google (Default)"</string>
+    <string name="baidu_search">"Baidu"</string>
+    <string name="duck_search" translatable="false">"DuckDuckGo"</string>
+    <string name="bing_search" translatable="false">"Bing"</string>
+    <string name="yahoo_search">"Yahoo! UK &amp; Ireland"</string>
+    <string name="custom_search">"Custom"</string>
+
 </resources>

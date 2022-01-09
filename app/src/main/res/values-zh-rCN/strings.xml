@@ -78,4 +78,8 @@
     <string name="add_to_fav">保存到收藏夹</string>
     <string name="del_hist_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
     <string name="del_hist_fab_desp">删除所有历史记录</string>
+    <string name="baidu_search">百度</string>
+    <string name="yahoo_search">雅虎</string>
+    <string name="google_search">谷歌 (默认)</string>
+    <string name="custom_search">自定义</string>
 </resources>

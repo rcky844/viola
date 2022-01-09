@@ -45,7 +45,9 @@ public class NewSettings extends PreferenceFragmentCompat {
     }
 
     private AlertDialog.Builder SearchSettingsDialog;
+    private AlertDialog.Builder CustomSearchSettingsDialog;
     private AlertDialog.Builder HomepageSettingsDialog;
+    private AlertDialog.Builder CustomHomepageSettingsDialog;
     private AlertDialog.Builder ZoomUpdateDialog;
     private AlertDialog.Builder InfoDialog;
 
@@ -55,7 +57,6 @@ public class NewSettings extends PreferenceFragmentCompat {
     private CheckBoxPreference show_pinch_btn;
     private CheckBoxPreference javascript;
     private CheckBoxPreference show_cus_error;
-    private Preference version;
 
     private static boolean needReload = false;
     private long downloadID;
@@ -75,9 +76,6 @@ public class NewSettings extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.pref_settings, rootKey);
-        initializeGeneral();
-        initializeAdvanced();
-        initializeHelp();
         initializeLogic();
         activity.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
@@ -101,29 +99,87 @@ public class NewSettings extends PreferenceFragmentCompat {
     }
 
     /**
-     * Initialize general category
+     * Initialize Logic
      */
-    private void initializeGeneral() {
+    private void initializeLogic() {
+        /* Common */
+        final String[] searchHomePageList = {
+                activity.getResources().getString(R.string.google_search),
+                activity.getResources().getString(R.string.baidu_search),
+                activity.getResources().getString(R.string.duck_search),
+                activity.getResources().getString(R.string.bing_search),
+                activity.getResources().getString(R.string.yahoo_search),
+                activity.getResources().getString(R.string.custom_search)
+        };
+
+        /* General category */
         search_engine = Objects.requireNonNull(findPreference("search_engine"));
         homepage = Objects.requireNonNull(findPreference("homepage"));
         show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
         show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
 
+        /* Advanced category */
+        javascript = Objects.requireNonNull(findPreference("javascript"));
+        show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
+
+        /* Help category */
+        Preference version = Objects.requireNonNull(findPreference("version"));
+        Preference feedback = Objects.requireNonNull(findPreference("feedback"));
+        Preference source_code = Objects.requireNonNull(findPreference("source_code"));
+
+        /* General category dialog */
         SearchSettingsDialog = new AlertDialog.Builder(activity);
+        CustomSearchSettingsDialog = new AlertDialog.Builder(activity);
         HomepageSettingsDialog = new AlertDialog.Builder(activity);
+        CustomHomepageSettingsDialog = new AlertDialog.Builder(activity);
         ZoomUpdateDialog = new AlertDialog.Builder(activity);
+
+        /* Help category dialog */
+        InfoDialog = new AlertDialog.Builder(activity);
 
         search_engine.setOnPreferenceClickListener(preference -> {
             SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
-            SearchSettingsDialog.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver(activity), AllPrefs.defaultSearch)));
-            final AppCompatEditText custom_se = new AppCompatEditText(activity);
-            LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-            custom_se.setLayoutParams(lp);
-            SearchSettingsDialog.setView(custom_se);
+            final int[] checkedItem = {BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)};
+            final String[] searchEngine = new String[1];
+            SearchSettingsDialog.setSingleChoiceItems(searchHomePageList,
+                    BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId), (dialog, which) -> checkedItem[0] = which);
             SearchSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
-                    BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, custom_se.getText().toString());
-                    search_engine.setSummary(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver(activity), AllPrefs.defaultSearch)));
+                if (checkedItem[0] == 0)
+                    searchEngine[0] = getResources().getString(R.string.url_default_homepage,
+                            getResources().getString(R.string.url_default_search_suffix));
+                else if (checkedItem[0] == 1)
+                    searchEngine[0] = getResources().getString(R.string.url_baidu_homepage,
+                            getResources().getString(R.string.url_baidu_search_suffix));
+                else if (checkedItem[0] == 2)
+                    searchEngine[0] = getResources().getString(R.string.url_duck_homepage,
+                            getResources().getString(R.string.url_duck_search_suffix));
+                else if (checkedItem[0] == 3)
+                    searchEngine[0] = getResources().getString(R.string.url_bing_homepage,
+                            getResources().getString(R.string.url_bing_search_suffix));
+                else if (checkedItem[0] == 4)
+                    searchEngine[0] = getResources().getString(R.string.url_yahoo_homepage,
+                            getResources().getString(R.string.url_yahoo_search_suffix));
+                else if (checkedItem[0] == 5) {
+                    CustomSearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
+                    final AppCompatEditText custom_se = new AppCompatEditText(activity);
+                    LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
+                    custom_se.setLayoutParams(lp);
+                    CustomSearchSettingsDialog.setView(custom_se);
+                    CustomSearchSettingsDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
+                            BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, custom_se.getText().toString());
+                            BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId, checkedItem[0]);
+                            search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
+                        }
+                    });
+                    CustomSearchSettingsDialog.setNegativeButton(android.R.string.cancel, null);
+                    CustomSearchSettingsDialog.create().show();
+                }
+
+                if (checkedItem[0] != 5) {
+                    BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, searchEngine[0]);
+                    BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId, checkedItem[0]);
+                    search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
                 }
             });
             SearchSettingsDialog.setNegativeButton(android.R.string.cancel, null);
@@ -133,15 +189,47 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         homepage.setOnPreferenceClickListener(preference -> {
             HomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
-            HomepageSettingsDialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver(activity), AllPrefs.defaultHomePage)));
-            final AppCompatEditText custom_hp = new AppCompatEditText(activity);
-            LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-            custom_hp.setLayoutParams(lp);
-            HomepageSettingsDialog.setView(custom_hp);
+            final int[] checkedItem = {BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)};
+            final String[] homePage = new String[1];
+            HomepageSettingsDialog.setSingleChoiceItems(searchHomePageList,
+                    BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId), (dialog, which) -> checkedItem[0] = which);
             HomepageSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                if (!Objects.requireNonNull(custom_hp.getText()).toString().isEmpty()) {
-                    BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, custom_hp.getText().toString());
-                    homepage.setSummary(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver(activity), AllPrefs.defaultHomePage)));
+                if (checkedItem[0] == 0)
+                    homePage[0] = getResources().getString(R.string.url_default_homepage,
+                            BrowservioBasicUtil.EMPTY_STRING);
+                else if (checkedItem[0] == 1)
+                    homePage[0] = getResources().getString(R.string.url_baidu_homepage,
+                            BrowservioBasicUtil.EMPTY_STRING);
+                else if (checkedItem[0] == 2)
+                    homePage[0] = getResources().getString(R.string.url_duck_homepage,
+                            BrowservioBasicUtil.EMPTY_STRING);
+                else if (checkedItem[0] == 3)
+                    homePage[0] = getResources().getString(R.string.url_bing_homepage,
+                            BrowservioBasicUtil.EMPTY_STRING);
+                else if (checkedItem[0] == 4)
+                    homePage[0] = getResources().getString(R.string.url_yahoo_homepage,
+                            BrowservioBasicUtil.EMPTY_STRING);
+                else if (checkedItem[0] == 5) {
+                    CustomHomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
+                    final AppCompatEditText custom_se = new AppCompatEditText(activity);
+                    LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
+                    custom_se.setLayoutParams(lp);
+                    CustomHomepageSettingsDialog.setView(custom_se);
+                    CustomHomepageSettingsDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
+                            BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, custom_se.getText().toString());
+                            BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId, checkedItem[0]);
+                            homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
+                        }
+                    });
+                    CustomHomepageSettingsDialog.setNegativeButton(android.R.string.cancel, null);
+                    CustomHomepageSettingsDialog.create().show();
+                }
+
+                if (checkedItem[0] != 5) {
+                    BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, homePage[0]);
+                    BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId, checkedItem[0]);
+                    homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
                 }
             });
             HomepageSettingsDialog.setNegativeButton(android.R.string.cancel, null);
@@ -165,14 +253,6 @@ public class NewSettings extends PreferenceFragmentCompat {
             ZoomUpdateDialog.create().show();
             return true;
         });
-    }
-
-    /**
-     * Initialize advanced category
-     */
-    private void initializeAdvanced() {
-        javascript = Objects.requireNonNull(findPreference("javascript"));
-        show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
 
         javascript.setOnPreferenceClickListener(preference -> {
             BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
@@ -186,17 +266,6 @@ public class NewSettings extends PreferenceFragmentCompat {
                     AllPrefs.showCustomError, show_cus_error.isChecked(), false);
             return true;
         });
-    }
-
-    /**
-     * Initialize help category
-     */
-    private void initializeHelp() {
-        version = Objects.requireNonNull(findPreference("version"));
-        Preference feedback = Objects.requireNonNull(findPreference("feedback"));
-        Preference source_code = Objects.requireNonNull(findPreference("source_code"));
-
-        InfoDialog = new AlertDialog.Builder(activity);
 
         version.setOnPreferenceClickListener(preference -> {
             @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
@@ -296,15 +365,13 @@ public class NewSettings extends PreferenceFragmentCompat {
                     BrowservioBasicUtil.EMPTY_STRING));
             return true;
         });
-    }
 
-    private void initializeLogic() {
         checkIfPrefIntIsTrue("showFavicon", show_favicon);
         checkIfPrefIntIsTrue("showZoomKeys", show_pinch_btn);
         checkIfPrefIntIsTrue("isJavaScriptEnabled", javascript);
         checkIfPrefIntIsTrue("showCustomError", show_cus_error);
-        search_engine.setSummary(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver(activity), AllPrefs.defaultSearch)));
-        homepage.setSummary(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver(activity), AllPrefs.defaultHomePage)));
+        search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)]));
+        homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId)]));
         version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
         needReload = false;
     }
