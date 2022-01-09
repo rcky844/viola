@@ -3,14 +3,12 @@ package tipz.browservio;
 import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -36,8 +34,11 @@ import java.net.URL;
 import java.util.Objects;
 
 import tipz.browservio.sharedprefs.AllPrefs;
-import tipz.browservio.utils.BrowservioBasicUtil;
+
+import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
+
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
+import tipz.browservio.utils.BrowservioBasicUtil;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -55,7 +56,6 @@ public class SettingsActivity extends AppCompatActivity {
     private AppCompatCheckBox checkbox4;
     private AppCompatImageView imageview5;
 
-    private SharedPreferences browservio_saver;
     private AlertDialog.Builder HomepageSettingsDialog;
     private final ObjectAnimator StackAnimate = new ObjectAnimator();
     private AlertDialog.Builder SearchSettingsDialog;
@@ -151,7 +151,6 @@ public class SettingsActivity extends AppCompatActivity {
         LinearLayoutCompat linear_feed = findViewById(R.id.linear_feed);
         LinearLayoutCompat linear_source = findViewById(R.id.linear_source);
         AppCompatTextView version_visible = findViewById(R.id.version_visible);
-        browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
         HomepageSettingsDialog = new AlertDialog.Builder(this);
         SearchSettingsDialog = new AlertDialog.Builder(this);
         InfoDialog = new AlertDialog.Builder(this);
@@ -165,15 +164,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         linear1_search.setOnClickListener(_view -> {
             SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
-            SearchSettingsDialog.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
+            SearchSettingsDialog.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultSearch)));
             final AppCompatEditText custom_se = new AppCompatEditText(SettingsActivity.this);
             LinearLayoutCompat.LayoutParams lp2 = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
             custom_se.setLayoutParams(lp2);
             SearchSettingsDialog.setView(custom_se);
             SearchSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                 if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty() && custom_se.getText().toString().contains("{term}")) {
-                    BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.defaultSearch, custom_se.getText().toString());
-                    textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
+                    BrowservioSaverUtils.setPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultSearch, custom_se.getText().toString());
+                    textview5.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultSearch)));
                 }
             });
             SearchSettingsDialog.setNegativeButton(android.R.string.cancel, null);
@@ -182,15 +181,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         linear1_homepage.setOnClickListener(_view -> {
             HomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
-            HomepageSettingsDialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
+            HomepageSettingsDialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultHomePage)));
             final AppCompatEditText custom_hp = new AppCompatEditText(SettingsActivity.this);
             LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
             custom_hp.setLayoutParams(lp);
             HomepageSettingsDialog.setView(custom_hp);
             HomepageSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                 if (!Objects.requireNonNull(custom_hp.getText()).toString().isEmpty()) {
-                    BrowservioSaverUtils.setPref(browservio_saver, AllPrefs.defaultHomePage, custom_hp.getText().toString());
-                    textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
+                    BrowservioSaverUtils.setPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultHomePage, custom_hp.getText().toString());
+                    textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultHomePage)));
                 }
             });
             HomepageSettingsDialog.setNegativeButton(android.R.string.cancel, null);
@@ -202,10 +201,10 @@ public class SettingsActivity extends AppCompatActivity {
         onClickChangeChkBox(linear1_override_empty, checkbox2);
         onClickChangeChkBox(linear13, checkbox4);
 
-        checkbox3.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showBrowseBtn, _param2, false));
+        checkbox3.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(SettingsActivity.this), AllPrefs.showBrowseBtn, _param2, false));
 
         checkbox5.setOnCheckedChangeListener((_param1, _param2) -> {
-            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showZoomKeys, _param2, false);
+            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(SettingsActivity.this), AllPrefs.showZoomKeys, _param2, false);
             if (!writingScreen) {
                 ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q));
                 ZoomUpdateDialog.setMessage(getResources().getString(R.string.restart_app_qmsg));
@@ -221,11 +220,11 @@ public class SettingsActivity extends AppCompatActivity {
             needReload = true;
         });
 
-        checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.isJavaScriptEnabled, _param2, false));
+        checkbox1.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(SettingsActivity.this), AllPrefs.isJavaScriptEnabled, _param2, false));
 
-        checkbox2.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showFavicon, _param2, false));
+        checkbox2.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(SettingsActivity.this), AllPrefs.showFavicon, _param2, false));
 
-        checkbox4.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver, AllPrefs.showCustomError, _param2, false));
+        checkbox4.setOnCheckedChangeListener((_param1, _param2) -> BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(SettingsActivity.this), AllPrefs.showCustomError, _param2, false));
 
         linear_version.setOnClickListener(_view -> {
             View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
@@ -328,15 +327,15 @@ public class SettingsActivity extends AppCompatActivity {
         checkIfPrefIntIsTrue("showBrowseBtn", checkbox3);
         checkIfPrefIntIsTrue("showCustomError", checkbox4);
         checkIfPrefIntIsTrue("showZoomKeys", checkbox5);
-        textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
-        textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
+        textview5.setText(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultHomePage)));
+        textview9.setText(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), AllPrefs.defaultSearch)));
         writingScreen = false;
 
         apkFile = new File(getExternalFilesDir(null).toString().concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk"));
     }
 
     private void checkIfPrefIntIsTrue(String tag, AppCompatCheckBox checkBox) {
-        checkBox.setChecked(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, tag)));
+        checkBox.setChecked(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(SettingsActivity.this), tag)));
     }
 
     public void onClickChangeChkBox(View view, AppCompatCheckBox checkBox) {

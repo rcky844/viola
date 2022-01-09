@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static tipz.browservio.history.HistoryApi.historyPref;
+import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
 
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView favicon;
     private LinearLayoutCompat addressBarLinear;
 
-    private SharedPreferences browservio_saver;
     private AlertDialog.Builder dialog;
     private MediaPlayer mediaPlayer;
     private final ObjectAnimator fabAnimate = new ObjectAnimator();
@@ -181,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
         AppCompatImageView exit = findViewById(R.id.exit);
         desktop_switch = findViewById(R.id.desktop_switch);
         favicon = findViewById(R.id.favicon);
-        browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
         dialog = new AlertDialog.Builder(this);
         bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 
@@ -219,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        homepage.setOnClickListener(_view -> browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
+        homepage.setOnClickListener(_view -> browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)));
 
         desktop_switch.setOnClickListener(_view -> {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, desktop_switch);
@@ -402,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
         setDeskMode(0, true); /* User agent init code */
 
         downloadManager(webview); /* Start the download manager service */
-        browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)); /* Load default webpage */
+        browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)); /* Load default webpage */
 
         /* zoom related stuff - From SCMPNews project */
         webview.getSettings().setSupportZoom(true);
@@ -434,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        new HistoryInit(browservio_saver, historyPref(MainActivity.this));
+        new HistoryInit(browservio_saver(MainActivity.this), historyPref(MainActivity.this));
     }
 
     /**
@@ -643,7 +642,7 @@ public class MainActivity extends AppCompatActivity {
         if (url == null)
             return;
         previousUrl = url;
-        String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch));
+        String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultSearch));
         if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
             // Load URL
             if (url.startsWith(getResources().getString(R.string.url_prefix, ""))
@@ -704,26 +703,27 @@ public class MainActivity extends AppCompatActivity {
         else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
             setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 
-        if ((BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch).isEmpty() || BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch)))) {
-            boolean isEqualToOneFirstLaunch = BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isFirstLaunch));
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, BrowservioBasicUtil.EMPTY_STRING), isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_suffix)), isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showBrowseBtn, "0", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showZoomKeys, "0", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.showCustomError, "1", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver, AllPrefs.isFirstLaunch, "0", isEqualToOneFirstLaunch);
+        if ((BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch).isEmpty()
+                || BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch)))) {
+            boolean isEqualToOneFirstLaunch = BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch));
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, BrowservioBasicUtil.EMPTY_STRING), isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_suffix)), isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showBrowseBtn, "0", isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys, "0", isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showCustomError, "1", isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch, "0", isEqualToOneFirstLaunch);
         }
 
         // Settings check
-        webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled)));
-        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.isJavaScriptEnabled)));
+        webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
+        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
 
-        browse.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showBrowseBtn)) ? View.VISIBLE : View.GONE);
-        favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
-        webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showZoomKeys)));
-        defaultError = !BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.showCustomError));
+        browse.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showBrowseBtn)) ? View.VISIBLE : View.GONE);
+        favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
+        webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys)));
+        defaultError = !BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showCustomError));
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);

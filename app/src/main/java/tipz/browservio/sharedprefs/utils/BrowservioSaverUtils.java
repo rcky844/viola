@@ -1,8 +1,16 @@
 package tipz.browservio.sharedprefs.utils;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
+import tipz.browservio.sharedprefs.AllPrefs;
+
 public class BrowservioSaverUtils {
+    public static SharedPreferences browservio_saver(Context context) {
+        return context.getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
+    }
+
     /**
      * Check if SharedPreferences is empty
      * <p>
