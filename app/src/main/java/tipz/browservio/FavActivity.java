@@ -1,6 +1,5 @@
 package tipz.browservio;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -25,6 +24,9 @@ import java.util.Objects;
 
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
+
+import static tipz.browservio.fav.FavApi.bookmarks;
+
 import tipz.browservio.utils.BrowservioBasicUtil;
 
 public class FavActivity extends AppCompatActivity {
@@ -33,7 +35,6 @@ public class FavActivity extends AppCompatActivity {
 
     private ListView listview;
 
-    private SharedPreferences bookmarks;
     private AlertDialog.Builder delFav;
     private ProgressBar PopulationProg;
 
@@ -60,7 +61,6 @@ public class FavActivity extends AppCompatActivity {
         FloatingActionButton _fab = findViewById(R.id._fab);
 
         listview = findViewById(R.id.listview);
-        bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
         delFav = new AlertDialog.Builder(this);
         PopulationProg = findViewById(R.id.PopulationProg);
 
@@ -88,16 +88,16 @@ public class FavActivity extends AppCompatActivity {
                     delFav.setMessage(getResources().getString(R.string.del_fav_title));
                     delFav.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                         bookmark_list.remove(_position);
-                        BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf((long) (_position))).concat(AllPrefs.bookmarked_count_show), "0");
+                        BrowservioSaverUtils.setPref(bookmarks(FavActivity.this), AllPrefs.bookmark.concat(String.valueOf((long) (_position))).concat(AllPrefs.bookmarked_count_show), "0");
                         ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
                         BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
-                        isEmptyCheck(bookmark_list, bookmarks);
+                        isEmptyCheck(bookmark_list, bookmarks(FavActivity.this));
                     });
                     delFav.setNegativeButton(android.R.string.cancel, null);
                     delFav.create().show();
                     return true;
                 } else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
-                    ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmark.concat(String.valueOf(_param3)))));
+                    ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(bookmarks(FavActivity.this), AllPrefs.bookmark.concat(String.valueOf(_param3)))));
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
                     return true;
                 }
@@ -111,7 +111,7 @@ public class FavActivity extends AppCompatActivity {
             delFav.setTitle(getResources().getString(R.string.del_fav2_title));
             delFav.setMessage(getResources().getString(R.string.del_fav2_message));
             delFav.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                bookmarks.edit().clear().apply();
+                bookmarks(FavActivity.this).edit().clear().apply();
                 BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
                 finish();
             });
@@ -127,18 +127,18 @@ public class FavActivity extends AppCompatActivity {
         int populate_count = 0;
         boolean loopComplete = false;
         while (!loopComplete) {
-            String shouldShow = BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_show));
+            String shouldShow = BrowservioSaverUtils.getPref(bookmarks(FavActivity.this), AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_show));
             if (!shouldShow.equals("0")) {
                 if (shouldShow.isEmpty()) {
                     loopComplete = true;
-                    isEmptyCheck(bookmark_list, bookmarks);
+                    isEmptyCheck(bookmark_list, bookmarks(FavActivity.this));
                     listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, bookmark_list));
                     PopulationProg.setVisibility(View.GONE);
                 } else {
                     String bookmarkTitle = AllPrefs.bookmarked.concat(Integer.toString(populate_count)).concat(AllPrefs.bookmarked_count_title);
-                    bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks, bookmarkTitle).isEmpty() ?
-                            BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked.concat(Integer.toString(populate_count))) :
-                            BrowservioSaverUtils.getPref(bookmarks, bookmarkTitle));
+                    bookmark_list.add(BrowservioSaverUtils.getPref(bookmarks(FavActivity.this), bookmarkTitle).isEmpty() ?
+                            BrowservioSaverUtils.getPref(bookmarks(FavActivity.this), AllPrefs.bookmarked.concat(Integer.toString(populate_count))) :
+                            BrowservioSaverUtils.getPref(bookmarks(FavActivity.this), bookmarkTitle));
                 }
             }
             populate_count++;

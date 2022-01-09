@@ -1,11 +1,12 @@
 package tipz.browservio;
 
-import android.app.Activity;
+import static tipz.browservio.history.HistoryApi.historyPref;
+import static tipz.browservio.fav.FavApi.bookmarks;
+
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
@@ -22,11 +23,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static tipz.browservio.history.HistoryApi.historyPref;
 import tipz.browservio.history.HistoryReader;
 import tipz.browservio.sharedprefs.AllPrefs;
-import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
+import tipz.browservio.utils.BrowservioBasicUtil;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -34,7 +34,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     private ListView listview;
 
-    private SharedPreferences bookmarks;
     private AlertDialog.Builder deleteHistory;
 
     private Boolean popup = false;
@@ -61,7 +60,6 @@ public class HistoryActivity extends AppCompatActivity {
         _fab.setContentDescription(getResources().getString(R.string.del_hist_fab_desp));
 
         listview = findViewById(R.id.listview);
-        bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
         deleteHistory = new AlertDialog.Builder(this);
 
         listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
@@ -107,9 +105,9 @@ public class HistoryActivity extends AppCompatActivity {
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
                     return true;
                 } else if (item.getTitle().toString().equals(getResources().getString(R.string.add_to_fav))) {
-                    BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)) + 1)));
-                    BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)), (String) listview.getItemAtPosition(_param3));
-                    BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
+                    BrowservioSaverUtils.setPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count)) + 1)));
+                    BrowservioSaverUtils.setPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count)), (String) listview.getItemAtPosition(_param3));
+                    BrowservioSaverUtils.setPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
                     return true;
                 }

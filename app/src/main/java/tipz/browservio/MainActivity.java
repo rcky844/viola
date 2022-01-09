@@ -1,11 +1,13 @@
 package tipz.browservio;
 
+import static tipz.browservio.fav.FavApi.bookmarks;
+import static tipz.browservio.history.HistoryApi.historyPref;
+import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
 import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -13,7 +15,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -58,9 +59,6 @@ import androidx.webkit.WebViewFeature;
 import java.io.IOException;
 import java.util.Objects;
 
-import static tipz.browservio.history.HistoryApi.historyPref;
-import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
-
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
 import tipz.browservio.sharedprefs.AllPrefs;
@@ -89,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private final ObjectAnimator fabAnimate = new ObjectAnimator();
     private final ObjectAnimator barAnimate = new ObjectAnimator();
-    private SharedPreferences bookmarks;
 
     private boolean isBitMapUpdated = false;
     private String UrlTitle;
@@ -182,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
         desktop_switch = findViewById(R.id.desktop_switch);
         favicon = findViewById(R.id.favicon);
         dialog = new AlertDialog.Builder(this);
-        bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 
         browse.setOnClickListener(_view -> browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString()));
 
@@ -320,13 +316,13 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
-                    BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)) + 1)));
-                    BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)), webview.getUrl());
-                    BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_title), UrlTitle);
-                    BrowservioSaverUtils.setPref(bookmarks, AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks, AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
+                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)) + 1)));
+                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)), webview.getUrl());
+                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_title), UrlTitle);
+                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
                 } else if (item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (bookmarks.getAll().size() == 0) {
+                    if (bookmarks(MainActivity.this).getAll().size() == 0) {
                         BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
                     } else {
                         Intent intent = new Intent(this, FavActivity.class);
