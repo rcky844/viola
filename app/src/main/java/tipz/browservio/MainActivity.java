@@ -699,8 +699,7 @@ public class MainActivity extends AppCompatActivity {
         else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
             setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 
-        if ((BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch).isEmpty()
-                || BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch)))) {
+        if (!BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch).equals("0")) {
             boolean isEqualToOneFirstLaunch = BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch));
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, BrowservioBasicUtil.EMPTY_STRING), isEqualToOneFirstLaunch);
