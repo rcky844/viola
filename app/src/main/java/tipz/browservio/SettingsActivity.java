@@ -271,7 +271,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                                                 if (!apkFile.exists()) {
                                                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
-                                                    request.setTitle("Browservio Update");
+                                                    request.setTitle(getResources().getString(R.string.download_title));
                                                     request.setMimeType("application/vnd.android.package-archive");
                                                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                                                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");

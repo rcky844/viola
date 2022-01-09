@@ -121,6 +121,7 @@
     <string name="feedback_desp">"Giving feedback will help improve the quality of Browservio."</string>
     <string name="source_code">"Source code"</string>
     <string name="source_code_desp">"Have a look at Browservio\'s source code."</string>
+    <string name="download_title">"Browservio Update"</string>
 
     <!--
         Favourites

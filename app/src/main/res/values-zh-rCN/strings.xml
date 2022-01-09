@@ -90,6 +90,7 @@
     <string name="network_unavailable_toast">网络不可用</string>
     <string name="new_update_detect_toast">"已检测到新的版本, 正在下载中…"</string>
     <string name="update_down_failed_toast">更新下载失败!</string>
+    <string name="download_title">"Browservio 更新"</string>
 
     <!-- LAYOUT -->
     <!-- General -->
