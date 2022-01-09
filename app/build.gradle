@@ -17,12 +17,12 @@ android {
 		applicationId "tipz.browservio"
 		minSdkVersion 14
 		targetSdkVersion 31
-		versionCode 51
-		versionName "1.4.5"
+		versionCode 52
+		versionName "1.4.6"
 
 		buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
 		buildConfigField "String", "VERSION_CODENAME", "\"Bowling\""
-		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_n2022_patch\""
+		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_n2022_patch1\""
 		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
 		buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
