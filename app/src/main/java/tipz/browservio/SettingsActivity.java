@@ -61,9 +61,9 @@ public class SettingsActivity extends AppCompatActivity {
     private AlertDialog.Builder ZoomUpdateDialog;
     private final ObjectAnimator ArrowAnimate = new ObjectAnimator();
 
-    boolean writingScreen = true;
-    boolean needReload = false;
-    long downloadID;
+    private boolean writingScreen = true;
+    private boolean needReload = false;
+    private long downloadID;
     private final String updateDownloadPath = Environment.getExternalStorageDirectory().getAbsolutePath()
             .concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk");
 
