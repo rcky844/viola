@@ -57,4 +57,5 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.4.0"
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.webkit:webkit:1.4.0'
+    implementation 'androidx.preference:preference:1.1.1'
 }

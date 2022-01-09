@@ -83,6 +83,9 @@
             android:name=".SettingsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
+            android:name=".NewSettingsActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
             android:name=".FavActivity"
             android:configChanges="orientation|screenSize" />
         <activity

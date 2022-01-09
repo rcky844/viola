@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         settings.setOnClickListener(_view -> {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = new Intent(this, NewSettingsActivity.class);
             mGetNeedLoad.launch(intent);
         });
 

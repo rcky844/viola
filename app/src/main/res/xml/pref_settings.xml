@@ -1,0 +1,52 @@
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/general">
+        <Preference
+            android:key="search_engine"
+            android:summary=""
+            android:title="@string/search_engine" />
+        <Preference
+            android:key="homepage"
+            android:summary=""
+            android:title="@string/homepage" />
+        <CheckBoxPreference
+            android:key="show_browse_btn"
+            android:summary="@string/show_browse_btn_desp"
+            android:title="@string/show_browse_btn" />
+        <CheckBoxPreference
+            android:key="show_favicon"
+            android:summary="@string/show_favicon_desp"
+            android:title="@string/show_favicon" />
+        <CheckBoxPreference
+            android:key="show_pinch_btn"
+            android:summary="@string/show_pinch_btn_desp"
+            android:title="@string/show_pinch_btn" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/advanced">
+        <CheckBoxPreference
+            android:key="javascript"
+            android:summary="@string/javascript_desp"
+            android:title="@string/javascript" />
+        <CheckBoxPreference
+            android:key="show_cus_error"
+            android:summary="@string/show_cus_error_desp"
+            android:title="@string/show_cus_error" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/help">
+        <Preference
+            android:key="version"
+            android:summary=""
+            android:title="@string/version" />
+        <Preference
+            android:key="feedback"
+            android:summary="@string/feedback_desp"
+            android:title="@string/feedback" />
+        <Preference
+            android:key="source_code"
+            android:summary="@string/source_code_desp"
+            android:title="@string/source_code" />
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
