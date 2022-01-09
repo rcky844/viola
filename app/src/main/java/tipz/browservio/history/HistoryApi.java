@@ -18,7 +18,7 @@ public class HistoryApi {
         return context.getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
     }
 
-    public static void HistoryApi_VerAdapter(SharedPreferences oldPref, SharedPreferences pref) throws IOException {
+    public static void HistoryApi_VerAdapter(SharedPreferences oldPref, SharedPreferences pref) {
         if (BrowservioSaverUtils.getPrefNum(pref, AllPrefs.historyApi) == 0) {
             BrowservioSaverUtils.setPrefNum(pref, AllPrefs.historyApi, LATEST_API);
 

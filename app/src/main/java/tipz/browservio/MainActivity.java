@@ -667,7 +667,7 @@ public class MainActivity extends AppCompatActivity {
      * <p>
      * Receive needLoadUrl for loading.
      */
-    ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+    final ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> browservioBrowse(result.getData() != null ? result.getData().getStringExtra("needLoadUrl") : null));
 
     /**

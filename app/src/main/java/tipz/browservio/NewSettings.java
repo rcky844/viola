@@ -38,7 +38,7 @@ import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
 
 public class NewSettings extends PreferenceFragmentCompat {
-    public Activity activity;
+    public final Activity activity;
 
     public NewSettings(Activity act) {
         this.activity = act;

@@ -7,8 +7,6 @@ import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.AppCompatCheckBox;
-
 public class BrowservioBasicUtil {
     public static final String EMPTY_STRING = "";
 
@@ -27,17 +25,6 @@ public class BrowservioBasicUtil {
      */
     public static void showMessage(Context context, String s) {
         Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Update CheckBox
-     * <p>
-     * This module updates a Checkbox to another condition.
-     *
-     * @param chk is supplied as the CheckBox to update
-     */
-    public static void updateChkbox(final AppCompatCheckBox chk) {
-        chk.setChecked(!chk.isChecked());
     }
 
     /**

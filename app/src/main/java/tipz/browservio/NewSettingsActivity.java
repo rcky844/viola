@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class NewSettingsActivity extends AppCompatActivity {
 
-    public Intent needLoad = new Intent();
+    public final Intent needLoad = new Intent();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
