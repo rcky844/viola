@@ -1,5 +1,7 @@
 package tipz.browservio.history;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
@@ -11,6 +13,10 @@ import tipz.browservio.utils.BrowservioBasicUtil;
 public class HistoryApi {
     private final static int LATEST_API = 1;
     public final static String current_history_pref = AllPrefs.history;
+
+    public static SharedPreferences historyPref(Context context) {
+        return context.getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
+    }
 
     public static void HistoryApi_VerAdapter(SharedPreferences oldPref, SharedPreferences pref) throws IOException {
         if (BrowservioSaverUtils.getPrefNum(pref, AllPrefs.historyApi) == 0) {

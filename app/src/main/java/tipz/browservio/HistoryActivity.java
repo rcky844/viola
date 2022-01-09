@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static tipz.browservio.history.HistoryApi.historyPref;
 import tipz.browservio.history.HistoryReader;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.utils.BrowservioBasicUtil;
@@ -34,7 +35,6 @@ public class HistoryActivity extends AppCompatActivity {
     private ListView listview;
 
     private SharedPreferences bookmarks;
-    private SharedPreferences historyPref;
     private AlertDialog.Builder deleteHistory;
 
     private Boolean popup = false;
@@ -62,7 +62,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         listview = findViewById(R.id.listview);
         bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
-        historyPref = getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
         deleteHistory = new AlertDialog.Builder(this);
 
         listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
@@ -95,7 +94,7 @@ public class HistoryActivity extends AppCompatActivity {
                             out.append(o.toString());
                             out.append(BrowservioBasicUtil.LINE_SEPARATOR());
                         }
-                        HistoryReader.write(historyPref, out.toString().trim());
+                        HistoryReader.write(historyPref(this), out.toString().trim());
                         ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
                         BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
                         isEmptyCheck();
@@ -124,7 +123,7 @@ public class HistoryActivity extends AppCompatActivity {
             deleteHistory.setTitle(getResources().getString(R.string.del_fav2_title));
             deleteHistory.setMessage(getResources().getString(R.string.del_hist_message));
             deleteHistory.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                HistoryReader.clear(historyPref);
+                HistoryReader.clear(historyPref(this));
                 BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
                 finish();
             });
@@ -136,13 +135,13 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        history_list = new ArrayList<>(Arrays.asList(HistoryReader.history_data(historyPref).trim().split("\n")));
+        history_list = new ArrayList<>(Arrays.asList(HistoryReader.history_data(historyPref(this)).trim().split("\n")));
         listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, history_list));
         isEmptyCheck();
     }
 
     private void isEmptyCheck() {
-        if (HistoryReader.isEmptyCheck(historyPref)) {
+        if (HistoryReader.isEmptyCheck(historyPref(this))) {
             BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
             finish();
         }

@@ -58,6 +58,8 @@ import androidx.webkit.WebViewFeature;
 import java.io.IOException;
 import java.util.Objects;
 
+import static tipz.browservio.history.HistoryApi.historyPref;
+
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
 import tipz.browservio.sharedprefs.AllPrefs;
@@ -83,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutCompat addressBarLinear;
 
     private SharedPreferences browservio_saver;
-    private SharedPreferences historyPref;
     private AlertDialog.Builder dialog;
     private MediaPlayer mediaPlayer;
     private final ObjectAnimator fabAnimate = new ObjectAnimator();
@@ -181,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
         desktop_switch = findViewById(R.id.desktop_switch);
         favicon = findViewById(R.id.favicon);
         browservio_saver = getSharedPreferences(AllPrefs.browservio_saver, Activity.MODE_PRIVATE);
-        historyPref = getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
         dialog = new AlertDialog.Builder(this);
         bookmarks = getSharedPreferences(AllPrefs.bookmarks, Activity.MODE_PRIVATE);
 
@@ -270,11 +270,11 @@ public class MainActivity extends AppCompatActivity {
                     reload.performClick();
                 } else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
                     webview.clearHistory();
-                    HistoryReader.clear(historyPref);
+                    HistoryReader.clear(historyPref(MainActivity.this));
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     reload.performClick();
                 } else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-                    HistoryReader.clear(historyPref);
+                    HistoryReader.clear(historyPref(MainActivity.this));
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
                     reload.performClick();
                 } else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
@@ -434,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        new HistoryInit(browservio_saver, historyPref);
+        new HistoryInit(browservio_saver, historyPref(MainActivity.this));
     }
 
     /**
@@ -447,7 +447,7 @@ public class MainActivity extends AppCompatActivity {
                     || url.equals("about:blank")
                     || url.equals(getResources().getString(R.string.url_error_real)))) {
                 UrlEdit.setText(url);
-                HistoryReader.appendData(historyPref, url);
+                HistoryReader.appendData(historyPref(MainActivity.this), url);
             }
         }
 
