@@ -760,6 +760,9 @@ public class MainActivity extends AppCompatActivity {
         if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real)))
             errorPage();
 
+        if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_license))))
+            browservioBrowse(getResources().getString(R.string.url_license_real));
+
         if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload))))
             reload.performClick();
 
