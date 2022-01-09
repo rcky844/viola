@@ -230,7 +230,7 @@ public class SettingsActivity extends AppCompatActivity {
             View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
             AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
+            if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING)
                 update_btn.setVisibility(View.GONE);
             dialog_text.setText(getResources().getString(R.string.version_info_message,
                     getResources().getString(R.string.app_name),
@@ -264,7 +264,7 @@ public class SettingsActivity extends AppCompatActivity {
                                         String[] array = bo.toString().split(BrowservioBasicUtil.LINE_SEPARATOR());
                                         for (String obj : array) {
                                             if (position == 0) {
-                                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE) {
+                                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && !BuildConfig.UPDATE_TESTING) {
                                                     isLatest = true;
                                                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.version_latest_toast));
                                                 }
