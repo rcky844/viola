@@ -103,6 +103,8 @@ public class SettingsActivity extends AppCompatActivity {
 	public void onBackPressed() {
 		if (needReload)
 			needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload)));
+		else
+		    finish();
 	}
 
 	private boolean isNetworkAvailable(Context context) {
