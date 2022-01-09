@@ -229,7 +229,7 @@ public class SettingsActivity extends AppCompatActivity {
             View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
             AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
-            if (BuildConfig.VERSION_CODE == 69420)
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
                 update_btn.setVisibility(View.GONE);
             dialog_text.setText(getResources().getString(R.string.version_info_message,
                     getResources().getString(R.string.app_name),
