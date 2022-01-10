@@ -444,7 +444,6 @@ public class MainActivity extends AppCompatActivity {
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
-            UrlSet(url);
         }
 
         public void onPageFinished(WebView view, String url) {
