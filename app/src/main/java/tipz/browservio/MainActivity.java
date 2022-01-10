@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 webview.reload();
             } else {
                 URLIdentify(pageBeforeError);
-                webview.loadUrl(UrlUtils.UrlChecker(webview.getUrl(), false, BrowservioBasicUtil.EMPTY_STRING));
+                webview.loadUrl(UrlUtils.UrlChecker(webview.getUrl()));
                 pageBeforeError = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
             }
         });
@@ -640,7 +640,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             URLIdentify(pageBeforeError);
-            webview.loadUrl(pageBeforeError);
+            webview.loadUrl(UrlUtils.UrlChecker(webview.getUrl()));
             pageBeforeError = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
         }
     }
