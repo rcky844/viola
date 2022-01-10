@@ -28,6 +28,19 @@
                 android:paddingRight="8dp"
                 app:srcCompat="@drawable/outline_public_24" />
 
+            <ProgressBar
+                android:id="@+id/faviconProgressBar"
+                style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:contentDescription="@string/favicon_desp"
+                android:indeterminate="true"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:paddingEnd="2dp"
+                android:paddingRight="8dp"
+                android:visibility="gone" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppCompatEditText UrlEdit;
     private ProgressBar MainProg;
+    private ProgressBar faviconProgressBar;
     private ImageView fab;
     private WebView webview;
     private HorizontalScrollView actionBar;
@@ -160,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         UrlEdit = findViewById(R.id.UrlEdit);
         MainProg = findViewById(R.id.MainProg);
+        faviconProgressBar = findViewById(R.id.faviconProgressBar);
         webview = findViewById(R.id.webview);
         addressBarLinear = findViewById(R.id.addressBarLinear);
         actionBar = findViewById(R.id.actionBar);
@@ -443,6 +445,8 @@ public class MainActivity extends AppCompatActivity {
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
+            favicon.setVisibility(View.GONE);
+            faviconProgressBar.setVisibility(View.VISIBLE);
         }
 
         public void onPageFinished(WebView view, String url) {
@@ -451,6 +455,8 @@ public class MainActivity extends AppCompatActivity {
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
+            favicon.setVisibility(View.VISIBLE);
+            faviconProgressBar.setVisibility(View.GONE);
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
