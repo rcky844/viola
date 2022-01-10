@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     private final ObjectAnimator fabAnimate = new ObjectAnimator();
     private final ObjectAnimator barAnimate = new ObjectAnimator();
 
-    private boolean isBitMapUpdated = false;
     private String UrlTitle;
     private String previousUrl;
 
@@ -448,7 +447,6 @@ public class MainActivity extends AppCompatActivity {
 
         public void onPageFinished(WebView view, String url) {
             UrlSet(url);
-            isBitMapUpdated = false;
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
@@ -568,7 +566,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            isBitMapUpdated = true;
             favicon.setImageBitmap(icon);
         }
 
