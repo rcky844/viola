@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 		reload.setOnClickListener(_view -> {
 			if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))
 					&& !webview.getUrl().isEmpty()) {
-				URLIdentify(webview.getUrl());
+				URLIdentify(UrlUtils.UrlChecker(webview.getUrl(), false, BrowservioBasicUtil.EMPTY_STRING));
 				webview.reload();
 			} else {
 				URLIdentify(pageBeforeError);

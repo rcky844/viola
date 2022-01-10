@@ -19,6 +19,8 @@ public class UrlUtils {
      * @return result
      */
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
+        if (url.contains("/?"))
+            return "browservio://error";
         for (String match : startsWithMatch) {
             if (url.startsWith(match)) {
                 return url;
@@ -27,12 +29,10 @@ public class UrlUtils {
         if (URLUtil.isValidUrl(url)) {
             return url;
         } else {
-            if (url.endsWith("/") || url.endsWith("\\") || url.contains(".")) {
+            if (url.endsWith("/") || url.endsWith("\\") || url.contains("."))
                 return "http://" + url;
-            }
-            if (canBeSearch) {
+            if (canBeSearch)
                 return searchUrl + url;
-            }
         }
         return url;
     }
