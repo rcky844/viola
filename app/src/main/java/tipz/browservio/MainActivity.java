@@ -447,8 +447,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageFinished(WebView view, String url) {
-            if (isBitMapUpdated)
-                favicon.setImageResource(R.drawable.outline_public_24);
             UrlSet(url);
             isBitMapUpdated = false;
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
