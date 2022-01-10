@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 webview.reload();
             } else {
                 URLIdentify(pageBeforeError);
-                webview.loadUrl(pageBeforeError);
+                webview.loadUrl(UrlUtils.UrlChecker(webview.getUrl(), false, BrowservioBasicUtil.EMPTY_STRING));
                 pageBeforeError = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
             }
         });
