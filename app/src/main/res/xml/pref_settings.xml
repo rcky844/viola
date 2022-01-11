@@ -1,48 +1,48 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/general">
-        <Preference
+    <androidx.preference.PreferenceCategory android:title="@string/general">
+        <androidx.preference.Preference
             android:key="search_engine"
             android:summary=""
             android:title="@string/search_engine" />
-        <Preference
+        <androidx.preference.Preference
             android:key="homepage"
             android:summary=""
             android:title="@string/homepage" />
-        <CheckBoxPreference
+        <androidx.preference.CheckBoxPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
             android:title="@string/show_favicon" />
-        <CheckBoxPreference
+        <androidx.preference.CheckBoxPreference
             android:key="show_pinch_btn"
             android:summary="@string/show_pinch_btn_desp"
             android:title="@string/show_pinch_btn" />
-    </PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/advanced">
-        <CheckBoxPreference
+    <androidx.preference.PreferenceCategory android:title="@string/advanced">
+        <androidx.preference.CheckBoxPreference
             android:key="javascript"
             android:summary="@string/javascript_desp"
             android:title="@string/javascript" />
-        <CheckBoxPreference
+        <androidx.preference.CheckBoxPreference
             android:key="show_cus_error"
             android:summary="@string/show_cus_error_desp"
             android:title="@string/show_cus_error" />
-    </PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/help">
-        <Preference
+    <androidx.preference.PreferenceCategory android:title="@string/help">
+        <androidx.preference.Preference
             android:key="version"
             android:summary=""
             android:title="@string/version" />
-        <Preference
+        <androidx.preference.Preference
             android:key="feedback"
             android:summary="@string/feedback_desp"
             android:title="@string/feedback" />
-        <Preference
+        <androidx.preference.Preference
             android:key="source_code"
             android:summary="@string/source_code_desp"
             android:title="@string/source_code" />
-    </PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

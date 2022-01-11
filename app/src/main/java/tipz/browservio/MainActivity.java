@@ -9,7 +9,6 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -56,6 +55,8 @@ import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView favicon;
     private LinearLayoutCompat addressBarLinear;
 
-    private AlertDialog.Builder dialog;
     private MediaPlayer mediaPlayer;
     private final ObjectAnimator fabAnimate = new ObjectAnimator();
     private final ObjectAnimator barAnimate = new ObjectAnimator();
@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
         AppCompatImageView exit = findViewById(R.id.exit);
         desktop_switch = findViewById(R.id.desktop_switch);
         favicon = findViewById(R.id.favicon);
-        dialog = new AlertDialog.Builder(this);
 
 		/*
 		  On back button being clicked, go backwards in history
@@ -225,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi)))
                     setDeskMode(0, false);
                 else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                     dialog.setTitle(getResources().getString(R.string.ua));
                     dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
                     final AppCompatEditText customUserAgent = new AppCompatEditText(MainActivity.this);
@@ -483,7 +483,7 @@ public class MainActivity extends AppCompatActivity {
         @SuppressLint("WebViewClientOnReceivedSslError")
         @Override
         public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(MainActivity.this);
             String message = "SSL Certificate error.";
             switch (error.getPrimaryError()) {
                 case SslError.SSL_DATE_INVALID:
@@ -510,12 +510,11 @@ public class MainActivity extends AppCompatActivity {
             }
             message += " Do you want to continue anyway?";
 
-            builder.setTitle("SSL Certificate Error");
-            builder.setMessage(message);
-            builder.setPositiveButton(getResources().getString(android.R.string.ok), (dialog, which) -> handler.proceed());
-            builder.setNegativeButton(getResources().getString(android.R.string.cancel), (dialog, which) -> handler.cancel());
-            final AlertDialog dialog = builder.create();
-            dialog.show();
+            dialog.setTitle("SSL Certificate Error");
+            dialog.setMessage(message);
+            dialog.setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed());
+            dialog.setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel());
+            dialog.create().show();
         }
     }
 

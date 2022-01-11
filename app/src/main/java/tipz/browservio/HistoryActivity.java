@@ -1,9 +1,8 @@
 package tipz.browservio;
 
-import static tipz.browservio.history.HistoryApi.historyPref;
 import static tipz.browservio.fav.FavApi.bookmarks;
+import static tipz.browservio.history.HistoryApi.historyPref;
 
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -17,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private ListView listview;
 
-    private AlertDialog.Builder deleteHistory;
+    private MaterialAlertDialogBuilder deleteHistory;
 
     private Boolean popup = false;
 
@@ -60,7 +60,7 @@ public class HistoryActivity extends AppCompatActivity {
         _fab.setContentDescription(getResources().getString(R.string.del_hist_fab_desp));
 
         listview = findViewById(R.id.listview);
-        deleteHistory = new AlertDialog.Builder(this);
+        deleteHistory = new MaterialAlertDialogBuilder(this);
 
         listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
             if (!popup) {

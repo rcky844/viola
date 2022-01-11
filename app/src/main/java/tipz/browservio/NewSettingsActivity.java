@@ -1,6 +1,7 @@
 package tipz.browservio;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -25,7 +26,7 @@ public class NewSettingsActivity extends AppCompatActivity {
         _toolbar.setNavigationOnClickListener(_v -> onBackPressed());
 
         NewSettings fragment = new NewSettings(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.list_container, fragment).commit();
     }
 
     @Override

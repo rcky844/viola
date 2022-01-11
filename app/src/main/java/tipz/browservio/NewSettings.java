@@ -5,7 +5,6 @@ import static tipz.browservio.utils.ApkInstaller.installApplication;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,6 +25,8 @@ import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -44,12 +45,12 @@ public class NewSettings extends PreferenceFragmentCompat {
         this.activity = act;
     }
 
-    private AlertDialog.Builder SearchSettingsDialog;
-    private AlertDialog.Builder CustomSearchSettingsDialog;
-    private AlertDialog.Builder HomepageSettingsDialog;
-    private AlertDialog.Builder CustomHomepageSettingsDialog;
-    private AlertDialog.Builder ZoomUpdateDialog;
-    private AlertDialog.Builder InfoDialog;
+    private MaterialAlertDialogBuilder SearchSettingsDialog;
+    private MaterialAlertDialogBuilder CustomSearchSettingsDialog;
+    private MaterialAlertDialogBuilder HomepageSettingsDialog;
+    private MaterialAlertDialogBuilder CustomHomepageSettingsDialog;
+    private MaterialAlertDialogBuilder ZoomUpdateDialog;
+    private MaterialAlertDialogBuilder InfoDialog;
 
     private Preference search_engine;
     private Preference homepage;
@@ -128,14 +129,14 @@ public class NewSettings extends PreferenceFragmentCompat {
         Preference source_code = Objects.requireNonNull(findPreference("source_code"));
 
         /* General category dialog */
-        SearchSettingsDialog = new AlertDialog.Builder(activity);
-        CustomSearchSettingsDialog = new AlertDialog.Builder(activity);
-        HomepageSettingsDialog = new AlertDialog.Builder(activity);
-        CustomHomepageSettingsDialog = new AlertDialog.Builder(activity);
-        ZoomUpdateDialog = new AlertDialog.Builder(activity);
+        SearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        CustomSearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        HomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
 
         /* Help category dialog */
-        InfoDialog = new AlertDialog.Builder(activity);
+        InfoDialog = new MaterialAlertDialogBuilder(activity);
 
         search_engine.setOnPreferenceClickListener(preference -> {
             SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));

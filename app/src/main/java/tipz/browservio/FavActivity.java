@@ -1,6 +1,7 @@
 package tipz.browservio;
 
-import android.app.AlertDialog;
+import static tipz.browservio.fav.FavApi.bookmarks;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -24,9 +26,6 @@ import java.util.Objects;
 
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
-
-import static tipz.browservio.fav.FavApi.bookmarks;
-
 import tipz.browservio.utils.BrowservioBasicUtil;
 
 public class FavActivity extends AppCompatActivity {
@@ -35,7 +34,7 @@ public class FavActivity extends AppCompatActivity {
 
     private ListView listview;
 
-    private AlertDialog.Builder delFav;
+    private MaterialAlertDialogBuilder delFav;
     private ProgressBar PopulationProg;
 
     private Boolean popup = false;
@@ -61,7 +60,7 @@ public class FavActivity extends AppCompatActivity {
         FloatingActionButton _fab = findViewById(R.id._fab);
 
         listview = findViewById(R.id.listview);
-        delFav = new AlertDialog.Builder(this);
+        delFav = new MaterialAlertDialogBuilder(this);
         PopulationProg = findViewById(R.id.PopulationProg);
 
         listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
