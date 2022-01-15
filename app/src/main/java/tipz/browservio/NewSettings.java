@@ -20,7 +20,6 @@ import android.view.View;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -163,8 +162,6 @@ public class NewSettings extends PreferenceFragmentCompat {
                 else if (checkedItem[0] == 5) {
                     CustomSearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
                     final AppCompatEditText custom_se = new AppCompatEditText(activity);
-                    LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-                    custom_se.setLayoutParams(lp);
                     CustomSearchSettingsDialog.setView(custom_se);
                     CustomSearchSettingsDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
@@ -213,8 +210,6 @@ public class NewSettings extends PreferenceFragmentCompat {
                 else if (checkedItem[0] == 5) {
                     CustomHomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
                     final AppCompatEditText custom_se = new AppCompatEditText(activity);
-                    LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-                    custom_se.setLayoutParams(lp);
                     CustomHomepageSettingsDialog.setView(custom_se);
                     CustomHomepageSettingsDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {

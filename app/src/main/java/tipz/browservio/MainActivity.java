@@ -239,8 +239,6 @@ public class MainActivity extends AppCompatActivity {
                     dialog.setTitle(getResources().getString(R.string.ua));
                     dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
                     final AppCompatEditText customUserAgent = new AppCompatEditText(MainActivity.this);
-                    LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-                    customUserAgent.setLayoutParams(lp);
                     dialog.setView(customUserAgent);
                     dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                         if (customUserAgent.length() == 0) {
