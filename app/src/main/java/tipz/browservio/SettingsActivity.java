@@ -166,8 +166,8 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_search.setOnClickListener(_view -> {
 			SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
 			SearchSettingsDialog.setMessage(getResources().getString(R.string.search_engine_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultSearch)));
-			final AppCompatEditText custom_se = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp2 = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-			custom_se.setLayoutParams(lp2); SearchSettingsDialog.setView(custom_se);
+			final AppCompatEditText custom_se = new AppCompatEditText(SettingsActivity.this);
+			SearchSettingsDialog.setView(custom_se);
 			SearchSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty() && custom_se.getText().toString().contains("{term}"))
 				{
@@ -182,8 +182,8 @@ public class SettingsActivity extends AppCompatActivity {
 		linear1_homepage.setOnClickListener(_view -> {
 			HomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
 			HomepageSettingsDialog.setMessage(getResources().getString(R.string.homepage_current, BrowservioSaverUtils.getPref(browservio_saver, AllPrefs.defaultHomePage)));
-			final AppCompatEditText custom_hp = new AppCompatEditText(SettingsActivity.this); LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
-			custom_hp.setLayoutParams(lp); HomepageSettingsDialog.setView(custom_hp);
+			final AppCompatEditText custom_hp = new AppCompatEditText(SettingsActivity.this);
+			HomepageSettingsDialog.setView(custom_hp);
 			HomepageSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
 				if (!Objects.requireNonNull(custom_hp.getText()).toString().isEmpty())
 				{
