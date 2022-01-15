@@ -26,7 +26,7 @@
                 android:paddingLeft="8dp"
                 android:paddingEnd="2dp"
                 android:paddingRight="8dp"
-                app:srcCompat="@drawable/outline_public_24" />
+                app:srcCompat="@drawable/default_favicon" />
 
             <ProgressBar
                 android:id="@+id/faviconProgressBar"
@@ -62,7 +62,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:singleLine="true"
-                    android:textColor="@color/colorBackground_inverted"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp"
                     android:weightSum="0" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -78,7 +78,7 @@
                 android:contentDescription="@string/fab_desp"
                 android:focusable="true"
                 android:rotation="180"
-                app:srcCompat="@drawable/outline_arrow_up_24" />
+                app:srcCompat="@drawable/arrow_up" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <HorizontalScrollView
@@ -108,7 +108,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_arrow_back_24" />
+                    app:srcCompat="@drawable/arrow_back_alt" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/forward"
@@ -121,7 +121,7 @@
                     android:paddingRight="8dp"
                     android:rotation="180"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_arrow_back_24" />
+                    app:srcCompat="@drawable/arrow_back_alt" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/reload"
@@ -133,7 +133,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_refresh_24" />
+                    app:srcCompat="@drawable/refresh" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/homepage"
@@ -145,7 +145,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_home_24" />
+                    app:srcCompat="@drawable/home" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/desktop_switch"
@@ -157,7 +157,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_smartphone_24" />
+                    app:srcCompat="@drawable/smartphone" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/clear"
@@ -169,7 +169,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_delete_24" />
+                    app:srcCompat="@drawable/delete" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/share"
@@ -181,7 +181,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_share_24" />
+                    app:srcCompat="@drawable/share" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings"
@@ -193,7 +193,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_settings_24" />
+                    app:srcCompat="@drawable/settings" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/history"
@@ -205,7 +205,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_history_24" />
+                    app:srcCompat="@drawable/history" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/fav"
@@ -217,7 +217,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_favorite_border_24" />
+                    app:srcCompat="@drawable/favorites" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/exit"
@@ -229,7 +229,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/outline_close_24" />
+                    app:srcCompat="@drawable/close" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </HorizontalScrollView>
 

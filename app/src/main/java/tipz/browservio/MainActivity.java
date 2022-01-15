@@ -155,12 +155,12 @@ public class MainActivity extends AppCompatActivity {
         if (mode == 0) {
             setDesktopMode(false,
                     userAgentFull("Linux; Android 12"),
-                    R.drawable.outline_smartphone_24,
+                    R.drawable.smartphone,
                     noReload);
         } else if (mode == 1) {
             setDesktopMode(true,
                     userAgentFull("X11; Linux x86_64"),
-                    R.drawable.outline_desktop_windows_24,
+                    R.drawable.desktop,
                     noReload);
         }
     }
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                         if (customUserAgent.length() == 0) {
                             setDeskMode(0, false);
                         } else {
-                            desktop_switch.setImageResource(R.drawable.outline_mode_edit_24);
+                            desktop_switch.setImageResource(R.drawable.custom);
                             webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
                             reload.performClick();
                         }
@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
+            favicon.setImageResource(R.drawable.default_favicon); // Set favicon as default before getting real favicon
             favicon.setVisibility(View.GONE);
             faviconProgressBar.setVisibility(View.VISIBLE);
             UrlEdit.dismissDropDown();

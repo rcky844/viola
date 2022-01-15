@@ -50,6 +50,6 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorAccent"
         android:contentDescription="@string/fav_del_fab_desp"
-        app:srcCompat="@drawable/outline_delete_24"
+        app:srcCompat="@drawable/delete"
         tools:targetApi="lollipop" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
