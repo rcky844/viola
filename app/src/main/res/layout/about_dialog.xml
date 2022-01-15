@@ -14,31 +14,35 @@
         android:orientation="horizontal"
         app:srcCompat="@drawable/browservio_banner_front" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dialog_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="@color/colorBackground_inverted"
-        android:textSize="12sp" />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/update_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/list_ripple"
-        android:text="@string/update_btn"
-        android:textColor="@color/colorPrimary"
-        app:backgroundTint="#00000000" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dialog_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/colorBackground_inverted"
+            android:textSize="14sp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/license_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/list_ripple"
-        android:text="@string/license_btn"
-        android:textColor="@color/colorPrimary"
-        app:backgroundTint="#00000000" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/update_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_btn"
+            android:textColor="@android:color/white" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/license_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/license_btn"
+            android:textColor="@android:color/white" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>
