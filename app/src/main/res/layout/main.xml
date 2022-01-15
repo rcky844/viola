@@ -48,7 +48,7 @@
                 android:orientation="horizontal"
                 android:padding="4dp">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/UrlEdit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

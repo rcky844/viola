@@ -26,6 +26,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -35,6 +37,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -56,8 +59,16 @@ import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import tipz.browservio.history.HistoryInit;
@@ -73,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     private String pageBeforeError;
     private boolean defaultError = true;
 
-    private AppCompatEditText UrlEdit;
+    private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
     private ImageView fab;
@@ -385,6 +396,66 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             return false;
+        });
+
+        UrlEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                if (text.toString().isEmpty())
+                    return;
+                new Thread() {
+                    @Override
+                    public void run() {
+                        String path = "http://suggestqueries.google.com/complete/search?client=firefox&q=".concat(text.toString());
+                        URL u;
+                        try {
+                            u = new URL(path);
+                            HttpURLConnection c = (HttpURLConnection) u.openConnection();
+                            c.setRequestMethod("GET");
+                            c.connect();
+                            final ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                            byte[] buffer = new byte[65536];
+                            c.getInputStream().read(buffer);
+                            bo.write(buffer);
+                            MainActivity.this.runOnUiThread(() -> {
+                                try {
+                                    JSONArray jsonArray = new JSONArray(bo.toString());
+
+                                    jsonArray = jsonArray.optJSONArray(1);
+                                    if (jsonArray == null) {
+                                        throw new RuntimeException("jsonArray is null.");
+                                    }
+                                    final int MAX_RESULTS = 10;
+                                    ArrayList<String> result = new ArrayList<>(Math.min(jsonArray.length(), MAX_RESULTS));
+                                    for (int i = 0; i < jsonArray.length() && result.size() < MAX_RESULTS; i++) {
+                                        String s = jsonArray.optString(i);
+                                        if (s != null && !s.isEmpty()) {
+                                            result.add(s);
+                                        }
+                                    }
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, result);
+                                    UrlEdit.setAdapter(adapter);
+                                    bo.close();
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
         });
 
         /* Page reloading stuff */
