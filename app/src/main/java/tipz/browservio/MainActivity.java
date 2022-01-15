@@ -28,6 +28,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -238,8 +239,10 @@ public class MainActivity extends AppCompatActivity {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                     dialog.setTitle(getResources().getString(R.string.ua));
                     dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
-                    final AppCompatEditText customUserAgent = new AppCompatEditText(MainActivity.this);
-                    dialog.setView(customUserAgent);
+                    final LayoutInflater layoutInflater = LayoutInflater.from(this);
+                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                    final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
+                    dialog.setView(root);
                     dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                         if (customUserAgent.length() == 0) {
                             setDeskMode(0, false);

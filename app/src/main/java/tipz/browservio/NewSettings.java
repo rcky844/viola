@@ -15,6 +15,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -161,8 +162,10 @@ public class NewSettings extends PreferenceFragmentCompat {
                             getResources().getString(R.string.url_yahoo_search_suffix));
                 else if (checkedItem[0] == 5) {
                     CustomSearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
-                    final AppCompatEditText custom_se = new AppCompatEditText(activity);
-                    CustomSearchSettingsDialog.setView(custom_se);
+                    final LayoutInflater layoutInflater = LayoutInflater.from(activity);
+                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                    final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
+                    CustomSearchSettingsDialog.setView(root);
                     CustomSearchSettingsDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
                             BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, custom_se.getText().toString());
@@ -209,8 +212,10 @@ public class NewSettings extends PreferenceFragmentCompat {
                             BrowservioBasicUtil.EMPTY_STRING);
                 else if (checkedItem[0] == 5) {
                     CustomHomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
-                    final AppCompatEditText custom_se = new AppCompatEditText(activity);
-                    CustomHomepageSettingsDialog.setView(custom_se);
+                    final LayoutInflater layoutInflater = LayoutInflater.from(activity);
+                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                    final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
+                    CustomHomepageSettingsDialog.setView(root);
                     CustomHomepageSettingsDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
                             BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, custom_se.getText().toString());
