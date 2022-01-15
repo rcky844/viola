@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Browservio</string>
-    <string name="no_error_elog" translatable="false">"Resource access denied, reason: \"browservio://no_error\" is a protected webpage."</string>
     <string name="error_already_page">"Already at the %s page!"</string>
     <string name="first">first</string>
     <string name="last">last</string>

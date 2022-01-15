@@ -749,7 +749,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void URLIdentify(String url) {
         if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error))))
-            throw new RuntimeException(getResources().getString(R.string.no_error_elog));
+            throw new RuntimeException("Resource access denied, reason: \"browservio://no_error\" is a protected webpage.");
 
         if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real)))
             errorPage();
