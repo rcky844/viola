@@ -81,4 +81,5 @@
     <string name="yahoo_search">Yahoo! UK &amp; Ireland</string>
     <string name="google_search">Google (Default)</string>
     <string name="custom_search">Custom</string>
+    <string name="license_btn">License</string>
 </resources>

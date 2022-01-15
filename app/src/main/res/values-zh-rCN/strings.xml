@@ -81,4 +81,5 @@
     <string name="yahoo_search">雅虎</string>
     <string name="google_search">谷歌 (默认)</string>
     <string name="custom_search">自定义</string>
+    <string name="license_btn">许可</string>
 </resources>

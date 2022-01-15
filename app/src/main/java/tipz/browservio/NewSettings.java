@@ -272,6 +272,7 @@ public class NewSettings extends PreferenceFragmentCompat {
             @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
             AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
+            AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
             if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING)
                 update_btn.setVisibility(View.GONE);
             dialog_text.setText(getResources().getString(R.string.version_info_message,
@@ -349,6 +350,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                     }.start();
                 }
             });
+            license_btn.setOnClickListener(_license_btn -> needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_license))));
             InfoDialog.setView(dialogView);
             InfoDialog.setPositiveButton(android.R.string.ok, null);
             InfoDialog.create().show();

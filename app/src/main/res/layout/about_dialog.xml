@@ -32,4 +32,13 @@
         android:textColor="@color/colorPrimary"
         app:backgroundTint="#00000000" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/license_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_ripple"
+        android:text="@string/license_btn"
+        android:textColor="@color/colorPrimary"
+        app:backgroundTint="#00000000" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
