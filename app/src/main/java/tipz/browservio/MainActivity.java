@@ -360,6 +360,8 @@ public class MainActivity extends AppCompatActivity {
             popupMenu.show();
         });
 
+        faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
+
         fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, actionBar));
     }
 
