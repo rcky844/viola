@@ -521,6 +521,7 @@ public class MainActivity extends AppCompatActivity {
             favicon.setImageResource(R.drawable.outline_public_24); // Set favicon as default before getting real favicon
             favicon.setVisibility(View.GONE);
             faviconProgressBar.setVisibility(View.VISIBLE);
+            UrlEdit.dismissDropDown();
         }
 
         public void onPageFinished(WebView view, String url) {
