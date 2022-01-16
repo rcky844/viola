@@ -36,6 +36,7 @@ import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
@@ -101,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private String previousUrl;
 
+    private final static int FILECHOOSER_RESULTCODE = 1;
+    private ValueCallback<Uri[]> mUploadMessage;
+
     private String userAgentFull(String mid) {
         return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
     }
@@ -135,6 +139,24 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1000) {
             initializeLogic();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == FILECHOOSER_RESULTCODE) {
+            if (null == mUploadMessage || intent == null || resultCode != RESULT_OK)
+                return;
+
+            Uri[] result = null;
+            String dataString = intent.getDataString();
+
+            if (dataString != null)
+                result = new Uri[]{Uri.parse(dataString)};
+
+            mUploadMessage.onReceiveValue(result);
+            mUploadMessage = null;
         }
     }
 
@@ -637,6 +659,22 @@ public class MainActivity extends AppCompatActivity {
 
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
             callback.invoke(origin, true, false);
+        }
+
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            if (mUploadMessage != null)
+                mUploadMessage.onReceiveValue(null);
+
+            mUploadMessage = filePathCallback;
+
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            i.addCategory(Intent.CATEGORY_OPENABLE);
+            i.setType("*/*");
+
+            MainActivity.this.startActivityForResult(Intent.createChooser(i, "File Chooser"), MainActivity.FILECHOOSER_RESULTCODE);
+
+            return true;
         }
     }
 
