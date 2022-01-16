@@ -51,7 +51,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -94,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView reload;
     private AppCompatImageView desktop_switch;
     private AppCompatImageView favicon;
-    private LinearLayoutCompat addressBarLinear;
 
     private MediaPlayer mediaPlayer;
     private final ObjectAnimator fabAnimate = new ObjectAnimator();
@@ -175,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
         MainProg = findViewById(R.id.MainProg);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         webview = findViewById(R.id.webview);
-        addressBarLinear = findViewById(R.id.addressBarLinear);
         actionBar = findViewById(R.id.actionBar);
         AppCompatImageView back = findViewById(R.id.back);
         AppCompatImageView forward = findViewById(R.id.forward);
@@ -376,21 +373,6 @@ public class MainActivity extends AppCompatActivity {
     private void initializeLogic() {
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            webview.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                int contentHeight = webview.getContentHeight();
-
-                if ((scrollY < oldScrollY && (oldScrollY - scrollY) > 64) || scrollY < 64)
-                    addressBarLinear.setVisibility(View.VISIBLE);
-                else if ((scrollY > oldScrollY && (scrollY - oldScrollY) > 64) || scrollY <= contentHeight)
-                    addressBarLinear.setVisibility(View.GONE);
-
-                if (actionBar.getVisibility() == View.VISIBLE
-                        && addressBarLinear.getVisibility() == View.GONE)
-                    fab.performClick();
-            });
-        }
 
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
