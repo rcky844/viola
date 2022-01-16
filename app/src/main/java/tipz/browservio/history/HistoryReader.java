@@ -12,15 +12,15 @@ public class HistoryReader {
 
     /**
      * History Saviour
-     *
+     * <p>
      * Module to save history into a SharedPref.
      */
     public static void appendData(SharedPreferences pref, String data) {
         BrowservioSaverUtils.setPref(pref,
                 HistoryApi.current_history_pref,
                 (history_data(pref).concat(history_data(pref).isEmpty() ?
-                                BrowservioBasicUtil.EMPTY_STRING
-                                : BrowservioBasicUtil.LINE_SEPARATOR()).concat(data)));
+                        BrowservioBasicUtil.EMPTY_STRING
+                        : BrowservioBasicUtil.LINE_SEPARATOR()).concat(data)));
     }
 
     public static void clear(SharedPreferences pref) {

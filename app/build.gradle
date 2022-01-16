@@ -1,54 +1,54 @@
 apply plugin: 'com.android.application'
 
 def getGitHash = { ->
-	def stdout = new ByteArrayOutputStream()
-	exec {
-		commandLine 'git', 'rev-parse', '--short', 'HEAD'
-		standardOutput = stdout
-	}
-	return stdout.toString().trim()
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
 }
 
 android {
-	useLibrary 'org.apache.http.legacy'
-	compileSdkVersion 31
-	
-	defaultConfig {
-		applicationId "tipz.browservio"
-		minSdkVersion 14
-		targetSdkVersion 31
-		versionCode 52
-		versionName "1.4.6"
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 31
 
-		buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-		buildConfigField "String", "VERSION_CODENAME", "\"Bowling\""
-		buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_n2022_patch1\""
-		buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
-		buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
+    defaultConfig {
+        applicationId "tipz.browservio"
+        minSdkVersion 14
+        targetSdkVersion 31
+        versionCode 52
+        versionName "1.4.6"
 
-		vectorDrawables.useSupportLibrary = true
-	}
-	buildTypes {
-		release {
-			minifyEnabled true
-			shrinkResources true
-		}
+        buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Bowling\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_n2022_patch1\""
+        buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
+        buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
-		debug {
-			buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
-			buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
-		}
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+        }
 
-		snapshot {
-			initWith(buildTypes.debug)
-			minifyEnabled true
-			shrinkResources true
-		}
-	}
+        debug {
+            buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
+            buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
+        }
+
+        snapshot {
+            initWith(buildTypes.debug)
+            minifyEnabled true
+            shrinkResources true
+        }
+    }
 }
 
 dependencies {
-	implementation "androidx.appcompat:appcompat:1.4.1"
-	implementation 'com.google.android.material:material:1.5.0'
-	implementation 'androidx.webkit:webkit:1.4.0'
+    implementation "androidx.appcompat:appcompat:1.4.1"
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.webkit:webkit:1.4.0'
 }

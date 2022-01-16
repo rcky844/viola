@@ -1,48 +1,54 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
-	<com.google.android.material.appbar.AppBarLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:theme="@style/AppTheme.AppBarOverlay">
-		<androidx.appcompat.widget.Toolbar
-			android:id="@+id/_toolbar"
-			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize"
-			android:background="?attr/colorPrimary"
-			app:popupTheme="@style/AppTheme.PopupOverlay"/>
-		<ProgressBar
-			android:id="@+id/PopulationProg"
-			style="?android:progressBarStyleHorizontal"
-			android:layout_width="match_parent"
-			android:layout_height="2dp"
-			android:background="@color/colorPrimary"
-			android:indeterminate="true"
-			android:visibility="gone" />
-	</com.google.android.material.appbar.AppBarLayout>
-	<androidx.appcompat.widget.LinearLayoutCompat
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior"
-		android:background="@color/colorBackground">
-		<ListView
-			android:id="@+id/listview"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:padding="8dp"
-			android:choiceMode="none"/>
-	</androidx.appcompat.widget.LinearLayoutCompat>
-	<com.google.android.material.floatingactionbutton.FloatingActionButton
-		android:id="@+id/_fab"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_margin="16dp"
-		android:layout_gravity="end|bottom"
-		android:backgroundTint="@color/colorAccent"
-		app:srcCompat="@drawable/outline_delete_24"
-		android:contentDescription="@string/fav_del_fab_desp"
-		tools:targetApi="lollipop" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <ProgressBar
+            android:id="@+id/PopulationProg"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimary"
+            android:indeterminate="true"
+            android:visibility="gone" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="none"
+            android:padding="8dp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorAccent"
+        android:contentDescription="@string/fav_del_fab_desp"
+        app:srcCompat="@drawable/outline_delete_24"
+        tools:targetApi="lollipop" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

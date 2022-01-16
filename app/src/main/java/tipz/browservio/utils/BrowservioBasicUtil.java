@@ -31,7 +31,7 @@ public class BrowservioBasicUtil {
 
     /**
      * Update CheckBox
-     *
+     * <p>
      * This module updates a Checkbox to another condition.
      *
      * @param chk is supplied as the CheckBox to update
@@ -42,7 +42,7 @@ public class BrowservioBasicUtil {
 
     /**
      * Module to check if app is installed
-     *
+     * <p>
      * Ref: https://stackoverflow.com/a/41693364/10866268
      *
      * @param uri should be supplied with app uri

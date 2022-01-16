@@ -1,98 +1,105 @@
-<manifest
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	package="tipz.browservio">
-	<uses-permission	android:name="android.permission.INTERNET"/>
-	<uses-permission	android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	<uses-permission	android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-	<uses-permission	android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-						android:maxSdkVersion="28" />
-	<uses-permission	android:name="android.permission.ACCESS_GPS" />
-	<uses-permission	android:name="android.permission.ACCESS_ASSISTED_GPS" />
-	<uses-permission	android:name="android.permission.ACCESS_LOCATION" />
-	<uses-permission	android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	<uses-permission	android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission	android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-	<application
-		android:allowBackup="true"
-		android:label="Browservio"
-		android:icon="@mipmap/ic_launcher"
-		android:roundIcon="@mipmap/ic_launcher_round"
-		android:theme="@style/AppTheme"
-		android:usesCleartextTraffic="true"
-		android:supportsRtl="true"
-		android:fullBackupContent="@xml/backup_descriptor"
-		android:dataExtractionRules="@xml/data_extraction_rules"
-		tools:targetApi="s">
-		<activity
-			android:name=".MainActivity"
-			android:configChanges="orientation|screenSize"
-			android:exported="true">
-			<intent-filter>
-				<action	android:name="android.intent.action.MAIN"/>
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
-			<intent-filter>
-				<action android:name="android.intent.action.SEND" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:mimeType="text/plain" />
-			</intent-filter>
-			<!-- For these schemes were not particular MIME type has been
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tipz.browservio">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.ACCESS_ASSISTED_GPS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Browservio"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="s">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <!-- For these schemes were not particular MIME type has been
                  supplied, we are a good candidate. -->
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="http" />
-				<data android:scheme="https" />
-				<data android:scheme="about" />
-				<data android:scheme="ftp" />
-				<data android:scheme="file" />
-				<data android:scheme="javascript" />
-				<data android:scheme="blob" />
-				<data android:scheme="data" />
-				<data android:scheme="browservio" />
-			</intent-filter>
-			<!--  For these schemes where any of these particular MIME types
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="about" />
+                <data android:scheme="ftp" />
+                <data android:scheme="file" />
+                <data android:scheme="javascript" />
+                <data android:scheme="blob" />
+                <data android:scheme="data" />
+                <data android:scheme="browservio" />
+            </intent-filter>
+            <!--  For these schemes where any of these particular MIME types
                   have been supplied, we are a good candidate. -->
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:scheme="http" />
-				<data android:scheme="https" />
-				<data android:mimeType="text/html"/>
-				<data android:mimeType="text/plain"/>
-				<data android:mimeType="application/xhtml+xml"/>
-				<data android:mimeType="application/vnd.wap.xhtml+xml"/>
-			</intent-filter>
-			<!-- Accept inbound NFC URLs at a low priority -->
-			<intent-filter android:priority="-101">
-				<action android:name="android.nfc.action.NDEF_DISCOVERED" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:scheme="text/plain" />
-			</intent-filter>
-		</activity>
-		<activity
-			android:name=".SettingsActivity"
-			android:configChanges="orientation|screenSize"/>
-		<activity
-			android:name=".FavActivity"
-			android:configChanges="orientation|screenSize"/>
-		<activity
-			android:name=".HistoryActivity"
-			android:configChanges="orientation|screenSize"/>
-		<uses-library
-			android:name="org.apache.http.legacy"
-			android:required="false"/>
-		<provider
-			android:name="androidx.core.content.FileProvider"
-			android:authorities="${applicationId}.provider"
-			android:exported="false"
-			android:grantUriPermissions="true">
-			<meta-data
-				android:name="android.support.FILE_PROVIDER_PATHS"
-				android:resource="@xml/provider_paths" />
-		</provider>
-	</application>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:mimeType="text/html" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="application/xhtml+xml" />
+                <data android:mimeType="application/vnd.wap.xhtml+xml" />
+            </intent-filter>
+            <!-- Accept inbound NFC URLs at a low priority -->
+            <intent-filter android:priority="-101">
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".FavActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".HistoryActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+    </application>
 </manifest>

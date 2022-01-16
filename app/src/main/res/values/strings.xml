@@ -1,26 +1,26 @@
 <resources>
-    <string	name="app_name"	translatable="false">Browservio</string>
+    <string name="app_name" translatable="false">Browservio</string>
 
     <!--
         Main
             -->
     <!-- JAVA -->
     <!-- Error logs -->
-    <string	name="no_error_elog" translatable="false">"Resource access denied, reason: \"browservio://no_error\" is a protected webpage."</string>
+    <string name="no_error_elog" translatable="false">"Resource access denied, reason: \"browservio://no_error\" is a protected webpage."</string>
 
     <!-- Field can't be empty -->
 
     <!-- Move pages string -->
-    <string	name="error_already_page">"Already at the %s page!"</string>
-    <string	name="first">first</string>
-    <string	name="last">last</string>
+    <string name="error_already_page">"Already at the %s page!"</string>
+    <string name="first">first</string>
+    <string name="last">last</string>
 
     <!-- Custom user agent or default ua selector -->
-    <string	name="linear_control_b3_desk">Desktop</string>
-    <string	name="linear_control_b3_mobi">Mobile</string>
-    <string	name="linear_control_b3_cus">Custom</string>
-    <string	name="ua">"User agent"</string>
-    <string	name="cus_ua_choose">"Please set the custom user agent of your choosing"</string>
+    <string name="linear_control_b3_desk">Desktop</string>
+    <string name="linear_control_b3_mobi">Mobile</string>
+    <string name="linear_control_b3_cus">Custom</string>
+    <string name="ua">"User agent"</string>
+    <string name="cus_ua_choose">"Please set the custom user agent of your choosing"</string>
 
     <!-- Toast shown when file starts downloading -->
 
