@@ -66,7 +66,7 @@ public class FavActivity extends AppCompatActivity {
         listview.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
             if (!popup) {
                 Intent needLoad = new Intent();
-                needLoad.putExtra("needLoadUrl", _param3);
+                needLoad.putExtra("needLoadUrl", bookmark_list.get(_param3));
                 setResult(0, needLoad);
                 finish();
             } else {
