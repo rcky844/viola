@@ -83,22 +83,22 @@ public class HistoryActivity extends AppCompatActivity {
             popup1.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.del_hist))) {
                     final int _position = _param3;
-                    deleteHistory.setTitle(getResources().getString(R.string.del_hist_title));
-                    deleteHistory.setMessage(getResources().getString(R.string.del_hist_title));
-                    deleteHistory.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                        history_list.remove(_position);
-                        StringBuilder out = new StringBuilder();
-                        for (Object o : history_list) {
-                            out.append(o.toString());
-                            out.append(BrowservioBasicUtil.LINE_SEPARATOR());
-                        }
-                        HistoryReader.write(historyPref(this), out.toString().trim());
-                        ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
-                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
-                        isEmptyCheck();
-                    });
-                    deleteHistory.setNegativeButton(android.R.string.cancel, null);
-                    deleteHistory.create().show();
+                    deleteHistory.setTitle(getResources().getString(R.string.del_hist_title))
+                            .setMessage(getResources().getString(R.string.del_hist_title))
+                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                history_list.remove(_position);
+                                StringBuilder out = new StringBuilder();
+                                for (Object o : history_list) {
+                                    out.append(o.toString());
+                                    out.append(BrowservioBasicUtil.LINE_SEPARATOR());
+                                }
+                                HistoryReader.write(historyPref(this), out.toString().trim());
+                                ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+                                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
+                                isEmptyCheck();
+                            })
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .create().show();
                     return true;
                 } else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
                     ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", (String) listview.getItemAtPosition(_param3)));
@@ -118,15 +118,15 @@ public class HistoryActivity extends AppCompatActivity {
         });
 
         _fab.setOnClickListener(_view -> {
-            deleteHistory.setTitle(getResources().getString(R.string.del_fav2_title));
-            deleteHistory.setMessage(getResources().getString(R.string.del_hist_message));
-            deleteHistory.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                HistoryReader.clear(historyPref(this));
-                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
-                finish();
-            });
-            deleteHistory.setNegativeButton(android.R.string.cancel, null);
-            deleteHistory.create().show();
+            deleteHistory.setTitle(getResources().getString(R.string.del_fav2_title))
+                    .setMessage(getResources().getString(R.string.del_hist_message))
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        HistoryReader.clear(historyPref(this));
+                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
+                        finish();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
         });
     }
 

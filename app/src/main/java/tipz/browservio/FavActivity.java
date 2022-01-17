@@ -83,17 +83,17 @@ public class FavActivity extends AppCompatActivity {
             popup1.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.del_fav))) {
                     final int _position = _param3;
-                    delFav.setTitle(getResources().getString(R.string.del_fav_title));
-                    delFav.setMessage(getResources().getString(R.string.del_fav_title));
-                    delFav.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                        bookmark_list.remove(_position);
-                        BrowservioSaverUtils.setPref(bookmarks(FavActivity.this), AllPrefs.bookmark.concat(String.valueOf((long) (_position))).concat(AllPrefs.bookmarked_count_show), "0");
-                        ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
-                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
-                        isEmptyCheck(bookmark_list, bookmarks(FavActivity.this));
-                    });
-                    delFav.setNegativeButton(android.R.string.cancel, null);
-                    delFav.create().show();
+                    delFav.setTitle(getResources().getString(R.string.del_fav_title))
+                            .setMessage(getResources().getString(R.string.del_fav_title))
+                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                bookmark_list.remove(_position);
+                                BrowservioSaverUtils.setPref(bookmarks(FavActivity.this), AllPrefs.bookmark.concat(String.valueOf((long) (_position))).concat(AllPrefs.bookmarked_count_show), "0");
+                                ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+                                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
+                                isEmptyCheck(bookmark_list, bookmarks(FavActivity.this));
+                            })
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .create().show();
                     return true;
                 } else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
                     ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", BrowservioSaverUtils.getPref(bookmarks(FavActivity.this), AllPrefs.bookmark.concat(String.valueOf(_param3)))));
@@ -107,15 +107,15 @@ public class FavActivity extends AppCompatActivity {
         });
 
         _fab.setOnClickListener(_view -> {
-            delFav.setTitle(getResources().getString(R.string.del_fav2_title));
-            delFav.setMessage(getResources().getString(R.string.del_fav2_message));
-            delFav.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                bookmarks(FavActivity.this).edit().clear().apply();
-                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
-                finish();
-            });
-            delFav.setNegativeButton(android.R.string.cancel, null);
-            delFav.create().show();
+            delFav.setTitle(getResources().getString(R.string.del_fav2_title))
+                    .setMessage(getResources().getString(R.string.del_fav2_message))
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        bookmarks(FavActivity.this).edit().clear().apply();
+                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
+                        finish();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
         });
     }
 

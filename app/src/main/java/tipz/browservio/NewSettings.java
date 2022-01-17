@@ -139,102 +139,102 @@ public class NewSettings extends PreferenceFragmentCompat {
         InfoDialog = new MaterialAlertDialogBuilder(activity);
 
         search_engine.setOnPreferenceClickListener(preference -> {
-            SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
             final int[] checkedItem = {BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)};
             final String[] searchEngine = new String[1];
-            SearchSettingsDialog.setSingleChoiceItems(searchHomePageList,
-                    BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId), (dialog, which) -> checkedItem[0] = which);
-            SearchSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                if (checkedItem[0] == 0)
-                    searchEngine[0] = getResources().getString(R.string.url_default_homepage,
-                            getResources().getString(R.string.url_default_search_suffix));
-                else if (checkedItem[0] == 1)
-                    searchEngine[0] = getResources().getString(R.string.url_baidu_homepage,
-                            getResources().getString(R.string.url_baidu_search_suffix));
-                else if (checkedItem[0] == 2)
-                    searchEngine[0] = getResources().getString(R.string.url_duck_homepage,
-                            getResources().getString(R.string.url_duck_search_suffix));
-                else if (checkedItem[0] == 3)
-                    searchEngine[0] = getResources().getString(R.string.url_bing_homepage,
-                            getResources().getString(R.string.url_bing_search_suffix));
-                else if (checkedItem[0] == 4)
-                    searchEngine[0] = getResources().getString(R.string.url_yahoo_homepage,
-                            getResources().getString(R.string.url_yahoo_search_suffix));
-                else if (checkedItem[0] == 5) {
-                    CustomSearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine));
-                    final LayoutInflater layoutInflater = LayoutInflater.from(activity);
-                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
-                    final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
-                    CustomSearchSettingsDialog.setView(root);
-                    CustomSearchSettingsDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                        if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
-                            BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, custom_se.getText().toString());
+            SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine))
+                    .setSingleChoiceItems(searchHomePageList,
+                            BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId), (dialog, which) -> checkedItem[0] = which)
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        if (checkedItem[0] == 0)
+                            searchEngine[0] = getResources().getString(R.string.url_default_homepage,
+                                    getResources().getString(R.string.url_default_search_suffix));
+                        else if (checkedItem[0] == 1)
+                            searchEngine[0] = getResources().getString(R.string.url_baidu_homepage,
+                                    getResources().getString(R.string.url_baidu_search_suffix));
+                        else if (checkedItem[0] == 2)
+                            searchEngine[0] = getResources().getString(R.string.url_duck_homepage,
+                                    getResources().getString(R.string.url_duck_search_suffix));
+                        else if (checkedItem[0] == 3)
+                            searchEngine[0] = getResources().getString(R.string.url_bing_homepage,
+                                    getResources().getString(R.string.url_bing_search_suffix));
+                        else if (checkedItem[0] == 4)
+                            searchEngine[0] = getResources().getString(R.string.url_yahoo_homepage,
+                                    getResources().getString(R.string.url_yahoo_search_suffix));
+                        else if (checkedItem[0] == 5) {
+                            final LayoutInflater layoutInflater = LayoutInflater.from(activity);
+                            @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                            final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
+                            CustomSearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine))
+                                    .setView(root)
+                                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                        if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
+                                            BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, custom_se.getText().toString());
+                                            BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId, checkedItem[0]);
+                                            search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .create().show();
+                        }
+
+                        if (checkedItem[0] != 5) {
+                            BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, searchEngine[0]);
                             BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId, checkedItem[0]);
                             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
                         }
-                    });
-                    CustomSearchSettingsDialog.setNegativeButton(android.R.string.cancel, null);
-                    CustomSearchSettingsDialog.create().show();
-                }
-
-                if (checkedItem[0] != 5) {
-                    BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, searchEngine[0]);
-                    BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId, checkedItem[0]);
-                    search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
-                }
-            });
-            SearchSettingsDialog.setNegativeButton(android.R.string.cancel, null);
-            SearchSettingsDialog.create().show();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
             return true;
         });
 
         homepage.setOnPreferenceClickListener(preference -> {
-            HomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
             final int[] checkedItem = {BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)};
             final String[] homePage = new String[1];
-            HomepageSettingsDialog.setSingleChoiceItems(searchHomePageList,
-                    BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId), (dialog, which) -> checkedItem[0] = which);
-            HomepageSettingsDialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                if (checkedItem[0] == 0)
-                    homePage[0] = getResources().getString(R.string.url_default_homepage,
-                            BrowservioBasicUtil.EMPTY_STRING);
-                else if (checkedItem[0] == 1)
-                    homePage[0] = getResources().getString(R.string.url_baidu_homepage,
-                            BrowservioBasicUtil.EMPTY_STRING);
-                else if (checkedItem[0] == 2)
-                    homePage[0] = getResources().getString(R.string.url_duck_homepage,
-                            BrowservioBasicUtil.EMPTY_STRING);
-                else if (checkedItem[0] == 3)
-                    homePage[0] = getResources().getString(R.string.url_bing_homepage,
-                            BrowservioBasicUtil.EMPTY_STRING);
-                else if (checkedItem[0] == 4)
-                    homePage[0] = getResources().getString(R.string.url_yahoo_homepage,
-                            BrowservioBasicUtil.EMPTY_STRING);
-                else if (checkedItem[0] == 5) {
-                    CustomHomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage));
-                    final LayoutInflater layoutInflater = LayoutInflater.from(activity);
-                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
-                    final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
-                    CustomHomepageSettingsDialog.setView(root);
-                    CustomHomepageSettingsDialog.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                        if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
-                            BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, custom_se.getText().toString());
+            HomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage))
+                    .setSingleChoiceItems(searchHomePageList,
+                            BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId), (dialog, which) -> checkedItem[0] = which)
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        if (checkedItem[0] == 0)
+                            homePage[0] = getResources().getString(R.string.url_default_homepage,
+                                    BrowservioBasicUtil.EMPTY_STRING);
+                        else if (checkedItem[0] == 1)
+                            homePage[0] = getResources().getString(R.string.url_baidu_homepage,
+                                    BrowservioBasicUtil.EMPTY_STRING);
+                        else if (checkedItem[0] == 2)
+                            homePage[0] = getResources().getString(R.string.url_duck_homepage,
+                                    BrowservioBasicUtil.EMPTY_STRING);
+                        else if (checkedItem[0] == 3)
+                            homePage[0] = getResources().getString(R.string.url_bing_homepage,
+                                    BrowservioBasicUtil.EMPTY_STRING);
+                        else if (checkedItem[0] == 4)
+                            homePage[0] = getResources().getString(R.string.url_yahoo_homepage,
+                                    BrowservioBasicUtil.EMPTY_STRING);
+                        else if (checkedItem[0] == 5) {
+                            final LayoutInflater layoutInflater = LayoutInflater.from(activity);
+                            @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                            final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
+                            CustomHomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage))
+                                    .setView(root)
+                                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                        if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
+                                            BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, custom_se.getText().toString());
+                                            BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId, checkedItem[0]);
+                                            homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .create().show();
+                        }
+
+                        if (checkedItem[0] != 5) {
+                            BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, homePage[0]);
                             BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId, checkedItem[0]);
                             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
                         }
-                    });
-                    CustomHomepageSettingsDialog.setNegativeButton(android.R.string.cancel, null);
-                    CustomHomepageSettingsDialog.create().show();
-                }
-
-                if (checkedItem[0] != 5) {
-                    BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, homePage[0]);
-                    BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId, checkedItem[0]);
-                    homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
-                }
-            });
-            HomepageSettingsDialog.setNegativeButton(android.R.string.cancel, null);
-            HomepageSettingsDialog.create().show();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
             return true;
         });
 
@@ -246,12 +246,12 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         show_pinch_btn.setOnPreferenceClickListener(preference -> {
             BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity), AllPrefs.showZoomKeys, show_pinch_btn.isChecked(), false);
-            ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q));
-            ZoomUpdateDialog.setMessage(getResources().getString(R.string.restart_app_qmsg));
-            ZoomUpdateDialog.setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) ->
-                    needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_restart))));
-            ZoomUpdateDialog.setNegativeButton(android.R.string.cancel, null);
-            ZoomUpdateDialog.create().show();
+            ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q))
+                    .setMessage(getResources().getString(R.string.restart_app_qmsg))
+                    .setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) ->
+                            needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_restart))))
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
             return true;
         });
 
@@ -351,9 +351,9 @@ public class NewSettings extends PreferenceFragmentCompat {
                 }
             });
             license_btn.setOnClickListener(_license_btn -> needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_license))));
-            InfoDialog.setView(dialogView);
-            InfoDialog.setPositiveButton(android.R.string.ok, null);
-            InfoDialog.create().show();
+            InfoDialog.setView(dialogView)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create().show();
             return true;
         });
 
