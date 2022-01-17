@@ -240,7 +240,7 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         show_favicon.setOnPreferenceClickListener(preference -> {
             BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
-                    AllPrefs.showBrowseBtn, show_favicon.isChecked(), false);
+                    AllPrefs.showFavicon, show_favicon.isChecked(), false);
             return true;
         });
 
