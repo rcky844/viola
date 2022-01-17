@@ -36,9 +36,7 @@
                         android:layout_width="?attr/minTouchTargetSize"
                         android:layout_height="?attr/minTouchTargetSize"
                         android:contentDescription="@string/favicon_desp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:paddingRight="8dp"
+                        android:padding="8dp"
                         app:srcCompat="@drawable/default_favicon" />
 
                     <ProgressBar
