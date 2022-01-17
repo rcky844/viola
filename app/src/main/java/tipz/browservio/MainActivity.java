@@ -511,17 +511,19 @@ public class MainActivity extends AppCompatActivity {
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(String url) {
+        private void UrlSet(String url, Boolean addToHist) {
             if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
                     && !(url.startsWith(getResources().getString(R.string.url_prefix, ""))
                     || url.equals("about:blank")
                     || url.equals(getResources().getString(R.string.url_error_real)))) {
                 UrlEdit.setText(url);
-                HistoryReader.appendData(historyPref(MainActivity.this), url);
+                if (addToHist)
+                    HistoryReader.appendData(historyPref(MainActivity.this), url);
             }
         }
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
+            UrlSet(url, false);
             favicon.setImageResource(R.drawable.default_favicon); // Set favicon as default before getting real favicon
             if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
                 favicon.setVisibility(View.GONE);
@@ -531,7 +533,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageFinished(WebView view, String url) {
-            UrlSet(url);
+            UrlSet(url, true);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
