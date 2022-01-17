@@ -1,6 +1,6 @@
 package tipz.browservio.searchengines;
 
-import android.webkit.URLUtil;
+import static tipz.browservio.utils.UrlUtils.composeSearchUrl;
 
 import tipz.browservio.utils.BrowservioBasicUtil;
 
@@ -19,10 +19,10 @@ public class SearchEngineEntries {
     public final static String ecosiaSearchSuffix = googleSearchSuffix;
 
     public static String getSearchEngineUrl(String homeAdd, String searchSuffix) {
-        return URLUtil.composeSearchUrl(searchSuffix, homeAdd, "%s");
+        return composeSearchUrl(searchSuffix, homeAdd, "%s");
     }
 
     public static String getHomepageUrl(String homeAdd) {
-        return URLUtil.composeSearchUrl(BrowservioBasicUtil.EMPTY_STRING, homeAdd, "%s");
+        return composeSearchUrl(BrowservioBasicUtil.EMPTY_STRING, homeAdd, "%s");
     }
 }

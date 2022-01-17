@@ -40,4 +40,9 @@ public class UrlUtils {
         }
         return url;
     }
+
+    public static String composeSearchUrl(String inQuery, String template,
+                                          String queryPlaceHolder) {
+        return template.replace(queryPlaceHolder, inQuery);
+    }
 }
