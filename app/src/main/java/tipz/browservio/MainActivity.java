@@ -2,6 +2,8 @@ package tipz.browservio;
 
 import static tipz.browservio.fav.FavApi.bookmarks;
 import static tipz.browservio.history.HistoryApi.historyPref;
+import static tipz.browservio.searchengines.SearchEngineEntries.getHomepageUrl;
+import static tipz.browservio.searchengines.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
 import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
 
@@ -74,6 +76,7 @@ import java.util.Objects;
 
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
+import tipz.browservio.searchengines.SearchEngineEntries;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
@@ -798,9 +801,9 @@ public class MainActivity extends AppCompatActivity {
         if (!BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch).equals("0")) {
             boolean isEqualToOneFirstLaunch = BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch));
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage, getResources().getString(R.string.url_default_homepage, BrowservioBasicUtil.EMPTY_STRING), isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage, getHomepageUrl(SearchEngineEntries.google), isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultHomePageId, 0, isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultSearch, getResources().getString(R.string.url_default_homepage, getResources().getString(R.string.url_default_search_suffix)), isEqualToOneFirstLaunch);
+            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultSearch, getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix), isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultSearchId, 0, isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
             BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys, "0", isEqualToOneFirstLaunch);
