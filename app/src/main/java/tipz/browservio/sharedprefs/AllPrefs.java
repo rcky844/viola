@@ -10,7 +10,6 @@ public class AllPrefs {
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String isJavaScriptEnabled = "isJavaScriptEnabled";
     public static final String showFavicon = "showFavicon";
-    public static final String showBrowseBtn = "showBrowseBtn";
     public static final String showZoomKeys = "showZoomKeys";
     public static final String showCustomError = "showCustomError";
 

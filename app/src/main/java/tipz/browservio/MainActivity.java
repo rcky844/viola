@@ -255,24 +255,24 @@ public class MainActivity extends AppCompatActivity {
                 else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi)))
                     setDeskMode(0, false);
                 else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
-                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    dialog.setTitle(getResources().getString(R.string.ua));
-                    dialog.setMessage(getResources().getString(R.string.cus_ua_choose));
                     final LayoutInflater layoutInflater = LayoutInflater.from(this);
                     @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                     final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
-                    dialog.setView(root);
-                    dialog.setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                        if (customUserAgent.length() == 0) {
-                            setDeskMode(0, false);
-                        } else {
-                            desktop_switch.setImageResource(R.drawable.custom);
-                            webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
-                            reload.performClick();
-                        }
-                    });
-                    dialog.setNegativeButton(android.R.string.cancel, null);
-                    dialog.create().show();
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                    dialog.setTitle(getResources().getString(R.string.ua))
+                            .setMessage(getResources().getString(R.string.cus_ua_choose))
+                            .setView(root)
+                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                if (customUserAgent.length() == 0) {
+                                    setDeskMode(0, false);
+                                } else {
+                                    desktop_switch.setImageResource(R.drawable.custom);
+                                    webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
+                                    reload.performClick();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .create().show();
                 }
                 return false;
             });
@@ -523,8 +523,10 @@ public class MainActivity extends AppCompatActivity {
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             favicon.setImageResource(R.drawable.default_favicon); // Set favicon as default before getting real favicon
-            favicon.setVisibility(View.GONE);
-            faviconProgressBar.setVisibility(View.VISIBLE);
+            if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
+                favicon.setVisibility(View.GONE);
+                faviconProgressBar.setVisibility(View.VISIBLE);
+            }
             UrlEdit.dismissDropDown();
         }
 
@@ -534,8 +536,10 @@ public class MainActivity extends AppCompatActivity {
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            favicon.setVisibility(View.VISIBLE);
-            faviconProgressBar.setVisibility(View.GONE);
+            if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
+                favicon.setVisibility(View.VISIBLE);
+                faviconProgressBar.setVisibility(View.GONE);
+            }
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -589,11 +593,11 @@ public class MainActivity extends AppCompatActivity {
             }
             message += " Do you want to continue anyway?";
 
-            dialog.setTitle("SSL Certificate Error");
-            dialog.setMessage(message);
-            dialog.setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed());
-            dialog.setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel());
-            dialog.create().show();
+            dialog.setTitle("SSL Certificate Error")
+                    .setMessage(message)
+                    .setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed())
+                    .setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel())
+                    .create().show();
         }
     }
 
@@ -693,16 +697,6 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         _configChecker();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     /**
