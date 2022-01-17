@@ -523,8 +523,10 @@ public class MainActivity extends AppCompatActivity {
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             favicon.setImageResource(R.drawable.default_favicon); // Set favicon as default before getting real favicon
-            favicon.setVisibility(View.GONE);
-            faviconProgressBar.setVisibility(View.VISIBLE);
+            if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
+                favicon.setVisibility(View.GONE);
+                faviconProgressBar.setVisibility(View.VISIBLE);
+            }
             UrlEdit.dismissDropDown();
         }
 
@@ -534,8 +536,10 @@ public class MainActivity extends AppCompatActivity {
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            favicon.setVisibility(View.VISIBLE);
-            faviconProgressBar.setVisibility(View.GONE);
+            if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
+                favicon.setVisibility(View.VISIBLE);
+                faviconProgressBar.setVisibility(View.GONE);
+            }
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
