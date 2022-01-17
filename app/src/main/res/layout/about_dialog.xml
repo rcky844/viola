@@ -40,6 +40,7 @@
                 android:id="@+id/update_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccent"
                 android:text="@string/update_btn"
                 android:textColor="@android:color/white" />
 
@@ -47,6 +48,7 @@
                 android:id="@+id/license_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccent"
                 android:text="@string/license_btn"
                 android:textColor="@android:color/white" />
 
