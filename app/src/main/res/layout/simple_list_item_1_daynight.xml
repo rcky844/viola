@@ -22,4 +22,4 @@
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:textColor="@color/colorBackground_inverted" />
+    android:textColor="@color/colorElement" />

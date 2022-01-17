@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/colorBackground_inverted"
+                android:textColor="@color/colorElement"
                 android:textSize="14sp" />
 
             <com.google.android.material.button.MaterialButton

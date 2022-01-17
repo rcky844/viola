@@ -4,5 +4,5 @@
     <color name="colorControlHighlight">#1E9D42</color>
     <color name="colorControlNormal">#37E81B</color>
     <color name="colorBackground">#000000</color>
-    <color name="colorBackground_inverted">#FFFFFF</color>
+    <color name="colorElement">#FFFFFF</color>
 </resources>
