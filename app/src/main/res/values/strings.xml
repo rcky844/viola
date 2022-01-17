@@ -85,5 +85,6 @@
     <string name="yahoo_search">"Yahoo! UK &amp; Ireland"</string>
     <string name="custom_search">"Custom"</string>
     <string name="license_btn">License</string>
+    <string name="ecosia_search" translatable="false">Ecosia</string>
 
 </resources>

@@ -10,14 +10,4 @@
     <string name="url_license_real" translatable="false">"file:///android_asset/LICENSE.txt"</string>
     <string name="url_bug_report_suffix" translatable="false">"-/issues"</string>
     <string name="url_source_code" translatable="false">"https://gitlab.com/TipzTeam/browservio/%s"</string>
-    <string name="url_default_homepage" translatable="false">"https://www.google.com/%s"</string>
-    <string name="url_default_search_suffix" translatable="false">"search?q="</string>
-    <string name="url_baidu_homepage" translatable="false">"https://www.baidu.com/%s"</string>
-    <string name="url_baidu_search_suffix" translatable="false">"s?wd="</string>
-    <string name="url_duck_homepage" translatable="false">"https://www.duckduckgo.com/%s"</string>
-    <string name="url_duck_search_suffix" translatable="false">"?q="</string>
-    <string name="url_bing_homepage" translatable="false">"https://www.bing.com/%s"</string>
-    <string name="url_bing_search_suffix" translatable="false">"search?q="</string>
-    <string name="url_yahoo_homepage" translatable="false">"https://uk.search.yahoo.com/%s"</string>
-    <string name="url_yahoo_search_suffix" translatable="false">"search?p="</string>
 </resources>

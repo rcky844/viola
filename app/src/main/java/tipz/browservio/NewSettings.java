@@ -1,5 +1,7 @@
 package tipz.browservio;
 
+import static tipz.browservio.searchengines.SearchEngineEntries.getHomepageUrl;
+import static tipz.browservio.searchengines.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
 import static tipz.browservio.utils.ApkInstaller.installApplication;
 
@@ -35,6 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
 
+import tipz.browservio.searchengines.SearchEngineEntries;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
@@ -111,6 +114,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                 activity.getResources().getString(R.string.duck_search),
                 activity.getResources().getString(R.string.bing_search),
                 activity.getResources().getString(R.string.yahoo_search),
+                activity.getResources().getString(R.string.ecosia_search),
                 activity.getResources().getString(R.string.custom_search)
         };
 
@@ -147,21 +151,18 @@ public class NewSettings extends PreferenceFragmentCompat {
                             BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId), (dialog, which) -> checkedItem[0] = which)
                     .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                         if (checkedItem[0] == 0)
-                            searchEngine[0] = getResources().getString(R.string.url_default_homepage,
-                                    getResources().getString(R.string.url_default_search_suffix));
+                            searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix);
                         else if (checkedItem[0] == 1)
-                            searchEngine[0] = getResources().getString(R.string.url_baidu_homepage,
-                                    getResources().getString(R.string.url_baidu_search_suffix));
+                            searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.baidu, SearchEngineEntries.baiduSearchSuffix);
                         else if (checkedItem[0] == 2)
-                            searchEngine[0] = getResources().getString(R.string.url_duck_homepage,
-                                    getResources().getString(R.string.url_duck_search_suffix));
+                            searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.duck, SearchEngineEntries.duckSearchSuffix);
                         else if (checkedItem[0] == 3)
-                            searchEngine[0] = getResources().getString(R.string.url_bing_homepage,
-                                    getResources().getString(R.string.url_bing_search_suffix));
+                            searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.bing, SearchEngineEntries.bingSearchSuffix);
                         else if (checkedItem[0] == 4)
-                            searchEngine[0] = getResources().getString(R.string.url_yahoo_homepage,
-                                    getResources().getString(R.string.url_yahoo_search_suffix));
-                        else if (checkedItem[0] == 5) {
+                            searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.yahoo, SearchEngineEntries.yahooSearchSuffix);
+                        else if (checkedItem[0] == 5)
+                            searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.ecosia, SearchEngineEntries.ecosiaSearchSuffix);
+                        else if (checkedItem[0] == 6) {
                             final LayoutInflater layoutInflater = LayoutInflater.from(activity);
                             @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                             final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -178,7 +179,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                                     .create().show();
                         }
 
-                        if (checkedItem[0] != 5) {
+                        if (checkedItem[0] != 6) {
                             BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, searchEngine[0]);
                             BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId, checkedItem[0]);
                             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
@@ -197,21 +198,18 @@ public class NewSettings extends PreferenceFragmentCompat {
                             BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId), (dialog, which) -> checkedItem[0] = which)
                     .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                         if (checkedItem[0] == 0)
-                            homePage[0] = getResources().getString(R.string.url_default_homepage,
-                                    BrowservioBasicUtil.EMPTY_STRING);
+                            homePage[0] = getHomepageUrl(SearchEngineEntries.google);
                         else if (checkedItem[0] == 1)
-                            homePage[0] = getResources().getString(R.string.url_baidu_homepage,
-                                    BrowservioBasicUtil.EMPTY_STRING);
+                            homePage[0] = getHomepageUrl(SearchEngineEntries.baidu);
                         else if (checkedItem[0] == 2)
-                            homePage[0] = getResources().getString(R.string.url_duck_homepage,
-                                    BrowservioBasicUtil.EMPTY_STRING);
+                            homePage[0] = getHomepageUrl(SearchEngineEntries.duck);
                         else if (checkedItem[0] == 3)
-                            homePage[0] = getResources().getString(R.string.url_bing_homepage,
-                                    BrowservioBasicUtil.EMPTY_STRING);
+                            homePage[0] = getHomepageUrl(SearchEngineEntries.bing);
                         else if (checkedItem[0] == 4)
-                            homePage[0] = getResources().getString(R.string.url_yahoo_homepage,
-                                    BrowservioBasicUtil.EMPTY_STRING);
-                        else if (checkedItem[0] == 5) {
+                            homePage[0] = getHomepageUrl(SearchEngineEntries.yahoo);
+                        else if (checkedItem[0] == 5)
+                            homePage[0] = getHomepageUrl(SearchEngineEntries.ecosia);
+                        else if (checkedItem[0] == 6) {
                             final LayoutInflater layoutInflater = LayoutInflater.from(activity);
                             @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                             final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -228,7 +226,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                                     .create().show();
                         }
 
-                        if (checkedItem[0] != 5) {
+                        if (checkedItem[0] != 6) {
                             BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, homePage[0]);
                             BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId, checkedItem[0]);
                             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
