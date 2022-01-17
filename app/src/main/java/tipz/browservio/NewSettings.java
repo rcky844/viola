@@ -20,6 +20,7 @@ import android.view.View;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
@@ -270,11 +271,13 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         version.setOnPreferenceClickListener(preference -> {
             @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
+            AppCompatImageView easter_banner = dialogView.findViewById(R.id.easter_banner);
             AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
             AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
             if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING)
                 update_btn.setVisibility(View.GONE);
+            easter_banner.setOnClickListener(_update_btn -> BrowservioBasicUtil.showMessage(activity, String.format("%0" + 3 + "d", 0).replace("0", getResources().getString(R.string.app_name).concat("! "))));
             dialog_text.setText(getResources().getString(R.string.version_info_message,
                     getResources().getString(R.string.app_name),
                     BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
