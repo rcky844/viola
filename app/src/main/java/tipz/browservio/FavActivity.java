@@ -106,17 +106,15 @@ public class FavActivity extends AppCompatActivity {
             return false;
         });
 
-        _fab.setOnClickListener(_view -> {
-            delFav.setTitle(getResources().getString(R.string.del_fav2_title))
-                    .setMessage(getResources().getString(R.string.del_fav2_message))
-                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                        bookmarks(FavActivity.this).edit().clear().apply();
-                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
-                        finish();
-                    })
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create().show();
-        });
+        _fab.setOnClickListener(_view -> delFav.setTitle(getResources().getString(R.string.del_fav2_title))
+                .setMessage(getResources().getString(R.string.del_fav2_message))
+                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                    bookmarks(FavActivity.this).edit().clear().apply();
+                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
+                    finish();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show());
     }
 
     @Override
