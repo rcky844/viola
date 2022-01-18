@@ -6,4 +6,5 @@
     <color name="colorControlNormal">#26000000</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorElement">#ffffff</color>
+    <color name="colorText">#000000</color>
 </resources>

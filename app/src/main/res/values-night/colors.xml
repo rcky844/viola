@@ -1,3 +1,4 @@
 <resources>
     <color name="colorBackground">#000000</color>
+    <color name="colorText">#ffffff</color>
 </resources>
