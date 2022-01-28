@@ -74,6 +74,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
 import tipz.browservio.searchengines.SearchEngineEntries;
@@ -135,6 +136,18 @@ public class MainActivity extends AppCompatActivity {
         } else {
             initializeLogic();
         }
+
+        CaocConfig.Builder.create()
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
+                .enabled(true)
+                .showErrorDetails(true)
+                .showRestartButton(true)
+                .logErrorOnRestart(true)
+                .trackActivities(true)
+                .minTimeBetweenCrashesMs(2000)
+                .restartActivity(MainActivity.class)
+                .errorActivity(null)
+                .apply();
     }
 
     @Override

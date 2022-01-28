@@ -58,4 +58,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.0-alpha01'
     implementation 'androidx.webkit:webkit:1.4.0'
     implementation 'androidx.preference:preference:1.1.1'
+    implementation 'cat.ereza:customactivityoncrash:2.3.0'
 }
