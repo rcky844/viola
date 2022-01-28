@@ -82,4 +82,13 @@
     <string name="google_search">谷歌 (默认)</string>
     <string name="custom_search">自定义</string>
     <string name="license_btn">许可</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">错误发生对于给您带来的不便，我们深表歉意。</string>
+    <string name="customactivityoncrash_error_activity_restart_app">重启应用</string>
+    <string name="customactivityoncrash_error_activity_error_details">错误详细</string>
+    <string name="customactivityoncrash_error_activity_close_app">关闭应用</string>
+    <string name="customactivityoncrash_error_activity_error_details_title">错误详细</string>
+    <string name="customactivityoncrash_error_activity_error_details_close">关闭</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy">复制到剪贴板</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied">成功复制到了剪贴板</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">错误信息</string>
 </resources>
