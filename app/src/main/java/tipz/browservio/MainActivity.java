@@ -216,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
         AppCompatImageView forward = findViewById(R.id.forward);
         reload = findViewById(R.id.reload);
         AppCompatImageView homepage = findViewById(R.id.homepage);
+        AppCompatImageView new_tab = findViewById(R.id.new_tab);
         AppCompatImageView clear = findViewById(R.id.clear);
         AppCompatImageView share = findViewById(R.id.share);
         AppCompatImageView settings = findViewById(R.id.settings);
@@ -293,6 +294,15 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             });
             popupMenu.show();
+        });
+
+        new_tab.setOnClickListener(_view -> {
+            Intent i = new Intent(this, MainActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            else
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            startActivity(i);
         });
 
         clear.setOnClickListener(_view -> {

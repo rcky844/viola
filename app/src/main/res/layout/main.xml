@@ -164,6 +164,18 @@
                     app:srcCompat="@drawable/smartphone" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/new_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/new_tab_desp"
+                    android:hardwareAccelerated="true"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/new_tab" />
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/clear"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
