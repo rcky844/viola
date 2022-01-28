@@ -85,6 +85,12 @@ public class NewSettings extends PreferenceFragmentCompat {
         activity.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        activity.unregisterReceiver(onDownloadComplete);
+    }
+
     public static boolean getNeedReload() {
         return needReload;
     }
