@@ -281,7 +281,7 @@ public class NewSettings extends PreferenceFragmentCompat {
             AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
             if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING)
                 update_btn.setVisibility(View.GONE);
-            easter_banner.setOnClickListener(_update_btn -> BrowservioBasicUtil.showMessage(activity, String.format("%0" + 3 + "d", 0).replace("0", getResources().getString(R.string.app_name).concat("! "))));
+            easter_banner.setOnClickListener(_update_btn -> BrowservioBasicUtil.showMessage(activity, String.format("%03d", 0).replace("0", getResources().getString(R.string.app_name).concat("! "))));
             dialog_text.setText(getResources().getString(R.string.version_info_message,
                     getResources().getString(R.string.app_name),
                     BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
