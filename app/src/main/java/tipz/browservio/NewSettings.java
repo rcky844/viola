@@ -52,13 +52,6 @@ public class NewSettings extends PreferenceFragmentCompat {
         this.activity = act;
     }
 
-    private Preference search_engine;
-    private Preference homepage;
-    private CheckBoxPreference show_favicon;
-    private CheckBoxPreference show_pinch_btn;
-    private CheckBoxPreference javascript;
-    private CheckBoxPreference show_cus_error;
-
     private static boolean needReload = false;
     private long downloadID;
     private final String updateDownloadPath = Environment.getExternalStorageDirectory().getAbsolutePath()
@@ -121,19 +114,19 @@ public class NewSettings extends PreferenceFragmentCompat {
         };
 
         /* General category */
-        search_engine = Objects.requireNonNull(findPreference("search_engine"));
-        homepage = Objects.requireNonNull(findPreference("homepage"));
+        Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));
+        Preference homepage = Objects.requireNonNull(findPreference("homepage"));
 
         /* Data & Privacy category */
         Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
         /* Visuals category */
-        show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-        show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
-        show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
+        CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
+        CheckBoxPreference show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
+        CheckBoxPreference show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
 
         /* Advanced category */
-        javascript = Objects.requireNonNull(findPreference("javascript"));
+        CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
 
         /* Help category */
         Preference version = Objects.requireNonNull(findPreference("version"));
