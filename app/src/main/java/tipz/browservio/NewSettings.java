@@ -52,13 +52,6 @@ public class NewSettings extends PreferenceFragmentCompat {
         this.activity = act;
     }
 
-    private MaterialAlertDialogBuilder SearchSettingsDialog;
-    private MaterialAlertDialogBuilder CustomSearchSettingsDialog;
-    private MaterialAlertDialogBuilder HomepageSettingsDialog;
-    private MaterialAlertDialogBuilder CustomHomepageSettingsDialog;
-    private MaterialAlertDialogBuilder ZoomUpdateDialog;
-    private MaterialAlertDialogBuilder InfoDialog;
-
     private Preference search_engine;
     private Preference homepage;
     private CheckBoxPreference show_favicon;
@@ -148,16 +141,16 @@ public class NewSettings extends PreferenceFragmentCompat {
         Preference source_code = Objects.requireNonNull(findPreference("source_code"));
 
         /* General category dialog */
-        SearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
-        CustomSearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
-        HomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
-        CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder SearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder CustomSearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder HomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
 
         /* Visuals category dialog */
-        ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
 
         /* Help category dialog */
-        InfoDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder InfoDialog = new MaterialAlertDialogBuilder(activity);
 
         search_engine.setOnPreferenceClickListener(preference -> {
             final int[] checkedItem = {BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)};
