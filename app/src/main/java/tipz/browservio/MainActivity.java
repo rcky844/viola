@@ -32,6 +32,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
@@ -319,7 +320,18 @@ public class MainActivity extends AppCompatActivity {
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     reload.performClick();
                 } else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-                    HistoryReader.clear(historyPref(MainActivity.this));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                        CookieManager.getInstance().removeAllCookies(null);
+                        CookieManager.getInstance().flush();
+                    } else {
+                        CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(this);
+                        CookieManager cookieManager = CookieManager.getInstance();
+                        cookieSyncMgr.startSync();
+                        cookieManager.removeAllCookie();
+                        cookieManager.removeSessionCookie();
+                        cookieSyncMgr.stopSync();
+                        cookieSyncMgr.sync();
+                    }
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
                     reload.performClick();
                 }
