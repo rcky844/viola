@@ -92,4 +92,5 @@
     <string name="customactivityoncrash_error_activity_error_details_copied">成功複製到了剪貼板</string>
     <string name="customactivityoncrash_error_activity_error_details_clipboard_label">錯誤資訊</string>
     <string name="new_tab_desp">新分頁</string>
+    <string name="visual">視覺效果</string>
 </resources>
