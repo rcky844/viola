@@ -49,7 +49,7 @@
     <string name="general">基本</string>
     <string name="show_pinch_btn">顯示雙指縮放按鈕</string>
     <string name="show_pinch_btn_desp">在右下角顯示雙指縮放控制按鈕\n(需要重啟應用)</string>
-    <string name="reset_btn">重置为默认值</string>
+    <string name="reset_btn">重置為默認值</string>
     <string name="advanced">進階</string>
     <string name="javascript">啟用JavaScript</string>
     <string name="javascript_desp">啟用JavaScript將為您提供更好的瀏覽體驗</string>
