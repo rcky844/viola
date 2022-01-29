@@ -544,7 +544,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            UrlSet(url, false);
+            UrlSet(url, true);
             favicon.setImageResource(R.drawable.default_favicon); // Set favicon as default before getting real favicon
             if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
                 favicon.setVisibility(View.GONE);
@@ -554,7 +554,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageFinished(WebView view, String url) {
-            UrlSet(url, true);
+            UrlSet(url, false);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
