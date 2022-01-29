@@ -404,11 +404,11 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
-        checkIfPrefIntIsTrue("enableSuggestions", search_suggestions, true);
-        checkIfPrefIntIsTrue("showFavicon", show_favicon, false);
-        checkIfPrefIntIsTrue("showZoomKeys", show_pinch_btn, false);
-        checkIfPrefIntIsTrue("isJavaScriptEnabled", javascript, false);
-        checkIfPrefIntIsTrue("showCustomError", show_cus_error, false);
+        checkIfPrefIntIsTrue(AllPrefs.enableSuggestions, search_suggestions, true);
+        checkIfPrefIntIsTrue(AllPrefs.showFavicon, show_favicon, false);
+        checkIfPrefIntIsTrue(AllPrefs.showZoomKeys, show_pinch_btn, false);
+        checkIfPrefIntIsTrue(AllPrefs.isJavaScriptEnabled, javascript, false);
+        checkIfPrefIntIsTrue(AllPrefs.showCustomError, show_cus_error, false);
         search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)]));
         homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId)]));
         version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
