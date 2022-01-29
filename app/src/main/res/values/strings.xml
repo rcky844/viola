@@ -82,10 +82,11 @@
     <string name="baidu_search">"Baidu"</string>
     <string name="duck_search" translatable="false">"DuckDuckGo"</string>
     <string name="bing_search" translatable="false">"Bing"</string>
-    <string name="yahoo_search">"Yahoo! UK &amp; Ireland"</string>
+    <string name="yahoo_search">"Yahoo!"</string>
     <string name="custom_search">"Custom"</string>
     <string name="license_btn">License</string>
     <string name="ecosia_search" translatable="false">Ecosia</string>
+    <string name="yandex_search" translatable="false">Yandex</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Restart app</string>
     <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">Close app</string>

@@ -78,7 +78,7 @@
     <string name="del_hist_message">"You are about to delete all history entries, are you sure about this?"</string>
     <string name="del_hist_fab_desp">"Delete all history"</string>
     <string name="baidu_search">Baidu</string>
-    <string name="yahoo_search">Yahoo! UK &amp; Ireland</string>
+    <string name="yahoo_search">Yahoo!</string>
     <string name="google_search">Google (Default)</string>
     <string name="custom_search">Custom</string>
     <string name="license_btn">License</string>
