@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Browservio</string>
     <string name="error_already_page">"Already at the %s page!"</string>
     <string name="first">first</string>
@@ -86,15 +86,15 @@
     <string name="custom_search">"Custom"</string>
     <string name="license_btn">License</string>
     <string name="ecosia_search" translatable="false">Ecosia</string>
-    <string name="customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
-    <string name="customactivityoncrash_error_activity_restart_app">Restart app</string>
-    <string name="customactivityoncrash_error_activity_close_app">Close app</string>
-    <string name="customactivityoncrash_error_activity_error_details">Error details</string>
-    <string name="customactivityoncrash_error_activity_error_details_title">Error details</string>
-    <string name="customactivityoncrash_error_activity_error_details_close">Close</string>
-    <string name="customactivityoncrash_error_activity_error_details_copy">Copy to clipboard</string>
-    <string name="customactivityoncrash_error_activity_error_details_copied">Copied to clipboard</string>
-    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">Error information</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
+    <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Restart app</string>
+    <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">Close app</string>
+    <string name="customactivityoncrash_error_activity_error_details" tools:keep="@string/customactivityoncrash_error_activity_error_details">Error details</string>
+    <string name="customactivityoncrash_error_activity_error_details_title" tools:keep="@string/customactivityoncrash_error_activity_error_details_title">Error details</string>
+    <string name="customactivityoncrash_error_activity_error_details_close" tools:keep="@string/customactivityoncrash_error_activity_error_details_close">Close</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">Copy to clipboard</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">Copied to clipboard</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">Error information</string>
     <string name="new_tab_desp">New tabs</string>
     <string name="visual">Visuals</string>
     <string name="data_privacy">Data &amp; Privacy</string>
