@@ -93,4 +93,6 @@
     <string name="customactivityoncrash_error_activity_error_details_clipboard_label">Error information</string>
     <string name="new_tab_desp">New tabs</string>
     <string name="visual">Visuals</string>
+    <string name="data_privacy">Data &amp; Privacy</string>
+    <string name="reset_btn_desp">Clear all browser data.</string>
 </resources>

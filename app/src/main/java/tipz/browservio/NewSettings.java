@@ -1,5 +1,6 @@
 package tipz.browservio;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static tipz.browservio.searchengines.SearchEngineEntries.getHomepageUrl;
 import static tipz.browservio.searchengines.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
@@ -7,6 +8,7 @@ import static tipz.browservio.utils.ApkInstaller.installApplication;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,6 +17,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -127,6 +130,9 @@ public class NewSettings extends PreferenceFragmentCompat {
         /* General category */
         search_engine = Objects.requireNonNull(findPreference("search_engine"));
         homepage = Objects.requireNonNull(findPreference("homepage"));
+
+        /* Data & Privacy category */
+        Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
         /* Visuals category */
         show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
@@ -244,6 +250,22 @@ public class NewSettings extends PreferenceFragmentCompat {
                     })
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show();
+            return true;
+        });
+
+        reset_to_default.setOnPreferenceClickListener(preference -> {
+            BrowservioBasicUtil.showMessage(activity, getResources().getString(R.string.reset_complete));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                ((ActivityManager) activity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+            } else {
+                String packageName = activity.getPackageName();
+                Runtime runtime = Runtime.getRuntime();
+                try {
+                    runtime.exec("pm clear " + packageName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             return true;
         });
 

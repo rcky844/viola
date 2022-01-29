@@ -8,7 +8,6 @@ import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -309,7 +308,6 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
             menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
             menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
-            menu.add(getResources().getString(R.string.reset_btn));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
                     webview.clearCache(true);
@@ -324,19 +322,6 @@ public class MainActivity extends AppCompatActivity {
                     HistoryReader.clear(historyPref(MainActivity.this));
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
                     reload.performClick();
-                } else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
-                    } else {
-                        String packageName = getApplicationContext().getPackageName();
-                        Runtime runtime = Runtime.getRuntime();
-                        try {
-                            runtime.exec("pm clear " + packageName);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
 
                 return false;

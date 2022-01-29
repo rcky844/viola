@@ -17,6 +17,16 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
+        android:title="@string/data_privacy"
+        app:iconSpaceReserved="false">
+        <androidx.preference.Preference
+            android:key="reset_to_default"
+            android:summary="@string/reset_btn_desp"
+            android:title="@string/reset_btn"
+            app:iconSpaceReserved="false" />
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
         android:title="@string/visual"
         app:iconSpaceReserved="false">
         <androidx.preference.CheckBoxPreference

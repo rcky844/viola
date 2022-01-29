@@ -93,4 +93,6 @@
     <string name="customactivityoncrash_error_activity_error_details_clipboard_label">錯誤資訊</string>
     <string name="new_tab_desp">新分頁</string>
     <string name="visual">視覺效果</string>
+    <string name="data_privacy">數據和隱私</string>
+    <string name="reset_btn_desp">清除所有瀏覽器數據</string>
 </resources>
