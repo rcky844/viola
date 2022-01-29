@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/easter_banner"
         android:layout_width="fill_parent"
         android:layout_height="96dp"
         android:layout_gravity="center_horizontal|center_vertical"
@@ -33,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:textColor="@color/colorElement"
+                android:textColor="@color/colorText"
                 android:textSize="14sp" />
 
             <com.google.android.material.button.MaterialButton

@@ -1,5 +1,6 @@
 package tipz.browservio;
 
+import static android.content.Context.ACTIVITY_SERVICE;
 import static tipz.browservio.searchengines.SearchEngineEntries.getHomepageUrl;
 import static tipz.browservio.searchengines.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
@@ -7,6 +8,7 @@ import static tipz.browservio.utils.ApkInstaller.installApplication;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,6 +17,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.view.View;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
@@ -34,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Objects;
 
 import tipz.browservio.searchengines.SearchEngineEntries;
@@ -47,20 +52,6 @@ public class NewSettings extends PreferenceFragmentCompat {
     public NewSettings(Activity act) {
         this.activity = act;
     }
-
-    private MaterialAlertDialogBuilder SearchSettingsDialog;
-    private MaterialAlertDialogBuilder CustomSearchSettingsDialog;
-    private MaterialAlertDialogBuilder HomepageSettingsDialog;
-    private MaterialAlertDialogBuilder CustomHomepageSettingsDialog;
-    private MaterialAlertDialogBuilder ZoomUpdateDialog;
-    private MaterialAlertDialogBuilder InfoDialog;
-
-    private Preference search_engine;
-    private Preference homepage;
-    private CheckBoxPreference show_favicon;
-    private CheckBoxPreference show_pinch_btn;
-    private CheckBoxPreference javascript;
-    private CheckBoxPreference show_cus_error;
 
     private static boolean needReload = false;
     private long downloadID;
@@ -82,6 +73,12 @@ public class NewSettings extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.pref_settings, rootKey);
         initializeLogic();
         activity.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        activity.unregisterReceiver(onDownloadComplete);
     }
 
     public static boolean getNeedReload() {
@@ -119,14 +116,20 @@ public class NewSettings extends PreferenceFragmentCompat {
         };
 
         /* General category */
-        search_engine = Objects.requireNonNull(findPreference("search_engine"));
-        homepage = Objects.requireNonNull(findPreference("homepage"));
-        show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-        show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
+        Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));
+        Preference homepage = Objects.requireNonNull(findPreference("homepage"));
+        CheckBoxPreference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
+
+        /* Data & Privacy category */
+        Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
+
+        /* Visuals category */
+        CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
+        CheckBoxPreference show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
+        CheckBoxPreference show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
 
         /* Advanced category */
-        javascript = Objects.requireNonNull(findPreference("javascript"));
-        show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
+        CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
 
         /* Help category */
         Preference version = Objects.requireNonNull(findPreference("version"));
@@ -134,14 +137,19 @@ public class NewSettings extends PreferenceFragmentCompat {
         Preference source_code = Objects.requireNonNull(findPreference("source_code"));
 
         /* General category dialog */
-        SearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
-        CustomSearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
-        HomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
-        CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
-        ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder SearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder CustomSearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder HomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
+
+        /* Data & Privacy dialog */
+        MaterialAlertDialogBuilder ResetDialog = new MaterialAlertDialogBuilder(activity);
+
+        /* Visuals category dialog */
+        MaterialAlertDialogBuilder ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
 
         /* Help category dialog */
-        InfoDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder InfoDialog = new MaterialAlertDialogBuilder(activity);
 
         search_engine.setOnPreferenceClickListener(preference -> {
             final int[] checkedItem = {BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)};
@@ -241,6 +249,34 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
+        search_suggestions.setOnPreferenceClickListener(preference -> {
+            BrowservioSaverUtils.setPrefIntBoolAccBool(browservio_saver(activity),
+                    AllPrefs.enableSuggestions, search_suggestions.isChecked(), false);
+            return true;
+        });
+
+        reset_to_default.setOnPreferenceClickListener(preference -> {
+            ResetDialog.setTitle(getResources().getString(R.string.reset_btn))
+                    .setMessage(getResources().getString(R.string.reset_dialog, getResources().getString(R.string.reset_btn_desp).toLowerCase()))
+                    .setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) -> {
+                        BrowservioBasicUtil.showMessage(activity, getResources().getString(R.string.reset_complete));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            ((ActivityManager) activity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+                        } else {
+                            String packageName = activity.getPackageName();
+                            Runtime runtime = Runtime.getRuntime();
+                            try {
+                                runtime.exec("pm clear " + packageName);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
+            return true;
+        });
+
         show_favicon.setOnPreferenceClickListener(preference -> {
             BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
                     AllPrefs.showFavicon, show_favicon.isChecked(), false);
@@ -273,11 +309,13 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         version.setOnPreferenceClickListener(preference -> {
             @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
+            AppCompatImageView easter_banner = dialogView.findViewById(R.id.easter_banner);
             AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
             AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
             if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING)
                 update_btn.setVisibility(View.GONE);
+            easter_banner.setOnClickListener(_update_btn -> BrowservioBasicUtil.showMessage(activity, String.format(Locale.ENGLISH, "%03d", 0).replace("0", getResources().getString(R.string.app_name).concat("! "))));
             dialog_text.setText(getResources().getString(R.string.version_info_message,
                     getResources().getString(R.string.app_name),
                     BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
@@ -372,17 +410,18 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
-        checkIfPrefIntIsTrue("showFavicon", show_favicon);
-        checkIfPrefIntIsTrue("showZoomKeys", show_pinch_btn);
-        checkIfPrefIntIsTrue("isJavaScriptEnabled", javascript);
-        checkIfPrefIntIsTrue("showCustomError", show_cus_error);
+        checkIfPrefIntIsTrue(AllPrefs.enableSuggestions, search_suggestions, true);
+        checkIfPrefIntIsTrue(AllPrefs.showFavicon, show_favicon, false);
+        checkIfPrefIntIsTrue(AllPrefs.showZoomKeys, show_pinch_btn, false);
+        checkIfPrefIntIsTrue(AllPrefs.isJavaScriptEnabled, javascript, false);
+        checkIfPrefIntIsTrue(AllPrefs.showCustomError, show_cus_error, false);
         search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)]));
         homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId)]));
         version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
         needReload = false;
     }
 
-    private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox) {
-        checkBox.setChecked(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(activity), tag)));
+    private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox, boolean isInt) {
+        checkBox.setChecked(BrowservioBasicUtil.isIntStrOne(isInt ? BrowservioSaverUtils.getPrefNum(browservio_saver(activity), tag) : BrowservioSaverUtils.getPref(browservio_saver(activity), tag)));
     }
 }

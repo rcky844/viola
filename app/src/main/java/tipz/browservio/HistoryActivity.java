@@ -117,17 +117,15 @@ public class HistoryActivity extends AppCompatActivity {
             return false;
         });
 
-        _fab.setOnClickListener(_view -> {
-            deleteHistory.setTitle(getResources().getString(R.string.del_fav2_title))
-                    .setMessage(getResources().getString(R.string.del_hist_message))
-                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                        HistoryReader.clear(historyPref(this));
-                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
-                        finish();
-                    })
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create().show();
-        });
+        _fab.setOnClickListener(_view -> deleteHistory.setTitle(getResources().getString(R.string.del_fav2_title))
+                .setMessage(getResources().getString(R.string.del_hist_message))
+                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                    HistoryReader.clear(historyPref(this));
+                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
+                    finish();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show());
     }
 
     @Override

@@ -11,12 +11,12 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/minTouchTargetSize"
-                android:background="@color/colorPrimary"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 app:contentInsetEnd="0dp"
@@ -89,7 +89,7 @@
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorTopBar"
             android:scrollbars="none"
             android:visibility="gone"
             android:weightSum="1">
@@ -98,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorTopBar"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -162,6 +162,18 @@
                     android:paddingRight="8dp"
                     android:scaleType="center"
                     app:srcCompat="@drawable/smartphone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/new_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/new_tab_desp"
+                    android:hardwareAccelerated="true"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/new_tab" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/clear"
@@ -242,7 +254,7 @@
             style="?android:progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorTopBar"
             android:indeterminate="false" />
 
         <WebView

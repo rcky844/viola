@@ -15,6 +15,26 @@
             android:title="@string/homepage"
             app:iconSpaceReserved="false" />
         <androidx.preference.CheckBoxPreference
+            android:key="search_suggestions"
+            android:summary="@string/search_suggestions_desp"
+            android:title="@string/search_suggestions_title"
+            app:iconSpaceReserved="false" />
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/data_privacy"
+        app:iconSpaceReserved="false">
+        <androidx.preference.Preference
+            android:key="reset_to_default"
+            android:summary="@string/reset_btn_desp"
+            android:title="@string/reset_btn"
+            app:iconSpaceReserved="false" />
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/visual"
+        app:iconSpaceReserved="false">
+        <androidx.preference.CheckBoxPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
             android:title="@string/show_favicon"
@@ -23,6 +43,11 @@
             android:key="show_pinch_btn"
             android:summary="@string/show_pinch_btn_desp"
             android:title="@string/show_pinch_btn"
+            app:iconSpaceReserved="false" />
+        <androidx.preference.CheckBoxPreference
+            android:key="show_cus_error"
+            android:summary="@string/show_cus_error_desp"
+            android:title="@string/show_cus_error"
             app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
 
@@ -33,11 +58,6 @@
             android:key="javascript"
             android:summary="@string/javascript_desp"
             android:title="@string/javascript"
-            app:iconSpaceReserved="false" />
-        <androidx.preference.CheckBoxPreference
-            android:key="show_cus_error"
-            android:summary="@string/show_cus_error_desp"
-            android:title="@string/show_cus_error"
             app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
 

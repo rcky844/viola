@@ -1,9 +1,10 @@
 <resources>
-    <color name="colorPrimary">#141414</color>
-    <color name="colorPrimaryDark">#303030</color>
     <color name="colorAccent">#52b3ff</color>
     <color name="colorControlHighlight">#d8d8d8</color>
     <color name="colorControlNormal">#26000000</color>
-    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorBackground">#ffffff</color>
+    <color name="colorUrlEditBg">#303030</color>
     <color name="colorElement">#ffffff</color>
+    <color name="colorTopBar">#141414</color>
+    <color name="colorText">#000000</color>
 </resources>

@@ -67,6 +67,9 @@ public class BrowservioBasicUtil {
     }
 
     public static boolean isIntStrOne(Object obj) {
-        return obj.equals("1");
+        if (obj instanceof String)
+            return obj.equals("1");
+        else
+            return obj.equals(1);
     }
 }

@@ -13,7 +13,6 @@
             android:id="@+id/_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -22,7 +21,7 @@
             style="?android:progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorTopBar"
             android:indeterminate="true"
             android:visibility="gone" />
     </com.google.android.material.appbar.AppBarLayout>

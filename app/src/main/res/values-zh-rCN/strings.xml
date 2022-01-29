@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="error_already_page">已经在%s页!</string>
     <string name="first">第一</string>
     <string name="last">最后一</string>
@@ -82,4 +82,20 @@
     <string name="google_search">谷歌 (默认)</string>
     <string name="custom_search">自定义</string>
     <string name="license_btn">许可</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">错误发生对于给您带来的不便，我们深表歉意。</string>
+    <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">重启应用</string>
+    <string name="customactivityoncrash_error_activity_error_details" tools:keep="@string/customactivityoncrash_error_activity_error_details">错误详细</string>
+    <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">关闭应用</string>
+    <string name="customactivityoncrash_error_activity_error_details_title" tools:keep="@string/customactivityoncrash_error_activity_error_details_title">错误详细</string>
+    <string name="customactivityoncrash_error_activity_error_details_close" tools:keep="@string/customactivityoncrash_error_activity_error_details_close">关闭</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">复制到剪贴板</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">成功复制到了剪贴板</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">错误信息</string>
+    <string name="new_tab_desp">新分页</string>
+    <string name="visual">视觉效果</string>
+    <string name="data_privacy">数据和隐私</string>
+    <string name="reset_btn_desp">清除所有浏览器数据</string>
+    <string name="reset_dialog">这将會%s。\n\n您确定要继续吗？</string>
+    <string name="search_suggestions_title">启用搜索建议</string>
+    <string name="search_suggestions_desp">搜索时显示搜索建议</string>
 </resources>

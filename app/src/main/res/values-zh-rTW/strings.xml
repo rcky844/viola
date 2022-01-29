@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="error_already_page">已經在%s頁!</string>
     <string name="first">第一</string>
     <string name="last">最後一</string>
@@ -49,7 +49,7 @@
     <string name="general">基本</string>
     <string name="show_pinch_btn">顯示雙指縮放按鈕</string>
     <string name="show_pinch_btn_desp">在右下角顯示雙指縮放控制按鈕\n(需要重啟應用)</string>
-    <string name="reset_btn">重置为默认值</string>
+    <string name="reset_btn">重置為默認值</string>
     <string name="advanced">進階</string>
     <string name="javascript">啟用JavaScript</string>
     <string name="javascript_desp">啟用JavaScript將為您提供更好的瀏覽體驗</string>
@@ -82,4 +82,20 @@
     <string name="google_search">谷歌 (默認)</string>
     <string name="custom_search">"自定義 "</string>
     <string name="license_btn">許可</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">錯誤發生對於給您帶來的不便，我們深表歉意。</string>
+    <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">重啟應用</string>
+    <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">關閉應用</string>
+    <string name="customactivityoncrash_error_activity_error_details" tools:keep="@string/customactivityoncrash_error_activity_error_details">錯誤詳細</string>
+    <string name="customactivityoncrash_error_activity_error_details_title" tools:keep="@string/customactivityoncrash_error_activity_error_details_title">錯誤詳細</string>
+    <string name="customactivityoncrash_error_activity_error_details_close" tools:keep="@string/customactivityoncrash_error_activity_error_details_close">關閉</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">複製到剪貼板</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">成功複製到了剪貼板</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">錯誤資訊</string>
+    <string name="new_tab_desp">新分頁</string>
+    <string name="visual">視覺效果</string>
+    <string name="data_privacy">數據和隱私</string>
+    <string name="reset_btn_desp">清除所有瀏覽器數據</string>
+    <string name="reset_dialog">這將會%s。\n\n您確定要繼續嗎？</string>
+    <string name="search_suggestions_title">啟用搜索建議</string>
+    <string name="search_suggestions_desp">搜索時顯示搜索建議</string>
 </resources>
