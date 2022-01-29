@@ -6,7 +6,6 @@ import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_
 
 import android.content.Context;
 
-import tipz.browservio.MainActivity;
 import tipz.browservio.searchengines.SearchEngineEntries;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
