@@ -114,6 +114,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                 activity.getResources().getString(R.string.bing_search),
                 activity.getResources().getString(R.string.yahoo_search),
                 activity.getResources().getString(R.string.ecosia_search),
+                activity.getResources().getString(R.string.yandex_search),
                 activity.getResources().getString(R.string.custom_search)
         };
 
@@ -161,7 +162,9 @@ public class NewSettings extends PreferenceFragmentCompat {
                             searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.yahoo, SearchEngineEntries.yahooSearchSuffix);
                         else if (checkedItem[0] == 5)
                             searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.ecosia, SearchEngineEntries.ecosiaSearchSuffix);
-                        else if (checkedItem[0] == 6) {
+                        else if (checkedItem[0] == 6)
+                            searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.yandex, SearchEngineEntries.yandexSearchSuffix);
+                        else if (checkedItem[0] == 7) {
                             final LayoutInflater layoutInflater = LayoutInflater.from(activity);
                             @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                             final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -178,7 +181,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                                     .create().show();
                         }
 
-                        if (checkedItem[0] != 6) {
+                        if (checkedItem[0] != 7) {
                             BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultSearch, searchEngine[0]);
                             BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId, checkedItem[0]);
                             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
@@ -208,7 +211,9 @@ public class NewSettings extends PreferenceFragmentCompat {
                             homePage[0] = getHomepageUrl(SearchEngineEntries.yahoo);
                         else if (checkedItem[0] == 5)
                             homePage[0] = getHomepageUrl(SearchEngineEntries.ecosia);
-                        else if (checkedItem[0] == 6) {
+                        else if (checkedItem[0] == 6)
+                            homePage[0] = getHomepageUrl(SearchEngineEntries.yandex);
+                        else if (checkedItem[0] == 7) {
                             final LayoutInflater layoutInflater = LayoutInflater.from(activity);
                             @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                             final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -225,7 +230,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                                     .create().show();
                         }
 
-                        if (checkedItem[0] != 6) {
+                        if (checkedItem[0] != 7) {
                             BrowservioSaverUtils.setPref(browservio_saver(activity), AllPrefs.defaultHomePage, homePage[0]);
                             BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId, checkedItem[0]);
                             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));

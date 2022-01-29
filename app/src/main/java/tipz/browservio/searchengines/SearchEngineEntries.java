@@ -17,6 +17,8 @@ public class SearchEngineEntries {
     public final static String yahooSearchSuffix = "search?p=";
     public final static String ecosia = "https://www.ecosia.org/%s";
     public final static String ecosiaSearchSuffix = googleSearchSuffix;
+    public final static String yandex = "https://yandex.com/%s";
+    public final static String yandexSearchSuffix = "search/?text=";
 
     public static String getSearchEngineUrl(String homeAdd, String searchSuffix) {
         return composeSearchUrl(searchSuffix, homeAdd, "%s");
