@@ -82,7 +82,7 @@
     <string name="baidu_search">"Baidu"</string>
     <string name="duck_search" translatable="false">"DuckDuckGo"</string>
     <string name="bing_search" translatable="false">"Bing"</string>
-    <string name="yahoo_search">"Yahoo! UK &amp; Ireland"</string>
+    <string name="yahoo_search">"Yahoo!"</string>
     <string name="custom_search">"Custom"</string>
     <string name="license_btn">License</string>
     <string name="ecosia_search" translatable="false">Ecosia</string>
