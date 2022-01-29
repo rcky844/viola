@@ -11,12 +11,12 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/minTouchTargetSize"
-                android:background="@color/colorTopBar"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 app:contentInsetEnd="0dp"
