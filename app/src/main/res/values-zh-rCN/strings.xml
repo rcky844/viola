@@ -95,4 +95,5 @@
     <string name="visual">视觉效果</string>
     <string name="data_privacy">数据和隐私</string>
     <string name="reset_btn_desp">清除所有浏览器数据</string>
+    <string name="reset_dialog">这将會%s。\n\n您确定要继续吗？</string>
 </resources>

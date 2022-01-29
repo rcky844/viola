@@ -95,4 +95,5 @@
     <string name="visual">Visuals</string>
     <string name="data_privacy">Data &amp; Privacy</string>
     <string name="reset_btn_desp">Clear all browser data.</string>
+    <string name="reset_dialog">This will %s\n\nAre you sure you want to continue?</string>
 </resources>

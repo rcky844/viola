@@ -146,6 +146,9 @@ public class NewSettings extends PreferenceFragmentCompat {
         MaterialAlertDialogBuilder HomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
         MaterialAlertDialogBuilder CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
 
+        /* Data & Privacy dialog */
+        MaterialAlertDialogBuilder ResetDialog = new MaterialAlertDialogBuilder(activity);
+
         /* Visuals category dialog */
         MaterialAlertDialogBuilder ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
 
@@ -247,18 +250,24 @@ public class NewSettings extends PreferenceFragmentCompat {
         });
 
         reset_to_default.setOnPreferenceClickListener(preference -> {
-            BrowservioBasicUtil.showMessage(activity, getResources().getString(R.string.reset_complete));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                ((ActivityManager) activity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
-            } else {
-                String packageName = activity.getPackageName();
-                Runtime runtime = Runtime.getRuntime();
-                try {
-                    runtime.exec("pm clear " + packageName);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            ResetDialog.setTitle(getResources().getString(R.string.reset_btn))
+                    .setMessage(getResources().getString(R.string.reset_dialog, getResources().getString(R.string.reset_btn_desp).toLowerCase()))
+                    .setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) -> {
+                        BrowservioBasicUtil.showMessage(activity, getResources().getString(R.string.reset_complete));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            ((ActivityManager) activity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+                        } else {
+                            String packageName = activity.getPackageName();
+                            Runtime runtime = Runtime.getRuntime();
+                            try {
+                                runtime.exec("pm clear " + packageName);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
             return true;
         });
 
