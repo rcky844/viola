@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty())
+                if (text.toString().isEmpty() || BrowservioSaverUtils.getPrefNum(browservio_saver(MainActivity.this), AllPrefs.enableSuggestions) != 1)
                     return;
                 new Thread() {
                     @Override

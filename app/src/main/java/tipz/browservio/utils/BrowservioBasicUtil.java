@@ -2,6 +2,7 @@ package tipz.browservio.utils;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
@@ -67,6 +68,9 @@ public class BrowservioBasicUtil {
     }
 
     public static boolean isIntStrOne(Object obj) {
-        return obj.equals("1");
+        if (obj instanceof String)
+            return obj.equals("1");
+        else
+            return obj.equals(1);
     }
 }

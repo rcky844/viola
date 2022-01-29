@@ -59,6 +59,23 @@ public class BrowservioSaverUtils {
     }
 
     /**
+     * Set the tag as integer bool according to boolean
+     * <p>
+     * Sets the integer bool according to the boolean.
+     *
+     * @param pref as the SharedPreference to get the value from.
+     * @param tag  as the tag to get the value from.
+     * @param bool as the bool to check.
+     * @param flip if the value needs to be flipped.
+     */
+    public static void setPrefIntBoolAccBool(SharedPreferences pref, String tag, boolean bool, boolean flip) {
+        if (bool)
+            setPrefNum(pref, tag, (flip) ? 0 : 1);
+        else
+            setPrefNum(pref, tag, (flip) ? 1 : 0);
+    }
+
+    /**
      * Set a preference to a string
      *
      * @param pref  as the SharedPreference to get the value from.

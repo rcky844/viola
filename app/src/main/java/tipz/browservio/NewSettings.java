@@ -116,6 +116,7 @@ public class NewSettings extends PreferenceFragmentCompat {
         /* General category */
         Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));
         Preference homepage = Objects.requireNonNull(findPreference("homepage"));
+        CheckBoxPreference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
         /* Data & Privacy category */
         Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
@@ -239,6 +240,12 @@ public class NewSettings extends PreferenceFragmentCompat {
                     })
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show();
+            return true;
+        });
+
+        search_suggestions.setOnPreferenceClickListener(preference -> {
+            BrowservioSaverUtils.setPrefIntBoolAccBool(browservio_saver(activity),
+                    AllPrefs.enableSuggestions, search_suggestions.isChecked(), false);
             return true;
         });
 
@@ -397,17 +404,18 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
-        checkIfPrefIntIsTrue("showFavicon", show_favicon);
-        checkIfPrefIntIsTrue("showZoomKeys", show_pinch_btn);
-        checkIfPrefIntIsTrue("isJavaScriptEnabled", javascript);
-        checkIfPrefIntIsTrue("showCustomError", show_cus_error);
+        checkIfPrefIntIsTrue("enableSuggestions", search_suggestions, true);
+        checkIfPrefIntIsTrue("showFavicon", show_favicon, false);
+        checkIfPrefIntIsTrue("showZoomKeys", show_pinch_btn, false);
+        checkIfPrefIntIsTrue("isJavaScriptEnabled", javascript, false);
+        checkIfPrefIntIsTrue("showCustomError", show_cus_error, false);
         search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)]));
         homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId)]));
         version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
         needReload = false;
     }
 
-    private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox) {
-        checkBox.setChecked(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(activity), tag)));
+    private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox, boolean isInt) {
+        checkBox.setChecked(BrowservioBasicUtil.isIntStrOne(isInt ? BrowservioSaverUtils.getPrefNum(browservio_saver(activity), tag) : BrowservioSaverUtils.getPref(browservio_saver(activity), tag)));
     }
 }
