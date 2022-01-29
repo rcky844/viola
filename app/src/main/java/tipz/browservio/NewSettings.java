@@ -127,12 +127,14 @@ public class NewSettings extends PreferenceFragmentCompat {
         /* General category */
         search_engine = Objects.requireNonNull(findPreference("search_engine"));
         homepage = Objects.requireNonNull(findPreference("homepage"));
+
+        /* Visuals category */
         show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
         show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
+        show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
 
         /* Advanced category */
         javascript = Objects.requireNonNull(findPreference("javascript"));
-        show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
 
         /* Help category */
         Preference version = Objects.requireNonNull(findPreference("version"));
@@ -144,6 +146,8 @@ public class NewSettings extends PreferenceFragmentCompat {
         CustomSearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
         HomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
         CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
+
+        /* Visuals category dialog */
         ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
 
         /* Help category dialog */
