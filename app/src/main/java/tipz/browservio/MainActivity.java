@@ -752,7 +752,7 @@ public class MainActivity extends AppCompatActivity {
      * @param url is for strings of URL to check and load
      */
     private void browservioBrowse(String url) {
-        if (url == null)
+        if (url == null || url.isEmpty())
             return;
         previousUrl = url;
         String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultSearch));
