@@ -2,15 +2,12 @@ package tipz.browservio;
 
 import static tipz.browservio.fav.FavApi.bookmarks;
 import static tipz.browservio.history.HistoryApi.historyPref;
-import static tipz.browservio.searchengines.SearchEngineEntries.getHomepageUrl;
-import static tipz.browservio.searchengines.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
 import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -35,6 +32,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
@@ -77,8 +75,8 @@ import java.util.Objects;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
-import tipz.browservio.searchengines.SearchEngineEntries;
 import tipz.browservio.sharedprefs.AllPrefs;
+import tipz.browservio.sharedprefs.FirstTimeInit;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.UrlUtils;
@@ -216,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         AppCompatImageView forward = findViewById(R.id.forward);
         reload = findViewById(R.id.reload);
         AppCompatImageView homepage = findViewById(R.id.homepage);
+        AppCompatImageView new_tab = findViewById(R.id.new_tab);
         AppCompatImageView clear = findViewById(R.id.clear);
         AppCompatImageView share = findViewById(R.id.share);
         AppCompatImageView settings = findViewById(R.id.settings);
@@ -295,13 +294,21 @@ public class MainActivity extends AppCompatActivity {
             popupMenu.show();
         });
 
+        new_tab.setOnClickListener(_view -> {
+            Intent i = new Intent(this, MainActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            else
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            startActivity(i);
+        });
+
         clear.setOnClickListener(_view -> {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, clear);
             Menu menu = popupMenu.getMenu();
             menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
             menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
             menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
-            menu.add(getResources().getString(R.string.reset_btn));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
                     webview.clearCache(true);
@@ -313,22 +320,20 @@ public class MainActivity extends AppCompatActivity {
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     reload.performClick();
                 } else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-                    HistoryReader.clear(historyPref(MainActivity.this));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                        CookieManager.getInstance().removeAllCookies(null);
+                        CookieManager.getInstance().flush();
+                    } else {
+                        CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(this);
+                        CookieManager cookieManager = CookieManager.getInstance();
+                        cookieSyncMgr.startSync();
+                        cookieManager.removeAllCookie();
+                        cookieManager.removeSessionCookie();
+                        cookieSyncMgr.stopSync();
+                        cookieSyncMgr.sync();
+                    }
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
                     reload.performClick();
-                } else if (item.getTitle().toString().equals(getResources().getString(R.string.reset_btn))) {
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.reset_complete));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
-                    } else {
-                        String packageName = getApplicationContext().getPackageName();
-                        Runtime runtime = Runtime.getRuntime();
-                        try {
-                            runtime.exec("pm clear " + packageName);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
 
                 return false;
@@ -424,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty())
+                if (text.toString().isEmpty() || BrowservioSaverUtils.getPrefNum(browservio_saver(MainActivity.this), AllPrefs.enableSuggestions) != 1)
                     return;
                 new Thread() {
                     @Override
@@ -527,19 +532,19 @@ public class MainActivity extends AppCompatActivity {
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(String url, Boolean addToHist) {
+        private void UrlSet(String url) {
             if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
                     && !(url.startsWith(getResources().getString(R.string.url_prefix, ""))
                     || url.equals("about:blank")
                     || url.equals(getResources().getString(R.string.url_error_real)))) {
                 UrlEdit.setText(url);
-                if (addToHist)
+                if (!HistoryReader.history_data(historyPref(MainActivity.this)).trim().endsWith(url))
                     HistoryReader.appendData(historyPref(MainActivity.this), url);
             }
         }
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            UrlSet(url, false);
+            UrlSet(url);
             favicon.setImageResource(R.drawable.default_favicon); // Set favicon as default before getting real favicon
             if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
                 favicon.setVisibility(View.GONE);
@@ -549,7 +554,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageFinished(WebView view, String url) {
-            UrlSet(url, true);
+            UrlSet(url);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
@@ -747,7 +752,7 @@ public class MainActivity extends AppCompatActivity {
      * @param url is for strings of URL to check and load
      */
     private void browservioBrowse(String url) {
-        if (url == null)
+        if (url == null || url.isEmpty())
             return;
         previousUrl = url;
         String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultSearch));
@@ -811,18 +816,8 @@ public class MainActivity extends AppCompatActivity {
         else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
             setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 
-        if (!BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch).equals("0")) {
-            boolean isEqualToOneFirstLaunch = BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch));
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage, getHomepageUrl(SearchEngineEntries.google), isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultHomePageId, 0, isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultSearch, getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix), isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.defaultSearchId, 0, isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys, "0", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.showCustomError, "1", isEqualToOneFirstLaunch);
-            BrowservioSaverUtils.checkIfEmpty(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch, "0", isEqualToOneFirstLaunch);
-        }
+        if (!BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch).equals("0"))
+            new FirstTimeInit(MainActivity.this);
 
         // Settings check
         webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));

@@ -11,12 +11,12 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/minTouchTargetSize"
-                android:background="@color/colorTopBar"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 app:contentInsetEnd="0dp"
@@ -62,6 +62,7 @@
                         android:importantForAutofill="no"
                         android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
                         android:padding="8dp"
+                        android:selectAllOnFocus="true"
                         android:singleLine="true"
                         android:textColor="@color/colorElement"
                         android:textSize="12dp"
@@ -162,6 +163,18 @@
                     android:paddingRight="8dp"
                     android:scaleType="center"
                     app:srcCompat="@drawable/smartphone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/new_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/new_tab_desp"
+                    android:hardwareAccelerated="true"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/new_tab" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/clear"
