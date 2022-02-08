@@ -357,10 +357,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                                             if (position == 1 && !isLatest) {
                                                 BrowservioBasicUtil.showMessage(activity.getApplicationContext(), getResources().getString(R.string.new_update_detect_toast));
 
-                                                if (apkFile.exists())
-                                                    apkFile.delete();
-
-                                                if (!apkFile.exists()) {
+                                                if (!apkFile.exists() || apkFile.delete()) {
                                                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
                                                     request.setTitle(getResources().getString(R.string.download_title));
                                                     request.setMimeType("application/vnd.android.package-archive");
