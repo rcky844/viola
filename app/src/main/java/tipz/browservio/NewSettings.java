@@ -1,8 +1,8 @@
 package tipz.browservio;
 
 import static android.content.Context.ACTIVITY_SERVICE;
-import static tipz.browservio.searchengines.SearchEngineEntries.getHomepageUrl;
-import static tipz.browservio.searchengines.SearchEngineEntries.getSearchEngineUrl;
+import static tipz.browservio.urls.SearchEngineEntries.getHomepageUrl;
+import static tipz.browservio.urls.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
 import static tipz.browservio.utils.ApkInstaller.installApplication;
 
@@ -41,7 +41,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
 
-import tipz.browservio.searchengines.SearchEngineEntries;
+import tipz.browservio.urls.SearchEngineEntries;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
