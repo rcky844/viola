@@ -9,6 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.Objects;
 
+import tipz.browservio.urls.BrowservioURLs;
+
 public class NewSettingsActivity extends AppCompatActivity {
 
     public final Intent needLoad = new Intent();
@@ -31,7 +33,7 @@ public class NewSettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (NewSettings.getNeedReload()) {
-            needLoad.putExtra("needLoadUrl", getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload)));
+            needLoad.putExtra("needLoadUrl", BrowservioURLs.reloadUrl);
             setResult(0, needLoad);
         }
         finish();

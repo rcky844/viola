@@ -41,6 +41,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
 
+import tipz.browservio.urls.BrowservioURLs;
 import tipz.browservio.urls.SearchEngineEntries;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
@@ -288,7 +289,7 @@ public class NewSettings extends PreferenceFragmentCompat {
             ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q))
                     .setMessage(getResources().getString(R.string.restart_app_qmsg))
                     .setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) ->
-                            needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_restart))))
+                            needLoad(BrowservioURLs.reloadUrl))
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show();
             return true;
@@ -388,7 +389,8 @@ public class NewSettings extends PreferenceFragmentCompat {
                     }.start();
                 }
             });
-            license_btn.setOnClickListener(_license_btn -> needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_license))));
+            license_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.licenseUrl));
+
             InfoDialog.setView(dialogView)
                     .setPositiveButton(android.R.string.ok, null)
                     .create().show();
@@ -396,14 +398,12 @@ public class NewSettings extends PreferenceFragmentCompat {
         });
 
         feedback.setOnPreferenceClickListener(preference -> {
-            needLoad(getResources().getString(R.string.url_source_code,
-                    getResources().getString(R.string.url_bug_report_suffix)));
+            needLoad(BrowservioURLs.feedbackUrl);
             return true;
         });
 
         source_code.setOnPreferenceClickListener(preference -> {
-            needLoad(getResources().getString(R.string.url_source_code,
-                    BrowservioBasicUtil.EMPTY_STRING));
+            needLoad(BrowservioURLs.sourceUrl);
             return true;
         });
 

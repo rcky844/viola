@@ -78,6 +78,7 @@ import tipz.browservio.history.HistoryReader;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.FirstTimeInit;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
+import tipz.browservio.urls.BrowservioURLs;
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.UrlUtils;
 
@@ -245,14 +246,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         reload.setOnClickListener(_view -> {
-            if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))
+            if (pageBeforeError.equals(BrowservioURLs.noErrUrl)
                     && !webview.getUrl().isEmpty()) {
                 URLIdentify(webview.getUrl());
                 webview.reload();
             } else {
                 URLIdentify(pageBeforeError);
                 webview.loadUrl(UrlUtils.UrlChecker(webview.getUrl()));
-                pageBeforeError = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
+                pageBeforeError = BrowservioURLs.noErrUrl;
             }
         });
 
@@ -487,8 +488,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /* Page reloading stuff */
-        pageBeforeError = getResources().getString(R.string.url_prefix,
-                getResources().getString(R.string.url_suffix_no_error));
+        pageBeforeError = BrowservioURLs.noErrUrl;
 
         setDeskMode(0, true); /* User agent init code */
 
@@ -534,9 +534,9 @@ public class MainActivity extends AppCompatActivity {
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url) {
             if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
-                    && !(url.startsWith(getResources().getString(R.string.url_prefix, ""))
+                    && !(url.startsWith(BrowservioURLs.prefix)
                     || url.equals("about:blank")
-                    || url.equals(getResources().getString(R.string.url_error_real)))) {
+                    || url.equals(BrowservioURLs.realErrUrl))) {
                 UrlEdit.setText(url);
                 if (!HistoryReader.history_data(historyPref(MainActivity.this)).trim().endsWith(url))
                     HistoryReader.appendData(historyPref(MainActivity.this), url);
@@ -756,10 +756,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         previousUrl = url;
         String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultSearch));
-        if (pageBeforeError.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error)))) {
+        if (pageBeforeError.equals(BrowservioURLs.noErrUrl)) {
             // Load URL
-            if (url.startsWith(getResources().getString(R.string.url_prefix, ""))
-                    || url.equals(getResources().getString(R.string.url_error_real))) {
+            if (url.startsWith(BrowservioURLs.prefix)
+                    || url.equals(BrowservioURLs.realErrUrl)) {
                 URLIdentify(url);
             } else {
                 URLIdentify(checkedUrl);
@@ -768,7 +768,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             URLIdentify(pageBeforeError);
             webview.loadUrl(UrlUtils.UrlChecker(webview.getUrl()));
-            pageBeforeError = getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error));
+            pageBeforeError = BrowservioURLs.noErrUrl;
         }
     }
 
@@ -837,7 +837,7 @@ public class MainActivity extends AppCompatActivity {
      * Error Page Loader
      */
     private void errorPage() {
-        webview.loadUrl(getResources().getString(R.string.url_error_real));
+        webview.loadUrl(BrowservioURLs.realErrUrl);
         // Media player
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
@@ -860,19 +860,19 @@ public class MainActivity extends AppCompatActivity {
      * @param url is supplied for the url to check
      */
     private void URLIdentify(String url) {
-        if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_no_error))))
+        if (url.equals(BrowservioURLs.noErrUrl))
             throw new RuntimeException("Resource access denied, reason: \"browservio://no_error\" is a protected webpage.");
 
-        if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_error))) || url.equals(getResources().getString(R.string.url_error_real)))
+        if (url.equals(BrowservioURLs.errorUrl) || url.equals(BrowservioURLs.realErrUrl))
             errorPage();
 
-        if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_license))))
-            browservioBrowse(getResources().getString(R.string.url_license_real));
+        if (url.equals(BrowservioURLs.licenseUrl))
+            browservioBrowse(BrowservioURLs.realLicenseUrl);
 
-        if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_reload))))
+        if (url.equals(BrowservioURLs.reloadUrl))
             reload.performClick();
 
-        if (url.equals(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_restart)))) {
+        if (url.equals(BrowservioURLs.restartUrl)) {
             Intent i = getIntent();
             finish();
             startActivity(i);
