@@ -85,7 +85,6 @@ import tipz.browservio.utils.UrlUtils;
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
 
-    private String pageBeforeError;
     private boolean defaultError = true;
 
     private MaterialAutoCompleteTextView UrlEdit;
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
     private final ObjectAnimator barAnimate = new ObjectAnimator();
 
     private String UrlTitle;
-    private String previousUrl;
 
     private final static int FILECHOOSER_RESULTCODE = 1;
     private ValueCallback<Uri[]> mUploadMessage;
@@ -246,15 +244,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         reload.setOnClickListener(_view -> {
-            if (pageBeforeError.equals(BrowservioURLs.noErrUrl)
-                    && !webview.getUrl().isEmpty()) {
-                URLIdentify(webview.getUrl());
+            if (webview.getUrl().equals(UrlEdit.getText().toString()))
                 webview.reload();
-            } else {
-                URLIdentify(pageBeforeError);
-                webview.loadUrl(UrlUtils.UrlChecker(webview.getUrl()));
-                pageBeforeError = BrowservioURLs.noErrUrl;
-            }
+            else
+                browservioBrowse(UrlEdit.getText().toString());
         });
 
         homepage.setOnClickListener(_view -> browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)));
@@ -487,9 +480,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /* Page reloading stuff */
-        pageBeforeError = BrowservioURLs.noErrUrl;
-
         setDeskMode(0, true); /* User agent init code */
 
         downloadManager(webview); /* Start the download manager service */
@@ -534,10 +524,10 @@ public class MainActivity extends AppCompatActivity {
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url) {
             if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
-                    && !(url.startsWith(BrowservioURLs.prefix)
-                    || url.equals("about:blank")
-                    || url.equals(BrowservioURLs.realErrUrl))) {
-                UrlEdit.setText(url);
+                    && !(url.equals("about:blank")
+                        || url.equals(BrowservioURLs.realErrUrl)
+                        || url.equals(BrowservioURLs.realLicenseUrl))) {
+                    UrlEdit.setText(url);
                 if (!HistoryReader.history_data(historyPref(MainActivity.this)).trim().endsWith(url))
                     HistoryReader.appendData(historyPref(MainActivity.this), url);
             }
@@ -566,10 +556,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            if (!defaultError) {
-                pageBeforeError = previousUrl;
+            if (!defaultError)
                 errorPage();
-            }
         }
 
         @Override
@@ -754,21 +742,15 @@ public class MainActivity extends AppCompatActivity {
     private void browservioBrowse(String url) {
         if (url == null || url.isEmpty())
             return;
-        previousUrl = url;
         String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultSearch));
-        if (pageBeforeError.equals(BrowservioURLs.noErrUrl)) {
-            // Load URL
-            if (url.startsWith(BrowservioURLs.prefix)
-                    || url.equals(BrowservioURLs.realErrUrl)) {
-                URLIdentify(url);
-            } else {
-                URLIdentify(checkedUrl);
-                webview.loadUrl(checkedUrl);
-            }
+        // Load URL
+        if (url.startsWith(BrowservioURLs.prefix)
+                || url.equals(BrowservioURLs.realErrUrl)
+                || url.equals(BrowservioURLs.realLicenseUrl)) {
+            URLIdentify(url);
         } else {
-            URLIdentify(pageBeforeError);
-            webview.loadUrl(UrlUtils.UrlChecker(webview.getUrl()));
-            pageBeforeError = BrowservioURLs.noErrUrl;
+            URLIdentify(checkedUrl);
+            webview.loadUrl(checkedUrl);
         }
     }
 
@@ -860,14 +842,13 @@ public class MainActivity extends AppCompatActivity {
      * @param url is supplied for the url to check
      */
     private void URLIdentify(String url) {
-        if (url.equals(BrowservioURLs.noErrUrl))
-            throw new RuntimeException("Resource access denied, reason: \"browservio://no_error\" is a protected webpage.");
-
-        if (url.equals(BrowservioURLs.errorUrl) || url.equals(BrowservioURLs.realErrUrl))
+        if (url.equals(BrowservioURLs.realErrUrl))
             errorPage();
 
-        if (url.equals(BrowservioURLs.licenseUrl))
-            browservioBrowse(BrowservioURLs.realLicenseUrl);
+        if (url.equals(BrowservioURLs.licenseUrl) || url.equals(BrowservioURLs.realLicenseUrl)) {
+            UrlEdit.setText(BrowservioURLs.licenseUrl);
+            webview.loadUrl(BrowservioURLs.realLicenseUrl);
+        }
 
         if (url.equals(BrowservioURLs.reloadUrl))
             reload.performClick();

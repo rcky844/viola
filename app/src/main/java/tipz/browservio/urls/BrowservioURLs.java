@@ -3,8 +3,6 @@ package tipz.browservio.urls;
 public class BrowservioURLs {
     public static final String prefix = "browservio://";
 
-    public static final String errorUrl = prefix.concat("error");
-    public static final String noErrUrl = prefix.concat("no_error");
     public static final String realErrUrl = "file:///android_asset/error.html";
 
     public static final String licenseUrl = prefix.concat("license");
