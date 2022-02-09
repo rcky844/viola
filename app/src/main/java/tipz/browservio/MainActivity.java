@@ -17,7 +17,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.nfc.NfcAdapter;
@@ -27,6 +26,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -34,6 +34,7 @@ import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
@@ -97,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView desktop_switch;
     private AppCompatImageView favicon;
 
-    private MediaPlayer mediaPlayer;
     private final ObjectAnimator fabAnimate = new ObjectAnimator();
     private final ObjectAnimator barAnimate = new ObjectAnimator();
 
@@ -407,9 +407,12 @@ public class MainActivity extends AppCompatActivity {
      * <p>
      * sur wen reel Sherk brower pls sand meme sum
      */
+    @SuppressLint("AddJavascriptInterface")
     private void initializeLogic() {
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
+
+        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this, reload), "browservioErr");
 
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
@@ -518,6 +521,39 @@ public class MainActivity extends AppCompatActivity {
         new HistoryInit(browservio_saver(MainActivity.this), historyPref(MainActivity.this));
     }
 
+    public class browservioErrJsInterface {
+        Context mContext;
+        View reload;
+
+        browservioErrJsInterface(Context c, View reload_btn) {
+            mContext = c;
+            reload = reload_btn;
+        }
+
+        @JavascriptInterface
+        public String errGetMsg(int msgId) {
+            if (msgId == 0)
+                return mContext.getResources().getString(R.string.errMsg0);
+            else if (msgId == 1)
+                return mContext.getResources().getString(R.string.errMsg1);
+            else if (msgId == 2)
+                return mContext.getResources().getString(R.string.errMsg2);
+            else if (msgId == 3)
+                return mContext.getResources().getString(R.string.errMsg3);
+            else if (msgId == 4)
+                return mContext.getResources().getString(R.string.errMsg4);
+            else if (msgId == 5)
+                return mContext.getResources().getString(R.string.reload_desp);
+            else
+                return BrowservioBasicUtil.EMPTY_STRING;
+        }
+
+        @JavascriptInterface
+        public void reloadBtn() {
+            runOnUiThread(() -> reload.performClick());
+        }
+    }
+
     /**
      * WebViewClient
      */
@@ -557,7 +593,7 @@ public class MainActivity extends AppCompatActivity {
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             if (!defaultError)
-                errorPage();
+                webview.loadUrl(BrowservioURLs.realErrUrl);
         }
 
         @Override
@@ -816,24 +852,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Error Page Loader
-     */
-    private void errorPage() {
-        webview.loadUrl(BrowservioURLs.realErrUrl);
-        // Media player
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-                mediaPlayer.reset();
-                mediaPlayer.release();
-            }
-        }
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.chord);
-        mediaPlayer.start();
-    }
-
-    /**
      * URL identify module
      * <p>
      * This module/function identifies a supplied
@@ -843,7 +861,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void URLIdentify(String url) {
         if (url.equals(BrowservioURLs.realErrUrl))
-            errorPage();
+            webview.loadUrl(BrowservioURLs.realErrUrl);
 
         if (url.equals(BrowservioURLs.licenseUrl) || url.equals(BrowservioURLs.realLicenseUrl)) {
             UrlEdit.setText(BrowservioURLs.licenseUrl);

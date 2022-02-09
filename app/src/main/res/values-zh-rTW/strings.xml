@@ -98,4 +98,9 @@
     <string name="reset_dialog">這將會%s。\n\n您確定要繼續嗎？</string>
     <string name="search_suggestions_title">啟用搜索建議</string>
     <string name="search_suggestions_desp">搜索時顯示搜索建議</string>
+    <string name="errMsg0">無法打開此頁面</string>
+    <string name="errMsg1">Browservio 無法打開您的網頁</string>
+    <string name="errMsg2">你可以嘗試:</string>
+    <string name="errMsg3">檢查您的互聯網連接</string>
+    <string name="errMsg4">重新加載網頁</string>
 </resources>
