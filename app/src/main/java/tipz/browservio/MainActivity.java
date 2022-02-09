@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_GO) {
+            if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                 browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString());
                 return true;
             }
