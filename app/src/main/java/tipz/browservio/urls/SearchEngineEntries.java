@@ -1,4 +1,4 @@
-package tipz.browservio.searchengines;
+package tipz.browservio.urls;
 
 import static tipz.browservio.utils.UrlUtils.composeSearchUrl;
 

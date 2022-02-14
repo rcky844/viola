@@ -1,12 +1,12 @@
 package tipz.browservio.sharedprefs;
 
-import static tipz.browservio.searchengines.SearchEngineEntries.getHomepageUrl;
-import static tipz.browservio.searchengines.SearchEngineEntries.getSearchEngineUrl;
+import static tipz.browservio.urls.SearchEngineEntries.getHomepageUrl;
+import static tipz.browservio.urls.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
 
 import android.content.Context;
 
-import tipz.browservio.searchengines.SearchEngineEntries;
+import tipz.browservio.urls.SearchEngineEntries;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
 

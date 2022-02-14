@@ -1,8 +1,8 @@
 package tipz.browservio;
 
 import static android.content.Context.ACTIVITY_SERVICE;
-import static tipz.browservio.searchengines.SearchEngineEntries.getHomepageUrl;
-import static tipz.browservio.searchengines.SearchEngineEntries.getSearchEngineUrl;
+import static tipz.browservio.urls.SearchEngineEntries.getHomepageUrl;
+import static tipz.browservio.urls.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
 import static tipz.browservio.utils.ApkInstaller.installApplication;
 
@@ -41,7 +41,8 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Objects;
 
-import tipz.browservio.searchengines.SearchEngineEntries;
+import tipz.browservio.urls.BrowservioURLs;
+import tipz.browservio.urls.SearchEngineEntries;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;
@@ -258,7 +259,7 @@ public class NewSettings extends PreferenceFragmentCompat {
         reset_to_default.setOnPreferenceClickListener(preference -> {
             ResetDialog.setTitle(getResources().getString(R.string.reset_btn))
                     .setMessage(getResources().getString(R.string.reset_dialog, getResources().getString(R.string.reset_btn_desp).toLowerCase()))
-                    .setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) -> {
+                    .setPositiveButton(getResources().getString(R.string.clear, BrowservioBasicUtil.EMPTY_STRING).trim(), (_dialog, _which) -> {
                         BrowservioBasicUtil.showMessage(activity, getResources().getString(R.string.reset_complete));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             ((ActivityManager) activity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
@@ -288,7 +289,7 @@ public class NewSettings extends PreferenceFragmentCompat {
             ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q))
                     .setMessage(getResources().getString(R.string.restart_app_qmsg))
                     .setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) ->
-                            needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_restart))))
+                            needLoad(BrowservioURLs.reloadUrl))
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show();
             return true;
@@ -357,10 +358,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                                             if (position == 1 && !isLatest) {
                                                 BrowservioBasicUtil.showMessage(activity.getApplicationContext(), getResources().getString(R.string.new_update_detect_toast));
 
-                                                if (apkFile.exists())
-                                                    apkFile.delete();
-
-                                                if (!apkFile.exists()) {
+                                                if (!apkFile.exists() || apkFile.delete()) {
                                                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
                                                     request.setTitle(getResources().getString(R.string.download_title));
                                                     request.setMimeType("application/vnd.android.package-archive");
@@ -391,7 +389,8 @@ public class NewSettings extends PreferenceFragmentCompat {
                     }.start();
                 }
             });
-            license_btn.setOnClickListener(_license_btn -> needLoad(getResources().getString(R.string.url_prefix, getResources().getString(R.string.url_suffix_license))));
+            license_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.licenseUrl));
+
             InfoDialog.setView(dialogView)
                     .setPositiveButton(android.R.string.ok, null)
                     .create().show();
@@ -399,14 +398,12 @@ public class NewSettings extends PreferenceFragmentCompat {
         });
 
         feedback.setOnPreferenceClickListener(preference -> {
-            needLoad(getResources().getString(R.string.url_source_code,
-                    getResources().getString(R.string.url_bug_report_suffix)));
+            needLoad(BrowservioURLs.feedbackUrl);
             return true;
         });
 
         source_code.setOnPreferenceClickListener(preference -> {
-            needLoad(getResources().getString(R.string.url_source_code,
-                    BrowservioBasicUtil.EMPTY_STRING));
+            needLoad(BrowservioURLs.sourceUrl);
             return true;
         });
 

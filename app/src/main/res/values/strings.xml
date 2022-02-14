@@ -103,4 +103,9 @@
     <string name="reset_dialog">This will %s\n\nAre you sure you want to continue?</string>
     <string name="search_suggestions_title">Enable Search Suggestions</string>
     <string name="search_suggestions_desp">Show search suggestions when searching.</string>
+    <string name="errMsg0">Can\'t open this page</string>
+    <string name="errMsg1">Browservio failed to open your webpage.</string>
+    <string name="errMsg2">Try:</string>
+    <string name="errMsg3">Checking your internet connection</string>
+    <string name="errMsg4">Reloading the webpage</string>
 </resources>
