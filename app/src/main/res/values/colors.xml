@@ -3,8 +3,8 @@
     <color name="colorControlHighlight">#d8d8d8</color>
     <color name="colorControlNormal">#26000000</color>
     <color name="colorBackground">#ffffff</color>
-    <color name="colorUrlEditBg">#303030</color>
-    <color name="colorElement">#ffffff</color>
-    <color name="colorTopBar">#141414</color>
-    <color name="colorText">#000000</color>
+    <color name="colorUrlEditBg">#ffffff</color>
+    <color name="colorElement">#000000</color>
+    <color name="colorTopBar">#f8f8f7</color>
+    <color name="colorText">@color/colorElement</color>
 </resources>
