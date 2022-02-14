@@ -17,12 +17,12 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 31
-        versionCode 55
+        versionCode 56
         versionName "2.0"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Change\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_change_beta2\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_change_rel\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
         buildConfigField "boolean", "UPDATE_TESTING", "false"
