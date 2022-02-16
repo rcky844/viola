@@ -1,11 +1,12 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@color/colorElement</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorControlHighlight</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
         <item name="materialAlertDialogTheme">@style/materialAlertDialogTheme</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/windowLightStatusBar</item>
     </style>
 
     <style name="materialAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">

@@ -7,4 +7,5 @@
     <color name="colorElement">#000000</color>
     <color name="colorTopBar">#f8f8f7</color>
     <color name="colorText">@color/colorElement</color>
+    <color name="colorPrimaryDark">@color/colorElement</color>
 </resources>
