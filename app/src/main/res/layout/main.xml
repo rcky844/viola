@@ -90,18 +90,18 @@
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
             android:layout_height="36dp"
+            android:background="@color/colorTopBar"
             android:scrollbars="none"
             android:visibility="gone"
-            android:weightSum="1"
-            app:backgroundTint="@color/colorTopBar">
+            android:weightSum="1">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
+                android:background="@color/colorTopBar"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:backgroundTint="@color/colorTopBar">
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/back"
