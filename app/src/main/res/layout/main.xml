@@ -90,18 +90,18 @@
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:background="@color/colorTopBar"
             android:scrollbars="none"
             android:visibility="gone"
-            android:weightSum="1">
+            android:weightSum="1"
+            app:backgroundTint="@color/colorTopBar">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:background="@color/colorTopBar"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:backgroundTint="@color/colorTopBar">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/back"
@@ -255,8 +255,8 @@
             style="?android:progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorTopBar"
-            android:indeterminate="false" />
+            android:indeterminate="false"
+            app:backgroundTint="@color/colorTopBar" />
 
         <WebView
             android:id="@+id/webview"
