@@ -7,6 +7,6 @@
         <item name="colorControlHighlight">@color/colorControlHighlight</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
         <item name="materialAlertDialogTheme">@style/materialAlertDialogTheme</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">@bool/windowLightStatusBar</item>
     </style>
 </resources>
