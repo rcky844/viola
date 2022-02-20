@@ -255,8 +255,8 @@
             style="?android:progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorTopBar"
-            android:indeterminate="false" />
+            android:indeterminate="false"
+            app:backgroundTint="@color/colorTopBar" />
 
         <WebView
             android:id="@+id/webview"

@@ -571,7 +571,6 @@ public class MainActivity extends AppCompatActivity {
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             UrlSet(url);
-            favicon.setImageResource(R.drawable.default_favicon); // Set favicon as default before getting real favicon
             if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
@@ -788,6 +787,7 @@ public class MainActivity extends AppCompatActivity {
             URLIdentify(checkedUrl);
             webview.loadUrl(checkedUrl);
         }
+        favicon.setImageResource(R.drawable.default_favicon); /* Reset favicon before getting real favicon */
     }
 
     /**
