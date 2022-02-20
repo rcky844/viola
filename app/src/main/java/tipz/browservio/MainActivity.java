@@ -42,7 +42,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -56,6 +55,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
@@ -76,6 +76,7 @@ import java.util.Objects;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
+import tipz.browservio.recycler.MainActionBarRecycler;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.FirstTimeInit;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
@@ -93,9 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar faviconProgressBar;
     private ImageView fab;
     private WebView webview;
-    private HorizontalScrollView actionBar;
-    private AppCompatImageView reload;
-    private AppCompatImageView desktop_switch;
+    private RecyclerView actionBar;
     private AppCompatImageView favicon;
 
     private final ObjectAnimator fabAnimate = new ObjectAnimator();
@@ -173,28 +172,168 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setDesktopMode(Boolean enableDesktop, String ua, Integer image, boolean noReload) {
+    private void setDesktopMode(ImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
         webview.getSettings().setUseWideViewPort(enableDesktop);
         webview.setScrollBarStyle(enableDesktop ? WebView.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);
-        desktop_switch.setImageResource(image);
-        if (!noReload) {
-            reload.performClick();
-        }
+        if (view != null)
+            view.setImageResource(image);
+        if (!noReload)
+            webviewReload();
     }
 
-    private void setDeskMode(double mode, boolean noReload) {
+    private void setDeskMode(ImageView view, double mode, boolean noReload) {
         if (mode == 0) {
-            setDesktopMode(false,
+            setDesktopMode(view,
+                    false,
                     userAgentFull("Linux; Android 12"),
                     R.drawable.smartphone,
                     noReload);
         } else if (mode == 1) {
-            setDesktopMode(true,
+            setDesktopMode(view,
+                    true,
                     userAgentFull("X11; Linux x86_64"),
                     R.drawable.desktop,
                     noReload);
+        }
+    }
+
+    private void webviewReload() {
+        if (webview.getUrl().equals(UrlEdit.getText().toString()))
+            webview.reload();
+        else
+            browservioBrowse(UrlEdit.getText().toString());
+    }
+
+    public void itemSelected(ImageView view, int item) {
+        if (item == 0) {
+            if (webview.canGoBack())
+                webview.goBack();
+            else
+                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
+        } else if (item == 1) {
+            if (webview.canGoForward())
+                webview.goForward();
+            else
+                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
+        } else if (item == 2) {
+            webviewReload();
+        } else if (item == 3) {
+            browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage));
+        } else if (item == 4) {
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+            Menu menu = popupMenu.getMenu();
+            menu.add(getResources().getString(R.string.linear_control_b3_desk));
+            menu.add(getResources().getString(R.string.linear_control_b3_mobi));
+            menu.add(getResources().getString(R.string.linear_control_b3_cus));
+            popupMenu.setOnMenuItemClickListener(_item -> {
+                if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk)))
+                    setDeskMode(view, 1, false);
+                else if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi)))
+                    setDeskMode(view, 0, false);
+                else if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
+                    final LayoutInflater layoutInflater = LayoutInflater.from(this);
+                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                    final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                    dialog.setTitle(getResources().getString(R.string.ua))
+                            .setMessage(getResources().getString(R.string.cus_ua_choose))
+                            .setView(root)
+                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                if (customUserAgent.length() == 0) {
+                                    setDeskMode(view, 0, false);
+                                } else {
+                                    view.setImageResource(R.drawable.custom);
+                                    webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
+                                    webviewReload();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .create().show();
+                }
+                return false;
+            });
+            popupMenu.show();
+        } else if (item == 5) {
+            Intent i = new Intent(this, MainActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            else
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            startActivity(i);
+        } else if (item == 6) {
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+            Menu menu = popupMenu.getMenu();
+            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
+            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
+            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
+            popupMenu.setOnMenuItemClickListener(_item -> {
+                if (_item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
+                    webview.clearCache(true);
+                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
+                    webviewReload();
+                } else if (_item.getTitle().toString().contains(getResources().getString(R.string.history))) {
+                    webview.clearHistory();
+                    HistoryReader.clear(historyPref(MainActivity.this));
+                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+                    webviewReload();
+                } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                        CookieManager.getInstance().removeAllCookies(null);
+                        CookieManager.getInstance().flush();
+                    } else {
+                        CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(this);
+                        CookieManager cookieManager = CookieManager.getInstance();
+                        cookieSyncMgr.startSync();
+                        cookieManager.removeAllCookie();
+                        cookieManager.removeSessionCookie();
+                        cookieSyncMgr.stopSync();
+                        cookieSyncMgr.sync();
+                    }
+                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
+                    webviewReload();
+                }
+
+                return false;
+            });
+            popupMenu.show();
+        } else if (item == 7) {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_TEXT, webview.getUrl());
+            startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
+        } else if (item == 8) {
+            Intent intent = new Intent(this, NewSettingsActivity.class);
+            mGetNeedLoad.launch(intent);
+        } else if (item == 9) {
+            Intent intent = new Intent(this, HistoryActivity.class);
+            mGetNeedLoad.launch(intent);
+        } else if (item == 10) {
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+            Menu menu = popupMenu.getMenu();
+            menu.add(getResources().getString(R.string.add_dot));
+            menu.add(getResources().getString(R.string.fav));
+            popupMenu.setOnMenuItemClickListener(_item -> {
+                if (_item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
+                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)) + 1)));
+                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)), webview.getUrl());
+                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_title), UrlTitle);
+                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
+                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
+                } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
+                    if (bookmarks(MainActivity.this).getAll().size() == 0) {
+                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+                    } else {
+                        Intent intent = new Intent(this, FavActivity.class);
+                        mGetNeedLoad.launch(intent);
+                    }
+                }
+                return false;
+            });
+            popupMenu.show();
+        } else if (item == 11) {
+            finish();
         }
     }
 
@@ -209,175 +348,9 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         webview = findViewById(R.id.webview);
         actionBar = findViewById(R.id.actionBar);
-        AppCompatImageView back = findViewById(R.id.back);
-        AppCompatImageView forward = findViewById(R.id.forward);
-        reload = findViewById(R.id.reload);
-        AppCompatImageView homepage = findViewById(R.id.homepage);
-        AppCompatImageView new_tab = findViewById(R.id.new_tab);
-        AppCompatImageView clear = findViewById(R.id.clear);
-        AppCompatImageView share = findViewById(R.id.share);
-        AppCompatImageView settings = findViewById(R.id.settings);
-        AppCompatImageView history = findViewById(R.id.history);
-        AppCompatImageView fav = findViewById(R.id.fav);
-        AppCompatImageView exit = findViewById(R.id.exit);
-        desktop_switch = findViewById(R.id.desktop_switch);
         favicon = findViewById(R.id.favicon);
 
-		/*
-		  On back button being clicked, go backwards in history
-		 */
-        back.setOnClickListener(_view -> {
-            if (webview.canGoBack()) // can go back
-                webview.goBack();
-            else // cannot go backwards
-                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
-        });
-
-		/*
-		  On forward button being clicked, go forward in history
-		 */
-        forward.setOnClickListener(_view -> {
-            if (webview.canGoForward()) // can go forward
-                webview.goForward();
-            else // cannot go forward
-                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
-        });
-
-        reload.setOnClickListener(_view -> {
-            if (webview.getUrl().equals(UrlEdit.getText().toString()))
-                webview.reload();
-            else
-                browservioBrowse(UrlEdit.getText().toString());
-        });
-
-        homepage.setOnClickListener(_view -> browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)));
-
-        desktop_switch.setOnClickListener(_view -> {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, desktop_switch);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.linear_control_b3_desk));
-            menu.add(getResources().getString(R.string.linear_control_b3_mobi));
-            menu.add(getResources().getString(R.string.linear_control_b3_cus));
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk)))
-                    setDeskMode(1, false);
-                else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi)))
-                    setDeskMode(0, false);
-                else if (item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
-                    final LayoutInflater layoutInflater = LayoutInflater.from(this);
-                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
-                    final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
-                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    dialog.setTitle(getResources().getString(R.string.ua))
-                            .setMessage(getResources().getString(R.string.cus_ua_choose))
-                            .setView(root)
-                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                if (customUserAgent.length() == 0) {
-                                    setDeskMode(0, false);
-                                } else {
-                                    desktop_switch.setImageResource(R.drawable.custom);
-                                    webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
-                                    reload.performClick();
-                                }
-                            })
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create().show();
-                }
-                return false;
-            });
-            popupMenu.show();
-        });
-
-        new_tab.setOnClickListener(_view -> {
-            Intent i = new Intent(this, MainActivity.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-            else
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            startActivity(i);
-        });
-
-        clear.setOnClickListener(_view -> {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, clear);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
-                    webview.clearCache(true);
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
-                    reload.performClick();
-                } else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
-                    webview.clearHistory();
-                    HistoryReader.clear(historyPref(MainActivity.this));
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
-                    reload.performClick();
-                } else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        CookieManager.getInstance().removeAllCookies(null);
-                        CookieManager.getInstance().flush();
-                    } else {
-                        CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(this);
-                        CookieManager cookieManager = CookieManager.getInstance();
-                        cookieSyncMgr.startSync();
-                        cookieManager.removeAllCookie();
-                        cookieManager.removeSessionCookie();
-                        cookieSyncMgr.stopSync();
-                        cookieSyncMgr.sync();
-                    }
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
-                    reload.performClick();
-                }
-
-                return false;
-            });
-            popupMenu.show();
-        });
-
-        share.setOnClickListener(_view -> {
-            Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("text/plain");
-            i.putExtra(Intent.EXTRA_TEXT, webview.getUrl());
-            startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
-        });
-
-        settings.setOnClickListener(_view -> {
-            Intent intent = new Intent(this, NewSettingsActivity.class);
-            mGetNeedLoad.launch(intent);
-        });
-
-        history.setOnClickListener(_view -> {
-            Intent intent = new Intent(this, HistoryActivity.class);
-            mGetNeedLoad.launch(intent);
-        });
-
-        fav.setOnClickListener(_view -> {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, fav);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.add_dot));
-            menu.add(getResources().getString(R.string.fav));
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
-                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)) + 1)));
-                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)), webview.getUrl());
-                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_title), UrlTitle);
-                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
-                } else if (item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (bookmarks(MainActivity.this).getAll().size() == 0) {
-                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
-                    } else {
-                        Intent intent = new Intent(this, FavActivity.class);
-                        mGetNeedLoad.launch(intent);
-                    }
-                }
-                return false;
-            });
-            popupMenu.show();
-        });
-
-        exit.setOnClickListener(_view -> finish());
+        MainActionBarRecycler.initMainActionBarRecycler(MainActivity.this, this, actionBar);
 
         favicon.setOnClickListener(_view -> {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, favicon);
@@ -412,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
 
-        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this, reload), "browservioErr");
+        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this, this), "browservioErr");
 
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
@@ -483,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setDeskMode(0, true); /* User agent init code */
+        setDeskMode(null, 0, true); /* User agent init code */
 
         downloadManager(webview); /* Start the download manager service */
         browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)); /* Load default webpage */
@@ -523,11 +496,11 @@ public class MainActivity extends AppCompatActivity {
 
     public class browservioErrJsInterface {
         Context mContext;
-        View reload;
+        MainActivity mMainActivity;
 
-        browservioErrJsInterface(Context c, View reload_btn) {
+        browservioErrJsInterface(Context c, MainActivity mainActivity) {
             mContext = c;
-            reload = reload_btn;
+            mMainActivity = mainActivity;
         }
 
         @JavascriptInterface
@@ -550,7 +523,7 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void reloadBtn() {
-            runOnUiThread(() -> reload.performClick());
+            runOnUiThread(() -> mMainActivity.webviewReload());
         }
     }
 
@@ -869,7 +842,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (url.equals(BrowservioURLs.reloadUrl))
-            reload.performClick();
+            webviewReload();
 
         if (url.equals(BrowservioURLs.restartUrl)) {
             Intent i = getIntent();
