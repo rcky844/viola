@@ -8,10 +8,6 @@ public class UrlUtils {
             "http:", "https:", "ftp:", "file:",
             "about:", "javascript:", "blob:", "data:"};
 
-    public static String UrlChecker(String url) {
-        return UrlChecker(url, false, BrowservioBasicUtil.EMPTY_STRING);
-    }
-
     /**
      * URL Checker
      * <p>
