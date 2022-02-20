@@ -1,7 +1,5 @@
 package tipz.browservio.utils;
 
-import android.webkit.URLUtil;
-
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {
@@ -26,14 +24,10 @@ public class UrlUtils {
                 return url;
             }
         }
-        if (URLUtil.isValidUrl(url)) {
-            return url;
-        } else {
-            if (url.endsWith("/") || url.endsWith("\\") || url.contains("."))
-                return "http://" + url;
-            if (canBeSearch)
-                return searchUrl + url;
-        }
+        if (url.endsWith("/") || url.endsWith("\\") || url.contains("."))
+            return "http://" + url;
+        if (canBeSearch)
+            return searchUrl + url;
         return url;
     }
 
