@@ -1,5 +1,7 @@
 package tipz.browservio.utils;
 
+import static tipz.browservio.urls.BrowservioURLs.realErrUrl;
+
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {
@@ -18,7 +20,7 @@ public class UrlUtils {
      */
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
         if (url.contains("/?"))
-            return "browservio://error";
+            return realErrUrl;
         for (String match : startsWithMatch) {
             if (url.startsWith(match)) {
                 return url;
