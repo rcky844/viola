@@ -21,15 +21,19 @@ public class UrlUtils {
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
         if (url.contains("/?"))
             return realErrUrl;
+
         for (String match : startsWithMatch) {
             if (url.startsWith(match)) {
                 return url;
             }
         }
-        if (url.endsWith("/") || url.endsWith("\\") || url.contains("."))
+
+        if (url.endsWith("/") || url.contains("."))
             return "http://" + url;
+
         if (canBeSearch)
             return searchUrl + url;
+
         return url;
     }
 
