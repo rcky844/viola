@@ -11,7 +11,6 @@ public class AllPrefs {
     public static final String isJavaScriptEnabled = "isJavaScriptEnabled";
     public static final String showFavicon = "showFavicon";
     public static final String showZoomKeys = "showZoomKeys";
-    public static final String showCustomError = "showCustomError";
     public static final String enableSuggestions = "enableSuggestions";
 
     /* bookmarks */

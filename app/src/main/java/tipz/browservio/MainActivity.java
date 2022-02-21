@@ -85,9 +85,6 @@ import tipz.browservio.utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
-
-    private boolean defaultError = true;
-
     private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
@@ -591,8 +588,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            if (!defaultError)
-                webview.loadUrl(BrowservioURLs.realErrUrl);
+            webview.loadUrl(BrowservioURLs.realErrUrl);
         }
 
         @Override
@@ -843,7 +839,6 @@ public class MainActivity extends AppCompatActivity {
 
         favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
         webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys)));
-        defaultError = !BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showCustomError));
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
