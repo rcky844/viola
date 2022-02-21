@@ -1,7 +1,6 @@
 package tipz.browservio;
 
 import static tipz.browservio.fav.FavApi.bookmarks;
-import static tipz.browservio.history.HistoryApi.historyPref;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -92,7 +91,7 @@ public class HistoryActivity extends AppCompatActivity {
                                     out.append(o.toString());
                                     out.append(BrowservioBasicUtil.LINE_SEPARATOR());
                                 }
-                                HistoryReader.write(historyPref(this), out.toString().trim());
+                                HistoryReader.write(this, out.toString().trim());
                                 ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
                                 BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
                                 isEmptyCheck();
@@ -120,7 +119,7 @@ public class HistoryActivity extends AppCompatActivity {
         _fab.setOnClickListener(_view -> deleteHistory.setTitle(getResources().getString(R.string.del_fav2_title))
                 .setMessage(getResources().getString(R.string.del_hist_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                    HistoryReader.clear(historyPref(this));
+                    HistoryReader.clear(this);
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
                     finish();
                 })
@@ -131,13 +130,13 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        history_list = new ArrayList<>(Arrays.asList(HistoryReader.history_data(historyPref(this)).trim().split("\n")));
+        history_list = new ArrayList<>(Arrays.asList(HistoryReader.history_data(this).trim().split("\n")));
         listview.setAdapter(new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, history_list));
         isEmptyCheck();
     }
 
     private void isEmptyCheck() {
-        if (HistoryReader.isEmptyCheck(historyPref(this))) {
+        if (HistoryReader.isEmptyCheck(this)) {
             BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
             finish();
         }

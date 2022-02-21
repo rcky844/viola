@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
                     reload.performClick();
                 } else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
                     webview.clearHistory();
-                    HistoryReader.clear(historyPref(MainActivity.this));
+                    HistoryReader.clear(MainActivity.this);
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     reload.performClick();
                 } else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
@@ -561,8 +561,8 @@ public class MainActivity extends AppCompatActivity {
                         || url.equals(BrowservioURLs.realErrUrl)
                         || url.equals(BrowservioURLs.realLicenseUrl))) {
                     UrlEdit.setText(url);
-                if (!HistoryReader.history_data(historyPref(MainActivity.this)).trim().endsWith(url))
-                    HistoryReader.appendData(historyPref(MainActivity.this), url);
+                if (!HistoryReader.history_data(MainActivity.this).trim().endsWith(url))
+                    HistoryReader.appendData(MainActivity.this, url);
             }
         }
 
