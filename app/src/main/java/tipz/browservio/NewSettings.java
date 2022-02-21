@@ -127,7 +127,6 @@ public class NewSettings extends PreferenceFragmentCompat {
         /* Visuals category */
         CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
         CheckBoxPreference show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
-        CheckBoxPreference show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
 
         /* Advanced category */
         CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
@@ -302,12 +301,6 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
-        show_cus_error.setOnPreferenceClickListener(preference -> {
-            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
-                    AllPrefs.showCustomError, show_cus_error.isChecked(), false);
-            return true;
-        });
-
         version.setOnPreferenceClickListener(preference -> {
             @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
             AppCompatImageView easter_banner = dialogView.findViewById(R.id.easter_banner);
@@ -411,7 +404,6 @@ public class NewSettings extends PreferenceFragmentCompat {
         checkIfPrefIntIsTrue(AllPrefs.showFavicon, show_favicon, false);
         checkIfPrefIntIsTrue(AllPrefs.showZoomKeys, show_pinch_btn, false);
         checkIfPrefIntIsTrue(AllPrefs.isJavaScriptEnabled, javascript, false);
-        checkIfPrefIntIsTrue(AllPrefs.showCustomError, show_cus_error, false);
         search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)]));
         homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId)]));
         version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));

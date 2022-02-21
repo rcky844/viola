@@ -1,16 +1,12 @@
 package tipz.browservio.utils;
 
-import android.webkit.URLUtil;
+import static tipz.browservio.urls.BrowservioURLs.realErrUrl;
 
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {
             "http:", "https:", "ftp:", "file:",
             "about:", "javascript:", "blob:", "data:"};
-
-    public static String UrlChecker(String url) {
-        return UrlChecker(url, false, BrowservioBasicUtil.EMPTY_STRING);
-    }
 
     /**
      * URL Checker
@@ -24,20 +20,20 @@ public class UrlUtils {
      */
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
         if (url.contains("/?"))
-            return "browservio://error";
+            return realErrUrl;
+
         for (String match : startsWithMatch) {
             if (url.startsWith(match)) {
                 return url;
             }
         }
-        if (URLUtil.isValidUrl(url)) {
-            return url;
-        } else {
-            if (url.endsWith("/") || url.endsWith("\\") || url.contains("."))
-                return "http://" + url;
-            if (canBeSearch)
-                return searchUrl + url;
-        }
+
+        if (url.endsWith("/") || url.contains("."))
+            return "http://" + url;
+
+        if (canBeSearch)
+            return searchUrl + url;
+
         return url;
     }
 
