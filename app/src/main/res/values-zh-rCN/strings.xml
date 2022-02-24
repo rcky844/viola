@@ -101,4 +101,5 @@
     <string name="errMsg2">你可以尝试:</string>
     <string name="errMsg3">检查您的互联网连接</string>
     <string name="errMsg4">重新加载网页</string>
+    <string name="get_changelog">阅读变更日志</string>
 </resources>
