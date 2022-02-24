@@ -101,4 +101,5 @@
     <string name="errMsg2">你可以嘗試:</string>
     <string name="errMsg3">檢查您的互聯網連接</string>
     <string name="errMsg4">重新加載網頁</string>
+    <string name="get_changelog">閱讀變更日誌</string>
 </resources>

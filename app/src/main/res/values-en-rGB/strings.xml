@@ -101,4 +101,5 @@
     <string name="errMsg2">Try:</string>
     <string name="errMsg3">Checking your internet connection</string>
     <string name="errMsg4">Reloading the webpage</string>
+    <string name="get_changelog">Read ChangeLogs</string>
 </resources>

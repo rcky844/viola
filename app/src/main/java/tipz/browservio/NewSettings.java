@@ -306,9 +306,12 @@ public class NewSettings extends PreferenceFragmentCompat {
             AppCompatImageView easter_banner = dialogView.findViewById(R.id.easter_banner);
             AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
+            AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
             AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-            if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING)
+            if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING) {
                 update_btn.setVisibility(View.GONE);
+                changelog_btn.setVisibility(View.GONE);
+            }
             easter_banner.setOnClickListener(_update_btn -> BrowservioBasicUtil.showMessage(activity, String.format(Locale.ENGLISH, "%03d", 0).replace("0", getResources().getString(R.string.app_name).concat("! "))));
             dialog_text.setText(getResources().getString(R.string.version_info_message,
                     getResources().getString(R.string.app_name),
@@ -382,6 +385,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                     }.start();
                 }
             });
+            changelog_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.realChangelogUrl));
             license_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.licenseUrl));
 
             InfoDialog.setView(dialogView)
