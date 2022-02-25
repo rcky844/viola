@@ -25,7 +25,6 @@ android {
         buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_change_master\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
-        buildConfigField "boolean", "UPDATE_TESTING", "false"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -38,11 +37,6 @@ android {
         debug {
             buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
             buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
-        }
-
-        debug_update_test {
-            initWith(buildTypes.debug)
-            buildConfigField "boolean", "UPDATE_TESTING", "true"
         }
 
         snapshot {

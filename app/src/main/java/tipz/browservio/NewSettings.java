@@ -308,11 +308,14 @@ public class NewSettings extends PreferenceFragmentCompat {
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
             AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
             AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-            if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING) {
+            if (BuildConfig.BUILD_TYPE.equals("debug") && BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.updateTesting) != 1) {
                 update_btn.setVisibility(View.GONE);
                 changelog_btn.setVisibility(View.GONE);
             }
-            easter_banner.setOnClickListener(_update_btn -> BrowservioBasicUtil.showMessage(activity, String.format(Locale.ENGLISH, "%03d", 0).replace("0", getResources().getString(R.string.app_name).concat("! "))));
+            easter_banner.setOnClickListener(_update_btn -> {
+                BrowservioBasicUtil.showMessage(activity, String.format(Locale.ENGLISH, "%03d", 0).replace("0", getResources().getString(R.string.app_name).concat("! ")));
+                BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.updateTesting, 1);
+            });
             dialog_text.setText(getResources().getString(R.string.version_info_message,
                     getResources().getString(R.string.app_name),
                     BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
@@ -346,7 +349,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                                         String[] array = bo.toString().split(BrowservioBasicUtil.LINE_SEPARATOR());
                                         for (String obj : array) {
                                             if (position == 0) {
-                                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && !BuildConfig.UPDATE_TESTING) {
+                                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.updateTesting) == 1) {
                                                     isLatest = true;
                                                     BrowservioBasicUtil.showMessage(activity.getApplicationContext(), getResources().getString(R.string.version_latest_toast));
                                                 }
