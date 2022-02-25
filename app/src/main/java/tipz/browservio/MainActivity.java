@@ -517,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void reloadBtn() {
-            runOnUiThread(() -> mMainActivity.webviewReload());
+            runOnUiThread(mMainActivity::webviewReload);
         }
     }
 
