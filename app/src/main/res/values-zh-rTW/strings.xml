@@ -19,17 +19,11 @@
     <string name="add_dot">添加…</string>
     <string name="saved_su">添加成功!</string>
     <string name="fav_list_empty">沒有已添加的收藏</string>
-    <string name="favicondialog_title">網站標題</string>
+    <string name="copy_title">複製網站標題</string>
     <string name="app_not_installed">應用程序未安裝</string>
     <string name="address_bar_hint">"搜索或輸入網址…"</string>
     <string name="favicon_desp">"網頁的圖標, 點擊我將㑹打開一個帶有網頁標題的對話框"</string>
-    <string name="back_desp">向後</string>
-    <string name="forward_desp">向前</string>
-    <string name="reload_desp">重新加載</string>
-    <string name="desktop_desp">選擇要使用的用戶代理</string>
-    <string name="clear_desp">清除緩存、Cookies或歷史記錄</string>
-    <string name="share_desp">分享這個網站</string>
-    <string name="exit_desp">退出</string>
+    <string name="reload">重新加載</string>
     <string name="fab_desp">單擊按鈕時將顯示或關閉操作欄</string>
     <string name="settings">設置</string>
     <string name="search_engine">搜索引擎</string>
@@ -84,11 +78,11 @@
     <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">複製到剪貼板</string>
     <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">成功複製到了剪貼板</string>
     <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">錯誤資訊</string>
-    <string name="new_tab_desp">新分頁</string>
     <string name="visual">視覺效果</string>
     <string name="data_privacy">數據和隱私</string>
     <string name="reset_btn_desp">清除所有瀏覽器數據</string>
-    <string name="reset_dialog">這將會%s。\n\n您確定要繼續嗎？</string>
+    <string name="reset_dialog">這將會清除所有瀏覽器數據。\n</string>
+    <string name="to_continue">您確定要繼續嗎？</string>
     <string name="search_suggestions_title">啟用搜索建議</string>
     <string name="search_suggestions_desp">搜索時顯示搜索建議</string>
     <string name="errMsg0">無法打開此頁面</string>

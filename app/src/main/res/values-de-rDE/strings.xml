@@ -1,0 +1,94 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="error_already_page">"Bereits auf der %s Seite!"</string>
+    <string name="first">ersten</string>
+    <string name="last">letzten</string>
+    <string name="linear_control_b3_desk">Desktop</string>
+    <string name="linear_control_b3_mobi">Mobile</string>
+    <string name="linear_control_b3_cus">Benutzerdefiniert</string>
+    <string name="ua">"User Agent"</string>
+    <string name="cus_ua_choose">"Setzen Sie einen benutzerdefinierten User Agent nach Ihren Vorlieben"</string>
+    <string name="reset_complete">"Erfolgreich zurückgesetzt!"</string>
+    <string name="clear">"%s leeren"</string>
+    <string name="cache">"Cache"</string>
+    <string name="history">"Verlauf"</string>
+    <string name="cookies">"Cookies"</string>
+    <string name="cleared_toast">"%s erfolgreich geleert!"</string>
+    <string name="linear_control_b5_title">"URL teilen mit"</string>
+    <string name="copied_clipboard">"In die Zwischenablage kopiert!"</string>
+    <string name="hist_empty">"Der Verlauf ist leer!"</string>
+    <string name="add_dot">"Hinzufügen…"</string>
+    <string name="saved_su">"Erfolgreich gespeichert!"</string>
+    <string name="fav_list_empty">"Es wurden keine Favoriten gespeichert."</string>
+    <string name="copy_title">"Webseitentitel kopieren"</string>
+    <string name="app_not_installed">"Anwendung ist nicht installiert."</string>
+    <string name="address_bar_hint">"Suchen oder URL eingeben…"</string>
+    <string name="favicon_desp">"Favicon der Webseite. Darauf klicken wird einen Dialog mit dem Webseitentitel anzeigen."</string>
+    <string name="reload">Neu laden</string>
+    <string name="fab_desp">"Ein Knopf, wenn gedrückt, wird die Aktionsleiste anzeigen oder schließen."</string>
+    <string name="settings">Einstellungen</string>
+    <string name="search_engine">"Suchmaschine"</string>
+    <string name="search_engine_current">"Aktuelle Suchmaschine: %s"</string>
+    <string name="homepage">"Startseite"</string>
+    <string name="homepage_current">"Aktuelle Startseite: %s"</string>
+    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nDieses Produkt ist lizenziert unter der Apache License.</string>
+    <string name="update_btn">Auf Aktualisierungen prüfen</string>
+    <string name="version_latest_toast">"Sie verwenden aktuell die neueste Version von Browservio."</string>
+    <string name="network_unavailable_toast">"Netzwerk nicht verfügnbar."</string>
+    <string name="new_update_detect_toast">"Eine Aktualisierung wurde gefunden. Herunterladen…"</string>
+    <string name="update_down_failed_toast">"Herunterladen der Aktualisierung fehlgeschlagen!"</string>
+    <string name="general">Allgemein</string>
+    <string name="reset_btn">"Auf Standard zurücksetzen"</string>
+    <string name="advanced">Erweitert</string>
+    <string name="javascript">"JavaScript aktivieren"</string>
+    <string name="javascript_desp">"JavaScript aktiviert zu haben wird Ihnen eine bessere Browser-Erfahrung bieten."</string>
+    <string name="show_favicon">"Favicon anzeigen"</string>
+    <string name="show_favicon_desp">"Favicon der Webseite neben der Adresszeile anzeigen."</string>
+    <string name="help">Hilfe</string>
+    <string name="version">Version</string>
+    <string name="feedback">Feedback</string>
+    <string name="feedback_desp">"Feedback hinterlassen wird die Qualität von Browservio verbessern."</string>
+    <string name="source_code">"Quellcode"</string>
+    <string name="source_code_desp">"Schauen Sie sich Browservios Quellcode an."</string>
+    <string name="download_title">"Browservio-Aktualisierung"</string>
+    <string name="fav">Favoriten</string>
+    <string name="del_fav">"Diesen Favoriten löschen"</string>
+    <string name="del_fav_title">"Möchten Sie diesen Favoriten löschen?"</string>
+    <string name="del_success">"Erfolgreich gelöscht!"</string>
+    <string name="del_fav2_title">"Alle Einträge löschen"</string>
+    <string name="del_fav2_message">"Sie sind dabei, alle Favoriten zu löschen. Sind Sie sicher, dass Sie fortfahren möchten?"</string>
+    <string name="wiped_success">"Erfolgreich bereinigt!"</string>
+    <string name="fav_del_fab_desp">"Alle Einträge löschen"</string>
+    <string name="hist">Verlauf</string>
+    <string name="del_hist">"Diesen Verlauf löschen"</string>
+    <string name="del_hist_title">"Möchten Sie diesen Verlauf löschen?"</string>
+    <string name="add_to_fav">"Als Favoriten speichern"</string>
+    <string name="del_hist_message">"Sie sind dabei, den gesamten Verlauf zu löschen. Sind Sie sich sicher?"</string>
+    <string name="del_hist_fab_desp">"Gesamten Verlauf löschen"</string>
+    <string name="baidu_search">Baidu</string>
+    <string name="yahoo_search">Yahoo!</string>
+    <string name="google_search">Google (Standard)</string>
+    <string name="custom_search">Benutzerdefiniert</string>
+    <string name="license_btn">Lizenz</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">Ein unerwarteter Fehler ist aufgetreten. Bitte entschuldigen Sie die Unannehmlichkeiten.</string>
+    <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">App neu starten</string>
+    <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">App beenden</string>
+    <string name="customactivityoncrash_error_activity_error_details" tools:keep="@string/customactivityoncrash_error_activity_error_details">Fehlerdetails</string>
+    <string name="customactivityoncrash_error_activity_error_details_title" tools:keep="@string/customactivityoncrash_error_activity_error_details_title">Fehlerdetails</string>
+    <string name="customactivityoncrash_error_activity_error_details_close" tools:keep="@string/customactivityoncrash_error_activity_error_details_close">Schließen</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">In die Zwischenablage kopieren</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">In die Zwischenablage kopiert</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">Fehlerinformationen</string>
+    <string name="visual">Optik</string>
+    <string name="data_privacy">Daten &amp; Privatsphäre</string>
+    <string name="reset_btn_desp">Alle Browserdaten leeren.</string>
+    <string name="reset_dialog">Dies wird alle Browserdaten leeren.\n</string>
+    <string name="to_continue">Sind Sie sicher, dass Sie fortfahren möchten?</string>
+    <string name="search_suggestions_title">Suchvorschläge aktivieren</string>
+    <string name="search_suggestions_desp">Während des Suchens Vorschläge anzeigen.</string>
+    <string name="errMsg0">Webseite kann nicht angezeigt werden</string>
+    <string name="errMsg1">Browservio konnte Ihre Webseite nicht anzeigen.</string>
+    <string name="errMsg2">Versuchen Sie:</string>
+    <string name="errMsg3">Ihre Internetverbindung zu überprüfen</string>
+    <string name="errMsg4">Die Webseite neu zu laden</string>
+    <string name="get_changelog">Changelog lesen</string>
+</resources>

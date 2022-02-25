@@ -1,270 +1,120 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintBottom_toTopOf="@id/actionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:layout_width="match_parent"
-                android:layout_height="?attr/minTouchTargetSize"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                app:contentInsetEnd="0dp"
-                app:contentInsetStart="0dp"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:title="@null">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/favicon"
-                        android:layout_width="?attr/minTouchTargetSize"
-                        android:layout_height="?attr/minTouchTargetSize"
-                        android:contentDescription="@string/favicon_desp"
-                        android:padding="8dp"
-                        app:srcCompat="@drawable/default_favicon" />
-
-                    <ProgressBar
-                        android:id="@+id/faviconProgressBar"
-                        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-                        android:layout_width="?attr/minTouchTargetSize"
-                        android:layout_height="?attr/minTouchTargetSize"
-                        android:contentDescription="@string/favicon_desp"
-                        android:indeterminate="true"
-                        android:padding="8dp"
-                        android:visibility="gone" />
-
-                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                        android:id="@+id/UrlEdit"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:background="@drawable/url_edit_bg"
-                        android:gravity="center_vertical"
-                        android:hint="@string/address_bar_hint"
-                        android:imeOptions="actionGo"
-                        android:importantForAutofill="no"
-                        android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
-                        android:padding="8dp"
-                        android:selectAllOnFocus="true"
-                        android:singleLine="true"
-                        android:textColor="@color/colorElement"
-                        android:textSize="12dp"
-                        android:weightSum="0" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/fab"
-                        android:layout_width="?attr/minTouchTargetSize"
-                        android:layout_height="?attr/minTouchTargetSize"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:contentDescription="@string/fab_desp"
-                        android:focusable="true"
-                        android:padding="8dp"
-                        android:rotation="180"
-                        app:srcCompat="@drawable/arrow_up"
-                        tools:ignore="RedundantDescriptionCheck" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </com.google.android.material.appbar.MaterialToolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <HorizontalScrollView
-            android:id="@+id/actionBar"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:background="@color/colorTopBar"
-            android:scrollbars="none"
-            android:visibility="gone"
-            android:weightSum="1">
+            android:layout_height="?attr/minTouchTargetSize"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:title="@null">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:background="@color/colorTopBar"
-                android:gravity="center_vertical"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center_horizontal|center_vertical"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/back_desp"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/arrow_back_alt" />
+                    android:id="@+id/favicon"
+                    android:layout_width="?attr/minTouchTargetSize"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:contentDescription="@string/favicon_desp"
+                    android:padding="8dp"
+                    app:srcCompat="@drawable/default_favicon" />
+
+                <ProgressBar
+                    android:id="@+id/faviconProgressBar"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+                    android:layout_width="?attr/minTouchTargetSize"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:contentDescription="@string/favicon_desp"
+                    android:indeterminate="true"
+                    android:padding="8dp"
+                    android:visibility="gone" />
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/UrlEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/url_edit_bg"
+                    android:gravity="center_vertical"
+                    android:hint="@string/address_bar_hint"
+                    android:imeOptions="actionGo"
+                    android:importantForAutofill="no"
+                    android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
+                    android:padding="8dp"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:textColor="@color/colorElement"
+                    android:textSize="12dp"
+                    android:weightSum="0" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/forward"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:id="@+id/fab"
+                    android:layout_width="?attr/minTouchTargetSize"
+                    android:layout_height="?attr/minTouchTargetSize"
                     android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/forward_desp"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/fab_desp"
+                    android:focusable="true"
+                    android:padding="8dp"
                     android:rotation="180"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/arrow_back_alt" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/reload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/reload_desp"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/refresh" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/homepage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/history"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/home" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/desktop_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/desktop_desp"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/smartphone" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/new_tab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/new_tab_desp"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/new_tab" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/clear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/clear_desp"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/delete" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/share"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/share_desp"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/share" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/settings"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/settings" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/history"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/history" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/fav"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/fav"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/favorites" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/exit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/exit_desp"
-                    android:hardwareAccelerated="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/close" />
+                    app:srcCompat="@drawable/arrow_up"
+                    tools:ignore="RedundantDescriptionCheck" />
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </HorizontalScrollView>
 
-        <ProgressBar
-            android:id="@+id/MainProg"
-            style="?android:progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:indeterminate="false"
-            app:backgroundTint="@color/colorTopBar" />
+        </com.google.android.material.appbar.MaterialToolbar>
 
-        <WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hardwareAccelerated="true"
-            android:scrollbarStyle="insideOverlay" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@color/colorTopBar"
+        android:hardwareAccelerated="true"
+        android:orientation="horizontal"
+        android:scrollbars="none"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/MainProg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar" />
+
+    <ProgressBar
+        android:id="@+id/MainProg"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:indeterminate="false"
+        app:backgroundTint="@color/colorTopBar"
+        app:layout_constraintBottom_toTopOf="@id/webview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actionBar" />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarStyle="insideOverlay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/MainProg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
