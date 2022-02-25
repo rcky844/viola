@@ -456,6 +456,9 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setSupportZoom(true);
         webview.getSettings().setBuiltInZoomControls(true);
 
+        webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
+                View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
+
         /*
          * Getting information from intents, either from
          * sharing menu or default browser launch.
