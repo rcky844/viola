@@ -90,6 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:background="@color/colorTopBar"
+        android:hardwareAccelerated="true"
         android:orientation="horizontal"
         android:scrollbars="none"
         android:visibility="gone"
