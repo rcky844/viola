@@ -126,8 +126,6 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         /* Visuals category */
         CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-        CheckBoxPreference show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
-        CheckBoxPreference show_cus_error = Objects.requireNonNull(findPreference("show_cus_error"));
 
         /* Advanced category */
         CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
@@ -145,9 +143,6 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         /* Data & Privacy dialog */
         MaterialAlertDialogBuilder ResetDialog = new MaterialAlertDialogBuilder(activity);
-
-        /* Visuals category dialog */
-        MaterialAlertDialogBuilder ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
 
         /* Help category dialog */
         MaterialAlertDialogBuilder InfoDialog = new MaterialAlertDialogBuilder(activity);
@@ -284,27 +279,10 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
-        show_pinch_btn.setOnPreferenceClickListener(preference -> {
-            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity), AllPrefs.showZoomKeys, show_pinch_btn.isChecked(), false);
-            ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q))
-                    .setMessage(getResources().getString(R.string.restart_app_qmsg))
-                    .setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) ->
-                            needLoad(BrowservioURLs.reloadUrl))
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create().show();
-            return true;
-        });
-
         javascript.setOnPreferenceClickListener(preference -> {
             BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
                     AllPrefs.isJavaScriptEnabled, javascript.isChecked(), false);
             needReload = true;
-            return true;
-        });
-
-        show_cus_error.setOnPreferenceClickListener(preference -> {
-            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
-                    AllPrefs.showCustomError, show_cus_error.isChecked(), false);
             return true;
         });
 
@@ -313,10 +291,16 @@ public class NewSettings extends PreferenceFragmentCompat {
             AppCompatImageView easter_banner = dialogView.findViewById(R.id.easter_banner);
             AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
+            AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
             AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-            if (BuildConfig.BUILD_TYPE.equals("debug") && !BuildConfig.UPDATE_TESTING)
+            if (BuildConfig.BUILD_TYPE.equals("debug") && BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.updateTesting) != 1) {
                 update_btn.setVisibility(View.GONE);
-            easter_banner.setOnClickListener(_update_btn -> BrowservioBasicUtil.showMessage(activity, String.format(Locale.ENGLISH, "%03d", 0).replace("0", getResources().getString(R.string.app_name).concat("! "))));
+                changelog_btn.setVisibility(View.GONE);
+            }
+            easter_banner.setOnClickListener(_update_btn -> {
+                BrowservioBasicUtil.showMessage(activity, String.format(Locale.ENGLISH, "%03d", 0).replace("0", getResources().getString(R.string.app_name).concat("! ")));
+                BrowservioSaverUtils.setPrefNum(browservio_saver(activity), AllPrefs.updateTesting, 1);
+            });
             dialog_text.setText(getResources().getString(R.string.version_info_message,
                     getResources().getString(R.string.app_name),
                     BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
@@ -350,7 +334,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                                         String[] array = bo.toString().split(BrowservioBasicUtil.LINE_SEPARATOR());
                                         for (String obj : array) {
                                             if (position == 0) {
-                                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && !BuildConfig.UPDATE_TESTING) {
+                                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.updateTesting) == 1) {
                                                     isLatest = true;
                                                     BrowservioBasicUtil.showMessage(activity.getApplicationContext(), getResources().getString(R.string.version_latest_toast));
                                                 }
@@ -389,6 +373,7 @@ public class NewSettings extends PreferenceFragmentCompat {
                     }.start();
                 }
             });
+            changelog_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.realChangelogUrl));
             license_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.licenseUrl));
 
             InfoDialog.setView(dialogView)
@@ -409,9 +394,7 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         checkIfPrefIntIsTrue(AllPrefs.enableSuggestions, search_suggestions, true);
         checkIfPrefIntIsTrue(AllPrefs.showFavicon, show_favicon, false);
-        checkIfPrefIntIsTrue(AllPrefs.showZoomKeys, show_pinch_btn, false);
         checkIfPrefIntIsTrue(AllPrefs.isJavaScriptEnabled, javascript, false);
-        checkIfPrefIntIsTrue(AllPrefs.showCustomError, show_cus_error, false);
         search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)]));
         homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId)]));
         version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));

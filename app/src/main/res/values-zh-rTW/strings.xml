@@ -36,9 +36,6 @@
     <string name="search_engine_current">"當前的搜索引擎: %s"</string>
     <string name="homepage">主頁</string>
     <string name="homepage_current">"當前的主頁: %s"</string>
-    <string name="restart_app_q">重啟應用?</string>
-    <string name="restart_app_qmsg">此功能需要重啟應用才能工作</string>
-    <string name="restart_app_now">馬上重啟</string>
     <string name="version_info_message">"%1$s\n版本 %2$s (內部版本號 %3$s : %4$s)\n版權所有 © 2020-%5$s Tipz Team\n\n本產品已獲得 Apache 許可</string>
     <string name="update_btn">檢查更新</string>
     <string name="version_latest_toast">您當前運行的是最新版本的Browservio</string>
@@ -47,16 +44,12 @@
     <string name="update_down_failed_toast">更新下載失敗!</string>
     <string name="download_title">"Browservio 更新"</string>
     <string name="general">基本</string>
-    <string name="show_pinch_btn">顯示雙指縮放按鈕</string>
-    <string name="show_pinch_btn_desp">在右下角顯示雙指縮放控制按鈕\n(需要重啟應用)</string>
     <string name="reset_btn">重置為默認值</string>
     <string name="advanced">進階</string>
     <string name="javascript">啟用JavaScript</string>
     <string name="javascript_desp">啟用JavaScript將為您提供更好的瀏覽體驗</string>
     <string name="show_favicon">顯示網站圖標</string>
     <string name="show_favicon_desp">在地址欄旁邊顯示網站的圖標</string>
-    <string name="show_cus_error">顯示自定義錯誤頁面</string>
-    <string name="show_cus_error_desp">在無法連接到網站時顯示帶有音頻效果的自定義錯誤頁面</string>
     <string name="help">幫助</string>
     <string name="version">版本</string>
     <string name="feedback">反饋</string>
@@ -103,4 +96,5 @@
     <string name="errMsg2">你可以嘗試:</string>
     <string name="errMsg3">檢查您的互聯網連接</string>
     <string name="errMsg4">重新加載網頁</string>
+    <string name="get_changelog">閱讀變更日誌</string>
 </resources>

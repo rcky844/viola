@@ -85,9 +85,6 @@ import tipz.browservio.utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
-
-    private boolean defaultError = true;
-
     private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
@@ -310,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
                     reload.performClick();
                 } else if (item.getTitle().toString().contains(getResources().getString(R.string.history))) {
                     webview.clearHistory();
-                    HistoryReader.clear(historyPref(MainActivity.this));
+                    HistoryReader.clear(MainActivity.this);
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     reload.performClick();
                 } else if (item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
@@ -447,16 +444,14 @@ public class MainActivity extends AppCompatActivity {
                                     JSONArray jsonArray = new JSONArray(bo.toString());
 
                                     jsonArray = jsonArray.optJSONArray(1);
-                                    if (jsonArray == null) {
+                                    if (jsonArray == null)
                                         throw new RuntimeException("jsonArray is null.");
-                                    }
                                     final int MAX_RESULTS = 10;
                                     ArrayList<String> result = new ArrayList<>(Math.min(jsonArray.length(), MAX_RESULTS));
                                     for (int i = 0; i < jsonArray.length() && result.size() < MAX_RESULTS; i++) {
                                         String s = jsonArray.optString(i);
-                                        if (s != null && !s.isEmpty()) {
+                                        if (s != null && !s.isEmpty())
                                             result.add(s);
-                                        }
                                     }
                                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, result);
                                     UrlEdit.setAdapter(adapter);
@@ -473,14 +468,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
+            public void afterTextChanged(Editable editable) { }
         });
 
         setDeskMode(0, true); /* User agent init code */
@@ -564,8 +555,8 @@ public class MainActivity extends AppCompatActivity {
                         || url.equals(BrowservioURLs.realErrUrl)
                         || url.equals(BrowservioURLs.realLicenseUrl))) {
                     UrlEdit.setText(url);
-                if (!HistoryReader.history_data(historyPref(MainActivity.this)).trim().endsWith(url))
-                    HistoryReader.appendData(historyPref(MainActivity.this), url);
+                if (!HistoryReader.history_data(MainActivity.this).trim().endsWith(url))
+                    HistoryReader.appendData(MainActivity.this, url);
             }
         }
 
@@ -591,8 +582,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            if (!defaultError)
-                webview.loadUrl(BrowservioURLs.realErrUrl);
+            webview.loadUrl(BrowservioURLs.realErrUrl);
         }
 
         @Override
@@ -733,9 +723,9 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (webview.canGoBack()) // can go back
+        if (webview.canGoBack())
             webview.goBack();
-        else // finish activity
+        else
             finish();
     }
 
@@ -840,10 +830,8 @@ public class MainActivity extends AppCompatActivity {
         // Settings check
         webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
-
         favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
-        webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys)));
-        defaultError = !BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showCustomError));
+        webview.getSettings().setDisplayZoomControls(false);
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
@@ -870,11 +858,5 @@ public class MainActivity extends AppCompatActivity {
 
         if (url.equals(BrowservioURLs.reloadUrl))
             reload.performClick();
-
-        if (url.equals(BrowservioURLs.restartUrl)) {
-            Intent i = getIntent();
-            finish();
-            startActivity(i);
-        }
     }
 }

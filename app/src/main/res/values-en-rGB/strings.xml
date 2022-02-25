@@ -36,9 +36,6 @@
     <string name="search_engine_current">"Current search engine: %s"</string>
     <string name="homepage">"Homepage"</string>
     <string name="homepage_current">"Current homepage: %s"</string>
-    <string name="restart_app_q">"Restart?"</string>
-    <string name="restart_app_qmsg">"A restart is required for this feature to work."</string>
-    <string name="restart_app_now">"Restart Now"</string>
     <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
     <string name="update_btn">Check for Updates</string>
     <string name="version_latest_toast">"You are currently running the latest version of Browservio."</string>
@@ -46,16 +43,12 @@
     <string name="new_update_detect_toast">"A new update has been detected, downloading…"</string>
     <string name="update_down_failed_toast">"Update failed to download!"</string>
     <string name="general">General</string>
-    <string name="show_pinch_btn">"Show pinch to zoom buttons"</string>
-    <string name="show_pinch_btn_desp">"Show the pinch to zoom control buttons on the right down corner.\n(A restart is required)"</string>
     <string name="reset_btn">"Reset to default"</string>
     <string name="advanced">Advanced</string>
     <string name="javascript">"Enable JavaScript"</string>
     <string name="javascript_desp">"Enabling JavaScript will give you a better browsing experience."</string>
     <string name="show_favicon">"Show favicon"</string>
     <string name="show_favicon_desp">"Show the favicon of the webpage next to the address bar."</string>
-    <string name="show_cus_error">"Show custom error page"</string>
-    <string name="show_cus_error_desp">"Show a custom error page with audio effects when having trouble connecting to a website."</string>
     <string name="help">Help</string>
     <string name="version">Version</string>
     <string name="feedback">Feedback</string>
@@ -103,4 +96,5 @@
     <string name="errMsg2">Try:</string>
     <string name="errMsg3">Checking your internet connection</string>
     <string name="errMsg4">Reloading the webpage</string>
+    <string name="get_changelog">Read ChangeLogs</string>
 </resources>

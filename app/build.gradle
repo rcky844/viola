@@ -25,7 +25,6 @@ android {
         buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_change_patch1\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
-        buildConfigField "boolean", "UPDATE_TESTING", "false"
 
         vectorDrawables.useSupportLibrary = true
     }
