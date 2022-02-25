@@ -19,7 +19,7 @@
     <string name="add_dot">"Hinzufügen…"</string>
     <string name="saved_su">"Erfolgreich gespeichert!"</string>
     <string name="fav_list_empty">"Es wurden keine Favoriten gespeichert."</string>
-    <string name="favicondialog_title">"Websitentitle"</string>
+    <string name="copy_title">"Webseitentitel kopieren"</string>
     <string name="app_not_installed">"Anwendung ist nicht installiert."</string>
     <string name="address_bar_hint">"Suchen oder URL eingeben…"</string>
     <string name="favicon_desp">"Favicon der Webseite. Darauf klicken wird einen Dialog mit dem Webseitentitel anzeigen."</string>

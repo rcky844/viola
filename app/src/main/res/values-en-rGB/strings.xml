@@ -19,7 +19,7 @@
     <string name="add_dot">"Add…"</string>
     <string name="saved_su">"Saved successfully!"</string>
     <string name="fav_list_empty">"There are no favourites saved."</string>
-    <string name="favicondialog_title">"Website Title"</string>
+    <string name="copy_title">"Copy Website Title"</string>
     <string name="app_not_installed">"Application is not installed."</string>
     <string name="address_bar_hint">"Search or type web address…"</string>
     <string name="favicon_desp">"Icon of the webpage, clicking on me will open a dialog with the webpage's title."</string>

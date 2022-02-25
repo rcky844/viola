@@ -380,9 +380,9 @@ public class MainActivity extends AppCompatActivity {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, favicon);
             Menu menu = popupMenu.getMenu();
             menu.add(UrlTitle).setEnabled(false);
-            menu.add(getResources().getString(android.R.string.copy).concat(" ").concat(getResources().getString(R.string.favicondialog_title)));
+            menu.add(getResources().getString(R.string.copy_title));
             popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getTitle().toString().equals(getResources().getString(android.R.string.copy).concat(" ").concat(getResources().getString(R.string.favicondialog_title)))) {
+                if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
                     ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
                     BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
                     return true;
