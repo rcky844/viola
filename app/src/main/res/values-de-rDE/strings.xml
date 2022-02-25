@@ -23,13 +23,7 @@
     <string name="app_not_installed">"Anwendung ist nicht installiert."</string>
     <string name="address_bar_hint">"Suchen oder URL eingeben…"</string>
     <string name="favicon_desp">"Favicon der Webseite. Darauf klicken wird einen Dialog mit dem Webseitentitel anzeigen."</string>
-    <string name="back_desp">Zurück</string>
-    <string name="forward_desp">Vorwärts</string>
-    <string name="reload_desp">Neu laden</string>
-    <string name="desktop_desp">"Zu verwendenden User Agent auswählen."</string>
-    <string name="clear_desp">"Cache, Cookies oder Verlauf leeren."</string>
-    <string name="share_desp">"Diese Webseite teilen."</string>
-    <string name="exit_desp">Beenden</string>
+    <string name="reload">Neu laden</string>
     <string name="fab_desp">"Ein Knopf, wenn gedrückt, wird die Aktionsleiste anzeigen oder schließen."</string>
     <string name="settings">Einstellungen</string>
     <string name="search_engine">"Suchmaschine"</string>
@@ -84,7 +78,6 @@
     <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">In die Zwischenablage kopieren</string>
     <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">In die Zwischenablage kopiert</string>
     <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">Fehlerinformationen</string>
-    <string name="new_tab_desp">Neuer Tab</string>
     <string name="visual">Optik</string>
     <string name="data_privacy">Daten &amp; Privatsphäre</string>
     <string name="reset_btn_desp">Alle Browserdaten leeren.</string>
