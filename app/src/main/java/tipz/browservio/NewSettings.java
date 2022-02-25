@@ -126,7 +126,6 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         /* Visuals category */
         CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-        CheckBoxPreference show_pinch_btn = Objects.requireNonNull(findPreference("show_pinch_btn"));
 
         /* Advanced category */
         CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
@@ -144,9 +143,6 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         /* Data & Privacy dialog */
         MaterialAlertDialogBuilder ResetDialog = new MaterialAlertDialogBuilder(activity);
-
-        /* Visuals category dialog */
-        MaterialAlertDialogBuilder ZoomUpdateDialog = new MaterialAlertDialogBuilder(activity);
 
         /* Help category dialog */
         MaterialAlertDialogBuilder InfoDialog = new MaterialAlertDialogBuilder(activity);
@@ -283,17 +279,6 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
-        show_pinch_btn.setOnPreferenceClickListener(preference -> {
-            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity), AllPrefs.showZoomKeys, show_pinch_btn.isChecked(), false);
-            ZoomUpdateDialog.setTitle(getResources().getString(R.string.restart_app_q))
-                    .setMessage(getResources().getString(R.string.restart_app_qmsg))
-                    .setPositiveButton(getResources().getString(R.string.restart_app_now), (_dialog, _which) ->
-                            needLoad(BrowservioURLs.reloadUrl))
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create().show();
-            return true;
-        });
-
         javascript.setOnPreferenceClickListener(preference -> {
             BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
                     AllPrefs.isJavaScriptEnabled, javascript.isChecked(), false);
@@ -409,7 +394,6 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         checkIfPrefIntIsTrue(AllPrefs.enableSuggestions, search_suggestions, true);
         checkIfPrefIntIsTrue(AllPrefs.showFavicon, show_favicon, false);
-        checkIfPrefIntIsTrue(AllPrefs.showZoomKeys, show_pinch_btn, false);
         checkIfPrefIntIsTrue(AllPrefs.isJavaScriptEnabled, javascript, false);
         search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultSearchId)]));
         homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[BrowservioSaverUtils.getPrefNum(browservio_saver(activity), AllPrefs.defaultHomePageId)]));

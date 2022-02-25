@@ -830,9 +830,8 @@ public class MainActivity extends AppCompatActivity {
         // Settings check
         webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
-
         favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
-        webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys)));
+        webview.getSettings().setDisplayZoomControls(false);
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
@@ -859,11 +858,5 @@ public class MainActivity extends AppCompatActivity {
 
         if (url.equals(BrowservioURLs.reloadUrl))
             reload.performClick();
-
-        if (url.equals(BrowservioURLs.restartUrl)) {
-            Intent i = getIntent();
-            finish();
-            startActivity(i);
-        }
     }
 }

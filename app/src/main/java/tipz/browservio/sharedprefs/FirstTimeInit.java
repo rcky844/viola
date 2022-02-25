@@ -19,7 +19,6 @@ public class FirstTimeInit {
         BrowservioSaverUtils.checkIfEmpty(browservio_saver(mContext), AllPrefs.defaultSearch, getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix), isEqualToOneFirstLaunch);
         BrowservioSaverUtils.checkIfEmpty(browservio_saver(mContext), AllPrefs.defaultSearchId, 0, isEqualToOneFirstLaunch);
         BrowservioSaverUtils.checkIfEmpty(browservio_saver(mContext), AllPrefs.showFavicon, "1", isEqualToOneFirstLaunch);
-        BrowservioSaverUtils.checkIfEmpty(browservio_saver(mContext), AllPrefs.showZoomKeys, "0", isEqualToOneFirstLaunch);
         BrowservioSaverUtils.checkIfEmpty(browservio_saver(mContext), AllPrefs.enableSuggestions, 1, isEqualToOneFirstLaunch);
         BrowservioSaverUtils.checkIfEmpty(browservio_saver(mContext), AllPrefs.updateTesting, 0, isEqualToOneFirstLaunch);
         BrowservioSaverUtils.checkIfEmpty(browservio_saver(mContext), AllPrefs.isFirstLaunch, "0", isEqualToOneFirstLaunch);
