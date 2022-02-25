@@ -1,4 +1,4 @@
-package tipz.browservio.recycler;
+package tipz.browservio.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -76,7 +76,7 @@ import java.util.Objects;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
-import tipz.browservio.recycler.MainActionBarRecycler;
+import tipz.browservio.view.MainActionBarRecycler;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.FirstTimeInit;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
