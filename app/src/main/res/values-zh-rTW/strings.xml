@@ -93,7 +93,8 @@
     <string name="visual">視覺效果</string>
     <string name="data_privacy">數據和隱私</string>
     <string name="reset_btn_desp">清除所有瀏覽器數據</string>
-    <string name="reset_dialog">這將會%s。\n\n您確定要繼續嗎？</string>
+    <string name="reset_dialog">這將會清除所有瀏覽器數據。\n</string>
+    <string name="to_continue">您確定要繼續嗎？</string>
     <string name="search_suggestions_title">啟用搜索建議</string>
     <string name="search_suggestions_desp">搜索時顯示搜索建議</string>
     <string name="errMsg0">無法打開此頁面</string>

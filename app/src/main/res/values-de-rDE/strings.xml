@@ -93,7 +93,8 @@
     <string name="visual">Optik</string>
     <string name="data_privacy">Daten &amp; Privatsphäre</string>
     <string name="reset_btn_desp">Alle Browserdaten leeren.</string>
-    <string name="reset_dialog">Dies wird alle Browserdaten leeren.\nSind Sie sicher, dass Sie fortfahren möchten?</string>
+    <string name="reset_dialog">Dies wird alle Browserdaten leeren.\n</string>
+    <string name="to_continue">Sind Sie sicher, dass Sie fortfahren möchten?</string>
     <string name="search_suggestions_title">Suchvorschläge aktivieren</string>
     <string name="search_suggestions_desp">Während des Suchens Vorschläge anzeigen.</string>
     <string name="errMsg0">Webseite kann nicht angezeigt werden</string>

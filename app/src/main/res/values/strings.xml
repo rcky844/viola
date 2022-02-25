@@ -98,7 +98,8 @@
     <string name="visual">Visuals</string>
     <string name="data_privacy">Data &amp; Privacy</string>
     <string name="reset_btn_desp">Clear all browser data.</string>
-    <string name="reset_dialog">This will %s\n\nAre you sure you want to continue?</string>
+    <string name="reset_dialog">This will clear all browser data\n</string>
+    <string name="to_continue">Are you sure you want to continue?</string>
     <string name="search_suggestions_title">Enable Search Suggestions</string>
     <string name="search_suggestions_desp">Show search suggestions when searching.</string>
     <string name="errMsg0">Can\'t open this page</string>
