@@ -37,9 +37,6 @@
     <string name="search_engine_current">"Current search engine: %s"</string>
     <string name="homepage">"Homepage"</string>
     <string name="homepage_current">"Current homepage: %s"</string>
-    <string name="restart_app_q">"Restart?"</string>
-    <string name="restart_app_qmsg">"A restart is required for this feature to work."</string>
-    <string name="restart_app_now">"Restart Now"</string>
     <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
     <string name="update_btn">Check for Updates</string>
     <string name="version_latest_toast">"You are currently running the latest version of Browservio."</string>
@@ -47,8 +44,6 @@
     <string name="new_update_detect_toast">"A new update has been detected, downloading…"</string>
     <string name="update_down_failed_toast">"Update failed to download!"</string>
     <string name="general">General</string>
-    <string name="show_pinch_btn">"Show pinch to zoom buttons"</string>
-    <string name="show_pinch_btn_desp">"Show the pinch to zoom control buttons on the right down corner.\n(A restart is required)"</string>
     <string name="reset_btn">"Reset to default"</string>
     <string name="advanced">Advanced</string>
     <string name="javascript">"Enable JavaScript"</string>

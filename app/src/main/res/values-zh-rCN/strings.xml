@@ -36,9 +36,6 @@
     <string name="search_engine_current">"当前的搜索引擎: %s"</string>
     <string name="homepage">主页</string>
     <string name="homepage_current">"当前的主页: %s"</string>
-    <string name="restart_app_q">重启应用?</string>
-    <string name="restart_app_qmsg">此功能需要重启应用才能工作</string>
-    <string name="restart_app_now">马上重启</string>
     <string name="version_info_message">"%1$s\n版本 %2$s (内部版本号 %3$s : %4$s)\n版权所有 © 2020-%5$s Tipz Team\n\n本产品已获得 Apache 许可</string>
     <string name="update_btn">检查更新</string>
     <string name="version_latest_toast">您当前运行的是最新版本的Browservio</string>
@@ -47,8 +44,6 @@
     <string name="update_down_failed_toast">更新下载失败!</string>
     <string name="download_title">"Browservio 更新"</string>
     <string name="general">基本</string>
-    <string name="show_pinch_btn">显示双指缩放按钮</string>
-    <string name="show_pinch_btn_desp">在右下角显示双指缩放控制按钮\n(需要重啟應用)</string>
     <string name="reset_btn">重置为默认值</string>
     <string name="advanced">进阶</string>
     <string name="javascript">启用JavaScript</string>

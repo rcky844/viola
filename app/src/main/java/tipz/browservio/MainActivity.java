@@ -444,16 +444,14 @@ public class MainActivity extends AppCompatActivity {
                                     JSONArray jsonArray = new JSONArray(bo.toString());
 
                                     jsonArray = jsonArray.optJSONArray(1);
-                                    if (jsonArray == null) {
+                                    if (jsonArray == null)
                                         throw new RuntimeException("jsonArray is null.");
-                                    }
                                     final int MAX_RESULTS = 10;
                                     ArrayList<String> result = new ArrayList<>(Math.min(jsonArray.length(), MAX_RESULTS));
                                     for (int i = 0; i < jsonArray.length() && result.size() < MAX_RESULTS; i++) {
                                         String s = jsonArray.optString(i);
-                                        if (s != null && !s.isEmpty()) {
+                                        if (s != null && !s.isEmpty())
                                             result.add(s);
-                                        }
                                     }
                                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, result);
                                     UrlEdit.setAdapter(adapter);
@@ -470,14 +468,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
+            public void afterTextChanged(Editable editable) { }
         });
 
         setDeskMode(0, true); /* User agent init code */
@@ -729,9 +723,9 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (webview.canGoBack()) // can go back
+        if (webview.canGoBack())
             webview.goBack();
-        else // finish activity
+        else
             finish();
     }
 
@@ -836,9 +830,8 @@ public class MainActivity extends AppCompatActivity {
         // Settings check
         webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
-
         favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
-        webview.getSettings().setDisplayZoomControls(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showZoomKeys)));
+        webview.getSettings().setDisplayZoomControls(false);
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
@@ -865,11 +858,5 @@ public class MainActivity extends AppCompatActivity {
 
         if (url.equals(BrowservioURLs.reloadUrl))
             reload.performClick();
-
-        if (url.equals(BrowservioURLs.restartUrl)) {
-            Intent i = getIntent();
-            finish();
-            startActivity(i);
-        }
     }
 }
