@@ -489,8 +489,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class browservioErrJsInterface {
-        Context mContext;
-        MainActivity mMainActivity;
+        final Context mContext;
+        final MainActivity mMainActivity;
 
         browservioErrJsInterface(Context c, MainActivity mainActivity) {
             mContext = c;
