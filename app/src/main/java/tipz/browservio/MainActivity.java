@@ -510,7 +510,7 @@ public class MainActivity extends AppCompatActivity {
             else if (msgId == 4)
                 return mContext.getResources().getString(R.string.errMsg4);
             else if (msgId == 5)
-                return mContext.getResources().getString(R.string.reload_desp);
+                return mContext.getResources().getString(R.string.reload);
             else
                 return BrowservioBasicUtil.EMPTY_STRING;
         }

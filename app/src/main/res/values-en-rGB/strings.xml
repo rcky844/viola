@@ -23,13 +23,7 @@
     <string name="app_not_installed">"Application is not installed."</string>
     <string name="address_bar_hint">"Search or type web address…"</string>
     <string name="favicon_desp">"Icon of the webpage, clicking on me will open a dialog with the webpage's title."</string>
-    <string name="back_desp">Backwards</string>
-    <string name="forward_desp">Forward</string>
-    <string name="reload_desp">Reload</string>
-    <string name="desktop_desp">"Choose the user agent to use."</string>
-    <string name="clear_desp">"Clear cache, cookies, or history."</string>
-    <string name="share_desp">"Share this website."</string>
-    <string name="exit_desp">Exit</string>
+    <string name="reload">Reload</string>
     <string name="fab_desp">"A button when clicked will show or close the action bar."</string>
     <string name="settings">Settings</string>
     <string name="search_engine">"Search engine"</string>
@@ -84,7 +78,6 @@
     <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">Copy to clipboard</string>
     <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">Copied to clipboard</string>
     <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">Error information</string>
-    <string name="new_tab_desp">New tabs</string>
     <string name="visual">Visuals</string>
     <string name="data_privacy">Data &amp; Privacy</string>
     <string name="reset_btn_desp">Clear all browser data.</string>
