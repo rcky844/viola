@@ -19,7 +19,7 @@
     <string name="add_dot">添加…</string>
     <string name="saved_su">添加成功!</string>
     <string name="fav_list_empty">没有已添加的收藏</string>
-    <string name="favicondialog_title">网站标题</string>
+    <string name="copy_title">复制网站标题</string>
     <string name="app_not_installed">应用程序未安装</string>
     <string name="address_bar_hint">"搜索或输入网址…"</string>
     <string name="favicon_desp">"网页的图标, 点击我将㑹打开一个带有网页标题的对话框"</string>
@@ -81,7 +81,8 @@
     <string name="visual">视觉效果</string>
     <string name="data_privacy">数据和隐私</string>
     <string name="reset_btn_desp">清除所有浏览器数据</string>
-    <string name="reset_dialog">这将會%s。\n\n您确定要继续吗？</string>
+    <string name="reset_dialog">这将會清除所有浏览器数据。\n</string>
+    <string name="to_continue">您确定要继续吗？</string>
     <string name="search_suggestions_title">启用搜索建议</string>
     <string name="search_suggestions_desp">搜索时显示搜索建议</string>
     <string name="errMsg0">无法打开此页面</string>

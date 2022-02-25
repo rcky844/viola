@@ -253,7 +253,7 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         reset_to_default.setOnPreferenceClickListener(preference -> {
             ResetDialog.setTitle(getResources().getString(R.string.reset_btn))
-                    .setMessage(getResources().getString(R.string.reset_dialog, getResources().getString(R.string.reset_btn_desp).toLowerCase()))
+                    .setMessage(getResources().getString(R.string.reset_dialog).concat(getResources().getString(R.string.to_continue)))
                     .setPositiveButton(getResources().getString(R.string.clear, BrowservioBasicUtil.EMPTY_STRING).trim(), (_dialog, _which) -> {
                         BrowservioBasicUtil.showMessage(activity, getResources().getString(R.string.reset_complete));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
