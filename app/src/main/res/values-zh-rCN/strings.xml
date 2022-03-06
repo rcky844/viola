@@ -91,4 +91,6 @@
     <string name="errMsg3">检查您的互联网连接</string>
     <string name="errMsg4">重新加载网页</string>
     <string name="get_changelog">阅读变更日志</string>
+    <string name="pref_adBlocker">启用广告拦截器</string>
+    <string name="pref_adBlocker_desp">拦截分散注意力而且烦人的广告</string>
 </resources>

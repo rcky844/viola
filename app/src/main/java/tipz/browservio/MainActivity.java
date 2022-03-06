@@ -39,6 +39,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -66,9 +67,14 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -76,13 +82,13 @@ import java.util.Objects;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
-import tipz.browservio.view.MainActionBarRecycler;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.FirstTimeInit;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.urls.BrowservioURLs;
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.view.MainActionBarRecycler;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     private final ObjectAnimator barAnimate = new ObjectAnimator();
 
     private String UrlTitle;
+    private StringBuilder adServers;
 
     private final static int FILECHOOSER_RESULTCODE = 1;
     private ValueCallback<Uri[]> mUploadMessage;
@@ -486,6 +493,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         new HistoryInit(browservio_saver(MainActivity.this), historyPref(MainActivity.this));
+
+        /* Import the list of Ad servers */
+        String line;
+        adServers = new StringBuilder();
+
+        InputStream is = this.getResources().openRawResource(R.raw.hosts);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        if (is != null) {
+            try {
+                while ((line = br.readLine()) != null) {
+                    adServers.append(line);
+                    adServers.append(BrowservioBasicUtil.LINE_SEPARATOR());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public class browservioErrJsInterface {
@@ -610,6 +635,19 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed())
                     .setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel())
                     .create().show();
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            String list = String.valueOf(adServers);
+
+            try {
+                if (list.contains(new URL(url).getHost()) && BrowservioSaverUtils.getPrefNum(browservio_saver(MainActivity.this), AllPrefs.enableAdBlock) == 1)
+                    return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(BrowservioBasicUtil.EMPTY_STRING.getBytes()));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return super.shouldInterceptRequest(view, url);
         }
     }
 

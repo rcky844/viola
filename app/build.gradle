@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'idea'
 
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
@@ -44,6 +45,12 @@ android {
             minifyEnabled true
             shrinkResources true
         }
+    }
+}
+
+idea {
+    module {
+        excludeDirs = [file("src/main/res/raw/hosts.txt")]
     }
 }
 

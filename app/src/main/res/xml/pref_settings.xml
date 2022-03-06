@@ -24,6 +24,11 @@
     <androidx.preference.PreferenceCategory
         android:title="@string/data_privacy"
         app:iconSpaceReserved="false">
+        <androidx.preference.CheckBoxPreference
+            android:key="adBlocker"
+            android:summary="@string/pref_adBlocker_desp"
+            android:title="@string/pref_adBlocker"
+            app:iconSpaceReserved="false" />
         <androidx.preference.Preference
             android:key="reset_to_default"
             android:summary="@string/reset_btn_desp"
