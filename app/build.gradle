@@ -41,9 +41,9 @@ android {
         }
 
         snapshot {
-            initWith(buildTypes.debug)
-            minifyEnabled true
-            shrinkResources true
+            initWith(buildTypes.release)
+            buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
+            buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
         }
     }
 }
