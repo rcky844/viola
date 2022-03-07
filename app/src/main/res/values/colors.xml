@@ -1,6 +1,5 @@
 <resources>
     <color name="colorAccent">#52b3ff</color>
-    <color name="colorControlHighlight">#d8d8d8</color>
     <color name="colorControlNormal">#26000000</color>
     <color name="colorBackground">#ffffff</color>
     <color name="colorUrlEditBg">#ffffff</color>
