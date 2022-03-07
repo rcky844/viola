@@ -121,34 +121,48 @@ public class MainActivity extends AppCompatActivity {
             "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
             "http", "https", "ftp", "file"};
 
+    public boolean webViewEnabled() {
+        try {
+            CookieManager.getInstance();
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        setContentView(R.layout.main);
-        initialize();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
+        if (webViewEnabled()) {
+            setContentView(R.layout.main);
+            initialize();
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
+                    || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
 
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+            } else {
+                initializeLogic();
+            }
+
+            CaocConfig.Builder.create()
+                    .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
+                    .enabled(true)
+                    .showErrorDetails(true)
+                    .showRestartButton(true)
+                    .logErrorOnRestart(true)
+                    .trackActivities(true)
+                    .minTimeBetweenCrashesMs(2000)
+                    .restartActivity(MainActivity.class)
+                    .errorActivity(null)
+                    .apply();
         } else {
-            initializeLogic();
+            BrowservioBasicUtil.showMessage(this, getResources().getString(R.string.no_webview));
+            finish();
         }
-
-        CaocConfig.Builder.create()
-                .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
-                .enabled(true)
-                .showErrorDetails(true)
-                .showRestartButton(true)
-                .logErrorOnRestart(true)
-                .trackActivities(true)
-                .minTimeBetweenCrashesMs(2000)
-                .restartActivity(MainActivity.class)
-                .errorActivity(null)
-                .apply();
     }
 
     @Override
@@ -790,7 +804,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        _configChecker();
+        if (webViewEnabled()) {
+            _configChecker();
+        }
     }
 
     public void downloadFile(String url, String contentDisposition, String mimeType) {

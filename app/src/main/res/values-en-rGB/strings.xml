@@ -98,4 +98,5 @@
     <string name="copy_url">Copy link</string>
     <string name="download_image">Download image</string>
     <string name="open_in_new_tab">Open in new tab</string>
+    <string name="no_webview">WebView is required but not installed.</string>
 </resources>

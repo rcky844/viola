@@ -92,10 +92,11 @@
     <string name="errMsg4">Die Webseite neu zu laden</string>
     <string name="get_changelog">Changelog lesen</string>
     <string name="pref_adBlocker">Werbeblocker aktivieren</string>
-    <string name="pref_adBlocker_desp">Stoppen Sie lästige Anzeigen, die Sie ablenken</string>
+    <string name="pref_adBlocker_desp">Stoppen Sie lästige Anzeigen, die Sie ablenken.</string>
     <string name="pref_do_not_track">Aktivitäten nicht verfolgen</string>
-    <string name="pref_do_not_track_desp">Websites mitteilen, meine Aktivitäten nicht zu verfolgen</string>
+    <string name="pref_do_not_track_desp">Websites mitteilen, meine Aktivitäten nicht zu verfolgen.</string>
     <string name="copy_url">Link kopieren</string>
     <string name="download_image">Bild speichern</string>
     <string name="open_in_new_tab">In neuem Tab öffnen</string>
+    <string name="no_webview">WebView ist erforderlich, aber nicht installiert.</string>
 </resources>
