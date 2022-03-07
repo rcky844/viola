@@ -483,10 +483,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void afterTextChanged(Editable editable) { }
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         setDeskMode(null, 0, true); /* User agent init code */
@@ -566,20 +568,20 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public String errGetMsg(int msgId) {
-            if (msgId == 0)
-                return mContext.getResources().getString(R.string.errMsg0);
-            else if (msgId == 1)
-                return mContext.getResources().getString(R.string.errMsg1);
-            else if (msgId == 2)
-                return mContext.getResources().getString(R.string.errMsg2);
-            else if (msgId == 3)
-                return mContext.getResources().getString(R.string.errMsg3);
-            else if (msgId == 4)
-                return mContext.getResources().getString(R.string.errMsg4);
-            else if (msgId == 5)
-                return mContext.getResources().getString(R.string.reload);
-            else
-                return BrowservioBasicUtil.EMPTY_STRING;
+            switch (msgId) {
+                case 0:
+                    return mContext.getResources().getString(R.string.errMsg0);
+                case 1:
+                    return mContext.getResources().getString(R.string.errMsg1);
+                case 2:
+                    return mContext.getResources().getString(R.string.errMsg2);
+                case 3:
+                    return mContext.getResources().getString(R.string.errMsg3);
+                case 4:
+                    return mContext.getResources().getString(R.string.errMsg4);
+                default:
+                    return BrowservioBasicUtil.EMPTY_STRING;
+            }
         }
 
         @JavascriptInterface
@@ -595,9 +597,9 @@ public class MainActivity extends AppCompatActivity {
         private void UrlSet(String url) {
             if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
                     && !(url.equals("about:blank")
-                        || url.equals(BrowservioURLs.realErrUrl)
-                        || url.equals(BrowservioURLs.realLicenseUrl))) {
-                    UrlEdit.setText(url);
+                    || url.equals(BrowservioURLs.realErrUrl)
+                    || url.equals(BrowservioURLs.realLicenseUrl))) {
+                UrlEdit.setText(url);
                 if (!HistoryReader.history_data(MainActivity.this).trim().endsWith(url))
                     HistoryReader.appendData(MainActivity.this, url);
             }
