@@ -380,11 +380,14 @@ public class MainActivity extends AppCompatActivity {
             String url;
 
             if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
-                url = hr.getExtra();
                 dialogType = 1;
+            } else if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
+                dialogType = 2;
             } else {
                 return;
             }
+
+            url = hr.getExtra();
 
             MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(MainActivity.this);
             webLongPress.setTitle(url);
