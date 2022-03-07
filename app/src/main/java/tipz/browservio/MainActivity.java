@@ -849,6 +849,7 @@ public class MainActivity extends AppCompatActivity {
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
+        webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
 
