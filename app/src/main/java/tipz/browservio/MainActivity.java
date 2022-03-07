@@ -854,6 +854,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Do Not Track request
         mRequestHeaders.put("DNT", BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.sendDNT));
+
+        if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))
+                && faviconProgressBar.getVisibility() == View.VISIBLE)
+            favicon.setVisibility(View.GONE);
     }
 
     /**
