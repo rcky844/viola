@@ -24,7 +24,6 @@
     <string name="app_not_installed">"Application is not installed."</string>
     <string name="address_bar_hint">"Search or type web address…"</string>
     <string name="favicon_desp">"Icon of the webpage, clicking on me will open a dialog with the webpage's title."</string>
-    <string name="reload">Reload</string>
     <string name="fab_desp">"A button when clicked will show or close the action bar."</string>
     <string name="settings">Settings</string>
     <string name="search_engine">"Search engine"</string>
