@@ -95,4 +95,6 @@
     <string name="pref_adBlocker_desp">Stop annoying ads from distracting you.</string>
     <string name="pref_do_not_track">Do Not Track</string>
     <string name="pref_do_not_track_desp">Send a Do Not Track request to websites you visit.</string>
+    <string name="copy_url">Copy link</string>
+    <string name="download_image">Download image</string>
 </resources>

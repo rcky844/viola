@@ -9,8 +9,6 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -363,8 +361,7 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.copy_title));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
-                    ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", UrlTitle));
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+                    BrowservioBasicUtil.copyClipboard(MainActivity.this, UrlTitle);
                     return true;
                 }
                 return false;
@@ -375,6 +372,40 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
 
         fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, actionBar));
+
+        webview.setOnLongClickListener(v -> {
+            final WebView.HitTestResult hr = webview.getHitTestResult();
+            int dialogType;
+            String url;
+
+            int type = hr.getType();
+            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                url = hr.getExtra();
+                dialogType = 1;
+            } else {
+                return false;
+            }
+
+            MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(MainActivity.this);
+            webLongPress.setTitle(url);
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.simple_list_item_1_daynight);
+            arrayAdapter.add(getResources().getString(R.string.copy_url));
+            if (dialogType == 1)
+                arrayAdapter.add(getResources().getString(R.string.download_image));
+
+            webLongPress.setAdapter(arrayAdapter, (dialog, which) -> {
+                String strName = arrayAdapter.getItem(which);
+
+                if (strName.equals(getResources().getString(R.string.copy_url)))
+                    BrowservioBasicUtil.copyClipboard(MainActivity.this, url);
+                else if (strName.equals(getResources().getString(R.string.download_image)))
+                    downloadFile(url, null, null);
+            });
+
+            webLongPress.show();
+            return false;
+        });
     }
 
     /**
@@ -456,7 +487,9 @@ public class MainActivity extends AppCompatActivity {
 
         setDeskMode(null, 0, true); /* User agent init code */
 
-        downloadManager(webview); /* Start the download manager service */
+        /* Start the download manager service */
+        webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
+
         browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)); /* Load default webpage */
 
         /* zoom related stuff - From SCMPNews project */
@@ -749,28 +782,19 @@ public class MainActivity extends AppCompatActivity {
         _configChecker();
     }
 
-    /**
-     * Download Manager
-     * <p>
-     * Module to monitor downloads from a webview.
-     *
-     * @param webview to monitor
-     */
-    private void downloadManager(final WebView webview) {
-        webview.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+    public void downloadFile(String url, String contentDisposition, String mimeType) {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
-            // Let this downloaded file be scanned by MediaScanner - so that it can
-            // show up in Gallery app, for example.
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
-                request.allowScanningByMediaScanner();
+        // Let this downloaded file be scanned by MediaScanner - so that it can
+        // show up in Gallery app, for example.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+            request.allowScanningByMediaScanner();
 
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
-            final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-            dm.enqueue(request);
-        });
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
+        final String filename = URLUtil.guessFileName(url, contentDisposition, mimeType);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        dm.enqueue(request);
     }
 
     /**
