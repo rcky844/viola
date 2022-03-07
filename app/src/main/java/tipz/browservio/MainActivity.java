@@ -492,7 +492,12 @@ public class MainActivity extends AppCompatActivity {
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
 
-        browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)); /* Load default webpage */
+        // Init load page
+        if (getIntent().getStringExtra("needLoadUrl").isEmpty())
+            browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)); /* Load default webpage */
+        else
+            browservioBrowse(getIntent().getStringExtra("needLoadUrl"));
+
 
         /* zoom related stuff - From SCMPNews project */
         webview.getSettings().setSupportZoom(true);
