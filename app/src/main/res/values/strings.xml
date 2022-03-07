@@ -103,4 +103,5 @@
     <string name="download_image">Download image</string>
     <string name="open_in_new_tab">Open in new tab</string>
     <string name="no_webview">WebView is required but not installed.</string>
+    <string name="share_url">Share link</string>
 </resources>

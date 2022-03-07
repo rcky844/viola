@@ -98,4 +98,5 @@
     <string name="download_image">下载图片</string>
     <string name="open_in_new_tab">在新标签页中打开</string>
     <string name="no_webview">WebView是必需的，但未安裝。</string>
+    <string name="share_url">分享链结</string>
 </resources>

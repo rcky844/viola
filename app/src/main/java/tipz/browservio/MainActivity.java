@@ -47,6 +47,7 @@ import android.widget.ProgressBar;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -222,6 +223,13 @@ public class MainActivity extends AppCompatActivity {
         browservioBrowse(UrlEdit.getText().toString());
     }
 
+    private void shareUrl(@Nullable String url) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, url == null ? webview.getUrl() : url);
+        startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
+    }
+
     public void itemSelected(ImageView view, int item) {
         if (item == 0) {
             if (webview.canGoBack())
@@ -315,10 +323,7 @@ public class MainActivity extends AppCompatActivity {
             });
             popupMenu.show();
         } else if (item == 7) {
-            Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("text/plain");
-            i.putExtra(Intent.EXTRA_TEXT, webview.getUrl());
-            startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
+            shareUrl(null);
         } else if (item == 8) {
             Intent intent = new Intent(this, NewSettingsActivity.class);
             mGetNeedLoad.launch(intent);
@@ -389,13 +394,11 @@ public class MainActivity extends AppCompatActivity {
 
         webview.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
             final WebView.HitTestResult hr = webview.getHitTestResult();
-            int type = hr.getType();
-            String url;
+            final String url = hr.getExtra();
+            final int type = hr.getType();
 
             if (type == WebView.HitTestResult.UNKNOWN_TYPE || type == WebView.HitTestResult.EDIT_TEXT_TYPE)
                 return;
-
-            url = hr.getExtra();
 
             MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(MainActivity.this);
             webLongPress.setTitle(url);
@@ -406,6 +409,7 @@ public class MainActivity extends AppCompatActivity {
             if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
                 arrayAdapter.add(getResources().getString(R.string.download_image));
             arrayAdapter.add(getResources().getString(R.string.copy_url));
+            arrayAdapter.add(getResources().getString(R.string.share_url));
 
             webLongPress.setAdapter(arrayAdapter, (dialog, which) -> {
                 String strName = arrayAdapter.getItem(which);
@@ -418,6 +422,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra("needLoadUrl", url);
                     startActivity(intent);
+                } else if (strName.equals(getResources().getString(R.string.share_url))) {
+                    shareUrl(url);
                 }
 
             });
