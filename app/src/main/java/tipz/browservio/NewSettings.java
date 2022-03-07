@@ -123,6 +123,7 @@ public class NewSettings extends PreferenceFragmentCompat {
 
         /* Data & Privacy category */
         CheckBoxPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
+        CheckBoxPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
         Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
         /* Visuals category */
@@ -255,6 +256,13 @@ public class NewSettings extends PreferenceFragmentCompat {
         adBlocker.setOnPreferenceClickListener(preference -> {
             BrowservioSaverUtils.setPrefIntBoolAccBool(browservio_saver(activity),
                     AllPrefs.enableAdBlock, adBlocker.isChecked(), false);
+            needReload = true;
+            return true;
+        });
+
+        do_not_track.setOnPreferenceClickListener(preference -> {
+            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
+                    AllPrefs.sendDNT, do_not_track.isChecked(), false);
             needReload = true;
             return true;
         });
@@ -401,6 +409,7 @@ public class NewSettings extends PreferenceFragmentCompat {
         });
 
         checkIfPrefIntIsTrue(AllPrefs.enableAdBlock, adBlocker, true);
+        checkIfPrefIntIsTrue(AllPrefs.sendDNT, do_not_track, false);
         checkIfPrefIntIsTrue(AllPrefs.enableSuggestions, search_suggestions, true);
         checkIfPrefIntIsTrue(AllPrefs.showFavicon, show_favicon, false);
         checkIfPrefIntIsTrue(AllPrefs.isJavaScriptEnabled, javascript, false);

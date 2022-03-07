@@ -93,4 +93,6 @@
     <string name="get_changelog">阅读变更日志</string>
     <string name="pref_adBlocker">启用广告拦截器</string>
     <string name="pref_adBlocker_desp">拦截分散注意力而且烦人的广告</string>
+    <string name="pref_do_not_track">不跟踪</string>
+    <string name="pref_do_not_track_desp">发送“不跟踪”请求到您浏览的网站</string>
 </resources>

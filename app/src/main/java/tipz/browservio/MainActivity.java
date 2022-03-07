@@ -77,6 +77,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int FILECHOOSER_RESULTCODE = 1;
     private ValueCallback<Uri[]> mUploadMessage;
+
+    private final HashMap<String, String> mRequestHeaders = new HashMap<>();
 
     private String userAgentFull(String mid) {
         return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
@@ -204,10 +207,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void webviewReload() {
-        if (webview.getUrl().equals(UrlEdit.getText().toString()))
-            webview.reload();
-        else
-            browservioBrowse(UrlEdit.getText().toString());
+        browservioBrowse(UrlEdit.getText().toString());
     }
 
     public void itemSelected(ImageView view, int item) {
@@ -789,7 +789,7 @@ public class MainActivity extends AppCompatActivity {
             URLIdentify(url);
         } else {
             URLIdentify(checkedUrl);
-            webview.loadUrl(checkedUrl);
+            webview.loadUrl(checkedUrl, mRequestHeaders);
         }
         favicon.setImageResource(R.drawable.default_favicon); /* Reset favicon before getting real favicon */
     }
@@ -851,6 +851,9 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setAppCacheEnabled(true);
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
+
+        // Do Not Track request
+        mRequestHeaders.put("DNT", BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.sendDNT));
     }
 
     /**
