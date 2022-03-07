@@ -373,17 +373,17 @@ public class MainActivity extends AppCompatActivity {
 
         fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, actionBar));
 
-        webview.setOnLongClickListener(v -> {
+        webview.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
             final WebView.HitTestResult hr = webview.getHitTestResult();
+            int type = hr.getType();
             int dialogType;
             String url;
 
-            int type = hr.getType();
             if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
                 url = hr.getExtra();
                 dialogType = 1;
             } else {
-                return false;
+                return;
             }
 
             MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(MainActivity.this);
@@ -404,7 +404,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
             webLongPress.show();
-            return false;
         });
     }
 
