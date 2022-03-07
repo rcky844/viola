@@ -97,4 +97,5 @@
     <string name="pref_do_not_track_desp">发送“不跟踪”请求到您浏览的网站</string>
     <string name="copy_url">复制链结</string>
     <string name="download_image">下载图片</string>
+    <string name="open_in_new_tab">在新标签页中打开</string>
 </resources>

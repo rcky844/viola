@@ -97,4 +97,5 @@
     <string name="pref_do_not_track_desp">Send a Do Not Track request to websites you visit.</string>
     <string name="copy_url">Copy link</string>
     <string name="download_image">Download image</string>
+    <string name="open_in_new_tab">Open in new tab</string>
 </resources>

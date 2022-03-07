@@ -379,13 +379,12 @@ public class MainActivity extends AppCompatActivity {
             int dialogType;
             String url;
 
-            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
                 dialogType = 1;
-            } else if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
+            else if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
                 dialogType = 2;
-            } else {
+            else
                 return;
-            }
 
             url = hr.getExtra();
 
@@ -393,17 +392,29 @@ public class MainActivity extends AppCompatActivity {
             webLongPress.setTitle(url);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.simple_list_item_1_daynight);
+            switch(dialogType) {
+                case 1:
+                    arrayAdapter.add(getResources().getString(R.string.download_image));
+                    break;
+                case 2:
+                    arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
+                    break;
+            }
             arrayAdapter.add(getResources().getString(R.string.copy_url));
-            if (dialogType == 1)
-                arrayAdapter.add(getResources().getString(R.string.download_image));
 
             webLongPress.setAdapter(arrayAdapter, (dialog, which) -> {
                 String strName = arrayAdapter.getItem(which);
 
-                if (strName.equals(getResources().getString(R.string.copy_url)))
+                if (strName.equals(getResources().getString(R.string.copy_url))) {
                     BrowservioBasicUtil.copyClipboard(MainActivity.this, url);
-                else if (strName.equals(getResources().getString(R.string.download_image)))
+                } else if (strName.equals(getResources().getString(R.string.download_image))) {
                     downloadFile(url, null, null);
+                } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("needLoadUrl", url);
+                    startActivity(intent);
+                }
+
             });
 
             webLongPress.show();
@@ -493,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
 
         // Init load page
-        if (getIntent().getStringExtra("needLoadUrl").isEmpty())
+        if (getIntent().getStringExtra("needLoadUrl") == null)
             browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)); /* Load default webpage */
         else
             browservioBrowse(getIntent().getStringExtra("needLoadUrl"));
