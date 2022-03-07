@@ -376,14 +376,9 @@ public class MainActivity extends AppCompatActivity {
         webview.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
             final WebView.HitTestResult hr = webview.getHitTestResult();
             int type = hr.getType();
-            int dialogType;
             String url;
 
-            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
-                dialogType = 1;
-            else if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
-                dialogType = 2;
-            else
+            if (type == WebView.HitTestResult.UNKNOWN_TYPE || type == WebView.HitTestResult.EDIT_TEXT_TYPE)
                 return;
 
             url = hr.getExtra();
@@ -392,14 +387,10 @@ public class MainActivity extends AppCompatActivity {
             webLongPress.setTitle(url);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.simple_list_item_1_daynight);
-            switch(dialogType) {
-                case 1:
-                    arrayAdapter.add(getResources().getString(R.string.download_image));
-                    break;
-                case 2:
-                    arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
-                    break;
-            }
+            if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
+                arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
+            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
+                arrayAdapter.add(getResources().getString(R.string.download_image));
             arrayAdapter.add(getResources().getString(R.string.copy_url));
 
             webLongPress.setAdapter(arrayAdapter, (dialog, which) -> {
