@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String UrlTitle;
     private StringBuilder adServers;
+    private boolean customBrowse;
 
     private final static int FILECHOOSER_RESULTCODE = 1;
     private ValueCallback<Uri[]> mUploadMessage;
@@ -652,16 +653,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url != null)
-                if (url.length() != 0)
-                    return false;
-            if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url)) {
+            if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url) && !UrlUtils.startsWithMatch(url)) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
+                return true;
             } else {
                 BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
             }
-            return true;
+            if (customBrowse) {
+                webview.loadUrl(url, mRequestHeaders);
+                customBrowse = false;
+                return true;
+            }
+            return false;
         }
 
         @SuppressLint("WebViewClientOnReceivedSslError")
@@ -848,6 +852,7 @@ public class MainActivity extends AppCompatActivity {
             URLIdentify(checkedUrl);
             webview.loadUrl(checkedUrl, mRequestHeaders);
         }
+        customBrowse = true;
         favicon.setImageResource(R.drawable.default_favicon); /* Reset favicon before getting real favicon */
     }
 
