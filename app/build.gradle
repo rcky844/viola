@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'idea'
 
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
@@ -21,8 +22,8 @@ android {
         versionName "2.0.2"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_CODENAME", "\"Change\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_change_patch2\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Cyanogen\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_cyanogen_master\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
@@ -38,12 +39,24 @@ android {
             buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
             buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
         }
+
+        snapshot {
+            initWith(buildTypes.release)
+            buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
+            buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
+        }
+    }
+}
+
+idea {
+    module {
+        excludeDirs = [file("src/main/res/raw/hosts.txt")]
     }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0-alpha02'
+    implementation 'com.google.android.material:material:1.6.0-alpha03'
     implementation 'androidx.webkit:webkit:1.4.0'
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'cat.ereza:customactivityoncrash:2.3.0'

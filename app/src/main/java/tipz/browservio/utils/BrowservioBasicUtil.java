@@ -1,11 +1,17 @@
 package tipz.browservio.utils;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
 import android.animation.ObjectAnimator;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
+
+import tipz.browservio.R;
 
 public class BrowservioBasicUtil {
     public static final String EMPTY_STRING = "";
@@ -25,6 +31,16 @@ public class BrowservioBasicUtil {
      */
     public static void showMessage(Context context, String s) {
         Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Copy to Clipboard
+     *
+     * @param s string to copy
+     */
+    public static void copyClipboard(Context context, String s) {
+        ((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", s));
+        showMessage(context, context.getResources().getString(R.string.copied_clipboard));
     }
 
     /**

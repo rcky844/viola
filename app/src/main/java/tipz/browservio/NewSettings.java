@@ -122,6 +122,8 @@ public class NewSettings extends PreferenceFragmentCompat {
         CheckBoxPreference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
         /* Data & Privacy category */
+        CheckBoxPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
+        CheckBoxPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
         Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
         /* Visuals category */
@@ -251,9 +253,23 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
+        adBlocker.setOnPreferenceClickListener(preference -> {
+            BrowservioSaverUtils.setPrefIntBoolAccBool(browservio_saver(activity),
+                    AllPrefs.enableAdBlock, adBlocker.isChecked(), false);
+            needReload = true;
+            return true;
+        });
+
+        do_not_track.setOnPreferenceClickListener(preference -> {
+            BrowservioSaverUtils.setPrefStringBoolAccBool(browservio_saver(activity),
+                    AllPrefs.sendDNT, do_not_track.isChecked(), false);
+            needReload = true;
+            return true;
+        });
+
         reset_to_default.setOnPreferenceClickListener(preference -> {
             ResetDialog.setTitle(getResources().getString(R.string.reset_btn))
-                    .setMessage(getResources().getString(R.string.reset_dialog, getResources().getString(R.string.reset_btn_desp).toLowerCase()))
+                    .setMessage(getResources().getString(R.string.reset_dialog).concat(getResources().getString(R.string.to_continue)))
                     .setPositiveButton(getResources().getString(R.string.clear, BrowservioBasicUtil.EMPTY_STRING).trim(), (_dialog, _which) -> {
                         BrowservioBasicUtil.showMessage(activity, getResources().getString(R.string.reset_complete));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -392,6 +408,8 @@ public class NewSettings extends PreferenceFragmentCompat {
             return true;
         });
 
+        checkIfPrefIntIsTrue(AllPrefs.enableAdBlock, adBlocker, true);
+        checkIfPrefIntIsTrue(AllPrefs.sendDNT, do_not_track, false);
         checkIfPrefIntIsTrue(AllPrefs.enableSuggestions, search_suggestions, true);
         checkIfPrefIntIsTrue(AllPrefs.showFavicon, show_favicon, false);
         checkIfPrefIntIsTrue(AllPrefs.isJavaScriptEnabled, javascript, false);

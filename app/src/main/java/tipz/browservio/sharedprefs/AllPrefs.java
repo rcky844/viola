@@ -7,8 +7,10 @@ public class AllPrefs {
     public static final String defaultHomePageId = "defaultHomePageId";
     public static final String defaultSearch = "defaultSearch";
     public static final String defaultSearchId = "defaultSearchId";
+    public static final String enableAdBlock = "enableAdBlock";
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String isJavaScriptEnabled = "isJavaScriptEnabled";
+    public static final String sendDNT = "sendDNT";
     public static final String showFavicon = "showFavicon";
     public static final String updateTesting = "updateTesting";
     public static final String enableSuggestions = "enableSuggestions";

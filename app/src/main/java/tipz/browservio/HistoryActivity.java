@@ -82,7 +82,7 @@ public class HistoryActivity extends AppCompatActivity {
             popup1.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.del_hist))) {
                     final int _position = _param3;
-                    deleteHistory.setTitle(getResources().getString(R.string.del_hist_title))
+                    deleteHistory.setTitle(getResources().getString(R.string.del_hist))
                             .setMessage(getResources().getString(R.string.del_hist_title))
                             .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                                 history_list.remove(_position);
