@@ -1,10 +1,7 @@
 package tipz.browservio.history;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
 import static tipz.browservio.fav.FavApi.bookmarks;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -110,8 +107,7 @@ public class HistoryRecycler {
                                 .create().show();
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(android.R.string.copyUrl))) {
-                        ((ClipboardManager) mHistoryActivity.getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", listData.get(position)));
-                        CommonUtils.showMessage(mHistoryActivity.getApplicationContext(), mHistoryActivity.getResources().getString(R.string.copied_clipboard));
+                        CommonUtils.copyClipboard(mHistoryActivity, listData.get(position));
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.add_to_fav))) {
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)) + 1)));
