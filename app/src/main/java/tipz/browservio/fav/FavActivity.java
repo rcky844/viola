@@ -67,14 +67,14 @@ public class FavActivity extends AppCompatActivity {
         final List<String> bookmark_list = new ArrayList<>();
         boolean loopComplete = false;
         while (!loopComplete) {
-            String shouldShow = SettingsUtils.getPref(bookmarks(FavActivity.this), SettingsKeys.bookmarked.concat(Integer.toString(populate_count)).concat(SettingsKeys.bookmarked_count_show));
+            String shouldShow = SettingsUtils.getPref(bookmarks(FavActivity.this), SettingsKeys.bookmarked.concat(Integer.toString(populate_count)).concat(SettingsKeys.bookmarked_show));
             if (!shouldShow.equals("0")) {
                 if (shouldShow.isEmpty()) {
                     loopComplete = true;
                     isEmptyCheck(bookmark_list, bookmarks(FavActivity.this));
                     PopulationProg.setVisibility(View.GONE);
                 } else {
-                    String bookmarkTitle = SettingsKeys.bookmarked.concat(Integer.toString(populate_count)).concat(SettingsKeys.bookmarked_count_title);
+                    String bookmarkTitle = SettingsKeys.bookmarked.concat(Integer.toString(populate_count)).concat(SettingsKeys.bookmarked_title);
                     bookmark_list.add(SettingsUtils.getPref(bookmarks(FavActivity.this), bookmarkTitle).isEmpty() ?
                             SettingsUtils.getPref(bookmarks(FavActivity.this), SettingsKeys.bookmarked.concat(Integer.toString(populate_count))) :
                             SettingsUtils.getPref(bookmarks(FavActivity.this), bookmarkTitle));
