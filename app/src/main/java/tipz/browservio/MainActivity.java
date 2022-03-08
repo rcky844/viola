@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
             MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(MainActivity.this);
             webLongPress.setTitle(url);
 
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.simple_list_item_1_daynight);
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1);
             if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
                 arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
             if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
@@ -493,7 +493,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (s != null && !s.isEmpty())
                                             result.add(s);
                                     }
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), R.layout.simple_list_item_1_daynight, result);
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), R.layout.recycler_list_item_1, result);
                                     UrlEdit.setAdapter(adapter);
                                     bo.close();
                                 } catch (IOException | JSONException e) {
