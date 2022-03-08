@@ -1,10 +1,7 @@
 package tipz.browservio.fav;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
 import static tipz.browservio.fav.FavApi.bookmarks;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -102,8 +99,7 @@ public class FavRecycler {
                                 .create().show();
                         return true;
                     } else if (item.getTitle().toString().equals(mFavActivity.getResources().getString(android.R.string.copyUrl))) {
-                        ((ClipboardManager) mFavActivity.getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmark.concat(String.valueOf(position)))));
-                        CommonUtils.showMessage(mFavActivity.getApplicationContext(), mFavActivity.getResources().getString(R.string.copied_clipboard));
+                        CommonUtils.copyClipboard(mFavActivity, SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmark.concat(String.valueOf(position))));
                         return true;
                     }
                     return false;
