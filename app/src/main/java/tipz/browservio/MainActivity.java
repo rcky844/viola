@@ -90,7 +90,6 @@ import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.urls.BrowservioURLs;
 import tipz.browservio.utils.BrowservioBasicUtil;
 import tipz.browservio.utils.UrlUtils;
-import tipz.browservio.view.MainActionBarRecycler;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package tipz.browservio.view;
+package tipz.browservio;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import tipz.browservio.MainActivity;
-import tipz.browservio.R;
 
 public class MainActionBarRecycler {
     public static void initMainActionBarRecycler(Context context, MainActivity mMainActivity, RecyclerView actionBar) {
