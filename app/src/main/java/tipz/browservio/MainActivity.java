@@ -421,7 +421,9 @@ public class MainActivity extends AppCompatActivity {
                     downloadFile(url, null, null);
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
                     Intent intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("needLoadUrl", url);
+                    intent.putExtra(Intent.EXTRA_TEXT, url)
+                        .setAction(Intent.ACTION_SEND)
+                        .setType(TypeSchemeMatch[1]);
                     startActivity(intent);
                 } else if (strName.equals(getResources().getString(R.string.share_url))) {
                     shareUrl(url);
@@ -517,12 +519,8 @@ public class MainActivity extends AppCompatActivity {
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
 
-        // Init load page
-        if (getIntent().getStringExtra("needLoadUrl") == null)
-            browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage)); /* Load default webpage */
-        else
-            browservioBrowse(getIntent().getStringExtra("needLoadUrl"));
-
+        /* Load default webpage */
+        browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage));
 
         /* zoom related stuff - From SCMPNews project */
         webview.getSettings().setSupportZoom(true);
@@ -548,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
                     browservioBrowse(sharedText != null ? sharedText : BrowservioBasicUtil.EMPTY_STRING);
                 }
             }
-        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) { /* From default browser */
+        } else if (Intent.ACTION_VIEW.equals(action)) { /* From default browser */
             for (String match : TypeSchemeMatch) {
                 if (match.equals(type) || match.equals(scheme)) {
                     Uri uri = getIntent().getData();
