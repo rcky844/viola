@@ -1,6 +1,6 @@
 package tipz.browservio.utils;
 
-import static tipz.browservio.urls.BrowservioURLs.realErrUrl;
+import static tipz.browservio.utils.urls.BrowservioURLs.realErrUrl;
 
 public class UrlUtils {
 
@@ -22,11 +22,8 @@ public class UrlUtils {
         if (url.contains("/?"))
             return realErrUrl;
 
-        for (String match : startsWithMatch) {
-            if (url.startsWith(match)) {
-                return url;
-            }
-        }
+        if (startsWithMatch(url))
+            return url;
 
         if (url.endsWith("/") || url.contains("."))
             return "http://" + url;
@@ -35,6 +32,14 @@ public class UrlUtils {
             return searchUrl + url;
 
         return url;
+    }
+
+    public static boolean startsWithMatch(String url) {
+        for (String match : startsWithMatch) {
+            if (url.startsWith(match))
+                return true;
+        }
+        return false;
     }
 
     public static String composeSearchUrl(String inQuery, String template,

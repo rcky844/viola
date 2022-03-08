@@ -1,4 +1,4 @@
-package tipz.browservio;
+package tipz.browservio.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +9,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.Objects;
 
-import tipz.browservio.urls.BrowservioURLs;
+import tipz.browservio.R;
+import tipz.browservio.utils.urls.BrowservioURLs;
 
-public class NewSettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     public final Intent needLoad = new Intent();
 
@@ -26,13 +27,13 @@ public class NewSettingsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         _toolbar.setNavigationOnClickListener(_v -> onBackPressed());
 
-        NewSettings fragment = new NewSettings(this);
+        SettingsPrefHandler fragment = new SettingsPrefHandler(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.list_container, fragment).commit();
     }
 
     @Override
     public void onBackPressed() {
-        if (NewSettings.getNeedReload()) {
+        if (SettingsPrefHandler.getNeedReload()) {
             needLoad.putExtra("needLoadUrl", BrowservioURLs.reloadUrl);
             setResult(0, needLoad);
         }

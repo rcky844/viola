@@ -4,34 +4,34 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import tipz.browservio.sharedprefs.AllPrefs;
-import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
-import tipz.browservio.utils.BrowservioBasicUtil;
+import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.utils.CommonUtils;
 
 public class HistoryApi {
     private final static int LATEST_API = 1;
-    public final static String current_history_pref = AllPrefs.history;
+    public final static String current_history_pref = SettingsKeys.history;
 
     public static SharedPreferences historyPref(Context context) {
-        return context.getSharedPreferences(AllPrefs.history_cfg, Activity.MODE_PRIVATE);
+        return context.getSharedPreferences(SettingsKeys.history_cfg, Activity.MODE_PRIVATE);
     }
 
     public static void HistoryApi_VerAdapter(SharedPreferences oldPref, SharedPreferences pref) {
-        if (BrowservioSaverUtils.getPrefNum(pref, AllPrefs.historyApi) == 0) {
-            BrowservioSaverUtils.setPrefNum(pref, AllPrefs.historyApi, LATEST_API);
+        if (SettingsUtils.getPrefNum(pref, SettingsKeys.historyApi) == 0) {
+            SettingsUtils.setPrefNum(pref, SettingsKeys.historyApi, LATEST_API);
 
-            if (!BrowservioSaverUtils.getPref(oldPref, AllPrefs.history).isEmpty()) {
-                BrowservioSaverUtils.setPref(pref, AllPrefs.history, BrowservioSaverUtils.getPref(oldPref, AllPrefs.history));
+            if (!SettingsUtils.getPref(oldPref, SettingsKeys.history).isEmpty()) {
+                SettingsUtils.setPref(pref, SettingsKeys.history, SettingsUtils.getPref(oldPref, SettingsKeys.history));
             }
 
-            BrowservioSaverUtils.setPref(oldPref, AllPrefs.history, BrowservioBasicUtil.EMPTY_STRING);
-            BrowservioSaverUtils.setPrefNum(oldPref, AllPrefs.historyApi, LATEST_API);
+            SettingsUtils.setPref(oldPref, SettingsKeys.history, CommonUtils.EMPTY_STRING);
+            SettingsUtils.setPrefNum(oldPref, SettingsKeys.historyApi, LATEST_API);
         }
     }
 
     public static void HistoryApi_VerChecker(SharedPreferences pref) {
-        if (BrowservioSaverUtils.getPrefNum(pref, AllPrefs.historyApi) > LATEST_API
-                || BrowservioSaverUtils.getPrefNum(pref, AllPrefs.historyApi) <= -1)
+        if (SettingsUtils.getPrefNum(pref, SettingsKeys.historyApi) > LATEST_API
+                || SettingsUtils.getPrefNum(pref, SettingsKeys.historyApi) <= -1)
             throw new RuntimeException();
     }
 }
