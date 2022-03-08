@@ -18,27 +18,27 @@ import tipz.browservio.R;
 
 public class MainActionBarRecycler {
     public static void initMainActionBarRecycler(Context context, MainActivity mMainActivity, RecyclerView actionBar) {
-        final List<IconItem> iconItems = new ArrayList<>();
+        final List<Integer> iconItems = new ArrayList<>();
 
-        iconItems.add(new IconItem(R.drawable.arrow_back_alt));
-        iconItems.add(new IconItem(R.drawable.arrow_forward_alt));
-        iconItems.add(new IconItem(R.drawable.refresh));
-        iconItems.add(new IconItem(R.drawable.home));
-        iconItems.add(new IconItem(R.drawable.smartphone));
-        iconItems.add(new IconItem(R.drawable.new_tab));
-        iconItems.add(new IconItem(R.drawable.delete));
-        iconItems.add(new IconItem(R.drawable.share));
-        iconItems.add(new IconItem(R.drawable.settings));
-        iconItems.add(new IconItem(R.drawable.history));
-        iconItems.add(new IconItem(R.drawable.favorites));
-        iconItems.add(new IconItem(R.drawable.close));
+        iconItems.add(R.drawable.arrow_back_alt);
+        iconItems.add(R.drawable.arrow_forward_alt);
+        iconItems.add(R.drawable.refresh);
+        iconItems.add(R.drawable.home);
+        iconItems.add(R.drawable.smartphone);
+        iconItems.add(R.drawable.new_tab);
+        iconItems.add(R.drawable.delete);
+        iconItems.add(R.drawable.share);
+        iconItems.add(R.drawable.settings);
+        iconItems.add(R.drawable.history);
+        iconItems.add(R.drawable.favorites);
+        iconItems.add(R.drawable.close);
 
         actionBar.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         actionBar.setAdapter(new ItemsAdapter(iconItems, mMainActivity));
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
-        private final List<IconItem> mItemList;
+        private final List<Integer> mItemList;
         private final MainActivity mMainActivity;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,7 +50,7 @@ public class MainActionBarRecycler {
             }
         }
 
-        public ItemsAdapter(List<IconItem> itemsList, MainActivity mainActivity) {
+        public ItemsAdapter(List<Integer> itemsList, MainActivity mainActivity) {
             mItemList = itemsList;
             mMainActivity = mainActivity;
         }
@@ -65,27 +65,13 @@ public class MainActionBarRecycler {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            IconItem item = mItemList.get(position);
-
-            holder.mImageView.setImageResource(item.getImage());
+            holder.mImageView.setImageResource(mItemList.get(position));
             holder.mImageView.setOnClickListener(view -> mMainActivity.itemSelected(holder.mImageView, position));
         }
 
         @Override
         public int getItemCount() {
             return mItemList.size();
-        }
-    }
-
-    static class IconItem {
-        private final int image;
-
-        public IconItem(int image) {
-            this.image = image;
-        }
-
-        public int getImage() {
-            return image;
         }
     }
 }
