@@ -1,6 +1,6 @@
-package tipz.browservio.sharedprefs;
+package tipz.browservio.settings;
 
-public class AllPrefs {
+public class SettingsKeys {
     /* browservio_saver */
     public static final String browservio_saver = "browservio.cfg";
     public static final String defaultHomePage = "defaultHomePage";

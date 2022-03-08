@@ -1,6 +1,6 @@
 package tipz.browservio.utils;
 
-import static tipz.browservio.urls.BrowservioURLs.realErrUrl;
+import static tipz.browservio.utils.urls.BrowservioURLs.realErrUrl;
 
 public class UrlUtils {
 

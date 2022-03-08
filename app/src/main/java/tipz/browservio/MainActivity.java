@@ -2,8 +2,8 @@ package tipz.browservio;
 
 import static tipz.browservio.fav.FavApi.bookmarks;
 import static tipz.browservio.history.HistoryApi.historyPref;
-import static tipz.browservio.sharedprefs.utils.BrowservioSaverUtils.browservio_saver;
-import static tipz.browservio.utils.BrowservioBasicUtil.RotateAlphaAnim;
+import static tipz.browservio.settings.SettingsUtils.browservio_saver;
+import static tipz.browservio.utils.CommonUtils.RotateAlphaAnim;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -84,11 +84,12 @@ import tipz.browservio.fav.FavActivity;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
-import tipz.browservio.sharedprefs.AllPrefs;
-import tipz.browservio.sharedprefs.FirstTimeInit;
-import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
-import tipz.browservio.urls.BrowservioURLs;
-import tipz.browservio.utils.BrowservioBasicUtil;
+import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.settings.SettingsInit;
+import tipz.browservio.settings.SettingsActivity;
+import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.utils.urls.BrowservioURLs;
+import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     .errorActivity(null)
                     .apply();
         } else {
-            BrowservioBasicUtil.showMessage(this, getResources().getString(R.string.no_webview));
+            CommonUtils.showMessage(this, getResources().getString(R.string.no_webview));
             finish();
         }
     }
@@ -237,16 +238,16 @@ public class MainActivity extends AppCompatActivity {
             if (webview.canGoBack())
                 webview.goBack();
             else
-                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
+                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
         } else if (item == 1) {
             if (webview.canGoForward())
                 webview.goForward();
             else
-                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
+                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
         } else if (item == 2) {
             webviewReload();
         } else if (item == 3) {
-            browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage));
+            browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
         } else if (item == 4) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
@@ -297,12 +298,12 @@ public class MainActivity extends AppCompatActivity {
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
                     webview.clearCache(true);
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
+                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.history))) {
                     webview.clearHistory();
                     HistoryReader.clear(MainActivity.this);
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
                         cookieSyncMgr.stopSync();
                         cookieSyncMgr.sync();
                     }
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
+                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
                     webviewReload();
                 }
 
@@ -327,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 7) {
             shareUrl(null);
         } else if (item == 8) {
-            Intent intent = new Intent(this, NewSettingsActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             mGetNeedLoad.launch(intent);
         } else if (item == 9) {
             Intent intent = new Intent(this, HistoryActivity.class);
@@ -339,14 +340,14 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
-                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)) + 1)));
-                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)), webview.getUrl());
-                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_title), UrlTitle);
-                    BrowservioSaverUtils.setPref(bookmarks(MainActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(MainActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
+                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)) + 1)));
+                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)), webview.getUrl());
+                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_count_title), UrlTitle);
+                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_count_show), "1");
+                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
                     if (bookmarks(MainActivity.this).getAll().size() == 0) {
-                        BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+                        CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
                     } else {
                         Intent intent = new Intent(this, FavActivity.class);
                         mGetNeedLoad.launch(intent);
@@ -382,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.copy_title));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
-                    BrowservioBasicUtil.copyClipboard(MainActivity.this, UrlTitle);
+                    CommonUtils.copyClipboard(MainActivity.this, UrlTitle);
                     return true;
                 }
                 return false;
@@ -417,7 +418,7 @@ public class MainActivity extends AppCompatActivity {
                 String strName = arrayAdapter.getItem(which);
 
                 if (strName.equals(getResources().getString(R.string.copy_url))) {
-                    BrowservioBasicUtil.copyClipboard(MainActivity.this, url);
+                    CommonUtils.copyClipboard(MainActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
                     downloadFile(url, null, null);
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
@@ -462,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || BrowservioSaverUtils.getPrefNum(browservio_saver(MainActivity.this), AllPrefs.enableSuggestions) != 1)
+                if (text.toString().isEmpty() || SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableSuggestions) != 1)
                     return;
                 new Thread() {
                     @Override
@@ -521,7 +522,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
 
         /* Load default webpage */
-        browservioBrowse(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultHomePage));
+        browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
 
         /* zoom related stuff - From SCMPNews project */
         webview.getSettings().setSupportZoom(true);
@@ -544,7 +545,7 @@ public class MainActivity extends AppCompatActivity {
             if (type != null) {
                 if ("text/plain".equals(type)) {
                     String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-                    browservioBrowse(sharedText != null ? sharedText : BrowservioBasicUtil.EMPTY_STRING);
+                    browservioBrowse(sharedText != null ? sharedText : CommonUtils.EMPTY_STRING);
                 }
             }
         } else if (Intent.ACTION_VIEW.equals(action)) { /* From default browser */
@@ -569,7 +570,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 while ((line = br.readLine()) != null) {
                     adServers.append(line);
-                    adServers.append(BrowservioBasicUtil.LINE_SEPARATOR());
+                    adServers.append(CommonUtils.LINE_SEPARATOR());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -600,7 +601,7 @@ public class MainActivity extends AppCompatActivity {
                 case 4:
                     return mContext.getResources().getString(R.string.errMsg4);
                 default:
-                    return BrowservioBasicUtil.EMPTY_STRING;
+                    return CommonUtils.EMPTY_STRING;
             }
         }
 
@@ -627,7 +628,7 @@ public class MainActivity extends AppCompatActivity {
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             UrlSet(url);
-            if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
             }
@@ -640,7 +641,7 @@ public class MainActivity extends AppCompatActivity {
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
             }
@@ -652,12 +653,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (BrowservioBasicUtil.appInstalledOrNot(getApplicationContext(), url) && !UrlUtils.startsWithMatch(url)) {
+            if (CommonUtils.appInstalledOrNot(getApplicationContext(), url) && !UrlUtils.startsWithMatch(url)) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
                 return true;
             } else {
-                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
+                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
             }
             if (customBrowse) {
                 webview.loadUrl(url, mRequestHeaders);
@@ -709,8 +710,8 @@ public class MainActivity extends AppCompatActivity {
             String list = String.valueOf(adServers);
 
             try {
-                if (list.contains(new URL(url).getHost()) && BrowservioSaverUtils.getPrefNum(browservio_saver(MainActivity.this), AllPrefs.enableAdBlock) == 1)
-                    return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(BrowservioBasicUtil.EMPTY_STRING.getBytes()));
+                if (list.contains(new URL(url).getHost()) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
+                    return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -841,7 +842,7 @@ public class MainActivity extends AppCompatActivity {
     private void browservioBrowse(String url) {
         if (url == null || url.isEmpty())
             return;
-        String checkedUrl = UrlUtils.UrlChecker(url, true, BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.defaultSearch));
+        String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
         // Load URL
         if (url.startsWith(BrowservioURLs.prefix)
                 || url.equals(BrowservioURLs.realErrUrl)
@@ -899,13 +900,13 @@ public class MainActivity extends AppCompatActivity {
         else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
             setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 
-        if (!BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isFirstLaunch).equals("0"))
-            new FirstTimeInit(MainActivity.this);
+        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0"))
+            new SettingsInit(MainActivity.this);
 
         // Settings check
-        webview.getSettings().setJavaScriptEnabled(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
-        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.isJavaScriptEnabled)));
-        favicon.setVisibility(BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon)) ? View.VISIBLE : View.GONE);
+        webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
+        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
+        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
         webview.getSettings().setDisplayZoomControls(false);
 
         // HTML5 API flags
@@ -915,9 +916,9 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setDomStorageEnabled(true);
 
         // Do Not Track request
-        mRequestHeaders.put("DNT", BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.sendDNT));
+        mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
 
-        if (BrowservioBasicUtil.isIntStrOne(BrowservioSaverUtils.getPref(browservio_saver(MainActivity.this), AllPrefs.showFavicon))
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))
                 && faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);
     }

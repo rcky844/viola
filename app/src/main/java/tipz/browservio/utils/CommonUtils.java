@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import tipz.browservio.R;
 
-public class BrowservioBasicUtil {
+public class CommonUtils {
     public static final String EMPTY_STRING = "";
 
     public static String LINE_SEPARATOR() {

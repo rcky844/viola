@@ -23,9 +23,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import tipz.browservio.R;
-import tipz.browservio.sharedprefs.AllPrefs;
-import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
-import tipz.browservio.utils.BrowservioBasicUtil;
+import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.utils.CommonUtils;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -89,11 +89,11 @@ public class HistoryActivity extends AppCompatActivity {
                                 StringBuilder out = new StringBuilder();
                                 for (Object o : history_list) {
                                     out.append(o.toString());
-                                    out.append(BrowservioBasicUtil.LINE_SEPARATOR());
+                                    out.append(CommonUtils.LINE_SEPARATOR());
                                 }
                                 HistoryReader.write(this, out.toString().trim());
                                 ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
-                                BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
+                                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.del_success));
                                 isEmptyCheck();
                             })
                             .setNegativeButton(android.R.string.cancel, null)
@@ -101,13 +101,13 @@ public class HistoryActivity extends AppCompatActivity {
                     return true;
                 } else if (item.getTitle().toString().equals(getResources().getString(android.R.string.copyUrl))) {
                     ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", (String) listview.getItemAtPosition(_param3)));
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
+                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.copied_clipboard));
                     return true;
                 } else if (item.getTitle().toString().equals(getResources().getString(R.string.add_to_fav))) {
-                    BrowservioSaverUtils.setPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count, BrowservioSaverUtils.getPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(BrowservioSaverUtils.getPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count)) + 1)));
-                    BrowservioSaverUtils.setPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count)), (String) listview.getItemAtPosition(_param3));
-                    BrowservioSaverUtils.setPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked.concat(BrowservioSaverUtils.getPref(bookmarks(HistoryActivity.this), AllPrefs.bookmarked_count)).concat(AllPrefs.bookmarked_count_show), "1");
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
+                    SettingsUtils.setPref(bookmarks(HistoryActivity.this), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(HistoryActivity.this), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(HistoryActivity.this), SettingsKeys.bookmarked_count)) + 1)));
+                    SettingsUtils.setPref(bookmarks(HistoryActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(HistoryActivity.this), SettingsKeys.bookmarked_count)), (String) listview.getItemAtPosition(_param3));
+                    SettingsUtils.setPref(bookmarks(HistoryActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(HistoryActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_count_show), "1");
+                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
                     return true;
                 }
                 return false;
@@ -120,7 +120,7 @@ public class HistoryActivity extends AppCompatActivity {
                 .setMessage(getResources().getString(R.string.del_hist_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                     HistoryReader.clear(this);
-                    BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
+                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
                     finish();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -137,7 +137,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void isEmptyCheck() {
         if (HistoryReader.isEmptyCheck(this)) {
-            BrowservioBasicUtil.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
+            CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
             finish();
         }
     }

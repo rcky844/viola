@@ -81,7 +81,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewSettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".fav.FavActivity"

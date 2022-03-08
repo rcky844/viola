@@ -1,4 +1,4 @@
-package tipz.browservio.urls;
+package tipz.browservio.utils.urls;
 
 import tipz.browservio.BuildConfig;
 

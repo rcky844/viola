@@ -1,8 +1,8 @@
-package tipz.browservio.urls;
+package tipz.browservio.utils.urls;
 
 import static tipz.browservio.utils.UrlUtils.composeSearchUrl;
 
-import tipz.browservio.utils.BrowservioBasicUtil;
+import tipz.browservio.utils.CommonUtils;
 
 public class SearchEngineEntries {
     public final static String google = "https://www.google.com/%s";
@@ -25,6 +25,6 @@ public class SearchEngineEntries {
     }
 
     public static String getHomepageUrl(String homeAdd) {
-        return composeSearchUrl(BrowservioBasicUtil.EMPTY_STRING, homeAdd, "%s");
+        return composeSearchUrl(CommonUtils.EMPTY_STRING, homeAdd, "%s");
     }
 }
