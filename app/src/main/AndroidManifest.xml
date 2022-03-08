@@ -84,7 +84,7 @@
             android:name=".NewSettingsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".FavActivity"
+            android:name=".fav.FavActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".history.HistoryActivity"

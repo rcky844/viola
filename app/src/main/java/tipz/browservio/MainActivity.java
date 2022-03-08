@@ -80,6 +80,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import tipz.browservio.fav.FavActivity;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
