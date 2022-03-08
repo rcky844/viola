@@ -99,7 +99,7 @@ public class FavRecycler {
                                 .create().show();
                         return true;
                     } else if (item.getTitle().toString().equals(mFavActivity.getResources().getString(android.R.string.copyUrl))) {
-                        CommonUtils.copyClipboard(mFavActivity, SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmark.concat(String.valueOf(position))));
+                        CommonUtils.copyClipboard(mFavActivity, SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(String.valueOf(position))));
                         return true;
                     }
                     return false;

@@ -17,7 +17,6 @@ public class SettingsKeys {
 
     /* bookmarks */
     public static final String bookmarks = "bookmarks.cfg";
-    public static final String bookmark = "bookmark_";
     public static final String bookmarked = "bookmarked_";
     public static final String bookmarked_count = bookmarked.concat("count");
     public static final String bookmarked_count_title = "_title";
