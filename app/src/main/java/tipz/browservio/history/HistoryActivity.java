@@ -1,4 +1,4 @@
-package tipz.browservio;
+package tipz.browservio.history;
 
 import static tipz.browservio.fav.FavApi.bookmarks;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-import tipz.browservio.history.HistoryReader;
+import tipz.browservio.R;
 import tipz.browservio.sharedprefs.AllPrefs;
 import tipz.browservio.sharedprefs.utils.BrowservioSaverUtils;
 import tipz.browservio.utils.BrowservioBasicUtil;

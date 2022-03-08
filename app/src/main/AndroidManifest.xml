@@ -87,7 +87,7 @@
             android:name=".FavActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".HistoryActivity"
+            android:name=".history.HistoryActivity"
             android:configChanges="orientation|screenSize" />
 
         <uses-library
