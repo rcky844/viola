@@ -73,7 +73,7 @@ public class FavRecycler {
             holder.mTextView.setOnClickListener(view -> {
                 if (!popup) {
                     Intent needLoad = new Intent();
-                    needLoad.putExtra("needLoadUrl", listData.get(position));
+                    needLoad.putExtra("needLoadUrl", SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(Integer.toString(position))));
                     mFavActivity.setResult(0, needLoad);
                     mFavActivity.finish();
                 } else {
