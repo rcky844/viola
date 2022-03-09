@@ -94,6 +94,7 @@
     <string name="errMsg2">Try:</string>
     <string name="errMsg3">Checking your internet connection</string>
     <string name="errMsg4">Reloading the webpage</string>
+    <string name="errMsg5">Reload</string>
     <string name="get_changelog">Read ChangeLogs</string>
     <string name="pref_adBlocker">Enable Ad Blocker</string>
     <string name="pref_adBlocker_desp">Stop annoying ads from distracting you.</string>

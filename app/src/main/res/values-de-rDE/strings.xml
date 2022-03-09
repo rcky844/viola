@@ -89,6 +89,7 @@
     <string name="errMsg2">Versuchen Sie:</string>
     <string name="errMsg3">Ihre Internetverbindung zu überprüfen</string>
     <string name="errMsg4">Die Webseite neu zu laden</string>
+    <string name="errMsg5">Neu laden</string>
     <string name="get_changelog">Changelog lesen</string>
     <string name="pref_adBlocker">Werbeblocker aktivieren</string>
     <string name="pref_adBlocker_desp">Stoppen Sie lästige Anzeigen, die Sie ablenken.</string>
