@@ -493,7 +493,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (s != null && !s.isEmpty())
                                             result.add(s);
                                     }
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), R.layout.recycler_list_item_1, result);
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1, result);
                                     UrlEdit.setAdapter(adapter);
                                     bo.close();
                                 } catch (IOException | JSONException e) {
