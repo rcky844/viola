@@ -18,12 +18,12 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 32
-        versionCode 60
-        versionName "2.1.1"
+        versionCode 61
+        versionName "2.1.2"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Cyanogen\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_cyanogen_rel2\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_cyanogen_rel3\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
