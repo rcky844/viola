@@ -82,13 +82,14 @@
     <string name="reset_btn_desp">清除所有瀏覽器數據</string>
     <string name="reset_dialog">這將會清除所有瀏覽器數據。\n</string>
     <string name="to_continue">您確定要繼續嗎？</string>
-    <string name="search_suggestions_title">啟用搜索建議</string>
-    <string name="search_suggestions_desp">搜索時顯示搜索建議</string>
+    <string name="search_suggestions_title">搜索建議</string>
+    <string name="search_suggestions_current">"搜索建議提供者: %s"</string>
     <string name="errMsg0">無法打開此頁面</string>
     <string name="errMsg1">Browservio 無法打開您的網頁</string>
     <string name="errMsg2">你可以嘗試:</string>
     <string name="errMsg3">檢查您的互聯網連接</string>
     <string name="errMsg4">重新加載網頁</string>
+    <string name="errMsg5">重新加載</string>
     <string name="get_changelog">閱讀變更日誌</string>
     <string name="pref_adBlocker">啟用廣告攔截器</string>
     <string name="pref_adBlocker_desp">攔截分散注意力而且煩人的廣告</string>

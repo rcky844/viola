@@ -63,9 +63,9 @@
     <string name="add_to_fav">保存到收藏夹</string>
     <string name="del_hist_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
     <string name="del_hist_fab_desp">删除所有历史记录</string>
-    <string name="baidu_search">百度</string>
+    <string name="baidu_search">百度 (默认)</string>
     <string name="yahoo_search">雅虎</string>
-    <string name="google_search">谷歌 (默认)</string>
+    <string name="google_search">谷歌</string>
     <string name="custom_search">自定义</string>
     <string name="license_btn">许可</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">错误发生对于给您带来的不便，我们深表歉意。</string>
@@ -82,13 +82,14 @@
     <string name="reset_btn_desp">清除所有浏览器数据</string>
     <string name="reset_dialog">这将會清除所有浏览器数据。\n</string>
     <string name="to_continue">您确定要继续吗？</string>
-    <string name="search_suggestions_title">启用搜索建议</string>
-    <string name="search_suggestions_desp">搜索时显示搜索建议</string>
+    <string name="search_suggestions_title">搜索建议</string>
+    <string name="search_suggestions_current">"搜索建议提供者: %s"</string>
     <string name="errMsg0">无法打开此页面</string>
     <string name="errMsg1">Browservio 无法打开您的网页</string>
     <string name="errMsg2">你可以尝试:</string>
     <string name="errMsg3">检查您的互联网连接</string>
     <string name="errMsg4">重新加载网页</string>
+    <string name="errMsg5">重新加载</string>
     <string name="get_changelog">阅读变更日志</string>
     <string name="pref_adBlocker">启用广告拦截器</string>
     <string name="pref_adBlocker_desp">拦截分散注意力而且烦人的广告</string>

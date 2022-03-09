@@ -115,11 +115,15 @@ public class SettingsPrefHandler extends PreferenceFragmentCompat {
                 activity.getResources().getString(R.string.yandex_search),
                 activity.getResources().getString(R.string.custom_search)
         };
+        final String[] suggestionsList = {
+                activity.getResources().getString(R.string.google_search),
+                activity.getResources().getString(R.string.bing_search)
+        };
 
         /* General category */
         Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));
         Preference homepage = Objects.requireNonNull(findPreference("homepage"));
-        CheckBoxPreference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
+        Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
         /* Data & Privacy category */
         CheckBoxPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
@@ -142,6 +146,7 @@ public class SettingsPrefHandler extends PreferenceFragmentCompat {
         MaterialAlertDialogBuilder CustomSearchSettingsDialog = new MaterialAlertDialogBuilder(activity);
         MaterialAlertDialogBuilder HomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
         MaterialAlertDialogBuilder CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder SearchSuggestionsSettingsDialog = new MaterialAlertDialogBuilder(activity);
 
         /* Data & Privacy dialog */
         MaterialAlertDialogBuilder ResetDialog = new MaterialAlertDialogBuilder(activity);
@@ -248,8 +253,23 @@ public class SettingsPrefHandler extends PreferenceFragmentCompat {
         });
 
         search_suggestions.setOnPreferenceClickListener(preference -> {
-            SettingsUtils.setPrefIntBoolAccBool(browservio_saver(activity),
-                    SettingsKeys.enableSuggestions, search_suggestions.isChecked(), false);
+            final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultSuggestionsId)};
+            final String[] homePage = new String[1];
+            SearchSuggestionsSettingsDialog.setTitle(getResources().getString(R.string.search_suggestions_title))
+                    .setSingleChoiceItems(suggestionsList,
+                            SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        if (checkedItem[0] == 0)
+                            homePage[0] = SearchEngineEntries.googleSearchSuggestionsUrl;
+                        else if (checkedItem[0] == 1)
+                            homePage[0] = SearchEngineEntries.bingSearchSuggestionsUrl;
+
+                        SettingsUtils.setPref(browservio_saver(activity), SettingsKeys.defaultSuggestions, homePage[0]);
+                        SettingsUtils.setPrefNum(browservio_saver(activity), SettingsKeys.defaultSuggestionsId, checkedItem[0]);
+                        search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[checkedItem[0]]));
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
             return true;
         });
 
@@ -410,11 +430,11 @@ public class SettingsPrefHandler extends PreferenceFragmentCompat {
 
         checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker, true);
         checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track, false);
-        checkIfPrefIntIsTrue(SettingsKeys.enableSuggestions, search_suggestions, true);
         checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon, false);
         checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript, false);
         search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultSearchId)]));
         homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultHomePageId)]));
+        search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultSuggestionsId)]));
         version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
         needReload = false;
     }

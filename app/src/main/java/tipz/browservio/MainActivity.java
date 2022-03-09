@@ -91,6 +91,7 @@ import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.utils.urls.SearchEngineEntries;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
@@ -463,12 +464,12 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableSuggestions) != 1)
+                if (text.toString().isEmpty())
                     return;
                 new Thread() {
                     @Override
                     public void run() {
-                        String path = "http://suggestqueries.google.com/complete/search?client=firefox&q=".concat(text.toString());
+                        String path = SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions), text.toString());
                         URL u;
                         try {
                             u = new URL(path);
@@ -493,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (s != null && !s.isEmpty())
                                             result.add(s);
                                     }
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), R.layout.recycler_list_item_1, result);
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1, result);
                                     UrlEdit.setAdapter(adapter);
                                     bo.close();
                                 } catch (IOException | JSONException e) {
@@ -600,6 +601,8 @@ public class MainActivity extends AppCompatActivity {
                     return mContext.getResources().getString(R.string.errMsg3);
                 case 4:
                     return mContext.getResources().getString(R.string.errMsg4);
+                case 5:
+                    return mContext.getResources().getString(R.string.errMsg5);
                 default:
                     return CommonUtils.EMPTY_STRING;
             }
