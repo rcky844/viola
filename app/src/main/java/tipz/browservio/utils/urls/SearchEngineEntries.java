@@ -7,6 +7,7 @@ import tipz.browservio.utils.CommonUtils;
 public class SearchEngineEntries {
     public final static String google = "https://www.google.com/%s";
     public final static String googleSearchSuffix = "search?q=";
+    public final static String googleSearchSuggestionsUrl = "http://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q=%s";
     public final static String baidu = "https://www.baidu.com/%s";
     public final static String baiduSearchSuffix = "s?wd=";
     public final static String duck = "https://www.duckduckgo.com/%s";
@@ -26,5 +27,9 @@ public class SearchEngineEntries {
 
     public static String getHomepageUrl(String homeAdd) {
         return composeSearchUrl(CommonUtils.EMPTY_STRING, homeAdd, "%s");
+    }
+
+    public static String getSuggestionsUrl(String homeAdd, String suggestions) {
+        return composeSearchUrl(suggestions, homeAdd, "%s");
     }
 }

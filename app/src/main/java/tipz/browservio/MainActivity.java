@@ -91,6 +91,7 @@ import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.utils.urls.SearchEngineEntries;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
@@ -468,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
                 new Thread() {
                     @Override
                     public void run() {
-                        String path = "http://suggestqueries.google.com/complete/search?client=firefox&q=".concat(text.toString());
+                        String path = SearchEngineEntries.getSuggestionsUrl(SearchEngineEntries.googleSearchSuggestionsUrl, text.toString());
                         URL u;
                         try {
                             u = new URL(path);
