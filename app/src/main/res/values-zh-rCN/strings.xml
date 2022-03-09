@@ -82,8 +82,8 @@
     <string name="reset_btn_desp">清除所有浏览器数据</string>
     <string name="reset_dialog">这将會清除所有浏览器数据。\n</string>
     <string name="to_continue">您确定要继续吗？</string>
-    <string name="search_suggestions_title">启用搜索建议</string>
-    <string name="search_suggestions_desp">搜索时显示搜索建议</string>
+    <string name="search_suggestions_title">搜索建议</string>
+    <string name="search_suggestions_current">"搜索建议提供者: %s"</string>
     <string name="errMsg0">无法打开此页面</string>
     <string name="errMsg1">Browservio 无法打开您的网页</string>
     <string name="errMsg2">你可以尝试:</string>

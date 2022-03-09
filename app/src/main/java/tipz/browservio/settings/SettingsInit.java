@@ -20,17 +20,19 @@ public class SettingsInit {
         SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.updateTesting, 0, isEqualToOneFirstLaunch);
 
         if (doesNotHaveGoogle) {
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.enableSuggestions, 0, isEqualToOneFirstLaunch);
             SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.baidu), isEqualToOneFirstLaunch);
             SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultHomePageId, 1, isEqualToOneFirstLaunch);
             SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.baidu, SearchEngineEntries.baiduSearchSuffix), isEqualToOneFirstLaunch);
             SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSearchId, 1, isEqualToOneFirstLaunch);
+            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSuggestions, SearchEngineEntries.bingSearchSuggestionsUrl, isEqualToOneFirstLaunch);
+            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSuggestionsId, 1, isEqualToOneFirstLaunch);
         } else {
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.enableSuggestions, 1, isEqualToOneFirstLaunch);
             SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.google), isEqualToOneFirstLaunch);
             SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultHomePageId, 0, isEqualToOneFirstLaunch);
             SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix), isEqualToOneFirstLaunch);
             SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSearchId, 0, isEqualToOneFirstLaunch);
+            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSuggestions, SearchEngineEntries.googleSearchSuggestionsUrl, isEqualToOneFirstLaunch);
+            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSuggestionsId, 0, isEqualToOneFirstLaunch);
         }
         SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.isFirstLaunch, "0", isEqualToOneFirstLaunch);
     }

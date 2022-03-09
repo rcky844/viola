@@ -82,8 +82,8 @@
     <string name="reset_btn_desp">Alle Browserdaten leeren.</string>
     <string name="reset_dialog">Dies wird alle Browserdaten leeren.\n</string>
     <string name="to_continue">Sind Sie sicher, dass Sie fortfahren möchten?</string>
-    <string name="search_suggestions_title">Suchvorschläge aktivieren</string>
-    <string name="search_suggestions_desp">Während des Suchens Vorschläge anzeigen.</string>
+    <string name="search_suggestions_title">Suchvorschläge</string>
+    <string name="search_suggestions_current">"Anbieter von Suchvorschlägen: %s"</string>
     <string name="errMsg0">Webseite kann nicht angezeigt werden</string>
     <string name="errMsg1">Browservio konnte Ihre Webseite nicht anzeigen.</string>
     <string name="errMsg2">Versuchen Sie:</string>

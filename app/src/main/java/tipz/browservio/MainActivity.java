@@ -464,12 +464,12 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableSuggestions) != 1)
+                if (text.toString().isEmpty())
                     return;
                 new Thread() {
                     @Override
                     public void run() {
-                        String path = SearchEngineEntries.getSuggestionsUrl(SearchEngineEntries.googleSearchSuggestionsUrl, text.toString());
+                        String path = SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions), text.toString());
                         URL u;
                         try {
                             u = new URL(path);

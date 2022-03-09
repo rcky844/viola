@@ -14,6 +14,7 @@ public class SearchEngineEntries {
     public final static String duckSearchSuffix = "?q=";
     public final static String bing = "https://www.bing.com/%s";
     public final static String bingSearchSuffix = googleSearchSuffix;
+    public final static String bingSearchSuggestionsUrl = "https://api.bing.com/osjson.aspx?query=%s";
     public final static String yahoo = "https://search.yahoo.com/%s";
     public final static String yahooSearchSuffix = "search?p=";
     public final static String ecosia = "https://www.ecosia.org/%s";
