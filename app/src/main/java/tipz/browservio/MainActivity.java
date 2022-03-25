@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private final HashMap<String, String> mRequestHeaders = new HashMap<>();
 
     private String userAgentFull(String mid) {
-        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
+        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
     }
 
     /**
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         if (mode == 0) {
             setDesktopMode(view,
                     false,
-                    userAgentFull("Linux; Android 12"),
+                    userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)),
                     R.drawable.smartphone,
                     noReload);
         } else if (mode == 1) {
