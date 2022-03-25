@@ -329,7 +329,8 @@ public class SettingsPrefHandler extends PreferenceFragmentCompat {
             AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
             AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
             AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-            if (BuildConfig.BUILD_TYPE.equals("debug") && SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.updateTesting) != 1) {
+            boolean updateTesting = SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.updateTesting) == 1;
+            if (BuildConfig.DEBUG && !updateTesting) {
                 update_btn.setVisibility(View.GONE);
                 changelog_btn.setVisibility(View.GONE);
             }
@@ -370,7 +371,7 @@ public class SettingsPrefHandler extends PreferenceFragmentCompat {
                                         String[] array = bo.toString().split(CommonUtils.LINE_SEPARATOR());
                                         for (String obj : array) {
                                             if (position == 0) {
-                                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.updateTesting) == 1) {
+                                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && !updateTesting) {
                                                     isLatest = true;
                                                     CommonUtils.showMessage(activity.getApplicationContext(), getResources().getString(R.string.version_latest_toast));
                                                 }
