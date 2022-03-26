@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
     private void shareUrl(@Nullable String url) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, url == null ? webview.getUrl() : url);
+        i.putExtra(Intent.EXTRA_TEXT, url == null ? UrlEdit.getText() : url);
         startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
     }
 
