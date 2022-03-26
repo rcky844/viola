@@ -8,6 +8,7 @@ import static tipz.browservio.utils.CommonUtils.RotateAlphaAnim;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -30,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
@@ -85,13 +87,13 @@ import tipz.browservio.fav.FavActivity;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
-import tipz.browservio.settings.SettingsKeys;
-import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsActivity;
+import tipz.browservio.settings.SettingsInit;
+import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
-import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.urls.SearchEngineEntries;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -457,6 +459,8 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                 browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString());
+                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 return true;
             }
             return false;
