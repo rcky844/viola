@@ -1,7 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="error_already_page">"Already at the %s page!"</string>
-    <string name="first">first</string>
-    <string name="last">last</string>
     <string name="linear_control_b3_desk">Desktop</string>
     <string name="linear_control_b3_mobi">Mobile</string>
     <string name="linear_control_b3_cus">Custom</string>

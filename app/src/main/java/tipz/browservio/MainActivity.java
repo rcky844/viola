@@ -238,16 +238,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void itemSelected(ImageView view, int item) {
-        if (item == 0) {
-            if (webview.canGoBack())
-                webview.goBack();
-            else
-                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
-        } else if (item == 1) {
-            if (webview.canGoForward())
-                webview.goForward();
-            else
-                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
+        if (item == 0 && webview.canGoBack()) {
+            webview.goBack();
+        } else if (item == 1 && webview.canGoForward()) {
+            webview.goForward();
         } else if (item == 2) {
             webviewReload();
         } else if (item == 3) {

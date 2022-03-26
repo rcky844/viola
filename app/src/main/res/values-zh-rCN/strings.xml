@@ -1,7 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="error_already_page">已经在%s页!</string>
-    <string name="first">第一</string>
-    <string name="last">最后一</string>
     <string name="linear_control_b3_desk">台式电脑</string>
     <string name="linear_control_b3_mobi">移动设备</string>
     <string name="linear_control_b3_cus">自定义</string>
