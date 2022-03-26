@@ -368,8 +368,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initialize function
      */
+    @SuppressLint("AddJavascriptInterface")
     private void initialize() {
-
         fab = findViewById(R.id.fab);
         UrlEdit = findViewById(R.id.UrlEdit);
         MainProg = findViewById(R.id.MainProg);
@@ -439,21 +439,6 @@ public class MainActivity extends AppCompatActivity {
 
             webLongPress.show();
         });
-    }
-
-    /**
-     * Welcome to the Browservio (The Shrek Browser)
-     * This browser was originally designed with Sketchware
-     * This project was started on Aug 13 2020
-     * <p>
-     * sur wen reel Sherk brower pls sand meme sum
-     */
-    @SuppressLint("AddJavascriptInterface")
-    private void initializeLogic() {
-        webview.setWebViewClient(new WebClient());
-        webview.setWebChromeClient(new ChromeWebClient());
-
-        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this, this), "browservioErr");
 
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
@@ -522,10 +507,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setDeskMode(null, 0, true); /* User agent init code */
+        webview.setWebViewClient(new WebClient());
+        webview.setWebChromeClient(new ChromeWebClient());
+
+        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this, this), "browservioErr");
+    }
+
+    /**
+     * Welcome to the Browservio (The Shrek Browser)
+     * This browser was originally designed with Sketchware
+     * This project was started on Aug 13 2020
+     * <p>
+     * sur wen reel Sherk brower pls sand meme sum
+     */
+    private void initializeLogic() {
+        /* User agent init code */
+        setDeskMode(null, 0, true);
 
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
+
+        /* Init settings check */
+        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0"))
+            new SettingsInit(MainActivity.this);
 
         /* Load default webpage */
         browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
@@ -536,6 +540,13 @@ public class MainActivity extends AppCompatActivity {
 
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
+        webview.getSettings().setDisplayZoomControls(false);
+
+        // HTML5 API flags
+        webview.getSettings().setAppCacheEnabled(true);
+        webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
+        webview.getSettings().setDatabaseEnabled(true);
+        webview.getSettings().setDomStorageEnabled(true);
 
         /*
          * Getting information from intents, either from
@@ -826,9 +837,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (webViewEnabled()) {
-            _configChecker();
-        }
+        if (webViewEnabled())
+            configChecker();
     }
 
     public void downloadFile(String url, String contentDisposition, String mimeType) {
@@ -893,7 +903,7 @@ public class MainActivity extends AppCompatActivity {
      * Used to check if anything has been changed
      * after resume of restart.
      */
-    private void _configChecker() {
+    private void configChecker() {
         // Dark mode
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
             case Configuration.UI_MODE_NIGHT_YES:
@@ -912,20 +922,10 @@ public class MainActivity extends AppCompatActivity {
         else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
             setDarkModeWebView(webview, powerManager.isPowerSaveMode());
 
-        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0"))
-            new SettingsInit(MainActivity.this);
-
         // Settings check
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
-        webview.getSettings().setDisplayZoomControls(false);
-
-        // HTML5 API flags
-        webview.getSettings().setAppCacheEnabled(true);
-        webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
-        webview.getSettings().setDatabaseEnabled(true);
-        webview.getSettings().setDomStorageEnabled(true);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
