@@ -21,7 +21,6 @@
     <string name="saved_su">"Saved successfully!"</string>
     <string name="fav_list_empty">"There are no favorites saved."</string>
     <string name="copy_title">"Copy Website Title"</string>
-    <string name="app_not_installed">"Application is not installed."</string>
     <string name="address_bar_hint">"Search or type web address…"</string>
     <string name="favicon_desp">"Icon of the webpage, clicking on me will open a dialog with the webpage's title."</string>
     <string name="fab_desp">"A button when clicked will show or close the action bar."</string>

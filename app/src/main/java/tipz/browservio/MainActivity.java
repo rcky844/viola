@@ -678,8 +678,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
                 return true;
-            } else {
-                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
             }
             if (customBrowse) {
                 webview.loadUrl(url, mRequestHeaders);
