@@ -57,7 +57,7 @@
                     android:background="@drawable/url_edit_bg"
                     android:gravity="center_vertical"
                     android:hint="@string/address_bar_hint"
-                    android:imeOptions="actionGo"
+                    android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
                     android:importantForAutofill="no"
                     android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
                     android:padding="8dp"
