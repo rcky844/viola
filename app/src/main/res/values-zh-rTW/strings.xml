@@ -91,6 +91,7 @@
     <string name="pref_adBlocker_desp">攔截分散注意力而且煩人的廣告</string>
     <string name="pref_do_not_track">不跟踪</string>
     <string name="pref_do_not_track_desp">发送“不跟踪”请求到您浏览的网站</string>
+    <string name="copy_url">複製鏈結</string>
     <string name="download_image">下載圖片</string>
     <string name="open_in_new_tab">在新分頁中開啟</string>
     <string name="no_webview">WebView是必需的，但未安裝。</string>

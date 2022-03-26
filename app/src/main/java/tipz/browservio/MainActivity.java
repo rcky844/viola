@@ -409,13 +409,13 @@ public class MainActivity extends AppCompatActivity {
                 arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
             if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
                 arrayAdapter.add(getResources().getString(R.string.download_image));
-            arrayAdapter.add(getResources().getString(android.R.string.copyUrl));
+            arrayAdapter.add(getResources().getString(R.string.copy_url));
             arrayAdapter.add(getResources().getString(R.string.share_url));
 
             webLongPress.setAdapter(arrayAdapter, (dialog, which) -> {
                 String strName = arrayAdapter.getItem(which);
 
-                if (strName.equals(getResources().getString(android.R.string.copyUrl))) {
+                if (strName.equals(getResources().getString(R.string.copy_url))) {
                     CommonUtils.copyClipboard(MainActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
                     downloadFile(url, null, null);
