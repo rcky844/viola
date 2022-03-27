@@ -92,7 +92,7 @@ public class FavRecycler {
                                     listData.remove(position);
                                     SettingsUtils.setPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(String.valueOf(position)).concat(SettingsKeys.bookmarked_show), "0");
                                     notifyItemRangeRemoved(position, 1);
-                                    CommonUtils.showMessage(mFavActivity.getApplicationContext(), mFavActivity.getResources().getString(R.string.del_success));
+                                    CommonUtils.showMessage(mFavActivity, mFavActivity.getResources().getString(R.string.del_success));
                                     mFavActivity.isEmptyCheck(listData, bookmarks(mFavActivity));
                                 })
                                 .setNegativeButton(android.R.string.cancel, null)

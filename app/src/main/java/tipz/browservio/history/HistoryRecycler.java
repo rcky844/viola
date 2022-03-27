@@ -113,7 +113,7 @@ public class HistoryRecycler {
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)) + 1)));
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)), listData.get(position));
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_show), "1");
-                        CommonUtils.showMessage(mHistoryActivity.getApplicationContext(), mHistoryActivity.getResources().getString(R.string.saved_su));
+                        CommonUtils.showMessage(mHistoryActivity, mHistoryActivity.getResources().getString(R.string.saved_su));
                         return true;
                     }
                     return false;
