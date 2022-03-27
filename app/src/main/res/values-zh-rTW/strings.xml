@@ -55,7 +55,6 @@
     <string name="fav_del_fab_desp">刪除所有收藏</string>
     <string name="hist">歷史記錄</string>
     <string name="del_hist">刪除這個歷史記錄</string>
-    <string name="del_hist_title">您想刪除這個歷史記錄嗎?</string>
     <string name="add_to_fav">保存到收藏夾</string>
     <string name="del_hist_message">"您將要刪除所有歷史記錄, 您確定要這樣做嗎?"</string>
     <string name="del_hist_fab_desp">刪除所有歷史記錄</string>

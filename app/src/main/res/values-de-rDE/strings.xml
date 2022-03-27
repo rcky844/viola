@@ -55,7 +55,6 @@
     <string name="fav_del_fab_desp">"Alle Einträge löschen"</string>
     <string name="hist">Verlauf</string>
     <string name="del_hist">"Diesen Verlauf löschen"</string>
-    <string name="del_hist_title">"Möchten Sie diesen Verlauf löschen?"</string>
     <string name="add_to_fav">"Als Favoriten speichern"</string>
     <string name="del_hist_message">"Sie sind dabei, den gesamten Verlauf zu löschen. Sind Sie sich sicher?"</string>
     <string name="del_hist_fab_desp">"Gesamten Verlauf löschen"</string>

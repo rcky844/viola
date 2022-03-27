@@ -15,8 +15,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,15 +28,11 @@ public class HistoryRecycler {
     private static List<String> listData;
     private static Boolean popup = false;
 
-    private static MaterialAlertDialogBuilder deleteHistory;
-
     public HistoryRecycler(Context context, HistoryActivity mHistoryActivity, RecyclerView historyList) {
         listData = new ArrayList<>(Arrays.asList(HistoryReader.history_data(context).trim().split("\n")));
 
         historyList.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         historyList.setAdapter(new HistoryRecycler.ItemsAdapter(mHistoryActivity));
-
-        deleteHistory = new MaterialAlertDialogBuilder(context);
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<HistoryRecycler.ItemsAdapter.ViewHolder> {
@@ -60,7 +54,7 @@ public class HistoryRecycler {
         @NonNull
         @Override
         public HistoryRecycler.ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item_1,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item_1, parent, false);
 
             return new HistoryRecycler.ItemsAdapter.ViewHolder(view);
         }
@@ -89,22 +83,15 @@ public class HistoryRecycler {
                 menu1.add(mHistoryActivity.getResources().getString(R.string.add_to_fav));
                 popup1.setOnMenuItemClickListener(item -> {
                     if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.del_hist))) {
-                        deleteHistory.setTitle(mHistoryActivity.getResources().getString(R.string.del_hist))
-                                .setMessage(mHistoryActivity.getResources().getString(R.string.del_hist_title))
-                                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                    listData.remove(position);
-                                    StringBuilder out = new StringBuilder();
-                                    for (Object o : listData) {
-                                        out.append(o.toString());
-                                        out.append(CommonUtils.LINE_SEPARATOR());
-                                    }
-                                    HistoryReader.write(mHistoryActivity, out.toString().trim());
-                                    notifyItemRangeRemoved(position, 1);
-                                    CommonUtils.showMessage(mHistoryActivity.getApplicationContext(), mHistoryActivity.getResources().getString(R.string.del_success));
-                                    mHistoryActivity.isEmptyCheck();
-                                })
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .create().show();
+                        listData.remove(position);
+                        StringBuilder out = new StringBuilder();
+                        for (Object o : listData) {
+                            out.append(o.toString());
+                            out.append(CommonUtils.LINE_SEPARATOR());
+                        }
+                        HistoryReader.write(mHistoryActivity, out.toString().trim());
+                        notifyItemRangeRemoved(position, 1);
+                        mHistoryActivity.isEmptyCheck();
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(android.R.string.copyUrl))) {
                         CommonUtils.copyClipboard(mHistoryActivity, listData.get(position));
