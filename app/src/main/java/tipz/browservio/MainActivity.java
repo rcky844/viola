@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     .errorActivity(null)
                     .apply();
         } else {
-            CommonUtils.showMessage(this, getResources().getString(R.string.no_webview));
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.no_webview));
             finish();
         }
     }
@@ -295,12 +295,12 @@ public class MainActivity extends AppCompatActivity {
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
                     webview.clearCache(true);
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.history))) {
                     webview.clearHistory();
                     HistoryReader.clear(MainActivity.this);
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                         cookieSyncMgr.stopSync();
                         cookieSyncMgr.sync();
                     }
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
                     webviewReload();
                 }
 
@@ -341,12 +341,12 @@ public class MainActivity extends AppCompatActivity {
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)), webview.getUrl());
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_title), UrlTitle);
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_show), "1");
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
                     if (bookmarks(MainActivity.this).getAll().size() == 0) {
-                        CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+                        CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
                     } else {
-                        Intent intent = new Intent(this, FavActivity.class);
+                        Intent intent = new Intent(MainActivity.this, FavActivity.class);
                         mGetNeedLoad.launch(intent);
                     }
                 }
