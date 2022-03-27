@@ -10,5 +10,6 @@
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:textColor="@color/colorElement" />
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+    android:textColor="@color/colorElement"
+    android:textSize="14sp" />
