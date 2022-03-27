@@ -47,8 +47,6 @@
     <string name="source_code_desp">看一下Browservio的源代碼</string>
     <string name="fav">收藏夾</string>
     <string name="del_fav">"刪除這個收藏"</string>
-    <string name="del_fav_title">您想刪除這個收藏嗎?</string>
-    <string name="del_success">刪除成功!"</string>
     <string name="del_fav2_title">刪除所有收藏</string>
     <string name="del_fav2_message">"您將要刪除所有收藏, 您確定要這樣做嗎?"</string>
     <string name="wiped_success">清除成功!</string>

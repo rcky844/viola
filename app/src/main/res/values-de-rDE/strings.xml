@@ -47,8 +47,6 @@
     <string name="download_title">"Browservio-Aktualisierung"</string>
     <string name="fav">Favoriten</string>
     <string name="del_fav">"Diesen Favoriten löschen"</string>
-    <string name="del_fav_title">"Möchten Sie diesen Favoriten löschen?"</string>
-    <string name="del_success">"Erfolgreich gelöscht!"</string>
     <string name="del_fav2_title">"Alle Einträge löschen"</string>
     <string name="del_fav2_message">"Sie sind dabei, alle Favoriten zu löschen. Sind Sie sicher, dass Sie fortfahren möchten?"</string>
     <string name="wiped_success">"Erfolgreich bereinigt!"</string>
