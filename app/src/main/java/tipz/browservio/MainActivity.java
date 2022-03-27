@@ -3,7 +3,6 @@ package tipz.browservio;
 import static tipz.browservio.fav.FavApi.bookmarks;
 import static tipz.browservio.history.HistoryApi.historyPref;
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-import static tipz.browservio.utils.CommonUtils.RotateAlphaAnim;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -391,7 +390,25 @@ public class MainActivity extends AppCompatActivity {
 
         faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
 
-        fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, actionBar));
+        fab.setOnClickListener(_view -> {
+            fabAnimate.setTarget(fab);
+            barAnimate.setTarget(actionBar);
+            fabAnimate.setPropertyName("rotation");
+            barAnimate.setPropertyName("alpha");
+            fabAnimate.setDuration(250);
+            barAnimate.setDuration(250);
+            if (actionBar.getVisibility() == View.VISIBLE) {
+                fabAnimate.setFloatValues(0, 180);
+                barAnimate.setFloatValues(1, 0);
+                actionBar.setVisibility(View.GONE);
+            } else {
+                actionBar.setVisibility(View.VISIBLE);
+                fabAnimate.setFloatValues(180, 0);
+                barAnimate.setFloatValues(0, 1);
+            }
+            fabAnimate.start();
+            barAnimate.start();
+        });
 
         webview.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
             final WebView.HitTestResult hr = webview.getHitTestResult();

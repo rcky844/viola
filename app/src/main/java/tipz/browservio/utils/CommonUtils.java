@@ -2,13 +2,11 @@ package tipz.browservio.utils;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.view.View;
 import android.widget.Toast;
 
 import tipz.browservio.R;
@@ -60,26 +58,6 @@ public class CommonUtils {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public static void RotateAlphaAnim(ObjectAnimator anim1, ObjectAnimator anim2, View view1, View view2) {
-        anim1.setTarget(view1);
-        anim2.setTarget(view2);
-        anim1.setPropertyName("rotation");
-        anim2.setPropertyName("alpha");
-        anim1.setDuration(250);
-        anim2.setDuration(250);
-        if (view2.getVisibility() == View.VISIBLE) {
-            anim1.setFloatValues(0, 180);
-            anim2.setFloatValues(1, 0);
-            view2.setVisibility(View.GONE);
-        } else {
-            view2.setVisibility(View.VISIBLE);
-            anim1.setFloatValues(180, 0);
-            anim2.setFloatValues(0, 1);
-        }
-        anim1.start();
-        anim2.start();
     }
 
     public static boolean isIntStrOne(Object obj) {
