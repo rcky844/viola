@@ -44,6 +44,11 @@
     <androidx.preference.PreferenceCategory
         android:title="@string/visual"
         app:iconSpaceReserved="false">
+        <androidx.preference.Preference
+            android:key="theme"
+            android:summary=""
+            android:title="@string/pref_theme"
+            app:iconSpaceReserved="false" />
         <androidx.preference.CheckBoxPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"

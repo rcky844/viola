@@ -144,6 +144,11 @@ public class SettingsActivity extends AppCompatActivity {
                     activity.getResources().getString(R.string.google_search),
                     activity.getResources().getString(R.string.bing_search)
             };
+            final String[] themeList = {
+                    activity.getResources().getString(R.string.pref_theme_default),
+                    activity.getResources().getString(R.string.pref_theme_light),
+                    activity.getResources().getString(R.string.pref_theme_dark)
+            };
 
             /* General category */
             Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));
@@ -156,6 +161,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
+            Preference theme = Objects.requireNonNull(findPreference("theme"));
             CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
 
             /* Advanced category */
@@ -175,6 +181,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             /* Data & Privacy dialog */
             MaterialAlertDialogBuilder ResetDialog = new MaterialAlertDialogBuilder(activity);
+
+            /* Visuals dialog */
+            MaterialAlertDialogBuilder ThemeDialog = new MaterialAlertDialogBuilder(activity);
 
             /* Help category dialog */
             MaterialAlertDialogBuilder InfoDialog = new MaterialAlertDialogBuilder(activity);
@@ -334,6 +343,20 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
+            theme.setOnPreferenceClickListener(preference -> {
+                final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.themeId)};
+                ThemeDialog.setTitle(getResources().getString(R.string.pref_theme))
+                        .setSingleChoiceItems(themeList,
+                                SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.themeId), (dialog, which) -> checkedItem[0] = which)
+                        .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                            SettingsUtils.setPrefNum(browservio_saver(activity), SettingsKeys.themeId, checkedItem[0]);
+                            theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[checkedItem[0]]));
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show();
+                return true;
+            });
+
             show_favicon.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefStringBoolAccBool(browservio_saver(activity),
                         SettingsKeys.showFavicon, show_favicon.isChecked(), false);
@@ -461,6 +484,7 @@ public class SettingsActivity extends AppCompatActivity {
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultHomePageId)]));
             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultSuggestionsId)]));
+            theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.themeId)]));
             version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
             needReload = false;
         }

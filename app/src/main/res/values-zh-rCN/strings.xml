@@ -93,4 +93,9 @@
     <string name="open_in_new_tab">在新标签页中打开</string>
     <string name="no_webview">WebView是必需的，但未安裝。</string>
     <string name="share_url">分享链结</string>
+    <string name="pref_theme_dark">深色</string>
+    <string name="pref_theme">主题</string>
+    <string name="pref_theme_light">浅色</string>
+    <string name="pref_theme_default">系统默认</string>
+    <string name="pref_theme_desp">当前主题: %s</string>
 </resources>

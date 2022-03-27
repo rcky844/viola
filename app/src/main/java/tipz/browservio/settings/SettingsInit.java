@@ -17,6 +17,7 @@ public class SettingsInit {
         SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.enableAdBlock, 0, isEqualToOneFirstLaunch);
         SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.sendDNT, "0", isEqualToOneFirstLaunch);
         SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.showFavicon, "1", isEqualToOneFirstLaunch);
+        SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.themeId, 0, isEqualToOneFirstLaunch);
         SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.updateTesting, 0, isEqualToOneFirstLaunch);
 
         if (doesNotHaveGoogle) {

@@ -915,22 +915,28 @@ public class MainActivity extends AppCompatActivity {
      */
     private void configChecker() {
         // Dark mode
-        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
-            case Configuration.UI_MODE_NIGHT_YES:
-                setDarkModeWebView(webview, true);
-                break;
-            case Configuration.UI_MODE_NIGHT_UNDEFINED:
-            case Configuration.UI_MODE_NIGHT_NO:
-                setDarkModeWebView(webview, false);
-                break;
-        }
+        if (SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 0) {
+            switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+                case Configuration.UI_MODE_NIGHT_YES:
+                    setDarkModeWebView(webview, true);
+                    break;
+                case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                case Configuration.UI_MODE_NIGHT_NO:
+                    setDarkModeWebView(webview, false);
+                    break;
+            }
 
-        AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
-            setDarkModeWebView(webview, false);
-        else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
-            setDarkModeWebView(webview, powerManager.isPowerSaveMode());
+            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
+                setDarkModeWebView(webview, false);
+            else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
+                setDarkModeWebView(webview, powerManager.isPowerSaveMode());
+        } else {
+            boolean darkMode = SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 2;
+            setDarkModeWebView(webview, darkMode);
+            AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         // Settings check
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
