@@ -371,7 +371,7 @@ public class SettingsActivity extends AppCompatActivity {
                         BuildConfig.VERSION_BUILD_YEAR));
                 update_btn.setOnClickListener(_update_btn -> {
                     if (!isNetworkAvailable(activity.getApplicationContext())) {
-                        CommonUtils.showMessage(activity.getApplicationContext(), getResources().getString(R.string.network_unavailable_toast));
+                        CommonUtils.showMessage(activity, getResources().getString(R.string.network_unavailable_toast));
                     } else {
                         new Thread() {
                             @Override
@@ -398,11 +398,11 @@ public class SettingsActivity extends AppCompatActivity {
                                                 if (position == 0) {
                                                     if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && !updateTesting) {
                                                         isLatest = true;
-                                                        CommonUtils.showMessage(activity.getApplicationContext(), getResources().getString(R.string.version_latest_toast));
+                                                        CommonUtils.showMessage(activity, getResources().getString(R.string.version_latest_toast));
                                                     }
                                                 }
                                                 if (position == 1 && !isLatest) {
-                                                    CommonUtils.showMessage(activity.getApplicationContext(), getResources().getString(R.string.new_update_detect_toast));
+                                                    CommonUtils.showMessage(activity, getResources().getString(R.string.new_update_detect_toast));
 
                                                     if (!apkFile.exists() || apkFile.delete()) {
                                                         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
@@ -413,7 +413,7 @@ public class SettingsActivity extends AppCompatActivity {
                                                         DownloadManager dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
                                                         downloadID = dm.enqueue(request);
                                                     } else {
-                                                        CommonUtils.showMessage(activity.getApplicationContext(), getResources().getString(R.string.update_down_failed_toast));
+                                                        CommonUtils.showMessage(activity, getResources().getString(R.string.update_down_failed_toast));
                                                     }
                                                 }
                                                 position += 1;
@@ -425,7 +425,7 @@ public class SettingsActivity extends AppCompatActivity {
                                             }
                                         });
                                     } else {
-                                        CommonUtils.showMessage(activity.getApplicationContext(), getResources().getString(R.string.update_down_failed_toast));
+                                        CommonUtils.showMessage(activity, getResources().getString(R.string.update_down_failed_toast));
                                     }
                                 } catch (IOException e) {
                                     e.printStackTrace();
