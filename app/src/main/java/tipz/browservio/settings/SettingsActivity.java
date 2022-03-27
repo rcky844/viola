@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (SettingsPrefHandler.getNeedReload()) {
+        if (SettingsPrefHandler.needReload) {
             needLoad.putExtra("needLoadUrl", BrowservioURLs.reloadUrl);
             setResult(0, needLoad);
         }
@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
             this.activity = act;
         }
 
-        private static boolean needReload = false;
+        public static boolean needReload = false;
         private long downloadID;
         private final String updateDownloadPath = Environment.getExternalStorageDirectory().getAbsolutePath()
                 .concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk");
@@ -110,10 +110,6 @@ public class SettingsActivity extends AppCompatActivity {
         public void onDestroyView() {
             super.onDestroyView();
             activity.unregisterReceiver(onDownloadComplete);
-        }
-
-        public static boolean getNeedReload() {
-            return needReload;
         }
 
         private boolean isNetworkAvailable(Context context) {
