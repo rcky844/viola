@@ -61,9 +61,6 @@ public class CommonUtils {
     }
 
     public static boolean isIntStrOne(Object obj) {
-        if (obj instanceof String)
-            return obj.equals("1");
-        else
-            return obj.equals(1);
+        return obj.equals(obj instanceof String ? "1" : 1);
     }
 }
