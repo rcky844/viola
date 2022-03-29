@@ -14,29 +14,24 @@ public class SettingsUtils {
      * <p>
      * Check if SharedPreferences is empty, and set it if it is.
      *
-     * @param pref         as the SharedPreference to get the value from.
-     * @param tag          as the tag to get the value from.
-     * @param defaultValue as the value to set if empty.
-     * @param mustSet      set it regardless.
+     * @param pref         SharedPreference to get the value from.
+     * @param tag          tag array to get the value from.
+     * @param defaultValue value array to set if empty.
+     * @param mustSet      if set it regardless.
      */
-    public static void checkIfEmpty(SharedPreferences pref, String tag, String defaultValue, boolean mustSet) {
-        if (getPref(pref, tag).isEmpty() || mustSet)
-            setPref(pref, tag, defaultValue);
-    }
+    public static void checkIfEmpty(SharedPreferences pref, String[] tag, Object[] defaultValue, boolean mustSet) {
+        int listLength = tag.length;
+        if (listLength != defaultValue.length)
+            return;
 
-    /**
-     * Check if SharedPreferences is empty
-     * <p>
-     * Check if SharedPreferences is empty, and set it if it is.
-     *
-     * @param pref         as the SharedPreference to get the value from.
-     * @param tag          as the tag to get the value from.
-     * @param defaultValue as the value to set if empty.
-     * @param mustSet      set it regardless.
-     */
-    public static void checkIfEmpty(SharedPreferences pref, String tag, int defaultValue, boolean mustSet) {
-        if (getPref(pref, tag).isEmpty() || mustSet)
-            setPrefNum(pref, tag, defaultValue);
+        for (int i = 0; i < listLength; i++) {
+            if (getPref(pref, tag[i]).isEmpty() || mustSet) {
+                if (defaultValue[i] instanceof String)
+                    setPref(pref, tag[i], (String) defaultValue[i]);
+                else
+                    setPrefNum(pref, tag[i], (Integer) defaultValue[i]);
+            }
+        }
     }
 
     /**
