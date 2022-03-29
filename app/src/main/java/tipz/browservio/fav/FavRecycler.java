@@ -24,7 +24,6 @@ import tipz.browservio.utils.CommonUtils;
 
 public class FavRecycler {
     private static List<String> listData;
-    private static Boolean popup = false;
 
     public FavRecycler(Context context, FavActivity mFavActivity, RecyclerView favList, List<String> mListData) {
         listData = mListData;
@@ -62,18 +61,13 @@ public class FavRecycler {
             holder.mTextView.setText(listData.get(position));
 
             holder.mTextView.setOnClickListener(view -> {
-                if (!popup) {
-                    Intent needLoad = new Intent();
-                    needLoad.putExtra("needLoadUrl", SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(Integer.toString(position))));
-                    mFavActivity.setResult(0, needLoad);
-                    mFavActivity.finish();
-                } else {
-                    popup = false;
-                }
+                Intent needLoad = new Intent();
+                needLoad.putExtra("needLoadUrl", SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(Integer.toString(position))));
+                mFavActivity.setResult(0, needLoad);
+                mFavActivity.finish();
             });
 
             holder.mTextView.setOnLongClickListener(view -> {
-                popup = true;
                 PopupMenu popup1 = new PopupMenu(mFavActivity, view);
                 Menu menu1 = popup1.getMenu();
                 menu1.add(mFavActivity.getResources().getString(R.string.del_fav));
@@ -92,7 +86,7 @@ public class FavRecycler {
                     return false;
                 });
                 popup1.show();
-                return false;
+                return true;
             });
         }
 

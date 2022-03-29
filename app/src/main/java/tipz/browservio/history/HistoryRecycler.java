@@ -26,7 +26,6 @@ import tipz.browservio.utils.CommonUtils;
 
 public class HistoryRecycler {
     private static List<String> listData;
-    private static Boolean popup = false;
 
     public HistoryRecycler(Context context, HistoryActivity mHistoryActivity, RecyclerView historyList) {
         listData = new ArrayList<>(Arrays.asList(HistoryReader.history_data(context).trim().split("\n")));
@@ -64,18 +63,13 @@ public class HistoryRecycler {
             holder.mTextView.setText(listData.get(position));
 
             holder.mTextView.setOnClickListener(view -> {
-                if (!popup) {
-                    Intent needLoad = new Intent();
-                    needLoad.putExtra("needLoadUrl", listData.get(position));
-                    mHistoryActivity.setResult(0, needLoad);
-                    mHistoryActivity.finish();
-                } else {
-                    popup = false;
-                }
+                Intent needLoad = new Intent();
+                needLoad.putExtra("needLoadUrl", listData.get(position));
+                mHistoryActivity.setResult(0, needLoad);
+                mHistoryActivity.finish();
             });
 
             holder.mTextView.setOnLongClickListener(view -> {
-                popup = true;
                 PopupMenu popup1 = new PopupMenu(mHistoryActivity, view);
                 Menu menu1 = popup1.getMenu();
                 menu1.add(mHistoryActivity.getResources().getString(R.string.del_hist));
@@ -106,7 +100,7 @@ public class HistoryRecycler {
                     return false;
                 });
                 popup1.show();
-                return false;
+                return true;
             });
         }
 
