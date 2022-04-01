@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
     private StringBuilder adServers;
     private boolean customBrowse = false;
 
-    private final static int FILECHOOSER_RESULTCODE = 1;
     private ValueCallback<Uri[]> mUploadMessage;
 
     private final HashMap<String, String> mRequestHeaders = new HashMap<>();
@@ -120,6 +119,15 @@ public class MainActivity extends AppCompatActivity {
     private String userAgentFull(String mid) {
         return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
     }
+
+    private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
+        new ActivityResultContracts.GetContent(), uri -> {
+                if (null == mUploadMessage || uri == null)
+                    return;
+
+                mUploadMessage.onReceiveValue(new Uri[]{uri});
+                mUploadMessage = null;
+            });
 
     /**
      * An array used for intent filtering
@@ -177,24 +185,6 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1000) {
             initializeLogic();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == FILECHOOSER_RESULTCODE) {
-            if (null == mUploadMessage || intent == null || resultCode != RESULT_OK)
-                return;
-
-            Uri[] result = null;
-            String dataString = intent.getDataString();
-
-            if (dataString != null)
-                result = new Uri[]{Uri.parse(dataString)};
-
-            mUploadMessage.onReceiveValue(result);
-            mUploadMessage = null;
         }
     }
 
@@ -822,12 +812,7 @@ public class MainActivity extends AppCompatActivity {
                 mUploadMessage.onReceiveValue(null);
 
             mUploadMessage = filePathCallback;
-
-            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-            i.addCategory(Intent.CATEGORY_OPENABLE);
-            i.setType("*/*");
-
-            MainActivity.this.startActivityForResult(Intent.createChooser(i, "File Chooser"), MainActivity.FILECHOOSER_RESULTCODE);
+            mFileChooser.launch("*/*");
 
             return true;
         }
