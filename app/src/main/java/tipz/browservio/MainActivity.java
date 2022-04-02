@@ -860,6 +860,7 @@ public class MainActivity extends AppCompatActivity {
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
         // Load URL
         if (url.startsWith(BrowservioURLs.prefix)
+                || url.startsWith(BrowservioURLs.yhlPrefix)
                 || url.equals(BrowservioURLs.realErrUrl)
                 || url.equals(BrowservioURLs.realLicenseUrl)) {
             URLIdentify(url);
@@ -953,5 +954,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (url.equals(BrowservioURLs.reloadUrl))
             webviewReload();
+
+        if (url.startsWith(BrowservioURLs.yhlPrefix))
+            webview.loadUrl("http://119.28.42.46:8886/chaxun_web.asp?kd_id=".concat(url.replace(BrowservioURLs.yhlPrefix, CommonUtils.EMPTY_STRING)));
     }
 }
