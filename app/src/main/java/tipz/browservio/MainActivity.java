@@ -43,7 +43,6 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
-    private ImageView fab;
+    private AppCompatImageView fab;
     private WebView webview;
     private RecyclerView actionBar;
     private AppCompatImageView favicon;
@@ -188,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setDesktopMode(ImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
+    private void setDesktopMode(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
         webview.getSettings().setUseWideViewPort(enableDesktop);
@@ -199,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             webviewReload();
     }
 
-    private void setDeskMode(ImageView view, double mode, boolean noReload) {
+    private void setDeskMode(AppCompatImageView view, double mode, boolean noReload) {
         if (mode == 0) {
             setDesktopMode(view,
                     false,
@@ -226,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
     }
 
-    public void itemSelected(ImageView view, int item) {
+    public void itemSelected(AppCompatImageView view, int item) {
         if (item == 0 && webview.canGoBack()) {
             webview.goBack();
         } else if (item == 1 && webview.canGoForward()) {
