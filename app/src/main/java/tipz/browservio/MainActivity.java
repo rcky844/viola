@@ -790,6 +790,9 @@ public class MainActivity extends AppCompatActivity {
             MainProg.setProgress(progress == 100 ? 0 : progress);
         }
 
+        /*
+         * FIXME: On pages without favicon, this will provide the last page's favicon
+         */
         public void onReceivedIcon(WebView view, Bitmap icon) {
             favicon.setImageBitmap(icon);
         }
