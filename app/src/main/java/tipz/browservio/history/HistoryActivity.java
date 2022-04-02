@@ -41,7 +41,7 @@ public class HistoryActivity extends AppCompatActivity {
                 .setMessage(getResources().getString(R.string.del_hist_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                     HistoryReader.clear(this);
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
+                    CommonUtils.showMessage(this, getResources().getString(R.string.wiped_success));
                     finish();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -58,7 +58,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     void isEmptyCheck() {
         if (HistoryReader.isEmptyCheck(this)) {
-            CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.hist_empty));
+            CommonUtils.showMessage(this, getResources().getString(R.string.hist_empty));
             finish();
         }
     }

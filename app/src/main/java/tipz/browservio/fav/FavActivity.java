@@ -52,7 +52,7 @@ public class FavActivity extends AppCompatActivity {
                 .setMessage(getResources().getString(R.string.del_fav2_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                     bookmarks(FavActivity.this).edit().clear().apply();
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.wiped_success));
+                    CommonUtils.showMessage(this, getResources().getString(R.string.wiped_success));
                     finish();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -90,7 +90,7 @@ public class FavActivity extends AppCompatActivity {
         // Placed here for old data migration
         if (list.isEmpty()) {
             out.edit().clear().apply();
-            CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+            CommonUtils.showMessage(this, getResources().getString(R.string.fav_list_empty));
             finish();
         }
     }

@@ -1,7 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="error_already_page">"Bereits auf der %s Seite!"</string>
-    <string name="first">ersten</string>
-    <string name="last">letzten</string>
     <string name="linear_control_b3_desk">Desktop</string>
     <string name="linear_control_b3_mobi">Mobile</string>
     <string name="linear_control_b3_cus">Benutzerdefiniert</string>
@@ -20,7 +17,6 @@
     <string name="saved_su">"Erfolgreich gespeichert!"</string>
     <string name="fav_list_empty">"Es wurden keine Favoriten gespeichert."</string>
     <string name="copy_title">"Webseitentitel kopieren"</string>
-    <string name="app_not_installed">"Anwendung ist nicht installiert."</string>
     <string name="address_bar_hint">"Suchen oder URL eingeben…"</string>
     <string name="favicon_desp">"Favicon der Webseite. Darauf klicken wird einen Dialog mit dem Webseitentitel anzeigen."</string>
     <string name="fab_desp">"Ein Knopf, wenn gedrückt, wird die Aktionsleiste anzeigen oder schließen."</string>
@@ -51,15 +47,12 @@
     <string name="download_title">"Browservio-Aktualisierung"</string>
     <string name="fav">Favoriten</string>
     <string name="del_fav">"Diesen Favoriten löschen"</string>
-    <string name="del_fav_title">"Möchten Sie diesen Favoriten löschen?"</string>
-    <string name="del_success">"Erfolgreich gelöscht!"</string>
     <string name="del_fav2_title">"Alle Einträge löschen"</string>
     <string name="del_fav2_message">"Sie sind dabei, alle Favoriten zu löschen. Sind Sie sicher, dass Sie fortfahren möchten?"</string>
     <string name="wiped_success">"Erfolgreich bereinigt!"</string>
     <string name="fav_del_fab_desp">"Alle Einträge löschen"</string>
     <string name="hist">Verlauf</string>
     <string name="del_hist">"Diesen Verlauf löschen"</string>
-    <string name="del_hist_title">"Möchten Sie diesen Verlauf löschen?"</string>
     <string name="add_to_fav">"Als Favoriten speichern"</string>
     <string name="del_hist_message">"Sie sind dabei, den gesamten Verlauf zu löschen. Sind Sie sich sicher?"</string>
     <string name="del_hist_fab_desp">"Gesamten Verlauf löschen"</string>
@@ -100,4 +93,9 @@
     <string name="open_in_new_tab">In neuem Tab öffnen</string>
     <string name="no_webview">WebView ist erforderlich, aber nicht installiert.</string>
     <string name="share_url">Link teilen</string>
+    <string name="pref_theme">Thema</string>
+    <string name="pref_theme_desp">Aktuelles Thema: %s</string>
+    <string name="pref_theme_default">Systemfehler</string>
+    <string name="pref_theme_light">helle Farbe</string>
+    <string name="pref_theme_dark">dunkel</string>
 </resources>

@@ -13,27 +13,12 @@ public class SettingsInit {
     public SettingsInit(Context mContext) {
         boolean doesNotHaveGoogle = mContext.getResources().getConfiguration().locale.getCountry().equals("CN");
         boolean isEqualToOneFirstLaunch = CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(mContext), SettingsKeys.isFirstLaunch));
-        SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.isJavaScriptEnabled, "1", isEqualToOneFirstLaunch);
-        SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.enableAdBlock, 0, isEqualToOneFirstLaunch);
-        SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.sendDNT, "0", isEqualToOneFirstLaunch);
-        SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.showFavicon, "1", isEqualToOneFirstLaunch);
-        SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.updateTesting, 0, isEqualToOneFirstLaunch);
-
-        if (doesNotHaveGoogle) {
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.baidu), isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultHomePageId, 1, isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.baidu, SearchEngineEntries.baiduSearchSuffix), isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSearchId, 1, isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSuggestions, SearchEngineEntries.bingSearchSuggestionsUrl, isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSuggestionsId, 1, isEqualToOneFirstLaunch);
-        } else {
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.google), isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultHomePageId, 0, isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix), isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSearchId, 0, isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSuggestions, SearchEngineEntries.googleSearchSuggestionsUrl, isEqualToOneFirstLaunch);
-            SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.defaultSuggestionsId, 0, isEqualToOneFirstLaunch);
-        }
-        SettingsUtils.checkIfEmpty(browservio_saver(mContext), SettingsKeys.isFirstLaunch, "0", isEqualToOneFirstLaunch);
+        SettingsUtils.checkIfEmpty(browservio_saver(mContext),
+                new String[]{SettingsKeys.defaultHomePage, SettingsKeys.defaultHomePageId, SettingsKeys.defaultSearch, SettingsKeys.defaultSearchId, SettingsKeys.defaultSuggestions, SettingsKeys.defaultSuggestionsId},
+                doesNotHaveGoogle ? new Object[]{getHomepageUrl(SearchEngineEntries.baidu), 1, getSearchEngineUrl(SearchEngineEntries.baidu, SearchEngineEntries.baiduSearchSuffix), 1, SearchEngineEntries.bingSearchSuggestionsUrl, 1}
+                        : new Object[]{getHomepageUrl(SearchEngineEntries.google), 0, getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix), 0, SearchEngineEntries.googleSearchSuggestionsUrl, 0}, isEqualToOneFirstLaunch);
+        SettingsUtils.checkIfEmpty(browservio_saver(mContext),
+                new String[]{SettingsKeys.isJavaScriptEnabled, SettingsKeys.enableAdBlock, SettingsKeys.sendDNT, SettingsKeys.showFavicon, SettingsKeys.themeId, SettingsKeys.updateTesting, SettingsKeys.isFirstLaunch},
+                new Object[]{"1", 0, "0", "1", 0, 0, "0"}, isEqualToOneFirstLaunch);
     }
 }

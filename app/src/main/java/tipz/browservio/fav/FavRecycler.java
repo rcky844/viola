@@ -15,8 +15,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import java.util.List;
 
 import tipz.browservio.R;
@@ -26,17 +24,12 @@ import tipz.browservio.utils.CommonUtils;
 
 public class FavRecycler {
     private static List<String> listData;
-    private static Boolean popup = false;
-
-    private static MaterialAlertDialogBuilder delFav;
 
     public FavRecycler(Context context, FavActivity mFavActivity, RecyclerView favList, List<String> mListData) {
         listData = mListData;
 
         favList.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         favList.setAdapter(new FavRecycler.ItemsAdapter(mFavActivity));
-
-        delFav = new MaterialAlertDialogBuilder(context);
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<FavRecycler.ItemsAdapter.ViewHolder> {
@@ -58,7 +51,7 @@ public class FavRecycler {
         @NonNull
         @Override
         public FavRecycler.ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item_1,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item_1, parent, false);
 
             return new FavRecycler.ItemsAdapter.ViewHolder(view);
         }
@@ -68,35 +61,23 @@ public class FavRecycler {
             holder.mTextView.setText(listData.get(position));
 
             holder.mTextView.setOnClickListener(view -> {
-                if (!popup) {
-                    Intent needLoad = new Intent();
-                    needLoad.putExtra("needLoadUrl", SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(Integer.toString(position))));
-                    mFavActivity.setResult(0, needLoad);
-                    mFavActivity.finish();
-                } else {
-                    popup = false;
-                }
+                Intent needLoad = new Intent();
+                needLoad.putExtra("needLoadUrl", SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(Integer.toString(position))));
+                mFavActivity.setResult(0, needLoad);
+                mFavActivity.finish();
             });
 
             holder.mTextView.setOnLongClickListener(view -> {
-                popup = true;
                 PopupMenu popup1 = new PopupMenu(mFavActivity, view);
                 Menu menu1 = popup1.getMenu();
                 menu1.add(mFavActivity.getResources().getString(R.string.del_fav));
                 menu1.add(mFavActivity.getResources().getString(android.R.string.copyUrl));
                 popup1.setOnMenuItemClickListener(item -> {
                     if (item.getTitle().toString().equals(mFavActivity.getResources().getString(R.string.del_fav))) {
-                        delFav.setTitle(mFavActivity.getResources().getString(R.string.del_fav_title))
-                                .setMessage(mFavActivity.getResources().getString(R.string.del_fav_title))
-                                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                    listData.remove(position);
-                                    SettingsUtils.setPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(String.valueOf(position)).concat(SettingsKeys.bookmarked_show), "0");
-                                    notifyItemRangeRemoved(position, 1);
-                                    CommonUtils.showMessage(mFavActivity.getApplicationContext(), mFavActivity.getResources().getString(R.string.del_success));
-                                    mFavActivity.isEmptyCheck(listData, bookmarks(mFavActivity));
-                                })
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .create().show();
+                        listData.remove(position);
+                        SettingsUtils.setPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(String.valueOf(position)).concat(SettingsKeys.bookmarked_show), "0");
+                        notifyItemRangeRemoved(position, 1);
+                        mFavActivity.isEmptyCheck(listData, bookmarks(mFavActivity));
                         return true;
                     } else if (item.getTitle().toString().equals(mFavActivity.getResources().getString(android.R.string.copyUrl))) {
                         CommonUtils.copyClipboard(mFavActivity, SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(String.valueOf(position))));
@@ -105,7 +86,7 @@ public class FavRecycler {
                     return false;
                 });
                 popup1.show();
-                return false;
+                return true;
             });
         }
 

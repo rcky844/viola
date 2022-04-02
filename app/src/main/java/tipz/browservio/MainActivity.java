@@ -3,11 +3,12 @@ package tipz.browservio;
 import static tipz.browservio.fav.FavApi.bookmarks;
 import static tipz.browservio.history.HistoryApi.historyPref;
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-import static tipz.browservio.utils.CommonUtils.RotateAlphaAnim;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -29,19 +30,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
-import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -84,13 +84,13 @@ import tipz.browservio.fav.FavActivity;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryInit;
 import tipz.browservio.history.HistoryReader;
-import tipz.browservio.settings.SettingsKeys;
-import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsActivity;
+import tipz.browservio.settings.SettingsInit;
+import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
-import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.urls.SearchEngineEntries;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
-    private ImageView fab;
+    private AppCompatImageView fab;
     private WebView webview;
     private RecyclerView actionBar;
     private AppCompatImageView favicon;
@@ -108,16 +108,24 @@ public class MainActivity extends AppCompatActivity {
 
     private String UrlTitle;
     private StringBuilder adServers;
-    private boolean customBrowse;
+    private boolean customBrowse = false;
 
-    private final static int FILECHOOSER_RESULTCODE = 1;
     private ValueCallback<Uri[]> mUploadMessage;
 
     private final HashMap<String, String> mRequestHeaders = new HashMap<>();
 
     private String userAgentFull(String mid) {
-        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/605.1.15 (KHTML, like Gecko) Safari/605.1.15 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
+        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
     }
+
+    private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
+        new ActivityResultContracts.GetContent(), uri -> {
+                if (null == mUploadMessage || uri == null)
+                    return;
+
+                mUploadMessage.onReceiveValue(new Uri[]{uri});
+                mUploadMessage = null;
+            });
 
     /**
      * An array used for intent filtering
@@ -165,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     .errorActivity(null)
                     .apply();
         } else {
-            CommonUtils.showMessage(this, getResources().getString(R.string.no_webview));
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.no_webview));
             finish();
         }
     }
@@ -178,25 +186,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == FILECHOOSER_RESULTCODE) {
-            if (null == mUploadMessage || intent == null || resultCode != RESULT_OK)
-                return;
-
-            Uri[] result = null;
-            String dataString = intent.getDataString();
-
-            if (dataString != null)
-                result = new Uri[]{Uri.parse(dataString)};
-
-            mUploadMessage.onReceiveValue(result);
-            mUploadMessage = null;
-        }
-    }
-
-    private void setDesktopMode(ImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
+    private void setDesktopMode(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
         webview.getSettings().setUseWideViewPort(enableDesktop);
@@ -207,11 +197,11 @@ public class MainActivity extends AppCompatActivity {
             webviewReload();
     }
 
-    private void setDeskMode(ImageView view, double mode, boolean noReload) {
+    private void setDeskMode(AppCompatImageView view, double mode, boolean noReload) {
         if (mode == 0) {
             setDesktopMode(view,
                     false,
-                    userAgentFull("Linux; Android 12"),
+                    userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)),
                     R.drawable.smartphone,
                     noReload);
         } else if (mode == 1) {
@@ -230,21 +220,15 @@ public class MainActivity extends AppCompatActivity {
     private void shareUrl(@Nullable String url) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, url == null ? webview.getUrl() : url);
+        i.putExtra(Intent.EXTRA_TEXT, url == null ? UrlEdit.getText() : url);
         startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
     }
 
-    public void itemSelected(ImageView view, int item) {
-        if (item == 0) {
-            if (webview.canGoBack())
-                webview.goBack();
-            else
-                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.first)));
-        } else if (item == 1) {
-            if (webview.canGoForward())
-                webview.goForward();
-            else
-                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.error_already_page, getResources().getString(R.string.last)));
+    public void itemSelected(AppCompatImageView view, int item) {
+        if (item == 0 && webview.canGoBack()) {
+            webview.goBack();
+        } else if (item == 1 && webview.canGoForward()) {
+            webview.goForward();
         } else if (item == 2) {
             webviewReload();
         } else if (item == 3) {
@@ -299,12 +283,12 @@ public class MainActivity extends AppCompatActivity {
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
                     webview.clearCache(true);
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.history))) {
                     webview.clearHistory();
                     HistoryReader.clear(MainActivity.this);
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -319,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                         cookieSyncMgr.stopSync();
                         cookieSyncMgr.sync();
                     }
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
                     webviewReload();
                 }
 
@@ -345,12 +329,12 @@ public class MainActivity extends AppCompatActivity {
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)), webview.getUrl());
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_title), UrlTitle);
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_show), "1");
-                    CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.saved_su));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
                     if (bookmarks(MainActivity.this).getAll().size() == 0) {
-                        CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.fav_list_empty));
+                        CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
                     } else {
-                        Intent intent = new Intent(this, FavActivity.class);
+                        Intent intent = new Intent(MainActivity.this, FavActivity.class);
                         mGetNeedLoad.launch(intent);
                     }
                 }
@@ -365,8 +349,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initialize function
      */
+    @SuppressLint("AddJavascriptInterface")
     private void initialize() {
-
         fab = findViewById(R.id.fab);
         UrlEdit = findViewById(R.id.UrlEdit);
         MainProg = findViewById(R.id.MainProg);
@@ -394,7 +378,25 @@ public class MainActivity extends AppCompatActivity {
 
         faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
 
-        fab.setOnClickListener(_view -> RotateAlphaAnim(fabAnimate, barAnimate, fab, actionBar));
+        fab.setOnClickListener(_view -> {
+            fabAnimate.setTarget(fab);
+            barAnimate.setTarget(actionBar);
+            fabAnimate.setPropertyName("rotation");
+            barAnimate.setPropertyName("alpha");
+            fabAnimate.setDuration(250);
+            barAnimate.setDuration(250);
+            if (actionBar.getVisibility() == View.VISIBLE) {
+                fabAnimate.setFloatValues(0, 180);
+                barAnimate.setFloatValues(1, 0);
+                actionBar.setVisibility(View.GONE);
+            } else {
+                actionBar.setVisibility(View.VISIBLE);
+                fabAnimate.setFloatValues(180, 0);
+                barAnimate.setFloatValues(0, 1);
+            }
+            fabAnimate.start();
+            barAnimate.start();
+        });
 
         webview.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
             final WebView.HitTestResult hr = webview.getHitTestResult();
@@ -436,26 +438,13 @@ public class MainActivity extends AppCompatActivity {
 
             webLongPress.show();
         });
-    }
-
-    /**
-     * Welcome to the Browservio (The Shrek Browser)
-     * This browser was originally designed with Sketchware
-     * This project was started on Aug 13 2020
-     * <p>
-     * sur wen reel Sherk brower pls sand meme sum
-     */
-    @SuppressLint("AddJavascriptInterface")
-    private void initializeLogic() {
-        webview.setWebViewClient(new WebClient());
-        webview.setWebChromeClient(new ChromeWebClient());
-
-        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this, this), "browservioErr");
 
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                 browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString());
+                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 return true;
             }
             return false;
@@ -517,10 +506,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setDeskMode(null, 0, true); /* User agent init code */
+        webview.setWebViewClient(new WebClient());
+        webview.setWebChromeClient(new ChromeWebClient());
+
+        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this, this), "browservioErr");
+    }
+
+    /**
+     * Welcome to the Browservio (The Shrek Browser)
+     * This browser was originally designed with Sketchware
+     * This project was started on Aug 13 2020
+     * <p>
+     * sur wen reel Sherk brower pls sand meme sum
+     */
+    private void initializeLogic() {
+        /* User agent init code */
+        setDeskMode(null, 0, true);
 
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
+
+        /* Init settings check */
+        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0"))
+            new SettingsInit(MainActivity.this);
 
         /* Load default webpage */
         browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
@@ -531,6 +539,13 @@ public class MainActivity extends AppCompatActivity {
 
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
+        webview.getSettings().setDisplayZoomControls(false);
+
+        // HTML5 API flags
+        webview.getSettings().setAppCacheEnabled(true);
+        webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
+        webview.getSettings().setDatabaseEnabled(true);
+        webview.getSettings().setDomStorageEnabled(true);
 
         /*
          * Getting information from intents, either from
@@ -631,6 +646,8 @@ public class MainActivity extends AppCompatActivity {
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             UrlSet(url);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
             if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
@@ -656,19 +673,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            boolean returnVal = false;
             if (CommonUtils.appInstalledOrNot(getApplicationContext(), url) && !UrlUtils.startsWithMatch(url)) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
-                return true;
-            } else {
-                CommonUtils.showMessage(getApplicationContext(), getResources().getString(R.string.app_not_installed));
+                returnVal = true;
             }
-            if (customBrowse) {
+            if (!customBrowse) {
                 webview.loadUrl(url, mRequestHeaders);
-                customBrowse = false;
-                return true;
+                returnVal = true;
             }
-            return false;
+            customBrowse = false;
+            return returnVal;
         }
 
         @SuppressLint("WebViewClientOnReceivedSslError")
@@ -774,12 +790,17 @@ public class MainActivity extends AppCompatActivity {
             MainProg.setProgress(progress == 100 ? 0 : progress);
         }
 
+        /*
+         * FIXME: On pages without favicon, this will provide the last page's favicon
+         */
         public void onReceivedIcon(WebView view, Bitmap icon) {
             favicon.setImageBitmap(icon);
         }
 
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                setTaskDescription(new ActivityManager.TaskDescription(title));
         }
 
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
@@ -792,12 +813,7 @@ public class MainActivity extends AppCompatActivity {
                 mUploadMessage.onReceiveValue(null);
 
             mUploadMessage = filePathCallback;
-
-            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-            i.addCategory(Intent.CATEGORY_OPENABLE);
-            i.setType("*/*");
-
-            MainActivity.this.startActivityForResult(Intent.createChooser(i, "File Chooser"), MainActivity.FILECHOOSER_RESULTCODE);
+            mFileChooser.launch("*/*");
 
             return true;
         }
@@ -817,9 +833,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (webViewEnabled()) {
-            _configChecker();
-        }
+        if (webViewEnabled())
+            configChecker();
     }
 
     public void downloadFile(String url, String contentDisposition, String mimeType) {
@@ -831,7 +846,7 @@ public class MainActivity extends AppCompatActivity {
             request.allowScanningByMediaScanner();
 
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
-        final String filename = URLUtil.guessFileName(url, contentDisposition, mimeType);
+        final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
         DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         dm.enqueue(request);
@@ -848,14 +863,15 @@ public class MainActivity extends AppCompatActivity {
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
         // Load URL
         if (url.startsWith(BrowservioURLs.prefix)
+                || url.startsWith(BrowservioURLs.yhlPrefix)
                 || url.equals(BrowservioURLs.realErrUrl)
                 || url.equals(BrowservioURLs.realLicenseUrl)) {
             URLIdentify(url);
         } else {
             URLIdentify(checkedUrl);
             webview.loadUrl(checkedUrl, mRequestHeaders);
+            customBrowse = true;
         }
-        customBrowse = true;
         favicon.setImageResource(R.drawable.default_favicon); /* Reset favicon before getting real favicon */
     }
 
@@ -884,39 +900,35 @@ public class MainActivity extends AppCompatActivity {
      * Used to check if anything has been changed
      * after resume of restart.
      */
-    private void _configChecker() {
+    private void configChecker() {
         // Dark mode
-        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
-            case Configuration.UI_MODE_NIGHT_YES:
-                setDarkModeWebView(webview, true);
-                break;
-            case Configuration.UI_MODE_NIGHT_UNDEFINED:
-            case Configuration.UI_MODE_NIGHT_NO:
+        if (SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 0) {
+            switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+                case Configuration.UI_MODE_NIGHT_YES:
+                    setDarkModeWebView(webview, true);
+                    break;
+                case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                case Configuration.UI_MODE_NIGHT_NO:
+                    setDarkModeWebView(webview, false);
+                    break;
+            }
+
+            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 setDarkModeWebView(webview, false);
-                break;
+            else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
+                setDarkModeWebView(webview, powerManager.isPowerSaveMode());
+        } else {
+            boolean darkMode = SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 2;
+            setDarkModeWebView(webview, darkMode);
+            AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         }
-
-        AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
-            setDarkModeWebView(webview, false);
-        else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
-            setDarkModeWebView(webview, powerManager.isPowerSaveMode());
-
-        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0"))
-            new SettingsInit(MainActivity.this);
 
         // Settings check
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
-        webview.getSettings().setDisplayZoomControls(false);
-
-        // HTML5 API flags
-        webview.getSettings().setAppCacheEnabled(true);
-        webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
-        webview.getSettings().setDatabaseEnabled(true);
-        webview.getSettings().setDomStorageEnabled(true);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
@@ -945,5 +957,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (url.equals(BrowservioURLs.reloadUrl))
             webviewReload();
+
+        if (url.startsWith(BrowservioURLs.yhlPrefix))
+            webview.loadUrl("http://119.28.42.46:8886/chaxun_web.asp?kd_id=".concat(url.replace(BrowservioURLs.yhlPrefix, CommonUtils.EMPTY_STRING)));
     }
 }
