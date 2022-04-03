@@ -472,8 +472,9 @@ public class MainActivity extends AppCompatActivity {
                             c.connect();
                             final ByteArrayOutputStream bo = new ByteArrayOutputStream();
                             byte[] buffer = new byte[65536];
-                            c.getInputStream().read(buffer);
-                            bo.write(buffer);
+                            int inputStreamTest = c.getInputStream().read(buffer);
+                            if (inputStreamTest > count)
+                                bo.write(buffer);
                             MainActivity.this.runOnUiThread(() -> {
                                 try {
                                     JSONArray jsonArray = new JSONArray(bo.toString());
