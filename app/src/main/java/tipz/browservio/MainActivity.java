@@ -6,7 +6,6 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -33,7 +32,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
@@ -475,9 +473,8 @@ public class MainActivity extends AppCompatActivity {
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
-                browservioBrowse(Objects.requireNonNull(UrlEdit.getText()).toString());
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                browservioBrowse(UrlEdit.getText().toString());
+                Objects.requireNonNull(ViewCompat.getWindowInsetsController(v)).hide(WindowInsetsCompat.Type.ime());
                 return true;
             }
             return false;
