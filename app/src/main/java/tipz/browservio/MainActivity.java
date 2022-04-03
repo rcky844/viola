@@ -29,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
@@ -780,9 +781,11 @@ public class MainActivity extends AppCompatActivity {
             mCustomViewCallback = viewCallback;
             setImmersiveMode(true);
             ((FrameLayout) getWindow().getDecorView()).addView(mCustomView, new FrameLayout.LayoutParams(-1, -1));
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         public void onHideCustomView() {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             ((FrameLayout) getWindow().getDecorView()).removeView(mCustomView);
             mCustomView = null;
             setImmersiveMode(false);
