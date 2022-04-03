@@ -37,8 +37,6 @@
     <string name="advanced">進階</string>
     <string name="javascript">啟用JavaScript</string>
     <string name="javascript_desp">啟用JavaScript將為您提供更好的瀏覽體驗</string>
-    <string name="show_favicon">顯示網站圖標</string>
-    <string name="show_favicon_desp">在地址欄旁邊顯示網站的圖標</string>
     <string name="help">幫助</string>
     <string name="version">版本</string>
     <string name="feedback">反饋</string>

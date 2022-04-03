@@ -654,10 +654,8 @@ public class MainActivity extends AppCompatActivity {
             UrlSet(url);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
-                favicon.setVisibility(View.GONE);
-                faviconProgressBar.setVisibility(View.VISIBLE);
-            }
+            favicon.setVisibility(View.GONE);
+            faviconProgressBar.setVisibility(View.VISIBLE);
             UrlEdit.dismissDropDown();
         }
 
@@ -667,10 +665,8 @@ public class MainActivity extends AppCompatActivity {
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
-                favicon.setVisibility(View.VISIBLE);
-                faviconProgressBar.setVisibility(View.GONE);
-            }
+            favicon.setVisibility(View.VISIBLE);
+            faviconProgressBar.setVisibility(View.GONE);
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -937,13 +933,11 @@ public class MainActivity extends AppCompatActivity {
         // Settings check
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
-        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
 
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))
-                && faviconProgressBar.getVisibility() == View.VISIBLE)
+        if (faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);
     }
 
