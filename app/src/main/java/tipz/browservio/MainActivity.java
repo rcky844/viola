@@ -669,6 +669,7 @@ public class MainActivity extends AppCompatActivity {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
             }
+            favicon.setImageResource(R.drawable.default_favicon);
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -794,9 +795,6 @@ public class MainActivity extends AppCompatActivity {
             MainProg.setProgress(progress == 100 ? 0 : progress);
         }
 
-        /*
-         * FIXME: On pages without favicon, this will provide the last page's favicon
-         */
         public void onReceivedIcon(WebView view, Bitmap icon) {
             favicon.setImageBitmap(icon);
         }
@@ -876,7 +874,6 @@ public class MainActivity extends AppCompatActivity {
             webview.loadUrl(checkedUrl, mRequestHeaders);
             customBrowse = true;
         }
-        favicon.setImageResource(R.drawable.default_favicon); /* Reset favicon before getting real favicon */
     }
 
     /**
