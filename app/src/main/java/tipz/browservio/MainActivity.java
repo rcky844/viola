@@ -12,10 +12,10 @@ import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.nfc.NfcAdapter;
@@ -55,6 +55,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
@@ -738,6 +742,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setImmersiveMode(boolean enable) {
+        WindowInsetsControllerCompat windowInsetsController =
+                ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+        if (windowInsetsController == null)
+            return;
+
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), !enable);
+
+        if (enable) {
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        } else {
+            windowInsetsController.show(WindowInsetsCompat.Type.systemBars());
+        }
+    }
+
     /**
      * WebChromeClient
      */
@@ -745,17 +766,8 @@ public class MainActivity extends AppCompatActivity {
         private View mCustomView;
         private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
-        // Initially mOriginalOrientation is set to Landscape
-        private int mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-        private int mOriginalSystemUiVisibility;
-
         // Constructor for ChromeWebClient
         public ChromeWebClient() {
-        }
-
-        @Override
-        public Bitmap getDefaultVideoPoster() {
-            return BitmapFactory.decodeResource(getApplicationContext().getResources(), 2130837573);
         }
 
         public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
@@ -764,24 +776,17 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             mCustomView = paramView;
-            mOriginalSystemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
-            // When CustomView is shown screen orientation changes to mOriginalOrientation (Landscape).
-            setRequestedOrientation(mOriginalOrientation);
-            // After that mOriginalOrientation is set to portrait.
-            mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mCustomViewCallback = viewCallback;
+            setImmersiveMode(true);
             ((FrameLayout) getWindow().getDecorView()).addView(mCustomView, new FrameLayout.LayoutParams(-1, -1));
-            getWindow().getDecorView().setSystemUiVisibility(3846);
         }
 
         public void onHideCustomView() {
             ((FrameLayout) getWindow().getDecorView()).removeView(mCustomView);
             mCustomView = null;
-            getWindow().getDecorView().setSystemUiVisibility(mOriginalSystemUiVisibility);
-            // When CustomView is hidden, screen orientation is set to mOriginalOrientation (portrait).
-            setRequestedOrientation(mOriginalOrientation);
-            // After that mOriginalOrientation is set to landscape.
-            mOriginalOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+            setImmersiveMode(false);
+            setRequestedOrientation(getResources().getConfiguration().orientation);
             mCustomViewCallback.onCustomViewHidden();
             mCustomViewCallback = null;
         }
