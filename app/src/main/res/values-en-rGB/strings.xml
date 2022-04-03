@@ -98,4 +98,13 @@
     <string name="pref_theme_default">System Default</string>
     <string name="pref_theme_desp">Current theme: %s</string>
     <string name="pref_theme">Theme</string>
+    <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>
+    <string name="ssl_certificate_error_dialog_content">%s Do you want to continue anyway?</string>
+    <string name="ssl_certificate_date_invalid">The date of the certificate is invalid.</string>
+    <string name="ssl_certificate_invalid">A generic SSL error occurred.</string>
+    <string name="ssl_certificate_expired">The certificate has expired.</string>
+    <string name="ssl_certificate_idmismatch">The certificate hostname mismatch.</string>
+    <string name="ssl_certificate_notyetvalid">The certificate is not yet valid.</string>
+    <string name="ssl_certificate_untrusted">The certificate authority is not trusted.</string>
+    <string name="ssl_certificate_unknown">An unknown SSL error occurred.</string>
 </resources>

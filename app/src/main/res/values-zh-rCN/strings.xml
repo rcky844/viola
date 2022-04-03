@@ -98,4 +98,13 @@
     <string name="pref_theme_light">浅色</string>
     <string name="pref_theme_default">系统默认</string>
     <string name="pref_theme_desp">当前主题: %s</string>
+    <string name="ssl_certificate_error_dialog_title">SSL证书错误</string>
+    <string name="ssl_certificate_error_dialog_content">%s你想继续吗?</string>
+    <string name="ssl_certificate_date_invalid">证书日期无效。</string>
+    <string name="ssl_certificate_invalid">发生了普通的SSL错误。</string>
+    <string name="ssl_certificate_expired">证书已过期。</string>
+    <string name="ssl_certificate_idmismatch">证书主机名不匹配。</string>
+    <string name="ssl_certificate_notyetvalid">证书尚未生效。</string>
+    <string name="ssl_certificate_untrusted">证书颁发机构不受信任。</string>
+    <string name="ssl_certificate_unknown">发生未知SSL错误。</string>
 </resources>

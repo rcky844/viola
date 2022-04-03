@@ -693,33 +693,36 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
             final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(MainActivity.this);
-            String message = "SSL Certificate error.";
+            String message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                    getResources().getString(R.string.ssl_certificate_unknown));
             switch (error.getPrimaryError()) {
                 case SslError.SSL_DATE_INVALID:
-                    message = "The date of the certificate is invalid.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_date_invalid));
                     break;
                 case SslError.SSL_INVALID:
-                    message = "A generic SSL error occurred.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_invalid));
                     break;
                 case SslError.SSL_EXPIRED:
-                    message = "The certificate has expired.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_expired));
                     break;
                 case SslError.SSL_IDMISMATCH:
-                    message = "The certificate hostname mismatch.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_idmismatch));
                     break;
                 case SslError.SSL_NOTYETVALID:
-                    message = "The certificate is not yet valid.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_notyetvalid));
                     break;
                 case SslError.SSL_UNTRUSTED:
-                    message = "The certificate authority is not trusted.";
-                    break;
-                case -1:
-                    message = "An unknown SSL error occurred.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_untrusted));
                     break;
             }
-            message += " Do you want to continue anyway?";
 
-            dialog.setTitle("SSL Certificate Error")
+            dialog.setTitle(getResources().getString(R.string.ssl_certificate_error_dialog_title))
                     .setMessage(message)
                     .setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed())
                     .setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel())

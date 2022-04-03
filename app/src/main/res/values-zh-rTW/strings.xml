@@ -98,4 +98,13 @@
     <string name="pref_theme_light">淺色</string>
     <string name="pref_theme_default">系統默認</string>
     <string name="pref_theme_desp">當前主題: %s</string>
+    <string name="ssl_certificate_error_dialog_title">SSL證書錯誤</string>
+    <string name="ssl_certificate_error_dialog_content">%s你想繼續嗎?</string>
+    <string name="ssl_certificate_date_invalid">證書日期無效。</string>
+    <string name="ssl_certificate_invalid">發生了普通的SSL錯誤。</string>
+    <string name="ssl_certificate_expired">證書已過期。</string>
+    <string name="ssl_certificate_idmismatch">證書主機名不匹配。</string>
+    <string name="ssl_certificate_notyetvalid">證書尚未生效。</string>
+    <string name="ssl_certificate_untrusted">證書頒發機構不受信任。</string>
+    <string name="ssl_certificate_unknown">發生未知SSL錯誤。</string>
 </resources>
