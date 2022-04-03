@@ -13,8 +13,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -109,13 +107,6 @@ public class SettingsActivity extends AppCompatActivity {
         public void onDestroyView() {
             super.onDestroyView();
             activity.unregisterReceiver(onDownloadComplete);
-        }
-
-        private boolean isNetworkAvailable(Context context) {
-            ConnectivityManager connectivityManager
-                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         }
 
         private void needLoad(String Url) {
@@ -393,7 +384,7 @@ public class SettingsActivity extends AppCompatActivity {
                         BuildConfig.VERSION_CODENAME,
                         BuildConfig.VERSION_BUILD_YEAR));
                 update_btn.setOnClickListener(_update_btn -> {
-                    if (!isNetworkAvailable(activity.getApplicationContext())) {
+                    if (!CommonUtils.isNetworkAvailable(activity.getApplicationContext())) {
                         CommonUtils.showMessage(activity, getResources().getString(R.string.network_unavailable_toast));
                     } else {
                         new Thread() {
