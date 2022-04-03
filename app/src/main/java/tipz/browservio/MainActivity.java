@@ -56,6 +56,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -316,12 +319,21 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 7) {
             shareUrl(null);
         } else if (item == 8) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setData(Uri.parse(UrlEdit.getText().toString()));
+            intent.setAction(Intent.ACTION_VIEW);
+            ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, UrlTitle)
+                    .setShortLabel(UrlTitle)
+                    .setIcon(webview.getFavicon() != null ? IconCompat.createWithBitmap(webview.getFavicon()) : IconCompat.createWithResource(this, R.drawable.default_favicon))
+                    .setIntent(intent)
+                    .build(), null);
+        } else if (item == 9) {
             Intent intent = new Intent(this, SettingsActivity.class);
             mGetNeedLoad.launch(intent);
-        } else if (item == 9) {
+        } else if (item == 10) {
             Intent intent = new Intent(this, HistoryActivity.class);
             mGetNeedLoad.launch(intent);
-        } else if (item == 10) {
+        } else if (item == 11) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
             menu.add(getResources().getString(R.string.add_dot));
@@ -344,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             });
             popupMenu.show();
-        } else if (item == 11) {
+        } else if (item == 12) {
             finish();
         }
     }

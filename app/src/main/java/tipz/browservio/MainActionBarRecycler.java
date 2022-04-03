@@ -25,6 +25,7 @@ public class MainActionBarRecycler {
         iconItems.add(R.drawable.new_tab);
         iconItems.add(R.drawable.delete);
         iconItems.add(R.drawable.share);
+        iconItems.add(R.drawable.app_shortcut);
         iconItems.add(R.drawable.settings);
         iconItems.add(R.drawable.history);
         iconItems.add(R.drawable.favorites);
