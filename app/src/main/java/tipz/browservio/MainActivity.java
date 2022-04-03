@@ -611,22 +611,7 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public String errGetMsg(int msgId) {
-            switch (msgId) {
-                case 0:
-                    return mContext.getResources().getString(R.string.errMsg0);
-                case 1:
-                    return mContext.getResources().getString(R.string.errMsg1);
-                case 2:
-                    return mContext.getResources().getString(R.string.errMsg2);
-                case 3:
-                    return mContext.getResources().getString(R.string.errMsg3);
-                case 4:
-                    return mContext.getResources().getString(R.string.errMsg4);
-                case 5:
-                    return mContext.getResources().getString(R.string.errMsg5);
-                default:
-                    return CommonUtils.EMPTY_STRING;
-            }
+            return mContext.getResources().getStringArray(R.array.errMsg)[msgId];
         }
 
         @JavascriptInterface

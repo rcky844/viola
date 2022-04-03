@@ -77,12 +77,6 @@
     <string name="to_continue">Sind Sie sicher, dass Sie fortfahren möchten?</string>
     <string name="search_suggestions_title">Suchvorschläge</string>
     <string name="search_suggestions_current">"Anbieter von Suchvorschlägen: %s"</string>
-    <string name="errMsg0">Webseite kann nicht angezeigt werden</string>
-    <string name="errMsg1">Browservio konnte Ihre Webseite nicht anzeigen.</string>
-    <string name="errMsg2">Versuchen Sie:</string>
-    <string name="errMsg3">Ihre Internetverbindung zu überprüfen</string>
-    <string name="errMsg4">Die Webseite neu zu laden</string>
-    <string name="errMsg5">Neu laden</string>
     <string name="get_changelog">Changelog lesen</string>
     <string name="pref_adBlocker">Werbeblocker aktivieren</string>
     <string name="pref_adBlocker_desp">Stoppen Sie lästige Anzeigen, die Sie ablenken.</string>
@@ -98,4 +92,13 @@
     <string name="pref_theme_default">Systemfehler</string>
     <string name="pref_theme_light">helle Farbe</string>
     <string name="pref_theme_dark">dunkel</string>
+
+    <string-array name="errMsg">
+        <item>Webseite kann nicht angezeigt werden</item>
+        <item>Browservio konnte Ihre Webseite nicht anzeigen.</item>
+        <item>Versuchen Sie:</item>
+        <item>Ihre Internetverbindung zu überprüfen</item>
+        <item>Die Webseite neu zu laden</item>
+        <item>Neu laden</item>
+    </string-array>
 </resources>

@@ -77,12 +77,6 @@
     <string name="to_continue">您确定要继续吗？</string>
     <string name="search_suggestions_title">搜索建议</string>
     <string name="search_suggestions_current">"搜索建议提供者: %s"</string>
-    <string name="errMsg0">无法打开此页面</string>
-    <string name="errMsg1">Browservio 无法打开您的网页</string>
-    <string name="errMsg2">你可以尝试:</string>
-    <string name="errMsg3">检查您的互联网连接</string>
-    <string name="errMsg4">重新加载网页</string>
-    <string name="errMsg5">重新加载</string>
     <string name="get_changelog">阅读变更日志</string>
     <string name="pref_adBlocker">启用广告拦截器</string>
     <string name="pref_adBlocker_desp">拦截分散注意力而且烦人的广告</string>
@@ -98,4 +92,13 @@
     <string name="pref_theme_light">浅色</string>
     <string name="pref_theme_default">系统默认</string>
     <string name="pref_theme_desp">当前主题: %s</string>
+
+    <string-array name="errMsg">
+        <item>无法打开此页面</item>
+        <item>Browservio 无法打开您的网页</item>
+        <item>你可以尝试:</item>
+        <item>检查您的互联网连接</item>
+        <item>重新加载网页</item>
+        <item>重新加载</item>
+    </string-array>
 </resources>
