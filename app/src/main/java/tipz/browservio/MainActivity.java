@@ -442,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty())
+                if (text.toString().isEmpty() || !CommonUtils.isNetworkAvailable(getApplicationContext()))
                     return;
                 new Thread() {
                     @Override
