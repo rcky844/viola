@@ -36,6 +36,8 @@
     <string name="advanced">Erweitert</string>
     <string name="javascript">"JavaScript aktivieren"</string>
     <string name="javascript_desp">"JavaScript aktiviert zu haben wird Ihnen eine bessere Browser-Erfahrung bieten."</string>
+    <string name="show_favicon">"Favicon anzeigen"</string>
+    <string name="show_favicon_desp">"Favicon der Webseite neben der Adresszeile anzeigen."</string>
     <string name="help">Hilfe</string>
     <string name="version">Version</string>
     <string name="feedback">Feedback</string>

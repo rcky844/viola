@@ -13,6 +13,7 @@ public class SettingsKeys {
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String isJavaScriptEnabled = "isJavaScriptEnabled";
     public static final String sendDNT = "sendDNT";
+    public static final String showFavicon = "showFavicon";
     public static final String themeId = "themeId";
     public static final String updateTesting = "updateTesting";
 
