@@ -38,6 +38,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebIconDatabase;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
@@ -592,6 +593,9 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
     }
 
     public class browservioErrJsInterface {
