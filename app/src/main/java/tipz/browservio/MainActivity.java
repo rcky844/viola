@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslCertificate;
 import android.net.http.SslError;
 import android.nfc.NfcAdapter;
 import android.os.Build;
@@ -80,6 +81,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -367,13 +369,30 @@ public class MainActivity extends AppCompatActivity {
         MainActionBarRecycler.initMainActionBarRecycler(MainActivity.this, this, actionBar);
 
         favicon.setOnClickListener(_view -> {
+            final SslCertificate cert = webview.getCertificate();
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, favicon);
             Menu menu = popupMenu.getMenu();
             menu.add(UrlTitle).setEnabled(false);
             menu.add(getResources().getString(R.string.copy_title));
+            if (cert != null)
+                menu.add(getResources().getString(R.string.ssl_info));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
                     CommonUtils.copyClipboard(MainActivity.this, UrlTitle);
+                    return true;
+                } else if (item.getTitle().toString().equals(getResources().getString(R.string.ssl_info))) {
+                    assert cert != null;
+                    final SslCertificate.DName issuedTo = cert.getIssuedTo();
+                    final SslCertificate.DName issuedBy = cert.getIssuedBy();
+                    final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(MainActivity.this);
+                    dialog.setTitle(Uri.parse(UrlEdit.getText().toString()).getHost())
+                            .setMessage(getResources().getString(R.string.ssl_info_dialog_content,
+                                    issuedTo.getCName(), issuedTo.getOName(), issuedTo.getUName(),
+                                    issuedBy.getCName(), issuedBy.getOName(), issuedBy.getUName(),
+                                    DateFormat.getDateTimeInstance().format(cert.getValidNotBeforeDate()),
+                                    DateFormat.getDateTimeInstance().format(cert.getValidNotAfterDate())))
+                            .setPositiveButton(getResources().getString(android.R.string.ok), null)
+                            .create().show();
                     return true;
                 }
                 return false;
@@ -639,10 +658,8 @@ public class MainActivity extends AppCompatActivity {
             UrlSet(url);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
-                favicon.setVisibility(View.GONE);
-                faviconProgressBar.setVisibility(View.VISIBLE);
-            }
+            favicon.setVisibility(View.GONE);
+            faviconProgressBar.setVisibility(View.VISIBLE);
             UrlEdit.dismissDropDown();
         }
 
@@ -652,10 +669,8 @@ public class MainActivity extends AppCompatActivity {
                 android.webkit.CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
-                favicon.setVisibility(View.VISIBLE);
-                faviconProgressBar.setVisibility(View.GONE);
-            }
+            favicon.setVisibility(View.VISIBLE);
+            faviconProgressBar.setVisibility(View.GONE);
         }
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -682,33 +697,36 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
             final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(MainActivity.this);
-            String message = "SSL Certificate error.";
+            String message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                    getResources().getString(R.string.ssl_certificate_unknown));
             switch (error.getPrimaryError()) {
                 case SslError.SSL_DATE_INVALID:
-                    message = "The date of the certificate is invalid.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_date_invalid));
                     break;
                 case SslError.SSL_INVALID:
-                    message = "A generic SSL error occurred.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_invalid));
                     break;
                 case SslError.SSL_EXPIRED:
-                    message = "The certificate has expired.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_expired));
                     break;
                 case SslError.SSL_IDMISMATCH:
-                    message = "The certificate hostname mismatch.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_idmismatch));
                     break;
                 case SslError.SSL_NOTYETVALID:
-                    message = "The certificate is not yet valid.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_notyetvalid));
                     break;
                 case SslError.SSL_UNTRUSTED:
-                    message = "The certificate authority is not trusted.";
-                    break;
-                case -1:
-                    message = "An unknown SSL error occurred.";
+                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
+                            getResources().getString(R.string.ssl_certificate_untrusted));
                     break;
             }
-            message += " Do you want to continue anyway?";
 
-            dialog.setTitle("SSL Certificate Error")
+            dialog.setTitle(getResources().getString(R.string.ssl_certificate_error_dialog_title))
                     .setMessage(message)
                     .setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed())
                     .setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel())
@@ -922,13 +940,11 @@ public class MainActivity extends AppCompatActivity {
         // Settings check
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
-        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
 
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))
-                && faviconProgressBar.getVisibility() == View.VISIBLE)
+        if (faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);
     }
 

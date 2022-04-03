@@ -92,6 +92,17 @@
     <string name="pref_theme_default">Systemfehler</string>
     <string name="pref_theme_light">helle Farbe</string>
     <string name="pref_theme_dark">dunkel</string>
+    <string name="ssl_info">SSL-Zertifikatdetails</string>
+    <string name="ssl_info_dialog_content">Ausgestellt für\n\tAllgemeiner Name (CN): %1$s\n\tOrganisation (O): %2$s\n\tOrganisationseinheit (OU): %3$s\n\nAusgestellt von\n\tAllgemeiner Name (CN): %4$s\n\tOrganisation (O): %5$s\n\tOrganisationseinheit (OU): %6$s\n\nGültigkeitsdauer\n\tAusgestellt am: %7$s\n\tGültig bis: %8$s</string>
+    <string name="ssl_certificate_error_dialog_title">SSL-Zertifikatsfehler</string>
+    <string name="ssl_certificate_error_dialog_content">%s Möchtest du trotzdem weitermachen?</string>
+    <string name="ssl_certificate_date_invalid">Das Datum des Zertifikats ist ungültig.</string>
+    <string name="ssl_certificate_invalid">Ein generischer SSL-Fehler ist aufgetreten.</string>
+    <string name="ssl_certificate_expired">Das Zertifikat ist abgelaufen.</string>
+    <string name="ssl_certificate_idmismatch">Der Hostname des Zertifikats stimmt nicht überein.</string>
+    <string name="ssl_certificate_notyetvalid">Das Zertifikat ist noch nicht gültig.</string>
+    <string name="ssl_certificate_untrusted">Der Zertifizierungsstelle wird nicht vertraut.</string>
+    <string name="ssl_certificate_unknown">Ein unbekannter SSL-Fehler ist aufgetreten.</string>
 
     <string-array name="errMsg">
         <item>Webseite kann nicht angezeigt werden</item>

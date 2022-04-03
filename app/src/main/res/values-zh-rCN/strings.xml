@@ -92,6 +92,17 @@
     <string name="pref_theme_light">浅色</string>
     <string name="pref_theme_default">系统默认</string>
     <string name="pref_theme_desp">当前主题: %s</string>
+    <string name="ssl_info">SSL证书信息</string>
+    <string name="ssl_info_dialog_content">颁发给\n\t通用名 (CN): %1$s\n\t机构 (O): %2$s\n\t机构单位 (OU): %3$s\n\n颁发者\n\t通用名 (CN): %4$s\n\t机构 (O): %5$s\n\t机构单位 (OU): %6$s\n\n有效期\n\t颁发日期: %7$s\n\t到期日期: %8$s</string>
+    <string name="ssl_certificate_error_dialog_title">SSL证书错误</string>
+    <string name="ssl_certificate_error_dialog_content">%s你想继续吗?</string>
+    <string name="ssl_certificate_date_invalid">证书日期无效。</string>
+    <string name="ssl_certificate_invalid">发生了普通的SSL错误。</string>
+    <string name="ssl_certificate_expired">证书已过期。</string>
+    <string name="ssl_certificate_idmismatch">证书主机名不匹配。</string>
+    <string name="ssl_certificate_notyetvalid">证书尚未生效。</string>
+    <string name="ssl_certificate_untrusted">证书颁发机构不受信任。</string>
+    <string name="ssl_certificate_unknown">发生未知SSL错误。</string>
 
     <string-array name="errMsg">
         <item>无法打开此页面</item>
