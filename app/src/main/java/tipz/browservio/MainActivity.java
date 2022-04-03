@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
-        new ActivityResultContracts.GetContent(), uri -> {
+            new ActivityResultContracts.GetContent(), uri -> {
                 if (null == mUploadMessage || uri == null)
                     return;
 
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             CookieManager.getInstance();
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -453,8 +453,8 @@ public class MainActivity extends AppCompatActivity {
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra(Intent.EXTRA_TEXT, url)
-                        .setAction(Intent.ACTION_SEND)
-                        .setType(TypeSchemeMatch[1]);
+                            .setAction(Intent.ACTION_SEND)
+                            .setType(TypeSchemeMatch[1]);
                     startActivity(intent);
                 } else if (strName.equals(getResources().getString(R.string.share_url))) {
                     shareUrl(url);
@@ -669,7 +669,7 @@ public class MainActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             UrlSet(url);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
-                android.webkit.CookieSyncManager.getInstance().sync();
+                CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
             favicon.setVisibility(View.VISIBLE);

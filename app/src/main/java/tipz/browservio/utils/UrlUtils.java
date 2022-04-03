@@ -60,13 +60,13 @@ public class UrlUtils {
 
     /**
      * Guess the name of the file that should be downloaded.
-     *
+     * <p>
      * This method is largely identical to {@link android.webkit.URLUtil#guessFileName}
      * which unfortunately does not implement RfC 5987.
      *
-     * @param url Url to the content
+     * @param url                Url to the content
      * @param contentDisposition Content-Disposition HTTP header or {@code null}
-     * @param mimeType Mime-type of the content or {@code null}
+     * @param mimeType           Mime-type of the content or {@code null}
      * @return file name including extension
      */
     public static String guessFileName(String url, @Nullable String contentDisposition, @Nullable String mimeType) {
