@@ -5,7 +5,6 @@ import static tipz.browservio.history.HistoryApi.historyPref;
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.Manifest;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -109,9 +108,6 @@ public class MainActivity extends AppCompatActivity {
     private WebView webview;
     private RecyclerView actionBar;
     private AppCompatImageView favicon;
-
-    private final ObjectAnimator fabAnimate = new ObjectAnimator();
-    private final ObjectAnimator barAnimate = new ObjectAnimator();
 
     private String UrlTitle;
     private StringBuilder adServers;
@@ -403,23 +399,15 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
 
         fab.setOnClickListener(_view -> {
-            fabAnimate.setTarget(fab);
-            barAnimate.setTarget(actionBar);
-            fabAnimate.setPropertyName("rotation");
-            barAnimate.setPropertyName("alpha");
-            fabAnimate.setDuration(250);
-            barAnimate.setDuration(250);
             if (actionBar.getVisibility() == View.VISIBLE) {
-                fabAnimate.setFloatValues(0, 180);
-                barAnimate.setFloatValues(1, 0);
+                fab.animate().rotation(180).setDuration(250).start();
+                actionBar.animate().alpha(0f).setDuration(250).start();
                 actionBar.setVisibility(View.GONE);
             } else {
+                fab.animate().rotation(0).setDuration(250).start();
+                actionBar.animate().alpha(1f).setDuration(250).start();
                 actionBar.setVisibility(View.VISIBLE);
-                fabAnimate.setFloatValues(180, 0);
-                barAnimate.setFloatValues(0, 1);
             }
-            fabAnimate.start();
-            barAnimate.start();
         });
 
         webview.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
