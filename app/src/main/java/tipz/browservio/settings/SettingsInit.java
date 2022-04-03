@@ -6,12 +6,14 @@ import static tipz.browservio.utils.urls.SearchEngineEntries.getSearchEngineUrl;
 
 import android.content.Context;
 
+import androidx.core.os.LocaleListCompat;
+
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.urls.SearchEngineEntries;
 
 public class SettingsInit {
     public SettingsInit(Context mContext) {
-        boolean doesNotHaveGoogle = mContext.getResources().getConfiguration().locale.getCountry().equals("CN");
+        boolean doesNotHaveGoogle = LocaleListCompat.getAdjustedDefault().get(0).getCountry().equals("CN");
         boolean isEqualToOneFirstLaunch = CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(mContext), SettingsKeys.isFirstLaunch));
         SettingsUtils.checkIfEmpty(browservio_saver(mContext),
                 new String[]{SettingsKeys.defaultHomePage, SettingsKeys.defaultHomePageId, SettingsKeys.defaultSearch, SettingsKeys.defaultSearchId, SettingsKeys.defaultSuggestions, SettingsKeys.defaultSuggestionsId},
