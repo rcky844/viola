@@ -815,7 +815,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            favicon.setImageBitmap(icon);
+            if (!icon.isRecycled())
+                favicon.setImageBitmap(icon);
         }
 
         public void onReceivedTitle(WebView view, String title) {
