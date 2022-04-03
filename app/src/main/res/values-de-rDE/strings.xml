@@ -98,4 +98,6 @@
     <string name="pref_theme_default">Systemfehler</string>
     <string name="pref_theme_light">helle Farbe</string>
     <string name="pref_theme_dark">dunkel</string>
+    <string name="ssl_info">SSL-Zertifikatdetails</string>
+    <string name="ssl_info_dialog_content">Ausgestellt für\n\tAllgemeiner Name (CN): %1$s\n\tOrganisation (O): %2$s\n\tOrganisationseinheit (OU): %3$s\n\nAusgestellt von\n\tAllgemeiner Name (CN): %4$s\n\tOrganisation (O): %5$s\n\tOrganisationseinheit (OU): %6$s\n\nGültigkeitsdauer\n\tAusgestellt am: %7$s\n\tGültig bis: %8$s</string>
 </resources>
