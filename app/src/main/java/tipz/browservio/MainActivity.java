@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslCertificate;
 import android.net.http.SslError;
 import android.nfc.NfcAdapter;
 import android.os.Build;
@@ -80,6 +81,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -367,13 +369,30 @@ public class MainActivity extends AppCompatActivity {
         MainActionBarRecycler.initMainActionBarRecycler(MainActivity.this, this, actionBar);
 
         favicon.setOnClickListener(_view -> {
+            final SslCertificate cert = webview.getCertificate();
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, favicon);
             Menu menu = popupMenu.getMenu();
             menu.add(UrlTitle).setEnabled(false);
             menu.add(getResources().getString(R.string.copy_title));
+            if (cert != null)
+                menu.add(getResources().getString(R.string.ssl_info));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
                     CommonUtils.copyClipboard(MainActivity.this, UrlTitle);
+                    return true;
+                } else if (item.getTitle().toString().equals(getResources().getString(R.string.ssl_info))) {
+                    assert cert != null;
+                    final SslCertificate.DName issuedTo = cert.getIssuedTo();
+                    final SslCertificate.DName issuedBy = cert.getIssuedBy();
+                    final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(MainActivity.this);
+                    dialog.setTitle(Uri.parse(UrlEdit.getText().toString()).getHost())
+                            .setMessage(getResources().getString(R.string.ssl_info_dialog_content,
+                                    issuedTo.getCName(), issuedTo.getOName(), issuedTo.getUName(),
+                                    issuedBy.getCName(), issuedBy.getOName(), issuedBy.getUName(),
+                                    DateFormat.getDateTimeInstance().format(cert.getValidNotBeforeDate()),
+                                    DateFormat.getDateTimeInstance().format(cert.getValidNotAfterDate())))
+                            .setPositiveButton(getResources().getString(android.R.string.ok), null)
+                            .create().show();
                     return true;
                 }
                 return false;
