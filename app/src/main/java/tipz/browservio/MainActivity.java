@@ -522,7 +522,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
 
-        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this, this), "browservioErr");
+        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this), "browservioErr");
     }
 
     /**
@@ -608,17 +608,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class browservioErrJsInterface {
-        final Context mContext;
         final MainActivity mMainActivity;
 
-        browservioErrJsInterface(Context c, MainActivity mainActivity) {
-            mContext = c;
+        browservioErrJsInterface(MainActivity mainActivity) {
             mMainActivity = mainActivity;
         }
 
         @JavascriptInterface
         public String errGetMsg(int msgId) {
-            return mContext.getResources().getStringArray(R.array.errMsg)[msgId];
+            return mMainActivity.getResources().getStringArray(R.array.errMsg)[msgId];
         }
 
         @JavascriptInterface
