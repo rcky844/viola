@@ -15,7 +15,8 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.http.SslCertificate;
 import android.net.http.SslError;
@@ -321,13 +322,19 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 7) {
             shareUrl(null);
         } else if (item == 8) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setData(Uri.parse(UrlEdit.getText().toString()));
-            intent.setAction(Intent.ACTION_VIEW);
+            Drawable originalIcon = favicon.getDrawable();
+            Bitmap icon = Bitmap.createBitmap(originalIcon.getIntrinsicWidth(), originalIcon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(icon);
+
+            originalIcon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            originalIcon.draw(canvas);
+
             ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, UrlTitle)
                     .setShortLabel(UrlTitle)
-                    .setIcon(IconCompat.createWithBitmap(((BitmapDrawable) favicon.getDrawable()).getBitmap()))
-                    .setIntent(intent)
+                    .setIcon(IconCompat.createWithBitmap(icon))
+                    .setIntent(new Intent(this, MainActivity.class)
+                            .setData(Uri.parse(UrlEdit.getText().toString()))
+                            .setAction(Intent.ACTION_VIEW))
                     .build(), null);
         } else if (item == 9) {
             Intent intent = new Intent(this, SettingsActivity.class);
