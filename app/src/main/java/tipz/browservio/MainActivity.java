@@ -15,6 +15,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.net.http.SslCertificate;
 import android.net.http.SslError;
@@ -324,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
             intent.setAction(Intent.ACTION_VIEW);
             ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, UrlTitle)
                     .setShortLabel(UrlTitle)
-                    .setIcon(webview.getFavicon() != null ? IconCompat.createWithBitmap(webview.getFavicon()) : IconCompat.createWithResource(this, R.drawable.default_favicon))
+                    .setIcon(IconCompat.createWithBitmap(((BitmapDrawable) favicon.getDrawable()).getBitmap()))
                     .setIntent(intent)
                     .build(), null);
         } else if (item == 9) {
