@@ -77,7 +77,7 @@
     <string name="pref_adBlocker">启用广告拦截器</string>
     <string name="pref_adBlocker_desp">拦截分散注意力而且烦人的广告</string>
     <string name="pref_do_not_track">不跟踪</string>
-    <string name="pref_do_not_track_desp">发送“不跟踪”请求到您浏览的网站</string>
+    <string name="pref_do_not_track_desp">发送不跟踪请求到您浏览的网站</string>
     <string name="copy_url">复制链结</string>
     <string name="download_image">下载图片</string>
     <string name="open_in_new_tab">在新标签页中打开</string>
