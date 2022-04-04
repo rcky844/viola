@@ -21,6 +21,7 @@ public class SearchEngineEntries {
     public final static String yahooSearchSuggestionsUrl = "https://sugg.search.yahoo.net/sg/?output=fxjson&command=%s";
     public final static String ecosia = "https://www.ecosia.org/%s";
     public final static String ecosiaSearchSuffix = googleSearchSuffix;
+    public final static String ecosiaSearchSuggestionsUrl = "https://ac.ecosia.org/autocomplete?q=%s&type=list";
     public final static String yandex = "https://yandex.com/%s";
     public final static String yandexSearchSuffix = "search/?text=";
 
