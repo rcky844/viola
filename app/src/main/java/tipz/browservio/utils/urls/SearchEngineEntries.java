@@ -10,6 +10,7 @@ public class SearchEngineEntries {
     public final static String googleSearchSuggestionsUrl = "http://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q=%s";
     public final static String baidu = "https://www.baidu.com/%s";
     public final static String baiduSearchSuffix = "s?wd=";
+    public final static String baiduSearchSuggestionsUrl = "http://suggestion.baidu.com/su?ie=UTF-8&wd=%s&action=opensearch";
     public final static String duck = "https://www.duckduckgo.com/%s";
     public final static String duckSearchSuffix = "?q=";
     public final static String bing = "https://www.bing.com/%s";

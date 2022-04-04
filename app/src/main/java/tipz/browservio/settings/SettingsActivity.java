@@ -130,7 +130,8 @@ public class SettingsActivity extends AppCompatActivity {
 
             final String[] suggestionsList = {
                     searchHomePageList[0],
-                    SettingsUtils.doesNotHaveGoogle ? searchHomePageList[3].concat(searchEntriesDefault) : searchHomePageList[3]
+                    SettingsUtils.doesNotHaveGoogle ? searchHomePageList[1].concat(searchEntriesDefault) : searchHomePageList[1],
+                    searchHomePageList[3]
             };
             final String[] themeList = activity.getResources().getStringArray(R.array.themes);
 
@@ -280,6 +281,8 @@ public class SettingsActivity extends AppCompatActivity {
                             if (checkedItem[0] == 0)
                                 homePage[0] = SearchEngineEntries.googleSearchSuggestionsUrl;
                             else if (checkedItem[0] == 1)
+                                homePage[0] = SearchEngineEntries.baiduSearchSuggestionsUrl;
+                            else if (checkedItem[0] == 2)
                                 homePage[0] = SearchEngineEntries.bingSearchSuggestionsUrl;
 
                             SettingsUtils.setPref(browservio_saver(activity), SettingsKeys.defaultSuggestions, homePage[0]);
