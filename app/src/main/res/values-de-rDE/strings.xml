@@ -56,10 +56,6 @@
     <string name="add_to_fav">"Als Favoriten speichern"</string>
     <string name="del_hist_message">"Sie sind dabei, den gesamten Verlauf zu löschen. Sind Sie sich sicher?"</string>
     <string name="del_hist_fab_desp">"Gesamten Verlauf löschen"</string>
-    <string name="baidu_search">Baidu</string>
-    <string name="yahoo_search">Yahoo!</string>
-    <string name="google_search">Google (Standard)</string>
-    <string name="custom_search">Benutzerdefiniert</string>
     <string name="license_btn">Lizenz</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">Ein unerwarteter Fehler ist aufgetreten. Bitte entschuldigen Sie die Unannehmlichkeiten.</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">App neu starten</string>
@@ -103,6 +99,7 @@
     <string name="ssl_certificate_notyetvalid">Das Zertifikat ist noch nicht gültig.</string>
     <string name="ssl_certificate_untrusted">Der Zertifizierungsstelle wird nicht vertraut.</string>
     <string name="ssl_certificate_unknown">Ein unbekannter SSL-Fehler ist aufgetreten.</string>
+    <string name="search_entries_default">\u0020(Standard)</string>
 
     <string-array name="errMsg">
         <item>Webseite kann nicht angezeigt werden</item>
@@ -111,5 +108,15 @@
         <item>Ihre Internetverbindung zu überprüfen</item>
         <item>Die Webseite neu zu laden</item>
         <item>Neu laden</item>
+    </string-array>
+    <string-array name="search_entries">
+        <item>Google</item>
+        <item>Baidu</item>
+        <item>DuckDuckGo</item>
+        <item>Bing</item>
+        <item>Yahoo!</item>
+        <item>Ecosia</item>
+        <item>Yandex</item>
+        <item>Benutzerdefiniert</item>
     </string-array>
 </resources>

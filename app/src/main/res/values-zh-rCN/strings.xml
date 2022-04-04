@@ -56,10 +56,6 @@
     <string name="add_to_fav">保存到收藏夹</string>
     <string name="del_hist_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
     <string name="del_hist_fab_desp">删除所有历史记录</string>
-    <string name="baidu_search">百度 (默认)</string>
-    <string name="yahoo_search">雅虎</string>
-    <string name="google_search">谷歌</string>
-    <string name="custom_search">自定义</string>
     <string name="license_btn">许可</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">错误发生对于给您带来的不便，我们深表歉意。</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">重启应用</string>
@@ -103,6 +99,7 @@
     <string name="ssl_certificate_notyetvalid">证书尚未生效。</string>
     <string name="ssl_certificate_untrusted">证书颁发机构不受信任。</string>
     <string name="ssl_certificate_unknown">发生未知SSL错误。</string>
+    <string name="search_entries_default">\u0020(默认)</string>
 
     <string-array name="errMsg">
         <item>无法打开此页面</item>
@@ -111,5 +108,15 @@
         <item>检查您的互联网连接</item>
         <item>重新加载网页</item>
         <item>重新加载</item>
+    </string-array>
+    <string-array name="search_entries">
+        <item>谷歌</item>
+        <item>百度</item>
+        <item>DuckDuckGo</item>
+        <item>Bing</item>
+        <item>雅虎</item>
+        <item>Ecosia</item>
+        <item>Yandex</item>
+        <item>自定义</item>
     </string-array>
 </resources>

@@ -121,19 +121,16 @@ public class SettingsActivity extends AppCompatActivity {
          */
         private void initializeLogic() {
             /* Common */
-            final String[] searchHomePageList = {
-                    activity.getResources().getString(R.string.google_search),
-                    activity.getResources().getString(R.string.baidu_search),
-                    activity.getResources().getString(R.string.duck_search),
-                    activity.getResources().getString(R.string.bing_search),
-                    activity.getResources().getString(R.string.yahoo_search),
-                    activity.getResources().getString(R.string.ecosia_search),
-                    activity.getResources().getString(R.string.yandex_search),
-                    activity.getResources().getString(R.string.custom_search)
-            };
+            final String searchEntriesDefault = activity.getResources().getString(R.string.search_entries_default);
+            final String[] searchHomePageList = activity.getResources().getStringArray(R.array.search_entries);
+            if (SettingsUtils.doesNotHaveGoogle)
+                searchHomePageList[1] = searchHomePageList[1].concat(searchEntriesDefault);
+            else
+                searchHomePageList[0] = searchHomePageList[0].concat(searchEntriesDefault);
+
             final String[] suggestionsList = {
-                    activity.getResources().getString(R.string.google_search),
-                    activity.getResources().getString(R.string.bing_search)
+                    searchHomePageList[0],
+                    SettingsUtils.doesNotHaveGoogle ? searchHomePageList[3].concat(searchEntriesDefault) : searchHomePageList[3]
             };
             final String[] themeList = {
                     activity.getResources().getString(R.string.pref_theme_default),
