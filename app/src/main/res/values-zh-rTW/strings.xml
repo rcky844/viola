@@ -84,9 +84,6 @@
     <string name="no_webview">WebView是必需的，但未安裝。</string>
     <string name="share_url">分享鏈結</string>
     <string name="pref_theme">主題</string>
-    <string name="pref_theme_dark">深色</string>
-    <string name="pref_theme_light">淺色</string>
-    <string name="pref_theme_default">系統默認</string>
     <string name="pref_theme_desp">當前主題: %s</string>
     <string name="ssl_info">SSL證書信息</string>
     <string name="ssl_info_dialog_content">頒發給\n\t通用名 (CN): %1$s\n\t機構 (O): %2$s\n\t機構單位 (OU): %3$s\n\n頒發者\n\t通用名 (CN): %4$s\n\t機構 (O): %5$s\n\t機構單位 (OU): %6$s\n\n有效期\n\t頒發日期: %7$s\n\t到期日期: %8$s</string>
@@ -118,5 +115,10 @@
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>自定義</item>
+    </string-array>
+    <string-array name="themes">
+        <item>系統默認</item>
+        <item>淺色</item>
+        <item>深色</item>
     </string-array>
 </resources>

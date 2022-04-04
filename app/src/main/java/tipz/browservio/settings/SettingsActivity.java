@@ -132,11 +132,7 @@ public class SettingsActivity extends AppCompatActivity {
                     searchHomePageList[0],
                     SettingsUtils.doesNotHaveGoogle ? searchHomePageList[3].concat(searchEntriesDefault) : searchHomePageList[3]
             };
-            final String[] themeList = {
-                    activity.getResources().getString(R.string.pref_theme_default),
-                    activity.getResources().getString(R.string.pref_theme_light),
-                    activity.getResources().getString(R.string.pref_theme_dark)
-            };
+            final String[] themeList = activity.getResources().getStringArray(R.array.themes);
 
             /* General category */
             Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));

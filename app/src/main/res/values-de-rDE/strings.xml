@@ -85,9 +85,6 @@
     <string name="share_url">Link teilen</string>
     <string name="pref_theme">Thema</string>
     <string name="pref_theme_desp">Aktuelles Thema: %s</string>
-    <string name="pref_theme_default">Systemfehler</string>
-    <string name="pref_theme_light">helle Farbe</string>
-    <string name="pref_theme_dark">dunkel</string>
     <string name="ssl_info">SSL-Zertifikatdetails</string>
     <string name="ssl_info_dialog_content">Ausgestellt für\n\tAllgemeiner Name (CN): %1$s\n\tOrganisation (O): %2$s\n\tOrganisationseinheit (OU): %3$s\n\nAusgestellt von\n\tAllgemeiner Name (CN): %4$s\n\tOrganisation (O): %5$s\n\tOrganisationseinheit (OU): %6$s\n\nGültigkeitsdauer\n\tAusgestellt am: %7$s\n\tGültig bis: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL-Zertifikatsfehler</string>
@@ -118,5 +115,10 @@
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Benutzerdefiniert</item>
+    </string-array>
+    <string-array name="themes">
+        <item>Systemfehler</item>
+        <item>helle Farbe</item>
+        <item>dunkel</item>
     </string-array>
 </resources>

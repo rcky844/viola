@@ -83,9 +83,6 @@
     <string name="open_in_new_tab">Open in new tab</string>
     <string name="no_webview">WebView is required but not installed.</string>
     <string name="share_url">Share link</string>
-    <string name="pref_theme_dark">Dark</string>
-    <string name="pref_theme_light">Light</string>
-    <string name="pref_theme_default">System Default</string>
     <string name="pref_theme_desp">Current theme: %s</string>
     <string name="pref_theme">Theme</string>
     <string name="ssl_info">SSL Certificate Details</string>
@@ -118,5 +115,10 @@
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Custom</item>
+    </string-array>
+    <string-array name="themes">
+        <item>System Default</item>
+        <item>Light</item>
+        <item>Dark</item>
     </string-array>
 </resources>
