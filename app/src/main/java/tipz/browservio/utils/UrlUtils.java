@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {
-            "http:", "https:", "content:", "ftp:", "file:",
-            "about:", "javascript:", "blob:", "data:"};
+            "http", "https", "content", "ftp", "file",
+            "about", "javascript", "blob", "data"};
 
     /**
      * URL Checker
@@ -47,7 +47,7 @@ public class UrlUtils {
 
     public static boolean startsWithMatch(String url) {
         for (String match : startsWithMatch) {
-            if (url.startsWith(match))
+            if (url.startsWith(match.concat(":")))
                 return true;
         }
         return false;
