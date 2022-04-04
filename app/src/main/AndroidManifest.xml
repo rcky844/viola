@@ -56,7 +56,6 @@
                 <data android:scheme="javascript" />
                 <data android:scheme="blob" />
                 <data android:scheme="data" />
-                <data android:scheme="browservio" />
             </intent-filter>
             <!--  For these schemes where any of these particular MIME types
                   have been supplied, we are a good candidate. -->
