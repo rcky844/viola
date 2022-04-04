@@ -55,6 +55,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -475,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                 browservioBrowse(UrlEdit.getText().toString());
-                Objects.requireNonNull(ViewCompat.getWindowInsetsController(v)).hide(WindowInsetsCompat.Type.ime());
+                closeKeyboard();
                 return true;
             }
             return false;
@@ -538,10 +539,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        UrlEdit.setOnItemClickListener((adapterView, view, pos, l) -> {
+            browservioBrowse(((AppCompatTextView) view.findViewById(android.R.id.text1)).getText().toString());
+            closeKeyboard();
+        });
+
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
 
         webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this), "browservioErr");
+    }
+
+    private void closeKeyboard() {
+        Objects.requireNonNull(ViewCompat.getWindowInsetsController(UrlEdit)).hide(WindowInsetsCompat.Type.ime());
     }
 
     /**
