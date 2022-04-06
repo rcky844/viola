@@ -626,7 +626,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (is != null) {
             try {
-                while ((line = br.readLine()) != null) {
+                while ((line = br.readLine()).startsWith("127.0.0.1 ")) {
                     adServers.append(line);
                     adServers.append(CommonUtils.LINE_SEPARATOR());
                 }
