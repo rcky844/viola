@@ -4,7 +4,6 @@ import tipz.browservio.BuildConfig;
 
 public class BrowservioURLs {
     public static final String prefix = "browservio://";
-    public static final String yhlPrefix = "yhl852:";
 
     public static final String realErrUrl = "file:///android_asset/error.html";
 
