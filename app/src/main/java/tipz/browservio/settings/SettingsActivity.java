@@ -368,14 +368,15 @@ public class SettingsActivity extends AppCompatActivity {
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
                 AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
                 AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-                boolean updateTesting = SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.updateTesting) == 1;
+                boolean updateTesting = BuildConfig.DEBUG && SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.updateTesting) == 1;
                 if (BuildConfig.DEBUG && !updateTesting) {
                     update_btn.setVisibility(View.GONE);
                     changelog_btn.setVisibility(View.GONE);
                 }
                 easter_banner.setOnClickListener(_update_btn -> {
                     CommonUtils.showMessage(activity, getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
-                    SettingsUtils.setPrefNum(browservio_saver(activity), SettingsKeys.updateTesting, 1);
+                    if (!updateTesting)
+                        SettingsUtils.setPrefNum(browservio_saver(activity), SettingsKeys.updateTesting, 1);
                 });
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
