@@ -1,7 +1,6 @@
 package tipz.browservio;
 
 import static tipz.browservio.fav.FavApi.bookmarks;
-import static tipz.browservio.history.HistoryApi.historyPref;
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.Manifest;
@@ -615,7 +614,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        new HistoryInit(browservio_saver(MainActivity.this), historyPref(MainActivity.this));
+        new HistoryInit(this);
 
         /* Import the list of Ad servers */
         String line;
