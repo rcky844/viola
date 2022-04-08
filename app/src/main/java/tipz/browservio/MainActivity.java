@@ -894,18 +894,16 @@ public class MainActivity extends AppCompatActivity {
     private void browservioBrowse(String url) {
         if (url == null || url.isEmpty())
             return;
+
+        String urlIdentify = URLIdentify(url);
+        if (urlIdentify != null)
+            if (urlIdentify.equals(CommonUtils.EMPTY_STRING))
+                return;
+
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
         // Load URL
-        if (url.startsWith(BrowservioURLs.prefix)
-                || url.startsWith(BrowservioURLs.yhlPrefix)
-                || url.equals(BrowservioURLs.realErrUrl)
-                || url.equals(BrowservioURLs.realLicenseUrl)) {
-            URLIdentify(url);
-        } else {
-            URLIdentify(checkedUrl);
-            webview.loadUrl(checkedUrl, mRequestHeaders);
-            customBrowse = true;
-        }
+        webview.loadUrl(checkedUrl, mRequestHeaders);
+        customBrowse = true;
     }
 
     /**
@@ -978,20 +976,26 @@ public class MainActivity extends AppCompatActivity {
      * URL to check for it's nature.
      *
      * @param url is supplied for the url to check
+     * @return url to load
      */
-    private void URLIdentify(String url) {
+    @Nullable
+    private String URLIdentify(String url) {
         if (url.equals(BrowservioURLs.realErrUrl))
-            webview.loadUrl(BrowservioURLs.realErrUrl);
+            return BrowservioURLs.realErrUrl;
 
         if (url.equals(BrowservioURLs.licenseUrl) || url.equals(BrowservioURLs.realLicenseUrl)) {
             UrlEdit.setText(BrowservioURLs.licenseUrl);
-            webview.loadUrl(BrowservioURLs.realLicenseUrl);
+            return BrowservioURLs.realLicenseUrl;
         }
 
-        if (url.equals(BrowservioURLs.reloadUrl))
+        if (url.equals(BrowservioURLs.reloadUrl)) {
             webviewReload();
+            return CommonUtils.EMPTY_STRING;
+        }
 
         if (url.startsWith(BrowservioURLs.yhlPrefix))
-            webview.loadUrl("http://119.28.42.46:8886/chaxun_web.asp?kd_id=".concat(url.replace(BrowservioURLs.yhlPrefix, CommonUtils.EMPTY_STRING)));
+            return "http://119.28.42.46:8886/chaxun_web.asp?kd_id=".concat(url.replace(BrowservioURLs.yhlPrefix, CommonUtils.EMPTY_STRING));
+
+        return null;
     }
 }
