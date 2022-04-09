@@ -20,12 +20,12 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 32
-        versionCode 63
-        versionName "2.2.1"
+        versionCode 64
+        versionName "2.2.2"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Cupcake\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_cupcake_rel2\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_cupcake_rel3\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
