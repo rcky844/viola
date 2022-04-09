@@ -6,17 +6,26 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.broha.Broha;
+import tipz.browservio.broha.BrohaClient;
+import tipz.browservio.broha.BrohaDao;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 
 public class HistoryApi {
     private final Context context;
-    private final static int LATEST_API = 1;
-    public final static String current_history_pref = SettingsKeys.history;
+    private final static int LATEST_API = 2;
+
+    /* Old pref keys for migration */
+    private static final String history = "history";
+    private static final String historyApi = "historyApi";
 
     public static SharedPreferences historyPref(Context context) {
-        return context.getSharedPreferences(SettingsKeys.history_cfg, Activity.MODE_PRIVATE);
+        return context.getSharedPreferences("history.cfg", Activity.MODE_PRIVATE);
+    }
+
+    public static BrohaDao historyBroha(Context context) {
+        return new BrohaClient(context, "history").getDao();
     }
 
     public HistoryApi(Context c) {
@@ -26,20 +35,29 @@ public class HistoryApi {
     }
 
     private void verAdapter() {
-        if (SettingsUtils.getPrefNum(historyPref(context), SettingsKeys.historyApi) == 0) {
-            SettingsUtils.setPrefNum(historyPref(context), SettingsKeys.historyApi, LATEST_API);
+        String historyData;
+        switch (SettingsUtils.getPrefNum(browservio_saver(context), historyApi)) {
+            case 0:
+                historyData = SettingsUtils.getPref(browservio_saver(context), history);
+                if (!historyData.isEmpty())
+                    SettingsUtils.setPref(historyPref(context), history, historyData);
 
-            if (!SettingsUtils.getPref(browservio_saver(context), SettingsKeys.history).isEmpty()) {
-                SettingsUtils.setPref(historyPref(context), SettingsKeys.history, SettingsUtils.getPref(browservio_saver(context), SettingsKeys.history));
-            }
-
-            SettingsUtils.setPref(browservio_saver(context), SettingsKeys.history, CommonUtils.EMPTY_STRING);
+                SettingsUtils.setPref(browservio_saver(context), history, CommonUtils.EMPTY_STRING);
+            case 1:
+                historyData = SettingsUtils.getPref(historyPref(context), history);
+                String[] listData = SettingsUtils.getPref(historyPref(context), history).trim().split("\n");
+                if (!historyData.isEmpty())
+                    for (String listDatum : listData)
+                        historyBroha(context).insertAll(
+                                new Broha(listDatum));
+                //historyPref(context).edit().clear().apply(); /* TODO: Uncomment this when API is done */
         }
+        SettingsUtils.setPrefNum(browservio_saver(context), historyApi, LATEST_API);
     }
 
     private void verChecker() {
-        if (SettingsUtils.getPrefNum(historyPref(context), SettingsKeys.historyApi) > LATEST_API
-                || SettingsUtils.getPrefNum(historyPref(context), SettingsKeys.historyApi) <= -1)
+        if (SettingsUtils.getPrefNum(browservio_saver(context), historyApi) > LATEST_API
+                || SettingsUtils.getPrefNum(browservio_saver(context), historyApi) <= -1)
             throw new RuntimeException();
     }
 }
