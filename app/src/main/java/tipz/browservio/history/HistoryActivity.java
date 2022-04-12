@@ -20,18 +20,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import tipz.browservio.R;
+import tipz.browservio.broha.Broha;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 
 public class HistoryActivity extends AppCompatActivity {
-    private static List<String> listData;
+    private static List<Broha> listData;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -58,7 +57,7 @@ public class HistoryActivity extends AppCompatActivity {
                 .setTitle(getResources().getString(R.string.del_fav2_title))
                 .setMessage(getResources().getString(R.string.del_hist_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                    HistoryReader.clear(this);
+                    HistoryUtils.clear(this);
                     CommonUtils.showMessage(this, getResources().getString(R.string.wiped_success));
                     finish();
                 })
@@ -70,17 +69,14 @@ public class HistoryActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         isEmptyCheck();
-
-
         RecyclerView historyList = findViewById(R.id.recyclerView);
-        listData = new ArrayList<>(Arrays.asList(HistoryReader.history_data(this).trim().split("\n")));
-
+        listData = HistoryApi.historyBroha(this).getAll();
         historyList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         historyList.setAdapter(new ItemsAdapter(this));
     }
 
     void isEmptyCheck() {
-        if (HistoryReader.isEmptyCheck(this)) {
+        if (HistoryUtils.isEmptyCheck(this)) {
             CommonUtils.showMessage(this, getResources().getString(R.string.hist_empty));
             finish();
         }
@@ -112,11 +108,11 @@ public class HistoryActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull HistoryActivity.ItemsAdapter.ViewHolder holder, int position) {
-            holder.mTextView.setText(listData.get(position));
+            holder.mTextView.setText(listData.get(position).getUrl());
 
             holder.mTextView.setOnClickListener(view -> {
                 Intent needLoad = new Intent();
-                needLoad.putExtra("needLoadUrl", listData.get(position));
+                needLoad.putExtra("needLoadUrl", listData.get(position).getUrl());
                 mHistoryActivity.setResult(0, needLoad);
                 mHistoryActivity.finish();
             });
@@ -129,22 +125,16 @@ public class HistoryActivity extends AppCompatActivity {
                 menu1.add(mHistoryActivity.getResources().getString(R.string.add_to_fav));
                 popup1.setOnMenuItemClickListener(item -> {
                     if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.del_hist))) {
-                        listData.remove(position);
-                        StringBuilder out = new StringBuilder();
-                        for (Object o : listData) {
-                            out.append(o.toString());
-                            out.append(CommonUtils.LINE_SEPARATOR());
-                        }
-                        HistoryReader.write(mHistoryActivity, out.toString().trim());
+                        HistoryUtils.deleteById(mHistoryActivity, position);
                         notifyItemRangeRemoved(position, 1);
                         mHistoryActivity.isEmptyCheck();
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(android.R.string.copyUrl))) {
-                        CommonUtils.copyClipboard(mHistoryActivity, listData.get(position));
+                        CommonUtils.copyClipboard(mHistoryActivity, listData.get(position).getUrl());
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.add_to_fav))) {
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)) + 1)));
-                        SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)), listData.get(position));
+                        SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)), listData.get(position).getUrl());
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_show), "1");
                         CommonUtils.showMessage(mHistoryActivity, mHistoryActivity.getResources().getString(R.string.saved_su));
                         return true;

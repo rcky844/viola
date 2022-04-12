@@ -94,7 +94,7 @@ import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.fav.FavActivity;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryApi;
-import tipz.browservio.history.HistoryReader;
+import tipz.browservio.history.HistoryUtils;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private StringBuilder adServers;
     private boolean customBrowse = false;
+    private boolean firstLaunch = false;
 
     private ValueCallback<Uri[]> mUploadMessage;
 
@@ -295,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.history))) {
                     webview.clearHistory();
-                    HistoryReader.clear(MainActivity.this);
+                    HistoryUtils.clear(MainActivity.this);
                     CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
@@ -561,6 +562,8 @@ public class MainActivity extends AppCompatActivity {
      * sur wen reel Sherk brower pls sand meme sum
      */
     private void initializeLogic() {
+        new HistoryApi(this); /* Start History service */
+
         /* User agent init code */
         setDeskMode(null, 0, true);
 
@@ -568,8 +571,10 @@ public class MainActivity extends AppCompatActivity {
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
 
         /* Init settings check */
-        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0"))
+        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0")) {
+            firstLaunch = true;
             new SettingsInit(MainActivity.this);
+        }
 
         /* Load default webpage */
         browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
@@ -613,8 +618,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
-        new HistoryApi(this);
 
         /* Import the list of Ad servers */
         String line;
@@ -666,8 +669,8 @@ public class MainActivity extends AppCompatActivity {
                     || url.equals(BrowservioURLs.realErrUrl)
                     || url.equals(BrowservioURLs.realLicenseUrl))) {
                 UrlEdit.setText(url);
-                if (!HistoryReader.history_data(MainActivity.this).trim().endsWith(url))
-                    HistoryReader.appendData(MainActivity.this, url);
+                if (firstLaunch || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
+                    HistoryUtils.appendData(MainActivity.this, url);
             }
         }
 

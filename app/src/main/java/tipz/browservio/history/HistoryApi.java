@@ -50,7 +50,7 @@ public class HistoryApi {
                     for (String listDatum : listData)
                         historyBroha(context).insertAll(
                                 new Broha(listDatum));
-                //historyPref(context).edit().clear().apply(); /* TODO: Uncomment this when API is done */
+                historyPref(context).edit().clear().apply();
         }
         SettingsUtils.setPrefNum(browservio_saver(context), historyApi, LATEST_API);
     }
