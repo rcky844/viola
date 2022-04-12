@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
@@ -122,9 +123,13 @@ public class HistoryActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull HistoryActivity.ItemsAdapter.ViewHolder holder, int position) {
+            Broha data = listData.get(position);
+            String title = data.getTitle();
+            String url = data.getUrl();
+
             holder.icon.setImageResource(R.drawable.default_favicon);
-            holder.title.setText(listData.get(position).getUrl());
-            holder.url.setText(Uri.parse(listData.get(position).getUrl()).getHost());
+            holder.title.setText(title == null ? url : title);
+            holder.url.setText(Uri.parse(url).getHost());
             Calendar date = Calendar.getInstance();
             date.setTimeInMillis(listData.get(position).getTimestamp() * 1000L);
             holder.time.setText(String.valueOf(date.get(Calendar.HOUR_OF_DAY)).concat(":")
@@ -132,7 +137,7 @@ public class HistoryActivity extends AppCompatActivity {
 
             holder.back.setOnClickListener(view -> {
                 Intent needLoad = new Intent();
-                needLoad.putExtra("needLoadUrl", listData.get(position).getUrl());
+                needLoad.putExtra("needLoadUrl", data.getUrl());
                 mHistoryActivity.setResult(0, needLoad);
                 mHistoryActivity.finish();
             });
@@ -145,17 +150,17 @@ public class HistoryActivity extends AppCompatActivity {
                 menu1.add(mHistoryActivity.getResources().getString(R.string.add_to_fav));
                 popup1.setOnMenuItemClickListener(item -> {
                     if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.del_hist))) {
-                        HistoryUtils.deleteById(mHistoryActivity, listData.get(position).getId());
+                        HistoryUtils.deleteById(mHistoryActivity, data.getId());
                         listData.remove(position);
                         notifyItemRangeRemoved(position, 1);
                         mHistoryActivity.isEmptyCheck();
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(android.R.string.copyUrl))) {
-                        CommonUtils.copyClipboard(mHistoryActivity, listData.get(position).getUrl());
+                        CommonUtils.copyClipboard(mHistoryActivity, data.getUrl());
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.add_to_fav))) {
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)) + 1)));
-                        SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)), listData.get(position).getUrl());
+                        SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)), data.getUrl());
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_show), "1");
                         CommonUtils.showMessage(mHistoryActivity, mHistoryActivity.getResources().getString(R.string.saved_su));
                         return true;

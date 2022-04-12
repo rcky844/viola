@@ -661,19 +661,18 @@ public class MainActivity extends AppCompatActivity {
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(String url) {
+        private void UrlSet(String url, String title) {
             if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
                     && !(url.equals("about:blank")
                     || url.equals(BrowservioURLs.realErrUrl)
                     || url.equals(BrowservioURLs.realLicenseUrl))) {
                 UrlEdit.setText(url);
                 if (HistoryUtils.isEmptyCheck(MainActivity.this) || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
-                    HistoryUtils.appendData(MainActivity.this, url);
+                    HistoryUtils.appendData(MainActivity.this, url, title);
             }
         }
 
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            UrlSet(url);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
             if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
@@ -684,7 +683,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageFinished(WebView view, String url) {
-            UrlSet(url);
+            UrlSet(url, UrlTitle);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 CookieSyncManager.getInstance().sync();
             else
