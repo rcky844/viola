@@ -28,16 +28,18 @@ public class UrlUtils {
      * @return result
      */
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
-        if (startsWithMatch(url))
-            return url;
+        String trimmedUrl = url.trim();
 
-        if (url.endsWith("/") || url.contains("."))
-            return "http://" + url;
+        if (startsWithMatch(trimmedUrl))
+            return trimmedUrl;
+
+        if (!trimmedUrl.contains(" ") && (trimmedUrl.contains("/") || trimmedUrl.contains(".")))
+            return "http://" + trimmedUrl;
 
         if (canBeSearch)
-            return searchUrl + url;
+            return searchUrl + trimmedUrl;
 
-        return url;
+        return trimmedUrl;
     }
 
     public static boolean startsWithMatch(String url) {
