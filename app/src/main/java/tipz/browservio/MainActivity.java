@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private StringBuilder adServers;
     private boolean customBrowse = false;
-    private boolean firstLaunch = false;
 
     private ValueCallback<Uri[]> mUploadMessage;
 
@@ -572,7 +571,6 @@ public class MainActivity extends AppCompatActivity {
 
         /* Init settings check */
         if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0")) {
-            firstLaunch = true;
             new SettingsInit(MainActivity.this);
         }
 
@@ -669,7 +667,7 @@ public class MainActivity extends AppCompatActivity {
                     || url.equals(BrowservioURLs.realErrUrl)
                     || url.equals(BrowservioURLs.realLicenseUrl))) {
                 UrlEdit.setText(url);
-                if (firstLaunch || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
+                if (HistoryUtils.isEmptyCheck(MainActivity.this) || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
                     HistoryUtils.appendData(MainActivity.this, url);
             }
         }
