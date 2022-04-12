@@ -115,7 +115,7 @@ public class HistoryActivity extends AppCompatActivity {
         @NonNull
         @Override
         public HistoryActivity.ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_broha_history, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_broha, parent, false);
 
             return new HistoryActivity.ItemsAdapter.ViewHolder(view);
         }
