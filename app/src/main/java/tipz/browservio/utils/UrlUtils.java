@@ -1,7 +1,5 @@
 package tipz.browservio.utils;
 
-import static tipz.browservio.utils.urls.BrowservioURLs.realErrUrl;
-
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
@@ -30,9 +28,6 @@ public class UrlUtils {
      * @return result
      */
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
-        if (url.contains("/?"))
-            return realErrUrl;
-
         if (startsWithMatch(url))
             return url;
 
