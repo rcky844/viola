@@ -2,6 +2,7 @@ package tipz.browservio.history;
 
 import static tipz.browservio.fav.FavApi.bookmarks;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -121,6 +122,7 @@ public class HistoryActivity extends AppCompatActivity {
             return new HistoryActivity.ItemsAdapter.ViewHolder(view);
         }
 
+        @SuppressLint("SimpleDateFormat")
         @Override
         public void onBindViewHolder(@NonNull HistoryActivity.ItemsAdapter.ViewHolder holder, int position) {
             Broha data = listData.get(position);
@@ -131,9 +133,8 @@ public class HistoryActivity extends AppCompatActivity {
             holder.title.setText(title == null ? url : title);
             holder.url.setText(Uri.parse(url).getHost());
             Calendar date = Calendar.getInstance();
-            date.setTimeInMillis(listData.get(position).getTimestamp() * 1000L);
-            holder.time.setText(String.valueOf(date.get(Calendar.HOUR_OF_DAY)).concat(":")
-                    .concat(String.valueOf(date.get(Calendar.MINUTE))));
+            date.setTimeInMillis(data.getTimestamp() * 1000L);
+            holder.time.setText(new SimpleDateFormat("dd/MM\nHH:ss").format(date.getTime()));
 
             holder.back.setOnClickListener(view -> {
                 Intent needLoad = new Intent();
