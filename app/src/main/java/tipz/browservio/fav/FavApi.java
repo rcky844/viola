@@ -16,13 +16,14 @@ public class FavApi {
 
     /* Old pref keys for migration */
     private static final String favApi = "favApi";
-    private static final String bookmarks = "bookmarks.cfg";
-    private static final String bookmarked = "bookmarked_";
+    private static String bookmarked(int count) {
+        return "bookmarked_".concat(Integer.toString(count));
+    }
     private static final String bookmarked_title = "_title";
     private static final String bookmarked_show = "_show";
 
     private static SharedPreferences bookmarks(Context context) {
-        return context.getSharedPreferences(bookmarks, Activity.MODE_PRIVATE);
+        return context.getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
     }
 
     public static BrohaDao favBroha(Context context) {
@@ -40,13 +41,13 @@ public class FavApi {
             int populate_count = 0;
             boolean loopComplete = false;
             while (!loopComplete) {
-                String shouldShow = SettingsUtils.getPref(bookmarks(context), bookmarked.concat(Integer.toString(populate_count)).concat(bookmarked_show));
+                String shouldShow = SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count).concat(bookmarked_show));
                 if (!shouldShow.equals("0")) {
                     if (shouldShow.isEmpty()) {
                         loopComplete = true;
                     } else {
-                        String bookmarkTitle = bookmarked.concat(Integer.toString(populate_count)).concat(bookmarked_title);
-                        FavUtils.appendData(context, SettingsUtils.getPref(bookmarks(context), bookmarkTitle), SettingsUtils.getPref(bookmarks(context), bookmarked.concat(Integer.toString(populate_count))));
+                        String bookmarkTitle = bookmarked(populate_count).concat(bookmarked_title);
+                        FavUtils.appendData(context, SettingsUtils.getPref(bookmarks(context), bookmarkTitle), SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count)));
                     }
                 }
                 populate_count++;
