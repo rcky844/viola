@@ -76,17 +76,14 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Scanner;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.fav.FavActivity;
@@ -115,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String UrlTitle;
     private String currentUrl;
-    private StringBuilder adServers;
+    private String adServers;
     private boolean customBrowse = false;
 
     private ValueCallback<Uri[]> mUploadMessage;
@@ -596,23 +593,15 @@ public class MainActivity extends AppCompatActivity {
 
         new HistoryApi(this);
 
-        /* Import the list of Ad servers */
-        String line;
-        adServers = new StringBuilder();
-
-        InputStream is = this.getResources().openRawResource(R.raw.hosts);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-        if (is != null) {
-            try {
-                while ((line = br.readLine()).startsWith("127.0.0.1 ")) {
-                    adServers.append(line);
-                    adServers.append(CommonUtils.LINE_SEPARATOR());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        /* Update the list of Ad servers */
+        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
+        StringBuilder builder = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.startsWith("127.0.0.1 "))
+                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
         }
+        adServers = builder.toString();
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
             WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
@@ -738,10 +727,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            String list = String.valueOf(adServers);
-
             try {
-                if (list.contains(new URL(url).getHost()) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
+                if (adServers.contains(new URL(url).getHost()) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
                     return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
