@@ -389,35 +389,34 @@ public class SettingsActivity extends AppCompatActivity {
                         CommonUtils.showMessage(activity, getResources().getString(R.string.network_unavailable_toast));
                     } else {
                         File apkFile = new File(updateDownloadPath);
-                        int position = 0;
-                        boolean isLatest = false;
+
                         String[] array = DownloadToStringUtils.
                                 downloadToString("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
                                 .split(CommonUtils.LINE_SEPARATOR());
-                        for (String obj : array) {
-                            if (position == 0) {
-                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && !updateTesting) {
-                                    isLatest = true;
-                                    CommonUtils.showMessage(activity, getResources().getString(R.string.version_latest_toast));
-                                }
-                            }
-                            if (position == 1 && !isLatest) {
-                                CommonUtils.showMessage(activity, getResources().getString(R.string.new_update_detect_toast));
 
-                                if (!apkFile.exists() || apkFile.delete()) {
-                                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
-                                    request.setTitle(getResources().getString(R.string.download_title));
-                                    request.setMimeType("application/vnd.android.package-archive");
-                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
-                                    DownloadManager dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
-                                    downloadID = dm.enqueue(request);
-                                } else {
-                                    CommonUtils.showMessage(activity, getResources().getString(R.string.update_down_failed_toast));
-                                }
-                            }
-                            position += 1;
+                        if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE && !updateTesting) {
+                            CommonUtils.showMessage(activity, getResources().getString(R.string.version_latest_toast));
+                            return;
                         }
+
+                        new MaterialAlertDialogBuilder(activity)
+                                .setTitle(getResources().getString(R.string.new_update_detect_title))
+                                .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
+                                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                    if (!apkFile.exists() || apkFile.delete()) {
+                                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(array[1]));
+                                        request.setTitle(getResources().getString(R.string.download_title));
+                                        request.setMimeType("application/vnd.android.package-archive");
+                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
+                                        DownloadManager dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+                                        downloadID = dm.enqueue(request);
+                                    } else {
+                                        CommonUtils.showMessage(activity, getResources().getString(R.string.update_down_failed_toast));
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .create().show();
                     }
                 });
                 changelog_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.realChangelogUrl));
