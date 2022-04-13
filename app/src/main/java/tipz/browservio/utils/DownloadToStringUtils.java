@@ -40,7 +40,7 @@ public class DownloadToStringUtils {
                     StringBuilder result = new StringBuilder();
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        result.append(line);
+                        result.append(line).append(CommonUtils.LINE_SEPARATOR());
                     }
                     value = result.toString();
                 } finally {
