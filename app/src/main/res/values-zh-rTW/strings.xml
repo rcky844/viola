@@ -29,7 +29,8 @@
     <string name="update_btn">檢查更新</string>
     <string name="version_latest_toast">您目前執行的是最新版本的Browservio</string>
     <string name="network_unavailable_toast">網路不可用</string>
-    <string name="new_update_detect_toast">"已檢測到新的版本, 正在下載中…"</string>
+    <string name="new_update_detect_title">"檢測到新的版本"</string>
+    <string name="new_update_detect_message">"%1$s (%2$s) 可用, 你想更新嗎?"</string>
     <string name="update_down_failed_toast">更新下載失敗!</string>
     <string name="download_title">"Browservio 更新"</string>
     <string name="general">一般</string>

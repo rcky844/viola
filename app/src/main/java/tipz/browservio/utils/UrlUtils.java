@@ -34,7 +34,7 @@ public class UrlUtils {
         if (startsWithMatch(trimmedUrl))
             return trimmedUrl;
 
-        if (!trimmedUrl.contains(" ") && (trimmedUrl.contains("/") || trimmedUrl.contains(".")))
+        if (trimmedUrl.contains("/") || trimmedUrl.contains("."))
             return "http://" + trimmedUrl;
 
         if (canBeSearch)

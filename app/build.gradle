@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'idea'
 }
 
 def getGitHash = { ->
@@ -57,12 +56,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
-    }
-}
-
-idea {
-    module {
-        excludeDirs = [file("src/main/res/raw/hosts.txt")]
     }
 }
 
