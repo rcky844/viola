@@ -39,13 +39,16 @@ public class FavApi {
     private void verAdapter() {
         if (SettingsUtils.getPrefNum(browservio_saver(context), favApi) == 0) {
             int populate_count = 0;
-            while (populate_count != -1) {
+            boolean loopComplete = false;
+            while (!loopComplete) {
                 String shouldShow = SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count).concat(bookmarked_show));
                 if (!shouldShow.equals("0")) {
-                    if (shouldShow.isEmpty())
-                        populate_count = -1;
-                    else
-                        FavUtils.appendData(context, SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count).concat(bookmarked_title)), SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count)));
+                    if (shouldShow.isEmpty()) {
+                        loopComplete = true;
+                    } else {
+                        String bookmarkTitle = bookmarked(populate_count).concat(bookmarked_title);
+                        FavUtils.appendData(context, SettingsUtils.getPref(bookmarks(context), bookmarkTitle), SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count)));
+                    }
                 }
                 populate_count++;
             }
