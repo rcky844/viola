@@ -10,8 +10,15 @@ public class HistoryUtils {
      * <p>
      * Module to save history into a SharedPref.
      */
-    public static void appendData(Context context, String url, String title) {
-        HistoryApi.historyBroha(context).insertAll(new Broha(title, url));
+    public static void appendData(Context context, String url) {
+        HistoryApi.historyBroha(context).insertAll(new Broha(url));
+    }
+
+    public static void updateData(Context context, String title) {
+        Broha lastBroha = HistoryApi.historyBroha(context).lastUrl();
+        if (title != null)
+            lastBroha.setTitle(title);
+        HistoryApi.historyBroha(context).updateUser(lastBroha);
     }
 
     public static void clear(Context context) {

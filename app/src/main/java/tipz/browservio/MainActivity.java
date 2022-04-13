@@ -661,14 +661,14 @@ public class MainActivity extends AppCompatActivity {
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(String url, String title) {
+        private void UrlSet(String url) {
             if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
                     && !(url.equals("about:blank")
                     || url.equals(BrowservioURLs.realErrUrl)
                     || url.equals(BrowservioURLs.realLicenseUrl))) {
                 UrlEdit.setText(url);
                 if (HistoryUtils.isEmptyCheck(MainActivity.this) || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
-                    HistoryUtils.appendData(MainActivity.this, url, title);
+                    HistoryUtils.appendData(MainActivity.this, url);
             }
         }
 
@@ -683,7 +683,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageFinished(WebView view, String url) {
-            UrlSet(url, UrlTitle);
+            UrlSet(url);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 CookieSyncManager.getInstance().sync();
             else
@@ -831,6 +831,7 @@ public class MainActivity extends AppCompatActivity {
 
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
+            HistoryUtils.updateData(MainActivity.this, title);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }
