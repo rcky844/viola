@@ -14,11 +14,13 @@ public class HistoryUtils {
         HistoryApi.historyBroha(context).insertAll(new Broha(url));
     }
 
-    public static void updateData(Context context, String title) {
+    public static void updateData(Context context, String title, String url) {
         Broha lastBroha = HistoryApi.historyBroha(context).lastUrl();
         if (!isEmptyCheck(context)) {
             if (title != null)
                 lastBroha.setTitle(title);
+            if (url != null)
+                lastBroha.setUrl(url);
             HistoryApi.historyBroha(context).updateBroha(lastBroha);
         }
     }
