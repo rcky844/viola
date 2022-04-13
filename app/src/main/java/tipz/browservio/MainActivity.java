@@ -668,6 +668,7 @@ public class MainActivity extends AppCompatActivity {
                     || url.equals(BrowservioURLs.realErrUrl)
                     || url.equals(BrowservioURLs.realLicenseUrl))) {
                 UrlEdit.setText(url);
+                currentUrl = url;
                 if (HistoryUtils.isEmptyCheck(MainActivity.this) || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
                     HistoryUtils.appendData(MainActivity.this, url);
             }
