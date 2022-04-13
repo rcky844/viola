@@ -138,7 +138,7 @@ public class HistoryActivity extends AppCompatActivity {
 
             holder.back.setOnClickListener(view -> {
                 Intent needLoad = new Intent();
-                needLoad.putExtra("needLoadUrl", data.getUrl());
+                needLoad.putExtra("needLoadUrl", url);
                 mHistoryActivity.setResult(0, needLoad);
                 mHistoryActivity.finish();
             });
@@ -157,7 +157,7 @@ public class HistoryActivity extends AppCompatActivity {
                         mHistoryActivity.isEmptyCheck();
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(android.R.string.copyUrl))) {
-                        CommonUtils.copyClipboard(mHistoryActivity, data.getUrl());
+                        CommonUtils.copyClipboard(mHistoryActivity, url);
                         return true;
                     } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.add_to_fav))) {
                         SettingsUtils.setPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(mHistoryActivity), SettingsKeys.bookmarked_count)) + 1)));
