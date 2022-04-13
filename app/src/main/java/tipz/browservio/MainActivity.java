@@ -1,6 +1,5 @@
 package tipz.browservio;
 
-import static tipz.browservio.fav.FavApi.bookmarks;
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.Manifest;
@@ -92,6 +91,8 @@ import java.util.Objects;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.fav.FavActivity;
+import tipz.browservio.fav.FavApi;
+import tipz.browservio.fav.FavUtils;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryApi;
 import tipz.browservio.history.HistoryUtils;
@@ -349,13 +350,10 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)) + 1)));
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)), webview.getUrl());
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_title), UrlTitle);
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_show), "1");
+                    FavUtils.appendData(this, UrlTitle, currentUrl);
                     CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (bookmarks(MainActivity.this).getAll().size() == 0) {
+                    if (FavUtils.isEmptyCheck(this)) {
                         CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
                     } else {
                         Intent intent = new Intent(MainActivity.this, FavActivity.class);
@@ -563,6 +561,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initializeLogic() {
         new HistoryApi(this); /* Start History service */
+        new FavApi(this); /* Start Favourites service */
 
         /* User agent init code */
         setDeskMode(null, 0, true);
