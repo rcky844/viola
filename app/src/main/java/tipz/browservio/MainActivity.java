@@ -550,8 +550,7 @@ public class MainActivity extends AppCompatActivity {
             new SettingsInit(MainActivity.this);
         }
 
-        /* Load default webpage */
-        browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
+        configChecker();
 
         /* zoom related stuff - From SCMPNews project */
         webview.getSettings().setSupportZoom(true);
@@ -605,6 +604,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
             WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
+
+        /* Load default webpage */
+        browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
     }
 
     public class browservioErrJsInterface {
@@ -830,13 +832,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (webViewEnabled())
-            configChecker();
-    }
-
     public void downloadFile(String url, String contentDisposition, String mimeType) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
@@ -891,7 +886,10 @@ public class MainActivity extends AppCompatActivity {
      * Receive needLoadUrl for loading.
      */
     final ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            result -> browservioBrowse(result.getData() != null ? result.getData().getStringExtra("needLoadUrl") : null));
+            result -> {
+                configChecker();
+                browservioBrowse(result.getData() != null ? result.getData().getStringExtra("needLoadUrl") : null);
+            });
 
     /**
      * Config Checker
