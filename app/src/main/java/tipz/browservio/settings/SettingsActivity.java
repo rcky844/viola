@@ -33,16 +33,14 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Objects;
 
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.utils.CommonUtils;
+import tipz.browservio.utils.DownloadToStringUtils;
 import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.urls.SearchEngineEntries;
 
@@ -387,69 +385,39 @@ public class SettingsActivity extends AppCompatActivity {
                         BuildConfig.VERSION_CODENAME,
                         BuildConfig.VERSION_BUILD_YEAR));
                 update_btn.setOnClickListener(_update_btn -> {
-                    if (!CommonUtils.isNetworkAvailable(activity.getApplicationContext())) {
+                    if (CommonUtils.isNetworkAvailable(activity.getApplicationContext())) {
                         CommonUtils.showMessage(activity, getResources().getString(R.string.network_unavailable_toast));
                     } else {
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                String path = "https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg";
-                                File apkFile = new File(updateDownloadPath);
-                                URL u;
-                                try {
-                                    u = new URL(path);
-                                    HttpURLConnection c = (HttpURLConnection) u.openConnection();
-                                    c.setRequestMethod("GET");
-                                    c.connect();
-                                    final ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                                    byte[] buffer = new byte[1024];
-                                    int inputStreamTest = c.getInputStream().read(buffer);
-                                    if (inputStreamTest >= 5) {
-                                        bo.write(buffer);
-
-                                        activity.runOnUiThread(() -> {
-                                            int position = 0;
-                                            boolean isLatest = false;
-                                            String[] array = bo.toString().split(CommonUtils.LINE_SEPARATOR());
-                                            for (String obj : array) {
-                                                if (position == 0) {
-                                                    if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && !updateTesting) {
-                                                        isLatest = true;
-                                                        CommonUtils.showMessage(activity, getResources().getString(R.string.version_latest_toast));
-                                                    }
-                                                }
-                                                if (position == 1 && !isLatest) {
-                                                    CommonUtils.showMessage(activity, getResources().getString(R.string.new_update_detect_toast));
-
-                                                    if (!apkFile.exists() || apkFile.delete()) {
-                                                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
-                                                        request.setTitle(getResources().getString(R.string.download_title));
-                                                        request.setMimeType("application/vnd.android.package-archive");
-                                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
-                                                        DownloadManager dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
-                                                        downloadID = dm.enqueue(request);
-                                                    } else {
-                                                        CommonUtils.showMessage(activity, getResources().getString(R.string.update_down_failed_toast));
-                                                    }
-                                                }
-                                                position += 1;
-                                            }
-                                            try {
-                                                bo.close();
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                        });
-                                    } else {
-                                        CommonUtils.showMessage(activity, getResources().getString(R.string.update_down_failed_toast));
-                                    }
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                        File apkFile = new File(updateDownloadPath);
+                        int position = 0;
+                        boolean isLatest = false;
+                        String[] array = DownloadToStringUtils.
+                                downloadToString("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
+                                .split(CommonUtils.LINE_SEPARATOR());
+                        for (String obj : array) {
+                            if (position == 0) {
+                                if (Integer.parseInt(obj) <= BuildConfig.VERSION_CODE && !updateTesting) {
+                                    isLatest = true;
+                                    CommonUtils.showMessage(activity, getResources().getString(R.string.version_latest_toast));
                                 }
-
                             }
-                        }.start();
+                            if (position == 1 && !isLatest) {
+                                CommonUtils.showMessage(activity, getResources().getString(R.string.new_update_detect_toast));
+
+                                if (!apkFile.exists() || apkFile.delete()) {
+                                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(obj));
+                                    request.setTitle(getResources().getString(R.string.download_title));
+                                    request.setMimeType("application/vnd.android.package-archive");
+                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
+                                    DownloadManager dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+                                    downloadID = dm.enqueue(request);
+                                } else {
+                                    CommonUtils.showMessage(activity, getResources().getString(R.string.update_down_failed_toast));
+                                }
+                            }
+                            position += 1;
+                        }
                     }
                 });
                 changelog_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.realChangelogUrl));
