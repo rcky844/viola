@@ -1,5 +1,6 @@
 package tipz.browservio.fav;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
@@ -130,10 +132,11 @@ public class FavActivity extends AppCompatActivity {
             holder.back.setOnLongClickListener(view -> {
                 PopupMenu popup1 = new PopupMenu(mFavActivity, view);
                 Menu menu1 = popup1.getMenu();
-                menu1.add(mFavActivity.getResources().getString(R.string.del_fav));
+                menu1.add(mFavActivity.getResources().getString(R.string.favMenuEdit));
+                menu1.add(mFavActivity.getResources().getString(R.string.delete));
                 menu1.add(mFavActivity.getResources().getString(android.R.string.copyUrl));
                 popup1.setOnMenuItemClickListener(item -> {
-                    if (item.getTitle().toString().equals(mFavActivity.getResources().getString(R.string.del_fav))) {
+                    if (item.getTitle().toString().equals(mFavActivity.getResources().getString(R.string.delete))) {
                         FavUtils.deleteById(mFavActivity, data.getId());
                         listData.remove(position);
                         notifyItemRangeRemoved(position, 1);
@@ -141,6 +144,31 @@ public class FavActivity extends AppCompatActivity {
                         return true;
                     } else if (item.getTitle().toString().equals(mFavActivity.getResources().getString(android.R.string.copyUrl))) {
                         CommonUtils.copyClipboard(mFavActivity, url);
+                        return true;
+                    } else if (item.getTitle().toString().equals(mFavActivity.getResources().getString(R.string.favMenuEdit))) {
+                        final LayoutInflater layoutInflater = LayoutInflater.from(mFavActivity);
+                        @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_fav_edit, null);
+                        final AppCompatEditText titleEditText = root.findViewById(R.id.titleEditText);
+                        final AppCompatEditText urlEditText = root.findViewById(R.id.urlEditText);
+                        titleEditText.setText(title);
+                        urlEditText.setText(url);
+                        new MaterialAlertDialogBuilder(mFavActivity)
+                                .setTitle(mFavActivity.getResources().getString(R.string.favMenuEdit))
+                                .setView(root)
+                                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                    if (!Objects.requireNonNull(titleEditText.getText()).toString().equals(title)
+                                            || !Objects.requireNonNull(urlEditText.getText()).toString().equals(url)) {
+                                        data.setTitle(Objects.requireNonNull(titleEditText.getText()).toString());
+                                        data.setUrl(Objects.requireNonNull(urlEditText.getText()).toString());
+                                        data.setTimestamp();
+                                        FavApi.favBroha(mFavActivity).updateBroha(data);
+                                        listData = FavApi.favBroha(mFavActivity).getAll();
+                                        notifyItemRangeRemoved(position, 1);
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setIcon(R.drawable.default_favicon)
+                                .create().show();
                         return true;
                     }
                     return false;
