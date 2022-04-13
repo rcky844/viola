@@ -25,7 +25,7 @@ public interface BrohaDao {
     void insertAll(Broha... broha);
 
     @Update
-    void updateUser(Broha... user);
+    void updateBroha(Broha... broha);
 
     @Query("DELETE FROM broha WHERE id = :id")
     void deleteById(int id);

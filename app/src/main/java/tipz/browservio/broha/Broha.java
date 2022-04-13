@@ -58,6 +58,14 @@ public class Broha {
         this.title = title;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setTimestamp() {
+        this.timestamp = System.currentTimeMillis() / 1000L;
+    }
+
     public int getId() {
         return this.id;
     }
