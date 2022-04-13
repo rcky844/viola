@@ -5,6 +5,7 @@
     - Redesigned dropdown
 - Commonize download functions
 - Broha objects for History and Favourites
+    - Add support for icon saving
 - Updater API 3
     - Update question dialog
 
