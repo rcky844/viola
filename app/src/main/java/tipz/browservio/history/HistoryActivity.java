@@ -143,11 +143,11 @@ public class HistoryActivity extends AppCompatActivity {
             holder.back.setOnLongClickListener(view -> {
                 PopupMenu popup1 = new PopupMenu(mHistoryActivity, view);
                 Menu menu1 = popup1.getMenu();
-                menu1.add(mHistoryActivity.getResources().getString(R.string.del_hist));
+                menu1.add(mHistoryActivity.getResources().getString(R.string.delete));
                 menu1.add(mHistoryActivity.getResources().getString(android.R.string.copyUrl));
                 menu1.add(mHistoryActivity.getResources().getString(R.string.add_to_fav));
                 popup1.setOnMenuItemClickListener(item -> {
-                    if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.del_hist))) {
+                    if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.delete))) {
                         HistoryUtils.deleteById(mHistoryActivity, data.getId());
                         listData.remove(position);
                         notifyItemRangeRemoved(position, 1);

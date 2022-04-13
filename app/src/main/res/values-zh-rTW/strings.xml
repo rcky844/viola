@@ -29,7 +29,8 @@
     <string name="update_btn">檢查更新</string>
     <string name="version_latest_toast">您目前執行的是最新版本的Browservio</string>
     <string name="network_unavailable_toast">網路不可用</string>
-    <string name="new_update_detect_toast">"已檢測到新的版本, 正在下載中…"</string>
+    <string name="new_update_detect_title">"檢測到新的版本"</string>
+    <string name="new_update_detect_message">"%1$s (%2$s) 可用, 你想更新嗎?"</string>
     <string name="update_down_failed_toast">更新下載失敗!</string>
     <string name="download_title">"Browservio 更新"</string>
     <string name="general">一般</string>
@@ -46,13 +47,12 @@
     <string name="source_code">原始碼</string>
     <string name="source_code_desp">看一下Browservio的原始碼</string>
     <string name="fav">書籤</string>
-    <string name="del_fav">"刪除這個書籤"</string>
+    <string name="delete">"刪除"</string>
     <string name="del_fav2_title">刪除全部書籤</string>
     <string name="del_fav2_message">"您將要刪除全部書籤, 您確定要這樣做嗎?"</string>
     <string name="wiped_success">清除成功!</string>
     <string name="fav_del_fab_desp">刪除全部書籤</string>
     <string name="hist">歷史記錄</string>
-    <string name="del_hist">刪除這個歷史記錄</string>
     <string name="add_to_fav">儲存到書籤</string>
     <string name="del_hist_message">"您將要刪除全部歷史記錄, 您確定要這樣做嗎?"</string>
     <string name="del_hist_fab_desp">刪除全部歷史記錄</string>
@@ -97,6 +97,9 @@
     <string name="ssl_certificate_untrusted">證書頒發機構不受信任。</string>
     <string name="ssl_certificate_unknown">發生未知SSL錯誤。</string>
     <string name="search_entries_default">\u0020(默認)</string>
+    <string name="favMenuEdit">編輯</string>
+    <string name="favMenuTitle">標題</string>
+    <string name="favMenuLink">鏈接</string>
 
     <string-array name="errMsg">
         <item>無法打開此頁面</item>

@@ -75,19 +75,14 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Scanner;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.fav.FavActivity;
@@ -101,6 +96,7 @@ import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
+import tipz.browservio.utils.DownloadToStringUtils;
 import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.urls.SearchEngineEntries;
@@ -117,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String UrlTitle;
     private String currentUrl;
-    private StringBuilder adServers;
+    private String adServers;
     private boolean customBrowse = false;
 
     private ValueCallback<Uri[]> mUploadMessage;
@@ -483,49 +479,29 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || !CommonUtils.isNetworkAvailable(getApplicationContext()))
+                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()))
                     return;
-                new Thread() {
-                    @Override
-                    public void run() {
-                        String path = SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions), text.toString());
-                        URL u;
-                        try {
-                            u = new URL(path);
-                            HttpURLConnection c = (HttpURLConnection) u.openConnection();
-                            c.setRequestMethod("GET");
-                            c.connect();
-                            final ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                            byte[] buffer = new byte[65536];
-                            int inputStreamTest = c.getInputStream().read(buffer);
-                            if (inputStreamTest > count)
-                                bo.write(buffer);
-                            MainActivity.this.runOnUiThread(() -> {
-                                try {
-                                    JSONArray jsonArray = new JSONArray(bo.toString());
+                try {
+                    JSONArray jsonArray = new JSONArray(DownloadToStringUtils.downloadToString(
+                            SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
+                                    browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
+                                    text.toString())));
 
-                                    jsonArray = jsonArray.optJSONArray(1);
-                                    if (jsonArray == null)
-                                        throw new RuntimeException("jsonArray is null.");
-                                    final int MAX_RESULTS = 10;
-                                    ArrayList<String> result = new ArrayList<>(Math.min(jsonArray.length(), MAX_RESULTS));
-                                    for (int i = 0; i < jsonArray.length() && result.size() < MAX_RESULTS; i++) {
-                                        String s = jsonArray.optString(i);
-                                        if (s != null && !s.isEmpty())
-                                            result.add(s);
-                                    }
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1, result);
-                                    UrlEdit.setAdapter(adapter);
-                                    bo.close();
-                                } catch (IOException | JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    jsonArray = jsonArray.optJSONArray(1);
+                    if (jsonArray == null)
+                        throw new RuntimeException("jsonArray is null.");
+                    final int MAX_RESULTS = 10;
+                    ArrayList<String> result = new ArrayList<>(Math.min(jsonArray.length(), MAX_RESULTS));
+                    for (int i = 0; i < jsonArray.length() && result.size() < MAX_RESULTS; i++) {
+                        String s = jsonArray.optString(i);
+                        if (s != null && !s.isEmpty())
+                            result.add(s);
                     }
-                }.start();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1, result);
+                    UrlEdit.setAdapter(adapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -617,23 +593,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        /* Import the list of Ad servers */
-        String line;
-        adServers = new StringBuilder();
-
-        InputStream is = this.getResources().openRawResource(R.raw.hosts);
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-        if (is != null) {
-            try {
-                while ((line = br.readLine()).startsWith("127.0.0.1 ")) {
-                    adServers.append(line);
-                    adServers.append(CommonUtils.LINE_SEPARATOR());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        /* Update the list of Ad servers */
+        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
+        StringBuilder builder = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.startsWith("127.0.0.1 "))
+                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
         }
+        adServers = builder.toString();
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
             WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
@@ -758,10 +726,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            String list = String.valueOf(adServers);
-
             try {
-                if (list.contains(new URL(url).getHost()) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
+                if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
                     return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();

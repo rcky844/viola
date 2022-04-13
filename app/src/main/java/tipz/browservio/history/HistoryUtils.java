@@ -19,7 +19,7 @@ public class HistoryUtils {
         if (!isEmptyCheck(context)) {
             if (title != null)
                 lastBroha.setTitle(title);
-            HistoryApi.historyBroha(context).updateUser(lastBroha);
+            HistoryApi.historyBroha(context).updateBroha(lastBroha);
         }
     }
 
