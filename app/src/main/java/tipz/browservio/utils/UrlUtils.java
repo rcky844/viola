@@ -114,14 +114,14 @@ public class UrlUtils {
         // Extract file name from content disposition header field
         if (contentDisposition != null) {
             filename = parseContentDisposition(contentDisposition);
-            assert filename != null;
-            filename = filename.substring(filename.lastIndexOf("/") + 1);
+            if (filename != null)
+                filename = filename.substring(filename.lastIndexOf("/") + 1);
         }
 
         // If all the other http-related approaches failed, use the plain uri
         if (filename == null) {
             String decodedUrl = Uri.decode(url);
-            decodedUrl = decodedUrl.substring(decodedUrl.lastIndexOf("/") + 1);
+            decodedUrl = decodedUrl.substring(0, decodedUrl.indexOf("?") - 1);
             if (!decodedUrl.endsWith("/")) {
                 filename = decodedUrl.substring(decodedUrl.lastIndexOf("/") + 1);
             }
@@ -172,7 +172,7 @@ public class UrlUtils {
      *
      */
     private static final String contentDispositionFileNameAsterisk =
-            "\\s*filename\\*\\s*=\\s*(utf-8|iso-8859-1)'[^']*'([^;\\\\s]*)";
+            "\\s*filename\\*\\s*=\\s*(utf-8|iso-8859-1)'[^']*'([^;\\s]*)";
 
     /**
      * Format as defined in RFC 2616 and RFC 5987
@@ -301,12 +301,12 @@ public class UrlUtils {
     /**
      * Definition as per RFC 5987, section 3.2.1. (value-chars)
      */
-    private static final Pattern ENCODED_SYMBOL_PATTERN =
+    private static final Pattern encodedSymbolPattern =
             Pattern.compile("%[0-9a-f]{2}|[0-9a-z!#$&+-.^_`|~]", Pattern.CASE_INSENSITIVE);
 
     private static String decodeHeaderField(String field, String encoding)
             throws UnsupportedEncodingException {
-        Matcher m = ENCODED_SYMBOL_PATTERN.matcher(field);
+        Matcher m = encodedSymbolPattern.matcher(field);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         while (m.find()) {
