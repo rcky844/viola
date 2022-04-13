@@ -1,6 +1,5 @@
 package tipz.browservio;
 
-import static tipz.browservio.fav.FavApi.bookmarks;
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.Manifest;
@@ -92,6 +91,8 @@ import java.util.Objects;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.fav.FavActivity;
+import tipz.browservio.fav.FavApi;
+import tipz.browservio.fav.FavUtils;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryApi;
 import tipz.browservio.history.HistoryUtils;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView favicon;
 
     private String UrlTitle;
+    private String currentUrl;
     private StringBuilder adServers;
     private boolean customBrowse = false;
 
@@ -222,13 +224,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void webviewReload() {
-        browservioBrowse(UrlEdit.getText().toString());
+        browservioBrowse(currentUrl);
     }
 
     private void shareUrl(@Nullable String url) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, url == null ? UrlEdit.getText() : url);
+        i.putExtra(Intent.EXTRA_TEXT, url == null ? currentUrl : url);
         startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
     }
 
@@ -332,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
                     .setShortLabel(UrlTitle)
                     .setIcon(IconCompat.createWithBitmap(icon))
                     .setIntent(new Intent(this, MainActivity.class)
-                            .setData(Uri.parse(UrlEdit.getText().toString()))
+                            .setData(Uri.parse(currentUrl))
                             .setAction(Intent.ACTION_VIEW))
                     .build(), null);
         } else if (item == 9) {
@@ -348,13 +350,10 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)) + 1)));
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)), webview.getUrl());
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_title), UrlTitle);
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_show), "1");
+                    FavUtils.appendData(this, UrlTitle, currentUrl);
                     CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (bookmarks(MainActivity.this).getAll().size() == 0) {
+                    if (FavUtils.isEmptyCheck(this)) {
                         CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
                     } else {
                         Intent intent = new Intent(MainActivity.this, FavActivity.class);
@@ -401,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
                     final SslCertificate.DName issuedTo = cert.getIssuedTo();
                     final SslCertificate.DName issuedBy = cert.getIssuedBy();
                     final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(MainActivity.this);
-                    dialog.setTitle(Uri.parse(UrlEdit.getText().toString()).getHost())
+                    dialog.setTitle(Uri.parse(currentUrl).getHost())
                             .setMessage(getResources().getString(R.string.ssl_info_dialog_content,
                                     issuedTo.getCName(), issuedTo.getOName(), issuedTo.getUName(),
                                     issuedBy.getCName(), issuedBy.getOName(), issuedBy.getUName(),
@@ -562,6 +561,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initializeLogic() {
         new HistoryApi(this); /* Start History service */
+        new FavApi(this); /* Start Favourites service */
 
         /* User agent init code */
         setDeskMode(null, 0, true);
@@ -661,14 +661,15 @@ public class MainActivity extends AppCompatActivity {
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(String url, String title) {
+        private void UrlSet(String url) {
             if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
                     && !(url.equals("about:blank")
                     || url.equals(BrowservioURLs.realErrUrl)
                     || url.equals(BrowservioURLs.realLicenseUrl))) {
                 UrlEdit.setText(url);
+                currentUrl = url;
                 if (HistoryUtils.isEmptyCheck(MainActivity.this) || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
-                    HistoryUtils.appendData(MainActivity.this, url, title);
+                    HistoryUtils.appendData(MainActivity.this, url);
             }
         }
 
@@ -683,7 +684,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onPageFinished(WebView view, String url) {
-            UrlSet(url, UrlTitle);
+            UrlSet(url);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 CookieSyncManager.getInstance().sync();
             else
@@ -831,6 +832,7 @@ public class MainActivity extends AppCompatActivity {
 
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
+            HistoryUtils.updateData(MainActivity.this, title);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }

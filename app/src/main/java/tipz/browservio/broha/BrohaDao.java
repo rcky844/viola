@@ -3,6 +3,7 @@ package tipz.browservio.broha;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public interface BrohaDao {
 
     @Insert
     void insertAll(Broha... broha);
+
+    @Update
+    void updateUser(Broha... user);
 
     @Query("DELETE FROM broha WHERE id = :id")
     void deleteById(int id);

@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import tipz.browservio.broha.BrohaClient;
-import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.broha.BrohaDao;
 import tipz.browservio.settings.SettingsUtils;
 
 public class FavApi {
@@ -16,24 +16,42 @@ public class FavApi {
 
     /* Old pref keys for migration */
     private static final String favApi = "favApi";
+    private static final String bookmarks = "bookmarks.cfg";
+    private static final String bookmarked = "bookmarked_";
+    private static final String bookmarked_title = "_title";
+    private static final String bookmarked_show = "_show";
 
-    public static SharedPreferences bookmarks(Context context) {
-        return context.getSharedPreferences(SettingsKeys.bookmarks, Activity.MODE_PRIVATE);
+    private static SharedPreferences bookmarks(Context context) {
+        return context.getSharedPreferences(bookmarks, Activity.MODE_PRIVATE);
     }
 
-    public static BrohaClient favBroha(Context context) {
-        return new BrohaClient(context, "bookmarks");
+    public static BrohaDao favBroha(Context context) {
+        return new BrohaClient(context, "bookmarks").getDao();
     }
 
-    /* TODO: set to public */
-    private FavApi(Context c) {
+    public FavApi(Context c) {
         context = c;
         verChecker();
         verAdapter();
     }
 
     private void verAdapter() {
-        if (SettingsUtils.getPrefNum(browservio_saver(context), favApi) == 0) {/* TODO: Write migrator */
+        if (SettingsUtils.getPrefNum(browservio_saver(context), favApi) == 0) {
+            int populate_count = 0;
+            boolean loopComplete = false;
+            while (!loopComplete) {
+                String shouldShow = SettingsUtils.getPref(bookmarks(context), bookmarked.concat(Integer.toString(populate_count)).concat(bookmarked_show));
+                if (!shouldShow.equals("0")) {
+                    if (shouldShow.isEmpty()) {
+                        loopComplete = true;
+                    } else {
+                        String bookmarkTitle = bookmarked.concat(Integer.toString(populate_count)).concat(bookmarked_title);
+                        FavUtils.appendData(context, SettingsUtils.getPref(bookmarks(context), bookmarkTitle), SettingsUtils.getPref(bookmarks(context), bookmarked.concat(Integer.toString(populate_count))));
+                    }
+                }
+                populate_count++;
+            }
+            bookmarks(context).edit().clear().apply();
         }
         SettingsUtils.setPrefNum(browservio_saver(context), favApi, LATEST_API);
     }

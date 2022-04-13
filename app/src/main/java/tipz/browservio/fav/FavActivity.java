@@ -1,21 +1,20 @@
 package tipz.browservio.fav;
 
-import static tipz.browservio.fav.FavApi.bookmarks;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,13 +25,11 @@ import java.util.List;
 import java.util.Objects;
 
 import tipz.browservio.R;
-import tipz.browservio.settings.SettingsKeys;
-import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.broha.Broha;
 import tipz.browservio.utils.CommonUtils;
 
 public class FavActivity extends AppCompatActivity {
-    private static List<String> listData;
-    private ProgressBar PopulationProg;
+    private static List<Broha> listData;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -54,13 +51,11 @@ public class FavActivity extends AppCompatActivity {
         _toolbar.setNavigationOnClickListener(_v -> onBackPressed());
         FloatingActionButton _fab = findViewById(R.id._fab);
 
-        PopulationProg = findViewById(R.id.PopulationProg);
-
         _fab.setOnClickListener(_view -> new MaterialAlertDialogBuilder(this)
                 .setTitle(getResources().getString(R.string.del_fav2_title))
                 .setMessage(getResources().getString(R.string.del_fav2_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                    bookmarks(FavActivity.this).edit().clear().apply();
+                    FavUtils.clear(this);
                     CommonUtils.showMessage(this, getResources().getString(R.string.wiped_success));
                     finish();
                 })
@@ -71,36 +66,15 @@ public class FavActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        PopulationProg.setVisibility(View.VISIBLE);
-        int populate_count = 0;
-        boolean loopComplete = false;
-        while (!loopComplete) {
-            String shouldShow = SettingsUtils.getPref(bookmarks(FavActivity.this), SettingsKeys.bookmarked.concat(Integer.toString(populate_count)).concat(SettingsKeys.bookmarked_show));
-            if (!shouldShow.equals("0")) {
-                if (shouldShow.isEmpty()) {
-                    loopComplete = true;
-                    isEmptyCheck(listData, bookmarks(FavActivity.this));
-                    PopulationProg.setVisibility(View.GONE);
-                } else {
-                    String bookmarkTitle = SettingsKeys.bookmarked.concat(Integer.toString(populate_count)).concat(SettingsKeys.bookmarked_title);
-                    listData.add(SettingsUtils.getPref(bookmarks(FavActivity.this), bookmarkTitle).isEmpty() ?
-                            SettingsUtils.getPref(bookmarks(FavActivity.this), SettingsKeys.bookmarked.concat(Integer.toString(populate_count))) :
-                            SettingsUtils.getPref(bookmarks(FavActivity.this), bookmarkTitle));
-                }
-            }
-            populate_count++;
-        }
-
         RecyclerView favList = findViewById(R.id.recyclerView);
-
+        listData = FavApi.favBroha(this).getAll();
         favList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         favList.setAdapter(new ItemsAdapter(this));
     }
 
-    void isEmptyCheck(List<String> list, SharedPreferences out) {
+    void isEmptyCheck() {
         // Placed here for old data migration
-        if (list.isEmpty()) {
-            out.edit().clear().apply();
+        if (FavUtils.isEmptyCheck(this)) {
             CommonUtils.showMessage(this, getResources().getString(R.string.fav_list_empty));
             finish();
         }
@@ -110,11 +84,17 @@ public class FavActivity extends AppCompatActivity {
         private final FavActivity mFavActivity;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            private final AppCompatTextView mTextView;
+            private final ConstraintLayout back;
+            private final AppCompatImageView icon;
+            private final AppCompatTextView title;
+            private final AppCompatTextView url;
 
             public ViewHolder(View view) {
                 super(view);
-                mTextView = view.findViewById(android.R.id.text1);
+                back = view.findViewById(R.id.bg);
+                icon = view.findViewById(R.id.icon);
+                title = view.findViewById(R.id.title);
+                url = view.findViewById(R.id.url);
             }
         }
 
@@ -125,36 +105,42 @@ public class FavActivity extends AppCompatActivity {
         @NonNull
         @Override
         public FavActivity.ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item_1, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_broha, parent, false);
 
             return new FavActivity.ItemsAdapter.ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull FavActivity.ItemsAdapter.ViewHolder holder, int position) {
-            holder.mTextView.setText(listData.get(position));
+            Broha data = listData.get(position);
+            String title = data.getTitle();
+            String url = data.getUrl();
 
-            holder.mTextView.setOnClickListener(view -> {
+            holder.icon.setImageResource(R.drawable.default_favicon);
+            holder.title.setText(title == null ? url : title);
+            holder.url.setText(Uri.parse(url).getHost());
+
+            holder.back.setOnClickListener(view -> {
                 Intent needLoad = new Intent();
-                needLoad.putExtra("needLoadUrl", SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(Integer.toString(position))));
+                needLoad.putExtra("needLoadUrl", url);
                 mFavActivity.setResult(0, needLoad);
                 mFavActivity.finish();
             });
 
-            holder.mTextView.setOnLongClickListener(view -> {
+            holder.back.setOnLongClickListener(view -> {
                 PopupMenu popup1 = new PopupMenu(mFavActivity, view);
                 Menu menu1 = popup1.getMenu();
                 menu1.add(mFavActivity.getResources().getString(R.string.del_fav));
                 menu1.add(mFavActivity.getResources().getString(android.R.string.copyUrl));
                 popup1.setOnMenuItemClickListener(item -> {
                     if (item.getTitle().toString().equals(mFavActivity.getResources().getString(R.string.del_fav))) {
+                        FavUtils.deleteById(mFavActivity, data.getId());
                         listData.remove(position);
-                        SettingsUtils.setPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(String.valueOf(position)).concat(SettingsKeys.bookmarked_show), "0");
                         notifyItemRangeRemoved(position, 1);
-                        mFavActivity.isEmptyCheck(listData, bookmarks(mFavActivity));
+                        mFavActivity.isEmptyCheck();
                         return true;
                     } else if (item.getTitle().toString().equals(mFavActivity.getResources().getString(android.R.string.copyUrl))) {
-                        CommonUtils.copyClipboard(mFavActivity, SettingsUtils.getPref(bookmarks(mFavActivity), SettingsKeys.bookmarked.concat(String.valueOf(position))));
+                        CommonUtils.copyClipboard(mFavActivity, url);
                         return true;
                     }
                     return false;

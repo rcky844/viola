@@ -20,7 +20,7 @@ public class HistoryApi {
     private static final String history = "history";
     private static final String historyApi = "historyApi";
 
-    public static SharedPreferences historyPref(Context context) {
+    private static SharedPreferences historyPref(Context context) {
         return context.getSharedPreferences("history.cfg", Activity.MODE_PRIVATE);
     }
 
