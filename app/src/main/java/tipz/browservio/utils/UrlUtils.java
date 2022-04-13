@@ -99,7 +99,7 @@ public class UrlUtils {
     private static String sanitizeMimeType(String mimeType) {
         if (mimeType != null) {
             if (mimeType.contains(";")) {
-                return mimeType.substring(0, mimeType.indexOf(";") - 1);
+                return StringUtils.substringBefore(mimeType, ';');
             } else {
                 return mimeType;
             }
@@ -115,15 +115,15 @@ public class UrlUtils {
         if (contentDisposition != null) {
             filename = parseContentDisposition(contentDisposition);
             if (filename != null)
-                filename = filename.substring(filename.lastIndexOf("/") + 1);
+                filename = StringUtils.substringAfterLast(filename, "/");
         }
 
         // If all the other http-related approaches failed, use the plain uri
         if (filename == null) {
             String decodedUrl = Uri.decode(url);
-            decodedUrl = decodedUrl.substring(0, decodedUrl.indexOf("?") - 1);
+            decodedUrl = StringUtils.substringBefore(decodedUrl, '?');
             if (!decodedUrl.endsWith("/")) {
-                filename = decodedUrl.substring(decodedUrl.lastIndexOf("/") + 1);
+                filename = StringUtils.substringAfterLast(decodedUrl, "/");
             }
         }
 
@@ -333,7 +333,7 @@ public class UrlUtils {
             MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
             // Compare the last segment of the extension against the mime type.
             // If there's a mismatch, discard the entire extension.
-            String typeFromExt = mimeTypeMap.getMimeTypeFromExtension(filename.substring(filename.lastIndexOf(".") + 1));
+            String typeFromExt = mimeTypeMap.getMimeTypeFromExtension(StringUtils.substringAfterLast(filename, "."));
             if (typeFromExt.equalsIgnoreCase(mimeType)) {
                 extension = "." + mimeTypeMap.getExtensionFromMimeType(mimeType);
                 // Check if the extension needs to be changed
