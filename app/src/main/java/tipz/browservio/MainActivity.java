@@ -995,9 +995,6 @@ public class MainActivity extends AppCompatActivity {
             return CommonUtils.EMPTY_STRING;
         }
 
-        if (url.startsWith(BrowservioURLs.yhlPrefix))
-            return "http://119.28.42.46:8886/chaxun_web.asp?kd_id=".concat(url.replace(BrowservioURLs.yhlPrefix, CommonUtils.EMPTY_STRING));
-
         return null;
     }
 }
