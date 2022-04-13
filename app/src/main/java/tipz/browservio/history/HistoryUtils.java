@@ -16,9 +16,11 @@ public class HistoryUtils {
 
     public static void updateData(Context context, String title) {
         Broha lastBroha = HistoryApi.historyBroha(context).lastUrl();
-        if (title != null)
-            lastBroha.setTitle(title);
-        HistoryApi.historyBroha(context).updateUser(lastBroha);
+        if (!isEmptyCheck(context)) {
+            if (title != null)
+                lastBroha.setTitle(title);
+            HistoryApi.historyBroha(context).updateUser(lastBroha);
+        }
     }
 
     public static void clear(Context context) {
