@@ -356,7 +356,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             center_action.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefStringBoolAccBool(browservio_saver(activity),
+                SettingsUtils.setPrefIntBoolAccBool(browservio_saver(activity),
                         SettingsKeys.centerActionBar, center_action.isChecked(), false);
                 return true;
             });
@@ -448,7 +448,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker, true);
             checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track, false);
             checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon, false);
-            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action, false);
+            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action, true);
             checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript, false);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultHomePageId)]));
