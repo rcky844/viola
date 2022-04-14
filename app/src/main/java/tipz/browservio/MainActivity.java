@@ -341,10 +341,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 11) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.add_dot));
+            menu.add(getResources().getString(R.string.add));
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
+                if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
                     FavUtils.appendData(this, UrlTitle, currentUrl);
                     CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {

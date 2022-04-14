@@ -13,7 +13,7 @@
     <string name="linear_control_b5_title">分享URL</string>
     <string name="copied_clipboard">成功复制到了剪贴板!</string>
     <string name="hist_empty">历史记录是空的!</string>
-    <string name="add_dot">添加…</string>
+    <string name="add">添加</string>
     <string name="saved_su">添加成功!</string>
     <string name="fav_list_empty">没有已添加的收藏</string>
     <string name="copy_title">复制网站标题</string>

@@ -13,7 +13,7 @@
     <string name="linear_control_b5_title">分享URL</string>
     <string name="copied_clipboard">成功複製到了剪貼簿!</string>
     <string name="hist_empty">歷史記錄是空的!</string>
-    <string name="add_dot">新增…</string>
+    <string name="add">新增</string>
     <string name="saved_su">新增成功!</string>
     <string name="fav_list_empty">沒有已新增的書籤</string>
     <string name="copy_title">複製網站標題</string>
