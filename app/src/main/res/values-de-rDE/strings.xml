@@ -13,7 +13,7 @@
     <string name="linear_control_b5_title">"URL teilen mit"</string>
     <string name="copied_clipboard">"In die Zwischenablage kopiert!"</string>
     <string name="hist_empty">"Der Verlauf ist leer!"</string>
-    <string name="add_dot">"Hinzufügen…"</string>
+    <string name="add">"Hinzufügen"</string>
     <string name="saved_su">"Erfolgreich gespeichert!"</string>
     <string name="fav_list_empty">"Es wurden keine Favoriten gespeichert."</string>
     <string name="copy_title">"Webseitentitel kopieren"</string>

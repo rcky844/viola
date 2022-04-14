@@ -14,7 +14,7 @@
     <string name="linear_control_b5_title">"Share URL using"</string>
     <string name="copied_clipboard">"Copied to clipboard!"</string>
     <string name="hist_empty">"History is empty!"</string>
-    <string name="add_dot">"Add…"</string>
+    <string name="add">"Add"</string>
     <string name="saved_su">"Saved successfully!"</string>
     <string name="fav_list_empty">"There are no favorites saved."</string>
     <string name="copy_title">"Copy Website Title"</string>

@@ -340,10 +340,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 11) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.add_dot));
+            menu.add(getResources().getString(R.string.add));
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
+                if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)) + 1)));
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)), webview.getUrl());
                     SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_title), UrlTitle);
