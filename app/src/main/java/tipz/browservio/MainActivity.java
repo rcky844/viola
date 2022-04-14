@@ -606,16 +606,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean urlShouldSet(String url) {
+        return !UrlEdit.getText().toString().equals(url)
+                && !(url.equals("about:blank")
+                || url.equals(BrowservioURLs.realErrUrl)
+                || url.equals(BrowservioURLs.realLicenseUrl));
+    }
+
     /**
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
-            if ((!UrlEdit.getText().toString().equals(url)
-                    && !(url.equals("about:blank")
-                        || url.equals(BrowservioURLs.realErrUrl)
-                        || url.equals(BrowservioURLs.realLicenseUrl)))
-                    || currentUrl == null) {
+            if (urlShouldSet(url) || currentUrl == null) {
                 UrlEdit.setText(url);
                 currentUrl = url;
                 if (update)
@@ -783,7 +786,8 @@ public class MainActivity extends AppCompatActivity {
 
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
-            HistoryUtils.updateData(MainActivity.this, title, null);
+            if (urlShouldSet(currentUrl))
+                HistoryUtils.updateData(MainActivity.this, title, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }
