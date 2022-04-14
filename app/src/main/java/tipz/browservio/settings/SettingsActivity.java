@@ -148,6 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
             CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
+            CheckBoxPreference center_action = Objects.requireNonNull(findPreference("center_action"));
 
             /* Advanced category */
             CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
@@ -354,6 +355,12 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
+            center_action.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefStringBoolAccBool(browservio_saver(activity),
+                        SettingsKeys.centerActionBar, center_action.isChecked(), false);
+                return true;
+            });
+
             javascript.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefStringBoolAccBool(browservio_saver(activity),
                         SettingsKeys.isJavaScriptEnabled, javascript.isChecked(), false);
@@ -441,6 +448,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker, true);
             checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track, false);
             checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon, false);
+            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action, false);
             checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript, false);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(activity), SettingsKeys.defaultHomePageId)]));

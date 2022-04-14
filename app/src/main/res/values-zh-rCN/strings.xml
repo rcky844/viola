@@ -85,6 +85,8 @@
     <string name="share_url">分享链结</string>
     <string name="pref_theme">主题</string>
     <string name="pref_theme_desp">当前主题: %s</string>
+    <string name="pref_center_action">水平居中操作栏</string>
+    <string name="pref_center_action_desp">当空间可用时自动居中操作栏</string>
     <string name="ssl_info">SSL证书信息</string>
     <string name="ssl_info_dialog_content">颁发给\n\t通用名 (CN): %1$s\n\t机构 (O): %2$s\n\t机构单位 (OU): %3$s\n\n颁发者\n\t通用名 (CN): %4$s\n\t机构 (O): %5$s\n\t机构单位 (OU): %6$s\n\n有效期\n\t颁发日期: %7$s\n\t到期日期: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL证书错误</string>

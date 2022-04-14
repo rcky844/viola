@@ -54,6 +54,11 @@
             android:summary="@string/show_favicon_desp"
             android:title="@string/show_favicon"
             app:iconSpaceReserved="false" />
+        <androidx.preference.CheckBoxPreference
+            android:key="center_action"
+            android:summary="@string/pref_center_action_desp"
+            android:title="@string/pref_center_action"
+            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory

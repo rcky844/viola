@@ -24,6 +24,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +46,7 @@ import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView fab;
     private WebView webview;
     private RecyclerView actionBar;
+    private RelativeLayout actionBarBack;
     private AppCompatImageView favicon;
 
     private String UrlTitle;
@@ -379,6 +382,7 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         webview = findViewById(R.id.webview);
         actionBar = findViewById(R.id.actionBar);
+        actionBarBack = findViewById(R.id.actionBarBack);
         favicon = findViewById(R.id.favicon);
 
         actionBar.setLayoutManager(new LinearLayoutManager(
@@ -606,8 +610,7 @@ public class MainActivity extends AppCompatActivity {
                     browservioBrowse(uri.toString());
                 }
             }
-        } else {
-            /* Load default webpage */
+        } else { /* Load default webpage */
             browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
         }
     }
@@ -798,10 +801,6 @@ public class MainActivity extends AppCompatActivity {
         private View mCustomView;
         private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
-        // Constructor for ChromeWebClient
-        public ChromeWebClient() {
-        }
-
         public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
             if (mCustomView != null) {
                 onHideCustomView();
@@ -974,6 +973,7 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
+        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
