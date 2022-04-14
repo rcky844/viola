@@ -2,14 +2,12 @@ package tipz.browservio;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -47,7 +45,6 @@ import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -55,8 +52,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
@@ -155,17 +150,7 @@ public class MainActivity extends AppCompatActivity {
         if (webViewEnabled()) {
             setContentView(R.layout.main);
             initialize();
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                    || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                    || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
-                    || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-            } else {
-                initializeLogic();
-            }
+            initializeLogic();
 
             CaocConfig.Builder.create()
                     .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
@@ -181,14 +166,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.no_webview));
             finish();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1000) {
-            initializeLogic();
         }
     }
 
@@ -566,6 +543,21 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
 
+        new HistoryApi(this);
+
+        /* Update the list of Ad servers */
+        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
+        StringBuilder builder = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.startsWith("127.0.0.1 "))
+                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+        }
+        adServers = builder.toString();
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
+
         /*
          * Getting information from intents, either from
          * sharing menu or default browser launch.
@@ -590,23 +582,10 @@ public class MainActivity extends AppCompatActivity {
                     browservioBrowse(uri.toString());
                 }
             }
+        } else {
+            /* Load default webpage */
+            browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
         }
-
-        /* Update the list of Ad servers */
-        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
-        StringBuilder builder = new StringBuilder();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (line.startsWith("127.0.0.1 "))
-                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
-        }
-        adServers = builder.toString();
-
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
-            WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
-
-        /* Load default webpage */
-        browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
     }
 
     public class browservioErrJsInterface {
@@ -898,7 +877,7 @@ public class MainActivity extends AppCompatActivity {
      * Config Checker
      * <p>
      * Used to check if anything has been changed
-     * after resume of restart.
+     * after returning from settings.
      */
     private void configChecker() {
         // Dark mode
