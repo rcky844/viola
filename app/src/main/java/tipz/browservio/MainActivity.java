@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
 
-        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this), "browservioErr");
+        webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
     }
 
     private void closeKeyboard() {
@@ -589,7 +589,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class browservioErrJsInterface {
+    public class browservioJsInterface {
         final MainActivity mMainActivity;
 
         browservioErrJsInterface(MainActivity mainActivity) {
