@@ -846,9 +846,12 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         String urlIdentify = URLIdentify(url);
-        if (urlIdentify != null)
-            if (urlIdentify.equals(CommonUtils.EMPTY_STRING))
-                return;
+        if (urlIdentify != null) {
+            currentUrl = urlIdentify;
+            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING))
+                webview.loadUrl(urlIdentify);
+            return;
+        }
 
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
         // Load URL
