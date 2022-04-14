@@ -100,6 +100,7 @@
     <string name="favMenuEdit">Bearbeiten</string>
     <string name="favMenuTitle">Titel</string>
     <string name="favMenuLink">Hyperlink</string>
+    <string name="ver3_blob_no_support">Blob-Dateien werden derzeit nicht zum Herunterladen unterstützt.</string>
 
     <string-array name="errMsg">
         <item>Webseite kann nicht angezeigt werden</item>

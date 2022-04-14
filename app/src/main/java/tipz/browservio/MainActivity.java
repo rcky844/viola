@@ -2,12 +2,14 @@ package tipz.browservio;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,6 +28,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
@@ -45,6 +48,7 @@ import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -52,6 +56,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
@@ -59,6 +64,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
@@ -75,7 +81,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -114,6 +122,20 @@ public class MainActivity extends AppCompatActivity {
     private ValueCallback<Uri[]> mUploadMessage;
 
     private final HashMap<String, String> mRequestHeaders = new HashMap<>();
+
+    private static final List<Integer> actionBarItemList = Arrays.asList(R.drawable.arrow_back_alt,
+            R.drawable.arrow_forward_alt,
+            R.drawable.refresh,
+            R.drawable.home,
+            R.drawable.smartphone,
+            R.drawable.new_tab,
+            R.drawable.delete,
+            R.drawable.share,
+            R.drawable.app_shortcut,
+            R.drawable.settings,
+            R.drawable.history,
+            R.drawable.favorites,
+            R.drawable.close);
 
     private String userAgentFull(String mid) {
         return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
@@ -354,7 +376,9 @@ public class MainActivity extends AppCompatActivity {
         actionBar = findViewById(R.id.actionBar);
         favicon = findViewById(R.id.favicon);
 
-        MainActionBarRecycler.initMainActionBarRecycler(MainActivity.this, this, actionBar);
+        actionBar.setLayoutManager(new LinearLayoutManager(
+                MainActivity.this, RecyclerView.HORIZONTAL, false));
+        actionBar.setAdapter(new ItemsAdapter(MainActivity.this));
 
         favicon.setOnClickListener(_view -> {
             final SslCertificate cert = webview.getCertificate();
@@ -498,7 +522,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
 
-        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this), "browservioErr");
+        webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
     }
 
     private void closeKeyboard() {
@@ -588,10 +612,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class browservioErrJsInterface {
+    public class browservioJsInterface {
         final MainActivity mMainActivity;
 
-        browservioErrJsInterface(MainActivity mainActivity) {
+        browservioJsInterface(MainActivity mainActivity) {
             mMainActivity = mainActivity;
         }
 
@@ -659,12 +683,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             boolean returnVal = false;
-            if (CommonUtils.appInstalledOrNot(getApplicationContext(), url) && !UrlUtils.startsWithMatch(url)) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
+            boolean normalSchemes = UrlUtils.startsWithMatch(url);
+            if (!normalSchemes) {
+                if (CommonUtils.appInstalledOrNot(getApplicationContext(), url)) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                } else {
+                    webview.stopLoading();
+                }
                 returnVal = true;
             }
-            if (!customBrowse) {
+            if (!customBrowse && normalSchemes) {
                 webview.loadUrl(url, mRequestHeaders);
                 returnVal = true;
             }
@@ -793,7 +822,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-            callback.invoke(origin, true, false);
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                callback.invoke(origin, true, false);
         }
 
         @Override
@@ -820,20 +851,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void downloadFile(String url, String contentDisposition, String mimeType) {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.ver3_blob_no_support));
+        } else {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
-        // Let this downloaded file be scanned by MediaScanner - so that it can
-        // show up in Gallery app, for example.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
-            request.allowScanningByMediaScanner();
+            // Let this downloaded file be scanned by MediaScanner - so that it can
+            // show up in Gallery app, for example.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+                request.allowScanningByMediaScanner();
 
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
-        final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-        request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                MimeTypeMap.getFileExtensionFromUrl(url)));
-        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        dm.enqueue(request);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
+            final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    MimeTypeMap.getFileExtensionFromUrl(url)));
+            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            dm.enqueue(request);
+        }
     }
 
     /**
@@ -950,5 +985,41 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return null;
+    }
+
+    public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
+        private final MainActivity mMainActivity;
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            private final AppCompatImageView mImageView;
+
+            public ViewHolder(View view) {
+                super(view);
+                mImageView = view.findViewById(R.id.imageView);
+            }
+        }
+
+        public ItemsAdapter(MainActivity mainActivity) {
+            mMainActivity = mainActivity;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_icon_item, parent, false);
+
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.mImageView.setImageResource(actionBarItemList.get(position));
+            holder.mImageView.setOnClickListener(view -> mMainActivity.itemSelected(holder.mImageView, position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return actionBarItemList.size();
+        }
     }
 }
