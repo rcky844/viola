@@ -3,6 +3,7 @@ package tipz.browservio.settings;
 public class SettingsKeys {
     /* browservio_saver */
     public static final String browservio_saver = "browservio.cfg";
+    public static final String centerActionBar = "centerActionBar";
     public static final String defaultHomePage = "defaultHomePage";
     public static final String defaultHomePageId = "defaultHomePageId";
     public static final String defaultSearch = "defaultSearch";

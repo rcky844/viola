@@ -87,6 +87,8 @@
     <string name="share_url">Share link</string>
     <string name="pref_theme">Theme</string>
     <string name="pref_theme_desp">Current theme: %s</string>
+    <string name="pref_center_action">Center Action Bar Horizontally</string>
+    <string name="pref_center_action_desp">Automatically center the action bar when space is available.</string>
     <string name="ssl_info">SSL Certificate Details</string>
     <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>
