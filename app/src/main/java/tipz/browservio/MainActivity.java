@@ -973,7 +973,7 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
-        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
+        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
