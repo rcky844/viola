@@ -12,6 +12,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tipz.browservio.utils.urls.BrowservioURLs;
+
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {
@@ -31,7 +33,7 @@ public class UrlUtils {
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
         String trimmedUrl = url.trim();
 
-        if (startsWithMatch(trimmedUrl))
+        if (startsWithMatch(trimmedUrl) || trimmedUrl.startsWith(BrowservioURLs.prefix))
             return trimmedUrl;
 
         if (trimmedUrl.contains("/") || trimmedUrl.contains("."))

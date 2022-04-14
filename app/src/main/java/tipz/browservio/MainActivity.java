@@ -543,6 +543,21 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
 
+        new HistoryApi(this);
+
+        /* Update the list of Ad servers */
+        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
+        StringBuilder builder = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.startsWith("127.0.0.1 "))
+                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+        }
+        adServers = builder.toString();
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
+
         /*
          * Getting information from intents, either from
          * sharing menu or default browser launch.
@@ -567,23 +582,10 @@ public class MainActivity extends AppCompatActivity {
                     browservioBrowse(uri.toString());
                 }
             }
+        } else {
+            /* Load default webpage */
+            browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
         }
-
-        /* Update the list of Ad servers */
-        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
-        StringBuilder builder = new StringBuilder();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (line.startsWith("127.0.0.1 "))
-                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
-        }
-        adServers = builder.toString();
-
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
-            WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
-
-        /* Load default webpage */
-        browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
     }
 
     public class browservioErrJsInterface {
@@ -604,15 +606,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean urlShouldSet(String url) {
+        return !(url.equals("about:blank")
+                || url.equals(BrowservioURLs.realErrUrl)
+                || url.equals(BrowservioURLs.realLicenseUrl));
+    }
+
     /**
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
-            if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
-                    && !(url.equals("about:blank")
-                    || url.equals(BrowservioURLs.realErrUrl)
-                    || url.equals(BrowservioURLs.realLicenseUrl))) {
+            if (!UrlEdit.getText().toString().equals(url)
+                    && urlShouldSet(url) || currentUrl == null) {
                 UrlEdit.setText(url);
                 currentUrl = url;
                 if (update)
@@ -780,7 +786,8 @@ public class MainActivity extends AppCompatActivity {
 
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
-            HistoryUtils.updateData(MainActivity.this, title, null);
+            if (urlShouldSet(currentUrl))
+                HistoryUtils.updateData(MainActivity.this, title, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }
@@ -839,9 +846,12 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         String urlIdentify = URLIdentify(url);
-        if (urlIdentify != null)
-            if (urlIdentify.equals(CommonUtils.EMPTY_STRING))
-                return;
+        if (urlIdentify != null) {
+            currentUrl = urlIdentify;
+            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING))
+                webview.loadUrl(urlIdentify);
+            return;
+        }
 
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
         // Load URL
@@ -875,7 +885,7 @@ public class MainActivity extends AppCompatActivity {
      * Config Checker
      * <p>
      * Used to check if anything has been changed
-     * after resume of restart.
+     * after returning from settings.
      */
     private void configChecker() {
         // Dark mode
