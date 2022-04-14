@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private String currentUrl;
     private String adServers;
+    private String currentError = CommonUtils.EMPTY_STRING;
+    private String currentCustomUA;
     private boolean customBrowse = false;
 
     private ValueCallback<Uri[]> mUploadMessage;
@@ -265,9 +267,12 @@ public class MainActivity extends AppCompatActivity {
                                     webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
                                     webviewReload();
                                 }
+                                currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
                             })
                             .setNegativeButton(android.R.string.cancel, null)
                             .create().show();
+                    if (currentCustomUA != null)
+                        customUserAgent.setText(currentCustomUA);
                 }
                 return false;
             });
@@ -483,10 +488,13 @@ public class MainActivity extends AppCompatActivity {
                 if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()))
                     return;
                 try {
-                    JSONArray jsonArray = new JSONArray(DownloadToStringUtils.downloadToString(
+                    String data = DownloadToStringUtils.downloadToString(
                             SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
                                     browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
-                                    text.toString())));
+                                    text.toString()));
+                    if (data == null)
+                        return;
+                    JSONArray jsonArray = new JSONArray(data);
 
                     jsonArray = jsonArray.optJSONArray(1);
                     if (jsonArray == null)
@@ -569,15 +577,7 @@ public class MainActivity extends AppCompatActivity {
 
         new HistoryApi(this);
 
-        /* Update the list of Ad servers */
-        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
-        StringBuilder builder = new StringBuilder();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (line.startsWith("127.0.0.1 "))
-                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
-        }
-        adServers = builder.toString();
+        updateAdServerList();
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
             WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
@@ -612,6 +612,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* Function to update the list of Ad servers */
+    private void updateAdServerList() {
+        String data = DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
+        if (data != null) {
+            Scanner scanner = new Scanner(data);
+            StringBuilder builder = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.startsWith("127.0.0.1 "))
+                    builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+            }
+            adServers = builder.toString();
+        }
+    }
+
     public class browservioJsInterface {
         final MainActivity mMainActivity;
 
@@ -621,6 +636,8 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public String errGetMsg(int msgId) {
+            if (msgId >= 6)
+                return currentError;
             return mMainActivity.getResources().getStringArray(R.array.errMsg)[msgId];
         }
 
@@ -678,6 +695,7 @@ public class MainActivity extends AppCompatActivity {
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             webview.loadUrl(BrowservioURLs.realErrUrl);
+            currentError = description;
         }
 
         @Override
@@ -743,9 +761,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            if (adServers == null)
+                updateAdServerList();
             try {
-                if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
-                    return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
+                if (adServers != null)
+                    if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
+                        return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -879,6 +900,8 @@ public class MainActivity extends AppCompatActivity {
     private void browservioBrowse(String url) {
         if (url == null || url.isEmpty())
             return;
+
+        currentError = "net::ERR_UNKNOWN";
 
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {

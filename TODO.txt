@@ -1,0 +1,13 @@
+3.0 Dragon
+- Better search suggestions Part 1
+    - More suggestions provider
+    - Use setProvider
+- Broha objects for History and Favourites
+    - Add support for icon saving
+
+4.0 Escobar
+- Introduce UA storage
+- Custom Adblocker source
+- PreferencesDataStore (?)
+- Better search suggestions Part 2
+    - Redesigned dropdown
