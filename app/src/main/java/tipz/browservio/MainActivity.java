@@ -607,8 +607,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean urlShouldSet(String url) {
-        return !UrlEdit.getText().toString().equals(url)
-                && !(url.equals("about:blank")
+        return !(url.equals("about:blank")
                 || url.equals(BrowservioURLs.realErrUrl)
                 || url.equals(BrowservioURLs.realLicenseUrl));
     }
@@ -618,7 +617,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
-            if (urlShouldSet(url) || currentUrl == null) {
+            if (!UrlEdit.getText().toString().equals(url)
+                    && urlShouldSet(url) || currentUrl == null) {
                 UrlEdit.setText(url);
                 currentUrl = url;
                 if (update)
