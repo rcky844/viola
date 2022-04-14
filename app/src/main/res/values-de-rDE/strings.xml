@@ -98,6 +98,7 @@
     <string name="ssl_certificate_untrusted">Der Zertifizierungsstelle wird nicht vertraut.</string>
     <string name="ssl_certificate_unknown">Ein unbekannter SSL-Fehler ist aufgetreten.</string>
     <string name="search_entries_default">\u0020(Standard)</string>
+    <string name="ver3_blob_no_support">Blob-Dateien werden derzeit nicht zum Herunterladen unterstützt.</string>
 
     <string-array name="errMsg">
         <item>Webseite kann nicht angezeigt werden</item>

@@ -98,6 +98,7 @@
     <string name="ssl_certificate_untrusted">證書頒發機構不受信任。</string>
     <string name="ssl_certificate_unknown">發生未知SSL錯誤。</string>
     <string name="search_entries_default">\u0020(默認)</string>
+    <string name="ver3_blob_no_support">目前不支持下載blob文件</string>
 
     <string-array name="errMsg">
         <item>無法打開此頁面</item>

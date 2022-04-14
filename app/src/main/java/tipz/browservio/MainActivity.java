@@ -836,20 +836,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void downloadFile(String url, String contentDisposition, String mimeType) {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.ver3_blob_no_support));
+        } else {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
-        // Let this downloaded file be scanned by MediaScanner - so that it can
-        // show up in Gallery app, for example.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
-            request.allowScanningByMediaScanner();
+            // Let this downloaded file be scanned by MediaScanner - so that it can
+            // show up in Gallery app, for example.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+                request.allowScanningByMediaScanner();
 
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
-        final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-        request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                MimeTypeMap.getFileExtensionFromUrl(url)));
-        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        dm.enqueue(request);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
+            final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    MimeTypeMap.getFileExtensionFromUrl(url)));
+            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            dm.enqueue(request);
+        }
     }
 
     /**

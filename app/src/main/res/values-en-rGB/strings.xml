@@ -98,6 +98,7 @@
     <string name="ssl_certificate_untrusted">The certificate authority is not trusted.</string>
     <string name="ssl_certificate_unknown">An unknown SSL error occurred.</string>
     <string name="search_entries_default">\u0020(Default)</string>
+    <string name="ver3_blob_no_support">blob files are currently not supported for downloading.</string>
 
     <string-array name="errMsg">
         <item>Can\'t open this page</item>
