@@ -29,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
@@ -48,6 +49,7 @@ import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -63,6 +65,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
@@ -79,7 +82,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -116,6 +121,20 @@ public class MainActivity extends AppCompatActivity {
     private ValueCallback<Uri[]> mUploadMessage;
 
     private final HashMap<String, String> mRequestHeaders = new HashMap<>();
+
+    private static final List<Integer> actionBarItemList = Arrays.asList(R.drawable.arrow_back_alt,
+            R.drawable.arrow_forward_alt,
+            R.drawable.refresh,
+            R.drawable.home,
+            R.drawable.smartphone,
+            R.drawable.new_tab,
+            R.drawable.delete,
+            R.drawable.share,
+            R.drawable.app_shortcut,
+            R.drawable.settings,
+            R.drawable.history,
+            R.drawable.favorites,
+            R.drawable.close);
 
     private String userAgentFull(String mid) {
         return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
@@ -359,7 +378,9 @@ public class MainActivity extends AppCompatActivity {
         actionBar = findViewById(R.id.actionBar);
         favicon = findViewById(R.id.favicon);
 
-        MainActionBarRecycler.initMainActionBarRecycler(MainActivity.this, this, actionBar);
+        actionBar.setLayoutManager(new LinearLayoutManager(
+                MainActivity.this, RecyclerView.HORIZONTAL, false));
+        actionBar.setAdapter(new ItemsAdapter(MainActivity.this));
 
         favicon.setOnClickListener(_view -> {
             final SslCertificate cert = webview.getCertificate();
@@ -592,7 +613,7 @@ public class MainActivity extends AppCompatActivity {
     public class browservioJsInterface {
         final MainActivity mMainActivity;
 
-        browservioErrJsInterface(MainActivity mainActivity) {
+        browservioJsInterface(MainActivity mainActivity) {
             mMainActivity = mainActivity;
         }
 
@@ -945,5 +966,41 @@ public class MainActivity extends AppCompatActivity {
             return "http://119.28.42.46:8886/chaxun_web.asp?kd_id=".concat(url.replace(BrowservioURLs.yhlPrefix, CommonUtils.EMPTY_STRING));
 
         return null;
+    }
+
+    public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
+        private final MainActivity mMainActivity;
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            private final AppCompatImageView mImageView;
+
+            public ViewHolder(View view) {
+                super(view);
+                mImageView = view.findViewById(R.id.imageView);
+            }
+        }
+
+        public ItemsAdapter(MainActivity mainActivity) {
+            mMainActivity = mainActivity;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_icon_item, parent, false);
+
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.mImageView.setImageResource(actionBarItemList.get(position));
+            holder.mImageView.setOnClickListener(view -> mMainActivity.itemSelected(holder.mImageView, position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return actionBarItemList.size();
+        }
     }
 }
