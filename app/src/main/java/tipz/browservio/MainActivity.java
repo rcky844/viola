@@ -486,10 +486,13 @@ public class MainActivity extends AppCompatActivity {
                 if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()))
                     return;
                 try {
-                    JSONArray jsonArray = new JSONArray(DownloadToStringUtils.downloadToString(
+                    String data = DownloadToStringUtils.downloadToString(
                             SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
                                     browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
-                                    text.toString())));
+                                    text.toString()));
+                    if (data == null)
+                        return;
+                    JSONArray jsonArray = new JSONArray(data);
 
                     jsonArray = jsonArray.optJSONArray(1);
                     if (jsonArray == null)
