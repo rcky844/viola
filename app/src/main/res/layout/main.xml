@@ -22,12 +22,9 @@
             app:contentInsetStart="0dp"
             app:title="@null">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:gravity="center_horizontal|center_vertical"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/favicon"
@@ -35,6 +32,9 @@
                     android:layout_height="?attr/minTouchTargetSize"
                     android:contentDescription="@string/favicon_desp"
                     android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/default_favicon" />
 
                 <ProgressBar
@@ -45,16 +45,24 @@
                     android:contentDescription="@string/favicon_desp"
                     android:indeterminate="true"
                     android:padding="8dp"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="right"
+                    app:constraint_referenced_ids="favicon,faviconProgressBar" />
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/UrlEdit"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
                     android:background="@drawable/url_edit_bg"
-                    android:gravity="center_vertical"
                     android:hint="@string/address_bar_hint"
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
                     android:importantForAutofill="no"
@@ -64,7 +72,9 @@
                     android:singleLine="true"
                     android:textColor="@color/colorElement"
                     android:textSize="12dp"
-                    android:weightSum="0" />
+                    app:layout_constraintEnd_toStartOf="@id/fab"
+                    app:layout_constraintStart_toEndOf="@id/barrier"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/fab"
@@ -74,9 +84,12 @@
                     android:contentDescription="@string/fab_desp"
                     android:padding="8dp"
                     android:rotation="180"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/arrow_up"
                     tools:ignore="RedundantDescriptionCheck" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 

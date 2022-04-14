@@ -604,8 +604,7 @@ public class MainActivity extends AppCompatActivity {
                     browservioBrowse(uri.toString());
                 }
             }
-        } else {
-            /* Load default webpage */
+        } else { /* Load default webpage */
             browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
         }
     }
@@ -789,10 +788,6 @@ public class MainActivity extends AppCompatActivity {
     public class ChromeWebClient extends WebChromeClient {
         private View mCustomView;
         private WebChromeClient.CustomViewCallback mCustomViewCallback;
-
-        // Constructor for ChromeWebClient
-        public ChromeWebClient() {
-        }
 
         public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
             if (mCustomView != null) {

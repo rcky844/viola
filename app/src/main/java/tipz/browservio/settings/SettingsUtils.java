@@ -11,7 +11,7 @@ public class SettingsUtils {
         return context.getSharedPreferences(SettingsKeys.browservio_saver, Activity.MODE_PRIVATE);
     }
 
-    public static boolean doesNotHaveGoogle = LocaleListCompat.getAdjustedDefault().get(0).getCountry().equals("CN");
+    public static final boolean doesNotHaveGoogle = LocaleListCompat.getAdjustedDefault().get(0).getCountry().equals("CN");
 
     /**
      * Check if SharedPreferences is empty
