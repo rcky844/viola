@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private String currentUrl;
     private String adServers;
+    private String currentError = CommonUtils.EMPTY_STRING;
     private boolean customBrowse = false;
 
     private ValueCallback<Uri[]> mUploadMessage;
@@ -619,6 +620,8 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public String errGetMsg(int msgId) {
+            if (msgId >= 6)
+                return currentError;
             return mMainActivity.getResources().getStringArray(R.array.errMsg)[msgId];
         }
 
@@ -670,6 +673,7 @@ public class MainActivity extends AppCompatActivity {
 
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             webview.loadUrl(BrowservioURLs.realErrUrl);
+            currentError = description;
         }
 
         @Override
