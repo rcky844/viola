@@ -675,12 +675,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             boolean returnVal = false;
-            if (CommonUtils.appInstalledOrNot(getApplicationContext(), url) && !UrlUtils.startsWithMatch(url)) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
+            boolean normalSchemes = UrlUtils.startsWithMatch(url);
+            if (!normalSchemes) {
+                if (CommonUtils.appInstalledOrNot(getApplicationContext(), url)) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                } else {
+                    webview.stopLoading();
+                }
                 returnVal = true;
             }
-            if (!customBrowse) {
+            if (!customBrowse && normalSchemes) {
                 webview.loadUrl(url, mRequestHeaders);
                 returnVal = true;
             }
