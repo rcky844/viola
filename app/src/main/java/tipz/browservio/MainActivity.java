@@ -541,6 +541,21 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
 
+        new HistoryApi(this);
+
+        /* Update the list of Ad servers */
+        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
+        StringBuilder builder = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.startsWith("127.0.0.1 "))
+                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+        }
+        adServers = builder.toString();
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
+
         /*
          * Getting information from intents, either from
          * sharing menu or default browser launch.
@@ -565,25 +580,10 @@ public class MainActivity extends AppCompatActivity {
                     browservioBrowse(uri.toString());
                 }
             }
+        } else {
+            /* Load default webpage */
+            browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
         }
-
-        new HistoryApi(this);
-
-        /* Update the list of Ad servers */
-        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
-        StringBuilder builder = new StringBuilder();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (line.startsWith("127.0.0.1 "))
-                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
-        }
-        adServers = builder.toString();
-
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
-            WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
-
-        /* Load default webpage */
-        browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
     }
 
     public class browservioErrJsInterface {
@@ -872,7 +872,7 @@ public class MainActivity extends AppCompatActivity {
      * Config Checker
      * <p>
      * Used to check if anything has been changed
-     * after resume of restart.
+     * after returning from settings.
      */
     private void configChecker() {
         // Dark mode
