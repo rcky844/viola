@@ -1,5 +1,4 @@
 3.0 Dragon
-- Introduce last custom UA
 - Better search suggestions Part 1
     - More suggestions provider
     - Use setProvider

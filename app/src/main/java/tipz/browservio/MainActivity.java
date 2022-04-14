@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentUrl;
     private String adServers;
     private String currentError = CommonUtils.EMPTY_STRING;
+    private String currentCustomUA;
     private boolean customBrowse = false;
 
     private ValueCallback<Uri[]> mUploadMessage;
@@ -265,9 +266,12 @@ public class MainActivity extends AppCompatActivity {
                                     webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
                                     webviewReload();
                                 }
+                                currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
                             })
                             .setNegativeButton(android.R.string.cancel, null)
                             .create().show();
+                    if (currentCustomUA != null)
+                        customUserAgent.setText(currentCustomUA);
                 }
                 return false;
             });
