@@ -611,10 +611,11 @@ public class MainActivity extends AppCompatActivity {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
-            if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
+            if ((!UrlEdit.getText().toString().equals(url)
                     && !(url.equals("about:blank")
-                    || url.equals(BrowservioURLs.realErrUrl)
-                    || url.equals(BrowservioURLs.realLicenseUrl))) {
+                        || url.equals(BrowservioURLs.realErrUrl)
+                        || url.equals(BrowservioURLs.realLicenseUrl)))
+                    || currentUrl == null) {
                 UrlEdit.setText(url);
                 currentUrl = url;
                 if (update)
