@@ -537,6 +537,9 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebChromeClient(new ChromeWebClient());
 
         webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
+        webview.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
+        webview.removeJavascriptInterface("accessibility"); /* CVE-2014-7224 */
+        webview.removeJavascriptInterface("accessibilityTraversal"); /* CVE-2014-7224 */
     }
 
     private void closeKeyboard() {
@@ -574,6 +577,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
         webview.getSettings().setDisplayZoomControls(false);
+        webview.getSettings().setAllowFileAccess(false);
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
@@ -889,7 +893,7 @@ public class MainActivity extends AppCompatActivity {
         if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.ver3_blob_no_support));
         } else {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(UrlUtils.UrlChecker(url, false, null)));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
@@ -915,7 +919,6 @@ public class MainActivity extends AppCompatActivity {
         if (url == null || url.isEmpty())
             return;
 
-        currentUrl = url;
         currentError = GENERIC_ERR_MSG;
 
         String urlIdentify = URLIdentify(url);
@@ -927,6 +930,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
+        currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
         customBrowse = true;
