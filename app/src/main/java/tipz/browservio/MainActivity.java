@@ -898,11 +898,20 @@ public class MainActivity extends AppCompatActivity {
 
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
             final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            try {
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            } catch (IllegalStateException e) {
+                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.downloadFailed));
+                return;
+            }
             request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
                     MimeTypeMap.getFileExtensionFromUrl(url)));
             DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-            dm.enqueue(request);
+            try {
+                dm.enqueue(request);
+            } catch (RuntimeException e) {
+                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.downloadFailed));
+            }
         }
     }
 
