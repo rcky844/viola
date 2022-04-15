@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
     private String currentCustomUA;
     private boolean customBrowse = false;
 
+    private final String GENERIC_ERR_MSG = "net::ERR_UNKNOWN";
+
     private ValueCallback<Uri[]> mUploadMessage;
 
     private final HashMap<String, String> mRequestHeaders = new HashMap<>();
@@ -535,6 +537,9 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebChromeClient(new ChromeWebClient());
 
         webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
+        webview.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
+        webview.removeJavascriptInterface("accessibility"); /* CVE-2014-7224 */
+        webview.removeJavascriptInterface("accessibilityTraversal"); /* CVE-2014-7224 */
     }
 
     private void closeKeyboard() {
@@ -572,6 +577,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
         webview.getSettings().setDisplayZoomControls(false);
+        webview.getSettings().setAllowFileAccess(false);
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
@@ -651,9 +657,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean urlShouldSet(String url) {
+        boolean errBool = !currentError.equals(GENERIC_ERR_MSG);
+        if (errBool && !webview.getUrl().equals(BrowservioURLs.realErrUrl))
+            webview.loadUrl(BrowservioURLs.realErrUrl);
         return !(url.equals("about:blank")
                 || url.equals(BrowservioURLs.realErrUrl)
-                || url.equals(BrowservioURLs.realLicenseUrl));
+                || url.equals(BrowservioURLs.realLicenseUrl)
+                || errBool);
     }
 
     /**
@@ -672,6 +682,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        @Override
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -683,6 +694,7 @@ public class MainActivity extends AppCompatActivity {
             UrlEdit.dismissDropDown();
         }
 
+        @Override
         public void onPageFinished(WebView view, String url) {
             UrlSet(url, true);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
@@ -696,6 +708,7 @@ public class MainActivity extends AppCompatActivity {
             favicon.setImageResource(R.drawable.default_favicon);
         }
 
+        @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             webview.loadUrl(BrowservioURLs.realErrUrl);
             currentError = description;
@@ -801,6 +814,7 @@ public class MainActivity extends AppCompatActivity {
         private View mCustomView;
         private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
+        @Override
         public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
             if (mCustomView != null) {
                 onHideCustomView();
@@ -814,6 +828,7 @@ public class MainActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
+        @Override
         public void onHideCustomView() {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             ((FrameLayout) getWindow().getDecorView()).removeView(mCustomView);
@@ -824,15 +839,18 @@ public class MainActivity extends AppCompatActivity {
             mCustomViewCallback = null;
         }
 
+        @Override
         public void onProgressChanged(WebView view, int progress) {
             MainProg.setProgress(progress == 100 ? 0 : progress);
         }
 
+        @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
             if (!icon.isRecycled())
                 favicon.setImageBitmap(icon);
         }
 
+        @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
             if (urlShouldSet(webview.getUrl()))
@@ -841,6 +859,7 @@ public class MainActivity extends AppCompatActivity {
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }
 
+        @Override
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                     || ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -874,7 +893,7 @@ public class MainActivity extends AppCompatActivity {
         if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.ver3_blob_no_support));
         } else {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(UrlUtils.UrlChecker(url, false, null)));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
@@ -900,7 +919,7 @@ public class MainActivity extends AppCompatActivity {
         if (url == null || url.isEmpty())
             return;
 
-        currentError = "net::ERR_UNKNOWN";
+        currentError = GENERIC_ERR_MSG;
 
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
@@ -911,6 +930,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
+        currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
         customBrowse = true;
