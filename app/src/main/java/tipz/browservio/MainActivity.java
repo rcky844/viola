@@ -899,6 +899,7 @@ public class MainActivity extends AppCompatActivity {
         if (url == null || url.isEmpty())
             return;
 
+        currentUrl = url;
         currentError = "net::ERR_UNKNOWN";
 
         String urlIdentify = URLIdentify(url);
