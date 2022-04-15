@@ -538,6 +538,8 @@ public class MainActivity extends AppCompatActivity {
 
         webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
         webview.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
+        webview.removeJavascriptInterface("accessibility"); /* CVE-2014-7224 */
+        webview.removeJavascriptInterface("accessibilityTraversal"); /* CVE-2014-7224 */
     }
 
     private void closeKeyboard() {
