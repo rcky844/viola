@@ -873,7 +873,7 @@ public class MainActivity extends AppCompatActivity {
         if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.ver3_blob_no_support));
         } else {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(UrlUtils.UrlChecker(url, false, null)));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
@@ -899,7 +899,6 @@ public class MainActivity extends AppCompatActivity {
         if (url == null || url.isEmpty())
             return;
 
-        currentUrl = url;
         currentError = "net::ERR_UNKNOWN";
 
         String urlIdentify = URLIdentify(url);
@@ -908,6 +907,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
 
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
+        currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
         customBrowse = true;
