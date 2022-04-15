@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
     private String currentCustomUA;
     private boolean customBrowse = false;
 
+    private final String GENERIC_ERR_MSG = "net::ERR_UNKNOWN";
+
     private ValueCallback<Uri[]> mUploadMessage;
 
     private final HashMap<String, String> mRequestHeaders = new HashMap<>();
@@ -651,9 +653,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean urlShouldSet(String url) {
+        boolean errBool = !currentError.equals(GENERIC_ERR_MSG);
+        if (errBool && !webview.getUrl().equals(BrowservioURLs.realErrUrl))
+            webview.loadUrl(BrowservioURLs.realErrUrl);
         return !(url.equals("about:blank")
                 || url.equals(BrowservioURLs.realErrUrl)
-                || url.equals(BrowservioURLs.realLicenseUrl));
+                || url.equals(BrowservioURLs.realLicenseUrl)
+                || errBool);
     }
 
     /**
@@ -910,7 +916,7 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         currentUrl = url;
-        currentError = "net::ERR_UNKNOWN";
+        currentError = GENERIC_ERR_MSG;
 
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
