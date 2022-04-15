@@ -1,12 +1,25 @@
-3.0 Dragon
+3.0 Dragon (May)
 - Better search suggestions Part 1
     - More suggestions provider
     - Use setProvider
 - Broha objects for History and Favourites
     - Add support for icon saving
+        - Icon SHA DB with index
+        - Store favicons locally as <SHA>.ico
 
-4.0 Escobar
+3.1 Dragonheart (July)
+- Custom tabs
+    - No database init
+    - Open in new tab
+    - Share
+- API 33 support
+    - Themed icons
+
+3.2 Dragonified (September)
 - Introduce UA storage
+- Built-in Image Searching
+
+4.0 Echo (November)
 - Custom Adblocker source
 - PreferencesDataStore (?)
 - Better search suggestions Part 2
