@@ -537,6 +537,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebChromeClient(new ChromeWebClient());
 
         webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
+        webview.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
     }
 
     private void closeKeyboard() {
