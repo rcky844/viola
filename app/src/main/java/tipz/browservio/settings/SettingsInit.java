@@ -17,7 +17,7 @@ public class SettingsInit {
                 SettingsUtils.doesNotHaveGoogle ? new Object[]{getHomepageUrl(SearchEngineEntries.baidu), 1, getSearchEngineUrl(SearchEngineEntries.baidu, SearchEngineEntries.baiduSearchSuffix), 1, SearchEngineEntries.bingSearchSuggestionsUrl, 1}
                         : new Object[]{getHomepageUrl(SearchEngineEntries.google), 0, getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix), 0, SearchEngineEntries.googleSearchSuggestionsUrl, 0}, isEqualToOneFirstLaunch);
         SettingsUtils.checkIfEmpty(browservio_saver(mContext),
-                new String[]{SettingsKeys.isJavaScriptEnabled, SettingsKeys.enableAdBlock, SettingsKeys.sendDNT, SettingsKeys.showFavicon, SettingsKeys.themeId, SettingsKeys.updateTesting, SettingsKeys.isFirstLaunch},
-                new Object[]{"1", 0, "0", "1", 0, 0, "0"}, isEqualToOneFirstLaunch);
+                new String[]{SettingsKeys.isJavaScriptEnabled, SettingsKeys.enableAdBlock, SettingsKeys.sendDNT, SettingsKeys.showFavicon, SettingsKeys.themeId, SettingsKeys.centerActionBar, SettingsKeys.updateTesting, SettingsKeys.isFirstLaunch},
+                new Object[]{"1", 0, "0", "1", 0, 1, 0, "0"}, isEqualToOneFirstLaunch);
     }
 }

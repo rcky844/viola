@@ -13,7 +13,7 @@
     <string name="linear_control_b5_title">"URL teilen mit"</string>
     <string name="copied_clipboard">"In die Zwischenablage kopiert!"</string>
     <string name="hist_empty">"Der Verlauf ist leer!"</string>
-    <string name="add_dot">"Hinzufügen…"</string>
+    <string name="add">"Hinzufügen"</string>
     <string name="saved_su">"Erfolgreich gespeichert!"</string>
     <string name="fav_list_empty">"Es wurden keine Favoriten gespeichert."</string>
     <string name="copy_title">"Webseitentitel kopieren"</string>
@@ -85,6 +85,8 @@
     <string name="share_url">Link teilen</string>
     <string name="pref_theme">Thema</string>
     <string name="pref_theme_desp">Aktuelles Thema: %s</string>
+    <string name="pref_center_action">Aktionsleiste horizontal zentrieren</string>
+    <string name="pref_center_action_desp">Zentrieren Sie die Aktionsleiste automatisch, wenn Platz verfügbar ist.</string>
     <string name="ssl_info">SSL-Zertifikatdetails</string>
     <string name="ssl_info_dialog_content">Ausgestellt für\n\tAllgemeiner Name (CN): %1$s\n\tOrganisation (O): %2$s\n\tOrganisationseinheit (OU): %3$s\n\nAusgestellt von\n\tAllgemeiner Name (CN): %4$s\n\tOrganisation (O): %5$s\n\tOrganisationseinheit (OU): %6$s\n\nGültigkeitsdauer\n\tAusgestellt am: %7$s\n\tGültig bis: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL-Zertifikatsfehler</string>
@@ -100,6 +102,7 @@
     <string name="favMenuEdit">Bearbeiten</string>
     <string name="favMenuTitle">Titel</string>
     <string name="favMenuLink">Hyperlink</string>
+    <string name="ver3_blob_no_support">Blob-Dateien werden derzeit nicht zum Herunterladen unterstützt.</string>
 
     <string-array name="errMsg">
         <item>Webseite kann nicht angezeigt werden</item>

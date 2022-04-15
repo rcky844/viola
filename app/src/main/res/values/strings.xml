@@ -14,7 +14,7 @@
     <string name="linear_control_b5_title">"Share URL using"</string>
     <string name="copied_clipboard">"Copied to clipboard!"</string>
     <string name="hist_empty">"History is empty!"</string>
-    <string name="add_dot">"Add…"</string>
+    <string name="add">"Add"</string>
     <string name="saved_su">"Saved successfully!"</string>
     <string name="fav_list_empty">"There are no favorites saved."</string>
     <string name="copy_title">"Copy Website Title"</string>
@@ -86,6 +86,8 @@
     <string name="share_url">Share link</string>
     <string name="pref_theme">Theme</string>
     <string name="pref_theme_desp">Current theme: %s</string>
+    <string name="pref_center_action">Center Action Bar Horizontally</string>
+    <string name="pref_center_action_desp">Automatically center the action bar when space is available.</string>
     <string name="ssl_info">SSL Certificate Details</string>
     <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>
@@ -101,6 +103,7 @@
     <string name="favMenuEdit">Edit</string>
     <string name="favMenuTitle">Title</string>
     <string name="favMenuLink">Link</string>
+    <string name="ver3_blob_no_support">blob files are currently not supported for downloading.</string>
 
     <string-array name="errMsg">
         <item>Can\'t open this page</item>

@@ -2,12 +2,14 @@ package tipz.browservio;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -22,10 +24,12 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
@@ -42,9 +46,11 @@ import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -52,6 +58,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
@@ -59,6 +66,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
@@ -75,7 +83,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -104,16 +114,33 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView fab;
     private WebView webview;
     private RecyclerView actionBar;
+    private RelativeLayout actionBarBack;
     private AppCompatImageView favicon;
 
     private String UrlTitle;
     private String currentUrl;
     private String adServers;
+    private String currentError = CommonUtils.EMPTY_STRING;
+    private String currentCustomUA;
     private boolean customBrowse = false;
 
     private ValueCallback<Uri[]> mUploadMessage;
 
     private final HashMap<String, String> mRequestHeaders = new HashMap<>();
+
+    private static final List<Integer> actionBarItemList = Arrays.asList(R.drawable.arrow_back_alt,
+            R.drawable.arrow_forward_alt,
+            R.drawable.refresh,
+            R.drawable.home,
+            R.drawable.smartphone,
+            R.drawable.new_tab,
+            R.drawable.delete,
+            R.drawable.share,
+            R.drawable.app_shortcut,
+            R.drawable.settings,
+            R.drawable.history,
+            R.drawable.favorites,
+            R.drawable.close);
 
     private String userAgentFull(String mid) {
         return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
@@ -243,9 +270,12 @@ public class MainActivity extends AppCompatActivity {
                                     webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
                                     webviewReload();
                                 }
+                                currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
                             })
                             .setNegativeButton(android.R.string.cancel, null)
                             .create().show();
+                    if (currentCustomUA != null)
+                        customUserAgent.setText(currentCustomUA);
                 }
                 return false;
             });
@@ -319,10 +349,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 11) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.add_dot));
+            menu.add(getResources().getString(R.string.add));
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.add_dot))) {
+                if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
                     FavUtils.appendData(this, UrlTitle, currentUrl);
                     CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
@@ -352,9 +382,12 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         webview = findViewById(R.id.webview);
         actionBar = findViewById(R.id.actionBar);
+        actionBarBack = findViewById(R.id.actionBarBack);
         favicon = findViewById(R.id.favicon);
 
-        MainActionBarRecycler.initMainActionBarRecycler(MainActivity.this, this, actionBar);
+        actionBar.setLayoutManager(new LinearLayoutManager(
+                MainActivity.this, RecyclerView.HORIZONTAL, false));
+        actionBar.setAdapter(new ItemsAdapter(MainActivity.this));
 
         favicon.setOnClickListener(_view -> {
             final SslCertificate cert = webview.getCertificate();
@@ -459,10 +492,13 @@ public class MainActivity extends AppCompatActivity {
                 if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()))
                     return;
                 try {
-                    JSONArray jsonArray = new JSONArray(DownloadToStringUtils.downloadToString(
+                    String data = DownloadToStringUtils.downloadToString(
                             SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
                                     browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
-                                    text.toString())));
+                                    text.toString()));
+                    if (data == null)
+                        return;
+                    JSONArray jsonArray = new JSONArray(data);
 
                     jsonArray = jsonArray.optJSONArray(1);
                     if (jsonArray == null)
@@ -498,7 +534,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
 
-        webview.addJavascriptInterface(new browservioErrJsInterface(MainActivity.this), "browservioErr");
+        webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
     }
 
     private void closeKeyboard() {
@@ -545,15 +581,7 @@ public class MainActivity extends AppCompatActivity {
 
         new HistoryApi(this);
 
-        /* Update the list of Ad servers */
-        Scanner scanner = new Scanner(DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt"));
-        StringBuilder builder = new StringBuilder();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (line.startsWith("127.0.0.1 "))
-                builder.append(line).append(CommonUtils.LINE_SEPARATOR());
-        }
-        adServers = builder.toString();
+        updateAdServerList();
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
             WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
@@ -582,21 +610,37 @@ public class MainActivity extends AppCompatActivity {
                     browservioBrowse(uri.toString());
                 }
             }
-        } else {
-            /* Load default webpage */
+        } else { /* Load default webpage */
             browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
         }
     }
 
-    public class browservioErrJsInterface {
+    /* Function to update the list of Ad servers */
+    private void updateAdServerList() {
+        String data = DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
+        if (data != null) {
+            Scanner scanner = new Scanner(data);
+            StringBuilder builder = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.startsWith("127.0.0.1 "))
+                    builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+            }
+            adServers = builder.toString();
+        }
+    }
+
+    public class browservioJsInterface {
         final MainActivity mMainActivity;
 
-        browservioErrJsInterface(MainActivity mainActivity) {
+        browservioJsInterface(MainActivity mainActivity) {
             mMainActivity = mainActivity;
         }
 
         @JavascriptInterface
         public String errGetMsg(int msgId) {
+            if (msgId >= 6)
+                return currentError;
             return mMainActivity.getResources().getStringArray(R.array.errMsg)[msgId];
         }
 
@@ -628,6 +672,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        @Override
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -639,6 +684,7 @@ public class MainActivity extends AppCompatActivity {
             UrlEdit.dismissDropDown();
         }
 
+        @Override
         public void onPageFinished(WebView view, String url) {
             UrlSet(url, true);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
@@ -652,19 +698,26 @@ public class MainActivity extends AppCompatActivity {
             favicon.setImageResource(R.drawable.default_favicon);
         }
 
+        @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             webview.loadUrl(BrowservioURLs.realErrUrl);
+            currentError = description;
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             boolean returnVal = false;
-            if (CommonUtils.appInstalledOrNot(getApplicationContext(), url) && !UrlUtils.startsWithMatch(url)) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
+            boolean normalSchemes = UrlUtils.startsWithMatch(url);
+            if (!normalSchemes) {
+                if (CommonUtils.appInstalledOrNot(getApplicationContext(), url)) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                } else {
+                    webview.stopLoading();
+                }
                 returnVal = true;
             }
-            if (!customBrowse) {
+            if (!customBrowse && normalSchemes) {
                 webview.loadUrl(url, mRequestHeaders);
                 returnVal = true;
             }
@@ -714,9 +767,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            if (adServers == null)
+                updateAdServerList();
             try {
-                if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
-                    return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
+                if (adServers != null)
+                    if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
+                        return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -748,10 +804,7 @@ public class MainActivity extends AppCompatActivity {
         private View mCustomView;
         private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
-        // Constructor for ChromeWebClient
-        public ChromeWebClient() {
-        }
-
+        @Override
         public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
             if (mCustomView != null) {
                 onHideCustomView();
@@ -765,6 +818,7 @@ public class MainActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
+        @Override
         public void onHideCustomView() {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             ((FrameLayout) getWindow().getDecorView()).removeView(mCustomView);
@@ -775,15 +829,18 @@ public class MainActivity extends AppCompatActivity {
             mCustomViewCallback = null;
         }
 
+        @Override
         public void onProgressChanged(WebView view, int progress) {
             MainProg.setProgress(progress == 100 ? 0 : progress);
         }
 
+        @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
             if (!icon.isRecycled())
                 favicon.setImageBitmap(icon);
         }
 
+        @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
             if (urlShouldSet(webview.getUrl()))
@@ -792,8 +849,11 @@ public class MainActivity extends AppCompatActivity {
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }
 
+        @Override
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-            callback.invoke(origin, true, false);
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                callback.invoke(origin, true, false);
         }
 
         @Override
@@ -820,20 +880,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void downloadFile(String url, String contentDisposition, String mimeType) {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.ver3_blob_no_support));
+        } else {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
-        // Let this downloaded file be scanned by MediaScanner - so that it can
-        // show up in Gallery app, for example.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
-            request.allowScanningByMediaScanner();
+            // Let this downloaded file be scanned by MediaScanner - so that it can
+            // show up in Gallery app, for example.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+                request.allowScanningByMediaScanner();
 
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
-        final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-        request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                MimeTypeMap.getFileExtensionFromUrl(url)));
-        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        dm.enqueue(request);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
+            final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    MimeTypeMap.getFileExtensionFromUrl(url)));
+            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            dm.enqueue(request);
+        }
     }
 
     /**
@@ -844,6 +908,9 @@ public class MainActivity extends AppCompatActivity {
     private void browservioBrowse(String url) {
         if (url == null || url.isEmpty())
             return;
+
+        currentUrl = url;
+        currentError = "net::ERR_UNKNOWN";
 
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
@@ -916,6 +983,7 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
+        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
@@ -953,5 +1021,41 @@ public class MainActivity extends AppCompatActivity {
             return "http://119.28.42.46:8886/chaxun_web.asp?kd_id=".concat(url.replace(BrowservioURLs.yhlPrefix, CommonUtils.EMPTY_STRING));
 
         return null;
+    }
+
+    public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
+        private final MainActivity mMainActivity;
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            private final AppCompatImageView mImageView;
+
+            public ViewHolder(View view) {
+                super(view);
+                mImageView = view.findViewById(R.id.imageView);
+            }
+        }
+
+        public ItemsAdapter(MainActivity mainActivity) {
+            mMainActivity = mainActivity;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_icon_item, parent, false);
+
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.mImageView.setImageResource(actionBarItemList.get(position));
+            holder.mImageView.setOnClickListener(view -> mMainActivity.itemSelected(holder.mImageView, position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return actionBarItemList.size();
+        }
     }
 }

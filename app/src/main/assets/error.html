@@ -63,15 +63,17 @@
                     <li id='msg3'></li>
                     <li id='msg4'></li>
                 </ul>
-                <button id='msg5' style="margin-top: 24px;" onclick="browservioErr.reloadBtn()"></button>
+                <button id='msg5' style="margin-top: 24px; margin-bottom: 8px;" onclick="browservioErr.reloadBtn()"></button>
+                <p id='msg6' style="font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;"></p>
             </div>
             <script>
-                document.getElementById('msg0').innerText = browservioErr.errGetMsg(0)
-                document.getElementById('msg1').innerText = browservioErr.errGetMsg(1)
-                document.getElementById('msg2').innerText = browservioErr.errGetMsg(2)
-                document.getElementById('msg3').innerText = browservioErr.errGetMsg(3)
-                document.getElementById('msg4').innerText = browservioErr.errGetMsg(4)
-                document.getElementById('msg5').innerText = browservioErr.errGetMsg(5)
+                document.getElementById('msg0').innerText = browservio.errGetMsg(0)
+                document.getElementById('msg1').innerText = browservio.errGetMsg(1)
+                document.getElementById('msg2').innerText = browservio.errGetMsg(2)
+                document.getElementById('msg3').innerText = browservio.errGetMsg(3)
+                document.getElementById('msg4').innerText = browservio.errGetMsg(4)
+                document.getElementById('msg5').innerText = browservio.errGetMsg(5)
+                document.getElementById('msg6').innerText = browservio.errGetMsg(6)
             </script>
         </div>
     </body>
