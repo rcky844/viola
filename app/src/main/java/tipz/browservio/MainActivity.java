@@ -664,6 +664,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        @Override
         public void onPageStarted(WebView view, String url, Bitmap icon) {
             UrlSet(url);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -675,6 +676,7 @@ public class MainActivity extends AppCompatActivity {
             UrlEdit.dismissDropDown();
         }
 
+        @Override
         public void onPageFinished(WebView view, String url) {
             UrlSet(url);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
@@ -688,6 +690,7 @@ public class MainActivity extends AppCompatActivity {
             favicon.setImageResource(R.drawable.default_favicon);
         }
 
+        @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             webview.loadUrl(BrowservioURLs.realErrUrl);
             currentError = description;
@@ -793,6 +796,7 @@ public class MainActivity extends AppCompatActivity {
         private View mCustomView;
         private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
+        @Override
         public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback viewCallback) {
             if (mCustomView != null) {
                 onHideCustomView();
@@ -806,6 +810,7 @@ public class MainActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
+        @Override
         public void onHideCustomView() {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             ((FrameLayout) getWindow().getDecorView()).removeView(mCustomView);
@@ -816,21 +821,25 @@ public class MainActivity extends AppCompatActivity {
             mCustomViewCallback = null;
         }
 
+        @Override
         public void onProgressChanged(WebView view, int progress) {
             MainProg.setProgress(progress == 100 ? 0 : progress);
         }
 
+        @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
             if (!icon.isRecycled())
                 favicon.setImageBitmap(icon);
         }
 
+        @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }
 
+        @Override
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                     || ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
