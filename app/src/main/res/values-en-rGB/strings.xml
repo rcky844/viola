@@ -102,6 +102,7 @@
     <string name="favMenuEdit">Edit</string>
     <string name="favMenuTitle">Title</string>
     <string name="favMenuLink">Link</string>
+    <string name="downloadFailed">Download failed!</string>
     <string name="ver3_blob_no_support">blob files are currently not supported for downloading.</string>
 
     <string-array name="errMsg">

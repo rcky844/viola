@@ -102,6 +102,7 @@
     <string name="favMenuEdit">編輯</string>
     <string name="favMenuTitle">標題</string>
     <string name="favMenuLink">鏈接</string>
+    <string name="downloadFailed">文件下載失敗!</string>
     <string name="ver3_blob_no_support">目前不支持下載blob文件</string>
 
     <string-array name="errMsg">
