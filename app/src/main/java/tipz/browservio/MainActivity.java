@@ -570,6 +570,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
         webview.getSettings().setDisplayZoomControls(false);
+        webview.getSettings().setAllowFileAccess(false);
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
