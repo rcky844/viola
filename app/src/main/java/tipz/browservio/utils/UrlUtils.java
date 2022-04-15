@@ -1,6 +1,7 @@
 package tipz.browservio.utils;
 
 import android.net.Uri;
+import android.os.Build;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,16 @@ public class UrlUtils {
      */
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
         String trimmedUrl = url.trim();
+
+        /*
+         Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
+         security flaws in producing correct host name from url string in android.net.Uri,
+         patch it ourselves.
+
+         Ref: CVE-2017-13274
+         */
+        if (trimmedUrl.contains("\\") && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
+            trimmedUrl = trimmedUrl.replace("\\", "/");
 
         if (startsWithMatch(trimmedUrl))
             return trimmedUrl;
