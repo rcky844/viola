@@ -1,7 +1,4 @@
 3.0 Dragon (May)
-- Better search suggestions Part 1
-    - More suggestions provider
-    - Use setProvider
 - Broha objects for History and Favourites
     - Add support for icon saving
         - Icon SHA DB with index
@@ -16,11 +13,14 @@
     - Themed icons
 
 3.2 Dragonified (September)
+- Better search suggestions Part 2
+    - Even more suggestions provider (the duck)
+    - Use setProvider
 - Introduce UA storage
 - Built-in Image Searching
 
 4.0 Echo (November)
 - Custom Adblocker source
 - PreferencesDataStore (?)
-- Better search suggestions Part 2
+- Better search suggestions Part 3
     - Redesigned dropdown
