@@ -47,13 +47,12 @@
     <string name="source_code_desp">"Have a look at Browservio\'s source code."</string>
     <string name="download_title">"Browservio Update"</string>
     <string name="fav">Favourites</string>
-    <string name="del_fav">"Delete this favourite"</string>
+    <string name="delete">"Delete"</string>
     <string name="del_fav2_title">"Delete all entries"</string>
     <string name="del_fav2_message">"You are about to delete all favourites entries, are you sure about this?"</string>
     <string name="wiped_success">"Wiped successfully!"</string>
     <string name="fav_del_fab_desp">"Delete all entries"</string>
     <string name="hist">History</string>
-    <string name="del_hist">"Delete this history"</string>
     <string name="add_to_fav">"Save to favourites"</string>
     <string name="del_hist_message">"You are about to delete all history entries, are you sure about this?"</string>
     <string name="del_hist_fab_desp">"Delete all history"</string>
@@ -100,6 +99,10 @@
     <string name="ssl_certificate_untrusted">The certificate authority is not trusted.</string>
     <string name="ssl_certificate_unknown">An unknown SSL error occurred.</string>
     <string name="search_entries_default">\u0020(Default)</string>
+    <string name="favMenuEdit">Edit</string>
+    <string name="favMenuTitle">Title</string>
+    <string name="favMenuLink">Link</string>
+    <string name="downloadFailed">Download failed!</string>
     <string name="ver3_blob_no_support">blob files are currently not supported for downloading.</string>
 
     <string-array name="errMsg">

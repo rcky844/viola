@@ -47,13 +47,12 @@
     <string name="source_code_desp">"Schauen Sie sich Browservios Quellcode an."</string>
     <string name="download_title">"Browservio-Aktualisierung"</string>
     <string name="fav">Favoriten</string>
-    <string name="del_fav">"Diesen Favoriten löschen"</string>
+    <string name="delete">"Diesen"</string>
     <string name="del_fav2_title">"Alle Einträge löschen"</string>
     <string name="del_fav2_message">"Sie sind dabei, alle Favoriten zu löschen. Sind Sie sicher, dass Sie fortfahren möchten?"</string>
     <string name="wiped_success">"Erfolgreich bereinigt!"</string>
     <string name="fav_del_fab_desp">"Alle Einträge löschen"</string>
     <string name="hist">Verlauf</string>
-    <string name="del_hist">"Diesen Verlauf löschen"</string>
     <string name="add_to_fav">"Als Favoriten speichern"</string>
     <string name="del_hist_message">"Sie sind dabei, den gesamten Verlauf zu löschen. Sind Sie sich sicher?"</string>
     <string name="del_hist_fab_desp">"Gesamten Verlauf löschen"</string>
@@ -100,6 +99,10 @@
     <string name="ssl_certificate_untrusted">Der Zertifizierungsstelle wird nicht vertraut.</string>
     <string name="ssl_certificate_unknown">Ein unbekannter SSL-Fehler ist aufgetreten.</string>
     <string name="search_entries_default">\u0020(Standard)</string>
+    <string name="favMenuEdit">Bearbeiten</string>
+    <string name="favMenuTitle">Titel</string>
+    <string name="favMenuLink">Hyperlink</string>
+    <string name="downloadFailed">Herunterladen fehlgeschlagen!</string>
     <string name="ver3_blob_no_support">Blob-Dateien werden derzeit nicht zum Herunterladen unterstützt.</string>
 
     <string-array name="errMsg">
