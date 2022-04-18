@@ -79,6 +79,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayInputStream;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -1040,7 +1041,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
-        private final MainActivity mMainActivity;
+        private final WeakReference<MainActivity> mMainActivity;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             private final AppCompatImageView mImageView;
@@ -1052,7 +1053,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public ItemsAdapter(MainActivity mainActivity) {
-            mMainActivity = mainActivity;
+            mMainActivity = new WeakReference<>(mainActivity);
         }
 
         @NonNull
@@ -1066,7 +1067,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mImageView.setImageResource(actionBarItemList.get(position));
-            holder.mImageView.setOnClickListener(view -> mMainActivity.itemSelected(holder.mImageView, position));
+            holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, position));
         }
 
         @Override

@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Objects;
 
@@ -83,7 +84,7 @@ public class FavActivity extends AppCompatActivity {
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<FavActivity.ItemsAdapter.ViewHolder> {
-        private final FavActivity mFavActivity;
+        private final WeakReference<FavActivity> mFavActivity;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             private final ConstraintLayout back;
@@ -101,7 +102,7 @@ public class FavActivity extends AppCompatActivity {
         }
 
         public ItemsAdapter(FavActivity favActivity) {
-            mFavActivity = favActivity;
+            mFavActivity = new WeakReference<>(favActivity);
         }
 
         @NonNull
@@ -114,6 +115,7 @@ public class FavActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull FavActivity.ItemsAdapter.ViewHolder holder, int position) {
+            final FavActivity favActivity = mFavActivity.get();
             Broha data = listData.get(position);
             String title = data.getTitle();
             String url = data.getUrl();
@@ -125,35 +127,35 @@ public class FavActivity extends AppCompatActivity {
             holder.back.setOnClickListener(view -> {
                 Intent needLoad = new Intent();
                 needLoad.putExtra("needLoadUrl", url);
-                mFavActivity.setResult(0, needLoad);
-                mFavActivity.finish();
+                favActivity.setResult(0, needLoad);
+                favActivity.finish();
             });
 
             holder.back.setOnLongClickListener(view -> {
-                PopupMenu popup1 = new PopupMenu(mFavActivity, view);
+                PopupMenu popup1 = new PopupMenu(favActivity, view);
                 Menu menu1 = popup1.getMenu();
-                menu1.add(mFavActivity.getResources().getString(R.string.favMenuEdit));
-                menu1.add(mFavActivity.getResources().getString(R.string.delete));
-                menu1.add(mFavActivity.getResources().getString(android.R.string.copyUrl));
+                menu1.add(favActivity.getResources().getString(R.string.favMenuEdit));
+                menu1.add(favActivity.getResources().getString(R.string.delete));
+                menu1.add(favActivity.getResources().getString(android.R.string.copyUrl));
                 popup1.setOnMenuItemClickListener(item -> {
-                    if (item.getTitle().toString().equals(mFavActivity.getResources().getString(R.string.delete))) {
-                        FavUtils.deleteById(mFavActivity, data.getId());
+                    if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.delete))) {
+                        FavUtils.deleteById(favActivity, data.getId());
                         listData.remove(position);
                         notifyItemRangeRemoved(position, 1);
-                        mFavActivity.isEmptyCheck();
+                        favActivity.isEmptyCheck();
                         return true;
-                    } else if (item.getTitle().toString().equals(mFavActivity.getResources().getString(android.R.string.copyUrl))) {
-                        CommonUtils.copyClipboard(mFavActivity, url);
+                    } else if (item.getTitle().toString().equals(favActivity.getResources().getString(android.R.string.copyUrl))) {
+                        CommonUtils.copyClipboard(favActivity, url);
                         return true;
-                    } else if (item.getTitle().toString().equals(mFavActivity.getResources().getString(R.string.favMenuEdit))) {
-                        final LayoutInflater layoutInflater = LayoutInflater.from(mFavActivity);
+                    } else if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.favMenuEdit))) {
+                        final LayoutInflater layoutInflater = LayoutInflater.from(favActivity);
                         @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_fav_edit, null);
                         final AppCompatEditText titleEditText = root.findViewById(R.id.titleEditText);
                         final AppCompatEditText urlEditText = root.findViewById(R.id.urlEditText);
                         titleEditText.setText(title);
                         urlEditText.setText(url);
-                        new MaterialAlertDialogBuilder(mFavActivity)
-                                .setTitle(mFavActivity.getResources().getString(R.string.favMenuEdit))
+                        new MaterialAlertDialogBuilder(favActivity)
+                                .setTitle(favActivity.getResources().getString(R.string.favMenuEdit))
                                 .setView(root)
                                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                                     if (!Objects.requireNonNull(titleEditText.getText()).toString().equals(title)
@@ -161,8 +163,8 @@ public class FavActivity extends AppCompatActivity {
                                         data.setTitle(Objects.requireNonNull(titleEditText.getText()).toString());
                                         data.setUrl(Objects.requireNonNull(urlEditText.getText()).toString());
                                         data.setTimestamp();
-                                        FavApi.favBroha(mFavActivity).updateBroha(data);
-                                        listData = FavApi.favBroha(mFavActivity).getAll();
+                                        FavApi.favBroha(favActivity).updateBroha(data);
+                                        listData = FavApi.favBroha(favActivity).getAll();
                                         notifyItemRangeRemoved(position, 1);
                                     }
                                 })

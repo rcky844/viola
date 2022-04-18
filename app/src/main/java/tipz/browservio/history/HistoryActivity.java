@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -88,7 +89,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<HistoryActivity.ItemsAdapter.ViewHolder> {
-        private final HistoryActivity mHistoryActivity;
+        private final WeakReference<HistoryActivity> mHistoryActivity;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             private final ConstraintLayout back;
@@ -108,7 +109,7 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
         public ItemsAdapter(HistoryActivity historyActivity) {
-            mHistoryActivity = historyActivity;
+            mHistoryActivity = new WeakReference<>(historyActivity);
         }
 
         @NonNull
@@ -122,6 +123,7 @@ public class HistoryActivity extends AppCompatActivity {
         @SuppressLint("SimpleDateFormat")
         @Override
         public void onBindViewHolder(@NonNull HistoryActivity.ItemsAdapter.ViewHolder holder, int position) {
+            final HistoryActivity historyActivity = mHistoryActivity.get();
             Broha data = listData.get(position);
             String title = data.getTitle();
             String url = data.getUrl();
@@ -136,29 +138,29 @@ public class HistoryActivity extends AppCompatActivity {
             holder.back.setOnClickListener(view -> {
                 Intent needLoad = new Intent();
                 needLoad.putExtra("needLoadUrl", url);
-                mHistoryActivity.setResult(0, needLoad);
-                mHistoryActivity.finish();
+                historyActivity.setResult(0, needLoad);
+                historyActivity.finish();
             });
 
             holder.back.setOnLongClickListener(view -> {
-                PopupMenu popup1 = new PopupMenu(mHistoryActivity, view);
+                PopupMenu popup1 = new PopupMenu(historyActivity, view);
                 Menu menu1 = popup1.getMenu();
-                menu1.add(mHistoryActivity.getResources().getString(R.string.delete));
-                menu1.add(mHistoryActivity.getResources().getString(android.R.string.copyUrl));
-                menu1.add(mHistoryActivity.getResources().getString(R.string.add_to_fav));
+                menu1.add(historyActivity.getResources().getString(R.string.delete));
+                menu1.add(historyActivity.getResources().getString(android.R.string.copyUrl));
+                menu1.add(historyActivity.getResources().getString(R.string.add_to_fav));
                 popup1.setOnMenuItemClickListener(item -> {
-                    if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.delete))) {
-                        HistoryUtils.deleteById(mHistoryActivity, data.getId());
+                    if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.delete))) {
+                        HistoryUtils.deleteById(historyActivity, data.getId());
                         listData.remove(position);
                         notifyItemRangeRemoved(position, 1);
-                        mHistoryActivity.isEmptyCheck();
+                        historyActivity.isEmptyCheck();
                         return true;
-                    } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(android.R.string.copyUrl))) {
-                        CommonUtils.copyClipboard(mHistoryActivity, url);
+                    } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(android.R.string.copyUrl))) {
+                        CommonUtils.copyClipboard(historyActivity, url);
                         return true;
-                    } else if (item.getTitle().toString().equals(mHistoryActivity.getResources().getString(R.string.add_to_fav))) {
-                        FavUtils.appendData(mHistoryActivity, title, url);
-                        CommonUtils.showMessage(mHistoryActivity, mHistoryActivity.getResources().getString(R.string.saved_su));
+                    } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.add_to_fav))) {
+                        FavUtils.appendData(historyActivity, title, url);
+                        CommonUtils.showMessage(historyActivity, historyActivity.getResources().getString(R.string.saved_su));
                         return true;
                     }
                     return false;
