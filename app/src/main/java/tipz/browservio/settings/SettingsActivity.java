@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -370,6 +371,10 @@ public class SettingsActivity extends AppCompatActivity {
 
             version.setOnPreferenceClickListener(preference -> {
                 @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
+                AlertDialog dialog = InfoDialog.setView(dialogView)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create();
+
                 AppCompatImageView easter_banner = dialogView.findViewById(R.id.easter_banner);
                 AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
@@ -426,12 +431,16 @@ public class SettingsActivity extends AppCompatActivity {
                                 .create().show();
                     }
                 });
-                changelog_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.realChangelogUrl));
-                license_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.licenseUrl));
+                changelog_btn.setOnClickListener(_license_btn -> {
+                    needLoad(BrowservioURLs.realChangelogUrl);
+                    dialog.dismiss();
+                });
+                license_btn.setOnClickListener(_license_btn -> {
+                    needLoad(BrowservioURLs.licenseUrl);
+                    dialog.dismiss();
+                });
 
-                InfoDialog.setView(dialogView)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create().show();
+                dialog.show();
                 return true;
             });
 
