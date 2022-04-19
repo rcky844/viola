@@ -54,6 +54,10 @@ public class Broha {
         this.timestamp = System.currentTimeMillis() / 1000L;
     }
 
+    public void setIconHash(String iconHash) {
+        this.iconHash = iconHash;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
