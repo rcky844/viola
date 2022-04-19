@@ -501,20 +501,20 @@ public class MainActivity extends AppCompatActivity {
                                     text.toString()));
                     if (data == null)
                         return;
-                    JSONArray jsonArray = new JSONArray(data);
 
-                    jsonArray = jsonArray.optJSONArray(1);
+                    JSONArray jsonArray = new JSONArray(data).optJSONArray(1);
                     if (jsonArray == null)
-                        throw new RuntimeException("jsonArray is null.");
-                    final int MAX_RESULTS = 10;
-                    ArrayList<String> result = new ArrayList<>(Math.min(jsonArray.length(), MAX_RESULTS));
-                    for (int i = 0; i < jsonArray.length() && result.size() < MAX_RESULTS; i++) {
-                        String s = jsonArray.optString(i);
+                        return;
+
+                    ArrayList<String> result = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        String s = jsonArray.getString(i);
                         if (s != null && !s.isEmpty())
                             result.add(s);
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1, result);
-                    UrlEdit.setAdapter(adapter);
+
+                    UrlEdit.setAdapter(new ArrayAdapter<>(
+                            MainActivity.this, R.layout.recycler_list_item_1, result));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
