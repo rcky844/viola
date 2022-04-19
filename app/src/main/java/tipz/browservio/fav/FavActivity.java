@@ -55,8 +55,8 @@ public class FavActivity extends AppCompatActivity {
         FloatingActionButton _fab = findViewById(R.id._fab);
 
         _fab.setOnClickListener(_view -> new MaterialAlertDialogBuilder(this)
-                .setTitle(getResources().getString(R.string.del_fav2_title))
-                .setMessage(getResources().getString(R.string.del_fav2_message))
+                .setTitle(getResources().getString(R.string.delete_all_entries))
+                .setMessage(getResources().getString(R.string.delete_fav_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                     FavUtils.clear(this);
                     CommonUtils.showMessage(this, getResources().getString(R.string.wiped_success));

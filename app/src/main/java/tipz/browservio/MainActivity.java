@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
         i.putExtra(Intent.EXTRA_TEXT, url == null ? currentUrl : url);
-        startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
+        startActivity(Intent.createChooser(i, getResources().getString(R.string.share_url_dialog_title)));
     }
 
     public void itemSelected(AppCompatImageView view, int item) {
@@ -256,21 +256,20 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 4) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.linear_control_b3_desk));
-            menu.add(getResources().getString(R.string.linear_control_b3_mobi));
-            menu.add(getResources().getString(R.string.linear_control_b3_cus));
+            menu.add(getResources().getString(R.string.desktop));
+            menu.add(getResources().getString(R.string.mobile));
+            menu.add(getResources().getString(R.string.custom));
             popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk)))
+                if (_item.getTitle().toString().equals(getResources().getString(R.string.desktop)))
                     setDeskMode(view, 1, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi)))
+                else if (_item.getTitle().toString().equals(getResources().getString(R.string.mobile)))
                     setDeskMode(view, 0, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
+                else if (_item.getTitle().toString().equals(getResources().getString(R.string.custom))) {
                     final LayoutInflater layoutInflater = LayoutInflater.from(this);
                     @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                     final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    dialog.setTitle(getResources().getString(R.string.ua))
-                            .setMessage(getResources().getString(R.string.cus_ua_choose))
+                    dialog.setTitle(getResources().getString(R.string.customUA))
                             .setView(root)
                             .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                                 if (customUserAgent.length() == 0) {
@@ -364,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
                     FavUtils.appendData(this, UrlTitle, currentUrl);
-                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
                     if (FavUtils.isEmptyCheck(this)) {
                         CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
