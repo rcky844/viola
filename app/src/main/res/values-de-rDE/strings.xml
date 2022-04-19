@@ -36,7 +36,7 @@
     <string name="reset_btn">"Auf Standard zurücksetzen"</string>
     <string name="advanced">Erweitert</string>
     <string name="javascript">"JavaScript aktivieren"</string>
-    <string name="javascript_desp">"JavaScript aktiviert zu haben wird Ihnen eine bessere Browser-Erfahrung bieten."</string>
+    <string name="javascript_desp">"Wenn Sie dies aktivieren, können JavaScript-Webinhalte geladen werden."</string>
     <string name="show_favicon">"Favicon anzeigen"</string>
     <string name="show_favicon_desp">"Favicon der Webseite neben der Adresszeile anzeigen."</string>
     <string name="help">Hilfe</string>

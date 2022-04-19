@@ -36,7 +36,7 @@
     <string name="reset_btn">"Reset to default"</string>
     <string name="advanced">Advanced</string>
     <string name="javascript">"Enable JavaScript"</string>
-    <string name="javascript_desp">"Enabling JavaScript will give you a better browsing experience."</string>
+    <string name="javascript_desp">"Enabling this will allow JavaScript web content to load."</string>
     <string name="show_favicon">"Show favicon"</string>
     <string name="show_favicon_desp">"Show the favicon of the webpage next to the address bar."</string>
     <string name="help">Help</string>

@@ -37,7 +37,7 @@
     <string name="reset_btn">重設為預設值</string>
     <string name="advanced">進階</string>
     <string name="javascript">啟用JavaScript</string>
-    <string name="javascript_desp">啟用JavaScript將為您提供更好的瀏覽體驗</string>
+    <string name="javascript_desp">啟用將允許加載JavaScript內容</string>
     <string name="show_favicon">顯示網站圖示</string>
     <string name="show_favicon_desp">在網址列旁邊顯示網站的圖示</string>
     <string name="help">幫助</string>
