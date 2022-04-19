@@ -565,9 +565,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
 
         /* Init settings check */
-        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0")) {
-            new SettingsInit(MainActivity.this);
-        }
+        new SettingsInit(MainActivity.this);
 
         configChecker();
 
