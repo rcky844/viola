@@ -582,8 +582,6 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
 
-        new HistoryApi(this);
-
         updateAdServerList();
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
