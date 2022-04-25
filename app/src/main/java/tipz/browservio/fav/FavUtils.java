@@ -1,8 +1,10 @@
 package tipz.browservio.fav;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import tipz.browservio.broha.Broha;
+import tipz.browservio.broha.icons.IconHashClient;
 
 public class FavUtils {
     /**
@@ -10,8 +12,11 @@ public class FavUtils {
      * <p>
      * Module to save favourites into a db.
      */
-    public static void appendData(Context context, String title, String url) {
-        FavApi.favBroha(context).insertAll(new Broha(title, url));
+    public static void appendData(Context context, IconHashClient iconHashClient, String title, String url, Bitmap icon) {
+        if (iconHashClient != null && icon != null)
+            FavApi.favBroha(context).insertAll(new Broha(iconHashClient.save(icon), title, url));
+        else
+            FavApi.favBroha(context).insertAll(new Broha(title, url));
     }
 
     public static void clear(Context context) {

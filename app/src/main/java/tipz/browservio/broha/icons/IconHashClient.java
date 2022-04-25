@@ -38,7 +38,7 @@ public class IconHashClient {
         return appDatabase.iconHashDao().findByHash(hash);
     }
 
-    public String save(Context context, Bitmap icon) {
+    public String save(Bitmap icon) {
         ByteBuffer buffer = ByteBuffer.allocate(icon.getByteCount());
         icon.copyPixelsToBuffer(buffer);
         String hash = Integer.toString(Arrays.hashCode(buffer.array()));
@@ -68,6 +68,8 @@ public class IconHashClient {
     }
 
     public Bitmap read(String iconId) {
+        if (iconId == null)
+            return null;
         IconHash data = getDao().findById(Integer.parseInt(iconId));
         if (data == null)
             return null;

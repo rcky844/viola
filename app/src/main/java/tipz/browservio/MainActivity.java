@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.http.SslCertificate;
@@ -364,7 +365,8 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
-                    FavUtils.appendData(this, UrlTitle, currentUrl);
+                    Drawable icon = favicon.getDrawable();
+                    FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
                     CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
                     if (FavUtils.isEmptyCheck(this)) {

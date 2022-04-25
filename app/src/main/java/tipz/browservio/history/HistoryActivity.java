@@ -128,9 +128,11 @@ public class HistoryActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull HistoryActivity.ItemsAdapter.ViewHolder holder, int position) {
             final HistoryActivity historyActivity = mHistoryActivity.get();
+            final IconHashClient iconHashClient = mIconHashClient.get();
             Broha data = listData.get(position);
             String title = data.getTitle();
             String url = data.getUrl();
+            Bitmap icon = iconHashClient.read(data.getIconHash());
 
             holder.title.setText(title == null ? url : title);
             holder.url.setText(Uri.parse(url).getHost());
@@ -162,7 +164,7 @@ public class HistoryActivity extends AppCompatActivity {
                         CommonUtils.copyClipboard(historyActivity, url);
                         return true;
                     } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.add_to_fav))) {
-                        FavUtils.appendData(historyActivity, title, url);
+                        FavUtils.appendData(historyActivity, iconHashClient, title, url, icon);
                         CommonUtils.showMessage(historyActivity, historyActivity.getResources().getString(R.string.save_successful));
                         return true;
                     }
@@ -173,7 +175,6 @@ public class HistoryActivity extends AppCompatActivity {
             });
 
             if (data.getIconHash() != null) {
-                Bitmap icon = mIconHashClient.get().read(data.getIconHash());
                 if (icon != null)
                     holder.icon.setImageBitmap(icon);
                 else
