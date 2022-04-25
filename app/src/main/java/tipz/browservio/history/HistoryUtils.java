@@ -23,10 +23,8 @@ public class HistoryUtils {
                 lastBroha.setTitle(title);
             if (url != null)
                 lastBroha.setUrl(url);
-            if (icon != null) {
+            if (icon != null)
                 lastBroha.setIconHash(iconHashClient.save(context, icon));
-                lastBroha.setTitle(title);
-            }
             HistoryApi.historyBroha(context).updateBroha(lastBroha);
         }
     }
