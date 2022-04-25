@@ -1,8 +1,5 @@
 3.0 Dragon (May)
-- Broha objects for History and Favourites
-    - Add support for icon saving
-        - Icon SHA DB with index
-        - Store favicons locally as <SHA>.ico
+DONE, BETA!
 
 3.1 Dragonheart (July)
 - Custom tabs
