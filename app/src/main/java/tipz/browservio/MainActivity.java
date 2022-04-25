@@ -861,7 +861,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
-            if (urlShouldSet(webview.getUrl()))
+            if (urlShouldSet(webview.getUrl()) && title != null)
                 HistoryUtils.updateData(MainActivity.this, null, title, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(title));

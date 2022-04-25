@@ -2,6 +2,7 @@ package tipz.browservio.history;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import java.util.Objects;
 
 import tipz.browservio.R;
 import tipz.browservio.broha.Broha;
+import tipz.browservio.broha.icons.IconHashClient;
 import tipz.browservio.fav.FavUtils;
 import tipz.browservio.utils.CommonUtils;
 
@@ -78,7 +80,7 @@ public class HistoryActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
         layoutManager.setStackFromEnd(true);
         historyList.setLayoutManager(layoutManager);
-        historyList.setAdapter(new ItemsAdapter(this));
+        historyList.setAdapter(new ItemsAdapter(this, new IconHashClient(this)));
     }
 
     void isEmptyCheck() {
@@ -90,6 +92,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     public static class ItemsAdapter extends RecyclerView.Adapter<HistoryActivity.ItemsAdapter.ViewHolder> {
         private final WeakReference<HistoryActivity> mHistoryActivity;
+        private final WeakReference<IconHashClient> mIconHashClient;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             private final ConstraintLayout back;
@@ -108,8 +111,9 @@ public class HistoryActivity extends AppCompatActivity {
             }
         }
 
-        public ItemsAdapter(HistoryActivity historyActivity) {
+        public ItemsAdapter(HistoryActivity historyActivity, IconHashClient iconHashClient) {
             mHistoryActivity = new WeakReference<>(historyActivity);
+            mIconHashClient = new WeakReference<>(iconHashClient);
         }
 
         @NonNull
@@ -128,7 +132,6 @@ public class HistoryActivity extends AppCompatActivity {
             String title = data.getTitle();
             String url = data.getUrl();
 
-            holder.icon.setImageResource(R.drawable.default_favicon);
             holder.title.setText(title == null ? url : title);
             holder.url.setText(Uri.parse(url).getHost());
             Calendar date = Calendar.getInstance();
@@ -168,6 +171,16 @@ public class HistoryActivity extends AppCompatActivity {
                 popup1.show();
                 return true;
             });
+
+            if (data.getIconHash() != null) {
+                Bitmap icon = mIconHashClient.get().read(data.getIconHash());
+                if (icon != null)
+                    holder.icon.setImageBitmap(icon);
+                else
+                    holder.icon.setImageResource(R.drawable.default_favicon);
+            } else {
+                holder.icon.setImageResource(R.drawable.default_favicon);
+            }
         }
 
         @Override
