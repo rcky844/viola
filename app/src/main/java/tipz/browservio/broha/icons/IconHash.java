@@ -17,8 +17,17 @@ public class IconHash {
         this.id = id;
         this.iconHash = iconHash;
     }
+
     @Ignore
     public IconHash(String iconHash) {
         this.iconHash = iconHash;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getIconHash() {
+        return iconHash;
     }
 }

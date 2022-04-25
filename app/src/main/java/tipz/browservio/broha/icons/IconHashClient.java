@@ -46,7 +46,7 @@ public class IconHashClient {
             File path = new File(fileDir, hash.concat(".jpg"));
 
             if (path.exists())
-                return hash;
+                return Integer.toString(getDao().findByHash(hash).getId());
 
             try {
                 FileOutputStream out = new FileOutputStream(path);
@@ -57,8 +57,9 @@ public class IconHashClient {
                 return null;
             }
 
-            getDao().insertAll(new IconHash(hash));
-            return hash;
+            IconHash iconHash = new IconHash(hash);
+            getDao().insertAll(iconHash);
+            return Integer.toString(iconHash.getId());
         }
         return null;
     }
