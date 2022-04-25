@@ -2,6 +2,7 @@ package tipz.browservio.broha.icons;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -14,6 +15,10 @@ public class IconHash {
 
     public IconHash(int id, String iconHash) {
         this.id = id;
+        this.iconHash = iconHash;
+    }
+    @Ignore
+    public IconHash(String iconHash) {
         this.iconHash = iconHash;
     }
 }
