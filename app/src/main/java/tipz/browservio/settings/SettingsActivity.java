@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -160,26 +161,10 @@ public class SettingsActivity extends AppCompatActivity {
             Preference feedback = Objects.requireNonNull(findPreference("feedback"));
             Preference source_code = Objects.requireNonNull(findPreference("source_code"));
 
-            /* General category dialog */
-            MaterialAlertDialogBuilder SearchSettingsDialog = new MaterialAlertDialogBuilder(settingsActivity);
-            MaterialAlertDialogBuilder CustomSearchSettingsDialog = new MaterialAlertDialogBuilder(settingsActivity);
-            MaterialAlertDialogBuilder HomepageSettingsDialog = new MaterialAlertDialogBuilder(settingsActivity);
-            MaterialAlertDialogBuilder CustomHomepageSettingsDialog = new MaterialAlertDialogBuilder(settingsActivity);
-            MaterialAlertDialogBuilder SearchSuggestionsSettingsDialog = new MaterialAlertDialogBuilder(settingsActivity);
-
-            /* Data & Privacy dialog */
-            MaterialAlertDialogBuilder ResetDialog = new MaterialAlertDialogBuilder(settingsActivity);
-
-            /* Visuals dialog */
-            MaterialAlertDialogBuilder ThemeDialog = new MaterialAlertDialogBuilder(settingsActivity);
-
-            /* Help category dialog */
-            MaterialAlertDialogBuilder InfoDialog = new MaterialAlertDialogBuilder(settingsActivity);
-
             search_engine.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId)};
                 final String[] searchEngine = new String[1];
-                SearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine))
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_engine))
                         .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
@@ -201,7 +186,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
-                                CustomSearchSettingsDialog.setTitle(getResources().getString(R.string.search_engine))
+                                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_engine))
                                         .setView(root)
                                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                                             if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
@@ -228,7 +213,7 @@ public class SettingsActivity extends AppCompatActivity {
             homepage.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId)};
                 final String[] homePage = new String[1];
-                HomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage))
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.homepage))
                         .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
@@ -250,7 +235,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
-                                CustomHomepageSettingsDialog.setTitle(getResources().getString(R.string.homepage))
+                                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.homepage))
                                         .setView(root)
                                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                                             if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
@@ -277,7 +262,7 @@ public class SettingsActivity extends AppCompatActivity {
             search_suggestions.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId)};
                 final String[] homePage = new String[1];
-                SearchSuggestionsSettingsDialog.setTitle(getResources().getString(R.string.search_suggestions_title))
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
                         .setSingleChoiceItems(suggestionsList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
@@ -316,7 +301,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             reset_to_default.setOnPreferenceClickListener(preference -> {
-                ResetDialog.setTitle(getResources().getString(R.string.reset_btn))
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.reset_btn))
                         .setMessage(getResources().getString(R.string.reset_dialog).concat(getResources().getString(R.string.to_continue)))
                         .setPositiveButton(getResources().getString(R.string.clear, CommonUtils.EMPTY_STRING).trim(), (_dialog, _which) -> {
                             CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.reset_complete));
@@ -339,7 +324,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             theme.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.themeId)};
-                ThemeDialog.setTitle(getResources().getString(R.string.pref_theme))
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_theme))
                         .setSingleChoiceItems(themeList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.themeId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
@@ -372,6 +357,10 @@ public class SettingsActivity extends AppCompatActivity {
 
             version.setOnPreferenceClickListener(preference -> {
                 @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
+                AlertDialog dialog = new MaterialAlertDialogBuilder(settingsActivity).setView(dialogView)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create();
+
                 AppCompatImageView easter_banner = dialogView.findViewById(R.id.easter_banner);
                 AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
@@ -428,12 +417,16 @@ public class SettingsActivity extends AppCompatActivity {
                                 .create().show();
                     }
                 });
-                changelog_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.realChangelogUrl));
-                license_btn.setOnClickListener(_license_btn -> needLoad(BrowservioURLs.licenseUrl));
+                changelog_btn.setOnClickListener(_license_btn -> {
+                    needLoad(BrowservioURLs.realChangelogUrl);
+                    dialog.dismiss();
+                });
+                license_btn.setOnClickListener(_license_btn -> {
+                    needLoad(BrowservioURLs.licenseUrl);
+                    dialog.dismiss();
+                });
 
-                InfoDialog.setView(dialogView)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create().show();
+                dialog.show();
                 return true;
             });
 

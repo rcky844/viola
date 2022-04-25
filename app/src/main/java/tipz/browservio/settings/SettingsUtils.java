@@ -29,7 +29,7 @@ public class SettingsUtils {
             return;
 
         for (int i = 0; i < listLength; i++) {
-            if (getPref(pref, tag[i]).isEmpty() || mustSet) {
+            if ((defaultValue[i] instanceof String ? getPref(pref, tag[i]).isEmpty() : getPrefNum(pref, tag[i]) == 0) || mustSet) {
                 if (defaultValue[i] instanceof String)
                     setPref(pref, tag[i], (String) defaultValue[i]);
                 else

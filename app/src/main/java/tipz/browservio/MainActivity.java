@@ -201,6 +201,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            webview.freeMemory();
+    }
+
     private void setDesktopMode(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
@@ -236,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
         i.putExtra(Intent.EXTRA_TEXT, url == null ? currentUrl : url);
-        startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
+        startActivity(Intent.createChooser(i, getResources().getString(R.string.share_url_dialog_title)));
     }
 
     public void itemSelected(AppCompatImageView view, int item) {
@@ -251,21 +258,20 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 4) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.linear_control_b3_desk));
-            menu.add(getResources().getString(R.string.linear_control_b3_mobi));
-            menu.add(getResources().getString(R.string.linear_control_b3_cus));
+            menu.add(getResources().getString(R.string.desktop));
+            menu.add(getResources().getString(R.string.mobile));
+            menu.add(getResources().getString(R.string.custom));
             popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk)))
+                if (_item.getTitle().toString().equals(getResources().getString(R.string.desktop)))
                     setDeskMode(view, 1, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi)))
+                else if (_item.getTitle().toString().equals(getResources().getString(R.string.mobile)))
                     setDeskMode(view, 0, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
+                else if (_item.getTitle().toString().equals(getResources().getString(R.string.custom))) {
                     final LayoutInflater layoutInflater = LayoutInflater.from(this);
                     @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                     final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    dialog.setTitle(getResources().getString(R.string.ua))
-                            .setMessage(getResources().getString(R.string.cus_ua_choose))
+                    dialog.setTitle(getResources().getString(R.string.customUA))
                             .setView(root)
                             .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                                 if (customUserAgent.length() == 0) {
@@ -359,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
                     FavUtils.appendData(this, UrlTitle, currentUrl);
-                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
                     if (FavUtils.isEmptyCheck(this)) {
                         CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
@@ -503,20 +509,20 @@ public class MainActivity extends AppCompatActivity {
                                     text.toString()));
                     if (data == null)
                         return;
-                    JSONArray jsonArray = new JSONArray(data);
 
-                    jsonArray = jsonArray.optJSONArray(1);
+                    JSONArray jsonArray = new JSONArray(data).optJSONArray(1);
                     if (jsonArray == null)
-                        throw new RuntimeException("jsonArray is null.");
-                    final int MAX_RESULTS = 10;
-                    ArrayList<String> result = new ArrayList<>(Math.min(jsonArray.length(), MAX_RESULTS));
-                    for (int i = 0; i < jsonArray.length() && result.size() < MAX_RESULTS; i++) {
-                        String s = jsonArray.optString(i);
+                        return;
+
+                    ArrayList<String> result = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        String s = jsonArray.getString(i);
                         if (s != null && !s.isEmpty())
                             result.add(s);
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1, result);
-                    UrlEdit.setAdapter(adapter);
+
+                    UrlEdit.setAdapter(new ArrayAdapter<>(
+                            MainActivity.this, R.layout.recycler_list_item_1, result));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -540,6 +546,9 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebChromeClient(new ChromeWebClient());
 
         webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
+        webview.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
+        webview.removeJavascriptInterface("accessibility"); /* CVE-2014-7224 */
+        webview.removeJavascriptInterface("accessibilityTraversal"); /* CVE-2014-7224 */
     }
 
     private void closeKeyboard() {
@@ -565,9 +574,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
 
         /* Init settings check */
-        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0")) {
-            new SettingsInit(MainActivity.this);
-        }
+        new SettingsInit(MainActivity.this);
 
         configChecker();
 
@@ -578,6 +585,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
         webview.getSettings().setDisplayZoomControls(false);
+        webview.getSettings().setAllowFileAccess(false);
 
         // HTML5 API flags
         webview.getSettings().setAppCacheEnabled(true);
@@ -893,7 +901,7 @@ public class MainActivity extends AppCompatActivity {
         if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.ver3_blob_no_support));
         } else {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(UrlUtils.UrlChecker(url, false, null)));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
@@ -928,7 +936,6 @@ public class MainActivity extends AppCompatActivity {
         if (url == null || url.isEmpty())
             return;
 
-        currentUrl = url;
         currentError = GENERIC_ERR_MSG;
 
         String urlIdentify = URLIdentify(url);
@@ -940,6 +947,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
+        currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
         customBrowse = true;

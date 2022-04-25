@@ -58,7 +58,7 @@ public class HistoryActivity extends AppCompatActivity {
         _fab.setContentDescription(getResources().getString(R.string.del_hist_fab_desp));
 
         _fab.setOnClickListener(_view -> new MaterialAlertDialogBuilder(this)
-                .setTitle(getResources().getString(R.string.del_fav2_title))
+                .setTitle(getResources().getString(R.string.delete_all_entries))
                 .setMessage(getResources().getString(R.string.del_hist_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                     HistoryUtils.clear(this);
@@ -160,7 +160,7 @@ public class HistoryActivity extends AppCompatActivity {
                         return true;
                     } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.add_to_fav))) {
                         FavUtils.appendData(historyActivity, title, url);
-                        CommonUtils.showMessage(historyActivity, historyActivity.getResources().getString(R.string.saved_su));
+                        CommonUtils.showMessage(historyActivity, historyActivity.getResources().getString(R.string.save_successful));
                         return true;
                     }
                     return false;
