@@ -1,8 +1,10 @@
 package tipz.browservio.history;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import tipz.browservio.broha.Broha;
+import tipz.browservio.broha.icons.IconHashClient;
 
 public class HistoryUtils {
     /**
@@ -14,13 +16,15 @@ public class HistoryUtils {
         HistoryApi.historyBroha(context).insertAll(new Broha(url));
     }
 
-    public static void updateData(Context context, String title, String url) {
+    public static void updateData(Context context, IconHashClient iconHashClient, String title, String url, Bitmap icon) {
         Broha lastBroha = HistoryApi.historyBroha(context).lastUrl();
         if (!isEmptyCheck(context)) {
             if (title != null)
                 lastBroha.setTitle(title);
             if (url != null)
                 lastBroha.setUrl(url);
+            if (icon != null)
+                lastBroha.setIconHash(iconHashClient.save(icon));
             HistoryApi.historyBroha(context).updateBroha(lastBroha);
         }
     }

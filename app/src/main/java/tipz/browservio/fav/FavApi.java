@@ -45,7 +45,7 @@ public class FavApi {
                     if (shouldShow.isEmpty())
                         populate_count = -2;
                     else
-                        FavUtils.appendData(context, SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count).concat(bookmarked_title)), SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count)));
+                        FavUtils.appendData(context, null, SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count).concat(bookmarked_title)), SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count)), null);
                 }
                 populate_count++;
             }

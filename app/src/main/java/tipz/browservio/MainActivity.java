@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.http.SslCertificate;
@@ -91,6 +92,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import tipz.browservio.broha.icons.IconHashClient;
 import tipz.browservio.fav.FavActivity;
 import tipz.browservio.fav.FavApi;
 import tipz.browservio.fav.FavUtils;
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentError = CommonUtils.EMPTY_STRING;
     private String currentCustomUA;
     private boolean customBrowse = false;
+    private IconHashClient iconHashClient;
 
     private final String GENERIC_ERR_MSG = "net::ERR_UNKNOWN";
 
@@ -362,7 +365,8 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
-                    FavUtils.appendData(this, UrlTitle, currentUrl);
+                    Drawable icon = favicon.getDrawable();
+                    FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
                     CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
                     if (FavUtils.isEmptyCheck(this)) {
@@ -563,6 +567,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeLogic() {
         new HistoryApi(this); /* Start History service */
         new FavApi(this); /* Start Favourites service */
+        iconHashClient = new IconHashClient(this);
 
         /* User agent init code */
         setDeskMode(null, 0, true);
@@ -679,7 +684,7 @@ public class MainActivity extends AppCompatActivity {
                 UrlEdit.setText(url);
                 currentUrl = url;
                 if (update)
-                    HistoryUtils.updateData(MainActivity.this, null, url);
+                    HistoryUtils.updateData(MainActivity.this, null, null, url, null);
                 else if (HistoryUtils.isEmptyCheck(MainActivity.this) || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
                     HistoryUtils.appendData(MainActivity.this, url);
             }
@@ -849,15 +854,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            if (!icon.isRecycled())
+            if (!icon.isRecycled()) {
                 favicon.setImageBitmap(icon);
+                HistoryUtils.updateData(MainActivity.this, iconHashClient, null, null, icon);
+            }
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
-            if (urlShouldSet(webview.getUrl()))
-                HistoryUtils.updateData(MainActivity.this, title, null);
+            if (urlShouldSet(webview.getUrl()) && title != null)
+                HistoryUtils.updateData(MainActivity.this, null, title, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }

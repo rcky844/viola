@@ -2,6 +2,7 @@ package tipz.browservio.fav;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import java.util.Objects;
 
 import tipz.browservio.R;
 import tipz.browservio.broha.Broha;
+import tipz.browservio.broha.icons.IconHashClient;
 import tipz.browservio.utils.CommonUtils;
 
 public class FavActivity extends AppCompatActivity {
@@ -72,7 +74,7 @@ public class FavActivity extends AppCompatActivity {
         RecyclerView favList = findViewById(R.id.recyclerView);
         listData = FavApi.favBroha(this).getAll();
         favList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        favList.setAdapter(new ItemsAdapter(this));
+        favList.setAdapter(new ItemsAdapter(this, new IconHashClient(this)));
     }
 
     void isEmptyCheck() {
@@ -85,6 +87,7 @@ public class FavActivity extends AppCompatActivity {
 
     public static class ItemsAdapter extends RecyclerView.Adapter<FavActivity.ItemsAdapter.ViewHolder> {
         private final WeakReference<FavActivity> mFavActivity;
+        private final WeakReference<IconHashClient> mIconHashClient;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             private final ConstraintLayout back;
@@ -101,8 +104,9 @@ public class FavActivity extends AppCompatActivity {
             }
         }
 
-        public ItemsAdapter(FavActivity favActivity) {
+        public ItemsAdapter(FavActivity favActivity, IconHashClient iconHashClient) {
             mFavActivity = new WeakReference<>(favActivity);
+            mIconHashClient = new WeakReference<>(iconHashClient);
         }
 
         @NonNull
@@ -120,7 +124,6 @@ public class FavActivity extends AppCompatActivity {
             String title = data.getTitle();
             String url = data.getUrl();
 
-            holder.icon.setImageResource(R.drawable.default_favicon);
             holder.title.setText(title == null ? url : title);
             holder.url.setText(Uri.parse(url).getHost());
 
@@ -178,6 +181,16 @@ public class FavActivity extends AppCompatActivity {
                 popup1.show();
                 return true;
             });
+
+            if (data.getIconHash() != null) {
+                Bitmap icon = mIconHashClient.get().read(data.getIconHash());
+                if (icon != null)
+                    holder.icon.setImageBitmap(icon);
+                else
+                    holder.icon.setImageResource(R.drawable.default_favicon);
+            } else {
+                holder.icon.setImageResource(R.drawable.default_favicon);
+            }
         }
 
         @Override
