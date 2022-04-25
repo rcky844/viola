@@ -35,7 +35,7 @@ public class Broha {
         this.iconHash = iconHash;
         this.title = title;
         this.url = url;
-        this.timestamp = System.nanoTime() / 1000000000;
+        this.timestamp = System.currentTimeMillis() / 1000L;
     }
 
     @Ignore
@@ -43,7 +43,7 @@ public class Broha {
         this.iconHash = null;
         this.title = title;
         this.url = url;
-        this.timestamp = System.nanoTime() / 1000000000;
+        this.timestamp = System.currentTimeMillis() / 1000L;
     }
 
     @Ignore
@@ -51,7 +51,7 @@ public class Broha {
         this.iconHash = null;
         this.title = null;
         this.url = url;
-        this.timestamp = System.nanoTime() / 1000000000;
+        this.timestamp = System.currentTimeMillis() / 1000L;
     }
 
     public void setIconHash(String iconHash) {
