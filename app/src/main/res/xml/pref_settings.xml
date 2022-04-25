@@ -1,94 +1,70 @@
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.preference.PreferenceCategory
-        android:title="@string/general"
-        app:iconSpaceReserved="false">
+    <androidx.preference.PreferenceCategory android:title="@string/general">
         <androidx.preference.Preference
             android:key="search_engine"
             android:summary=""
-            android:title="@string/search_engine"
-            app:iconSpaceReserved="false" />
+            android:title="@string/search_engine" />
         <androidx.preference.Preference
             android:key="homepage"
             android:summary=""
-            android:title="@string/homepage"
-            app:iconSpaceReserved="false" />
+            android:title="@string/homepage" />
         <androidx.preference.Preference
             android:key="search_suggestions"
             android:summary=""
-            android:title="@string/search_suggestions_title"
-            app:iconSpaceReserved="false" />
+            android:title="@string/search_suggestions_title" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        android:title="@string/data_privacy"
-        app:iconSpaceReserved="false">
+    <androidx.preference.PreferenceCategory android:title="@string/data_privacy">
         <androidx.preference.CheckBoxPreference
             android:key="adBlocker"
             android:summary="@string/pref_adBlocker_desp"
-            android:title="@string/pref_adBlocker"
-            app:iconSpaceReserved="false" />
+            android:title="@string/pref_adBlocker" />
         <androidx.preference.CheckBoxPreference
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_desp"
-            android:title="@string/pref_do_not_track"
-            app:iconSpaceReserved="false" />
+            android:title="@string/pref_do_not_track" />
         <androidx.preference.Preference
             android:key="reset_to_default"
             android:summary="@string/reset_btn_desp"
-            android:title="@string/reset_btn"
-            app:iconSpaceReserved="false" />
+            android:title="@string/reset_btn" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        android:title="@string/visual"
-        app:iconSpaceReserved="false">
+    <androidx.preference.PreferenceCategory android:title="@string/visual">
         <androidx.preference.Preference
             android:key="theme"
             android:summary=""
-            android:title="@string/pref_theme"
-            app:iconSpaceReserved="false" />
+            android:title="@string/pref_theme" />
         <androidx.preference.CheckBoxPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
-            android:title="@string/show_favicon"
-            app:iconSpaceReserved="false" />
+            android:title="@string/show_favicon" />
         <androidx.preference.CheckBoxPreference
             android:key="center_action"
             android:summary="@string/pref_center_action_desp"
-            android:title="@string/pref_center_action"
-            app:iconSpaceReserved="false" />
+            android:title="@string/pref_center_action" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        android:title="@string/advanced"
-        app:iconSpaceReserved="false">
+    <androidx.preference.PreferenceCategory android:title="@string/advanced">
         <androidx.preference.CheckBoxPreference
             android:key="javascript"
             android:summary="@string/javascript_desp"
-            android:title="@string/javascript"
-            app:iconSpaceReserved="false" />
+            android:title="@string/javascript" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        android:title="@string/help"
-        app:iconSpaceReserved="false">
+    <androidx.preference.PreferenceCategory android:title="@string/help">
         <androidx.preference.Preference
             android:key="version"
             android:summary=""
-            android:title="@string/version"
-            app:iconSpaceReserved="false" />
+            android:title="@string/version" />
         <androidx.preference.Preference
             android:key="feedback"
             android:summary="@string/feedback_desp"
-            android:title="@string/feedback"
-            app:iconSpaceReserved="false" />
+            android:title="@string/feedback" />
         <androidx.preference.Preference
             android:key="source_code"
             android:summary="@string/source_code_desp"
-            android:title="@string/source_code"
-            app:iconSpaceReserved="false" />
+            android:title="@string/source_code" />
     </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

@@ -1,6 +1,5 @@
 package tipz.browservio;
 
-import static tipz.browservio.fav.FavApi.bookmarks;
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.Manifest;
@@ -14,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.http.SslCertificate;
@@ -80,6 +80,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayInputStream;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -91,10 +92,13 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import tipz.browservio.broha.icons.IconHashClient;
 import tipz.browservio.fav.FavActivity;
+import tipz.browservio.fav.FavApi;
+import tipz.browservio.fav.FavUtils;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryApi;
-import tipz.browservio.history.HistoryReader;
+import tipz.browservio.history.HistoryUtils;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
@@ -122,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
     private String currentError = CommonUtils.EMPTY_STRING;
     private String currentCustomUA;
     private boolean customBrowse = false;
+    private IconHashClient iconHashClient;
+
+    private final String GENERIC_ERR_MSG = "net::ERR_UNKNOWN";
 
     private ValueCallback<Uri[]> mUploadMessage;
 
@@ -195,6 +202,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            webview.freeMemory();
+    }
+
     private void setDesktopMode(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
@@ -230,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
         i.putExtra(Intent.EXTRA_TEXT, url == null ? currentUrl : url);
-        startActivity(Intent.createChooser(i, getResources().getString(R.string.linear_control_b5_title)));
+        startActivity(Intent.createChooser(i, getResources().getString(R.string.share_url_dialog_title)));
     }
 
     public void itemSelected(AppCompatImageView view, int item) {
@@ -245,21 +259,20 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 4) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.linear_control_b3_desk));
-            menu.add(getResources().getString(R.string.linear_control_b3_mobi));
-            menu.add(getResources().getString(R.string.linear_control_b3_cus));
+            menu.add(getResources().getString(R.string.desktop));
+            menu.add(getResources().getString(R.string.mobile));
+            menu.add(getResources().getString(R.string.custom));
             popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_desk)))
+                if (_item.getTitle().toString().equals(getResources().getString(R.string.desktop)))
                     setDeskMode(view, 1, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_mobi)))
+                else if (_item.getTitle().toString().equals(getResources().getString(R.string.mobile)))
                     setDeskMode(view, 0, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.linear_control_b3_cus))) {
+                else if (_item.getTitle().toString().equals(getResources().getString(R.string.custom))) {
                     final LayoutInflater layoutInflater = LayoutInflater.from(this);
                     @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                     final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    dialog.setTitle(getResources().getString(R.string.ua))
-                            .setMessage(getResources().getString(R.string.cus_ua_choose))
+                    dialog.setTitle(getResources().getString(R.string.customUA))
                             .setView(root)
                             .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                                 if (customUserAgent.length() == 0) {
@@ -299,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.history))) {
                     webview.clearHistory();
-                    HistoryReader.clear(MainActivity.this);
+                    HistoryUtils.clear(MainActivity.this);
                     CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
                     webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
@@ -352,13 +365,11 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.fav));
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count, SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count).isEmpty() ? "0" : String.valueOf((long) (Double.parseDouble(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)) + 1)));
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)), webview.getUrl());
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_title), UrlTitle);
-                    SettingsUtils.setPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked.concat(SettingsUtils.getPref(bookmarks(MainActivity.this), SettingsKeys.bookmarked_count)).concat(SettingsKeys.bookmarked_show), "1");
-                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.saved_su));
+                    Drawable icon = favicon.getDrawable();
+                    FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
                 } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (bookmarks(MainActivity.this).getAll().size() == 0) {
+                    if (FavUtils.isEmptyCheck(this)) {
                         CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
                     } else {
                         Intent intent = new Intent(MainActivity.this, FavActivity.class);
@@ -500,20 +511,20 @@ public class MainActivity extends AppCompatActivity {
                                     text.toString()));
                     if (data == null)
                         return;
-                    JSONArray jsonArray = new JSONArray(data);
 
-                    jsonArray = jsonArray.optJSONArray(1);
+                    JSONArray jsonArray = new JSONArray(data).optJSONArray(1);
                     if (jsonArray == null)
-                        throw new RuntimeException("jsonArray is null.");
-                    final int MAX_RESULTS = 10;
-                    ArrayList<String> result = new ArrayList<>(Math.min(jsonArray.length(), MAX_RESULTS));
-                    for (int i = 0; i < jsonArray.length() && result.size() < MAX_RESULTS; i++) {
-                        String s = jsonArray.optString(i);
+                        return;
+
+                    ArrayList<String> result = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        String s = jsonArray.getString(i);
                         if (s != null && !s.isEmpty())
                             result.add(s);
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1, result);
-                    UrlEdit.setAdapter(adapter);
+
+                    UrlEdit.setAdapter(new ArrayAdapter<>(
+                            MainActivity.this, R.layout.recycler_list_item_1, result));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -554,6 +565,10 @@ public class MainActivity extends AppCompatActivity {
      * sur wen reel Sherk brower pls sand meme sum
      */
     private void initializeLogic() {
+        new HistoryApi(this); /* Start History service */
+        new FavApi(this); /* Start Favourites service */
+        iconHashClient = new IconHashClient(this);
+
         /* User agent init code */
         setDeskMode(null, 0, true);
 
@@ -561,8 +576,7 @@ public class MainActivity extends AppCompatActivity {
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
 
         /* Init settings check */
-        if (!SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isFirstLaunch).equals("0"))
-            new SettingsInit(MainActivity.this);
+        new SettingsInit(MainActivity.this);
 
         configChecker();
 
@@ -580,8 +594,6 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
-
-        new HistoryApi(this);
 
         updateAdServerList();
 
@@ -652,25 +664,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean urlShouldSet(String url) {
+        boolean errBool = !currentError.equals(GENERIC_ERR_MSG);
+        if (errBool && !webview.getUrl().equals(BrowservioURLs.realErrUrl))
+            webview.loadUrl(BrowservioURLs.realErrUrl);
+        return !(url.equals("about:blank")
+                || url.equals(BrowservioURLs.realErrUrl)
+                || url.equals(BrowservioURLs.realLicenseUrl)
+                || errBool);
+    }
+
     /**
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(String url) {
-            if (!Objects.requireNonNull(UrlEdit.getText()).toString().equals(url)
-                    && !(url.equals("about:blank")
-                    || url.equals(BrowservioURLs.realErrUrl)
-                    || url.equals(BrowservioURLs.realLicenseUrl))) {
+        private void UrlSet(String url, boolean update) {
+            if (!UrlEdit.getText().toString().equals(url)
+                    && urlShouldSet(url) || currentUrl == null) {
                 UrlEdit.setText(url);
                 currentUrl = url;
-                if (!HistoryReader.history_data(MainActivity.this).trim().endsWith(url))
-                    HistoryReader.appendData(MainActivity.this, url);
+                if (update)
+                    HistoryUtils.updateData(MainActivity.this, null, null, url, null);
+                else if (HistoryUtils.isEmptyCheck(MainActivity.this) || !HistoryUtils.lastUrl(MainActivity.this).equals(url))
+                    HistoryUtils.appendData(MainActivity.this, url);
             }
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            UrlSet(url);
+            UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
             if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
@@ -682,7 +704,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            UrlSet(url);
+            UrlSet(url, true);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 CookieSyncManager.getInstance().sync();
             else
@@ -832,13 +854,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            if (!icon.isRecycled())
+            if (!icon.isRecycled()) {
                 favicon.setImageBitmap(icon);
+                HistoryUtils.updateData(MainActivity.this, iconHashClient, null, null, icon);
+            }
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
+            if (urlShouldSet(webview.getUrl()) && title != null)
+                HistoryUtils.updateData(MainActivity.this, null, title, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(title));
         }
@@ -886,11 +912,20 @@ public class MainActivity extends AppCompatActivity {
 
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
             final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            try {
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            } catch (IllegalStateException e) {
+                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.downloadFailed));
+                return;
+            }
             request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
                     MimeTypeMap.getFileExtensionFromUrl(url)));
             DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-            dm.enqueue(request);
+            try {
+                dm.enqueue(request);
+            } catch (RuntimeException e) {
+                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.downloadFailed));
+            }
         }
     }
 
@@ -903,12 +938,15 @@ public class MainActivity extends AppCompatActivity {
         if (url == null || url.isEmpty())
             return;
 
-        currentError = "net::ERR_UNKNOWN";
+        currentError = GENERIC_ERR_MSG;
 
         String urlIdentify = URLIdentify(url);
-        if (urlIdentify != null)
-            if (urlIdentify.equals(CommonUtils.EMPTY_STRING))
-                return;
+        if (urlIdentify != null) {
+            currentUrl = urlIdentify;
+            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING))
+                webview.loadUrl(urlIdentify);
+            return;
+        }
 
         String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
         currentUrl = checkedUrl;
@@ -1015,7 +1053,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
-        private final MainActivity mMainActivity;
+        private final WeakReference<MainActivity> mMainActivity;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             private final AppCompatImageView mImageView;
@@ -1027,7 +1065,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public ItemsAdapter(MainActivity mainActivity) {
-            mMainActivity = mainActivity;
+            mMainActivity = new WeakReference<>(mainActivity);
         }
 
         @NonNull
@@ -1041,7 +1079,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mImageView.setImageResource(actionBarItemList.get(position));
-            holder.mImageView.setOnClickListener(view -> mMainActivity.itemSelected(holder.mImageView, position));
+            holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, position));
         }
 
         @Override

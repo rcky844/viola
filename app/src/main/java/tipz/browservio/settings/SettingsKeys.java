@@ -17,16 +17,4 @@ public class SettingsKeys {
     public static final String showFavicon = "showFavicon";
     public static final String themeId = "themeId";
     public static final String updateTesting = "updateTesting";
-
-    /* bookmarks */
-    public static final String bookmarks = "bookmarks.cfg";
-    public static final String bookmarked = "bookmarked_";
-    public static final String bookmarked_count = bookmarked.concat("count");
-    public static final String bookmarked_title = "_title";
-    public static final String bookmarked_show = "_show";
-
-    /* history */
-    public static final String history_cfg = "history.cfg";
-    public static final String history = "history";
-    public static final String historyApi = "historyApi";
 }

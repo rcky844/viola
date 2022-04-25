@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tipz.browservio.utils.urls.BrowservioURLs;
+
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {
@@ -42,7 +44,7 @@ public class UrlUtils {
         if (trimmedUrl.contains("\\") && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
             trimmedUrl = trimmedUrl.replace("\\", "/");
 
-        if (startsWithMatch(trimmedUrl))
+        if (startsWithMatch(trimmedUrl) || trimmedUrl.startsWith(BrowservioURLs.prefix))
             return trimmedUrl;
 
         if (trimmedUrl.contains("/") || trimmedUrl.contains("."))
