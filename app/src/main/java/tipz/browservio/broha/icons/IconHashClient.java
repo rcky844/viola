@@ -35,6 +35,7 @@ public class IconHashClient {
         return appDatabase.iconHashDao().findByHash(hash);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public String save(Bitmap icon) {
         ByteBuffer buffer = ByteBuffer.allocate(icon.getByteCount());
         icon.copyPixelsToBuffer(buffer);
