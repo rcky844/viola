@@ -105,6 +105,7 @@
     <string name="ver3_blob_no_support">目前不支持下載blob文件</string>
 
     <string-array name="errMsg">
+        <item>錯誤!</item>
         <item>無法打開此頁面</item>
         <item>Browservio 無法打開您的網頁</item>
         <item>您可以嘗試:</item>

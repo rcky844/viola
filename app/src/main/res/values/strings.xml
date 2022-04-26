@@ -106,6 +106,7 @@
     <string name="ver3_blob_no_support">blob files are currently not supported for downloading.</string>
 
     <string-array name="errMsg">
+        <item>Error!</item>
         <item>Can\'t open this page</item>
         <item>Browservio failed to open your webpage.</item>
         <item>Try:</item>

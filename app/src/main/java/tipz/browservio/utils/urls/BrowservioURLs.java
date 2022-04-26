@@ -6,8 +6,6 @@ public class BrowservioURLs {
     public static final String prefix = "browservio://";
     public static final String yhlPrefix = "yhl852:";
 
-    public static final String realErrUrl = "file:///android_asset/error.html";
-
     public static final String realChangelogUrl = "https://gitlab.com/TipzTeam/browservio/-/releases/"
             .concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA);
 
