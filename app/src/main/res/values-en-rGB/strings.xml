@@ -120,7 +120,7 @@
         <item>Yahoo!</item>
         <item>Ecosia</item>
         <item>Yandex</item>
-        <item>Custom</item>
+        <item>@string/custom</item>
     </string-array>
     <string-array name="themes">
         <item>System Default</item>
