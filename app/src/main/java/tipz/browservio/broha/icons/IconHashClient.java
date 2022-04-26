@@ -55,9 +55,8 @@ public class IconHashClient {
                 return null;
             }
 
-            IconHash iconHash = new IconHash(hash);
-            getDao().insertAll(iconHash);
-            return Integer.toString(iconHash.getId());
+            getDao().insertAll(new IconHash(hash));
+            return Integer.toString(getDao().lastIcon().getId());
         }
         return null;
     }

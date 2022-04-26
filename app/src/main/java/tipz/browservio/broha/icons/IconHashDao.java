@@ -17,6 +17,9 @@ public interface IconHashDao {
     @Query("SELECT * FROM iconHash LIMIT 1")
     List<IconHash> isEmpty();
 
+    @Query("SELECT * FROM iconHash ORDER BY id DESC LIMIT 1")
+    IconHash lastIcon();
+
     @Insert
     void insertAll(IconHash... iconHash);
 }
