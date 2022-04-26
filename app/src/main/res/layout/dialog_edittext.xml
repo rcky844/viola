@@ -14,6 +14,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
-        android:maxLength="50"
         android:singleLine="true" />
 </androidx.appcompat.widget.LinearLayoutCompat>

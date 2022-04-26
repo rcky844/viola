@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'idea'
 }
 
 def getGitHash = { ->
@@ -20,16 +19,22 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 32
-        versionCode 62
-        versionName "2.2"
+        versionCode 72
+        versionName "3.0"
 
-        buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_CODENAME", "\"Cupcake\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_cupcake_rel\""
+        buildConfigField "String", "VERSION_NAME_EXTRA", "\" Beta 1\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Dragon\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragon_beta1\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
         vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -54,16 +59,12 @@ android {
     }
 }
 
-idea {
-    module {
-        excludeDirs = [file("src/main/res/raw/hosts.txt")]
-    }
-}
-
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0-beta01'
+    implementation 'com.google.android.material:material:1.7.0-alpha01'
     implementation 'androidx.webkit:webkit:1.4.0'
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
+    implementation "androidx.room:room-runtime:2.4.2"
+    annotationProcessor "androidx.room:room-compiler:2.4.2"
 }

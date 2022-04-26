@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.core.os.LocaleListCompat;
+
 public class SettingsUtils {
     public static SharedPreferences browservio_saver(Context context) {
         return context.getSharedPreferences(SettingsKeys.browservio_saver, Activity.MODE_PRIVATE);
     }
+
+    public static final boolean doesNotHaveGoogle = LocaleListCompat.getAdjustedDefault().get(0).getCountry().equals("CN");
 
     /**
      * Check if SharedPreferences is empty
@@ -25,7 +29,7 @@ public class SettingsUtils {
             return;
 
         for (int i = 0; i < listLength; i++) {
-            if (getPref(pref, tag[i]).isEmpty() || mustSet) {
+            if ((defaultValue[i] instanceof String ? getPref(pref, tag[i]).isEmpty() : getPrefNum(pref, tag[i]) == 0) || mustSet) {
                 if (defaultValue[i] instanceof String)
                     setPref(pref, tag[i], (String) defaultValue[i]);
                 else

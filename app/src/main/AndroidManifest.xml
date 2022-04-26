@@ -4,10 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.ACCESS_GPS" />
     <uses-permission android:name="android.permission.ACCESS_ASSISTED_GPS" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION" />
@@ -17,8 +13,6 @@
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -56,7 +50,6 @@
                 <data android:scheme="javascript" />
                 <data android:scheme="blob" />
                 <data android:scheme="data" />
-                <data android:scheme="browservio" />
             </intent-filter>
             <!--  For these schemes where any of these particular MIME types
                   have been supplied, we are a good candidate. -->
@@ -68,6 +61,7 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+                <data android:scheme="content"/>
                 <data android:mimeType="text/html" />
                 <data android:mimeType="text/plain" />
                 <data android:mimeType="application/xhtml+xml" />
