@@ -5,6 +5,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="appBarLayoutStyle">@style/AppTheme.AppBarOverlay</item>
         <item name="materialAlertDialogTheme">@style/materialAlertDialogTheme</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/windowLightStatusBar</item>
     </style>
