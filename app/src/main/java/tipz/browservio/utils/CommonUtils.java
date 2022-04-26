@@ -17,11 +17,8 @@ public class CommonUtils {
     public static final String EMPTY_STRING = "";
 
     public static String LINE_SEPARATOR() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            return System.getProperty("line.separator");
-        } else {
-            return System.lineSeparator();
-        }
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 ?
+                System.getProperty("line.separator") : System.lineSeparator();
     }
 
     /**

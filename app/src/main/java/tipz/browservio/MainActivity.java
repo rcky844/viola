@@ -573,7 +573,6 @@ public class MainActivity extends AppCompatActivity {
 
         /* Init settings check */
         new SettingsInit(MainActivity.this);
-
         configChecker();
 
         /* zoom related stuff - From SCMPNews project */
@@ -585,13 +584,11 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setAllowFileAccess(false);
 
-        // HTML5 API flags
+        /* HTML5 API flags */
         webview.getSettings().setAppCacheEnabled(true);
         webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
-
-        updateAdServerList();
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
             WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
