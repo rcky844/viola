@@ -3,6 +3,7 @@ package tipz.browservio.broha.icons;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 
 import androidx.room.Room;
 
@@ -41,22 +42,33 @@ public class IconHashClient {
 
         File dirFile = new File(fileDir);
         if (dirFile.exists() || dirFile.mkdirs()) {
+            boolean wasJpg = false;
             File path = new File(fileDir, hash.concat(".jpg"));
+            if (path.exists()) {
+                path.delete(); /* Delete old JPEG files */
+                wasJpg = true;
+            }
 
+            path = new File(fileDir, hash.concat(".webp"));
             if (path.exists())
                 return Integer.toString(getIconHashByHash(hash).getId());
 
             try {
                 FileOutputStream out = new FileOutputStream(path);
-                icon.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                icon.compress(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ?
+                        Bitmap.CompressFormat.WEBP_LOSSY : Bitmap.CompressFormat.WEBP, 75, out);
                 out.flush();
                 out.close();
             } catch (Exception e) {
                 return null;
             }
 
-            getDao().insertAll(new IconHash(hash));
-            return Integer.toString(getDao().lastIcon().getId());
+            if (wasJpg) {
+                return Integer.toString(getIconHashByHash(hash).getId());
+            } else {
+                getDao().insertAll(new IconHash(hash));
+                return Integer.toString(getDao().lastIcon().getId());
+            }
         }
         return null;
     }
@@ -67,9 +79,14 @@ public class IconHashClient {
         IconHash data = getIconHashById(Integer.parseInt(iconId));
         if (data == null)
             return null;
-        File imgFile = new File(fileDir, data.getIconHash().concat(".jpg"));
+        File imgFile = new File(fileDir, data.getIconHash().concat(".webp"));
         if (imgFile.exists())
             return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+        imgFile = new File(fileDir, data.getIconHash().concat(".jpg"));
+        if (imgFile.exists())
+            return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
         return null;
     }
 }
