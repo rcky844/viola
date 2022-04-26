@@ -4,7 +4,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
-        <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="colorControlNormal">@color/colorElement</item>
         <item name="appBarLayoutStyle">@style/AppTheme.AppBarOverlay</item>
         <item name="materialAlertDialogTheme">@style/materialAlertDialogTheme</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/windowLightStatusBar</item>
@@ -28,6 +28,4 @@
         <item name="titleTextColor">@color/colorText</item>
         <item name="navigationIconTint">@color/colorElement</item>
     </style>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.Material3.Light" />
 </resources>
