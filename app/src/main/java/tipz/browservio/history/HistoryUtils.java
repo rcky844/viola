@@ -25,6 +25,7 @@ public class HistoryUtils {
                 lastBroha.setUrl(url);
             if (icon != null)
                 lastBroha.setIconHash(iconHashClient.save(icon));
+            lastBroha.setTimestamp();
             HistoryApi.historyBroha(context).updateBroha(lastBroha);
         }
     }
