@@ -28,6 +28,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Objects;
 
+import tipz.browservio.Application;
 import tipz.browservio.R;
 import tipz.browservio.broha.Broha;
 import tipz.browservio.broha.icons.IconHashClient;
@@ -74,7 +75,7 @@ public class FavActivity extends AppCompatActivity {
         RecyclerView favList = findViewById(R.id.recyclerView);
         listData = FavApi.favBroha(this).getAll();
         favList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        favList.setAdapter(new ItemsAdapter(this, new IconHashClient(this)));
+        favList.setAdapter(new ItemsAdapter(this, ((Application) getApplicationContext()).iconHashClient));
     }
 
     void isEmptyCheck() {

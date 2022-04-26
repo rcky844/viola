@@ -1,6 +1,3 @@
-3.0 Dragon (May)
-DONE, BETA!
-
 3.1 Dragonheart (July)
 - Custom tabs
     - No database init
@@ -8,6 +5,7 @@ DONE, BETA!
     - Share
 - API 33 support
     - Themed icons
+- Dynamic error page creation
 
 3.2 Dragonified (September)
 - Better search suggestions Part 2

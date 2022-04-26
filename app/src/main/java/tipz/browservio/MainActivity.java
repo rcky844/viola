@@ -94,10 +94,8 @@ import java.util.Scanner;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.broha.icons.IconHashClient;
 import tipz.browservio.fav.FavActivity;
-import tipz.browservio.fav.FavApi;
 import tipz.browservio.fav.FavUtils;
 import tipz.browservio.history.HistoryActivity;
-import tipz.browservio.history.HistoryApi;
 import tipz.browservio.history.HistoryUtils;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
@@ -565,9 +563,7 @@ public class MainActivity extends AppCompatActivity {
      * sur wen reel Sherk brower pls sand meme sum
      */
     private void initializeLogic() {
-        new HistoryApi(this); /* Start History service */
-        new FavApi(this); /* Start Favourites service */
-        iconHashClient = new IconHashClient(this);
+        iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
         /* User agent init code */
         setDeskMode(null, 0, true);
@@ -577,7 +573,6 @@ public class MainActivity extends AppCompatActivity {
 
         /* Init settings check */
         new SettingsInit(MainActivity.this);
-
         configChecker();
 
         /* zoom related stuff - From SCMPNews project */
@@ -589,13 +584,11 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setAllowFileAccess(false);
 
-        // HTML5 API flags
+        /* HTML5 API flags */
         webview.getSettings().setAppCacheEnabled(true);
         webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
-
-        updateAdServerList();
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
             WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());

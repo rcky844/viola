@@ -3,7 +3,6 @@ package tipz.browservio.broha.icons;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import java.util.List;
 
@@ -18,9 +17,9 @@ public interface IconHashDao {
     @Query("SELECT * FROM iconHash LIMIT 1")
     List<IconHash> isEmpty();
 
+    @Query("SELECT * FROM iconHash ORDER BY id DESC LIMIT 1")
+    IconHash lastIcon();
+
     @Insert
     void insertAll(IconHash... iconHash);
-
-    @Update
-    void updateBroha(IconHash... iconHash);
 }

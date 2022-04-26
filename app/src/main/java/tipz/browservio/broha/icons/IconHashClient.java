@@ -22,10 +22,6 @@ public class IconHashClient {
         fileDir = context.getFilesDir().getPath().concat("/favicon");
     }
 
-    public IconHashDatabase getDatabase() {
-        return appDatabase;
-    }
-
     public IconHashDao getDao() {
         return appDatabase.iconHashDao();
     }
@@ -43,13 +39,12 @@ public class IconHashClient {
         icon.copyPixelsToBuffer(buffer);
         String hash = Integer.toString(Arrays.hashCode(buffer.array()));
 
-
         File dirFile = new File(fileDir);
         if (dirFile.exists() || dirFile.mkdirs()) {
             File path = new File(fileDir, hash.concat(".jpg"));
 
             if (path.exists())
-                return Integer.toString(getDao().findByHash(hash).getId());
+                return Integer.toString(getIconHashByHash(hash).getId());
 
             try {
                 FileOutputStream out = new FileOutputStream(path);
@@ -60,9 +55,8 @@ public class IconHashClient {
                 return null;
             }
 
-            IconHash iconHash = new IconHash(hash);
-            getDao().insertAll(iconHash);
-            return Integer.toString(iconHash.getId());
+            getDao().insertAll(new IconHash(hash));
+            return Integer.toString(getDao().lastIcon().getId());
         }
         return null;
     }
@@ -70,7 +64,7 @@ public class IconHashClient {
     public Bitmap read(String iconId) {
         if (iconId == null)
             return null;
-        IconHash data = getDao().findById(Integer.parseInt(iconId));
+        IconHash data = getIconHashById(Integer.parseInt(iconId));
         if (data == null)
             return null;
         File imgFile = new File(fileDir, data.getIconHash().concat(".jpg"));
