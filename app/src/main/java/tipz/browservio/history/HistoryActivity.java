@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import tipz.browservio.Application;
 import tipz.browservio.R;
 import tipz.browservio.broha.Broha;
 import tipz.browservio.broha.icons.IconHashClient;
@@ -80,7 +81,7 @@ public class HistoryActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
         layoutManager.setStackFromEnd(true);
         historyList.setLayoutManager(layoutManager);
-        historyList.setAdapter(new ItemsAdapter(this, new IconHashClient(this)));
+        historyList.setAdapter(new ItemsAdapter(this, ((Application) getApplicationContext()).iconHashClient));
     }
 
     void isEmptyCheck() {

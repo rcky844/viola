@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import tipz.browservio.broha.BrohaClient;
+import tipz.browservio.Application;
 import tipz.browservio.broha.BrohaDao;
 import tipz.browservio.settings.SettingsUtils;
 
@@ -27,7 +27,7 @@ public class FavApi {
     }
 
     public static BrohaDao favBroha(Context context) {
-        return new BrohaClient(context, "bookmarks").getDao();
+        return ((Application) context.getApplicationContext()).favBroha;
     }
 
     public FavApi(Context c) {

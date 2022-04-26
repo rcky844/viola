@@ -6,8 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import tipz.browservio.Application;
 import tipz.browservio.broha.Broha;
-import tipz.browservio.broha.BrohaClient;
 import tipz.browservio.broha.BrohaDao;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
@@ -25,7 +25,7 @@ public class HistoryApi {
     }
 
     public static BrohaDao historyBroha(Context context) {
-        return new BrohaClient(context, "history").getDao();
+        return ((Application) context.getApplicationContext()).historyBroha;
     }
 
     public HistoryApi(Context c) {
