@@ -6,12 +6,8 @@ import androidx.room.Room;
 
 public class BrohaClient {
     private final BrohaDatabase appDatabase;
-    private static String databaseName;
-
 
     public BrohaClient(Context context, String dbName) {
-        databaseName = dbName;
-
         //appDatabase = Room.databaseBuilder(context, BrohaDatabase.class, dbName).build();
         /* FIXME: Don't run on main thread */
         appDatabase = Room.databaseBuilder(context, BrohaDatabase.class, dbName).allowMainThreadQueries().build();
@@ -20,5 +16,4 @@ public class BrohaClient {
     public BrohaDao getDao() {
         return appDatabase.brohaDao();
     }
-
 }
