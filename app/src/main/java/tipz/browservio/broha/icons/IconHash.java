@@ -11,15 +11,15 @@ public class IconHash {
     private int id;
 
     @ColumnInfo
-    private String iconHash;
+    private int iconHash;
 
-    public IconHash(int id, String iconHash) {
+    public IconHash(int id, int iconHash) {
         this.id = id;
         this.iconHash = iconHash;
     }
 
     @Ignore
-    public IconHash(String iconHash) {
+    public IconHash(int iconHash) {
         this.iconHash = iconHash;
     }
 
@@ -27,7 +27,7 @@ public class IconHash {
         return id;
     }
 
-    public String getIconHash() {
+    public int getIconHash() {
         return iconHash;
     }
 }

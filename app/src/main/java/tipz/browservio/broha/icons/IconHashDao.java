@@ -12,7 +12,7 @@ public interface IconHashDao {
     IconHash findById(int id);
 
     @Query("SELECT * FROM iconHash WHERE iconHash LIKE :hash LIMIT 1")
-    IconHash findByHash(String hash);
+    IconHash findByHash(int hash);
 
     @Query("SELECT * FROM iconHash LIMIT 1")
     List<IconHash> isEmpty();

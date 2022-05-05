@@ -31,7 +31,7 @@ public class IconHashClient {
         return appDatabase.iconHashDao().findById(id);
     }
 
-    public IconHash getIconHashByHash(String hash) {
+    public IconHash getIconHashByHash(int hash) {
         return appDatabase.iconHashDao().findByHash(hash);
     }
 
@@ -39,7 +39,8 @@ public class IconHashClient {
     public String save(Bitmap icon) {
         ByteBuffer buffer = ByteBuffer.allocate(icon.getByteCount());
         icon.copyPixelsToBuffer(buffer);
-        String hash = Integer.toString(Arrays.hashCode(buffer.array()));
+        int hashInt = Arrays.hashCode(buffer.array());
+        String hash = Integer.toString(hashInt);
 
         File dirFile = new File(fileDir);
         if (dirFile.exists() || dirFile.mkdirs()) {
@@ -52,7 +53,7 @@ public class IconHashClient {
 
             path = new File(fileDir, hash.concat(".webp"));
             if (path.exists())
-                return Integer.toString(getIconHashByHash(hash).getId());
+                return Integer.toString(getIconHashByHash(hashInt).getId());
 
             try {
                 FileOutputStream out = new FileOutputStream(path);
@@ -65,9 +66,9 @@ public class IconHashClient {
             }
 
             if (wasJpg) {
-                return Integer.toString(getIconHashByHash(hash).getId());
+                return Integer.toString(getIconHashByHash(hashInt).getId());
             } else {
-                getDao().insertAll(new IconHash(hash));
+                getDao().insertAll(new IconHash(hashInt));
                 return Integer.toString(getDao().lastIcon().getId());
             }
         }
@@ -80,11 +81,12 @@ public class IconHashClient {
         IconHash data = getIconHashById(Integer.parseInt(iconId));
         if (data == null)
             return null;
-        File imgFile = new File(fileDir, data.getIconHash().concat(".webp"));
+        String hash = String.valueOf(data.getIconHash());
+        File imgFile = new File(fileDir, hash.concat(".webp"));
         if (imgFile.exists())
             return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
-        imgFile = new File(fileDir, data.getIconHash().concat(".jpg"));
+        imgFile = new File(fileDir, hash.concat(".jpg"));
         if (imgFile.exists())
             return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
