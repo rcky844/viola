@@ -24,6 +24,7 @@ public class SearchEngineEntries {
     public final static String ecosiaSearchSuggestionsUrl = "https://ac.ecosia.org/autocomplete?q=%s&type=list";
     public final static String yandex = "https://yandex.com/%s";
     public final static String yandexSearchSuffix = "search/?text=";
+    public final static String yandexSearchSuggestionsUrl = "https://yandex.com/suggest/suggest-ya.cgi?v=4&part=%s";
 
     public static String getSearchEngineUrl(String homeAdd, String searchSuffix) {
         return composeSearchUrl(searchSuffix, homeAdd, "%s");

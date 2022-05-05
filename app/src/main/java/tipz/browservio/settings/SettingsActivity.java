@@ -134,7 +134,8 @@ public class SettingsActivity extends AppCompatActivity {
                     SettingsUtils.doesNotHaveGoogle ? searchHomePageList[1].concat(searchEntriesDefault) : searchHomePageList[1],
                     searchHomePageList[3],
                     searchHomePageList[4],
-                    searchHomePageList[5]
+                    searchHomePageList[5],
+                    searchHomePageList[6]
             };
             final String[] themeList = settingsActivity.getResources().getStringArray(R.array.themes);
 
@@ -276,6 +277,8 @@ public class SettingsActivity extends AppCompatActivity {
                                 homePage[0] = SearchEngineEntries.yahooSearchSuggestionsUrl;
                             else if (checkedItem[0] == 4)
                                 homePage[0] = SearchEngineEntries.ecosiaSearchSuggestionsUrl;
+                            else if (checkedItem[0] == 5)
+                                homePage[0] = SearchEngineEntries.yandexSearchSuggestionsUrl;
 
                             SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestions, homePage[0]);
                             SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId, checkedItem[0]);

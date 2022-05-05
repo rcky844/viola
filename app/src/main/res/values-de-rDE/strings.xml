@@ -105,6 +105,7 @@
     <string name="ver3_blob_no_support">Blob-Dateien werden derzeit nicht zum Herunterladen unterstützt.</string>
 
     <string-array name="errMsg">
+        <item>Fehler!</item>
         <item>Webseite kann nicht angezeigt werden</item>
         <item>Browservio konnte Ihre Webseite nicht anzeigen.</item>
         <item>Versuchen Sie:</item>

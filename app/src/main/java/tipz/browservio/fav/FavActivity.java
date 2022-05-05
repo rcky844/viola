@@ -173,7 +173,7 @@ public class FavActivity extends AppCompatActivity {
                                     }
                                 })
                                 .setNegativeButton(android.R.string.cancel, null)
-                                .setIcon(R.drawable.default_favicon)
+                                .setIcon(holder.icon.getDrawable())
                                 .create().show();
                         return true;
                     }

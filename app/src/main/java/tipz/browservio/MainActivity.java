@@ -36,7 +36,6 @@ import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
-import android.webkit.JavascriptInterface;
 import android.webkit.MimeTypeMap;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
@@ -121,12 +120,11 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private String currentUrl;
     private String adServers;
-    private String currentError = CommonUtils.EMPTY_STRING;
     private String currentCustomUA;
     private boolean customBrowse = false;
     private IconHashClient iconHashClient;
 
-    private final String GENERIC_ERR_MSG = "net::ERR_UNKNOWN";
+    private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n<style>\nbutton {\nbackground:rgba(158,158,158,.2);\nborder:none;\nborder-radius:2px;\ncolor:#000;\nposition:relative;\nheight:36px;\nmargin:0;\nmin-width:64px;\npadding:0 16px;\ndisplay:inline-block;\nfont-family:\"Roboto\",\"Helvetica\",\"Arial\",sans-serif;\nfont-size:14px;\nfont-weight:500;\ntext-transform:uppercase;\nletter-spacing:0;\noverflow:hidden;\ntransition:box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);\noutline:none;\ncursor:pointer;\ntext-decoration:none;\ntext-align:center;\nline-height:36px;\nvertical-align:middle;\nbox-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)\n}\n\nbutton:hover {\nbackground-color:rgba(158,158,158,.2)\n}\n\nbutton:focus:not(:active) {\nbox-shadow:0 0 8px rgba(0,0,0,.18),0 8px 16px rgba(0,0,0,.36);\nbackground-color:rgba(158,158,158,.4)\n}\n\nbutton:active {\nbox-shadow:0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);\nbackground-color:rgba(158,158,158,.4)\n}\n</style>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<button style=\"margin-top: 24px; margin-bottom: 8px;\" onclick=\"browservioErr.reloadBtn()\">$6</button>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$7</p>\n</div>\n</div>\n</body>\n</html>";
 
     private ValueCallback<Uri[]> mUploadMessage;
 
@@ -545,7 +543,6 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
 
-        webview.addJavascriptInterface(new browservioJsInterface(MainActivity.this), "browservio");
         webview.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
         webview.removeJavascriptInterface("accessibility"); /* CVE-2014-7224 */
         webview.removeJavascriptInterface("accessibilityTraversal"); /* CVE-2014-7224 */
@@ -637,34 +634,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class browservioJsInterface {
-        final MainActivity mMainActivity;
-
-        browservioJsInterface(MainActivity mainActivity) {
-            mMainActivity = mainActivity;
-        }
-
-        @JavascriptInterface
-        public String errGetMsg(int msgId) {
-            if (msgId >= 6)
-                return currentError;
-            return mMainActivity.getResources().getStringArray(R.array.errMsg)[msgId];
-        }
-
-        @JavascriptInterface
-        public void reloadBtn() {
-            runOnUiThread(mMainActivity::webviewReload);
-        }
-    }
-
     private boolean urlShouldSet(String url) {
-        boolean errBool = !currentError.equals(GENERIC_ERR_MSG);
-        if (errBool && !webview.getUrl().equals(BrowservioURLs.realErrUrl))
-            webview.loadUrl(BrowservioURLs.realErrUrl);
         return !(url.equals("about:blank")
-                || url.equals(BrowservioURLs.realErrUrl)
-                || url.equals(BrowservioURLs.realLicenseUrl)
-                || errBool);
+                || url.equals(BrowservioURLs.realLicenseUrl));
     }
 
     /**
@@ -688,7 +660,8 @@ public class MainActivity extends AppCompatActivity {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this),
+                    SettingsKeys.showFavicon)) && urlShouldSet(url)) {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
             }
@@ -702,7 +675,8 @@ public class MainActivity extends AppCompatActivity {
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this),
+                    SettingsKeys.showFavicon))) {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
             }
@@ -711,8 +685,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            webview.loadUrl(BrowservioURLs.realErrUrl);
-            currentError = description;
+            String returnVal = template;
+            for (int i = 0; i < 7; i++)
+                returnVal = returnVal.replace("$".concat(Integer.toString(i)),
+                        MainActivity.this.getResources().getStringArray(R.array.errMsg)[i]);
+            returnVal = returnVal.replace("$7", description);
+
+            webview.loadDataWithBaseURL(null, returnVal, "text/html", "UTF-8", null);
         }
 
         @Override
@@ -931,8 +910,6 @@ public class MainActivity extends AppCompatActivity {
         if (url == null || url.isEmpty())
             return;
 
-        currentError = GENERIC_ERR_MSG;
-
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
             currentUrl = urlIdentify;
@@ -1026,9 +1003,6 @@ public class MainActivity extends AppCompatActivity {
      */
     @Nullable
     private String URLIdentify(String url) {
-        if (url.equals(BrowservioURLs.realErrUrl))
-            return BrowservioURLs.realErrUrl;
-
         if (url.equals(BrowservioURLs.licenseUrl) || url.equals(BrowservioURLs.realLicenseUrl)) {
             UrlEdit.setText(BrowservioURLs.licenseUrl);
             return BrowservioURLs.realLicenseUrl;
