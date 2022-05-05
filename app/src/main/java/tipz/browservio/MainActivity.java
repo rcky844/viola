@@ -660,7 +660,8 @@ public class MainActivity extends AppCompatActivity {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this),
+                    SettingsKeys.showFavicon)) && urlShouldSet(url)) {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
             }
@@ -674,7 +675,8 @@ public class MainActivity extends AppCompatActivity {
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this),
+                    SettingsKeys.showFavicon))) {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
             }
