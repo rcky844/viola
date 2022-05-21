@@ -68,6 +68,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
     private AppCompatImageView fab;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private WebView webview;
     private RecyclerView actionBar;
     private RelativeLayout actionBarBack;
@@ -389,6 +391,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit = findViewById(R.id.UrlEdit);
         MainProg = findViewById(R.id.MainProg);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
+        swipeRefreshLayout = findViewById(R.id.swipe);
         webview = findViewById(R.id.webview);
         actionBar = findViewById(R.id.actionBar);
         actionBarBack = findViewById(R.id.actionBarBack);
@@ -484,6 +487,9 @@ public class MainActivity extends AppCompatActivity {
 
             webLongPress.show();
         });
+
+        swipeRefreshLayout.setOnRefreshListener(this::webviewReload);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
@@ -681,6 +687,7 @@ public class MainActivity extends AppCompatActivity {
                 faviconProgressBar.setVisibility(View.GONE);
             }
             favicon.setImageResource(R.drawable.default_favicon);
+            swipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
