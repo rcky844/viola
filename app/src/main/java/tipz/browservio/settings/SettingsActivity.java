@@ -13,7 +13,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,7 +41,7 @@ import java.util.Objects;
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.utils.CommonUtils;
-import tipz.browservio.utils.DownloadToStringUtils;
+import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.urls.SearchEngineEntries;
 
@@ -391,7 +390,7 @@ public class SettingsActivity extends AppCompatActivity {
                     } else {
                         File apkFile = new File(updateDownloadPath);
 
-                        String[] array = DownloadToStringUtils.
+                        String[] array = DownloadUtils.
                                 downloadToString("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
                                 .split(CommonUtils.LINE_SEPARATOR());
 
@@ -404,17 +403,12 @@ public class SettingsActivity extends AppCompatActivity {
                                 .setTitle(getResources().getString(R.string.new_update_detect_title))
                                 .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
                                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                    if (!apkFile.exists() || apkFile.delete()) {
-                                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(array[1]));
-                                        request.setTitle(getResources().getString(R.string.download_title));
-                                        request.setMimeType("application/vnd.android.package-archive");
-                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
-                                        DownloadManager dm = (DownloadManager) settingsActivity.getSystemService(Context.DOWNLOAD_SERVICE);
-                                        downloadID = dm.enqueue(request);
-                                    } else {
+                                    if (!apkFile.exists() || apkFile.delete())
+                                        downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
+                                                null, "application/vnd.android.package-archive",
+                                                getResources().getString(R.string.download_title), "browservio-update.apk");
+                                    else
                                         CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
-                                    }
                                 })
                                 .setNegativeButton(android.R.string.cancel, null)
                                 .create().show();
