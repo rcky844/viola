@@ -14,8 +14,8 @@ public class SettingsInit {
         boolean isEqualToOneFirstLaunch = CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(mContext), SettingsKeys.isFirstLaunch));
         SettingsUtils.checkIfEmpty(browservio_saver(mContext),
                 new String[]{SettingsKeys.defaultHomePage, SettingsKeys.defaultHomePageId, SettingsKeys.defaultSearch, SettingsKeys.defaultSearchId, SettingsKeys.defaultSuggestions, SettingsKeys.defaultSuggestionsId},
-                SettingsUtils.doesNotHaveGoogle ? new Object[]{getHomepageUrl(SearchEngineEntries.baidu), 1, getSearchEngineUrl(SearchEngineEntries.baidu, SearchEngineEntries.baiduSearchSuffix), 1, SearchEngineEntries.baiduSearchSuggestionsUrl, 1}
-                        : new Object[]{getHomepageUrl(SearchEngineEntries.google), 0, getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix), 0, SearchEngineEntries.googleSearchSuggestionsUrl, 0}, isEqualToOneFirstLaunch);
+                SettingsUtils.doesNotHaveGoogle ? new Object[]{getHomepageUrl(SearchEngineEntries.baseSearch[1]), 1, getSearchEngineUrl(SearchEngineEntries.baseSearch[1], SearchEngineEntries.searchSuffix[1]), 1, SearchEngineEntries.searchSuggestionsUrl[1], 1}
+                        : new Object[]{getHomepageUrl(SearchEngineEntries.baseSearch[0]), 0, getSearchEngineUrl(SearchEngineEntries.baseSearch[0], SearchEngineEntries.searchSuffix[0]), 0, SearchEngineEntries.searchSuggestionsUrl[0], 0}, isEqualToOneFirstLaunch);
         SettingsUtils.checkIfEmpty(browservio_saver(mContext),
                 new String[]{SettingsKeys.isJavaScriptEnabled, SettingsKeys.enableAdBlock, SettingsKeys.sendDNT, SettingsKeys.showFavicon, SettingsKeys.themeId, SettingsKeys.centerActionBar, SettingsKeys.updateTesting, SettingsKeys.isFirstLaunch},
                 new Object[]{"1", 0, "0", "1", 0, 1, 0, "0"}, isEqualToOneFirstLaunch);
