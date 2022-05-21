@@ -5,7 +5,6 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -21,7 +20,6 @@ import android.net.http.SslError;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -36,7 +34,6 @@ import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
-import android.webkit.MimeTypeMap;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -68,6 +65,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewFeature;
@@ -101,7 +99,7 @@ import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
-import tipz.browservio.utils.DownloadToStringUtils;
+import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.urls.SearchEngineEntries;
@@ -112,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
     private AppCompatImageView fab;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private WebView webview;
     private RecyclerView actionBar;
     private RelativeLayout actionBarBack;
@@ -389,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit = findViewById(R.id.UrlEdit);
         MainProg = findViewById(R.id.MainProg);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
+        swipeRefreshLayout = findViewById(R.id.swipe);
         webview = findViewById(R.id.webview);
         actionBar = findViewById(R.id.actionBar);
         actionBarBack = findViewById(R.id.actionBarBack);
@@ -469,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
                 if (strName.equals(getResources().getString(R.string.copy_url))) {
                     CommonUtils.copyClipboard(MainActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
-                    downloadFile(url, null, null);
+                    DownloadUtils.dmDownloadFile(MainActivity.this, url, null, null);
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra(Intent.EXTRA_TEXT, url)
@@ -483,7 +483,11 @@ public class MainActivity extends AppCompatActivity {
             });
 
             webLongPress.show();
+            webLongPress.show();
         });
+
+        swipeRefreshLayout.setOnRefreshListener(this::webviewReload);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
@@ -501,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
                 if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()))
                     return;
                 try {
-                    String data = DownloadToStringUtils.downloadToString(
+                    String data = DownloadUtils.downloadToString(
                             SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
                                     browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
                                     text.toString()));
@@ -566,7 +570,8 @@ public class MainActivity extends AppCompatActivity {
         setDeskMode(null, 0, true);
 
         /* Start the download manager service */
-        webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> downloadFile(url, contentDisposition, mimeType));
+        webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) ->
+                DownloadUtils.dmDownloadFile(MainActivity.this, url, contentDisposition, mimeType));
 
         /* Init settings check */
         new SettingsInit(MainActivity.this);
@@ -621,7 +626,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Function to update the list of Ad servers */
     private void updateAdServerList() {
-        String data = DownloadToStringUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
+        String data = DownloadUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
         if (data != null) {
             Scanner scanner = new Scanner(data);
             StringBuilder builder = new StringBuilder();
@@ -681,6 +686,7 @@ public class MainActivity extends AppCompatActivity {
                 faviconProgressBar.setVisibility(View.GONE);
             }
             favicon.setImageResource(R.drawable.default_favicon);
+            swipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
@@ -869,36 +875,6 @@ public class MainActivity extends AppCompatActivity {
             webview.goBack();
         else
             finish();
-    }
-
-    public void downloadFile(String url, String contentDisposition, String mimeType) {
-        if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
-            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.ver3_blob_no_support));
-        } else {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(UrlUtils.UrlChecker(url, false, null)));
-
-            // Let this downloaded file be scanned by MediaScanner - so that it can
-            // show up in Gallery app, for example.
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
-                request.allowScanningByMediaScanner();
-
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
-            final String filename = UrlUtils.guessFileName(url, contentDisposition, mimeType);
-            try {
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-            } catch (IllegalStateException e) {
-                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.downloadFailed));
-                return;
-            }
-            request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                    MimeTypeMap.getFileExtensionFromUrl(url)));
-            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-            try {
-                dm.enqueue(request);
-            } catch (RuntimeException e) {
-                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.downloadFailed));
-            }
-        }
     }
 
     /**

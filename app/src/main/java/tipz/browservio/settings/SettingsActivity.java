@@ -13,7 +13,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,7 +41,7 @@ import java.util.Objects;
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.utils.CommonUtils;
-import tipz.browservio.utils.DownloadToStringUtils;
+import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.urls.BrowservioURLs;
 import tipz.browservio.utils.urls.SearchEngineEntries;
 
@@ -164,26 +163,11 @@ public class SettingsActivity extends AppCompatActivity {
 
             search_engine.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId)};
-                final String[] searchEngine = new String[1];
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_engine))
                         .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 0)
-                                searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.google, SearchEngineEntries.googleSearchSuffix);
-                            else if (checkedItem[0] == 1)
-                                searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.baidu, SearchEngineEntries.baiduSearchSuffix);
-                            else if (checkedItem[0] == 2)
-                                searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.duck, SearchEngineEntries.duckSearchSuffix);
-                            else if (checkedItem[0] == 3)
-                                searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.bing, SearchEngineEntries.bingSearchSuffix);
-                            else if (checkedItem[0] == 4)
-                                searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.yahoo, SearchEngineEntries.yahooSearchSuffix);
-                            else if (checkedItem[0] == 5)
-                                searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.ecosia, SearchEngineEntries.ecosiaSearchSuffix);
-                            else if (checkedItem[0] == 6)
-                                searchEngine[0] = getSearchEngineUrl(SearchEngineEntries.yandex, SearchEngineEntries.yandexSearchSuffix);
-                            else if (checkedItem[0] == 7) {
+                            if (checkedItem[0] == 7) {
                                 final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -201,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
 
                             if (checkedItem[0] != 7) {
-                                SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSearch, searchEngine[0]);
+                                SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.baseSearch[checkedItem[0]], SearchEngineEntries.searchSuffix[checkedItem[0]]));
                                 SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId, checkedItem[0]);
                                 search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
                             }
@@ -213,26 +197,11 @@ public class SettingsActivity extends AppCompatActivity {
 
             homepage.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId)};
-                final String[] homePage = new String[1];
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.homepage))
                         .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 0)
-                                homePage[0] = getHomepageUrl(SearchEngineEntries.google);
-                            else if (checkedItem[0] == 1)
-                                homePage[0] = getHomepageUrl(SearchEngineEntries.baidu);
-                            else if (checkedItem[0] == 2)
-                                homePage[0] = getHomepageUrl(SearchEngineEntries.duck);
-                            else if (checkedItem[0] == 3)
-                                homePage[0] = getHomepageUrl(SearchEngineEntries.bing);
-                            else if (checkedItem[0] == 4)
-                                homePage[0] = getHomepageUrl(SearchEngineEntries.yahoo);
-                            else if (checkedItem[0] == 5)
-                                homePage[0] = getHomepageUrl(SearchEngineEntries.ecosia);
-                            else if (checkedItem[0] == 6)
-                                homePage[0] = getHomepageUrl(SearchEngineEntries.yandex);
-                            else if (checkedItem[0] == 7) {
+                            if (checkedItem[0] == 7) {
                                 final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -250,7 +219,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
 
                             if (checkedItem[0] != 7) {
-                                SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultHomePage, homePage[0]);
+                                SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.baseSearch[checkedItem[0]]));
                                 SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId, checkedItem[0]);
                                 homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
                             }
@@ -262,25 +231,11 @@ public class SettingsActivity extends AppCompatActivity {
 
             search_suggestions.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId)};
-                final String[] homePage = new String[1];
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
                         .setSingleChoiceItems(suggestionsList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 0)
-                                homePage[0] = SearchEngineEntries.googleSearchSuggestionsUrl;
-                            else if (checkedItem[0] == 1)
-                                homePage[0] = SearchEngineEntries.baiduSearchSuggestionsUrl;
-                            else if (checkedItem[0] == 2)
-                                homePage[0] = SearchEngineEntries.bingSearchSuggestionsUrl;
-                            else if (checkedItem[0] == 3)
-                                homePage[0] = SearchEngineEntries.yahooSearchSuggestionsUrl;
-                            else if (checkedItem[0] == 4)
-                                homePage[0] = SearchEngineEntries.ecosiaSearchSuggestionsUrl;
-                            else if (checkedItem[0] == 5)
-                                homePage[0] = SearchEngineEntries.yandexSearchSuggestionsUrl;
-
-                            SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestions, homePage[0]);
+                            SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestions, SearchEngineEntries.searchSuggestionsUrl[checkedItem[0]]);
                             SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId, checkedItem[0]);
                             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[checkedItem[0]]));
                         })
@@ -391,7 +346,7 @@ public class SettingsActivity extends AppCompatActivity {
                     } else {
                         File apkFile = new File(updateDownloadPath);
 
-                        String[] array = DownloadToStringUtils.
+                        String[] array = DownloadUtils.
                                 downloadToString("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
                                 .split(CommonUtils.LINE_SEPARATOR());
 
@@ -404,17 +359,12 @@ public class SettingsActivity extends AppCompatActivity {
                                 .setTitle(getResources().getString(R.string.new_update_detect_title))
                                 .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
                                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                    if (!apkFile.exists() || apkFile.delete()) {
-                                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(array[1]));
-                                        request.setTitle(getResources().getString(R.string.download_title));
-                                        request.setMimeType("application/vnd.android.package-archive");
-                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "browservio-update.apk");
-                                        DownloadManager dm = (DownloadManager) settingsActivity.getSystemService(Context.DOWNLOAD_SERVICE);
-                                        downloadID = dm.enqueue(request);
-                                    } else {
+                                    if (!apkFile.exists() || apkFile.delete())
+                                        downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
+                                                null, "application/vnd.android.package-archive",
+                                                getResources().getString(R.string.download_title), "browservio-update.apk");
+                                    else
                                         CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
-                                    }
                                 })
                                 .setNegativeButton(android.R.string.cancel, null)
                                 .create().show();
