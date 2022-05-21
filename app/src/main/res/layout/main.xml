@@ -120,7 +120,7 @@
         android:layout_height="2dp"
         android:indeterminate="false"
         android:progressBackgroundTint="#26000000"
-        app:layout_constraintBottom_toTopOf="@id/webview"
+        app:layout_constraintBottom_toTopOf="@id/swipe"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/actionBarBack" />
 
