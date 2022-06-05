@@ -457,8 +457,10 @@ public class MainActivity extends AppCompatActivity {
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1);
             if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
                 arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
-            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
+            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
                 arrayAdapter.add(getResources().getString(R.string.download_image));
+                arrayAdapter.add(getResources().getString(R.string.search_image));
+            }
             arrayAdapter.add(getResources().getString(R.string.copy_url));
             arrayAdapter.add(getResources().getString(R.string.share_url));
 
@@ -469,6 +471,8 @@ public class MainActivity extends AppCompatActivity {
                     CommonUtils.copyClipboard(MainActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
                     DownloadUtils.dmDownloadFile(MainActivity.this, url, null, null);
+                } else if (strName.equals(getResources().getString(R.string.search_image))) {
+                    browservioBrowse("http://images.google.com/searchbyimage?image_url=".concat(url));
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra(Intent.EXTRA_TEXT, url)
@@ -478,7 +482,6 @@ public class MainActivity extends AppCompatActivity {
                 } else if (strName.equals(getResources().getString(R.string.share_url))) {
                     shareUrl(url);
                 }
-
             });
 
             webLongPress.show();
