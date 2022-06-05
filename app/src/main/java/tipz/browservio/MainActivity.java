@@ -482,7 +482,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
             webLongPress.show();
-            webLongPress.show();
         });
 
         swipeRefreshLayout.setOnRefreshListener(this::webviewReload);
