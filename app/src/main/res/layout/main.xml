@@ -99,6 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorTopBar"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/MainProg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar">
@@ -109,8 +110,7 @@
             android:layout_height="36dp"
             android:hardwareAccelerated="true"
             android:orientation="horizontal"
-            android:scrollbars="none"
-            android:visibility="gone" />
+            android:scrollbars="none" />
     </RelativeLayout>
 
     <ProgressBar
@@ -128,11 +128,11 @@
         android:id="@+id/swipe"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/MainProg"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/colorAccent"
         tools:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <WebView

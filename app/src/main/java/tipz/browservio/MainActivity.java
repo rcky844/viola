@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView fab;
     private SwipeRefreshLayout swipeRefreshLayout;
     private WebView webview;
-    private RecyclerView actionBar;
     private RelativeLayout actionBarBack;
     private AppCompatImageView favicon;
 
@@ -390,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         swipeRefreshLayout = findViewById(R.id.swipe);
         webview = findViewById(R.id.webview);
-        actionBar = findViewById(R.id.actionBar);
+        RecyclerView actionBar = findViewById(R.id.actionBar);
         actionBarBack = findViewById(R.id.actionBarBack);
         favicon = findViewById(R.id.favicon);
 
@@ -433,14 +432,14 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
 
         fab.setOnClickListener(_view -> {
-            if (actionBar.getVisibility() == View.VISIBLE) {
+            if (actionBarBack.getVisibility() == View.VISIBLE) {
                 fab.animate().rotation(180).setDuration(250).start();
-                actionBar.animate().alpha(0f).setDuration(250).start();
-                actionBar.setVisibility(View.GONE);
+                actionBarBack.animate().alpha(0f).setDuration(250).start();
+                actionBarBack.setVisibility(View.GONE);
             } else {
                 fab.animate().rotation(0).setDuration(250).start();
-                actionBar.animate().alpha(1f).setDuration(250).start();
-                actionBar.setVisibility(View.VISIBLE);
+                actionBarBack.animate().alpha(1f).setDuration(250).start();
+                actionBarBack.setVisibility(View.VISIBLE);
             }
         });
 
