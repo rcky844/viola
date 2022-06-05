@@ -11,7 +11,6 @@ public class SettingsKeys {
     public static final String defaultSuggestions = "defaultSuggestions";
     public static final String defaultSuggestionsId = "defaultSuggestionsId";
     public static final String enableAdBlock = "enableAdBlock";
-    public static final String isFirstLaunch = "isFirstLaunch";
     public static final String isJavaScriptEnabled = "isJavaScriptEnabled";
     public static final String sendDNT = "sendDNT";
     public static final String showFavicon = "showFavicon";
