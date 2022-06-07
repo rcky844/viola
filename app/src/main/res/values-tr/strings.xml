@@ -1,0 +1,134 @@
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">Browservio</string>
+    <string name="desktop">Masaüstü</string>
+    <string name="mobile">Mobil</string>
+    <string name="custom">Özel</string>
+    <string name="customUA">"Özel Kullanıcı Aracısı (Custom User Agent)"</string>
+    <string name="reset_complete">"Sıfırlama başarıyla tamamlandı."</string>
+    <string name="clear">"%s temizle"</string>
+    <string name="cache">"Önbellek"</string>
+    <string name="history">"Geçmiş"</string>
+    <string name="cookies">"Çerezler"</string>
+    <string name="cleared_toast">"%s başarıyla silindi!"</string>
+    <string name="share_url_dialog_title">"URL\'yi şununla paylaş:"</string>
+    <string name="copied_clipboard">"Panoya kopyalandı!"</string>
+    <string name="hist_empty">"Geçmiş temiz!"</string>
+    <string name="add">"Ekle"</string>
+    <string name="save_successful">"Başarıyla kaydedildi!"</string>
+    <string name="fav_list_empty">"Sık kullanılan listesi boş."</string>
+    <string name="copy_title">"Web sitesinin başlığını kopyala"</string>
+    <string name="address_bar_hint">"Arayın ya da adres girin…"</string>
+    <string name="favicon_desp">"Sitenin simgesine dokunmak, site\'nin başlığını içeren bir diyalog gösterecektir."</string>
+    <string name="fab_desp">"Dokunulduğunda araç çubuğunu gizleyecek\gösterecek bir tuş."</string>
+    <string name="settings">Ayarlar</string>
+    <string name="search_engine">"Arama motoru"</string>
+    <string name="search_engine_current">"Güncel arama motoru: %s"</string>
+    <string name="homepage">"Ana sayfa"</string>
+    <string name="homepage_current">"Güncel ana sayfa: %s"</string>
+    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="update_btn">Güncellemeleri denetle</string>
+    <string name="version_latest_toast">"Browservio'nun en güncel sürümünü kullanmaktasınız."</string>
+    <string name="network_unavailable_toast">"Bağlantı yok."</string>
+    <string name="new_update_detect_title">"Güncelleme mevcut"</string>
+    <string name="new_update_detect_message">"%1$s (%2$s) mevcut, yüklemek ister misiniz?"</string>
+    <string name="update_down_failed_toast">"Güncelleme indirilirken hata!"</string>
+    <string name="general">Genel</string>
+    <string name="reset_btn">"Varsayılanlara sıfırla"</string>
+    <string name="advanced">Gelişmiş</string>
+    <string name="javascript">"JavaScript\'i etkinleştir"</string>
+    <string name="javascript_desp">"Bunu etkinleştirmek JavaScript web içeriğinin yüklenmesine izin verecektir."</string>
+    <string name="show_favicon">"Web sitesi simgesini göster"</string>
+    <string name="show_favicon_desp">"Adres çubuğu yanında web sitesinin simgesini gösterir."</string>
+    <string name="help">Yardım</string>
+    <string name="version">Sürüm</string>
+    <string name="feedback">Geri bildirim</string>
+    <string name="feedback_desp">"Geri bildirimde bulunmak Browservio\'nun kalitesini artırmaya yardımcı olacaktır."</string>
+    <string name="source_code">"Kaynak kodu"</string>
+    <string name="source_code_desp">"Browservio\'nun kaynak koduna göz atın."</string>
+    <string name="download_title">"Browservio Güncellemesi"</string>
+    <string name="fav">Sık kullanılanlar</string>
+    <string name="delete">"Sil"</string>
+    <string name="delete_all_entries">"Tüm girişleri sil"</string>
+    <string name="delete_fav_message">"Tüm sık kullanılanları silmek üzeresiniz. Devam etmek istiyor musunuz?"</string>
+    <string name="wiped_success">"Başarıyla silindi!"</string>
+    <string name="fav_del_fab_desp">"Tüm girişleri sil"</string>
+    <string name="hist">Geçmiş</string>
+    <string name="add_to_fav">"Sık kullanılanlara ekle"</string>
+    <string name="del_hist_message">"Tüm geçmişi silmek üzeresiniz. Devam etmek istiyor musunuz?"</string>
+    <string name="del_hist_fab_desp">"Tüm geçmişi sil"</string>
+    <string name="license_btn">Lisans</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">Bilinmeyen bir hata meydana geldi. Tutarsızlık için üzgünüz.</string>
+    <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Uygulamayı yeniden başlat</string>
+    <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">Uygulamayı kapat</string>
+    <string name="customactivityoncrash_error_activity_error_details" tools:keep="@string/customactivityoncrash_error_activity_error_details">Hata ayrıntıları</string>
+    <string name="customactivityoncrash_error_activity_error_details_title" tools:keep="@string/customactivityoncrash_error_activity_error_details_title">Hata ayrıntıları</string>
+    <string name="customactivityoncrash_error_activity_error_details_close" tools:keep="@string/customactivityoncrash_error_activity_error_details_close">Kapat</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">Panoya kopyala</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">Panoya kopyalandı</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">Hata bilgisi</string>
+    <string name="visual">Görsel</string>
+    <string name="data_privacy">Veri &amp; Gizlilik</string>
+    <string name="reset_btn_desp">Tüm tarayıcı verisini sil.</string>
+    <string name="reset_dialog">Bu, tüm tarayıcı verisini silecek.\n</string>
+    <string name="to_continue">Devam etmek istiyor musunuz?</string>
+    <string name="search_suggestions_title">Arama önerileri</string>
+    <string name="search_suggestions_current">"Güncel arama önerisi sağlayıcısı: %s"</string>
+    <string name="get_changelog">Değişiklik günlüğü</string>
+    <string name="pref_adBlocker">Reklam engelleyiciyi etkinleştir</string>
+    <string name="pref_adBlocker_desp">Reklamların rahatsızlık vermesini engeller.</string>
+    <string name="pref_do_not_track">İzlemeyi Durdur (Do Not Track)</string>
+    <string name="pref_do_not_track_desp">Girdiğiniz sitelere İzlemeyi Durdurma talebi gönderir.</string>
+    <string name="copy_url">Bağlantıyı kopyala</string>
+    <string name="download_image">Görseli kaydet</string>
+    <string name="open_in_new_tab">Yeni sekmede aç</string>
+    <string name="no_webview">WebView gereklidir ancak yüklü değildir.</string>
+    <string name="share_url">Bağlantıyı paylaş</string>
+    <string name="pref_theme">Tema</string>
+    <string name="pref_theme_desp">Güncel tema: %s</string>
+    <string name="pref_center_action">Araç çubuğunu yatay olarak ortala</string>
+    <string name="pref_center_action_desp">Yer olduğunda, araç çubuğunu yatay olarak ortalar.</string>
+    <string name="ssl_info">SSL Sertifika ayrıntıları</string>
+    <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
+    <string name="ssl_certificate_error_dialog_title">SSL Sertifika hatası</string>
+    <string name="ssl_certificate_error_dialog_content">%s Yine de devam etmek istiyor musunuz?</string>
+    <string name="ssl_certificate_date_invalid">Sertifikanın tarihi geçersiz.</string>
+    <string name="ssl_certificate_invalid">SSL hatası.</string>
+    <string name="ssl_certificate_expired">Sertifikanın süresi dolmuş.</string>
+    <string name="ssl_certificate_idmismatch">Sertifika ana makine adı eşlemiyor.</string>
+    <string name="ssl_certificate_notyetvalid">Sertifika henüz geçerli değil.</string>
+    <string name="ssl_certificate_untrusted">Sertifika yetkilisi güvenilir değil.</string>
+    <string name="ssl_certificate_unknown">Bilinmeyen bir SSL hatası meydana geldi.</string>
+    <string name="search_entries_default">\u0020(Varsayılan)</string>
+    <string name="favMenuEdit">Düzenle</string>
+    <string name="favMenuTitle">Başlık</string>
+    <string name="favMenuLink">Bağlantı</string>
+    <string name="downloadFailed">İndirme başarısız!</string>
+    <string name="ver3_blob_no_support">blob dosyaları indirme desteği henüz mevcut değil.</string>
+    <string name="search_image">benzer görselleri ara</string>
+
+    <string-array name="errMsg">
+        <item>Hata!</item>
+        <item>Bu sayfa açılamıyor</item>
+        <item>Browservio siteyi açamadı.</item>
+        <item>Şunları deneyin:</item>
+        <item>İnternet bağlantınızı kontrol edin</item>
+        <item>Sayfayı yenileyin</item>
+        <item>Yenile</item>
+    </string-array>
+    <string-array name="search_entries">
+        <item>Google</item>
+        <item>Baidu</item>
+        <item>DuckDuckGo</item>
+        <item>Bing</item>
+        <item>Yahoo!</item>
+        <item>Ecosia</item>
+        <item>Yandex</item>
+        <item>@string/custom</item>
+    </string-array>
+    <string-array name="themes">
+        <item>Sistem Varsayılanı</item>
+        <item>Açık</item>
+        <item>Koyu</item>
+    </string-array>
+</resources>

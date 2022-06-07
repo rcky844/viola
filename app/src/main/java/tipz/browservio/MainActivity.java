@@ -5,7 +5,6 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -20,7 +19,6 @@ import android.net.http.SslError;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -51,6 +49,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -112,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView fab;
     private SwipeRefreshLayout swipeRefreshLayout;
     private WebView webview;
-    private RecyclerView actionBar;
     private RelativeLayout actionBarBack;
     private AppCompatImageView favicon;
 
@@ -120,10 +118,11 @@ public class MainActivity extends AppCompatActivity {
     private String currentUrl;
     private String adServers;
     private String currentCustomUA;
+    private boolean currentCustomUAWideView = false;
     private boolean customBrowse = false;
     private IconHashClient iconHashClient;
 
-    private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n<style>\nbutton {\nbackground:rgba(158,158,158,.2);\nborder:none;\nborder-radius:2px;\ncolor:#000;\nposition:relative;\nheight:36px;\nmargin:0;\nmin-width:64px;\npadding:0 16px;\ndisplay:inline-block;\nfont-family:\"Roboto\",\"Helvetica\",\"Arial\",sans-serif;\nfont-size:14px;\nfont-weight:500;\ntext-transform:uppercase;\nletter-spacing:0;\noverflow:hidden;\ntransition:box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);\noutline:none;\ncursor:pointer;\ntext-decoration:none;\ntext-align:center;\nline-height:36px;\nvertical-align:middle;\nbox-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)\n}\n\nbutton:hover {\nbackground-color:rgba(158,158,158,.2)\n}\n\nbutton:focus:not(:active) {\nbox-shadow:0 0 8px rgba(0,0,0,.18),0 8px 16px rgba(0,0,0,.36);\nbackground-color:rgba(158,158,158,.4)\n}\n\nbutton:active {\nbox-shadow:0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);\nbackground-color:rgba(158,158,158,.4)\n}\n</style>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<button style=\"margin-top: 24px; margin-bottom: 8px;\" onclick=\"browservioErr.reloadBtn()\">$6</button>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$7</p>\n</div>\n</div>\n</body>\n</html>";
+    private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$7</p>\n</div>\n</div>\n</body>\n</html>";
 
     private ValueCallback<Uri[]> mUploadMessage;
 
@@ -204,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             webview.freeMemory();
     }
 
-    private void setDesktopMode(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
+    private void setUA(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
         webview.getSettings().setUseWideViewPort(enableDesktop);
@@ -215,20 +214,12 @@ public class MainActivity extends AppCompatActivity {
             webviewReload();
     }
 
-    private void setDeskMode(AppCompatImageView view, double mode, boolean noReload) {
-        if (mode == 0) {
-            setDesktopMode(view,
-                    false,
-                    userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)),
-                    R.drawable.smartphone,
-                    noReload);
-        } else if (mode == 1) {
-            setDesktopMode(view,
-                    true,
-                    userAgentFull("X11; Linux x86_64"),
-                    R.drawable.desktop,
-                    noReload);
-        }
+    private void setPrebuiltUAMode(AppCompatImageView view, double mode, boolean noReload) {
+        setUA(view,
+                mode == 1,
+                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)) : userAgentFull("X11; Linux x86_64"),
+                mode == 0 ? R.drawable.smartphone : R.drawable.desktop,
+                noReload);
     }
 
     private void webviewReload() {
@@ -259,25 +250,30 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.custom));
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.desktop)))
-                    setDeskMode(view, 1, false);
+                    setPrebuiltUAMode(view, 1, false);
                 else if (_item.getTitle().toString().equals(getResources().getString(R.string.mobile)))
-                    setDeskMode(view, 0, false);
+                    setPrebuiltUAMode(view, 0, false);
                 else if (_item.getTitle().toString().equals(getResources().getString(R.string.custom))) {
                     final LayoutInflater layoutInflater = LayoutInflater.from(this);
-                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
                     final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
+                    final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
+                    deskMode.setChecked(currentCustomUAWideView);
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                     dialog.setTitle(getResources().getString(R.string.customUA))
                             .setView(root)
                             .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                                 if (customUserAgent.length() == 0) {
-                                    setDeskMode(view, 0, false);
+                                    setPrebuiltUAMode(view, 0, false);
                                 } else {
-                                    view.setImageResource(R.drawable.custom);
-                                    webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
-                                    webviewReload();
+                                    setUA(view,
+                                            deskMode.isChecked(),
+                                            Objects.requireNonNull(customUserAgent.getText()).toString(),
+                                            R.drawable.custom,
+                                            false);
                                 }
                                 currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
+                                currentCustomUAWideView = deskMode.isChecked();
                             })
                             .setNegativeButton(android.R.string.cancel, null)
                             .create().show();
@@ -390,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         swipeRefreshLayout = findViewById(R.id.swipe);
         webview = findViewById(R.id.webview);
-        actionBar = findViewById(R.id.actionBar);
+        RecyclerView actionBar = findViewById(R.id.actionBar);
         actionBarBack = findViewById(R.id.actionBarBack);
         favicon = findViewById(R.id.favicon);
 
@@ -433,14 +429,14 @@ public class MainActivity extends AppCompatActivity {
         faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
 
         fab.setOnClickListener(_view -> {
-            if (actionBar.getVisibility() == View.VISIBLE) {
+            if (actionBarBack.getVisibility() == View.VISIBLE) {
                 fab.animate().rotation(180).setDuration(250).start();
-                actionBar.animate().alpha(0f).setDuration(250).start();
-                actionBar.setVisibility(View.GONE);
+                actionBarBack.animate().alpha(0f).setDuration(250).start();
+                actionBarBack.setVisibility(View.GONE);
             } else {
                 fab.animate().rotation(0).setDuration(250).start();
-                actionBar.animate().alpha(1f).setDuration(250).start();
-                actionBar.setVisibility(View.VISIBLE);
+                actionBarBack.animate().alpha(1f).setDuration(250).start();
+                actionBarBack.setVisibility(View.VISIBLE);
             }
         });
 
@@ -458,8 +454,10 @@ public class MainActivity extends AppCompatActivity {
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1);
             if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
                 arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
-            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
+            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
                 arrayAdapter.add(getResources().getString(R.string.download_image));
+                arrayAdapter.add(getResources().getString(R.string.search_image));
+            }
             arrayAdapter.add(getResources().getString(R.string.copy_url));
             arrayAdapter.add(getResources().getString(R.string.share_url));
 
@@ -470,6 +468,8 @@ public class MainActivity extends AppCompatActivity {
                     CommonUtils.copyClipboard(MainActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
                     DownloadUtils.dmDownloadFile(MainActivity.this, url, null, null);
+                } else if (strName.equals(getResources().getString(R.string.search_image))) {
+                    browservioBrowse("http://images.google.com/searchbyimage?image_url=".concat(url));
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra(Intent.EXTRA_TEXT, url)
@@ -479,10 +479,8 @@ public class MainActivity extends AppCompatActivity {
                 } else if (strName.equals(getResources().getString(R.string.share_url))) {
                     shareUrl(url);
                 }
-
             });
 
-            webLongPress.show();
             webLongPress.show();
         });
 
@@ -507,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String data = DownloadUtils.downloadToString(
                             SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                                    browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
+                                            browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
                                     text.toString()));
                     if (data == null)
                         return;
@@ -567,7 +565,7 @@ public class MainActivity extends AppCompatActivity {
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
         /* User agent init code */
-        setDeskMode(null, 0, true);
+        setPrebuiltUAMode(null, 0, true);
 
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) ->
@@ -902,17 +900,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Set Dark Mode for WebView
-     *
-     * @param webview WebView to set
-     * @param turnOn  Turn on or off the WebView dark mode
-     */
-    private void setDarkModeWebView(WebView webview, Boolean turnOn) {
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
-            WebSettingsCompat.setForceDark(webview.getSettings(), turnOn ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
-    }
-
-    /**
      * Need Load Info Receiver
      * <p>
      * Receive needLoadUrl for loading.
@@ -931,28 +918,18 @@ public class MainActivity extends AppCompatActivity {
      */
     private void configChecker() {
         // Dark mode
-        if (SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 0) {
-            switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
-                case Configuration.UI_MODE_NIGHT_YES:
-                    setDarkModeWebView(webview, true);
-                    break;
-                case Configuration.UI_MODE_NIGHT_UNDEFINED:
-                case Configuration.UI_MODE_NIGHT_NO:
-                    setDarkModeWebView(webview, false);
-                    break;
-            }
-
-            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
-                setDarkModeWebView(webview, false);
-            else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
-                setDarkModeWebView(webview, powerManager.isPowerSaveMode());
-        } else {
-            boolean darkMode = SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 2;
-            setDarkModeWebView(webview, darkMode);
-            AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        }
+        if (SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 0)
+            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ?
+                    AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        else
+            AppCompatDelegate.setDefaultNightMode(SettingsUtils.getPrefNum(
+                    browservio_saver(MainActivity.this), SettingsKeys.themeId) == 2 ?
+                    AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
+            WebSettingsCompat.setForceDark(webview.getSettings(),
+                    (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
+                            Configuration.UI_MODE_NIGHT_YES ?
+                            WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
 
         // Settings check
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));

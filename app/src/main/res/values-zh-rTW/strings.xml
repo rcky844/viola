@@ -103,6 +103,7 @@
     <string name="favMenuLink">鏈接</string>
     <string name="downloadFailed">文件下載失敗!</string>
     <string name="ver3_blob_no_support">目前不支持下載blob文件</string>
+    <string name="search_image">搜尋相似圖片</string>
 
     <string-array name="errMsg">
         <item>錯誤!</item>

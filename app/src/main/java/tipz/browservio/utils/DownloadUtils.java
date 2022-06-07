@@ -63,18 +63,20 @@ public class DownloadUtils {
         return -1;
     }
 
+    // TODO: Switch to something more async.
     public static String downloadToString(String inUrl) {
         DownloadToString downloadToString = new DownloadToString(inUrl);
         Thread thread = new Thread(downloadToString);
         thread.start();
         try {
-            thread.join();
+            thread.join(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return downloadToString.getValue();
     }
 
+    // TODO: Switch to something more async.
     private static class DownloadToString implements Runnable {
         private volatile String value;
         private final String inUrl;

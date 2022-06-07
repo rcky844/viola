@@ -11,7 +11,7 @@
     - Even more suggestions provider (the duck)
     - Use setProvider
 - Introduce UA storage
-- Built-in Image Searching
+- More image searching providers
 
 4.0 Echo (November)
 - Custom Adblocker source
