@@ -125,7 +125,7 @@
         <item>Yandex</item>
         <item>@string/custom</item>
     </string-array>
-    <string-array name="themes">Tối
+    <string-array name="themes">
         <item>Mặc định</item>
         <item>Sáng</item>
         <item>Tối</item>
