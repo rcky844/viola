@@ -51,6 +51,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentUrl;
     private String adServers;
     private String currentCustomUA;
+    private boolean currentCustomUAWideView = false;
     private boolean customBrowse = false;
     private IconHashClient iconHashClient;
 
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
             webview.freeMemory();
     }
 
-    private void setDesktopMode(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
+    private void setUA(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
         webview.getSettings().setUseWideViewPort(enableDesktop);
@@ -214,20 +216,12 @@ public class MainActivity extends AppCompatActivity {
             webviewReload();
     }
 
-    private void setDeskMode(AppCompatImageView view, double mode, boolean noReload) {
-        if (mode == 0) {
-            setDesktopMode(view,
-                    false,
-                    userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)),
-                    R.drawable.smartphone,
-                    noReload);
-        } else if (mode == 1) {
-            setDesktopMode(view,
-                    true,
-                    userAgentFull("X11; Linux x86_64"),
-                    R.drawable.desktop,
-                    noReload);
-        }
+    private void setPrebuiltUAMode(AppCompatImageView view, double mode, boolean noReload) {
+        setUA(view,
+                mode == 1,
+                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)) : userAgentFull("X11; Linux x86_64"),
+                mode == 0 ? R.drawable.smartphone : R.drawable.desktop,
+                noReload);
     }
 
     private void webviewReload() {
@@ -258,25 +252,30 @@ public class MainActivity extends AppCompatActivity {
             menu.add(getResources().getString(R.string.custom));
             popupMenu.setOnMenuItemClickListener(_item -> {
                 if (_item.getTitle().toString().equals(getResources().getString(R.string.desktop)))
-                    setDeskMode(view, 1, false);
+                    setPrebuiltUAMode(view, 1, false);
                 else if (_item.getTitle().toString().equals(getResources().getString(R.string.mobile)))
-                    setDeskMode(view, 0, false);
+                    setPrebuiltUAMode(view, 0, false);
                 else if (_item.getTitle().toString().equals(getResources().getString(R.string.custom))) {
                     final LayoutInflater layoutInflater = LayoutInflater.from(this);
-                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
                     final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
+                    final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
+                    deskMode.setChecked(currentCustomUAWideView);
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                     dialog.setTitle(getResources().getString(R.string.customUA))
                             .setView(root)
                             .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                                 if (customUserAgent.length() == 0) {
-                                    setDeskMode(view, 0, false);
+                                    setPrebuiltUAMode(view, 0, false);
                                 } else {
-                                    view.setImageResource(R.drawable.custom);
-                                    webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
-                                    webviewReload();
+                                    setUA(view,
+                                            deskMode.isChecked(),
+                                            Objects.requireNonNull(customUserAgent.getText()).toString(),
+                                            R.drawable.custom,
+                                            false);
                                 }
                                 currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
+                                currentCustomUAWideView = deskMode.isChecked();
                             })
                             .setNegativeButton(android.R.string.cancel, null)
                             .create().show();
@@ -508,7 +507,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String data = DownloadUtils.downloadToString(
                             SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                                    browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
+                                            browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
                                     text.toString()));
                     if (data == null)
                         return;
@@ -568,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
         /* User agent init code */
-        setDeskMode(null, 0, true);
+        setPrebuiltUAMode(null, 0, true);
 
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) ->
