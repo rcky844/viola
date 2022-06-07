@@ -6,7 +6,7 @@
     <string name="custom">Özel</string>
     <string name="customUA">"Özel Kullanıcı Aracısı (Custom User Agent)"</string>
     <string name="reset_complete">"Sıfırlama başarıyla tamamlandı."</string>
-    <string name="clear">"%\'i temizle"</string>
+    <string name="clear">"%s temizle"</string>
     <string name="cache">"Önbellek"</string>
     <string name="history">"Geçmiş"</string>
     <string name="cookies">"Çerezler"</string>
