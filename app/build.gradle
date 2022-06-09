@@ -35,6 +35,8 @@ android {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+        resConfigs "de-rDE", "en-rGB", "tr", "vi", "zh-rCN", "zh-rTW"
     }
     buildTypes {
         release {
