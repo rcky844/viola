@@ -585,8 +585,6 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setAllowFileAccess(false);
 
         /* HTML5 API flags */
-        webview.getSettings().setAppCacheEnabled(true);
-        webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
 

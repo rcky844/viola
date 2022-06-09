@@ -13,12 +13,12 @@ def getGitHash = { ->
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "tipz.browservio"
         minSdkVersion 14
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 69420
         versionName "MASTER"
 
