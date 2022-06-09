@@ -124,6 +124,7 @@ public class FavActivity extends AppCompatActivity {
             Broha data = listData.get(position);
             String title = data.getTitle();
             String url = data.getUrl();
+            Bitmap icon = mIconHashClient.get().read(data.getIconHash());
 
             holder.title.setText(title == null ? url : title);
             holder.url.setText(Uri.parse(url).getHost());
@@ -183,15 +184,10 @@ public class FavActivity extends AppCompatActivity {
                 return true;
             });
 
-            if (data.getIconHash() != null) {
-                Bitmap icon = mIconHashClient.get().read(data.getIconHash());
-                if (icon != null)
-                    holder.icon.setImageBitmap(icon);
-                else
-                    holder.icon.setImageResource(R.drawable.default_favicon);
-            } else {
+            if (data.getIconHash() != null && icon != null)
+                holder.icon.setImageBitmap(icon);
+            else
                 holder.icon.setImageResource(R.drawable.default_favicon);
-            }
         }
 
         @Override

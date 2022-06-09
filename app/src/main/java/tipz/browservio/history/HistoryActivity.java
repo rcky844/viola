@@ -175,14 +175,10 @@ public class HistoryActivity extends AppCompatActivity {
                 return true;
             });
 
-            if (data.getIconHash() != null) {
-                if (icon != null)
-                    holder.icon.setImageBitmap(icon);
-                else
-                    holder.icon.setImageResource(R.drawable.default_favicon);
-            } else {
+            if (data.getIconHash() != null && icon != null)
+                holder.icon.setImageBitmap(icon);
+            else
                 holder.icon.setImageResource(R.drawable.default_favicon);
-            }
         }
 
         @Override
