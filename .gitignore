@@ -5,7 +5,6 @@
 /buildSrc/build/
 /.idea/
 /app/build/
-/app/schemas/
 /app/*/output-metadata.json
 /app/*/app-*.apk
 /app/.gradle/
