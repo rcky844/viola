@@ -105,7 +105,6 @@
     <string name="favMenuLink">Bağlantı</string>
     <string name="downloadFailed">İndirme başarısız!</string>
     <string name="ver3_blob_no_support">blob dosyaları indirme desteği henüz mevcut değil.</string>
-    <string name="search_image">benzer görselleri ara</string>
 
     <string-array name="errMsg">
         <item>Hata!</item>
