@@ -122,6 +122,7 @@
         <item>Yahoo!</item>
         <item>Ecosia</item>
         <item>Yandex</item>
+        <item>Brave Search</item>
         <item>@string/custom</item>
     </string-array>
     <string-array name="themes">

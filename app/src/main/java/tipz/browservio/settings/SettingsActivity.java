@@ -121,20 +121,17 @@ public class SettingsActivity extends AppCompatActivity {
          */
         private void initializeLogic() {
             /* Common */
-            final String searchEntriesDefault = settingsActivity.getResources().getString(R.string.search_entries_default);
             final String[] searchHomePageList = settingsActivity.getResources().getStringArray(R.array.search_entries);
-            if (SettingsUtils.doesNotHaveGoogle)
-                searchHomePageList[1] = searchHomePageList[1].concat(searchEntriesDefault);
-            else
-                searchHomePageList[0] = searchHomePageList[0].concat(searchEntriesDefault);
+            searchHomePageList[7] += settingsActivity.getResources().getString(R.string.search_entries_default);
 
             final String[] suggestionsList = {
                     searchHomePageList[0],
-                    SettingsUtils.doesNotHaveGoogle ? searchHomePageList[1].concat(searchEntriesDefault) : searchHomePageList[1],
+                    searchHomePageList[1],
                     searchHomePageList[3],
                     searchHomePageList[4],
                     searchHomePageList[5],
-                    searchHomePageList[6]
+                    searchHomePageList[6],
+                    searchHomePageList[7],
             };
             final String[] themeList = settingsActivity.getResources().getStringArray(R.array.themes);
 
@@ -167,7 +164,7 @@ public class SettingsActivity extends AppCompatActivity {
                         .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 7) {
+                            if (checkedItem[0] == 8) {
                                 final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -184,7 +181,7 @@ public class SettingsActivity extends AppCompatActivity {
                                         .create().show();
                             }
 
-                            if (checkedItem[0] != 7) {
+                            if (checkedItem[0] != 8) {
                                 SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.baseSearch[checkedItem[0]], SearchEngineEntries.searchSuffix[checkedItem[0]]));
                                 SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId, checkedItem[0]);
                                 search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
@@ -201,7 +198,7 @@ public class SettingsActivity extends AppCompatActivity {
                         .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 7) {
+                            if (checkedItem[0] == 8) {
                                 final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -218,7 +215,7 @@ public class SettingsActivity extends AppCompatActivity {
                                         .create().show();
                             }
 
-                            if (checkedItem[0] != 7) {
+                            if (checkedItem[0] != 8) {
                                 SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.baseSearch[checkedItem[0]]));
                                 SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId, checkedItem[0]);
                                 homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));

@@ -13,6 +13,7 @@ public class SearchEngineEntries {
             "https://search.yahoo.com/%s",
             "https://www.ecosia.org/%s",
             "https://yandex.com/%s",
+            "https://search.brave.com/%s",
     };
 
     public final static String[] searchSuffix = new String[]{
@@ -23,6 +24,7 @@ public class SearchEngineEntries {
             "search?p=",
             "search?q=",
             "search/?text=",
+            "search?q=",
     };
 
     public final static String[] searchSuggestionsUrl = new String[]{
@@ -32,6 +34,7 @@ public class SearchEngineEntries {
             "https://sugg.search.yahoo.net/sg/?output=fxjson&command=%s",
             "https://ac.ecosia.org/autocomplete?q=%s&type=list",
             "https://yandex.com/suggest/suggest-ya.cgi?v=4&part=%s",
+            "https://search.brave.com/api/suggest?q=%s",
     };
 
     public static String getSearchEngineUrl(String homeAdd, String searchSuffix) {
