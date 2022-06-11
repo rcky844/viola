@@ -21,14 +21,15 @@ public class SettingsUtils {
      * @param pref         SharedPreference to get the value from.
      * @param tag          tag array to get the value from.
      * @param defaultValue value array to set if empty.
+     * @param mustSet      if set it regardless.
      */
-    public static void checkIfEmpty(SharedPreferences pref, String[] tag, Object[] defaultValue) {
+    public static void checkIfEmpty(SharedPreferences pref, String[] tag, Object[] defaultValue, boolean mustSet) {
         int listLength = tag.length;
         if (listLength != defaultValue.length)
             return;
 
         for (int i = 0; i < listLength; i++) {
-            if ((defaultValue[i] instanceof String ? getPref(pref, tag[i]).isEmpty() : getPrefNum(pref, tag[i]) == 0)) {
+            if ((defaultValue[i] instanceof String ? getPref(pref, tag[i]).isEmpty() : getPrefNum(pref, tag[i]) == 0) || mustSet) {
                 if (defaultValue[i] instanceof String)
                     setPref(pref, tag[i], (String) defaultValue[i]);
                 else
