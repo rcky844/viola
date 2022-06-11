@@ -19,12 +19,12 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 32
-        versionCode 75
-        versionName "3.0.2"
+        versionCode 77
+        versionName "3.0.3"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Dragon\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragon_rel2\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragon_rel3\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
@@ -43,17 +43,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
-        debug {
-            buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
-            buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
-        }
-
-        snapshot {
-            initWith(buildTypes.release)
-            buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
-            buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
         }
     }
     compileOptions {
