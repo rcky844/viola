@@ -585,8 +585,6 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setAllowFileAccess(false);
 
         /* HTML5 API flags */
-        webview.getSettings().setAppCacheEnabled(true);
-        webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
 
@@ -925,11 +923,13 @@ public class MainActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(SettingsUtils.getPrefNum(
                     browservio_saver(MainActivity.this), SettingsKeys.themeId) == 2 ?
                     AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
+        boolean darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
+                Configuration.UI_MODE_NIGHT_YES;
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webview.getSettings(), darkMode);
+        else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
             WebSettingsCompat.setForceDark(webview.getSettings(),
-                    (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
-                            Configuration.UI_MODE_NIGHT_YES ?
-                            WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
+                    darkMode ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
 
         // Settings check
         webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
