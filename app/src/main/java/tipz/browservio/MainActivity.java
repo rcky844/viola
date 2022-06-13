@@ -661,7 +661,7 @@ public class MainActivity extends AppCompatActivity {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this),
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
                     SettingsKeys.showFavicon)) && urlShouldSet(url)) {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
@@ -676,7 +676,7 @@ public class MainActivity extends AppCompatActivity {
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this),
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
                     SettingsKeys.showFavicon))) {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
@@ -932,15 +932,16 @@ public class MainActivity extends AppCompatActivity {
                     darkMode ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
 
         // Settings check
-        webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
-        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
-        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
+        webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
+        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
+        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
         actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
 
         // Do Not Track request
-        mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
+        mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.sendDNT)));
 
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))
+        // FIXME: favicon is broken on first launch
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))
                 && faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);
     }

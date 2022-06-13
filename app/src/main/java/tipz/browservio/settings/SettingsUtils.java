@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import tipz.browservio.utils.CommonUtils;
-
 public class SettingsUtils {
     public static SharedPreferences browservio_saver(Context context) {
         return context.getSharedPreferences(SettingsKeys.browservio_saver, Activity.MODE_PRIVATE);
+    }
+
+    public static boolean isFirstLaunch(SharedPreferences pref) {
+        return !SettingsUtils.getPref(pref, SettingsKeys.isFirstLaunch).equals("0");
     }
 
     /**
@@ -25,36 +27,17 @@ public class SettingsUtils {
         if (listLength != defaultValue.length)
             return;
 
-        boolean mustSet = CommonUtils.isIntStrOne(SettingsUtils.getPref(pref, SettingsKeys.isFirstLaunch));
-
         for (int i = 0; i < listLength; i++) {
             if ((defaultValue[i] instanceof String ? getPref(pref, tag[i]).isEmpty() : getPrefNum(pref, tag[i]) == 0)) {
                 if (defaultValue[i] instanceof String)
                     setPref(pref, tag[i], (String) defaultValue[i]);
-                else if (mustSet)
+                else if (isFirstLaunch(pref))
                     setPrefNum(pref, tag[i], (Integer) defaultValue[i]);
             }
         }
 
-        if (mustSet)
+        if (isFirstLaunch(pref))
             setPref(pref, SettingsKeys.isFirstLaunch, "0");
-    }
-
-    /**
-     * Set the tag as string bool according to boolean
-     * <p>
-     * Sets the string bool according to the boolean.
-     *
-     * @param pref as the SharedPreference to get the value from.
-     * @param tag  as the tag to get the value from.
-     * @param bool as the bool to check.
-     * @param flip if the value needs to be flipped.
-     */
-    public static void setPrefStringBoolAccBool(SharedPreferences pref, String tag, boolean bool, boolean flip) {
-        if (bool)
-            setPref(pref, tag, (flip) ? "0" : "1");
-        else
-            setPref(pref, tag, (flip) ? "1" : "0");
     }
 
     /**
