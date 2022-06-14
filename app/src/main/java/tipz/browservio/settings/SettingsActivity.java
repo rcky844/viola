@@ -343,9 +343,13 @@ public class SettingsActivity extends AppCompatActivity {
                     } else {
                         File apkFile = new File(updateDownloadPath);
 
-                        String[] array = DownloadUtils.
-                                downloadToString("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
-                                .split(CommonUtils.LINE_SEPARATOR());
+                        String arrayString = DownloadUtils.downloadToString(
+                                "https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg", 5000);
+                        if (arrayString == null) {
+                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
+                            return;
+                        }
+                        String[] array = arrayString.split(CommonUtils.LINE_SEPARATOR());
 
                         if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE && !updateTesting) {
                             CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
