@@ -321,15 +321,8 @@ public class SettingsActivity extends AppCompatActivity {
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
                 AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
                 AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-                boolean updateTesting = BuildConfig.DEBUG && SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.updateTesting) == 1;
-                if (BuildConfig.DEBUG && !updateTesting) {
-                    update_btn.setVisibility(View.GONE);
-                    changelog_btn.setVisibility(View.GONE);
-                }
                 easter_banner.setOnClickListener(_update_btn -> {
                     CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
-                    if (!updateTesting)
-                        SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.updateTesting, 1);
                 });
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
@@ -351,7 +344,7 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                         String[] array = arrayString.split(CommonUtils.LINE_SEPARATOR());
 
-                        if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE && !updateTesting) {
+                        if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE) {
                             CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
                             return;
                         }

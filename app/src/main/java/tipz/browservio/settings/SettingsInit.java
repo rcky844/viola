@@ -45,11 +45,10 @@ public class SettingsInit {
                         SettingsKeys.sendDNT,
                         SettingsKeys.showFavicon,
                         SettingsKeys.themeId,
-                        SettingsKeys.centerActionBar,
-                        SettingsKeys.updateTesting},
+                        SettingsKeys.centerActionBar},
                 new Object[]{getHomepageUrl(SearchEngineEntries.baseSearch[7]), 7,
                         getSearchEngineUrl(SearchEngineEntries.baseSearch[7], SearchEngineEntries.searchSuffix[7]), 7,
                         SearchEngineEntries.searchSuggestionsUrl[6], 6,
-                        1, 0, 0, 1, 0, 1, 0});
+                        1, 0, 0, 1, 0, 1});
     }
 }
