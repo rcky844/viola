@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.webkit.MimeTypeMap;
 
+import androidx.annotation.Nullable;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,13 +65,19 @@ public class DownloadUtils {
         return -1;
     }
 
-    // TODO: Switch to something more async.
+    @Nullable
     public static String downloadToString(String inUrl) {
+        return downloadToString(inUrl, 500);
+    }
+    
+    // TODO: Switch to something more async.
+    @Nullable
+    public static String downloadToString(String inUrl, int timeout) {
         DownloadToString downloadToString = new DownloadToString(inUrl);
         Thread thread = new Thread(downloadToString);
         thread.start();
         try {
-            thread.join(500);
+            thread.join(timeout);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

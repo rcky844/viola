@@ -249,7 +249,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             do_not_track.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefStringBoolAccBool(browservio_saver(settingsActivity),
+                SettingsUtils.setPrefIntBoolAccBool(browservio_saver(settingsActivity),
                         SettingsKeys.sendDNT, do_not_track.isChecked(), false);
                 needReload = true;
                 return true;
@@ -292,7 +292,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             show_favicon.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefStringBoolAccBool(browservio_saver(settingsActivity),
+                SettingsUtils.setPrefIntBoolAccBool(browservio_saver(settingsActivity),
                         SettingsKeys.showFavicon, show_favicon.isChecked(), false);
                 return true;
             });
@@ -304,7 +304,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             javascript.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefStringBoolAccBool(browservio_saver(settingsActivity),
+                SettingsUtils.setPrefIntBoolAccBool(browservio_saver(settingsActivity),
                         SettingsKeys.isJavaScriptEnabled, javascript.isChecked(), false);
                 needReload = true;
                 return true;
@@ -321,15 +321,8 @@ public class SettingsActivity extends AppCompatActivity {
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
                 AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
                 AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-                boolean updateTesting = BuildConfig.DEBUG && SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.updateTesting) == 1;
-                if (BuildConfig.DEBUG && !updateTesting) {
-                    update_btn.setVisibility(View.GONE);
-                    changelog_btn.setVisibility(View.GONE);
-                }
                 easter_banner.setOnClickListener(_update_btn -> {
                     CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
-                    if (!updateTesting)
-                        SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.updateTesting, 1);
                 });
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
@@ -343,11 +336,15 @@ public class SettingsActivity extends AppCompatActivity {
                     } else {
                         File apkFile = new File(updateDownloadPath);
 
-                        String[] array = DownloadUtils.
-                                downloadToString("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
-                                .split(CommonUtils.LINE_SEPARATOR());
+                        String arrayString = DownloadUtils.downloadToString(
+                                "https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg", 5000);
+                        if (arrayString == null) {
+                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
+                            return;
+                        }
+                        String[] array = arrayString.split(CommonUtils.LINE_SEPARATOR());
 
-                        if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE && !updateTesting) {
+                        if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE) {
                             CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
                             return;
                         }
@@ -390,11 +387,11 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker, true);
-            checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track, false);
-            checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon, false);
-            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action, true);
-            checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript, false);
+            checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
+            checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
+            checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
+            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
+            checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId)]));
             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId)]));
@@ -403,8 +400,8 @@ public class SettingsActivity extends AppCompatActivity {
             needReload = false;
         }
 
-        private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox, boolean isInt) {
-            checkBox.setChecked(CommonUtils.isIntStrOne(isInt ? SettingsUtils.getPrefNum(browservio_saver(settingsActivity), tag) : SettingsUtils.getPref(browservio_saver(settingsActivity), tag)));
+        private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox) {
+            checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(settingsActivity), tag)));
         }
     }
 }
