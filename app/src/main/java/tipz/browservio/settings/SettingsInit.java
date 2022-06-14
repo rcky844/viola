@@ -13,14 +13,16 @@ public class SettingsInit {
     public SettingsInit(Context mContext) {
         SharedPreferences pref = browservio_saver(mContext);
 
-
         if (!SettingsUtils.isFirstLaunch(pref)) {
             switch (SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion)) {
                 case 0:
+                    // TODO: finalize
+                    /* 2c15e330: java: urls: Add Brave Search */
                     if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId) == 7)
                         SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, 8);
                     if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId) == 7)
                         SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, 8);
+                    /* 8cdfc371: java: settings: Move most settings to integer and add protocol version */
                     SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled,
                             Integer.parseInt(SettingsUtils.getPref(pref, SettingsKeys.isJavaScriptEnabled)));
                     SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT,
