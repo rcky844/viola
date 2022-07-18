@@ -814,10 +814,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            if (!icon.isRecycled()) {
-                favicon.setImageBitmap(icon);
-                HistoryUtils.updateData(MainActivity.this, iconHashClient, null, null, icon);
-            }
+            favicon.setImageBitmap(icon);
+            HistoryUtils.updateData(MainActivity.this, iconHashClient, null, null, icon);
         }
 
         @Override
@@ -926,7 +924,6 @@ public class MainActivity extends AppCompatActivity {
         // Do Not Track request
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
 
-        // FIXME: favicon is broken on first launch
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
                 && faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);
