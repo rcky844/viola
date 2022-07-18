@@ -13,6 +13,11 @@ public class SettingsInit {
     public SettingsInit(Context mContext) {
         SharedPreferences pref = browservio_saver(mContext);
 
+        /* A bloopers fix for migrating from old versions */
+        if (SettingsUtils.isFirstLaunch(pref) && SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion) == 0
+            && !SettingsUtils.getPref(pref, SettingsKeys.isJavaScriptEnabled).isEmpty())
+            SettingsUtils.setPref(pref, SettingsKeys.isFirstLaunch, "0");
+
         if (!SettingsUtils.isFirstLaunch(pref)) {
             switch (SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion)) {
                 case 0:
