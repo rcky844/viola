@@ -377,6 +377,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void itemLongSelected(AppCompatImageView view, int item) {
+
+    }
+
     /**
      * Initialize function
      */
@@ -1003,6 +1007,10 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mImageView.setImageResource(actionBarItemList.get(position));
             holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, position));
+            holder.mImageView.setOnLongClickListener(view -> {
+                mMainActivity.get().itemLongSelected(holder.mImageView, position);
+                return true;
+            });
         }
 
         @Override
