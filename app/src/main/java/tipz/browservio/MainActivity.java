@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPrebuiltUAMode(AppCompatImageView view, double mode, boolean noReload) {
         setUA(view,
                 mode == 1,
-                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)) : userAgentFull("X11; Linux x86_64"),
+                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE).concat("; ").concat(Build.MODEL)) : userAgentFull("X11; Linux x86_64"),
                 mode == 0 ? R.drawable.smartphone : R.drawable.desktop,
                 noReload);
     }
