@@ -336,15 +336,10 @@ public class MainActivity extends AppCompatActivity {
             dialog.setTitle(getResources().getString(R.string.customUA))
                     .setView(root)
                     .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                        if (customUserAgent.length() == 0) {
-                            setPrebuiltUAMode(view, 0, false);
-                        } else {
-                            setUA(view,
-                                    deskMode.isChecked(),
+                        if (customUserAgent.length() != 0)
+                            setUA(view, deskMode.isChecked(),
                                     Objects.requireNonNull(customUserAgent.getText()).toString(),
-                                    R.drawable.custom,
-                                    false);
-                        }
+                                    R.drawable.custom, false);
                         currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
                         currentCustomUAWideView = deskMode.isChecked();
                     })
