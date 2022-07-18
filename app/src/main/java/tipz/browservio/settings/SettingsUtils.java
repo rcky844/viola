@@ -6,8 +6,7 @@ import android.content.SharedPreferences;
 
 import androidx.core.os.LocaleListCompat;
 
-import tipz.browservio.utils.CommonUtils;
-
+/* TODO: rewrite to only use browservio_saver */
 public class SettingsUtils {
     public static SharedPreferences browservio_saver(Context context) {
         return context.getSharedPreferences(SettingsKeys.browservio_saver, Activity.MODE_PRIVATE);

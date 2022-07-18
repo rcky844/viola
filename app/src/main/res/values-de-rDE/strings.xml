@@ -1,7 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="desktop">Desktop</string>
-    <string name="mobile">Mobile</string>
-    <string name="custom">Benutzerdefiniert</string>
     <string name="customUA">"Benutzerdefinierten User Agent"</string>
     <string name="reset_complete">"Erfolgreich zurückgesetzt!"</string>
     <string name="clear">"%s leeren"</string>
@@ -12,7 +9,6 @@
     <string name="share_url_dialog_title">"URL teilen mit"</string>
     <string name="copied_clipboard">"In die Zwischenablage kopiert!"</string>
     <string name="hist_empty">"Der Verlauf ist leer!"</string>
-    <string name="add">"Hinzufügen"</string>
     <string name="save_successful">"Erfolgreich gespeichert!"</string>
     <string name="fav_list_empty">"Es wurden keine Favoriten gespeichert."</string>
     <string name="copy_title">"Webseitentitel kopieren"</string>
@@ -103,6 +99,9 @@
     <string name="favMenuLink">Hyperlink</string>
     <string name="downloadFailed">Herunterladen fehlgeschlagen!</string>
     <string name="ver3_blob_no_support">Blob-Dateien werden derzeit nicht zum Herunterladen unterstützt.</string>
+    <string name="search_image">Tìm kiếm các hình ảnh tương tự</string>
+    <string name="desk_mode_text">Bật chế độ xem rộng</string>
+    <string name="notification_download_successful">%s đã tải xuống thành công.</string>
 
     <string-array name="errMsg">
         <item>Fehler!</item>
@@ -122,7 +121,7 @@
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Brave-Suche</item>
-        <item>@string/custom</item>
+        <item>Benutzerdefiniert</item>
     </string-array>
     <string-array name="themes">
         <item>Systemfehler</item>

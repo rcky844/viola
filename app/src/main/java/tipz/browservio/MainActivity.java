@@ -6,6 +6,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -117,10 +118,12 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private String currentUrl;
     private String adServers;
+    private boolean currentPrebuiltUAState = false;
     private String currentCustomUA;
     private boolean currentCustomUAWideView = false;
     private boolean customBrowse = false;
     private IconHashClient iconHashClient;
+    private SharedPreferences pref;
 
     private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$7</p>\n</div>\n</div>\n</body>\n</html>";
 
@@ -208,8 +211,10 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
         webview.getSettings().setUseWideViewPort(enableDesktop);
         webview.setScrollBarStyle(enableDesktop ? WebView.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);
-        if (view != null)
+        if (view != null) {
             view.setImageResource(image);
+            view.setTag(image);
+        }
         if (!noReload)
             webviewReload();
     }
@@ -217,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPrebuiltUAMode(AppCompatImageView view, double mode, boolean noReload) {
         setUA(view,
                 mode == 1,
-                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)) : userAgentFull("X11; Linux x86_64"),
+                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE).concat("; ").concat(Build.MODEL)) : userAgentFull("X11; Linux x86_64"),
                 mode == 0 ? R.drawable.smartphone : R.drawable.desktop,
                 noReload);
     }
@@ -241,48 +246,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 2) {
             webviewReload();
         } else if (item == 3) {
-            browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
+            browservioBrowse(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
         } else if (item == 4) {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.desktop));
-            menu.add(getResources().getString(R.string.mobile));
-            menu.add(getResources().getString(R.string.custom));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.desktop)))
-                    setPrebuiltUAMode(view, 1, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.mobile)))
-                    setPrebuiltUAMode(view, 0, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.custom))) {
-                    final LayoutInflater layoutInflater = LayoutInflater.from(this);
-                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
-                    final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
-                    final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
-                    deskMode.setChecked(currentCustomUAWideView);
-                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    dialog.setTitle(getResources().getString(R.string.customUA))
-                            .setView(root)
-                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                if (customUserAgent.length() == 0) {
-                                    setPrebuiltUAMode(view, 0, false);
-                                } else {
-                                    setUA(view,
-                                            deskMode.isChecked(),
-                                            Objects.requireNonNull(customUserAgent.getText()).toString(),
-                                            R.drawable.custom,
-                                            false);
-                                }
-                                currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
-                                currentCustomUAWideView = deskMode.isChecked();
-                            })
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create().show();
-                    if (currentCustomUA != null)
-                        customUserAgent.setText(currentCustomUA);
-                }
-                return false;
-            });
-            popupMenu.show();
+            currentPrebuiltUAState = !currentPrebuiltUAState;
+            setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
         } else if (item == 5) {
             Intent i = new Intent(this, MainActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -350,28 +317,48 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HistoryActivity.class);
             mGetNeedLoad.launch(intent);
         } else if (item == 11) {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.add));
-            menu.add(getResources().getString(R.string.fav));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
-                    Drawable icon = favicon.getDrawable();
-                    FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
-                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
-                } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (FavUtils.isEmptyCheck(this)) {
-                        CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, FavActivity.class);
-                        mGetNeedLoad.launch(intent);
-                    }
-                }
-                return false;
-            });
-            popupMenu.show();
+            Drawable icon = favicon.getDrawable();
+            FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
         } else if (item == 12) {
             finish();
+        }
+    }
+
+    public void itemLongSelected(AppCompatImageView view, int item) {
+        if (item == 4) {
+            final LayoutInflater layoutInflater = LayoutInflater.from(this);
+            @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
+            final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
+            final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
+            deskMode.setChecked(currentCustomUAWideView);
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+            dialog.setTitle(getResources().getString(R.string.customUA))
+                    .setView(root)
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        if (customUserAgent.length() == 0) {
+                            setPrebuiltUAMode(view, 0, false);
+                        } else {
+                            setUA(view,
+                                    deskMode.isChecked(),
+                                    Objects.requireNonNull(customUserAgent.getText()).toString(),
+                                    R.drawable.custom,
+                                    false);
+                        }
+                        currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
+                        currentCustomUAWideView = deskMode.isChecked();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
+            if (currentCustomUA != null)
+                customUserAgent.setText(currentCustomUA);
+        } else if (item == 11) {
+            if (FavUtils.isEmptyCheck(this)) {
+                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
+            } else {
+                Intent intent = new Intent(MainActivity.this, FavActivity.class);
+                mGetNeedLoad.launch(intent);
+            }
         }
     }
 
@@ -500,12 +487,12 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()))
+                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()) || !UrlEdit.hasFocus())
                     return;
                 try {
                     String data = DownloadUtils.downloadToString(
                             SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                                            browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
+                                            pref, SettingsKeys.defaultSuggestions),
                                     text.toString()));
                     if (data == null)
                         return;
@@ -562,6 +549,7 @@ public class MainActivity extends AppCompatActivity {
      * sur wen reel Sherk brower pls sand meme sum
      */
     private void initializeLogic() {
+        pref = browservio_saver(this);
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
         /* User agent init code */
@@ -616,7 +604,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } else { /* Load default webpage */
-            browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
+            browservioBrowse(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
         }
     }
 
@@ -661,8 +649,8 @@ public class MainActivity extends AppCompatActivity {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
-                    SettingsKeys.showFavicon)) && urlShouldSet(url)) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
+                    && urlShouldSet(url)) {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
             }
@@ -676,8 +664,7 @@ public class MainActivity extends AppCompatActivity {
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
-                    SettingsKeys.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
             }
@@ -763,7 +750,7 @@ public class MainActivity extends AppCompatActivity {
                 updateAdServerList();
             try {
                 if (adServers != null)
-                    if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
+                    if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(pref, SettingsKeys.enableAdBlock) == 1)
                         return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -890,7 +877,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
+        String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(pref, SettingsKeys.defaultSearch));
         currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
@@ -916,12 +903,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private void configChecker() {
         // Dark mode
-        if (SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 0)
+        if (SettingsUtils.getPrefNum(pref, SettingsKeys.themeId) == 0)
             AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ?
                     AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         else
             AppCompatDelegate.setDefaultNightMode(SettingsUtils.getPrefNum(
-                    browservio_saver(MainActivity.this), SettingsKeys.themeId) == 2 ?
+                    pref, SettingsKeys.themeId) == 2 ?
                     AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         boolean darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
                 Configuration.UI_MODE_NIGHT_YES;
@@ -932,16 +919,16 @@ public class MainActivity extends AppCompatActivity {
                     darkMode ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
 
         // Settings check
-        webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
-        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
-        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
-        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
+        webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
+        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
+        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
+        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
 
         // Do Not Track request
-        mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.sendDNT)));
+        mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
 
         // FIXME: favicon is broken on first launch
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
                 && faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);
     }
@@ -998,6 +985,10 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mImageView.setImageResource(actionBarItemList.get(position));
             holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, position));
+            holder.mImageView.setOnLongClickListener(view -> {
+                mMainActivity.get().itemLongSelected(holder.mImageView, position);
+                return true;
+            });
         }
 
         @Override
