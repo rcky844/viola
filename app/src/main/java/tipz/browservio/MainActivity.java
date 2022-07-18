@@ -502,7 +502,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()))
+                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()) || !UrlEdit.hasFocus())
                     return;
                 try {
                     String data = DownloadUtils.downloadToString(
