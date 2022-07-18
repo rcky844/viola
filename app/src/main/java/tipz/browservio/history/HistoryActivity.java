@@ -158,7 +158,8 @@ public class HistoryActivity extends AppCompatActivity {
                     if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.delete))) {
                         HistoryUtils.deleteById(historyActivity, data.getId());
                         listData.remove(position);
-                        notifyItemRangeRemoved(position, 1);
+                        notifyItemRemoved(position);
+                        notifyItemRangeRemoved(position, getItemCount() - position);
                         historyActivity.isEmptyCheck();
                         return true;
                     } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(android.R.string.copyUrl))) {
@@ -175,14 +176,10 @@ public class HistoryActivity extends AppCompatActivity {
                 return true;
             });
 
-            if (data.getIconHash() != null) {
-                if (icon != null)
-                    holder.icon.setImageBitmap(icon);
-                else
-                    holder.icon.setImageResource(R.drawable.default_favicon);
-            } else {
+            if (data.getIconHash() != null && icon != null)
+                holder.icon.setImageBitmap(icon);
+            else
                 holder.icon.setImageResource(R.drawable.default_favicon);
-            }
         }
 
         @Override

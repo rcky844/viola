@@ -1,9 +1,5 @@
-
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Browservio</string>
-    <string name="desktop">Masaüstü</string>
-    <string name="mobile">Mobil</string>
-    <string name="custom">Özel</string>
     <string name="customUA">"Özel Kullanıcı Aracısı (Custom User Agent)"</string>
     <string name="reset_complete">"Sıfırlama başarıyla tamamlandı."</string>
     <string name="clear">"%s temizle"</string>
@@ -14,7 +10,6 @@
     <string name="share_url_dialog_title">"URL\'yi şununla paylaş:"</string>
     <string name="copied_clipboard">"Panoya kopyalandı!"</string>
     <string name="hist_empty">"Geçmiş temiz!"</string>
-    <string name="add">"Ekle"</string>
     <string name="save_successful">"Başarıyla kaydedildi!"</string>
     <string name="fav_list_empty">"Sık kullanılan listesi boş."</string>
     <string name="copy_title">"Web sitesinin başlığını kopyala"</string>
@@ -105,6 +100,9 @@
     <string name="favMenuLink">Bağlantı</string>
     <string name="downloadFailed">İndirme başarısız!</string>
     <string name="ver3_blob_no_support">blob dosyaları indirme desteği henüz mevcut değil.</string>
+    <string name="search_image">Benzer resimleri arama</string>
+    <string name="desk_mode_text">Geniş görüntüleme çerçevesi modunu etkinleştir</string>
+    <string name="notification_download_successful">%s başarıyla indirildi.</string>
 
     <string-array name="errMsg">
         <item>Hata!</item>
@@ -113,7 +111,6 @@
         <item>Şunları deneyin:</item>
         <item>İnternet bağlantınızı kontrol edin</item>
         <item>Sayfayı yenileyin</item>
-        <item>Yenile</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>
@@ -123,7 +120,8 @@
         <item>Yahoo!</item>
         <item>Ecosia</item>
         <item>Yandex</item>
-        <item>@string/custom</item>
+        <item>Brave Search</item>
+        <item>Özel</item>
     </string-array>
     <string-array name="themes">
         <item>Sistem Varsayılanı</item>

@@ -1,7 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="desktop">Desktop</string>
-    <string name="mobile">Mobile</string>
-    <string name="custom">Custom</string>
     <string name="customUA">"Custom User Agent"</string>
     <string name="reset_complete">"Reset completed successfully."</string>
     <string name="clear">"Clear %s"</string>
@@ -12,7 +9,6 @@
     <string name="share_url_dialog_title">"Share URL using"</string>
     <string name="copied_clipboard">"Copied to clipboard!"</string>
     <string name="hist_empty">"History is empty!"</string>
-    <string name="add">"Add"</string>
     <string name="save_successful">"Saved successfully!"</string>
     <string name="fav_list_empty">"There are no favourites saved."</string>
     <string name="copy_title">"Copy Website Title"</string>
@@ -103,6 +99,9 @@
     <string name="favMenuLink">Link</string>
     <string name="downloadFailed">Download failed!</string>
     <string name="ver3_blob_no_support">blob files are currently not supported for downloading.</string>
+    <string name="search_image">Search for similar images</string>
+    <string name="desk_mode_text">Enable wide viewport mode</string>
+    <string name="notification_download_successful">%s downloaded successfully.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
@@ -111,7 +110,6 @@
         <item>Try:</item>
         <item>Checking your internet connection</item>
         <item>Reloading the webpage</item>
-        <item>Reload</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>
@@ -121,7 +119,8 @@
         <item>Yahoo!</item>
         <item>Ecosia</item>
         <item>Yandex</item>
-        <item>@string/custom</item>
+        <item>Brave Search</item>
+        <item>Custom</item>
     </string-array>
     <string-array name="themes">
         <item>System Default</item>

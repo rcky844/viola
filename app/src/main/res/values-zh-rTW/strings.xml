@@ -1,7 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="desktop">桌上型電腦</string>
-    <string name="mobile">行動裝置</string>
-    <string name="custom">自訂</string>
     <string name="customUA">"自訂使用者代理"</string>
     <string name="reset_complete">重設已成功完成</string>
     <string name="clear">清除%s</string>
@@ -12,7 +9,6 @@
     <string name="share_url_dialog_title">分享URL</string>
     <string name="copied_clipboard">成功複製到了剪貼簿!</string>
     <string name="hist_empty">歷史記錄是空的!</string>
-    <string name="add">新增</string>
     <string name="save_successful">新增成功!</string>
     <string name="fav_list_empty">沒有已新增的書籤</string>
     <string name="copy_title">複製網站標題</string>
@@ -103,6 +99,9 @@
     <string name="favMenuLink">鏈接</string>
     <string name="downloadFailed">文件下載失敗!</string>
     <string name="ver3_blob_no_support">目前不支持下載blob文件</string>
+    <string name="search_image">搜尋相似圖片</string>
+    <string name="desk_mode_text">啟用寬窗口模式</string>
+    <string name="notification_download_successful">%s下載成功</string>
 
     <string-array name="errMsg">
         <item>錯誤!</item>
@@ -111,7 +110,6 @@
         <item>您可以嘗試:</item>
         <item>檢查您的網路連接</item>
         <item>重新載入網頁</item>
-        <item>重新載入</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>
@@ -121,7 +119,8 @@
         <item>Yahoo!</item>
         <item>Ecosia</item>
         <item>Yandex</item>
-        <item>@string/custom</item>
+        <item>Brave Search</item>
+        <item>自訂</item>
     </string-array>
     <string-array name="themes">
         <item>系統預設</item>

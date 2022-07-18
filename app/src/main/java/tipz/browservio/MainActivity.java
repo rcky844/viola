@@ -5,8 +5,8 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -20,7 +20,6 @@ import android.net.http.SslError;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -51,6 +50,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -59,7 +59,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -118,11 +117,14 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private String currentUrl;
     private String adServers;
+    private boolean currentPrebuiltUAState = false;
     private String currentCustomUA;
+    private boolean currentCustomUAWideView = false;
     private boolean customBrowse = false;
     private IconHashClient iconHashClient;
+    private SharedPreferences pref;
 
-    private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$7</p>\n</div>\n</div>\n</body>\n</html>";
+    private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$6</p>\n</div>\n</div>\n</body>\n</html>";
 
     private ValueCallback<Uri[]> mUploadMessage;
 
@@ -143,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.close);
 
     private String userAgentFull(String mid) {
-        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
+        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)).concat(" Chrome/103.0.5060.71 Mobile Safari/537.36"));
     }
 
     private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
@@ -203,31 +205,25 @@ public class MainActivity extends AppCompatActivity {
             webview.freeMemory();
     }
 
-    private void setDesktopMode(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
+    private void setUA(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
         webview.getSettings().setUseWideViewPort(enableDesktop);
         webview.setScrollBarStyle(enableDesktop ? WebView.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);
-        if (view != null)
+        if (view != null) {
             view.setImageResource(image);
+            view.setTag(image);
+        }
         if (!noReload)
             webviewReload();
     }
 
-    private void setDeskMode(AppCompatImageView view, double mode, boolean noReload) {
-        if (mode == 0) {
-            setDesktopMode(view,
-                    false,
-                    userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE)),
-                    R.drawable.smartphone,
-                    noReload);
-        } else if (mode == 1) {
-            setDesktopMode(view,
-                    true,
-                    userAgentFull("X11; Linux x86_64"),
-                    R.drawable.desktop,
-                    noReload);
-        }
+    private void setPrebuiltUAMode(AppCompatImageView view, double mode, boolean noReload) {
+        setUA(view,
+                mode == 1,
+                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE).concat("; Device with Browservio")) : userAgentFull("X11; Linux x86_64"),
+                mode == 0 ? R.drawable.smartphone : R.drawable.desktop,
+                noReload);
     }
 
     private void webviewReload() {
@@ -249,43 +245,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 2) {
             webviewReload();
         } else if (item == 3) {
-            browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
+            browservioBrowse(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
         } else if (item == 4) {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.desktop));
-            menu.add(getResources().getString(R.string.mobile));
-            menu.add(getResources().getString(R.string.custom));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.desktop)))
-                    setDeskMode(view, 1, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.mobile)))
-                    setDeskMode(view, 0, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.custom))) {
-                    final LayoutInflater layoutInflater = LayoutInflater.from(this);
-                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
-                    final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
-                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    dialog.setTitle(getResources().getString(R.string.customUA))
-                            .setView(root)
-                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                if (customUserAgent.length() == 0) {
-                                    setDeskMode(view, 0, false);
-                                } else {
-                                    view.setImageResource(R.drawable.custom);
-                                    webview.getSettings().setUserAgentString(Objects.requireNonNull(customUserAgent.getText()).toString());
-                                    webviewReload();
-                                }
-                                currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
-                            })
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create().show();
-                    if (currentCustomUA != null)
-                        customUserAgent.setText(currentCustomUA);
-                }
-                return false;
-            });
-            popupMenu.show();
+            currentPrebuiltUAState = !currentPrebuiltUAState;
+            setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
         } else if (item == 5) {
             Intent i = new Intent(this, MainActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -353,28 +316,43 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HistoryActivity.class);
             mGetNeedLoad.launch(intent);
         } else if (item == 11) {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.add));
-            menu.add(getResources().getString(R.string.fav));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
-                    Drawable icon = favicon.getDrawable();
-                    FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
-                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
-                } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (FavUtils.isEmptyCheck(this)) {
-                        CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, FavActivity.class);
-                        mGetNeedLoad.launch(intent);
-                    }
-                }
-                return false;
-            });
-            popupMenu.show();
+            Drawable icon = favicon.getDrawable();
+            FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
         } else if (item == 12) {
             finish();
+        }
+    }
+
+    public void itemLongSelected(AppCompatImageView view, int item) {
+        if (item == 4) {
+            final LayoutInflater layoutInflater = LayoutInflater.from(this);
+            @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
+            final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
+            final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
+            deskMode.setChecked(currentCustomUAWideView);
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+            dialog.setTitle(getResources().getString(R.string.customUA))
+                    .setView(root)
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        if (customUserAgent.length() != 0)
+                            setUA(view, deskMode.isChecked(),
+                                    Objects.requireNonNull(customUserAgent.getText()).toString(),
+                                    R.drawable.custom, false);
+                        currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
+                        currentCustomUAWideView = deskMode.isChecked();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
+            if (currentCustomUA != null)
+                customUserAgent.setText(currentCustomUA);
+        } else if (item == 11) {
+            if (FavUtils.isEmptyCheck(this)) {
+                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
+            } else {
+                Intent intent = new Intent(MainActivity.this, FavActivity.class);
+                mGetNeedLoad.launch(intent);
+            }
         }
     }
 
@@ -457,8 +435,10 @@ public class MainActivity extends AppCompatActivity {
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1);
             if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
                 arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
-            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
+            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
                 arrayAdapter.add(getResources().getString(R.string.download_image));
+                arrayAdapter.add(getResources().getString(R.string.search_image));
+            }
             arrayAdapter.add(getResources().getString(R.string.copy_url));
             arrayAdapter.add(getResources().getString(R.string.share_url));
 
@@ -469,6 +449,8 @@ public class MainActivity extends AppCompatActivity {
                     CommonUtils.copyClipboard(MainActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
                     DownloadUtils.dmDownloadFile(MainActivity.this, url, null, null);
+                } else if (strName.equals(getResources().getString(R.string.search_image))) {
+                    browservioBrowse("http://images.google.com/searchbyimage?image_url=".concat(url));
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.putExtra(Intent.EXTRA_TEXT, url)
@@ -478,7 +460,6 @@ public class MainActivity extends AppCompatActivity {
                 } else if (strName.equals(getResources().getString(R.string.share_url))) {
                     shareUrl(url);
                 }
-
             });
 
             webLongPress.show();
@@ -497,15 +478,20 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
+        UrlEdit.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus && !UrlEdit.getText().toString().equals(currentUrl))
+                UrlEdit.setText(currentUrl);
+        });
+
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()))
+                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()) || !UrlEdit.hasFocus())
                     return;
                 try {
                     String data = DownloadUtils.downloadToString(
                             SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                                    browservio_saver(MainActivity.this), SettingsKeys.defaultSuggestions),
+                                            pref, SettingsKeys.defaultSuggestions),
                                     text.toString()));
                     if (data == null)
                         return;
@@ -523,8 +509,7 @@ public class MainActivity extends AppCompatActivity {
 
                     UrlEdit.setAdapter(new ArrayAdapter<>(
                             MainActivity.this, R.layout.recycler_list_item_1, result));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } catch (JSONException ignored) {
                 }
             }
 
@@ -551,7 +536,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void closeKeyboard() {
-        Objects.requireNonNull(ViewCompat.getWindowInsetsController(UrlEdit)).hide(WindowInsetsCompat.Type.ime());
+        WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
     }
 
     /**
@@ -562,10 +547,11 @@ public class MainActivity extends AppCompatActivity {
      * sur wen reel Sherk brower pls sand meme sum
      */
     private void initializeLogic() {
+        pref = browservio_saver(this);
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
         /* User agent init code */
-        setDeskMode(null, 0, true);
+        setPrebuiltUAMode(null, 0, true);
 
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) ->
@@ -585,8 +571,6 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setAllowFileAccess(false);
 
         /* HTML5 API flags */
-        webview.getSettings().setAppCacheEnabled(true);
-        webview.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
         webview.getSettings().setDatabaseEnabled(true);
         webview.getSettings().setDomStorageEnabled(true);
 
@@ -618,7 +602,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } else { /* Load default webpage */
-            browservioBrowse(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultHomePage));
+            browservioBrowse(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
         }
     }
 
@@ -663,8 +647,8 @@ public class MainActivity extends AppCompatActivity {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this),
-                    SettingsKeys.showFavicon)) && urlShouldSet(url)) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
+                    && urlShouldSet(url)) {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
             }
@@ -678,8 +662,7 @@ public class MainActivity extends AppCompatActivity {
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this),
-                    SettingsKeys.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
             }
@@ -690,10 +673,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             String returnVal = template;
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 6; i++)
                 returnVal = returnVal.replace("$".concat(Integer.toString(i)),
                         MainActivity.this.getResources().getStringArray(R.array.errMsg)[i]);
-            returnVal = returnVal.replace("$7", description);
+            returnVal = returnVal.replace("$6", description);
 
             webview.loadDataWithBaseURL(null, returnVal, "text/html", "UTF-8", null);
         }
@@ -765,7 +748,7 @@ public class MainActivity extends AppCompatActivity {
                 updateAdServerList();
             try {
                 if (adServers != null)
-                    if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.enableAdBlock) == 1)
+                    if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(pref, SettingsKeys.enableAdBlock) == 1)
                         return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -776,9 +759,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setImmersiveMode(boolean enable) {
         WindowInsetsControllerCompat windowInsetsController =
-                ViewCompat.getWindowInsetsController(getWindow().getDecorView());
-        if (windowInsetsController == null)
-            return;
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), !enable);
 
@@ -830,10 +811,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            if (!icon.isRecycled()) {
-                favicon.setImageBitmap(icon);
-                HistoryUtils.updateData(MainActivity.this, iconHashClient, null, null, icon);
-            }
+            favicon.setImageBitmap(icon);
+            HistoryUtils.updateData(MainActivity.this, iconHashClient, null, null, icon);
         }
 
         @Override
@@ -892,22 +871,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.defaultSearch));
+        String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(pref, SettingsKeys.defaultSearch));
         currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
         customBrowse = true;
-    }
-
-    /**
-     * Set Dark Mode for WebView
-     *
-     * @param webview WebView to set
-     * @param turnOn  Turn on or off the WebView dark mode
-     */
-    private void setDarkModeWebView(WebView webview, Boolean turnOn) {
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
-            WebSettingsCompat.setForceDark(webview.getSettings(), turnOn ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
     }
 
     /**
@@ -929,39 +897,31 @@ public class MainActivity extends AppCompatActivity {
      */
     private void configChecker() {
         // Dark mode
-        if (SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 0) {
-            switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
-                case Configuration.UI_MODE_NIGHT_YES:
-                    setDarkModeWebView(webview, true);
-                    break;
-                case Configuration.UI_MODE_NIGHT_UNDEFINED:
-                case Configuration.UI_MODE_NIGHT_NO:
-                    setDarkModeWebView(webview, false);
-                    break;
-            }
-
-            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ? AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
-                setDarkModeWebView(webview, false);
-            else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
-                setDarkModeWebView(webview, powerManager.isPowerSaveMode());
-        } else {
-            boolean darkMode = SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.themeId) == 2;
-            setDarkModeWebView(webview, darkMode);
-            AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        }
+        if (SettingsUtils.getPrefNum(pref, SettingsKeys.themeId) == 0)
+            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ?
+                    AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        else
+            AppCompatDelegate.setDefaultNightMode(SettingsUtils.getPrefNum(
+                    pref, SettingsKeys.themeId) == 2 ?
+                    AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        boolean darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
+                Configuration.UI_MODE_NIGHT_YES;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webview.getSettings(), darkMode);
+        else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
+            WebSettingsCompat.setForceDark(webview.getSettings(),
+                    darkMode ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
 
         // Settings check
-        webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
-        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.isJavaScriptEnabled)));
-        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
-        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(browservio_saver(MainActivity.this), SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
+        webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
+        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
+        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
+        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
 
         // Do Not Track request
-        mRequestHeaders.put("DNT", SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.sendDNT));
+        mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
 
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPref(browservio_saver(MainActivity.this), SettingsKeys.showFavicon))
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
                 && faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);
     }
@@ -1018,6 +978,10 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mImageView.setImageResource(actionBarItemList.get(position));
             holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, position));
+            holder.mImageView.setOnLongClickListener(view -> {
+                mMainActivity.get().itemLongSelected(holder.mImageView, position);
+                return true;
+            });
         }
 
         @Override

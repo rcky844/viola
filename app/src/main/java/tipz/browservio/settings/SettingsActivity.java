@@ -13,6 +13,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -75,10 +76,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsPrefHandler extends PreferenceFragmentCompat {
         private final Activity settingsActivity;
+        private final SharedPreferences pref;
 
         public SettingsPrefHandler(Activity act) {
             WeakReference<Activity> activity = new WeakReference<>(act);
             settingsActivity = activity.get();
+            pref = browservio_saver(settingsActivity);
         }
 
         public static boolean needReload = false;
@@ -121,20 +124,17 @@ public class SettingsActivity extends AppCompatActivity {
          */
         private void initializeLogic() {
             /* Common */
-            final String searchEntriesDefault = settingsActivity.getResources().getString(R.string.search_entries_default);
             final String[] searchHomePageList = settingsActivity.getResources().getStringArray(R.array.search_entries);
-            if (SettingsUtils.doesNotHaveGoogle)
-                searchHomePageList[1] = searchHomePageList[1].concat(searchEntriesDefault);
-            else
-                searchHomePageList[0] = searchHomePageList[0].concat(searchEntriesDefault);
+            searchHomePageList[7] += settingsActivity.getResources().getString(R.string.search_entries_default);
 
             final String[] suggestionsList = {
                     searchHomePageList[0],
-                    SettingsUtils.doesNotHaveGoogle ? searchHomePageList[1].concat(searchEntriesDefault) : searchHomePageList[1],
+                    searchHomePageList[1],
                     searchHomePageList[3],
                     searchHomePageList[4],
                     searchHomePageList[5],
-                    searchHomePageList[6]
+                    searchHomePageList[6],
+                    searchHomePageList[7],
             };
             final String[] themeList = settingsActivity.getResources().getStringArray(R.array.themes);
 
@@ -162,12 +162,12 @@ public class SettingsActivity extends AppCompatActivity {
             Preference source_code = Objects.requireNonNull(findPreference("source_code"));
 
             search_engine.setOnPreferenceClickListener(preference -> {
-                final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId)};
+                final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)};
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_engine))
                         .setSingleChoiceItems(searchHomePageList,
-                                SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId), (dialog, which) -> checkedItem[0] = which)
+                                SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 7) {
+                            if (checkedItem[0] == 8) {
                                 final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -175,8 +175,8 @@ public class SettingsActivity extends AppCompatActivity {
                                         .setView(root)
                                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                                             if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
-                                                SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSearch, custom_se.getText().toString());
-                                                SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId, checkedItem[0]);
+                                                SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, custom_se.getText().toString());
+                                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, checkedItem[0]);
                                                 search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
                                             }
                                         })
@@ -184,9 +184,9 @@ public class SettingsActivity extends AppCompatActivity {
                                         .create().show();
                             }
 
-                            if (checkedItem[0] != 7) {
-                                SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.baseSearch[checkedItem[0]], SearchEngineEntries.searchSuffix[checkedItem[0]]));
-                                SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId, checkedItem[0]);
+                            if (checkedItem[0] != 8) {
+                                SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.baseSearch[checkedItem[0]], SearchEngineEntries.searchSuffix[checkedItem[0]]));
+                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, checkedItem[0]);
                                 search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
                             }
                         })
@@ -196,12 +196,12 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             homepage.setOnPreferenceClickListener(preference -> {
-                final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId)};
+                final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)};
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.homepage))
                         .setSingleChoiceItems(searchHomePageList,
-                                SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId), (dialog, which) -> checkedItem[0] = which)
+                                SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 7) {
+                            if (checkedItem[0] == 8) {
                                 final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
@@ -209,8 +209,8 @@ public class SettingsActivity extends AppCompatActivity {
                                         .setView(root)
                                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                                             if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
-                                                SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultHomePage, custom_se.getText().toString());
-                                                SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId, checkedItem[0]);
+                                                SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, custom_se.getText().toString());
+                                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, checkedItem[0]);
                                                 homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
                                             }
                                         })
@@ -218,9 +218,9 @@ public class SettingsActivity extends AppCompatActivity {
                                         .create().show();
                             }
 
-                            if (checkedItem[0] != 7) {
-                                SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.baseSearch[checkedItem[0]]));
-                                SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId, checkedItem[0]);
+                            if (checkedItem[0] != 8) {
+                                SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.baseSearch[checkedItem[0]]));
+                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, checkedItem[0]);
                                 homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
                             }
                         })
@@ -230,13 +230,13 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             search_suggestions.setOnPreferenceClickListener(preference -> {
-                final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId)};
+                final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)};
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
                         .setSingleChoiceItems(suggestionsList,
-                                SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
+                                SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            SettingsUtils.setPref(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestions, SearchEngineEntries.searchSuggestionsUrl[checkedItem[0]]);
-                            SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId, checkedItem[0]);
+                            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, SearchEngineEntries.searchSuggestionsUrl[checkedItem[0]]);
+                            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
                             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[checkedItem[0]]));
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -245,14 +245,14 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             adBlocker.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(browservio_saver(settingsActivity),
+                SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.enableAdBlock, adBlocker.isChecked(), false);
                 needReload = true;
                 return true;
             });
 
             do_not_track.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefStringBoolAccBool(browservio_saver(settingsActivity),
+                SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.sendDNT, do_not_track.isChecked(), false);
                 needReload = true;
                 return true;
@@ -281,12 +281,12 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             theme.setOnPreferenceClickListener(preference -> {
-                final int[] checkedItem = {SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.themeId)};
+                final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)};
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_theme))
                         .setSingleChoiceItems(themeList,
-                                SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.themeId), (dialog, which) -> checkedItem[0] = which)
+                                SettingsUtils.getPrefNum(pref, SettingsKeys.themeId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            SettingsUtils.setPrefNum(browservio_saver(settingsActivity), SettingsKeys.themeId, checkedItem[0]);
+                            SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0]);
                             theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[checkedItem[0]]));
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -295,19 +295,19 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             show_favicon.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefStringBoolAccBool(browservio_saver(settingsActivity),
+                SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.showFavicon, show_favicon.isChecked(), false);
                 return true;
             });
 
             center_action.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(browservio_saver(settingsActivity),
+                SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.centerActionBar, center_action.isChecked(), false);
                 return true;
             });
 
             javascript.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefStringBoolAccBool(browservio_saver(settingsActivity),
+                SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.isJavaScriptEnabled, javascript.isChecked(), false);
                 needReload = true;
                 return true;
@@ -324,9 +324,7 @@ public class SettingsActivity extends AppCompatActivity {
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
                 AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
                 AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-                easter_banner.setOnClickListener(_update_btn -> {
-                    CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
-                });
+                easter_banner.setOnClickListener(_update_btn -> CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
                         BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
@@ -390,21 +388,21 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker, true);
-            checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track, false);
-            checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon, false);
-            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action, true);
-            checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript, false);
-            search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSearchId)]));
-            homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultHomePageId)]));
-            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.defaultSuggestionsId)]));
-            theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[SettingsUtils.getPrefNum(browservio_saver(settingsActivity), SettingsKeys.themeId)]));
+            checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
+            checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
+            checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
+            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
+            checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
+            search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
+            homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));
+            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
+            theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]));
             version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
             needReload = false;
         }
 
-        private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox, boolean isInt) {
-            checkBox.setChecked(CommonUtils.isIntStrOne(isInt ? SettingsUtils.getPrefNum(browservio_saver(settingsActivity), tag) : SettingsUtils.getPref(browservio_saver(settingsActivity), tag)));
+        private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox) {
+            checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, tag)));
         }
     }
 }

@@ -5,7 +5,7 @@ plugins {
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
     exec {
-        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        commandLine 'git', 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
         standardOutput = stdout
     }
     return stdout.toString().trim()
@@ -13,18 +13,18 @@ def getGitHash = { ->
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "tipz.browservio"
         minSdkVersion 14
-        targetSdkVersion 32
-        versionCode 78
-        versionName "3.0.4"
+        targetSdkVersion 33
+        versionCode 79
+        versionName "3.1"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_CODENAME", "\"Dragon\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragon_rel4\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Dragonheart\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonheart_beta1\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
@@ -44,6 +44,17 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
+            buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
+        }
+
+        snapshot {
+            initWith(buildTypes.release)
+            buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
+            buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -53,9 +64,12 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.7.0-alpha02'
-    implementation 'androidx.webkit:webkit:1.4.0'
-    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'com.google.android.material:material:1.7.0-alpha03'
+    implementation 'androidx.webkit:webkit:1.5.0-beta01'
+    implementation('androidx.preference:preference:1.2.0') {
+        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
+        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
+    }
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
     implementation "androidx.room:room-runtime:2.4.2"
