@@ -36,7 +36,7 @@ android {
             }
         }
 
-        resConfigs "de-rDE", "en-rGB", "tr", "vi", "zh-rCN", "zh-rTW"
+        resConfigs "de-rDE", "en-rGB", "fr-rFR", "tr", "vi", "zh-rCN", "zh-rTW"
     }
     buildTypes {
         release {
