@@ -912,7 +912,7 @@ public class MainActivity extends AppCompatActivity {
                     AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         boolean darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
                 Configuration.UI_MODE_NIGHT_YES;
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(webview.getSettings(), darkMode);
         else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
             WebSettingsCompat.setForceDark(webview.getSettings(),
