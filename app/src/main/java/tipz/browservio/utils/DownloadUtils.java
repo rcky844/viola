@@ -30,9 +30,7 @@ public class DownloadUtils {
                                       String contentDisposition,
                                       String mimeType, String title,
                                       String customFilename) {
-        if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
-            CommonUtils.showMessage(context, context.getResources().getString(R.string.ver3_blob_no_support));
-        } else {
+        if (url.startsWith("http://") || url.startsWith("https://")) {
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(UrlUtils.UrlChecker(url, false, null)));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
@@ -60,6 +58,10 @@ public class DownloadUtils {
                 return dm.enqueue(request);
             } catch (RuntimeException e) {
                 CommonUtils.showMessage(context, context.getResources().getString(R.string.downloadFailed));
+            }
+        } else {
+            if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
+                CommonUtils.showMessage(context, context.getResources().getString(R.string.ver3_blob_no_support));
             }
         }
         return -1;
