@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
     private String UrlTitle;
     private String currentUrl;
     private String adServers;
+    private boolean currentPrebuiltUAState = false;
     private String currentCustomUA;
     private boolean currentCustomUAWideView = false;
     private boolean customBrowse = false;
@@ -210,8 +211,10 @@ public class MainActivity extends AppCompatActivity {
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
         webview.getSettings().setUseWideViewPort(enableDesktop);
         webview.setScrollBarStyle(enableDesktop ? WebView.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);
-        if (view != null)
+        if (view != null) {
             view.setImageResource(image);
+            view.setTag(image);
+        }
         if (!noReload)
             webviewReload();
     }
@@ -245,46 +248,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (item == 3) {
             browservioBrowse(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
         } else if (item == 4) {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.desktop));
-            menu.add(getResources().getString(R.string.mobile));
-            menu.add(getResources().getString(R.string.custom));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.desktop)))
-                    setPrebuiltUAMode(view, 1, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.mobile)))
-                    setPrebuiltUAMode(view, 0, false);
-                else if (_item.getTitle().toString().equals(getResources().getString(R.string.custom))) {
-                    final LayoutInflater layoutInflater = LayoutInflater.from(this);
-                    @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
-                    final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
-                    final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
-                    deskMode.setChecked(currentCustomUAWideView);
-                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    dialog.setTitle(getResources().getString(R.string.customUA))
-                            .setView(root)
-                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                if (customUserAgent.length() == 0) {
-                                    setPrebuiltUAMode(view, 0, false);
-                                } else {
-                                    setUA(view,
-                                            deskMode.isChecked(),
-                                            Objects.requireNonNull(customUserAgent.getText()).toString(),
-                                            R.drawable.custom,
-                                            false);
-                                }
-                                currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
-                                currentCustomUAWideView = deskMode.isChecked();
-                            })
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create().show();
-                    if (currentCustomUA != null)
-                        customUserAgent.setText(currentCustomUA);
-                }
-                return false;
-            });
-            popupMenu.show();
+            currentPrebuiltUAState = !currentPrebuiltUAState;
+            setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
         } else if (item == 5) {
             Intent i = new Intent(this, MainActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -352,28 +317,48 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HistoryActivity.class);
             mGetNeedLoad.launch(intent);
         } else if (item == 11) {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.add));
-            menu.add(getResources().getString(R.string.fav));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
-                    Drawable icon = favicon.getDrawable();
-                    FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
-                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
-                } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (FavUtils.isEmptyCheck(this)) {
-                        CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, FavActivity.class);
-                        mGetNeedLoad.launch(intent);
-                    }
-                }
-                return false;
-            });
-            popupMenu.show();
+            Drawable icon = favicon.getDrawable();
+            FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
         } else if (item == 12) {
             finish();
+        }
+    }
+
+    public void itemLongSelected(AppCompatImageView view, int item) {
+        if (item == 4) {
+            final LayoutInflater layoutInflater = LayoutInflater.from(this);
+            @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
+            final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
+            final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
+            deskMode.setChecked(currentCustomUAWideView);
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+            dialog.setTitle(getResources().getString(R.string.customUA))
+                    .setView(root)
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        if (customUserAgent.length() == 0) {
+                            setPrebuiltUAMode(view, 0, false);
+                        } else {
+                            setUA(view,
+                                    deskMode.isChecked(),
+                                    Objects.requireNonNull(customUserAgent.getText()).toString(),
+                                    R.drawable.custom,
+                                    false);
+                        }
+                        currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
+                        currentCustomUAWideView = deskMode.isChecked();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
+            if (currentCustomUA != null)
+                customUserAgent.setText(currentCustomUA);
+        } else if (item == 11) {
+            if (FavUtils.isEmptyCheck(this)) {
+                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
+            } else {
+                Intent intent = new Intent(MainActivity.this, FavActivity.class);
+                mGetNeedLoad.launch(intent);
+            }
         }
     }
 
@@ -1003,6 +988,10 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mImageView.setImageResource(actionBarItemList.get(position));
             holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, position));
+            holder.mImageView.setOnLongClickListener(view -> {
+                mMainActivity.get().itemLongSelected(holder.mImageView, position);
+                return true;
+            });
         }
 
         @Override

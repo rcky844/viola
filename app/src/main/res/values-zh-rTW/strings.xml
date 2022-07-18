@@ -1,7 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="desktop">桌上型電腦</string>
-    <string name="mobile">行動裝置</string>
-    <string name="custom">自訂</string>
     <string name="customUA">"自訂使用者代理"</string>
     <string name="reset_complete">重設已成功完成</string>
     <string name="clear">清除%s</string>
@@ -12,7 +9,6 @@
     <string name="share_url_dialog_title">分享URL</string>
     <string name="copied_clipboard">成功複製到了剪貼簿!</string>
     <string name="hist_empty">歷史記錄是空的!</string>
-    <string name="add">新增</string>
     <string name="save_successful">新增成功!</string>
     <string name="fav_list_empty">沒有已新增的書籤</string>
     <string name="copy_title">複製網站標題</string>
@@ -125,7 +121,7 @@
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Brave Search</item>
-        <item>@string/custom</item>
+        <item>自訂</item>
     </string-array>
     <string-array name="themes">
         <item>系統預設</item>
