@@ -352,33 +352,23 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HistoryActivity.class);
             mGetNeedLoad.launch(intent);
         } else if (item == 11) {
-            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.add));
-            menu.add(getResources().getString(R.string.fav));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().equals(getResources().getString(R.string.add))) {
-                    Drawable icon = favicon.getDrawable();
-                    FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
-                    CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
-                } else if (_item.getTitle().toString().equals(getResources().getString(R.string.fav))) {
-                    if (FavUtils.isEmptyCheck(this)) {
-                        CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, FavActivity.class);
-                        mGetNeedLoad.launch(intent);
-                    }
-                }
-                return false;
-            });
-            popupMenu.show();
+            Drawable icon = favicon.getDrawable();
+            FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
         } else if (item == 12) {
             finish();
         }
     }
 
     public void itemLongSelected(AppCompatImageView view, int item) {
-
+        if (item == 11) {
+            if (FavUtils.isEmptyCheck(this)) {
+                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
+            } else {
+                Intent intent = new Intent(MainActivity.this, FavActivity.class);
+                mGetNeedLoad.launch(intent);
+            }
+        }
     }
 
     /**
