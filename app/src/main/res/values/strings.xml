@@ -104,9 +104,9 @@
     <string name="favMenuLink">Link</string>
     <string name="downloadFailed">Download failed!</string>
     <string name="ver3_blob_no_support">blob files are currently not supported for downloading.</string>
-    <string name="search_image">Search for similar images</string>
-    <string name="desk_mode_text">Enable wide viewport mode</string>
-    <string name="notification_download_successful">%s downloaded successfully.</string>
+    <string name="search_image">Suche nach ähnlichen Bildern</string>
+    <string name="desk_mode_text">Wide Viewport-Modus aktivieren</string>
+    <string name="notification_download_successful">%s wurde erfolgreich heruntergeladen.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

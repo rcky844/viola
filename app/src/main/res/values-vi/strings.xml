@@ -105,6 +105,9 @@
     <string name="favMenuLink">Đường dẫn</string>
     <string name="downloadFailed">Tải xuống thất bại!</string>
     <string name="ver3_blob_no_support">Chưa hỗ trợ tải xuống blob files.</string>
+    <string name="search_image">Tìm kiếm các hình ảnh tương tự</string>
+    <string name="desk_mode_text">Bật chế độ xem rộng</string>
+    <string name="notification_download_successful">%s đã tải xuống thành công.</string>
 
     <string-array name="errMsg">
         <item>Lỗi!</item>
