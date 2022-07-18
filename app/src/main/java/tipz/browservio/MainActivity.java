@@ -515,8 +515,7 @@ public class MainActivity extends AppCompatActivity {
 
                     UrlEdit.setAdapter(new ArrayAdapter<>(
                             MainActivity.this, R.layout.recycler_list_item_1, result));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } catch (JSONException ignored) {
                 }
             }
 
