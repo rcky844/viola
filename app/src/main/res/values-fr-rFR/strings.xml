@@ -102,7 +102,7 @@
     <string name="ver3_blob_no_support">Le téléchargement des fichiers blob n’est pas encore supporté.</string>
     <string name="search_image">Rechercher des images similaires</string>
     <string name="desk_mode_text">Activer le mode fenêtre élargie</string>
-    <string name="notification_download_successful">%s téléchargé effectué.</string>
+    <string name="notification_download_successful">%s téléchargé avec succès.</string>
 
     <string-array name="errMsg">
         <item>Erreur!</item>
