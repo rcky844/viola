@@ -111,7 +111,6 @@
         <item>Try:</item>
         <item>Checking your internet connection</item>
         <item>Reloading the webpage</item>
-        <item>Reload</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>

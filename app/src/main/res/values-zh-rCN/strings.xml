@@ -110,7 +110,6 @@
         <item>你可以尝试:</item>
         <item>检查您的互联网连接</item>
         <item>重新加载网页</item>
-        <item>重新加载</item>
     </string-array>
     <string-array name="search_entries">
         <item>谷歌</item>
