@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Browservio</string>
-    <string name="desktop">Chế độ máy tính</string>
-    <string name="mobile">Chế độ điện thoại</string>
-    <string name="custom">Tùy chỉnh</string>
     <string name="customUA">"User Agent tùy chỉnh"</string>
     <string name="reset_complete">"Đặt lại thành."</string>
     <string name="clear">"Xóa %s"</string>
@@ -14,7 +11,6 @@
     <string name="share_url_dialog_title">"Chia sẻ URL bằng"</string>
     <string name="copied_clipboard">"Đã sao chép vào bảng nhớ tạm!"</string>
     <string name="hist_empty">"Lịch sử trống rỗng!"</string>
-    <string name="add">"Thêm"</string>tạm
     <string name="save_successful">"Lưu thành công!"</string>
     <string name="fav_list_empty">"Chưa lưu trang yêu thích nào."</string>
     <string name="copy_title">"Sao chép tiêu đề"</string>
@@ -124,7 +120,7 @@
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Tìm kiếm Brave</item>
-        <item>@string/custom</item>
+        <item>Tùy chỉnh</item>
     </string-array>
     <string-array name="themes">
         <item>Mặc định</item>
