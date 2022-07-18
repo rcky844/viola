@@ -484,6 +484,11 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
+        UrlEdit.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus && !UrlEdit.getText().toString().equals(currentUrl))
+                UrlEdit.setText(currentUrl);
+        });
+
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
