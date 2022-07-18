@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.close);
 
     private String userAgentFull(String mid) {
-        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
+        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)).concat(" Chrome/103.0.5060.71 Mobile Safari/537.36"));
     }
 
     private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
