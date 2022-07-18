@@ -5,7 +5,7 @@ plugins {
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
     exec {
-        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        commandLine 'git', 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
         standardOutput = stdout
     }
     return stdout.toString().trim()
