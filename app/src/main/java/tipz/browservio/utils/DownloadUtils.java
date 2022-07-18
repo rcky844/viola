@@ -4,18 +4,23 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Base64;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.Nullable;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -26,6 +31,7 @@ public class DownloadUtils {
         dmDownloadFile(context, url, contentDisposition, mimeType, null, null);
     }
 
+    /* TODO: Rewrite into our own download manager */
     public static long dmDownloadFile(Context context, String url,
                                       String contentDisposition,
                                       String mimeType, String title,
@@ -60,7 +66,31 @@ public class DownloadUtils {
                 CommonUtils.showMessage(context, context.getResources().getString(R.string.downloadFailed));
             }
         } else {
-            if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
+            if (url.startsWith("data:")) {
+                File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                String filetype = url.substring(url.indexOf("/") + 1, url.indexOf(";"));
+                String filename = System.currentTimeMillis() + "." + filetype;
+                File file = new File(path, filename);
+                try {
+                    if (!path.exists())
+                        path.mkdirs();
+                    if (!file.exists())
+                        file.createNewFile();
+
+                    String base64EncodedString = url.substring(url.indexOf(",") + 1);
+                    byte[] decodedBytes = Base64.decode(base64EncodedString, Base64.DEFAULT);
+                    OutputStream os = new FileOutputStream(file);
+                    os.write(decodedBytes);
+                    os.close();
+
+                    // Tell the media scanner about the new file so that it is immediately available to the user.
+                    MediaScannerConnection.scanFile(context,
+                            new String[]{file.toString()}, null, null);
+
+                    CommonUtils.showMessage(context, context.getResources().getString(R.string.notification_download_successful, filename));
+                } catch (IOException ignored) {
+                }
+            } else if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
                 CommonUtils.showMessage(context, context.getResources().getString(R.string.ver3_blob_no_support));
             }
         }
