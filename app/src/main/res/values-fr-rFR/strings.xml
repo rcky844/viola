@@ -1,0 +1,132 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">Browservio</string>
+    <string name="customUA">"Agent utilisateur personnalisé"</string>
+    <string name="reset_complete">"Réinitialisation effectuée correctement."</string>
+    <string name="clear">"Effacer %s"</string>
+    <string name="cache">"Cache"</string>
+    <string name="history">"Historique"</string>
+    <string name="cookies">"Cookies"</string>
+    <string name="cleared_toast">"%s effacé(s)correctement !"</string>
+    <string name="share_url_dialog_title">"Partager URL via"</string>
+    <string name="copied_clipboard">"Copié dans le presse-papier !"</string>
+    <string name="hist_empty">"L’historique est vide !"</string>
+    <string name="save_successful">"Enregistré correctement !"</string>
+    <string name="fav_list_empty">"Aucun favori enregistré."</string>
+    <string name="copy_title">"Copier le titre du site web"</string>
+    <string name="address_bar_hint">"Rechercher ou taper une adresse…"</string>
+    <string name="favicon_desp">"Icône de la page web, cilquer sur moi ouvrira une fenêtre avec le titre de la page web."</string>
+    <string name="fab_desp">"Cliquer sur un bouton affichera ou fermera la barre d’action."</string>
+    <string name="settings">Réglages</string>
+    <string name="search_engine">"Moteur de recherche"</string>
+    <string name="search_engine_current">"Moteur de recherche actuel : %s"</string>
+    <string name="homepage">"Page d’accueil"</string>
+    <string name="homepage_current">"Page d’accueil actuelle : %s"</string>
+    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
+    <string name="update_btn">Vérifier les mises à jour</string>
+    <string name="version_latest_toast">"Vous disposez actuellement de la dernière version de Browservio."</string>
+    <string name="network_unavailable_toast">"Le réseau n’est pas disponible."</string>
+    <string name="new_update_detect_title">"Mise à jour disponible"</string>
+    <string name="new_update_detect_message">"%1$s (%2$s) est disponible, voulez-vous l’installer ?"</string>
+    <string name="update_down_failed_toast">"le téléchargement de la mise à jour a échoué !"</string>
+    <string name="general">Général</string>
+    <string name="reset_btn">"Réinitaliser par défaut"</string>
+    <string name="advanced">Avancé</string>
+    <string name="javascript">"Activer JavaScript"</string>
+    <string name="javascript_desp">"Activer ceci autorisera le chargement du contenu JavaScript."</string>
+    <string name="show_favicon">"Montrer l’icône des favoris"</string>
+    <string name="show_favicon_desp">"Montrer l’icône des favoris de la page web à côté de la barre d’adresse."</string>
+    <string name="help">Aide</string>
+    <string name="version">Version</string>
+    <string name="feedback">Suggestions</string>
+    <string name="feedback_desp">"Faire des suggestions aidera à améliorer la qualité de Browservio."</string>
+    <string name="source_code">"Code source"</string>
+    <string name="source_code_desp">"Consulter le code source de Browservio."</string>
+    <string name="download_title">"Mise à jour Browservio"</string>
+    <string name="fav">Favoris</string>
+    <string name="delete">"Effacer"</string>
+    <string name="delete_all_entries">"Effacer toutes les entrées"</string>
+    <string name="delete_fav_message">"Vous êtes sur le point d’effacer tous les favoris, êtes-vous sûr ?"</string>
+    <string name="wiped_success">"Effacement réussi !"</string>
+    <string name="fav_del_fab_desp">"Effacer toutes les entrées"</string>
+    <string name="hist">Historique</string>
+    <string name="add_to_fav">"Sauvegarder comme favori"</string>
+    <string name="del_hist_message">"Vous êtes sur le point d’effacer tout l’historique, êtes-vous sûr ?"</string>
+    <string name="del_hist_fab_desp">"Effacer tout l’historique"</string>
+    <string name="license_btn">Licence</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">Une erreur s’est produite. Désolé pour le désagrément.</string>
+    <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Redémarrer l’application</string>
+    <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">Fermer l’application</string>
+    <string name="customactivityoncrash_error_activity_error_details" tools:keep="@string/customactivityoncrash_error_activity_error_details">Détails de l’erreur</string>
+    <string name="customactivityoncrash_error_activity_error_details_title" tools:keep="@string/customactivityoncrash_error_activity_error_details_title">Détails de l’erreur</string>
+    <string name="customactivityoncrash_error_activity_error_details_close" tools:keep="@string/customactivityoncrash_error_activity_error_details_close">Fermer</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">Copier dans le presse-papier</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">Copié dans le presse-papier</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">Information sur l’erreur</string>
+    <string name="visual">Visuels</string>
+    <string name="data_privacy">Confidentialité et des données</string>
+    <string name="reset_btn_desp">Effacer toutes les données du navigateur.</string>
+    <string name="reset_dialog">Cela effacera toutes les données du navigateur\n</string>
+    <string name="to_continue">Voulez-vous continuer?</string>
+    <string name="search_suggestions_title">Rechercher les suggestions</string>
+    <string name="search_suggestions_current">"Fournisseur actuel des suggestions: %s"</string>
+    <string name="get_changelog">Lire la liste des changements</string>
+    <string name="pref_adBlocker">Activer le bloqueur de publicités</string>
+    <string name="pref_adBlocker_desp">Empêcher les publicités de vous distraire.</string>
+    <string name="pref_do_not_track">Ne Pas Suivre</string>
+    <string name="pref_do_not_track_desp">Envoyer une requête Ne Pas Suivre aux sites web que vous visitez.</string>
+    <string name="copy_url">Copier le lien</string>
+    <string name="download_image">Télécharger l’image</string>
+    <string name="open_in_new_tab">Ouvir dans un nouvel onglet</string>
+    <string name="no_webview">WebView est nécessaire mais n’est pas installé.</string>
+    <string name="share_url">SPartager le lien</string>
+    <string name="pref_theme">Thème</string>
+    <string name="pref_theme_desp">Thème actuel : %s</string>
+    <string name="pref_center_action">Centrer la barre d’action horizontalement</string>
+    <string name="pref_center_action_desp">Centrer automatiquement la barre d’action quand c’est possible.</string>
+    <string name="ssl_info">Détails du certificat SSL</string>
+    <string name="ssl_info_dialog_content">Publié à\n\tNom Commun (NC): %1$s\n\tOrganisation (O): %2$s\n\tUnité Organisationnelle (OU): %3$s\n\nPublié Par\n\tNom Commun (CN): %4$s\n\tOrganisation (O): %5$s\n\tUnité Organisationnelle (OU): %6$s\n\nPériode de Validité\n\tPublié Sur : %7$s\n\tExpire Le: %8$s</string>
+    <string name="ssl_certificate_error_dialog_title">Erreur du certificat SSL</string>
+    <string name="ssl_certificate_error_dialog_content">%s Voulez-vous malgré tout continuer ?</string>
+    <string name="ssl_certificate_date_invalid">La date du certificat est invalide.</string>
+    <string name="ssl_certificate_invalid">Une erreur générique SSL s’est produite.</string>
+    <string name="ssl_certificate_expired">Le certificat a expiré.</string>
+    <string name="ssl_certificate_idmismatch">Le nom d’hôte du certificat ne correspond pas.</string>
+    <string name="ssl_certificate_notyetvalid">Le certificat n’est plus valide.</string>
+    <string name="ssl_certificate_untrusted">L’autorité de certification n’est pas de confiance.</string>
+    <string name="ssl_certificate_unknown">Une erreur SSL inconnue s’est produite.</string>
+    <string name="search_entries_default">\u0020(Défaut)</string>
+    <string name="favMenuEdit">Editer</string>
+    <string name="favMenuTitle">Titre</string>
+    <string name="favMenuLink">Lien</string>
+    <string name="downloadFailed">Echec du téléchargement!</string>
+    <string name="ver3_blob_no_support">Le téléchargement des fichiers blob n’est pas encore supporté.</string>
+    <string name="search_image">Rechercher des images similaires</string>
+    <string name="desk_mode_text">Activer le mode fenêtre élargie</string>
+    <string name="notification_download_successful">%s téléchargé effectué.</string>
+
+    <string-array name="errMsg">
+        <item>Erreur !</item>
+        <item>Impossible d’ouvrir cette page</item>
+        <item>Browservio n’a pas réussi à ouvrir la page.</item>
+        <item>Essai :</item>
+        <item>Vérification de votre connexion internet</item>
+        <item>Actualisation de la page web</item>
+        <item>Actualisation</item>
+    </string-array>
+    <string-array name="search_entries">
+        <item>Google</item>
+        <item>Baidu</item>
+        <item>DuckDuckGo</item>
+        <item>Bing</item>
+        <item>Yahoo!</item>
+        <item>Ecosia</item>
+        <item>Yandex</item>
+        <item>Brave Search</item>
+        <item>Personnalisé</item>
+    </string-array>
+    <string-array name="themes">
+        <item>Défaut système</item>
+        <item>Clair</item>
+        <item>Sombre</item>
+    </string-array>
+</resources>
