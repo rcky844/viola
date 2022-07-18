@@ -110,7 +110,6 @@
         <item>您可以嘗試:</item>
         <item>檢查您的網路連接</item>
         <item>重新載入網頁</item>
-        <item>重新載入</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>

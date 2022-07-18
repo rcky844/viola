@@ -112,7 +112,6 @@
         <item>Hãy thử:</item>
         <item>Kiểm tra kết nối Internet</item>
         <item>Tải lại trang web</item>
-        <item>Reload</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>

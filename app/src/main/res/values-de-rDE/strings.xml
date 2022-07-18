@@ -110,7 +110,6 @@
         <item>Versuchen Sie:</item>
         <item>Ihre Internetverbindung zu überprüfen</item>
         <item>Die Webseite neu zu laden</item>
-        <item>Neu laden</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>

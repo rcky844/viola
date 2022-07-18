@@ -59,7 +59,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     private IconHashClient iconHashClient;
     private SharedPreferences pref;
 
-    private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$7</p>\n</div>\n</div>\n</body>\n</html>";
+    private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$6</p>\n</div>\n</div>\n</body>\n</html>";
 
     private ValueCallback<Uri[]> mUploadMessage;
 
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.close);
 
     private String userAgentFull(String mid) {
-        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36 ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
+        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)).concat(" Chrome/103.0.5060.71 Mobile Safari/537.36"));
     }
 
     private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
@@ -222,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPrebuiltUAMode(AppCompatImageView view, double mode, boolean noReload) {
         setUA(view,
                 mode == 1,
-                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE).concat("; ").concat(Build.MODEL)) : userAgentFull("X11; Linux x86_64"),
+                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE).concat("; Device with Browservio")) : userAgentFull("X11; Linux x86_64"),
                 mode == 0 ? R.drawable.smartphone : R.drawable.desktop,
                 noReload);
     }
@@ -336,15 +335,10 @@ public class MainActivity extends AppCompatActivity {
             dialog.setTitle(getResources().getString(R.string.customUA))
                     .setView(root)
                     .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                        if (customUserAgent.length() == 0) {
-                            setPrebuiltUAMode(view, 0, false);
-                        } else {
-                            setUA(view,
-                                    deskMode.isChecked(),
+                        if (customUserAgent.length() != 0)
+                            setUA(view, deskMode.isChecked(),
                                     Objects.requireNonNull(customUserAgent.getText()).toString(),
-                                    R.drawable.custom,
-                                    false);
-                        }
+                                    R.drawable.custom, false);
                         currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
                         currentCustomUAWideView = deskMode.isChecked();
                     })
@@ -484,6 +478,11 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
+        UrlEdit.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus && !UrlEdit.getText().toString().equals(currentUrl))
+                UrlEdit.setText(currentUrl);
+        });
+
         UrlEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
@@ -510,8 +509,7 @@ public class MainActivity extends AppCompatActivity {
 
                     UrlEdit.setAdapter(new ArrayAdapter<>(
                             MainActivity.this, R.layout.recycler_list_item_1, result));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } catch (JSONException ignored) {
                 }
             }
 
@@ -538,7 +536,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void closeKeyboard() {
-        Objects.requireNonNull(ViewCompat.getWindowInsetsController(UrlEdit)).hide(WindowInsetsCompat.Type.ime());
+        WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
     }
 
     /**
@@ -675,10 +673,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             String returnVal = template;
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 6; i++)
                 returnVal = returnVal.replace("$".concat(Integer.toString(i)),
                         MainActivity.this.getResources().getStringArray(R.array.errMsg)[i]);
-            returnVal = returnVal.replace("$7", description);
+            returnVal = returnVal.replace("$6", description);
 
             webview.loadDataWithBaseURL(null, returnVal, "text/html", "UTF-8", null);
         }
@@ -761,9 +759,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setImmersiveMode(boolean enable) {
         WindowInsetsControllerCompat windowInsetsController =
-                ViewCompat.getWindowInsetsController(getWindow().getDecorView());
-        if (windowInsetsController == null)
-            return;
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), !enable);
 
@@ -815,10 +811,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            if (!icon.isRecycled()) {
-                favicon.setImageBitmap(icon);
-                HistoryUtils.updateData(MainActivity.this, iconHashClient, null, null, icon);
-            }
+            favicon.setImageBitmap(icon);
+            HistoryUtils.updateData(MainActivity.this, iconHashClient, null, null, icon);
         }
 
         @Override
@@ -912,7 +906,7 @@ public class MainActivity extends AppCompatActivity {
                     AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         boolean darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
                 Configuration.UI_MODE_NIGHT_YES;
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(webview.getSettings(), darkMode);
         else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
             WebSettingsCompat.setForceDark(webview.getSettings(),
@@ -927,7 +921,6 @@ public class MainActivity extends AppCompatActivity {
         // Do Not Track request
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
 
-        // FIXME: favicon is broken on first launch
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
                 && faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);

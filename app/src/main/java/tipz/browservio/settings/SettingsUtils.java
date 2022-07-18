@@ -19,33 +19,6 @@ public class SettingsUtils {
     public static final boolean doesNotHaveGoogle = LocaleListCompat.getAdjustedDefault().get(0).getCountry().equals("CN");
 
     /**
-     * Check if SharedPreferences is empty
-     * <p>
-     * Check if SharedPreferences is empty, and set it if it is.
-     *
-     * @param pref         SharedPreference to get the value from.
-     * @param tag          tag array to get the value from.
-     * @param defaultValue value array to set if empty.
-     */
-    public static void checkIfEmpty(SharedPreferences pref, String[] tag, Object[] defaultValue) {
-        int listLength = tag.length;
-        if (listLength != defaultValue.length)
-            return;
-
-        for (int i = 0; i < listLength; i++) {
-            if ((defaultValue[i] instanceof String ? getPref(pref, tag[i]).isEmpty() : getPrefNum(pref, tag[i]) == 0)) {
-                if (defaultValue[i] instanceof String)
-                    setPref(pref, tag[i], (String) defaultValue[i]);
-                else if (isFirstLaunch(pref))
-                    setPrefNum(pref, tag[i], (Integer) defaultValue[i]);
-            }
-        }
-
-        if (isFirstLaunch(pref))
-            setPref(pref, SettingsKeys.isFirstLaunch, "0");
-    }
-
-    /**
      * Set the tag as integer bool according to boolean
      * <p>
      * Sets the integer bool according to the boolean.

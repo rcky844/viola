@@ -146,7 +146,8 @@ public class FavActivity extends AppCompatActivity {
                     if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.delete))) {
                         FavUtils.deleteById(favActivity, data.getId());
                         listData.remove(position);
-                        notifyItemRangeRemoved(position, 1);
+                        notifyItemRemoved(position);
+                        notifyItemRangeRemoved(position, getItemCount() - position);
                         favActivity.isEmptyCheck();
                         return true;
                     } else if (item.getTitle().toString().equals(favActivity.getResources().getString(android.R.string.copyUrl))) {
