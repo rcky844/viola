@@ -105,10 +105,10 @@
     <string name="notification_download_successful">%s téléchargé effectué.</string>
 
     <string-array name="errMsg">
-        <item>Erreur !</item>
+        <item>Erreur!</item>
         <item>Impossible d’ouvrir cette page</item>
         <item>Browservio n’a pas réussi à ouvrir la page.</item>
-        <item>Essai :</item>
+        <item>Essai:</item>
         <item>Vérification de votre connexion internet</item>
         <item>Actualisation de la page web</item>
         <item>Actualisation</item>
