@@ -59,7 +59,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -537,7 +536,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void closeKeyboard() {
-        Objects.requireNonNull(ViewCompat.getWindowInsetsController(UrlEdit)).hide(WindowInsetsCompat.Type.ime());
+        WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
     }
 
     /**
@@ -760,9 +759,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setImmersiveMode(boolean enable) {
         WindowInsetsControllerCompat windowInsetsController =
-                ViewCompat.getWindowInsetsController(getWindow().getDecorView());
-        if (windowInsetsController == null)
-            return;
+                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), !enable);
 
