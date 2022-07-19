@@ -68,8 +68,10 @@ public class DownloadUtils {
         } else {
             if (url.startsWith("data:")) {
                 File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                String filetype = url.substring(url.indexOf("/") + 1, url.indexOf(";"));
-                String filename = System.currentTimeMillis() + "." + filetype;
+                String dataInfo = url.substring(url.indexOf(":") + 1, url.indexOf(","));
+                String filename = System.currentTimeMillis() + "."
+                        + MimeTypeMap.getSingleton().getExtensionFromMimeType(
+                                dataInfo.substring(0, dataInfo.contains(";") ? url.indexOf(";") : dataInfo.length()));
                 File file = new File(path, filename);
                 try {
                     if (!path.exists())
@@ -77,10 +79,10 @@ public class DownloadUtils {
                     if (!file.exists())
                         file.createNewFile();
 
-                    String base64EncodedString = url.substring(url.indexOf(",") + 1);
-                    byte[] decodedBytes = Base64.decode(base64EncodedString, Base64.DEFAULT);
+                    String dataString = url.substring(url.indexOf(",") + 1);
+                    byte[] writableBytes = dataInfo.contains(";base64") ? Base64.decode(dataString, Base64.DEFAULT) : dataString.getBytes();
                     OutputStream os = new FileOutputStream(file);
-                    os.write(decodedBytes);
+                    os.write(writableBytes);
                     os.close();
 
                     // Tell the media scanner about the new file so that it is immediately available to the user.

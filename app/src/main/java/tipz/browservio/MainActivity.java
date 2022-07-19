@@ -652,6 +652,7 @@ public class MainActivity extends AppCompatActivity {
                 favicon.setVisibility(View.GONE);
                 faviconProgressBar.setVisibility(View.VISIBLE);
             }
+            favicon.setImageResource(R.drawable.default_favicon);
             UrlEdit.dismissDropDown();
         }
 
@@ -666,7 +667,8 @@ public class MainActivity extends AppCompatActivity {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
             }
-            favicon.setImageResource(R.drawable.default_favicon);
+            if (!(favicon.getDrawable() instanceof BitmapDrawable))
+                favicon.setImageResource(R.drawable.default_favicon);
             swipeRefreshLayout.setRefreshing(false);
         }
 
