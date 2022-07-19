@@ -68,8 +68,10 @@ public class DownloadUtils {
         } else {
             if (url.startsWith("data:")) {
                 File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                String filetype = url.substring(url.indexOf("/") + 1, url.contains(";") ? url.indexOf(";") : url.indexOf(","));
-                String filename = System.currentTimeMillis() + "." + filetype;
+                String dataInfo = url.substring(url.indexOf(":") + 1, url.indexOf(","));
+                String filename = System.currentTimeMillis() + "."
+                        + MimeTypeMap.getSingleton().getExtensionFromMimeType(
+                                dataInfo.substring(0, dataInfo.contains(";") ? url.indexOf(";") : dataInfo.length()));
                 File file = new File(path, filename);
                 try {
                     if (!path.exists())
@@ -78,7 +80,7 @@ public class DownloadUtils {
                         file.createNewFile();
 
                     String dataString = url.substring(url.indexOf(",") + 1);
-                    byte[] writableBytes = url.contains(";base64") ? Base64.decode(dataString, Base64.DEFAULT) : dataString.getBytes();
+                    byte[] writableBytes = dataInfo.contains(";base64") ? Base64.decode(dataString, Base64.DEFAULT) : dataString.getBytes();
                     OutputStream os = new FileOutputStream(file);
                     os.write(writableBytes);
                     os.close();
