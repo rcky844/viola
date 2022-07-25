@@ -127,8 +127,8 @@ public class UrlUtils {
         // Extract file name from content disposition header field
         if (contentDisposition != null) {
             filename = parseContentDisposition(contentDisposition);
-            if (filename != null)
-                filename = StringUtils.substringAfterLast(filename, "/");
+            if (filename == null)
+                filename = StringUtils.substringAfterLast(url, "/");
         }
 
         // If all the other http-related approaches failed, use the plain uri
