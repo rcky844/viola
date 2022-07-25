@@ -5,6 +5,7 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -694,10 +695,10 @@ public class MainActivity extends AppCompatActivity {
             boolean returnVal = false;
             boolean normalSchemes = UrlUtils.startsWithMatch(url);
             if (!normalSchemes) {
-                if (CommonUtils.appInstalledOrNot(getApplicationContext(), url)) {
+                try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(intent);
-                } else {
+                } catch (ActivityNotFoundException ignored) {
                     webview.stopLoading();
                 }
                 returnVal = true;
