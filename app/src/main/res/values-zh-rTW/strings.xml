@@ -73,11 +73,11 @@
     <string name="pref_adBlocker_desp">阻擋分散注意力而且煩人的廣告</string>
     <string name="pref_do_not_track">不要追蹤</string>
     <string name="pref_do_not_track_desp">傳送不要追蹤要求到您瀏覽的網站</string>
-    <string name="copy_url">複製連結</string>
+    <string name="copy_url">複製鏈接</string>
     <string name="download_image">下載圖片</string>
     <string name="open_in_new_tab">在新分頁中開啟</string>
     <string name="no_webview">WebView是必要的，但並未安裝。</string>
-    <string name="share_url">分享連結</string>
+    <string name="share_url">分享鏈接</string>
     <string name="pref_theme">主題</string>
     <string name="pref_theme_desp">目前主題: %s</string>
     <string name="pref_center_action">水平置中操作列</string>

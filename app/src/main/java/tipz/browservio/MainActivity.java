@@ -5,6 +5,7 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -144,8 +145,14 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.favorites,
             R.drawable.close);
 
-    private String userAgentFull(String mid) {
-        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)).concat(" Chrome/103.0.5060.71 Mobile Safari/537.36"));
+    private String userAgentFull(double mode) {
+        return "Mozilla/5.0 ("
+                .concat(mode == 0 ? "Linux; Android ".concat(Build.VERSION.RELEASE)
+                        .concat("; Device with Browservio ".concat(BuildConfig.VERSION_NAME)
+                                .concat(BuildConfig.VERSION_TECHNICAL_EXTRA)) : "X11; Linux x86_64")
+                .concat(") AppleWebKit/537.36 (KHTML, like Gecko)"
+                        .concat(" Chrome/103.0.0.0 ").concat(mode == 0 ? "Mobile " : CommonUtils.EMPTY_STRING)
+                        .concat("Safari/537.36"));
     }
 
     private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
@@ -221,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPrebuiltUAMode(AppCompatImageView view, double mode, boolean noReload) {
         setUA(view,
                 mode == 1,
-                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE).concat("; Device with Browservio")) : userAgentFull("X11; Linux x86_64"),
+                userAgentFull(mode),
                 mode == 0 ? R.drawable.smartphone : R.drawable.desktop,
                 noReload);
     }
@@ -430,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
 
             MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(MainActivity.this);
-            webLongPress.setTitle(url);
+            webLongPress.setTitle(url.length() > 48 ? url.substring(0, 47).concat("…") : url);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1);
             if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
@@ -688,10 +695,10 @@ public class MainActivity extends AppCompatActivity {
             boolean returnVal = false;
             boolean normalSchemes = UrlUtils.startsWithMatch(url);
             if (!normalSchemes) {
-                if (CommonUtils.appInstalledOrNot(getApplicationContext(), url)) {
+                try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(intent);
-                } else {
+                } catch (ActivityNotFoundException ignored) {
                     webview.stopLoading();
                 }
                 returnVal = true;
