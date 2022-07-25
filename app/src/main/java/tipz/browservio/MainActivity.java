@@ -144,8 +144,14 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.favorites,
             R.drawable.close);
 
-    private String userAgentFull(String mid) {
-        return "Mozilla/5.0 (".concat(mid).concat(") AppleWebKit/537.36 (KHTML, like Gecko) ".concat("Browservio/".concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)).concat(" Chrome/103.0.5060.71 Mobile Safari/537.36"));
+    private String userAgentFull(double mode) {
+        return "Mozilla/5.0 ("
+                .concat(mode == 0 ? "Linux; Android ".concat(Build.VERSION.RELEASE)
+                        .concat("; Device with Browservio ".concat(BuildConfig.VERSION_NAME)
+                                .concat(BuildConfig.VERSION_TECHNICAL_EXTRA)) : "X11; Linux x86_64")
+                .concat(") AppleWebKit/537.36 (KHTML, like Gecko)"
+                        .concat(" Chrome/103.0.0.0 ").concat(mode == 0 ? "Mobile " : CommonUtils.EMPTY_STRING)
+                        .concat("Safari/537.36"));
     }
 
     private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
@@ -221,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     private void setPrebuiltUAMode(AppCompatImageView view, double mode, boolean noReload) {
         setUA(view,
                 mode == 1,
-                mode == 0 ? userAgentFull("Linux; Android ".concat(Build.VERSION.RELEASE).concat("; Device with Browservio")) : userAgentFull("X11; Linux x86_64"),
+                userAgentFull(mode),
                 mode == 0 ? R.drawable.smartphone : R.drawable.desktop,
                 noReload);
     }
