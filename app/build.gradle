@@ -19,12 +19,12 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 81
-        versionName "3.1.1"
+        versionCode 82
+        versionName "3.1.2"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Dragonheart\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonheart_rel2\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonheart_rel3\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
