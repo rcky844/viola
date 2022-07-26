@@ -146,6 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
             /* Data & Privacy category */
             CheckBoxPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
             CheckBoxPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
+            CheckBoxPreference redirect_google_amp = Objects.requireNonNull(findPreference("redirect_google_amp"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
@@ -255,6 +256,13 @@ public class SettingsActivity extends AppCompatActivity {
             do_not_track.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.sendDNT, do_not_track.isChecked(), false);
+                needReload = true;
+                return true;
+            });
+
+            redirect_google_amp.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.redirectGoogleAmp, redirect_google_amp.isChecked(), false);
                 needReload = true;
                 return true;
             });
@@ -397,6 +405,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
             checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
+            checkIfPrefIntIsTrue(SettingsKeys.redirectGoogleAmp, redirect_google_amp);
             checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
             checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
             checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);
