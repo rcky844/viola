@@ -635,22 +635,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onPageFinished(WebView view, String url) {
-            UrlSet(url, true);
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
-                CookieSyncManager.getInstance().sync();
-            else
-                CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) {
-                favicon.setVisibility(View.VISIBLE);
-                faviconProgressBar.setVisibility(View.GONE);
-            }
-            if (!(favicon.getDrawable() instanceof BitmapDrawable))
-                favicon.setImageResource(R.drawable.default_favicon);
-            swipeRefreshLayout.setRefreshing(false);
-        }
-
-        @Override
         public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
             if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.redirectGoogleAmp))
                     && url.contains(googleAmpHeading)) {
@@ -659,6 +643,17 @@ public class MainActivity extends AppCompatActivity {
                 browservioBrowse(url.replace(googleAmpHeading, CommonUtils.EMPTY_STRING).replace("/%3famp", CommonUtils.EMPTY_STRING));
             } else {
                 UrlSet(url, true);
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
+                    CookieSyncManager.getInstance().sync();
+                else
+                    CookieManager.getInstance().flush();
+                if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) {
+                    favicon.setVisibility(View.VISIBLE);
+                    faviconProgressBar.setVisibility(View.GONE);
+                }
+                if (!(favicon.getDrawable() instanceof BitmapDrawable))
+                    favicon.setImageResource(R.drawable.default_favicon);
+                swipeRefreshLayout.setRefreshing(false);
             }
         }
 
