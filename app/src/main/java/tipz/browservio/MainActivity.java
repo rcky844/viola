@@ -490,8 +490,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         UrlEdit.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus && !UrlEdit.getText().toString().equals(currentUrl))
-                UrlEdit.setText(currentUrl);
+            if (!hasFocus) {
+                if (!UrlEdit.getText().toString().equals(currentUrl))
+                    UrlEdit.setText(currentUrl);
+                UrlEdit.setSelection(0);
+            }
         });
 
         UrlEdit.setOnItemClickListener((adapterView, view, pos, l) -> {
