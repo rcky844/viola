@@ -21,8 +21,6 @@ import android.net.http.SslError;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -73,15 +71,11 @@ import androidx.webkit.WebViewFeature;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.ByteArrayInputStream;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -98,11 +92,11 @@ import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.suggestions.SuggestionAdapter;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.utils.urls.BrowservioURLs;
-import tipz.browservio.utils.urls.SearchEngineEntries;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
@@ -490,49 +484,12 @@ public class MainActivity extends AppCompatActivity {
                 UrlEdit.setText(currentUrl);
         });
 
-        UrlEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()) || !UrlEdit.hasFocus())
-                    return;
-                try {
-                    String data = DownloadUtils.downloadToString(
-                            SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                                            pref, SettingsKeys.defaultSuggestions),
-                                    text.toString()));
-                    if (data == null)
-                        return;
-
-                    JSONArray jsonArray = new JSONArray(data).optJSONArray(1);
-                    if (jsonArray == null)
-                        return;
-
-                    ArrayList<String> result = new ArrayList<>();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        String s = jsonArray.getString(i);
-                        if (s != null && !s.isEmpty())
-                            result.add(s);
-                    }
-
-                    UrlEdit.setAdapter(new ArrayAdapter<>(
-                            MainActivity.this, R.layout.recycler_list_item_1, result));
-                } catch (JSONException ignored) {
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
         UrlEdit.setOnItemClickListener((adapterView, view, pos, l) -> {
             browservioBrowse(((AppCompatTextView) view.findViewById(android.R.id.text1)).getText().toString());
             closeKeyboard();
         });
+
+        UrlEdit.setAdapter(new SuggestionAdapter(MainActivity.this, R.layout.recycler_list_item_1));
 
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
