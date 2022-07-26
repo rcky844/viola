@@ -23,8 +23,8 @@ android {
         versionName "MASTER"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_CODENAME", "\"Dragonheart\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonheart_master\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Dragonified\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonified_master\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
