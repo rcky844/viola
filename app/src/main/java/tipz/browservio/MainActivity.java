@@ -209,6 +209,13 @@ public class MainActivity extends AppCompatActivity {
             webview.freeMemory();
     }
 
+    // https://stackoverflow.com/a/57840629/10866268
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.clear();
+    }
+
     private void setUA(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
