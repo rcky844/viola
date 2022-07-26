@@ -19,12 +19,12 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 69420
-        versionName "Dragonified Snapshot 20220726a"
+        versionCode 82
+        versionName "Dragonified Snapshot 20220726b"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Dragonified\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonified_master\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonified_s20220726b\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
