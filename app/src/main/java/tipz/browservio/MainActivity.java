@@ -92,11 +92,11 @@ import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
-import tipz.browservio.suggestions.SuggestionAdapter;
+import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.UrlUtils;
-import tipz.browservio.utils.urls.BrowservioURLs;
+import tipz.browservio.utils.BrowservioURLs;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {

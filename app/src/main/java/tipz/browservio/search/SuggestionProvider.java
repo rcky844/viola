@@ -1,4 +1,4 @@
-package tipz.browservio.suggestions;
+package tipz.browservio.search;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
-import tipz.browservio.utils.urls.SearchEngineEntries;
 
 /*
     "Inspired" by LineageOS' Jelly

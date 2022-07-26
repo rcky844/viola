@@ -13,8 +13,6 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import tipz.browservio.utils.urls.BrowservioURLs;
-
 public class UrlUtils {
 
     private static final String[] startsWithMatch = {

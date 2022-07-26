@@ -1,4 +1,4 @@
-package tipz.browservio.suggestions;
+package tipz.browservio.search;
 
 import android.content.Context;
 import android.graphics.Typeface;
