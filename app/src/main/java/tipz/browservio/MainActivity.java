@@ -242,25 +242,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void itemSelected(AppCompatImageView view, int item) {
-        if (item == 0 && webview.canGoBack()) {
+        if (item == R.drawable.arrow_back_alt && webview.canGoBack()) {
             webview.goBack();
-        } else if (item == 1 && webview.canGoForward()) {
+        } else if (item == R.drawable.arrow_forward_alt && webview.canGoForward()) {
             webview.goForward();
-        } else if (item == 2) {
+        } else if (item == R.drawable.refresh) {
             webviewReload();
-        } else if (item == 3) {
+        } else if (item == R.drawable.home) {
             browservioBrowse(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
-        } else if (item == 4) {
+        } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             currentPrebuiltUAState = !currentPrebuiltUAState;
             setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
-        } else if (item == 5) {
+        } else if (item == R.drawable.new_tab) {
             Intent i = new Intent(this, MainActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
             else
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             startActivity(i);
-        } else if (item == 6) {
+        } else if (item == R.drawable.delete) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
             menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
@@ -296,9 +296,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             });
             popupMenu.show();
-        } else if (item == 7) {
+        } else if (item == R.drawable.share) {
             shareUrl(null);
-        } else if (item == 8) {
+        } else if (item == R.drawable.app_shortcut) {
             Drawable originalIcon = favicon.getDrawable();
             Bitmap icon = Bitmap.createBitmap(originalIcon.getIntrinsicWidth(), originalIcon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(icon);
@@ -313,23 +313,23 @@ public class MainActivity extends AppCompatActivity {
                             .setData(Uri.parse(currentUrl))
                             .setAction(Intent.ACTION_VIEW))
                     .build(), null);
-        } else if (item == 9) {
+        } else if (item == R.drawable.settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             mGetNeedLoad.launch(intent);
-        } else if (item == 10) {
+        } else if (item == R.drawable.history) {
             Intent intent = new Intent(this, HistoryActivity.class);
             mGetNeedLoad.launch(intent);
-        } else if (item == 11) {
+        } else if (item == R.drawable.favorites) {
             Drawable icon = favicon.getDrawable();
             FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
-        } else if (item == 12) {
+        } else if (item == R.drawable.close) {
             finish();
         }
     }
 
     public void itemLongSelected(AppCompatImageView view, int item) {
-        if (item == 4) {
+        if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             final LayoutInflater layoutInflater = LayoutInflater.from(this);
             @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
             final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                     .create().show();
             if (currentCustomUA != null)
                 customUserAgent.setText(currentCustomUA);
-        } else if (item == 11) {
+        } else if (item == R.drawable.favorites) {
             if (FavUtils.isEmptyCheck(this)) {
                 CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
             } else {
@@ -949,9 +949,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mImageView.setImageResource(actionBarItemList.get(position));
-            holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, position));
+            holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, actionBarItemList.get(position)));
             holder.mImageView.setOnLongClickListener(view -> {
-                mMainActivity.get().itemLongSelected(holder.mImageView, position);
+                mMainActivity.get().itemLongSelected(holder.mImageView, actionBarItemList.get(position));
                 return true;
             });
         }
