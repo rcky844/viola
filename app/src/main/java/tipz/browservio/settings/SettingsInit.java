@@ -20,6 +20,7 @@ public class SettingsInit {
             SettingsUtils.setPref(pref, SettingsKeys.isFirstLaunch, "0");
 
         if (SettingsUtils.isFirstLaunch(pref)) {
+            SettingsUtils.setPrefNum(pref, SettingsKeys.centerActionBar, 1);
             SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage,
                     getHomepageUrl(SearchEngineEntries.baseSearch[7]));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, 7);
@@ -32,10 +33,10 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 6);
             SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
-            SettingsUtils.setPrefNum(pref, SettingsKeys.centerActionBar, 1);
         } else {
             protoVer0To1();
         }

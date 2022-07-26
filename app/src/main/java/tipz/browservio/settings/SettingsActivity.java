@@ -152,6 +152,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference theme = Objects.requireNonNull(findPreference("theme"));
             CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
             CheckBoxPreference center_action = Objects.requireNonNull(findPreference("center_action"));
+            CheckBoxPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
 
             /* Advanced category */
             CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
@@ -306,6 +307,12 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
+            enable_swipe_refresh.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.enableSwipeRefresh, enable_swipe_refresh.isChecked(), false);
+                return true;
+            });
+
             javascript.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.isJavaScriptEnabled, javascript.isChecked(), false);
@@ -392,6 +399,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
             checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
             checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
+            checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);
             checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));

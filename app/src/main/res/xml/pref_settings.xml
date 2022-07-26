@@ -43,6 +43,10 @@
             android:key="center_action"
             android:summary="@string/pref_center_action_desp"
             android:title="@string/pref_center_action" />
+        <androidx.preference.CheckBoxPreference
+            android:key="enable_swipe_refresh"
+            android:summary="@string/pref_enable_swipe_refresh_summary"
+            android:title="@string/pref_enable_swipe_refresh_title" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/advanced">
