@@ -39,8 +39,9 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
         } else {
             protoVer0To1();
+            //protoVer1To2();
         }
-        SettingsUtils.setPrefNum(pref, SettingsKeys.protocolVersion, 1); /* CURRENT_PROTOCOL_VERSION */
+        SettingsUtils.setPrefNum(pref, SettingsKeys.protocolVersion, 1 /* 2 */); /* CURRENT_PROTOCOL_VERSION */
         if (SettingsUtils.isFirstLaunch(pref))
             SettingsUtils.setPref(pref, SettingsKeys.isFirstLaunch, "0");
     }
@@ -59,6 +60,13 @@ public class SettingsInit {
                     Integer.parseInt(SettingsUtils.getPref(pref, SettingsKeys.sendDNT)));
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon,
                     Integer.parseInt(SettingsUtils.getPref(pref, SettingsKeys.showFavicon)));
+        }
+    }
+
+    private void protoVer1To2() {
+        if (SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion) == 1) {
+            /* 4bb92167: java: settings: Allow enabling or disabling pull to refresh */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
         }
     }
 }
