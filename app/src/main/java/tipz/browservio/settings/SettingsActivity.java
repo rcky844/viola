@@ -146,12 +146,14 @@ public class SettingsActivity extends AppCompatActivity {
             /* Data & Privacy category */
             CheckBoxPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
             CheckBoxPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
+            CheckBoxPreference redirect_google_amp = Objects.requireNonNull(findPreference("redirect_google_amp"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
             CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
             CheckBoxPreference center_action = Objects.requireNonNull(findPreference("center_action"));
+            CheckBoxPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
 
             /* Advanced category */
             CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
@@ -258,6 +260,13 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
+            redirect_google_amp.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.redirectGoogleAmp, redirect_google_amp.isChecked(), false);
+                needReload = true;
+                return true;
+            });
+
             reset_to_default.setOnPreferenceClickListener(preference -> {
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.reset_btn))
                         .setMessage(getResources().getString(R.string.reset_dialog).concat(getResources().getString(R.string.to_continue)))
@@ -303,6 +312,12 @@ public class SettingsActivity extends AppCompatActivity {
             center_action.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.centerActionBar, center_action.isChecked(), false);
+                return true;
+            });
+
+            enable_swipe_refresh.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.enableSwipeRefresh, enable_swipe_refresh.isChecked(), false);
                 return true;
             });
 
@@ -390,8 +405,10 @@ public class SettingsActivity extends AppCompatActivity {
 
             checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
             checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
+            checkIfPrefIntIsTrue(SettingsKeys.redirectGoogleAmp, redirect_google_amp);
             checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
             checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
+            checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);
             checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));

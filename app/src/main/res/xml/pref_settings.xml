@@ -24,6 +24,10 @@
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_desp"
             android:title="@string/pref_do_not_track" />
+        <androidx.preference.CheckBoxPreference
+            android:key="redirect_google_amp"
+            android:summary="@string/pref_redirect_google_amp_summary"
+            android:title="@string/pref_redirect_google_amp_title" />
         <androidx.preference.Preference
             android:key="reset_to_default"
             android:summary="@string/reset_btn_desp"
@@ -43,6 +47,10 @@
             android:key="center_action"
             android:summary="@string/pref_center_action_desp"
             android:title="@string/pref_center_action" />
+        <androidx.preference.CheckBoxPreference
+            android:key="enable_swipe_refresh"
+            android:summary="@string/pref_enable_swipe_refresh_summary"
+            android:title="@string/pref_enable_swipe_refresh_title" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/advanced">
