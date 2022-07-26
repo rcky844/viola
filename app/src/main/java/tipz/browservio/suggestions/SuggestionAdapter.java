@@ -101,13 +101,11 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence constraint, FilterResults results) {
             mItems.clear();
-            if (results.values != null) {
-                // FIXME: We should do a sanity check here
-                List<String> items = (List<String>) results.values;
-                mItems.addAll(items);
-            }
+            if (results.values != null)
+                mItems.addAll((List<String>) results.values);
             mQueryText = constraint != null
                     ? constraint.toString().toLowerCase(Locale.getDefault()).trim() : null;
             notifyDataSetChanged();
