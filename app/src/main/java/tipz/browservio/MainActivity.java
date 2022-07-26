@@ -635,6 +635,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onPageFinished(WebView view, String url) {
+            if (webview.getOriginalUrl().equals(url))
+                this.doUpdateVisitedHistory(view, url, true);
+        }
+
+        @Override
         public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
             if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.redirectGoogleAmp))
                     && url.contains(googleAmpHeading)) {
