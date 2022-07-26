@@ -654,6 +654,7 @@ public class MainActivity extends AppCompatActivity {
         public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
             if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.redirectGoogleAmp))
                     && url.contains(googleAmpHeading)) {
+                // TODO: read href properly
                 webview.stopLoading();
                 browservioBrowse(url.replace(googleAmpHeading, CommonUtils.EMPTY_STRING).replace("/%3famp", CommonUtils.EMPTY_STRING));
             } else {
