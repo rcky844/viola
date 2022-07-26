@@ -9,7 +9,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -67,7 +66,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
-import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -90,15 +88,15 @@ import tipz.browservio.fav.FavActivity;
 import tipz.browservio.fav.FavUtils;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryUtils;
-import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
-import tipz.browservio.utils.BrowservioURLs;
+import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.utils.BrowservioURLs;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
@@ -142,14 +140,13 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.close);
 
     private String userAgentFull(double mode) {
-        PackageInfo info = WebViewCompat.getCurrentWebViewPackage(MainActivity.this);
-        String webkitVersion = info == null ? "534.30" : "537.36";
-        return "Mozilla/5.0 (".concat(mode == 0 ? "Linux; Android ".concat(Build.VERSION.RELEASE)
+        return "Mozilla/5.0 ("
+                .concat(mode == 0 ? "Linux; Android ".concat(Build.VERSION.RELEASE)
                         .concat("; Device with Browservio ".concat(BuildConfig.VERSION_NAME)
                                 .concat(BuildConfig.VERSION_TECHNICAL_EXTRA)) : "X11; Linux x86_64")
-                .concat(") AppleWebKit/").concat(webkitVersion).concat(" KHTML, like Gecko) Chrome/")
-                .concat(info == null ? "12.0.742" : info.versionName).concat(mode == 0 ? " Mobile " : " ")
-                .concat("Safari/").concat(webkitVersion);
+                .concat(") AppleWebKit/537.36 (KHTML, like Gecko)"
+                        .concat(" Chrome/103.0.0.0 ").concat(mode == 0 ? "Mobile " : CommonUtils.EMPTY_STRING)
+                        .concat("Safari/537.36"));
     }
 
     private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
