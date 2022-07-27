@@ -2,13 +2,13 @@ package tipz.browservio.settings;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import static tipz.browservio.settings.SettingsUtils.doesNotHaveGoogle;
-import static tipz.browservio.utils.urls.SearchEngineEntries.getHomepageUrl;
-import static tipz.browservio.utils.urls.SearchEngineEntries.getSearchEngineUrl;
+import static tipz.browservio.search.SearchEngineEntries.getHomepageUrl;
+import static tipz.browservio.search.SearchEngineEntries.getSearchEngineUrl;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import tipz.browservio.utils.urls.SearchEngineEntries;
+import tipz.browservio.search.SearchEngineEntries;
 
 public class SettingsInit {
     SharedPreferences pref;

@@ -9,6 +9,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -21,8 +22,6 @@ import android.net.http.SslError;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -68,20 +67,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
+import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.ByteArrayInputStream;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -94,15 +90,15 @@ import tipz.browservio.fav.FavActivity;
 import tipz.browservio.fav.FavUtils;
 import tipz.browservio.history.HistoryActivity;
 import tipz.browservio.history.HistoryUtils;
+import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.utils.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.UrlUtils;
-import tipz.browservio.utils.urls.BrowservioURLs;
-import tipz.browservio.utils.urls.SearchEngineEntries;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends AppCompatActivity {
@@ -146,13 +142,14 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.close);
 
     private String userAgentFull(double mode) {
-        return "Mozilla/5.0 ("
-                .concat(mode == 0 ? "Linux; Android ".concat(Build.VERSION.RELEASE)
+        PackageInfo info = WebViewCompat.getCurrentWebViewPackage(MainActivity.this);
+        String webkitVersion = info == null ? "534.30" : "537.36";
+        return "Mozilla/5.0 (".concat(mode == 0 ? "Linux; Android ".concat(Build.VERSION.RELEASE)
                         .concat("; Device with Browservio ".concat(BuildConfig.VERSION_NAME)
                                 .concat(BuildConfig.VERSION_TECHNICAL_EXTRA)) : "X11; Linux x86_64")
-                .concat(") AppleWebKit/537.36 (KHTML, like Gecko)"
-                        .concat(" Chrome/103.0.0.0 ").concat(mode == 0 ? "Mobile " : CommonUtils.EMPTY_STRING)
-                        .concat("Safari/537.36"));
+                .concat(") AppleWebKit/").concat(webkitVersion).concat(" KHTML, like Gecko) Chrome/")
+                .concat(info == null ? "12.0.742" : info.versionName).concat(mode == 0 ? " Mobile " : " ")
+                .concat("Safari/").concat(webkitVersion);
     }
 
     private final ActivityResultLauncher<String> mFileChooser = registerForActivityResult(
@@ -212,6 +209,13 @@ public class MainActivity extends AppCompatActivity {
             webview.freeMemory();
     }
 
+    // https://stackoverflow.com/a/57840629/10866268
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.clear();
+    }
+
     private void setUA(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
         webview.getSettings().setUserAgentString(ua);
         webview.getSettings().setLoadWithOverviewMode(enableDesktop);
@@ -245,25 +249,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void itemSelected(AppCompatImageView view, int item) {
-        if (item == 0 && webview.canGoBack()) {
+        if (item == R.drawable.arrow_back_alt && webview.canGoBack()) {
             webview.goBack();
-        } else if (item == 1 && webview.canGoForward()) {
+        } else if (item == R.drawable.arrow_forward_alt && webview.canGoForward()) {
             webview.goForward();
-        } else if (item == 2) {
+        } else if (item == R.drawable.refresh) {
             webviewReload();
-        } else if (item == 3) {
+        } else if (item == R.drawable.home) {
             browservioBrowse(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
-        } else if (item == 4) {
+        } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             currentPrebuiltUAState = !currentPrebuiltUAState;
             setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
-        } else if (item == 5) {
+        } else if (item == R.drawable.new_tab) {
             Intent i = new Intent(this, MainActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
             else
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             startActivity(i);
-        } else if (item == 6) {
+        } else if (item == R.drawable.delete) {
             PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
             Menu menu = popupMenu.getMenu();
             menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
@@ -299,9 +303,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             });
             popupMenu.show();
-        } else if (item == 7) {
+        } else if (item == R.drawable.share) {
             shareUrl(null);
-        } else if (item == 8) {
+        } else if (item == R.drawable.app_shortcut) {
             Drawable originalIcon = favicon.getDrawable();
             Bitmap icon = Bitmap.createBitmap(originalIcon.getIntrinsicWidth(), originalIcon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(icon);
@@ -316,23 +320,23 @@ public class MainActivity extends AppCompatActivity {
                             .setData(Uri.parse(currentUrl))
                             .setAction(Intent.ACTION_VIEW))
                     .build(), null);
-        } else if (item == 9) {
+        } else if (item == R.drawable.settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             mGetNeedLoad.launch(intent);
-        } else if (item == 10) {
+        } else if (item == R.drawable.history) {
             Intent intent = new Intent(this, HistoryActivity.class);
             mGetNeedLoad.launch(intent);
-        } else if (item == 11) {
+        } else if (item == R.drawable.favorites) {
             Drawable icon = favicon.getDrawable();
             FavUtils.appendData(this, iconHashClient, UrlTitle, currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.save_successful));
-        } else if (item == 12) {
+        } else if (item == R.drawable.close) {
             finish();
         }
     }
 
     public void itemLongSelected(AppCompatImageView view, int item) {
-        if (item == 4) {
+        if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             final LayoutInflater layoutInflater = LayoutInflater.from(this);
             @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
             final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
@@ -353,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
                     .create().show();
             if (currentCustomUA != null)
                 customUserAgent.setText(currentCustomUA);
-        } else if (item == 11) {
+        } else if (item == R.drawable.favorites) {
             if (FavUtils.isEmptyCheck(this)) {
                 CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
             } else {
@@ -490,49 +494,12 @@ public class MainActivity extends AppCompatActivity {
                 UrlEdit.setText(currentUrl);
         });
 
-        UrlEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence text, int start, int before, int count) {
-                if (text.toString().isEmpty() || CommonUtils.isNetworkAvailable(getApplicationContext()) || !UrlEdit.hasFocus())
-                    return;
-                try {
-                    String data = DownloadUtils.downloadToString(
-                            SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                                            pref, SettingsKeys.defaultSuggestions),
-                                    text.toString()));
-                    if (data == null)
-                        return;
-
-                    JSONArray jsonArray = new JSONArray(data).optJSONArray(1);
-                    if (jsonArray == null)
-                        return;
-
-                    ArrayList<String> result = new ArrayList<>();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        String s = jsonArray.getString(i);
-                        if (s != null && !s.isEmpty())
-                            result.add(s);
-                    }
-
-                    UrlEdit.setAdapter(new ArrayAdapter<>(
-                            MainActivity.this, R.layout.recycler_list_item_1, result));
-                } catch (JSONException ignored) {
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
         UrlEdit.setOnItemClickListener((adapterView, view, pos, l) -> {
             browservioBrowse(((AppCompatTextView) view.findViewById(android.R.id.text1)).getText().toString());
             closeKeyboard();
         });
+
+        UrlEdit.setAdapter(new SuggestionAdapter(MainActivity.this, R.layout.recycler_list_item_1));
 
         webview.setWebViewClient(new WebClient());
         webview.setWebChromeClient(new ChromeWebClient());
@@ -986,9 +953,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.mImageView.setImageResource(actionBarItemList.get(position));
-            holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, position));
+            holder.mImageView.setOnClickListener(view -> mMainActivity.get().itemSelected(holder.mImageView, actionBarItemList.get(position)));
             holder.mImageView.setOnLongClickListener(view -> {
-                mMainActivity.get().itemLongSelected(holder.mImageView, position);
+                mMainActivity.get().itemLongSelected(holder.mImageView, actionBarItemList.get(position));
                 return true;
             });
         }

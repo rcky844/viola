@@ -2,8 +2,8 @@ package tipz.browservio.settings;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import static tipz.browservio.utils.ApkInstaller.installApplication;
-import static tipz.browservio.utils.urls.SearchEngineEntries.getHomepageUrl;
-import static tipz.browservio.utils.urls.SearchEngineEntries.getSearchEngineUrl;
+import static tipz.browservio.search.SearchEngineEntries.getHomepageUrl;
+import static tipz.browservio.search.SearchEngineEntries.getSearchEngineUrl;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -43,8 +43,8 @@ import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
-import tipz.browservio.utils.urls.BrowservioURLs;
-import tipz.browservio.utils.urls.SearchEngineEntries;
+import tipz.browservio.utils.BrowservioURLs;
+import tipz.browservio.search.SearchEngineEntries;
 
 public class SettingsActivity extends AppCompatActivity {
 
