@@ -133,6 +133,7 @@ public class UrlUtils {
         if (filename == null) {
             String decodedUrl = Uri.decode(url);
             decodedUrl = StringUtils.substringBefore(decodedUrl, '?');
+            decodedUrl = StringUtils.substringBefore(decodedUrl, ';');
             if (!decodedUrl.endsWith("/")) {
                 filename = StringUtils.substringAfterLast(decodedUrl, "/");
             }
