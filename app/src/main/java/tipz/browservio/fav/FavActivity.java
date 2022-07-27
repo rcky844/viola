@@ -140,8 +140,8 @@ public class FavActivity extends AppCompatActivity {
                 PopupMenu popup1 = new PopupMenu(favActivity, view);
                 Menu menu1 = popup1.getMenu();
                 menu1.add(favActivity.getResources().getString(R.string.favMenuEdit));
+                menu1.add(favActivity.getResources().getString(R.string.copy_url));
                 menu1.add(favActivity.getResources().getString(R.string.delete));
-                menu1.add(favActivity.getResources().getString(android.R.string.copyUrl));
                 popup1.setOnMenuItemClickListener(item -> {
                     if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.delete))) {
                         FavUtils.deleteById(favActivity, data.getId());
@@ -150,7 +150,7 @@ public class FavActivity extends AppCompatActivity {
                         notifyItemRangeRemoved(position, getItemCount() - position);
                         favActivity.isEmptyCheck();
                         return true;
-                    } else if (item.getTitle().toString().equals(favActivity.getResources().getString(android.R.string.copyUrl))) {
+                    } else if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.copy_url))) {
                         CommonUtils.copyClipboard(favActivity, url);
                         return true;
                     } else if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.favMenuEdit))) {

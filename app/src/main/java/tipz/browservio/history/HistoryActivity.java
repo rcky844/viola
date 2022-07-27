@@ -152,7 +152,7 @@ public class HistoryActivity extends AppCompatActivity {
                 PopupMenu popup1 = new PopupMenu(historyActivity, view);
                 Menu menu1 = popup1.getMenu();
                 menu1.add(historyActivity.getResources().getString(R.string.delete));
-                menu1.add(historyActivity.getResources().getString(android.R.string.copyUrl));
+                menu1.add(historyActivity.getResources().getString(R.string.copy_url));
                 menu1.add(historyActivity.getResources().getString(R.string.add_to_fav));
                 popup1.setOnMenuItemClickListener(item -> {
                     if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.delete))) {
@@ -162,7 +162,7 @@ public class HistoryActivity extends AppCompatActivity {
                         notifyItemRangeRemoved(position, getItemCount() - position);
                         historyActivity.isEmptyCheck();
                         return true;
-                    } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(android.R.string.copyUrl))) {
+                    } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.copy_url))) {
                         CommonUtils.copyClipboard(historyActivity, url);
                         return true;
                     } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.add_to_fav))) {
