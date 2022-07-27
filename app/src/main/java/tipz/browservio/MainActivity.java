@@ -565,8 +565,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
         // Chrome does this in the current Chrome Dev, but not Chrome release).
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+        webview.getSettings().setLayoutAlgorithm(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+                ? WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING : WebSettings.LayoutAlgorithm.NORMAL);
 
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setAllowFileAccess(false);
