@@ -546,9 +546,14 @@ public class MainActivity extends AppCompatActivity {
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setAllowFileAccess(false);
+        webview.getSettings().setAllowContentAccess(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            webview.getSettings().setAllowFileAccessFromFileURLs(false);
+            webview.getSettings().setAllowUniversalAccessFromFileURLs(false);
+        }
 
         /* HTML5 API flags */
-        webview.getSettings().setDatabaseEnabled(true);
+        webview.getSettings().setDatabaseEnabled(false);
         webview.getSettings().setDomStorageEnabled(true);
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
