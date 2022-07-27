@@ -664,7 +664,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if (webview.getOriginalUrl().equals(url))
+            if (webview.getOriginalUrl() == null || webview.getOriginalUrl().equals(url))
                 this.doUpdateVisitedHistory(view, url, true);
         }
 
