@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.core.os.LocaleListCompat;
-
 /* TODO: rewrite to only use browservio_saver */
 public class SettingsUtils {
     public static SharedPreferences browservio_saver(Context context) {
@@ -15,8 +13,6 @@ public class SettingsUtils {
     public static boolean isFirstLaunch(SharedPreferences pref) {
         return !SettingsUtils.getPref(pref, SettingsKeys.isFirstLaunch).equals("0");
     }
-
-    public static final boolean doesNotHaveGoogle = LocaleListCompat.getAdjustedDefault().get(0).getCountry().equals("CN");
 
     /**
      * Set the tag as integer bool according to boolean

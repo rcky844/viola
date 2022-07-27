@@ -1,7 +1,6 @@
 package tipz.browservio.settings;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-import static tipz.browservio.settings.SettingsUtils.doesNotHaveGoogle;
 import static tipz.browservio.search.SearchEngineEntries.getHomepageUrl;
 import static tipz.browservio.search.SearchEngineEntries.getSearchEngineUrl;
 
@@ -20,9 +19,6 @@ public class SettingsInit {
                 && !SettingsUtils.getPref(pref, SettingsKeys.isJavaScriptEnabled).isEmpty())
             SettingsUtils.setPref(pref, SettingsKeys.isFirstLaunch, "0");
 
-        // TODO: Switch to Brave entirely
-        int searchSuggest = doesNotHaveGoogle ? 1 : 0;
-
         if (SettingsUtils.isFirstLaunch(pref)) {
             SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage,
                     getHomepageUrl(SearchEngineEntries.baseSearch[7]));
@@ -32,8 +28,8 @@ public class SettingsInit {
                             SearchEngineEntries.searchSuffix[7]));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, 7);
             SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions,
-                    SearchEngineEntries.searchSuggestionsUrl[searchSuggest]);
-            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, searchSuggest);
+                    SearchEngineEntries.searchSuggestionsUrl[6]);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 6);
             SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0);
