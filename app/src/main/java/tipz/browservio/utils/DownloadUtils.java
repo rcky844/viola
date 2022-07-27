@@ -71,7 +71,8 @@ public class DownloadUtils {
                 String dataInfo = url.substring(url.indexOf(":") + 1, url.indexOf(","));
                 String filename = System.currentTimeMillis() + "."
                         + MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                                dataInfo.substring(0, dataInfo.contains(";") ? dataInfo.indexOf(";") : dataInfo.length()));
+                                StringUtils.substringBefore(dataInfo,
+                                        dataInfo.contains(";") ? dataInfo.indexOf(";") : dataInfo.length()));
                 File file = new File(path, filename);
                 try {
                     if (!path.exists())
