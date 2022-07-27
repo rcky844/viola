@@ -38,6 +38,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebIconDatabase;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -561,11 +562,22 @@ public class MainActivity extends AppCompatActivity {
 
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
+
+        // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
+        // Chrome does this in the current Chrome Dev, but not Chrome release).
+        webview.getSettings().setLayoutAlgorithm(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+                ? WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING : WebSettings.LayoutAlgorithm.NORMAL);
+
         webview.getSettings().setDisplayZoomControls(false);
         webview.getSettings().setAllowFileAccess(false);
+        webview.getSettings().setAllowContentAccess(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            webview.getSettings().setAllowFileAccessFromFileURLs(false);
+            webview.getSettings().setAllowUniversalAccessFromFileURLs(false);
+        }
 
         /* HTML5 API flags */
-        webview.getSettings().setDatabaseEnabled(true);
+        webview.getSettings().setDatabaseEnabled(false);
         webview.getSettings().setDomStorageEnabled(true);
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -652,7 +664,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if (webview.getOriginalUrl().equals(url))
+            if (webview.getOriginalUrl() == null || webview.getOriginalUrl().equals(url))
                 this.doUpdateVisitedHistory(view, url, true);
         }
 

@@ -133,6 +133,7 @@ public class UrlUtils {
         if (filename == null) {
             String decodedUrl = Uri.decode(url);
             decodedUrl = StringUtils.substringBefore(decodedUrl, '?');
+            decodedUrl = StringUtils.substringBefore(decodedUrl, ';');
             if (!decodedUrl.endsWith("/")) {
                 filename = StringUtils.substringAfterLast(decodedUrl, "/");
             }
@@ -345,7 +346,7 @@ public class UrlUtils {
             // Compare the last segment of the extension against the mime type.
             // If there's a mismatch, discard the entire extension.
             String typeFromExt = mimeTypeMap.getMimeTypeFromExtension(StringUtils.substringAfterLast(filename, "."));
-            if (typeFromExt.equalsIgnoreCase(mimeType)) {
+            if (typeFromExt != null && typeFromExt.equalsIgnoreCase(mimeType)) {
                 extension = "." + mimeTypeMap.getExtensionFromMimeType(mimeType);
                 // Check if the extension needs to be changed
                 if (filename.toLowerCase(Locale.ROOT).endsWith(extension.toLowerCase())) {
