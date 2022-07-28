@@ -29,7 +29,7 @@ public class UrlUtils {
      * @param searchUrl   as the Url supplied for search.
      * @return result
      */
-    public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
+    public static String UrlChecker(String url, boolean canBeSearch, String searchUrl, boolean enforceHttps) {
         String trimmedUrl = url.trim();
 
         /*

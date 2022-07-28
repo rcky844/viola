@@ -889,7 +889,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(pref, SettingsKeys.defaultSearch));
+        String checkedUrl = UrlUtils.UrlChecker(url, true,
+                SettingsUtils.getPref(pref, SettingsKeys.defaultSearch),
+                CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
         currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);

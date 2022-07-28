@@ -147,6 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
             CheckBoxPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
             CheckBoxPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
             CheckBoxPreference redirect_google_amp = Objects.requireNonNull(findPreference("redirect_google_amp"));
+            CheckBoxPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
@@ -264,6 +265,12 @@ public class SettingsActivity extends AppCompatActivity {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.redirectGoogleAmp, redirect_google_amp.isChecked(), false);
                 needReload = true;
+                return true;
+            });
+
+            enforce_https.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.enforceHttps, enforce_https.isChecked(), false);
                 return true;
             });
 
@@ -406,6 +413,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
             checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
             checkIfPrefIntIsTrue(SettingsKeys.redirectGoogleAmp, redirect_google_amp);
+            checkIfPrefIntIsTrue(SettingsKeys.enforceHttps, enforce_https);
             checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
             checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
             checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);

@@ -37,7 +37,9 @@ public class DownloadUtils {
                                       String mimeType, String title,
                                       String customFilename) {
         if (url.startsWith("http://") || url.startsWith("https://")) {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(UrlUtils.UrlChecker(url, false, null)));
+            DownloadManager.Request request = new DownloadManager.Request(
+                    Uri.parse(UrlUtils.UrlChecker(url, false, null,
+                            StringUtils.substringBefore(url, ':').equals("https"))));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
