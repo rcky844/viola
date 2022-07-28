@@ -147,10 +147,9 @@ public class MainActivity extends AppCompatActivity {
     private String userAgentFull(double mode) {
         PackageInfo info = WebViewCompat.getCurrentWebViewPackage(MainActivity.this);
         String webkitVersion = info == null ? "534.30" : "537.36";
-        return "Mozilla/5.0 (".concat(mode == 0 ? "Linux; Android ".concat(Build.VERSION.RELEASE)
-                        .concat("; Device with Browservio ".concat(BuildConfig.VERSION_NAME)
-                                .concat(BuildConfig.VERSION_TECHNICAL_EXTRA)) : "X11; Linux x86_64")
-                .concat(") AppleWebKit/").concat(webkitVersion).concat(" KHTML, like Gecko) Chrome/")
+        return "Mozilla/5.0 (".concat("Linux; Device with Browservio ").concat(BuildConfig.VERSION_NAME)
+                .concat(BuildConfig.VERSION_TECHNICAL_EXTRA).concat(") AppleWebKit/")
+                .concat(webkitVersion).concat(" KHTML, like Gecko) Chrome/")
                 .concat(info == null ? "12.0.742" : info.versionName).concat(mode == 0 ? " Mobile " : " ")
                 .concat("Safari/").concat(webkitVersion);
     }
