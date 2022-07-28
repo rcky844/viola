@@ -703,7 +703,7 @@ public class MainActivity extends AppCompatActivity {
             boolean normalSchemes = UrlUtils.startsWithMatch(url);
             if (!normalSchemes) {
                 try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)));
                     startActivity(intent);
                 } catch (ActivityNotFoundException ignored) {
                     webview.stopLoading();
