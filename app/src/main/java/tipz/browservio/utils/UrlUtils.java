@@ -46,7 +46,7 @@ public class UrlUtils {
             return trimmedUrl;
 
         if (trimmedUrl.contains("/") || trimmedUrl.contains("."))
-            return "http://" + trimmedUrl;
+            return (enforceHttps ? "https://" : "http://") + trimmedUrl;
 
         if (canBeSearch)
             return searchUrl + trimmedUrl;
