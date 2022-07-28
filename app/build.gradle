@@ -20,11 +20,11 @@ android {
         minSdkVersion 14
         targetSdkVersion 33
         versionCode 83
-        versionName "Dragonified Snapshot 20220727a"
+        versionName "Eagle Snapshot 20220728a"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_CODENAME", "\"Dragonified\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonified_s20220727a\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Eagle\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_eagle_s20220728a\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
