@@ -42,6 +42,9 @@ public class UrlUtils {
         if (trimmedUrl.contains("\\") && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
             trimmedUrl = trimmedUrl.replace("\\", "/");
 
+        // Decode once to decode %XX and all the nasty Uri stuff
+        trimmedUrl = Uri.decode(trimmedUrl);
+
         if (startsWithMatch(trimmedUrl) || trimmedUrl.startsWith(BrowservioURLs.prefix))
             return trimmedUrl;
 
