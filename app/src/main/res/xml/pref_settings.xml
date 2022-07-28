@@ -16,19 +16,19 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/data_privacy">
-        <androidx.preference.CheckBoxPreference
+        <androidx.preference.SwitchPreference
             android:key="adBlocker"
             android:summary="@string/pref_adBlocker_desp"
             android:title="@string/pref_adBlocker" />
-        <androidx.preference.CheckBoxPreference
+        <androidx.preference.SwitchPreference
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_desp"
             android:title="@string/pref_do_not_track" />
-        <androidx.preference.CheckBoxPreference
+        <androidx.preference.SwitchPreference
             android:key="redirect_google_amp"
             android:summary="@string/pref_redirect_google_amp_summary"
             android:title="@string/pref_redirect_google_amp_title" />
-        <androidx.preference.CheckBoxPreference
+        <androidx.preference.SwitchPreference
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
             android:title="@string/pref_enforce_https_title" />
@@ -43,22 +43,22 @@
             android:key="theme"
             android:summary=""
             android:title="@string/pref_theme" />
-        <androidx.preference.CheckBoxPreference
+        <androidx.preference.SwitchPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
             android:title="@string/show_favicon" />
-        <androidx.preference.CheckBoxPreference
+        <androidx.preference.SwitchPreference
             android:key="center_action"
             android:summary="@string/pref_center_action_desp"
             android:title="@string/pref_center_action" />
-        <androidx.preference.CheckBoxPreference
+        <androidx.preference.SwitchPreference
             android:key="enable_swipe_refresh"
             android:summary="@string/pref_enable_swipe_refresh_summary"
             android:title="@string/pref_enable_swipe_refresh_title" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/advanced">
-        <androidx.preference.CheckBoxPreference
+        <androidx.preference.SwitchPreference
             android:key="javascript"
             android:summary="@string/javascript_desp"
             android:title="@string/javascript" />
