@@ -25,10 +25,6 @@
             android:summary="@string/pref_do_not_track_desp"
             android:title="@string/pref_do_not_track" />
         <androidx.preference.SwitchPreference
-            android:key="redirect_google_amp"
-            android:summary="@string/pref_redirect_google_amp_summary"
-            android:title="@string/pref_redirect_google_amp_title" />
-        <androidx.preference.SwitchPreference
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
             android:title="@string/pref_enforce_https_title" />

@@ -19,6 +19,23 @@ public class UrlUtils {
             "http", "https", "content", "ftp", "file",
             "about", "javascript", "blob", "data"};
 
+
+    /**
+     * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
+     * security flaws in producing correct host name from url string in android.net.Uri,
+     * patch it ourselves.
+     *
+     * Ref: CVE-2017-13274
+     *
+     * @param url         supplied url to check.
+     * @return fixed up url
+     */
+    public static String cve_2017_13274(String url) {
+        if (url.contains("\\") && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
+            return url.replace("\\", "/");
+        return url;
+    }
+
     /**
      * URL Checker
      * <p>
@@ -32,15 +49,8 @@ public class UrlUtils {
     public static String UrlChecker(String url, boolean canBeSearch, String searchUrl, boolean enforceHttps) {
         String trimmedUrl = url.trim();
 
-        /*
-         Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
-         security flaws in producing correct host name from url string in android.net.Uri,
-         patch it ourselves.
-
-         Ref: CVE-2017-13274
-         */
-        if (trimmedUrl.contains("\\") && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
-            trimmedUrl = trimmedUrl.replace("\\", "/");
+        // Decode once to decode %XX and all the nasty Uri stuff
+        trimmedUrl = Uri.decode(cve_2017_13274(trimmedUrl));
 
         if (startsWithMatch(trimmedUrl) || trimmedUrl.startsWith(BrowservioURLs.prefix))
             return trimmedUrl;

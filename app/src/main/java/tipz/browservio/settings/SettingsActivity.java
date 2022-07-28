@@ -146,7 +146,6 @@ public class SettingsActivity extends AppCompatActivity {
             /* Data & Privacy category */
             SwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
             SwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
-            SwitchPreference redirect_google_amp = Objects.requireNonNull(findPreference("redirect_google_amp"));
             SwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
@@ -257,13 +256,6 @@ public class SettingsActivity extends AppCompatActivity {
             do_not_track.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.sendDNT, do_not_track.isChecked(), false);
-                needReload = true;
-                return true;
-            });
-
-            redirect_google_amp.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.redirectGoogleAmp, redirect_google_amp.isChecked(), false);
                 needReload = true;
                 return true;
             });
@@ -412,7 +404,6 @@ public class SettingsActivity extends AppCompatActivity {
 
             checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
             checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
-            checkIfPrefIntIsTrue(SettingsKeys.redirectGoogleAmp, redirect_google_amp);
             checkIfPrefIntIsTrue(SettingsKeys.enforceHttps, enforce_https);
             checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
             checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
