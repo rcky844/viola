@@ -731,37 +731,30 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
             final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(MainActivity.this);
-            String message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                    getResources().getString(R.string.ssl_certificate_unknown));
+            String content_summary = getResources().getString(R.string.ssl_certificate_unknown);
             switch (error.getPrimaryError()) {
                 case SslError.SSL_DATE_INVALID:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_date_invalid));
+                    content_summary = getResources().getString(R.string.ssl_certificate_date_invalid);
                     break;
                 case SslError.SSL_INVALID:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_invalid));
+                    content_summary = getResources().getString(R.string.ssl_certificate_invalid);
                     break;
                 case SslError.SSL_EXPIRED:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_expired));
+                    content_summary = getResources().getString(R.string.ssl_certificate_expired);
                     break;
                 case SslError.SSL_IDMISMATCH:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_idmismatch));
+                    content_summary = getResources().getString(R.string.ssl_certificate_idmismatch);
                     break;
                 case SslError.SSL_NOTYETVALID:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_notyetvalid));
+                    content_summary = getResources().getString(R.string.ssl_certificate_notyetvalid);
                     break;
                 case SslError.SSL_UNTRUSTED:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_untrusted));
+                    content_summary = getResources().getString(R.string.ssl_certificate_untrusted);
                     break;
             }
 
             dialog.setTitle(getResources().getString(R.string.ssl_certificate_error_dialog_title))
-                    .setMessage(message)
+                    .setMessage(getResources().getString(R.string.ssl_certificate_error_dialog_content, content_summary))
                     .setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed())
                     .setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel())
                     .create().show();
