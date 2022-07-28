@@ -637,6 +637,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
+            if (UrlEdit.hasFocus())
+                UrlEdit.selectAll();
             if (!UrlEdit.getText().toString().equals(url)
                     && urlShouldSet(url) || currentUrl == null) {
                 UrlEdit.setText(url);
