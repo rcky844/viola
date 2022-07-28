@@ -29,7 +29,7 @@ public class UrlUtils {
      * @param searchUrl   as the Url supplied for search.
      * @return result
      */
-    public static String UrlChecker(String url, boolean canBeSearch, String searchUrl) {
+    public static String UrlChecker(String url, boolean canBeSearch, String searchUrl, boolean enforceHttps) {
         String trimmedUrl = url.trim();
 
         /*
@@ -46,7 +46,7 @@ public class UrlUtils {
             return trimmedUrl;
 
         if (trimmedUrl.contains("/") || trimmedUrl.contains("."))
-            return "http://" + trimmedUrl;
+            return (enforceHttps ? "https://" : "http://") + trimmedUrl;
 
         if (canBeSearch)
             return searchUrl + trimmedUrl;

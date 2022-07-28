@@ -1,9 +1,9 @@
 package tipz.browservio.settings;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-import static tipz.browservio.utils.ApkInstaller.installApplication;
 import static tipz.browservio.search.SearchEngineEntries.getHomepageUrl;
 import static tipz.browservio.search.SearchEngineEntries.getSearchEngineUrl;
+import static tipz.browservio.settings.SettingsUtils.browservio_saver;
+import static tipz.browservio.utils.ApkInstaller.installApplication;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,9 +28,9 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -41,10 +41,10 @@ import java.util.Objects;
 
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
+import tipz.browservio.search.SearchEngineEntries;
+import tipz.browservio.utils.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
-import tipz.browservio.utils.BrowservioURLs;
-import tipz.browservio.search.SearchEngineEntries;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -144,19 +144,20 @@ public class SettingsActivity extends AppCompatActivity {
             Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
             /* Data & Privacy category */
-            CheckBoxPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
-            CheckBoxPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
-            CheckBoxPreference redirect_google_amp = Objects.requireNonNull(findPreference("redirect_google_amp"));
+            SwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
+            SwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
+            SwitchPreference redirect_google_amp = Objects.requireNonNull(findPreference("redirect_google_amp"));
+            SwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
-            CheckBoxPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-            CheckBoxPreference center_action = Objects.requireNonNull(findPreference("center_action"));
-            CheckBoxPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
+            SwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
+            SwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
+            SwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
 
             /* Advanced category */
-            CheckBoxPreference javascript = Objects.requireNonNull(findPreference("javascript"));
+            SwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
 
             /* Help category */
             Preference version = Objects.requireNonNull(findPreference("version"));
@@ -264,6 +265,12 @@ public class SettingsActivity extends AppCompatActivity {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.redirectGoogleAmp, redirect_google_amp.isChecked(), false);
                 needReload = true;
+                return true;
+            });
+
+            enforce_https.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.enforceHttps, enforce_https.isChecked(), false);
                 return true;
             });
 
@@ -406,6 +413,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
             checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
             checkIfPrefIntIsTrue(SettingsKeys.redirectGoogleAmp, redirect_google_amp);
+            checkIfPrefIntIsTrue(SettingsKeys.enforceHttps, enforce_https);
             checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
             checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
             checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);
@@ -418,7 +426,7 @@ public class SettingsActivity extends AppCompatActivity {
             needReload = false;
         }
 
-        private void checkIfPrefIntIsTrue(String tag, CheckBoxPreference checkBox) {
+        private void checkIfPrefIntIsTrue(String tag, SwitchPreference checkBox) {
             checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, tag)));
         }
     }

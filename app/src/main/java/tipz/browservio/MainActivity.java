@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean customBrowse = false;
     private IconHashClient iconHashClient;
     private SharedPreferences pref;
+    private WebSettings webSettings;
 
     private static final String template = "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" enable-background=\"new 0 0 24 24\" height=\"96px\" viewBox=\"0 0 24 24\" width=\"96px\" fill=\"currentColor\">\n<g>\n<rect fill=\"none\" height=\"24\" width=\"24\"/>\n<path d=\"M11,8.17L6.49,3.66C8.07,2.61,9.96,2,12,2c5.52,0,10,4.48,10,10c0,2.04-0.61,3.93-1.66,5.51l-1.46-1.46 C19.59,14.87,20,13.48,20,12c0-3.35-2.07-6.22-5-7.41V5c0,1.1-0.9,2-2,2h-2V8.17z M21.19,21.19l-1.41,1.41l-2.27-2.27 C15.93,21.39,14.04,22,12,22C6.48,22,2,17.52,2,12c0-2.04,0.61-3.93,1.66-5.51L1.39,4.22l1.41-1.41L21.19,21.19z M11,18 c-1.1,0-2-0.9-2-2v-1l-4.79-4.79C4.08,10.79,4,11.38,4,12c0,4.08,3.05,7.44,7,7.93V18z\"/>\n</g>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$6</p>\n</div>\n</div>\n</body>\n</html>";
     private static final String googleAmpHeading = "https://www.google.com/amp/s/";
@@ -235,9 +236,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUA(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
-        webview.getSettings().setUserAgentString(ua);
-        webview.getSettings().setLoadWithOverviewMode(enableDesktop);
-        webview.getSettings().setUseWideViewPort(enableDesktop);
+        webSettings.setUserAgentString(ua);
+        webSettings.setLoadWithOverviewMode(enableDesktop);
+        webSettings.setUseWideViewPort(enableDesktop);
         webview.setScrollBarStyle(enableDesktop ? WebView.SCROLLBARS_OUTSIDE_OVERLAY : View.SCROLLBARS_INSIDE_OVERLAY);
         if (view != null) {
             view.setImageResource(image);
@@ -544,6 +545,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeLogic() {
         pref = browservio_saver(this);
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
+        webSettings = webview.getSettings();
 
         /* User agent init code */
         setPrebuiltUAMode(null, 0, true);
@@ -557,28 +559,28 @@ public class MainActivity extends AppCompatActivity {
         configChecker();
 
         /* zoom related stuff - From SCMPNews project */
-        webview.getSettings().setSupportZoom(true);
-        webview.getSettings().setBuiltInZoomControls(true);
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
 
         webview.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
 
         // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
         // Chrome does this in the current Chrome Dev, but not Chrome release).
-        webview.getSettings().setLayoutAlgorithm(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+        webSettings.setLayoutAlgorithm(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                 ? WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING : WebSettings.LayoutAlgorithm.NORMAL);
 
-        webview.getSettings().setDisplayZoomControls(false);
-        webview.getSettings().setAllowFileAccess(false);
-        webview.getSettings().setAllowContentAccess(false);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setAllowFileAccess(false);
+        webSettings.setAllowContentAccess(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webview.getSettings().setAllowFileAccessFromFileURLs(false);
-            webview.getSettings().setAllowUniversalAccessFromFileURLs(false);
+            webSettings.setAllowFileAccessFromFileURLs(false);
+            webSettings.setAllowUniversalAccessFromFileURLs(false);
         }
 
         /* HTML5 API flags */
-        webview.getSettings().setDatabaseEnabled(false);
-        webview.getSettings().setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(false);
+        webSettings.setDomStorageEnabled(true);
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2)
             WebIconDatabase.getInstance().open(getDir("icons", MODE_PRIVATE).getPath());
@@ -637,6 +639,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
+            if (UrlEdit.hasFocus())
+                UrlEdit.selectAll();
             if (!UrlEdit.getText().toString().equals(url)
                     && urlShouldSet(url) || currentUrl == null) {
                 UrlEdit.setText(url);
@@ -727,37 +731,30 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
             final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(MainActivity.this);
-            String message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                    getResources().getString(R.string.ssl_certificate_unknown));
+            String content_summary = getResources().getString(R.string.ssl_certificate_unknown);
             switch (error.getPrimaryError()) {
                 case SslError.SSL_DATE_INVALID:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_date_invalid));
+                    content_summary = getResources().getString(R.string.ssl_certificate_date_invalid);
                     break;
                 case SslError.SSL_INVALID:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_invalid));
+                    content_summary = getResources().getString(R.string.ssl_certificate_invalid);
                     break;
                 case SslError.SSL_EXPIRED:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_expired));
+                    content_summary = getResources().getString(R.string.ssl_certificate_expired);
                     break;
                 case SslError.SSL_IDMISMATCH:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_idmismatch));
+                    content_summary = getResources().getString(R.string.ssl_certificate_idmismatch);
                     break;
                 case SslError.SSL_NOTYETVALID:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_notyetvalid));
+                    content_summary = getResources().getString(R.string.ssl_certificate_notyetvalid);
                     break;
                 case SslError.SSL_UNTRUSTED:
-                    message = getResources().getString(R.string.ssl_certificate_error_dialog_content,
-                            getResources().getString(R.string.ssl_certificate_untrusted));
+                    content_summary = getResources().getString(R.string.ssl_certificate_untrusted);
                     break;
             }
 
             dialog.setTitle(getResources().getString(R.string.ssl_certificate_error_dialog_title))
-                    .setMessage(message)
+                    .setMessage(getResources().getString(R.string.ssl_certificate_error_dialog_content, content_summary))
                     .setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed())
                     .setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel())
                     .create().show();
@@ -892,7 +889,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String checkedUrl = UrlUtils.UrlChecker(url, true, SettingsUtils.getPref(pref, SettingsKeys.defaultSearch));
+        String checkedUrl = UrlUtils.UrlChecker(url, true,
+                SettingsUtils.getPref(pref, SettingsKeys.defaultSearch),
+                CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
         currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
@@ -928,17 +927,17 @@ public class MainActivity extends AppCompatActivity {
         boolean darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
                 Configuration.UI_MODE_NIGHT_YES;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
-            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webview.getSettings(), darkMode);
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode);
         else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
-            WebSettingsCompat.setForceDark(webview.getSettings(),
+            WebSettingsCompat.setForceDark(webSettings,
                     darkMode ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
 
         // Pull to Refresh
         swipeRefreshLayout.setEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)));
 
         // Settings check
-        webview.getSettings().setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
-        webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
+        webSettings.setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
         actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
 
