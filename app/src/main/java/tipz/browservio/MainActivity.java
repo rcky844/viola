@@ -476,7 +476,8 @@ public class MainActivity extends AppCompatActivity {
                 if (strName.equals(getResources().getString(R.string.copy_url))) {
                     CommonUtils.copyClipboard(MainActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
-                    DownloadUtils.dmDownloadFile(MainActivity.this, url, null, null);
+                    DownloadUtils.dmDownloadFile(MainActivity.this, url,
+                            null, null, currentUrl);
                 } else if (strName.equals(getResources().getString(R.string.search_image))) {
                     browservioBrowse("http://images.google.com/searchbyimage?image_url=".concat(url));
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
@@ -550,7 +551,8 @@ public class MainActivity extends AppCompatActivity {
 
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) ->
-                DownloadUtils.dmDownloadFile(MainActivity.this, url, contentDisposition, mimeType));
+                DownloadUtils.dmDownloadFile(MainActivity.this, url, contentDisposition,
+                        mimeType, currentUrl));
 
         /* Init settings check */
         new SettingsInit(MainActivity.this);
