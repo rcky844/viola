@@ -501,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                 browservioBrowse(UrlEdit.getText().toString());
-                closeKeyboard();
+                UrlEdit.clearFocus();
                 return true;
             }
             return false;
@@ -512,6 +512,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!UrlEdit.getText().toString().equals(currentUrl))
                     UrlEdit.setText(currentUrl);
                 UrlEdit.setSelection(0);
+                closeKeyboard();
             }
         });
 
@@ -639,8 +640,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
-            if (UrlEdit.hasFocus())
-                UrlEdit.selectAll();
             if (!UrlEdit.getText().toString().equals(url)
                     && urlShouldSet(url) || currentUrl == null) {
                 UrlEdit.setText(url);
