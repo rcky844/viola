@@ -27,15 +27,17 @@ import java.net.URL;
 import tipz.browservio.R;
 
 public class DownloadUtils {
-    public static void dmDownloadFile(Context context, String url, String contentDisposition, String mimeType) {
-        dmDownloadFile(context, url, contentDisposition, mimeType, null, null);
+    public static void dmDownloadFile(Context context, String url,
+                                      String contentDisposition,
+                                      String mimeType, String requestUrl) {
+        dmDownloadFile(context, url, contentDisposition, mimeType, null, null, requestUrl);
     }
 
     /* TODO: Rewrite into our own download manager */
     public static long dmDownloadFile(Context context, String url,
                                       String contentDisposition,
                                       String mimeType, String title,
-                                      String customFilename) {
+                                      String customFilename, String requestUrl) {
         if (url.startsWith("http://") || url.startsWith("https://")) {
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(UrlUtils.UrlChecker(url, false, null)));
 
@@ -46,6 +48,9 @@ public class DownloadUtils {
 
             if (title != null)
                 request.setTitle(title);
+
+            // Referer header for some sites which use the same HTML link for the download link
+            request.addRequestHeader("Referer", requestUrl == null ? url : requestUrl);
 
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // Notify client once download is completed!
             final String filename = customFilename == null ?

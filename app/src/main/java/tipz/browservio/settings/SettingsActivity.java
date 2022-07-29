@@ -357,7 +357,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     if (!apkFile.exists() || apkFile.delete())
                                         downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
                                                 null, "application/vnd.android.package-archive",
-                                                getResources().getString(R.string.download_title), "browservio-update.apk");
+                                                getResources().getString(R.string.download_title), "browservio-update.apk", null);
                                     else
                                         CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
                                 })
