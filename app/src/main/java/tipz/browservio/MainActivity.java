@@ -689,7 +689,7 @@ public class MainActivity extends AppCompatActivity {
                 returnVal = true;
             }
             if (!customBrowse && normalSchemes) {
-                webview.loadUrl(url, mRequestHeaders);
+                webview.loadUrl(UrlUtils.cve_2017_13274(url), mRequestHeaders);
                 returnVal = true;
             }
             customBrowse = false;
