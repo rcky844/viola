@@ -34,7 +34,7 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
-            SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
@@ -69,7 +69,7 @@ public class SettingsInit {
             /* 4bb92167: java: settings: Allow enabling or disabling pull to refresh */
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             /* 1fd6ea58: java: main: Add experimental support for enforcing HTTPS */
-            SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
         }
     }
 }
