@@ -476,7 +476,8 @@ public class MainActivity extends AppCompatActivity {
                 if (strName.equals(getResources().getString(R.string.copy_url))) {
                     CommonUtils.copyClipboard(MainActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
-                    DownloadUtils.dmDownloadFile(MainActivity.this, url, null, null);
+                    DownloadUtils.dmDownloadFile(MainActivity.this, url,
+                            null, null, currentUrl);
                 } else if (strName.equals(getResources().getString(R.string.search_image))) {
                     browservioBrowse("http://images.google.com/searchbyimage?image_url=".concat(url));
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
@@ -500,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                 browservioBrowse(UrlEdit.getText().toString());
-                closeKeyboard();
+                UrlEdit.clearFocus();
                 return true;
             }
             return false;
@@ -511,6 +512,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!UrlEdit.getText().toString().equals(currentUrl))
                     UrlEdit.setText(currentUrl);
                 UrlEdit.setSelection(0);
+                closeKeyboard();
             }
         });
 
@@ -550,7 +552,8 @@ public class MainActivity extends AppCompatActivity {
 
         /* Start the download manager service */
         webview.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) ->
-                DownloadUtils.dmDownloadFile(MainActivity.this, url, contentDisposition, mimeType));
+                DownloadUtils.dmDownloadFile(MainActivity.this, url, contentDisposition,
+                        mimeType, currentUrl));
 
         /* Init settings check */
         new SettingsInit(MainActivity.this);
@@ -637,8 +640,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
-            if (UrlEdit.hasFocus())
-                UrlEdit.selectAll();
             if (!UrlEdit.getText().toString().equals(url)
                     && urlShouldSet(url) || currentUrl == null) {
                 UrlEdit.setText(url);
@@ -711,7 +712,7 @@ public class MainActivity extends AppCompatActivity {
                 returnVal = true;
             }
             if (!customBrowse && normalSchemes) {
-                webview.loadUrl(url, mRequestHeaders);
+                webview.loadUrl(UrlUtils.cve_2017_13274(url), mRequestHeaders);
                 returnVal = true;
             }
             customBrowse = false;
@@ -883,6 +884,7 @@ public class MainActivity extends AppCompatActivity {
         String checkedUrl = UrlUtils.UrlChecker(url, true,
                 SettingsUtils.getPref(pref, SettingsKeys.defaultSearch),
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
+
         currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
@@ -931,6 +933,12 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
         actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
+
+        // HTTPS enforce setting
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            webSettings.setMixedContentMode(CommonUtils.isIntStrOne(
+                    SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)) ?
+                    WebSettings.MIXED_CONTENT_NEVER_ALLOW : WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));

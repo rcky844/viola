@@ -5,15 +5,33 @@
     android:layout_height="240dp"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/easter_banner"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="96dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:background="@drawable/browservio_banner_back"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="horizontal"
-        app:srcCompat="@drawable/browservio_banner_front" />
+        android:background="@drawable/browservio_banner_back">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/eagle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/eagle" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/easter_banner_front"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/browservio_banner_front" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="fill_parent"

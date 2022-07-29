@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -28,6 +29,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
@@ -333,12 +335,33 @@ public class SettingsActivity extends AppCompatActivity {
                         .setPositiveButton(android.R.string.ok, null)
                         .create();
 
-                AppCompatImageView easter_banner = dialogView.findViewById(R.id.easter_banner);
+                ConstraintLayout easter_banner = dialogView.findViewById(R.id.easter_banner);
+                AppCompatImageView easter_banner_front = dialogView.findViewById(R.id.easter_banner_front);
+                AppCompatImageView eagle = dialogView.findViewById(R.id.eagle);
                 AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
                 AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
                 AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-                easter_banner.setOnClickListener(_update_btn -> CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA)));
+                final int[] pressed = {0, 0};
+                easter_banner.setOnClickListener(_update_btn -> {
+                    if (pressed[0] <= 4) {
+                        eagle.animate().cancel();
+                        easter_banner_front.setImageResource(R.drawable.browservio_banner_front);
+                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
+                        pressed[0]++;
+                    } else {
+                        easter_banner_front.setImageDrawable(null);
+                        if (pressed[1] == 0) {
+                            eagle.animate().translationX(easter_banner.getRight() + 200f).setDuration(5000);
+                            pressed[1] = 1;
+                        } else if (pressed[1] == 1) {
+                            eagle.animate().translationX(easter_banner.getLeft() - 200f).setDuration(5000);
+                            pressed[1] = 0;
+                        }
+                        pressed[0] = 0;
+                    }
+                    Log.i("BrowserVIO", String.valueOf(pressed[0]));
+                });
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
                         BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
@@ -371,7 +394,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     if (!apkFile.exists() || apkFile.delete())
                                         downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
                                                 null, "application/vnd.android.package-archive",
-                                                getResources().getString(R.string.download_title), "browservio-update.apk");
+                                                getResources().getString(R.string.download_title), "browservio-update.apk", null);
                                     else
                                         CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
                                 })
