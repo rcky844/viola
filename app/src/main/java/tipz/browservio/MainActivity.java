@@ -884,6 +884,7 @@ public class MainActivity extends AppCompatActivity {
         String checkedUrl = UrlUtils.UrlChecker(url, true,
                 SettingsUtils.getPref(pref, SettingsKeys.defaultSearch),
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
+
         currentUrl = checkedUrl;
         // Load URL
         webview.loadUrl(checkedUrl, mRequestHeaders);
@@ -932,6 +933,12 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
         actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
+
+        // HTTPS enforce setting
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            webSettings.setMixedContentMode(CommonUtils.isIntStrOne(
+                    SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)) ?
+                    WebSettings.MIXED_CONTENT_NEVER_ALLOW : WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
         // Do Not Track request
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
