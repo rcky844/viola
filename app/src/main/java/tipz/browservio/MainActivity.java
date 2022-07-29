@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                 browservioBrowse(UrlEdit.getText().toString());
-                closeKeyboard();
+                UrlEdit.clearFocus();
                 return true;
             }
             return false;
@@ -495,6 +495,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!UrlEdit.getText().toString().equals(currentUrl))
                     UrlEdit.setText(currentUrl);
                 UrlEdit.setSelection(0);
+                closeKeyboard();
             }
         });
 
