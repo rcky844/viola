@@ -215,8 +215,10 @@ public class MainActivity extends AppCompatActivity {
             ((ViewGroup) webview.getParent()).removeView(webview);
             webview.destroy();
         }
-        // For removing all WebView thread
-        System.exit(0);
+        if (!isChangingConfigurations()) {
+            // For removing all WebView thread
+            System.exit(0);
+        }
     }
 
     @Override
