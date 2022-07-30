@@ -86,11 +86,10 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
-import tipz.browservio.broha.icons.IconHashClient;
-import tipz.browservio.fav.FavActivity;
-import tipz.browservio.fav.FavUtils;
-import tipz.browservio.history.HistoryActivity;
-import tipz.browservio.history.HistoryUtils;
+import tipz.browservio.broha.BrohaListInterfaceActivity;
+import tipz.browservio.broha.api.FavUtils;
+import tipz.browservio.broha.api.HistoryUtils;
+import tipz.browservio.broha.database.icons.IconHashClient;
 import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
@@ -215,8 +214,10 @@ public class MainActivity extends AppCompatActivity {
             ((ViewGroup) webview.getParent()).removeView(webview);
             webview.destroy();
         }
-        // For removing all WebView thread
-        System.exit(0);
+        if (!isChangingConfigurations()) {
+            // For removing all WebView thread
+            System.exit(0);
+        }
     }
 
     @Override
@@ -341,7 +342,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             mGetNeedLoad.launch(intent);
         } else if (item == R.drawable.history) {
-            Intent intent = new Intent(this, HistoryActivity.class);
+            Intent intent = new Intent(MainActivity.this, BrohaListInterfaceActivity.class);
+            intent.putExtra(Intent.EXTRA_TEXT, BrohaListInterfaceActivity.mode_history);
             mGetNeedLoad.launch(intent);
         } else if (item == R.drawable.favorites) {
             Drawable icon = favicon.getDrawable();
@@ -375,12 +377,9 @@ public class MainActivity extends AppCompatActivity {
             if (currentCustomUA != null)
                 customUserAgent.setText(currentCustomUA);
         } else if (item == R.drawable.favorites) {
-            if (FavUtils.isEmptyCheck(this)) {
-                CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.fav_list_empty));
-            } else {
-                Intent intent = new Intent(MainActivity.this, FavActivity.class);
-                mGetNeedLoad.launch(intent);
-            }
+            Intent intent = new Intent(MainActivity.this, BrohaListInterfaceActivity.class);
+            intent.putExtra(Intent.EXTRA_TEXT, BrohaListInterfaceActivity.mode_favorites);
+            mGetNeedLoad.launch(intent);
         }
     }
 

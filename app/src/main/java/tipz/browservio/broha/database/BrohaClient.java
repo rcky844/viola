@@ -1,4 +1,4 @@
-package tipz.browservio.broha;
+package tipz.browservio.broha.database;
 
 import android.content.Context;
 

@@ -79,10 +79,7 @@
             android:name=".settings.SettingsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".fav.FavActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".history.HistoryActivity"
+            android:name=".broha.BrohaListInterfaceActivity"
             android:configChanges="orientation|screenSize" />
 
         <uses-library

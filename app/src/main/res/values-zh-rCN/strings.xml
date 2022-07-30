@@ -46,11 +46,9 @@
     <string name="delete_all_entries">刪除所有收藏</string>
     <string name="delete_fav_message">"您将要删除所有收藏, 您确定要这样做吗?"</string>
     <string name="wiped_success">清除成功!</string>
-    <string name="fav_del_fab_desp">删除所有收藏</string>
     <string name="hist">历史记录</string>
     <string name="add_to_fav">保存到收藏夹</string>
     <string name="del_hist_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
-    <string name="del_hist_fab_desp">删除所有历史记录</string>
     <string name="license_btn">许可</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">错误发生对于给您带来的不便，我们深表歉意。</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">重启应用</string>

@@ -1,4 +1,4 @@
-package tipz.browservio.fav;
+package tipz.browservio.broha.api;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import tipz.browservio.Application;
-import tipz.browservio.broha.BrohaDao;
+import tipz.browservio.broha.database.BrohaDao;
 import tipz.browservio.settings.SettingsUtils;
 
 public class FavApi {

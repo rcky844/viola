@@ -1,8 +1,8 @@
 package tipz.browservio;
 
-import tipz.browservio.broha.BrohaClient;
-import tipz.browservio.broha.BrohaDao;
-import tipz.browservio.broha.icons.IconHashClient;
+import tipz.browservio.broha.database.BrohaClient;
+import tipz.browservio.broha.database.BrohaDao;
+import tipz.browservio.broha.database.icons.IconHashClient;
 
 public class Application extends android.app.Application {
     public BrohaDao historyBroha;

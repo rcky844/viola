@@ -46,11 +46,9 @@
     <string name="delete_all_entries">"Delete all entries"</string>
     <string name="delete_fav_message">"You are about to delete all favourites entries, are you sure about this?"</string>
     <string name="wiped_success">"Wiped successfully!"</string>
-    <string name="fav_del_fab_desp">"Delete all entries"</string>
     <string name="hist">History</string>
     <string name="add_to_fav">"Save to favourites"</string>
     <string name="del_hist_message">"You are about to delete all history entries, are you sure about this?"</string>
-    <string name="del_hist_fab_desp">"Delete all history"</string>
     <string name="license_btn">License</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Restart app</string>
@@ -80,8 +78,8 @@
     <string name="share_url">Share link</string>
     <string name="pref_theme_desp">Current theme: %s</string>
     <string name="pref_theme">Theme</string>
-    <string name="pref_center_action">Center Action Bar Horizontally</string>
-    <string name="pref_center_action_desp">Automatically center the action bar when space is available.</string>
+    <string name="pref_center_action">Centre Action Bar Horizontally</string>
+    <string name="pref_center_action_desp">Automatically centre the action bar when space is available.</string>
     <string name="ssl_info">SSL Certificate Details</string>
     <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>

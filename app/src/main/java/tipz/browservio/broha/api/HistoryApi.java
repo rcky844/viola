@@ -1,4 +1,4 @@
-package tipz.browservio.history;
+package tipz.browservio.broha.api;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import tipz.browservio.Application;
-import tipz.browservio.broha.Broha;
-import tipz.browservio.broha.BrohaDao;
+import tipz.browservio.broha.database.Broha;
+import tipz.browservio.broha.database.BrohaDao;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 
