@@ -47,11 +47,9 @@
     <string name="delete_all_entries">"Effacer toutes les entrées"</string>
     <string name="delete_fav_message">"Vous êtes sur le point d’effacer tous les favoris, êtes-vous sûr ?"</string>
     <string name="wiped_success">"Effacement réussi !"</string>
-    <string name="fav_del_fab_desp">"Effacer toutes les entrées"</string>
     <string name="hist">Historique</string>
     <string name="add_to_fav">"Sauvegarder comme favori"</string>
     <string name="del_hist_message">"Vous êtes sur le point d’effacer tout l’historique, êtes-vous sûr ?"</string>
-    <string name="del_hist_fab_desp">"Effacer tout l’historique"</string>
     <string name="license_btn">Licence</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">Une erreur s’est produite. Désolé pour le désagrément.</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Redémarrer l’application</string>

@@ -47,11 +47,9 @@
     <string name="delete_all_entries">"Tüm girişleri sil"</string>
     <string name="delete_fav_message">"Tüm sık kullanılanları silmek üzeresiniz. Devam etmek istiyor musunuz?"</string>
     <string name="wiped_success">"Başarıyla silindi!"</string>
-    <string name="fav_del_fab_desp">"Tüm girişleri sil"</string>
     <string name="hist">Geçmiş</string>
     <string name="add_to_fav">"Sık kullanılanlara ekle"</string>
     <string name="del_hist_message">"Tüm geçmişi silmek üzeresiniz. Devam etmek istiyor musunuz?"</string>
-    <string name="del_hist_fab_desp">"Tüm geçmişi sil"</string>
     <string name="license_btn">Lisans</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">Bilinmeyen bir hata meydana geldi. Tutarsızlık için üzgünüz.</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Uygulamayı yeniden başlat</string>

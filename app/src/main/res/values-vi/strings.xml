@@ -48,11 +48,9 @@
     <string name="delete_all_entries">"Xóa toàn bộ các mục"</string>
     <string name="delete_fav_message">"Bạn đang định xóa toàn bộ các mục yêu thích, bạn chắc chắn chứ?"</string>
     <string name="wiped_success">"Xóa thành công!"</string>
-    <string name="fav_del_fab_desp">"Xóa toàn bộ các mục"</string>
     <string name="hist">Lịch sử</string>
     <string name="add_to_fav">"Lưu vào Yêu thích"</string>
     <string name="del_hist_message">"Bạn đang định xóa toàn bộ lịch sử, bạn chắc chắn chứ?"</string>
-    <string name="del_hist_fab_desp">"Xóa toàn bộ lịch sử"</string>
     <string name="license_btn">Giấy phép</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">Lỗi bất ngờ! Xin lỗi vì sự bất tiện.</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Khởi động lại ứng dụng</string>
