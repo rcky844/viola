@@ -1,4 +1,4 @@
-package tipz.browservio.broha.icons;
+package tipz.browservio.broha.database.icons;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

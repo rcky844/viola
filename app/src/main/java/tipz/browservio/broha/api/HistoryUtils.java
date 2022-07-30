@@ -1,10 +1,10 @@
-package tipz.browservio.history;
+package tipz.browservio.broha.api;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import tipz.browservio.broha.Broha;
-import tipz.browservio.broha.icons.IconHashClient;
+import tipz.browservio.broha.database.Broha;
+import tipz.browservio.broha.database.icons.IconHashClient;
 
 public class HistoryUtils {
     /**

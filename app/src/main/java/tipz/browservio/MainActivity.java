@@ -86,11 +86,11 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
-import tipz.browservio.broha.icons.IconHashClient;
-import tipz.browservio.fav.FavActivity;
-import tipz.browservio.fav.FavUtils;
-import tipz.browservio.history.HistoryActivity;
-import tipz.browservio.history.HistoryUtils;
+import tipz.browservio.broha.database.icons.IconHashClient;
+import tipz.browservio.broha.activity.FavActivity;
+import tipz.browservio.broha.api.FavUtils;
+import tipz.browservio.broha.activity.HistoryActivity;
+import tipz.browservio.broha.api.HistoryUtils;
 import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;

@@ -1,4 +1,4 @@
-package tipz.browservio.history;
+package tipz.browservio.broha.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
@@ -24,19 +25,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
 import tipz.browservio.Application;
 import tipz.browservio.R;
-import tipz.browservio.broha.Broha;
-import tipz.browservio.broha.icons.IconHashClient;
-import tipz.browservio.fav.FavUtils;
+import tipz.browservio.broha.database.Broha;
+import tipz.browservio.broha.database.icons.IconHashClient;
+import tipz.browservio.broha.api.FavApi;
+import tipz.browservio.broha.api.FavUtils;
 import tipz.browservio.utils.CommonUtils;
 
-public class HistoryActivity extends AppCompatActivity {
+public class FavActivity extends AppCompatActivity {
     private static List<Broha> listData;
 
     @Override
@@ -44,7 +44,7 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.recycler_list_item_activity);
         initialize();
-        setTitle(getResources().getString(R.string.hist));
+        setTitle(getResources().getString(R.string.fav));
     }
 
     /**
@@ -58,13 +58,12 @@ public class HistoryActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         _toolbar.setNavigationOnClickListener(_v -> onBackPressed());
         FloatingActionButton _fab = findViewById(R.id._fab);
-        _fab.setContentDescription(getResources().getString(R.string.del_hist_fab_desp));
 
         _fab.setOnClickListener(_view -> new MaterialAlertDialogBuilder(this)
                 .setTitle(getResources().getString(R.string.delete_all_entries))
-                .setMessage(getResources().getString(R.string.del_hist_message))
+                .setMessage(getResources().getString(R.string.delete_fav_message))
                 .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                    HistoryUtils.clear(this);
+                    FavUtils.clear(this);
                     CommonUtils.showMessage(this, getResources().getString(R.string.wiped_success));
                     finish();
                 })
@@ -75,24 +74,22 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        isEmptyCheck();
-        RecyclerView historyList = findViewById(R.id.recyclerView);
-        listData = HistoryApi.historyBroha(this).getAll();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
-        layoutManager.setStackFromEnd(true);
-        historyList.setLayoutManager(layoutManager);
-        historyList.setAdapter(new ItemsAdapter(this, ((Application) getApplicationContext()).iconHashClient));
+        RecyclerView favList = findViewById(R.id.recyclerView);
+        listData = FavApi.favBroha(this).getAll();
+        favList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        favList.setAdapter(new ItemsAdapter(this, ((Application) getApplicationContext()).iconHashClient));
     }
 
     void isEmptyCheck() {
-        if (HistoryUtils.isEmptyCheck(this)) {
-            CommonUtils.showMessage(this, getResources().getString(R.string.hist_empty));
+        // Placed here for old data migration
+        if (FavUtils.isEmptyCheck(this)) {
+            CommonUtils.showMessage(this, getResources().getString(R.string.fav_list_empty));
             finish();
         }
     }
 
-    public static class ItemsAdapter extends RecyclerView.Adapter<HistoryActivity.ItemsAdapter.ViewHolder> {
-        private final WeakReference<HistoryActivity> mHistoryActivity;
+    public static class ItemsAdapter extends RecyclerView.Adapter<FavActivity.ItemsAdapter.ViewHolder> {
+        private final WeakReference<FavActivity> mFavActivity;
         private final WeakReference<IconHashClient> mIconHashClient;
 
         static class ViewHolder extends RecyclerView.ViewHolder {
@@ -100,7 +97,6 @@ public class HistoryActivity extends AppCompatActivity {
             private final AppCompatImageView icon;
             private final AppCompatTextView title;
             private final AppCompatTextView url;
-            private final AppCompatTextView time;
 
             public ViewHolder(View view) {
                 super(view);
@@ -108,66 +104,81 @@ public class HistoryActivity extends AppCompatActivity {
                 icon = view.findViewById(R.id.icon);
                 title = view.findViewById(R.id.title);
                 url = view.findViewById(R.id.url);
-                time = view.findViewById(R.id.time);
             }
         }
 
-        public ItemsAdapter(HistoryActivity historyActivity, IconHashClient iconHashClient) {
-            mHistoryActivity = new WeakReference<>(historyActivity);
+        public ItemsAdapter(FavActivity favActivity, IconHashClient iconHashClient) {
+            mFavActivity = new WeakReference<>(favActivity);
             mIconHashClient = new WeakReference<>(iconHashClient);
         }
 
         @NonNull
         @Override
-        public HistoryActivity.ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public FavActivity.ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_broha, parent, false);
 
-            return new HistoryActivity.ItemsAdapter.ViewHolder(view);
+            return new FavActivity.ItemsAdapter.ViewHolder(view);
         }
 
-        @SuppressLint("SimpleDateFormat")
         @Override
-        public void onBindViewHolder(@NonNull HistoryActivity.ItemsAdapter.ViewHolder holder, int position) {
-            final HistoryActivity historyActivity = mHistoryActivity.get();
-            final IconHashClient iconHashClient = mIconHashClient.get();
+        public void onBindViewHolder(@NonNull FavActivity.ItemsAdapter.ViewHolder holder, int position) {
+            final FavActivity favActivity = mFavActivity.get();
             Broha data = listData.get(position);
             String title = data.getTitle();
             String url = data.getUrl();
-            Bitmap icon = iconHashClient.read(data.getIconHash());
+            Bitmap icon = mIconHashClient.get().read(data.getIconHash());
 
             holder.title.setText(title == null ? url : title);
             holder.url.setText(Uri.parse(url).getHost());
-            Calendar date = Calendar.getInstance();
-            date.setTimeInMillis(data.getTimestamp() * 1000L);
-            holder.time.setText(new SimpleDateFormat("dd/MM\nHH:ss").format(date.getTime()));
 
             holder.back.setOnClickListener(view -> {
                 Intent needLoad = new Intent();
                 needLoad.putExtra("needLoadUrl", url);
-                historyActivity.setResult(0, needLoad);
-                historyActivity.finish();
+                favActivity.setResult(0, needLoad);
+                favActivity.finish();
             });
 
             holder.back.setOnLongClickListener(view -> {
-                PopupMenu popup1 = new PopupMenu(historyActivity, view);
+                PopupMenu popup1 = new PopupMenu(favActivity, view);
                 Menu menu1 = popup1.getMenu();
-                menu1.add(historyActivity.getResources().getString(R.string.delete));
-                menu1.add(historyActivity.getResources().getString(R.string.copy_url));
-                menu1.add(historyActivity.getResources().getString(R.string.add_to_fav));
+                menu1.add(favActivity.getResources().getString(R.string.favMenuEdit));
+                menu1.add(favActivity.getResources().getString(R.string.copy_url));
+                menu1.add(favActivity.getResources().getString(R.string.delete));
                 popup1.setOnMenuItemClickListener(item -> {
-                    if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.delete))) {
-                        HistoryUtils.deleteById(historyActivity, data.getId());
+                    if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.delete))) {
+                        FavUtils.deleteById(favActivity, data.getId());
                         listData.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeRemoved(position, getItemCount() - position);
-                        historyActivity.isEmptyCheck();
+                        favActivity.isEmptyCheck();
                         return true;
-                    } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.copy_url))) {
-                        CommonUtils.copyClipboard(historyActivity, url);
+                    } else if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.copy_url))) {
+                        CommonUtils.copyClipboard(favActivity, url);
                         return true;
-                    } else if (item.getTitle().toString().equals(historyActivity.getResources().getString(R.string.add_to_fav))) {
-                        FavUtils.appendData(historyActivity, iconHashClient, title, url, icon);
-                        CommonUtils.showMessage(historyActivity, historyActivity.getResources().getString(R.string.save_successful));
+                    } else if (item.getTitle().toString().equals(favActivity.getResources().getString(R.string.favMenuEdit))) {
+                        final LayoutInflater layoutInflater = LayoutInflater.from(favActivity);
+                        @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_fav_edit, null);
+                        final AppCompatEditText titleEditText = root.findViewById(R.id.titleEditText);
+                        final AppCompatEditText urlEditText = root.findViewById(R.id.urlEditText);
+                        titleEditText.setText(title);
+                        urlEditText.setText(url);
+                        new MaterialAlertDialogBuilder(favActivity)
+                                .setTitle(favActivity.getResources().getString(R.string.favMenuEdit))
+                                .setView(root)
+                                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                    if (!Objects.requireNonNull(titleEditText.getText()).toString().equals(title)
+                                            || !Objects.requireNonNull(urlEditText.getText()).toString().equals(url)) {
+                                        data.setTitle(Objects.requireNonNull(titleEditText.getText()).toString());
+                                        data.setUrl(Objects.requireNonNull(urlEditText.getText()).toString());
+                                        data.setTimestamp();
+                                        FavApi.favBroha(favActivity).updateBroha(data);
+                                        listData = FavApi.favBroha(favActivity).getAll();
+                                        notifyItemRangeRemoved(position, 1);
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setIcon(holder.icon.getDrawable())
+                                .create().show();
                         return true;
                     }
                     return false;
