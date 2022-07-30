@@ -17,7 +17,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -346,21 +345,24 @@ public class SettingsActivity extends AppCompatActivity {
                 easter_banner.setOnClickListener(_update_btn -> {
                     if (pressed[0] <= 4) {
                         eagle.animate().cancel();
+                        eagle.setX(pressed[1] == 0 ?
+                                (easter_banner.getLeft() - 200f) : (easter_banner.getRight() + 200f));
                         easter_banner_front.setImageResource(R.drawable.browservio_banner_front);
-                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
+                        if (pressed[0] == 0)
+                            CommonUtils.showMessage(settingsActivity,
+                                    getResources().getString(R.string.app_name)
+                                            .concat(" ").concat(BuildConfig.VERSION_NAME)
+                                            .concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
                         pressed[0]++;
                     } else {
+                        eagle.setVisibility(View.VISIBLE);
                         easter_banner_front.setImageDrawable(null);
-                        if (pressed[1] == 0) {
-                            eagle.animate().translationX(easter_banner.getRight() + 200f).setDuration(5000);
-                            pressed[1] = 1;
-                        } else if (pressed[1] == 1) {
-                            eagle.animate().translationX(easter_banner.getLeft() - 200f).setDuration(5000);
-                            pressed[1] = 0;
-                        }
+                        eagle.animate().translationX(pressed[1] == 0 ?
+                                easter_banner.getRight() + 200f : easter_banner.getLeft() - 200f)
+                                .setDuration(5000);
                         pressed[0] = 0;
+                        pressed[1] = ~pressed[1] & 1;
                     }
-                    Log.i("BrowserVIO", String.valueOf(pressed[0]));
                 });
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
