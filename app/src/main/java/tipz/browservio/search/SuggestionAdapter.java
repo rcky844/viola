@@ -13,12 +13,14 @@ import android.widget.Filter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import tipz.browservio.MainActivity;
 import tipz.browservio.R;
 
 /*
@@ -57,9 +59,10 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
-            convertView = mInflater.inflate(R.layout.recycler_list_item_1, parent, false);
+            convertView = mInflater.inflate(R.layout.list_item_suggestions, parent, false);
 
         AppCompatTextView title = convertView.findViewById(android.R.id.text1);
+        AppCompatImageView copy_to_search_bar_button = convertView.findViewById(R.id.copy_to_search_bar_button);
         String suggestion = mItems.get(position);
 
         if (mQueryText != null) {
@@ -76,6 +79,8 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
         } else {
             title.setText(suggestion);
         }
+
+        copy_to_search_bar_button.setOnClickListener(view -> ((MainActivity) mContext).copyToSearchBar(suggestion));
         return convertView;
     }
 
