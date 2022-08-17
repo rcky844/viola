@@ -211,9 +211,10 @@ public class VioWebView extends WebView {
 
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
-            currentUrl = urlIdentify;
-            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING))
+            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING)) {
+                currentUrl = urlIdentify;
                 super.loadUrl(urlIdentify);
+            }
             return;
         }
 
