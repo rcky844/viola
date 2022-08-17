@@ -515,6 +515,10 @@ public class MainActivity extends AppCompatActivity {
         webview.removeJavascriptInterface("accessibilityTraversal"); /* CVE-2014-7224 */
     }
 
+    public void copyToSearchBar(CharSequence toCopy) {
+        UrlEdit.setText(toCopy);
+    }
+
     private void closeKeyboard() {
         WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
     }
