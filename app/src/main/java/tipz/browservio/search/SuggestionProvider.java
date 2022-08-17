@@ -34,7 +34,7 @@ import tipz.browservio.settings.SettingsUtils;
 
 public class SuggestionProvider {
     private static final long INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1);
-    private static final String DEFAULT_LANGUAGE = "en";
+    private static final String DEFAULT_LANGUAGE = "en-US";
     private static final String DEFAULT_ENCODING = "UTF-8";
     private final Context mContext;
     @NonNull
@@ -51,9 +51,10 @@ public class SuggestionProvider {
     @NonNull
     private static String getLanguage() {
         String language = Locale.getDefault().getLanguage();
+        String country = Locale.getDefault().getCountry();
         if (TextUtils.isEmpty(language))
             language = DEFAULT_LANGUAGE;
-        return language;
+        return language + "-" + country;
     }
 
     @NonNull
@@ -73,15 +74,8 @@ public class SuggestionProvider {
     protected String createQueryUrl(@NonNull String query,
                                     @NonNull String language) {
         SharedPreferences pref = browservio_saver(mContext);
-        String suggestionString = SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                pref, SettingsKeys.defaultSuggestions), query);
-        int suggestionId = SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId);
-        if (suggestionId == 0)
-            return suggestionString + "&hl=" + language;
-        else if (suggestionId == 2)
-            return suggestionString + "&language=" + language;
-        else
-            return suggestionString;
+        return SearchEngineEntries.getSuggestionsUrl(pref, SettingsUtils.getPrefNum(
+                pref, SettingsKeys.defaultSuggestionsId), query, language);
     }
 
     /**

@@ -62,6 +62,7 @@ import tipz.browservio.broha.BrohaListInterfaceActivity;
 import tipz.browservio.broha.api.FavUtils;
 import tipz.browservio.broha.api.HistoryUtils;
 import tipz.browservio.broha.database.icons.IconHashClient;
+import tipz.browservio.search.SearchEngineEntries;
 import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsInit;
@@ -493,7 +494,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } else { /* Load default webpage */
-            webview.loadUrl(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
+            webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
+                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
         }
     }
 

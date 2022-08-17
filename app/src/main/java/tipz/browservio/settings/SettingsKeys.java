@@ -4,11 +4,11 @@ public class SettingsKeys {
     /* browservio_saver */
     public static final String browservio_saver = "browservio.cfg"; /* Pref file name */
     public static final String centerActionBar = "centerActionBar"; /* INTEGER */
-    public static final String defaultHomePage = "defaultHomePage"; /* STRING */
+    public static final String defaultHomePage = "defaultHomePage"; /* STRING */ /* FIXME: Rename to customHomePage */
     public static final String defaultHomePageId = "defaultHomePageId"; /* INTEGER */
-    public static final String defaultSearch = "defaultSearch"; /* STRING */
+    public static final String defaultSearch = "defaultSearch"; /* STRING */ /* FIXME: Rename to customSearch */
     public static final String defaultSearchId = "defaultSearchId"; /* INTEGER */
-    public static final String defaultSuggestions = "defaultSuggestions"; /* STRING */
+    public static final String defaultSuggestions = "defaultSuggestions"; /* STRING */ /* FIXME: Rename to customSuggestions */
     public static final String defaultSuggestionsId = "defaultSuggestionsId"; /* INTEGER */
     public static final String enableAdBlock = "enableAdBlock"; /* INTEGER */
     public static final String enableSwipeRefresh = "enableSwipeRefresh"; /* INTEGER */

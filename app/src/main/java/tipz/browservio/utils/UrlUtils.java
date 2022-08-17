@@ -1,5 +1,6 @@
 package tipz.browservio.utils;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.webkit.MimeTypeMap;
@@ -12,6 +13,10 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import tipz.browservio.search.SearchEngineEntries;
+import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.settings.SettingsUtils;
 
 public class UrlUtils {
 
@@ -42,11 +47,9 @@ public class UrlUtils {
      * Checks if URL is valid, if not, make it a search term.
      *
      * @param url         is supplied as the URL to check.
-     * @param canBeSearch sets if it should be changed to a search term when the supplied URL isn't valid.
-     * @param searchUrl   as the Url supplied for search.
      * @return result
      */
-    public static String UrlChecker(String url, boolean canBeSearch, String searchUrl, boolean enforceHttps) {
+    public static String UrlChecker(SharedPreferences pref, String url, boolean enforceHttps) {
         String trimmedUrl = url.trim();
 
         // Decode once to decode %XX and all the nasty Uri stuff
@@ -58,8 +61,9 @@ public class UrlUtils {
         if (trimmedUrl.contains("/") || trimmedUrl.contains("."))
             return (enforceHttps ? "https://" : "http://") + trimmedUrl;
 
-        if (canBeSearch)
-            return searchUrl + trimmedUrl;
+        if (pref != null)
+            return SearchEngineEntries.getSearchUrl(pref,
+                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId), trimmedUrl);
 
         return trimmedUrl;
     }
@@ -70,11 +74,6 @@ public class UrlUtils {
                 return true;
         }
         return false;
-    }
-
-    public static String composeSearchUrl(String inQuery, String template,
-                                          String queryPlaceHolder) {
-        return template.replace(queryPlaceHolder, inQuery);
     }
 
     /**

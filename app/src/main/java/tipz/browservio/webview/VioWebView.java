@@ -211,14 +211,14 @@ public class VioWebView extends WebView {
 
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
-            currentUrl = urlIdentify;
-            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING))
+            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING)) {
+                currentUrl = urlIdentify;
                 super.loadUrl(urlIdentify);
+            }
             return;
         }
 
-        String checkedUrl = UrlUtils.UrlChecker(url, true,
-                SettingsUtils.getPref(pref, SettingsKeys.defaultSearch),
+        String checkedUrl = UrlUtils.UrlChecker(pref, url,
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
 
         currentUrl = checkedUrl;

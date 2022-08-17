@@ -1,7 +1,5 @@
 package tipz.browservio.settings;
 
-import static tipz.browservio.search.SearchEngineEntries.getHomepageUrl;
-import static tipz.browservio.search.SearchEngineEntries.getSearchEngineUrl;
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import static tipz.browservio.utils.ApkInstaller.installApplication;
 
@@ -42,7 +40,6 @@ import java.util.Objects;
 
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
-import tipz.browservio.search.SearchEngineEntries;
 import tipz.browservio.utils.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
@@ -188,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
 
                             if (checkedItem[0] != 8) {
-                                SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, getSearchEngineUrl(SearchEngineEntries.baseSearch[checkedItem[0]], SearchEngineEntries.searchSuffix[checkedItem[0]]));
+                                SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, CommonUtils.EMPTY_STRING);
                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, checkedItem[0]);
                                 search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
                             }
@@ -222,7 +219,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
 
                             if (checkedItem[0] != 8) {
-                                SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, getHomepageUrl(SearchEngineEntries.baseSearch[checkedItem[0]]));
+                                SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, CommonUtils.EMPTY_STRING);
                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, checkedItem[0]);
                                 homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
                             }
@@ -238,7 +235,7 @@ public class SettingsActivity extends AppCompatActivity {
                         .setSingleChoiceItems(suggestionsList,
                                 SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, SearchEngineEntries.searchSuggestionsUrl[checkedItem[0]]);
+                            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
                             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
                             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[checkedItem[0]]));
                         })
@@ -347,7 +344,10 @@ public class SettingsActivity extends AppCompatActivity {
                         eagle.animate().cancel();
                         eagle.setX(pressed[1] == 0 ?
                                 (easter_banner.getLeft() - 200f) : (easter_banner.getRight() + 200f));
-                        easter_banner_front.setImageResource(R.drawable.browservio_banner_front);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
+                            easter_banner_front.setImageResource(R.mipmap.ic_launcher_round);
+                        else
+                            easter_banner_front.setImageResource(R.drawable.browservio_banner_front);
                         if (pressed[0] == 0)
                             CommonUtils.showMessage(settingsActivity,
                                     getResources().getString(R.string.app_name)
@@ -364,6 +364,8 @@ public class SettingsActivity extends AppCompatActivity {
                         pressed[1] = ~pressed[1] & 1;
                     }
                 });
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
+                    easter_banner_front.setImageResource(R.mipmap.ic_launcher_round);
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
                         BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),

@@ -1,13 +1,12 @@
 package tipz.browservio.settings;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-import static tipz.browservio.search.SearchEngineEntries.getHomepageUrl;
-import static tipz.browservio.search.SearchEngineEntries.getSearchEngineUrl;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import tipz.browservio.search.SearchEngineEntries;
+import tipz.browservio.utils.CommonUtils;
 
 public class SettingsInit {
     SharedPreferences pref;
@@ -22,14 +21,13 @@ public class SettingsInit {
         if (SettingsUtils.isFirstLaunch(pref)) {
             SettingsUtils.setPrefNum(pref, SettingsKeys.centerActionBar, 1);
             SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage,
-                    getHomepageUrl(SearchEngineEntries.baseSearch[7]));
+                    SearchEngineEntries.getHomePageUrl(pref, 7));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, 7);
             SettingsUtils.setPref(pref, SettingsKeys.defaultSearch,
-                    getSearchEngineUrl(SearchEngineEntries.baseSearch[7],
-                            SearchEngineEntries.searchSuffix[7]));
+                    SearchEngineEntries.getSearchUrl(pref, 7, null));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, 7);
             SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions,
-                    SearchEngineEntries.searchSuggestionsUrl[6]);
+                    SearchEngineEntries.getSuggestionsUrl(pref, 6, null, null));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 6);
             SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
@@ -70,6 +68,12 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             /* 1fd6ea58: java: main: Add experimental support for enforcing HTTPS */
             SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
+            /* cc6cb8ea: java: search: Rewrite search engine code */
+            if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId) != 8)
+                SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, CommonUtils.EMPTY_STRING);
+            if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId) != 8)
+                SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, CommonUtils.EMPTY_STRING);
+            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
         }
     }
 }
