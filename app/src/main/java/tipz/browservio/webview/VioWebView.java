@@ -261,6 +261,11 @@ public class VioWebView extends WebView {
         public void onPageFinished(WebView view, String url) {
             if (view.getOriginalUrl() == null || view.getOriginalUrl().equals(url))
                 this.doUpdateVisitedHistory(view, url, true);
+
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) {
+                favicon.setVisibility(View.VISIBLE);
+                faviconProgressBar.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -270,10 +275,6 @@ public class VioWebView extends WebView {
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) {
-                favicon.setVisibility(View.VISIBLE);
-                faviconProgressBar.setVisibility(View.GONE);
-            }
             if (!(favicon.getDrawable() instanceof BitmapDrawable))
                 favicon.setImageResource(R.drawable.default_favicon);
             if (swipeRefreshLayout != null)
