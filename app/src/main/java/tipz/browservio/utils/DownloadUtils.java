@@ -21,8 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import tipz.browservio.R;
 
@@ -140,7 +141,7 @@ public class DownloadUtils {
             try {
                 URL url = new URL(inUrl);
 
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
                 try (InputStream in = new BufferedInputStream(urlConnection.getInputStream())) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     StringBuilder result = new StringBuilder();
