@@ -40,7 +40,7 @@ public class DownloadUtils {
                                       String customFilename, String requestUrl) {
         if (url.startsWith("http://") || url.startsWith("https://")) {
             DownloadManager.Request request = new DownloadManager.Request(
-                    Uri.parse(UrlUtils.UrlChecker(url, false, null,
+                    Uri.parse(UrlUtils.UrlChecker(null, url,
                             StringUtils.substringBefore(url, ':').equals("https"))));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can

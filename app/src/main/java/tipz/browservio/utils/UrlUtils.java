@@ -47,10 +47,9 @@ public class UrlUtils {
      * Checks if URL is valid, if not, make it a search term.
      *
      * @param url         is supplied as the URL to check.
-     * @param canBeSearch sets if it should be changed to a search term when the supplied URL isn't valid.
      * @return result
      */
-    public static String UrlChecker(SharedPreferences pref, String url, boolean canBeSearch, boolean enforceHttps) {
+    public static String UrlChecker(SharedPreferences pref, String url, boolean enforceHttps) {
         String trimmedUrl = url.trim();
 
         // Decode once to decode %XX and all the nasty Uri stuff
@@ -62,7 +61,7 @@ public class UrlUtils {
         if (trimmedUrl.contains("/") || trimmedUrl.contains("."))
             return (enforceHttps ? "https://" : "http://") + trimmedUrl;
 
-        if (canBeSearch)
+        if (pref != null)
             return SearchEngineEntries.getSearchUrl(pref,
                     SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId), trimmedUrl);
 

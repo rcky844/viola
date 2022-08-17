@@ -217,7 +217,7 @@ public class VioWebView extends WebView {
             return;
         }
 
-        String checkedUrl = UrlUtils.UrlChecker(pref, url, true,
+        String checkedUrl = UrlUtils.UrlChecker(pref, url,
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
 
         currentUrl = checkedUrl;
