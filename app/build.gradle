@@ -57,15 +57,15 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.7.0-alpha03'
-    implementation 'androidx.webkit:webkit:1.5.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'com.google.android.material:material:1.7.0-beta01'
+    implementation 'androidx.webkit:webkit:1.5.0-rc01'
     implementation('androidx.preference:preference:1.2.0') {
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
     }
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
-    implementation "androidx.room:room-runtime:2.4.2"
-    annotationProcessor "androidx.room:room-compiler:2.4.2"
+    implementation "androidx.room:room-runtime:2.4.3"
+    annotationProcessor "androidx.room:room-compiler:2.4.3"
 }
