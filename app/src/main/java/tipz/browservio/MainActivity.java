@@ -856,9 +856,10 @@ public class MainActivity extends AppCompatActivity {
 
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
-            currentUrl = urlIdentify;
-            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING))
+            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING)) {
+                currentUrl = urlIdentify;
                 webview.loadUrl(urlIdentify);
+            }
             return;
         }
 
