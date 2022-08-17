@@ -344,7 +344,10 @@ public class SettingsActivity extends AppCompatActivity {
                         eagle.animate().cancel();
                         eagle.setX(pressed[1] == 0 ?
                                 (easter_banner.getLeft() - 200f) : (easter_banner.getRight() + 200f));
-                        easter_banner_front.setImageResource(R.drawable.browservio_banner_front);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
+                            easter_banner_front.setImageResource(R.mipmap.ic_launcher_round);
+                        else
+                            easter_banner_front.setImageResource(R.drawable.browservio_banner_front);
                         if (pressed[0] == 0)
                             CommonUtils.showMessage(settingsActivity,
                                     getResources().getString(R.string.app_name)
@@ -361,6 +364,8 @@ public class SettingsActivity extends AppCompatActivity {
                         pressed[1] = ~pressed[1] & 1;
                     }
                 });
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
+                    easter_banner_front.setImageResource(R.mipmap.ic_launcher_round);
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
                         BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
