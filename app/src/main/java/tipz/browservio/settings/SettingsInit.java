@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import tipz.browservio.search.SearchEngineEntries;
+import tipz.browservio.utils.CommonUtils;
 
 public class SettingsInit {
     SharedPreferences pref;
@@ -67,6 +68,12 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             /* 1fd6ea58: java: main: Add experimental support for enforcing HTTPS */
             SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
+            /* cc6cb8ea: java: search: Rewrite search engine code */
+            if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId) != 8)
+                SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, CommonUtils.EMPTY_STRING);
+            if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId) != 8)
+                SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, CommonUtils.EMPTY_STRING);
+            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
         }
     }
 }
