@@ -74,15 +74,8 @@ public class SuggestionProvider {
     protected String createQueryUrl(@NonNull String query,
                                     @NonNull String language) {
         SharedPreferences pref = browservio_saver(mContext);
-        String suggestionString = SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                pref, SettingsKeys.defaultSuggestions), query);
-        int suggestionId = SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId);
-        if (suggestionId == 0)
-            return suggestionString + "&hl=" + language;
-        else if (suggestionId == 2)
-            return suggestionString + "&language=" + language;
-        else
-            return suggestionString;
+        return SearchEngineEntries.getSuggestionsUrl(pref, SettingsUtils.getPrefNum(
+                pref, SettingsKeys.defaultSuggestionsId), query, language);
     }
 
     /**
