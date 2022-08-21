@@ -74,6 +74,8 @@ public class SettingsInit {
             if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId) != 8)
                 SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, CommonUtils.EMPTY_STRING);
             SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
+            /* 8f2ca067: java: settings: Allow the user to choose if they want Custom Tabs */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.useCustomTabs, 1);
         }
     }
 }
