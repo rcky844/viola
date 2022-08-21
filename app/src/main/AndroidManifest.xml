@@ -24,7 +24,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
-            android:documentLaunchMode="always"
+            android:excludeFromRecents="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -75,6 +75,10 @@
                 <data android:scheme="text/plain" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".BrowserActivity"
+            android:configChanges="orientation|screenSize"
+            android:documentLaunchMode="always" />
         <activity
             android:name=".settings.SettingsActivity"
             android:configChanges="orientation|screenSize" />

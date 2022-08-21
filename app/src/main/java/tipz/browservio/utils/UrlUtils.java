@@ -24,6 +24,12 @@ public class UrlUtils {
             "http", "https", "content", "ftp", "file",
             "about", "javascript", "blob", "data"};
 
+    /**
+     * An array used for intent filtering
+     */
+    public static final String[] TypeSchemeMatch = {
+            "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
+            "http", "https", "ftp", "file"};
 
     /**
      * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
