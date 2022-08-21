@@ -53,7 +53,6 @@ public class CustomTabsActivity extends AppCompatActivity {
         webview.setUpProgressBar(MainProg);
         webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
         webview.setUrlTitleUpdates(true);
-        webview.setHistoryUpdates(false);
     }
 
     public void onReceivedTitle(String urlTitle) {

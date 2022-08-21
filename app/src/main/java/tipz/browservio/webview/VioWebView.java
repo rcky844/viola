@@ -89,7 +89,6 @@ public class VioWebView extends WebView {
     private String adServers;
     private boolean customBrowse = false;
     private boolean urlTitleUpdates = false;
-    private boolean historyUpdates = true;
     private final SharedPreferences pref;
     private ValueCallback<Uri[]> mUploadMessage;
     private final ActivityResultLauncher<String> mFileChooser;
@@ -211,10 +210,6 @@ public class VioWebView extends WebView {
         this.urlTitleUpdates = urlTitleUpdates;
     }
 
-    public void setHistoryUpdates(boolean historyUpdates) {
-        this.historyUpdates = historyUpdates;
-    }
-
     @Override
     public void loadUrl(String url) {
         if (url == null || url.isEmpty())
@@ -243,27 +238,20 @@ public class VioWebView extends WebView {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(WebView view, String url, boolean update) {
-            String checkUrl;
-            if (urlBox == null)
-                checkUrl = view.getOriginalUrl();
-            else
-                checkUrl = urlBox.getText().toString();
-
-            if (!checkUrl.equals(url) && urlShouldSet(url) || currentUrl == null) {
+            if (!urlBox.getText().toString().equals(url) && urlShouldSet(url) || currentUrl == null) {
                 urlBox.setText(url);
                 currentUrl = url;
-                if (historyUpdates) {
-                    if (update)
-                        HistoryUtils.updateData(mContext, null, null, url, null);
-                    else if (HistoryUtils.isEmptyCheck(mContext) || !HistoryUtils.lastUrl(mContext).equals(url))
-                        HistoryUtils.appendData(mContext, url);
-                }
+                if (update)
+                    HistoryUtils.updateData(mContext, null, null, url, null);
+                else if (HistoryUtils.isEmptyCheck(mContext) || !HistoryUtils.lastUrl(mContext).equals(url))
+                    HistoryUtils.appendData(mContext, url);
             }
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            UrlSet(view, url, false);
+            if (urlBox != null)
+                UrlSet(view, url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
             if (favicon != null) {
@@ -292,7 +280,8 @@ public class VioWebView extends WebView {
 
         @Override
         public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
-            UrlSet(view, url, true);
+            if (urlBox != null)
+                UrlSet(view, url, true);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 CookieSyncManager.getInstance().sync();
             else
@@ -442,14 +431,14 @@ public class VioWebView extends WebView {
         public void onReceivedIcon(WebView view, Bitmap icon) {
             if (favicon != null)
                 favicon.setImageBitmap(icon);
-            if (historyUpdates)
+            if (urlBox != null)
                 HistoryUtils.updateData(mContext, iconHashClient, null, null, icon);
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
-            if (historyUpdates && urlShouldSet(currentUrl) && title != null)
+            if (urlBox != null && urlShouldSet(currentUrl) && title != null)
                 HistoryUtils.updateData(mContext, null, title, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(title));
