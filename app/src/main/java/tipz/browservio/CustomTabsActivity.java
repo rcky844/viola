@@ -53,12 +53,13 @@ public class CustomTabsActivity extends AppCompatActivity {
 
         /* WebView */
         webview = findViewById(R.id.webview);
-        Uri dataUri = getIntent().getData();
-        if (dataUri != null)
-            webview.loadUrl(dataUri.toString());
+        webview.doSettingsCheck();
         webview.setUpProgressBar(MainProg);
         webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
         webview.setUrlTitleUpdates(true);
+        Uri dataUri = getIntent().getData();
+        if (dataUri != null)
+            webview.loadUrl(dataUri.toString());
     }
 
     public void onReceivedTitle(String urlTitle) {
