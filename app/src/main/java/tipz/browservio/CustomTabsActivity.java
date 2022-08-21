@@ -42,6 +42,7 @@ public class CustomTabsActivity extends AppCompatActivity {
             Intent intent = new Intent(CustomTabsActivity.this, BrowserActivity.class);
             intent.setData(Uri.parse(UrlUtils.cve_2017_13274(webview.currentUrl)));
             startActivity(intent);
+            finish();
         });
 
         /* Swipe Refresh Layout */
