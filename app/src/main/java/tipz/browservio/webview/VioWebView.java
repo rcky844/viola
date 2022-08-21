@@ -63,6 +63,7 @@ import java.util.Scanner;
 
 import tipz.browservio.Application;
 import tipz.browservio.BuildConfig;
+import tipz.browservio.CustomTabsActivity;
 import tipz.browservio.R;
 import tipz.browservio.broha.api.HistoryUtils;
 import tipz.browservio.broha.database.icons.IconHashClient;
@@ -87,6 +88,8 @@ public class VioWebView extends WebView {
     public String currentUrl;
     private String adServers;
     private boolean customBrowse = false;
+    private boolean urlTitleUpdates = false;
+    private boolean historyUpdates = true;
     private final SharedPreferences pref;
     private ValueCallback<Uri[]> mUploadMessage;
     private final ActivityResultLauncher<String> mFileChooser;
@@ -204,6 +207,14 @@ public class VioWebView extends WebView {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
+    public void setUrlTitleUpdates(boolean urlTitleUpdates) {
+        this.urlTitleUpdates = urlTitleUpdates;
+    }
+
+    public void setHistoryUpdates(boolean historyUpdates) {
+        this.historyUpdates = historyUpdates;
+    }
+
     @Override
     public void loadUrl(String url) {
         if (url == null || url.isEmpty())
@@ -231,30 +242,40 @@ public class VioWebView extends WebView {
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(String url, boolean update) {
-            if (!urlBox.getText().toString().equals(url) /* FIXME: Don't assume urlBox is always non-null */
-                    && urlShouldSet(url) || currentUrl == null) {
+        private void UrlSet(WebView view, String url, boolean update) {
+            String checkUrl;
+            if (urlBox == null)
+                checkUrl = view.getOriginalUrl();
+            else
+                checkUrl = urlBox.getText().toString();
+
+            if (!checkUrl.equals(url) && urlShouldSet(url) || currentUrl == null) {
                 urlBox.setText(url);
                 currentUrl = url;
-                if (update)
-                    HistoryUtils.updateData(mContext, null, null, url, null);
-                else if (HistoryUtils.isEmptyCheck(mContext) || !HistoryUtils.lastUrl(mContext).equals(url))
-                    HistoryUtils.appendData(mContext, url);
+                if (historyUpdates) {
+                    if (update)
+                        HistoryUtils.updateData(mContext, null, null, url, null);
+                    else if (HistoryUtils.isEmptyCheck(mContext) || !HistoryUtils.lastUrl(mContext).equals(url))
+                        HistoryUtils.appendData(mContext, url);
+                }
             }
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            UrlSet(url, false);
+            UrlSet(view, url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
-                    && urlShouldSet(url)) {
-                favicon.setVisibility(View.GONE);
-                faviconProgressBar.setVisibility(View.VISIBLE);
+            if (favicon != null) {
+                if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
+                        && urlShouldSet(url)) {
+                    favicon.setVisibility(View.GONE);
+                    faviconProgressBar.setVisibility(View.VISIBLE);
+                }
+                favicon.setImageResource(R.drawable.default_favicon);
             }
-            favicon.setImageResource(R.drawable.default_favicon);
-            urlBox.dismissDropDown();
+            if (urlBox != null)
+                urlBox.dismissDropDown();
         }
 
         @Override
@@ -262,7 +283,8 @@ public class VioWebView extends WebView {
             if (view.getOriginalUrl() == null || view.getOriginalUrl().equals(url))
                 this.doUpdateVisitedHistory(view, url, true);
 
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
+                && favicon != null) {
                 favicon.setVisibility(View.VISIBLE);
                 faviconProgressBar.setVisibility(View.GONE);
             }
@@ -270,13 +292,15 @@ public class VioWebView extends WebView {
 
         @Override
         public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
-            UrlSet(url, true);
+            UrlSet(view, url, true);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (!(favicon.getDrawable() instanceof BitmapDrawable))
-                favicon.setImageResource(R.drawable.default_favicon);
+            if (favicon != null) {
+                if (!(favicon.getDrawable() instanceof BitmapDrawable))
+                    favicon.setImageResource(R.drawable.default_favicon);
+            }
             if (swipeRefreshLayout != null)
                 swipeRefreshLayout.setRefreshing(false);
         }
@@ -416,17 +440,22 @@ public class VioWebView extends WebView {
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            favicon.setImageBitmap(icon);
-            HistoryUtils.updateData(mContext, iconHashClient, null, null, icon);
+            if (favicon != null)
+                favicon.setImageBitmap(icon);
+            if (historyUpdates)
+                HistoryUtils.updateData(mContext, iconHashClient, null, null, icon);
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
-            if (urlShouldSet(view.getUrl()) && title != null)
+            if (historyUpdates && urlShouldSet(currentUrl) && title != null)
                 HistoryUtils.updateData(mContext, null, title, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(title));
+            if (urlTitleUpdates) {
+                ((CustomTabsActivity) mContext).onReceivedTitle(UrlTitle);
+            }
         }
 
         @Override
