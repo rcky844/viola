@@ -76,5 +76,6 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
     implementation "androidx.room:room-runtime:2.4.3"
+    annotationProcessor 'androidx.annotation:annotation:1.4.0'
     annotationProcessor "androidx.room:room-compiler:2.4.3"
 }
