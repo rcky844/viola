@@ -155,6 +155,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             /* Advanced category */
             SwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
+            SwitchPreference use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
 
             /* Help category */
             Preference version = Objects.requireNonNull(findPreference("version"));
@@ -325,6 +326,13 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
+            use_custom_tabs.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.useCustomTabs, use_custom_tabs.isChecked(), false);
+                needReload = true;
+                return true;
+            });
+
             version.setOnPreferenceClickListener(preference -> {
                 @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
                 AlertDialog dialog = new MaterialAlertDialogBuilder(settingsActivity).setView(dialogView)
@@ -436,6 +444,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
             checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);
             checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
+            checkIfPrefIntIsTrue(SettingsKeys.useCustomTabs, use_custom_tabs);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));
             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));

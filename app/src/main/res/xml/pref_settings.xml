@@ -58,6 +58,10 @@
             android:key="javascript"
             android:summary="@string/javascript_desp"
             android:title="@string/javascript" />
+        <androidx.preference.SwitchPreference
+            android:key="use_custom_tabs"
+            android:summary="@string/pref_use_custom_tabs_summary"
+            android:title="@string/pref_use_custom_tabs_title" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/help">

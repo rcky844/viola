@@ -1,5 +1,7 @@
 package tipz.browservio;
 
+import static tipz.browservio.settings.SettingsUtils.browservio_saver;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -9,6 +11,8 @@ import android.webkit.CookieManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.tabbies.BrowserActivity;
 import tipz.browservio.tabbies.CustomTabsActivity;
 import tipz.browservio.utils.CommonUtils;
@@ -45,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
         String scheme = intent.getScheme();
 
         Intent openIntent = new Intent(this,
-                intent.hasCategory("android.intent.category.LAUNCHER") ?
-                        BrowserActivity.class : CustomTabsActivity.class);
+                (intent.hasCategory("android.intent.category.LAUNCHER")
+                        || SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
+                                SettingsKeys.useCustomTabs) == 0) ?
+                            BrowserActivity.class : CustomTabsActivity.class);
         Uri uri = null;
 
         if (Intent.ACTION_SEND.equals(action) /* From share menu */

@@ -105,6 +105,8 @@
     <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
     <string name="pref_enforce_https_title">Enforce HTTPS</string>
     <string name="pref_enforce_https_summary">Always visit websites using HTTPS for added security. (Experimental)</string>
+    <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
+    <string name="pref_use_custom_tabs_summary">Always open the webpage in Custom Tabs when it is opened from another application.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
