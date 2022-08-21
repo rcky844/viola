@@ -30,7 +30,6 @@ import android.widget.RelativeLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -142,12 +141,7 @@ public class BrowserActivity extends AppCompatActivity {
         outState.clear();
     }
 
-    private void shareUrl(@Nullable String url) {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, url == null ? webview.currentUrl : url);
-        startActivity(Intent.createChooser(i, getResources().getString(R.string.share_url_dialog_title)));
-    }
+
 
     public void itemSelected(AppCompatImageView view, int item) {
         if (item == R.drawable.arrow_back_alt && webview.canGoBack()) {
@@ -205,7 +199,7 @@ public class BrowserActivity extends AppCompatActivity {
             });
             popupMenu.show();
         } else if (item == R.drawable.share) {
-            shareUrl(null);
+            CommonUtils.shareUrl(this, webview.currentUrl);
         } else if (item == R.drawable.app_shortcut) {
             Drawable originalIcon = favicon.getDrawable();
             Bitmap icon = Bitmap.createBitmap(originalIcon.getIntrinsicWidth(), originalIcon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -369,7 +363,7 @@ public class BrowserActivity extends AppCompatActivity {
                             .setType(UrlUtils.TypeSchemeMatch[1]);
                     startActivity(intent);
                 } else if (strName.equals(getResources().getString(R.string.share_url))) {
-                    shareUrl(url);
+                    CommonUtils.shareUrl(this, url);
                 }
             });
 

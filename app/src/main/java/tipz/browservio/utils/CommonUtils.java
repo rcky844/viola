@@ -5,10 +5,13 @@ import static android.content.Context.CLIPBOARD_SERVICE;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import tipz.browservio.R;
 
@@ -18,6 +21,13 @@ public class CommonUtils {
     public static String LINE_SEPARATOR() {
         return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 ?
                 System.getProperty("line.separator") : System.lineSeparator();
+    }
+
+    public static void shareUrl(Context context, @NonNull String url) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, url);
+        context.startActivity(Intent.createChooser(i, context.getResources().getString(R.string.share_url_dialog_title)));
     }
 
     /**

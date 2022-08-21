@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.webview.VioWebView;
 
@@ -30,6 +31,10 @@ public class CustomTabsActivity extends AppCompatActivity {
         /* Title and Host */
         title = findViewById(R.id.title);
         host = findViewById(R.id.host);
+
+        /* Share */
+        AppCompatImageView share = findViewById(R.id.share);
+        share.setOnClickListener(v -> CommonUtils.shareUrl(this, webview.currentUrl));
 
         /* Open in Browser */
         AppCompatImageView open_browser = findViewById(R.id.open_browser);
