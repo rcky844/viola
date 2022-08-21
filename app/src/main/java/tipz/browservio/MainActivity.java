@@ -9,6 +9,8 @@ import android.webkit.CookieManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import tipz.browservio.tabbies.BrowserActivity;
+import tipz.browservio.tabbies.CustomTabsActivity;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
 

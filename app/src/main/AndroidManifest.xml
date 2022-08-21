@@ -76,11 +76,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BrowserActivity"
+            android:name=".tabbies.BrowserActivity"
             android:configChanges="orientation|screenSize"
             android:documentLaunchMode="always" />
         <activity
-            android:name=".CustomTabsActivity"
+            android:name=".tabbies.CustomTabsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".settings.SettingsActivity"

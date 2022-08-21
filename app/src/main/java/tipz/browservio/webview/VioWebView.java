@@ -63,7 +63,7 @@ import java.util.Scanner;
 
 import tipz.browservio.Application;
 import tipz.browservio.BuildConfig;
-import tipz.browservio.CustomTabsActivity;
+import tipz.browservio.tabbies.CustomTabsActivity;
 import tipz.browservio.R;
 import tipz.browservio.broha.api.HistoryUtils;
 import tipz.browservio.broha.database.icons.IconHashClient;

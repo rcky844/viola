@@ -1,4 +1,4 @@
-package tipz.browservio;
+package tipz.browservio.tabbies;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
@@ -55,6 +55,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import tipz.browservio.Application;
+import tipz.browservio.R;
 import tipz.browservio.broha.BrohaListInterfaceActivity;
 import tipz.browservio.broha.api.FavUtils;
 import tipz.browservio.broha.api.HistoryUtils;
@@ -140,8 +142,6 @@ public class BrowserActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.clear();
     }
-
-
 
     public void itemSelected(AppCompatImageView view, int item) {
         if (item == R.drawable.arrow_back_alt && webview.canGoBack()) {

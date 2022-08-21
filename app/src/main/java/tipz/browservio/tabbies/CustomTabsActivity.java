@@ -1,4 +1,4 @@
-package tipz.browservio;
+package tipz.browservio.tabbies;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import tipz.browservio.R;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.webview.VioWebView;
