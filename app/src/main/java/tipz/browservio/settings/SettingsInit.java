@@ -20,6 +20,7 @@ public class SettingsInit {
 
         if (SettingsUtils.isFirstLaunch(pref)) {
             SettingsUtils.setPrefNum(pref, SettingsKeys.centerActionBar, 1);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1);
             SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage,
                     SearchEngineEntries.getHomePageUrl(pref, 7));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, 7);
@@ -77,6 +78,8 @@ public class SettingsInit {
             SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
             /* 8f2ca067: java: settings: Allow the user to choose if they want Custom Tabs */
             SettingsUtils.setPrefNum(pref, SettingsKeys.useCustomTabs, 1);
+            /* 2d6ce244: java: webview: Finish if launched page is a download */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1);
         }
     }
 }
