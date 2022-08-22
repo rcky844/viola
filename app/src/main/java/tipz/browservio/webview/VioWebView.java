@@ -123,9 +123,12 @@ public class VioWebView extends WebView {
         this.setPrebuiltUAMode(null, 0, true);
 
         /* Start the download manager service */
-        this.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) ->
-                DownloadUtils.dmDownloadFile(mContext, url, contentDisposition,
-                        mimeType, currentUrl));
+        this.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> {
+            DownloadUtils.dmDownloadFile(mContext, url, contentDisposition,
+                    mimeType, currentUrl);
+            if (!canGoBack() && CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.closeAppAfterDownload)))
+                mVioWebViewActivity.finish();
+        });
 
         this.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);

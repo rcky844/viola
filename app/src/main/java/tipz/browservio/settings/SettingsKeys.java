@@ -4,6 +4,7 @@ public class SettingsKeys {
     /* browservio_saver */
     public static final String browservio_saver = "browservio.cfg"; /* Pref file name */
     public static final String centerActionBar = "centerActionBar"; /* INTEGER */
+    public static final String closeAppAfterDownload = "closeAppAfterDownload"; /* INTEGER */
     public static final String defaultHomePage = "defaultHomePage"; /* STRING */ /* FIXME: Rename to customHomePage */
     public static final String defaultHomePageId = "defaultHomePageId"; /* INTEGER */
     public static final String defaultSearch = "defaultSearch"; /* STRING */ /* FIXME: Rename to customSearch */

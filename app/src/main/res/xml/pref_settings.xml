@@ -62,6 +62,10 @@
             android:key="use_custom_tabs"
             android:summary="@string/pref_use_custom_tabs_summary"
             android:title="@string/pref_use_custom_tabs_title" />
+        <androidx.preference.SwitchPreference
+            android:key="close_app_after_download"
+            android:summary="@string/pref_close_app_after_download_summary"
+            android:title="@string/pref_close_app_after_download_title" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/help">

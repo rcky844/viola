@@ -156,6 +156,7 @@ public class SettingsActivity extends AppCompatActivity {
             /* Advanced category */
             SwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
             SwitchPreference use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
+            SwitchPreference close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */
             Preference version = Objects.requireNonNull(findPreference("version"));
@@ -329,7 +330,12 @@ public class SettingsActivity extends AppCompatActivity {
             use_custom_tabs.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.useCustomTabs, use_custom_tabs.isChecked(), false);
-                needReload = true;
+                return true;
+            });
+
+            close_app_after_download.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.closeAppAfterDownload, close_app_after_download.isChecked(), false);
                 return true;
             });
 
@@ -445,6 +451,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);
             checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
             checkIfPrefIntIsTrue(SettingsKeys.useCustomTabs, use_custom_tabs);
+            checkIfPrefIntIsTrue(SettingsKeys.closeAppAfterDownload, close_app_after_download);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));
             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
