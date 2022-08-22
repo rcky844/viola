@@ -21,16 +21,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/eagle" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <include
             android:id="@+id/easter_banner_front"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/browservio_banner_front" />
+            layout="@layout/browservio_banner_front" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView

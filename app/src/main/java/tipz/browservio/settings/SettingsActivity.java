@@ -346,7 +346,7 @@ public class SettingsActivity extends AppCompatActivity {
                         .create();
 
                 ConstraintLayout easter_banner = dialogView.findViewById(R.id.easter_banner);
-                AppCompatImageView easter_banner_front = dialogView.findViewById(R.id.easter_banner_front);
+                View easter_banner_front = dialogView.findViewById(R.id.easter_banner_front);
                 AppCompatImageView eagle = dialogView.findViewById(R.id.eagle);
                 AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
@@ -358,10 +358,7 @@ public class SettingsActivity extends AppCompatActivity {
                         eagle.animate().cancel();
                         eagle.setX(pressed[1] == 0 ?
                                 (easter_banner.getLeft() - 200f) : (easter_banner.getRight() + 200f));
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
-                            easter_banner_front.setImageResource(R.mipmap.ic_launcher_round);
-                        else
-                            easter_banner_front.setImageResource(R.drawable.browservio_banner_front);
+                        easter_banner_front.setVisibility(View.VISIBLE);
                         if (pressed[0] == 0)
                             CommonUtils.showMessage(settingsActivity,
                                     getResources().getString(R.string.app_name)
@@ -370,7 +367,7 @@ public class SettingsActivity extends AppCompatActivity {
                         pressed[0]++;
                     } else {
                         eagle.setVisibility(View.VISIBLE);
-                        easter_banner_front.setImageDrawable(null);
+                        easter_banner_front.setVisibility(View.GONE);
                         eagle.animate().translationX(pressed[1] == 0 ?
                                 easter_banner.getRight() + 200f : easter_banner.getLeft() - 200f)
                                 .setDuration(5000);
@@ -378,8 +375,6 @@ public class SettingsActivity extends AppCompatActivity {
                         pressed[1] = ~pressed[1] & 1;
                     }
                 });
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
-                    easter_banner_front.setImageResource(R.mipmap.ic_launcher_round);
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
                         BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
