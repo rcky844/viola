@@ -9,4 +9,5 @@ public interface VioWebViewInterface {
     void onFaviconUpdated(Bitmap icon, boolean checkInstance);
     void onFaviconProgressUpdated(boolean isLoading);
     void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing);
+    void onPageLoadProgressChanged(int progress);
 }

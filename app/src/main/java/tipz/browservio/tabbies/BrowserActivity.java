@@ -74,7 +74,6 @@ import tipz.browservio.webview.VioWebViewActivity;
 
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
-    private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
     private AppCompatImageView fab;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -266,7 +265,7 @@ public class BrowserActivity extends VioWebViewActivity {
     private void initialize() {
         fab = findViewById(R.id.fab);
         UrlEdit = findViewById(R.id.UrlEdit);
-        MainProg = findViewById(R.id.MainProg);
+        progressBar = findViewById(R.id.MainProg);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         swipeRefreshLayout = findViewById(R.id.swipe);
         webview = findViewById(R.id.webview);
@@ -424,7 +423,6 @@ public class BrowserActivity extends VioWebViewActivity {
 
         /* Init VioWebView */
         webview.notifyViewSetup();
-        webview.setUpProgressBar(MainProg);
 
         Intent intent = getIntent();
         Uri dataUri = intent.getData();

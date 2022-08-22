@@ -74,7 +74,6 @@ import tipz.browservio.utils.UrlUtils;
 public class VioWebView extends WebView {
     private final Context mContext;
     private VioWebViewActivity mVioWebViewActivity;
-    private ProgressBar progressBar;
     private final IconHashClient iconHashClient;
     private final WebSettings webSettings;
 
@@ -188,10 +187,6 @@ public class VioWebView extends WebView {
 
     public void notifyViewSetup() {
         mVioWebViewActivity = (VioWebViewActivity) mContext;
-    }
-
-    public void setUpProgressBar(ProgressBar progressBar) {
-        this.progressBar = progressBar;
     }
 
     public void setUpdateHistory(boolean updateHistory) {
@@ -403,8 +398,7 @@ public class VioWebView extends WebView {
 
         @Override
         public void onProgressChanged(WebView view, int progress) {
-            if (progressBar != null)
-                progressBar.setProgress(progress == 100 ? 0 : progress);
+            mVioWebViewActivity.onPageLoadProgressChanged(progress);
         }
 
         @Override

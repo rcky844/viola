@@ -1,10 +1,12 @@
 package tipz.browservio.webview;
 
 import android.graphics.Bitmap;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class VioWebViewActivity extends AppCompatActivity implements VioWebViewInterface {
+    public ProgressBar progressBar;
 
     @Override
     public void onUrlUpdated(String url) {
@@ -34,5 +36,10 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     @Override
     public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
 
+    }
+
+    @Override
+    public void onPageLoadProgressChanged(int progress) {
+        progressBar.setProgress(progress == 100 ? 0 : progress);
     }
 }

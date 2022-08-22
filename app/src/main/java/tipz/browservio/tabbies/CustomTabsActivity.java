@@ -3,7 +3,6 @@ package tipz.browservio.tabbies;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -51,13 +50,12 @@ public class CustomTabsActivity extends VioWebViewActivity {
         swipeRefreshLayout = findViewById(R.id.swipe);
 
         /* Progress Bar */
-        ProgressBar MainProg = findViewById(R.id.MainProg);
+        progressBar = findViewById(R.id.MainProg);
 
         /* WebView */
         webview = findViewById(R.id.webview);
         webview.doSettingsCheck();
         webview.notifyViewSetup();
-        webview.setUpProgressBar(MainProg);
         webview.setUpdateHistory(false);
         Uri dataUri = getIntent().getData();
         if (dataUri != null)
