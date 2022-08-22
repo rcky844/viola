@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.no_webview));
             finish();
         }
-        setContentView(R.layout.main);
         CaocConfig.Builder.create()
                 .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
                 .enabled(true)
@@ -64,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
             if (intent.hasCategory("android.intent.category.LAUNCHER")
                     || SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
                         SettingsKeys.useCustomTabs) == 0)
-                classLaunch = CustomTabsActivity.class;
-            else
                 classLaunch = BrowserActivity.class;
+            else
+                classLaunch = CustomTabsActivity.class;
         }
 
         Intent openIntent = new Intent(this, classLaunch);
