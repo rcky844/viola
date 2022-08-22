@@ -72,6 +72,7 @@ import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.UrlUtils;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class VioWebView extends WebView {
     private final Context mContext;
     private VioWebViewActivity mVioWebViewActivity;

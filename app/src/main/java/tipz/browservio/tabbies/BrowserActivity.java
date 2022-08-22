@@ -72,7 +72,6 @@ import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.webview.VioWebView;
 import tipz.browservio.webview.VioWebViewActivity;
 
-@SuppressLint("SetJavaScriptEnabled")
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar MainProg;
