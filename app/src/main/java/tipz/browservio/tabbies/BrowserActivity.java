@@ -199,7 +199,7 @@ public class BrowserActivity extends VioWebViewActivity {
             });
             popupMenu.show();
         } else if (item == R.drawable.share) {
-            CommonUtils.shareUrl(this, webview.currentUrl);
+            CommonUtils.shareUrl(this, webview.getUrl());
         } else if (item == R.drawable.app_shortcut) {
             Drawable originalIcon = favicon.getDrawable();
             Bitmap icon = Bitmap.createBitmap(originalIcon.getIntrinsicWidth(), originalIcon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -212,7 +212,7 @@ public class BrowserActivity extends VioWebViewActivity {
                     .setShortLabel(webview.UrlTitle)
                     .setIcon(IconCompat.createWithBitmap(icon))
                     .setIntent(new Intent(this, BrowserActivity.class)
-                            .setData(Uri.parse(webview.currentUrl))
+                            .setData(Uri.parse(webview.getUrl()))
                             .setAction(Intent.ACTION_VIEW))
                     .build(), null);
         } else if (item == R.drawable.settings) {
@@ -224,7 +224,7 @@ public class BrowserActivity extends VioWebViewActivity {
             mGetNeedLoad.launch(intent);
         } else if (item == R.drawable.favorites) {
             Drawable icon = favicon.getDrawable();
-            FavUtils.appendData(this, iconHashClient, webview.UrlTitle, webview.currentUrl, icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+            FavUtils.appendData(this, iconHashClient, webview.UrlTitle, webview.getUrl(), icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
             CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.save_successful));
         } else if (item == R.drawable.close) {
             finish();
@@ -296,7 +296,7 @@ public class BrowserActivity extends VioWebViewActivity {
                     final SslCertificate.DName issuedTo = cert.getIssuedTo();
                     final SslCertificate.DName issuedBy = cert.getIssuedBy();
                     final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(BrowserActivity.this);
-                    dialog.setTitle(Uri.parse(webview.currentUrl).getHost())
+                    dialog.setTitle(Uri.parse(webview.getUrl()).getHost())
                             .setMessage(getResources().getString(R.string.ssl_info_dialog_content,
                                     issuedTo.getCName(), issuedTo.getOName(), issuedTo.getUName(),
                                     issuedBy.getCName(), issuedBy.getOName(), issuedBy.getUName(),
@@ -353,7 +353,7 @@ public class BrowserActivity extends VioWebViewActivity {
                     CommonUtils.copyClipboard(BrowserActivity.this, url);
                 } else if (strName.equals(getResources().getString(R.string.download_image))) {
                     DownloadUtils.dmDownloadFile(BrowserActivity.this, url,
-                            null, null, webview.currentUrl);
+                            null, null, webview.getUrl());
                 } else if (strName.equals(getResources().getString(R.string.search_image))) {
                     webview.loadUrl("http://images.google.com/searchbyimage?image_url=".concat(url));
                 } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
@@ -385,8 +385,8 @@ public class BrowserActivity extends VioWebViewActivity {
 
         UrlEdit.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                if (!UrlEdit.getText().toString().equals(webview.currentUrl))
-                    UrlEdit.setText(webview.currentUrl);
+                if (!UrlEdit.getText().toString().equals(webview.getUrl()))
+                    UrlEdit.setText(webview.getUrl());
                 UrlEdit.setSelection(0);
                 closeKeyboard();
             }

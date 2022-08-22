@@ -35,13 +35,13 @@ public class CustomTabsActivity extends VioWebViewActivity {
 
         /* Share */
         AppCompatImageView share = findViewById(R.id.share);
-        share.setOnClickListener(v -> CommonUtils.shareUrl(this, webview.currentUrl));
+        share.setOnClickListener(v -> CommonUtils.shareUrl(this, webview.getUrl()));
 
         /* Open in Browser */
         AppCompatImageView open_browser = findViewById(R.id.open_browser);
         open_browser.setOnClickListener(v -> {
             Intent intent = new Intent(CustomTabsActivity.this, BrowserActivity.class);
-            intent.setData(Uri.parse(UrlUtils.cve_2017_13274(webview.currentUrl)));
+            intent.setData(Uri.parse(UrlUtils.cve_2017_13274(webview.getUrl())));
             startActivity(intent);
             finish();
         });

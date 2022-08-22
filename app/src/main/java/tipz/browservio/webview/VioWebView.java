@@ -82,7 +82,7 @@ public class VioWebView extends WebView {
     private final WebSettings webSettings;
 
     public String UrlTitle;
-    public String currentUrl;
+    private String currentUrl;
     private String adServers;
     private boolean customBrowse = false;
     private boolean updateHistory = true;
@@ -224,6 +224,11 @@ public class VioWebView extends WebView {
         // Load URL
         super.loadUrl(checkedUrl, mRequestHeaders);
         customBrowse = true;
+    }
+
+    @Override
+    public String getUrl() {
+        return currentUrl;
     }
 
     /**
