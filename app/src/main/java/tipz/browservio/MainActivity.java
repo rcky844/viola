@@ -19,6 +19,15 @@ import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
 
 public class MainActivity extends AppCompatActivity {
+    public final Class<?>[] VioActivityMode = {
+            null,                       /* ACTIVITY_DEFAULT */
+            BrowserActivity.class,      /* ACTIVITY_BROWSER */
+            CustomTabsActivity.class,   /* ACTIVITY_CUSTOM_TABS */
+            null,                       /* ACTIVITY_WEB_APP */
+    };
+
+    public final String EXTRA_ACTIVITY_MODE = "extra_activity_mode";
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
@@ -48,11 +57,19 @@ public class MainActivity extends AppCompatActivity {
         String type = intent.getType();
         String scheme = intent.getScheme();
 
-        Intent openIntent = new Intent(this,
-                (intent.hasCategory("android.intent.category.LAUNCHER")
-                        || SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
-                                SettingsKeys.useCustomTabs) == 0) ?
-                            BrowserActivity.class : CustomTabsActivity.class);
+        int extraMode = intent.getIntExtra(EXTRA_ACTIVITY_MODE, 0);
+        Class<?> classLaunch = VioActivityMode[extraMode];
+
+        if (classLaunch == null) {
+            if (intent.hasCategory("android.intent.category.LAUNCHER")
+                    || SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
+                        SettingsKeys.useCustomTabs) == 0)
+                classLaunch = CustomTabsActivity.class;
+            else
+                classLaunch = BrowserActivity.class;
+        }
+
+        Intent openIntent = new Intent(this, classLaunch);
         Uri uri = null;
 
         if (Intent.ACTION_SEND.equals(action) /* From share menu */
