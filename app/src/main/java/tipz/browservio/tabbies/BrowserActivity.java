@@ -361,9 +361,6 @@ public class BrowserActivity extends VioWebViewActivity {
             webLongPress.show();
         });
 
-        swipeRefreshLayout.setOnRefreshListener(() -> webview.webviewReload());
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-
         /* Code for detecting return key presses */
         UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {

@@ -14,6 +14,7 @@ import androidx.annotation.CallSuper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import tipz.browservio.R;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
@@ -29,6 +30,15 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = browservio_saver(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Setup swipe refresh layout
+        swipeRefreshLayout.setOnRefreshListener(() -> webview.webviewReload());
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
     }
 
     /**
