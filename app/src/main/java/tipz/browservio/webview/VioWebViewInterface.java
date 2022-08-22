@@ -8,4 +8,5 @@ public interface VioWebViewInterface {
     void onDropDownDismissed();
     void onFaviconUpdated(Bitmap icon, boolean checkInstance);
     void onFaviconProgressUpdated(boolean isLoading);
+    void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing);
 }

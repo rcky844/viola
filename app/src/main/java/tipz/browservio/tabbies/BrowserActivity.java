@@ -425,7 +425,6 @@ public class BrowserActivity extends VioWebViewActivity {
         /* Init VioWebView */
         webview.notifyViewSetup();
         webview.setUpProgressBar(MainProg);
-        webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
 
         Intent intent = getIntent();
         Uri dataUri = intent.getData();
@@ -482,6 +481,11 @@ public class BrowserActivity extends VioWebViewActivity {
             favicon.setVisibility(View.VISIBLE);
             faviconProgressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
+        swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 
     /**

@@ -18,6 +18,7 @@ import tipz.browservio.webview.VioWebViewActivity;
 public class CustomTabsActivity extends VioWebViewActivity {
     private AppCompatTextView title;
     private AppCompatTextView host;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private VioWebView webview;
 
     @Override
@@ -47,7 +48,7 @@ public class CustomTabsActivity extends VioWebViewActivity {
         });
 
         /* Swipe Refresh Layout */
-        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe);
+        swipeRefreshLayout = findViewById(R.id.swipe);
 
         /* Progress Bar */
         ProgressBar MainProg = findViewById(R.id.MainProg);
@@ -57,7 +58,6 @@ public class CustomTabsActivity extends VioWebViewActivity {
         webview.doSettingsCheck();
         webview.notifyViewSetup();
         webview.setUpProgressBar(MainProg);
-        webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
         webview.setUpdateHistory(false);
         Uri dataUri = getIntent().getData();
         if (dataUri != null)
@@ -72,5 +72,10 @@ public class CustomTabsActivity extends VioWebViewActivity {
     @Override
     public void onTitleUpdated(String title) {
         this.title.setText(title);
+    }
+
+    @Override
+    public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
+        swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 }

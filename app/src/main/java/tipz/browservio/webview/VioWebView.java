@@ -45,7 +45,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewCompat;
@@ -76,7 +75,6 @@ public class VioWebView extends WebView {
     private final Context mContext;
     private VioWebViewActivity mVioWebViewActivity;
     private ProgressBar progressBar;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private final IconHashClient iconHashClient;
     private final WebSettings webSettings;
 
@@ -196,10 +194,6 @@ public class VioWebView extends WebView {
         this.progressBar = progressBar;
     }
 
-    public void setUpSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
-        this.swipeRefreshLayout = swipeRefreshLayout;
-    }
-
     public void setUpdateHistory(boolean updateHistory) {
         this.updateHistory = updateHistory;
     }
@@ -277,8 +271,7 @@ public class VioWebView extends WebView {
             else
                 CookieManager.getInstance().flush();
             mVioWebViewActivity.onFaviconUpdated(null, true);
-            if (swipeRefreshLayout != null)
-                swipeRefreshLayout.setRefreshing(false);
+            mVioWebViewActivity.onSwipeRefreshLayoutRefreshingUpdated(false);
         }
 
         @Override

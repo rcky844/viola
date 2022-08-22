@@ -30,4 +30,9 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     public void onFaviconProgressUpdated(boolean isLoading) {
 
     }
+
+    @Override
+    public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
+
+    }
 }
