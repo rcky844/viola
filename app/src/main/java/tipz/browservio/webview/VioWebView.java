@@ -230,7 +230,7 @@ public class VioWebView extends WebView {
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(WebView view, String url, boolean update) {
+        private void UrlSet(String url, boolean update) {
             if (!currentUrl.equals(url) && urlShouldSet(url) || currentUrl == null) {
                 ((VioWebViewActivity) mContext).onUrlUpdated(url);
                 currentUrl = url;
@@ -243,7 +243,7 @@ public class VioWebView extends WebView {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            UrlSet(view, url, false);
+            UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
             if (favicon != null) {
@@ -271,7 +271,7 @@ public class VioWebView extends WebView {
 
         @Override
         public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
-            UrlSet(view, url, true);
+            UrlSet(url, true);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 CookieSyncManager.getInstance().sync();
             else
