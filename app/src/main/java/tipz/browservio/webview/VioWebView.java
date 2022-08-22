@@ -188,9 +188,6 @@ public class VioWebView extends WebView {
 
         // Do Not Track request
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
-
-        // Do activity settings check
-        mVioWebViewActivity.doSettingsCheck();
     }
 
     public void notifyViewSetup() {

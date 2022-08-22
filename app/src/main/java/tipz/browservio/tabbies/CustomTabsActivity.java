@@ -53,7 +53,6 @@ public class CustomTabsActivity extends VioWebViewActivity {
         /* WebView */
         webview = findViewById(R.id.webview);
         webview.notifyViewSetup();
-        webview.doSettingsCheck();
         webview.setUpdateHistory(false);
         Uri dataUri = getIntent().getData();
         if (dataUri != null)

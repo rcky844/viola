@@ -36,6 +36,10 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     public void onStart() {
         super.onStart();
 
+        /* Init VioWebView */
+        webview.doSettingsCheck();
+        doSettingsCheck();
+
         // Setup swipe refresh layout
         swipeRefreshLayout.setOnRefreshListener(() -> webview.webviewReload());
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
