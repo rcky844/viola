@@ -27,10 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -43,7 +40,6 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -75,7 +71,6 @@ public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar faviconProgressBar;
     private AppCompatImageView fab;
-    private VioWebView webview;
     private RelativeLayout actionBarBack;
     private AppCompatImageView favicon;
 
@@ -417,7 +412,6 @@ public class BrowserActivity extends VioWebViewActivity {
 
         /* Init settings check */
         new SettingsInit(BrowserActivity.this);
-        configChecker();
 
         /* Init VioWebView */
         webview.notifyViewSetup();
@@ -479,35 +473,9 @@ public class BrowserActivity extends VioWebViewActivity {
         }
     }
 
-    /**
-     * Need Load Info Receiver
-     * <p>
-     * Receive needLoadUrl for loading.
-     */
-    final ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                configChecker();
-                webview.loadUrl(result.getData() != null ? result.getData().getStringExtra("needLoadUrl") : null);
-            });
-
-    /**
-     * Config Checker
-     * <p>
-     * Used to check if anything has been changed
-     * after returning from settings.
-     */
-    private void configChecker() {
-        // Dark mode
-        if (SettingsUtils.getPrefNum(pref, SettingsKeys.themeId) == 0)
-            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ?
-                    AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        else
-            AppCompatDelegate.setDefaultNightMode(SettingsUtils.getPrefNum(
-                    pref, SettingsKeys.themeId) == 2 ?
-                    AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-
-        // Pull to Refresh
-        swipeRefreshLayout.setEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)));
+    @Override
+    public void doSettingsCheck() {
+        super.doSettingsCheck();
 
         // Settings check
         favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
@@ -516,9 +484,6 @@ public class BrowserActivity extends VioWebViewActivity {
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
                 && faviconProgressBar.getVisibility() == View.VISIBLE)
             favicon.setVisibility(View.GONE);
-
-        // Do VioWebView settings check
-        webview.doSettingsCheck();
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {

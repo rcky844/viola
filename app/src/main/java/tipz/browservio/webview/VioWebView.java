@@ -33,7 +33,6 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -189,10 +188,14 @@ public class VioWebView extends WebView {
 
         // Do Not Track request
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
+
+        // Do activity settings check
+        mVioWebViewActivity.doSettingsCheck();
     }
 
     public void notifyViewSetup() {
         mVioWebViewActivity = (VioWebViewActivity) mContext;
+        doSettingsCheck();
     }
 
     public void setUpdateHistory(boolean updateHistory) {

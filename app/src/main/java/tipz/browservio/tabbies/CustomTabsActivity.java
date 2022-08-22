@@ -15,7 +15,6 @@ import tipz.browservio.webview.VioWebViewActivity;
 public class CustomTabsActivity extends VioWebViewActivity {
     private AppCompatTextView title;
     private AppCompatTextView host;
-    private VioWebView webview;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
