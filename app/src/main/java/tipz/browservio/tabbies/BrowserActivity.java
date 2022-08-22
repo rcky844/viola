@@ -30,7 +30,6 @@ import android.widget.RelativeLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -71,9 +70,10 @@ import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.webview.VioWebView;
+import tipz.browservio.webview.VioWebViewActivity;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class BrowserActivity extends AppCompatActivity {
+public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar MainProg;
     private ProgressBar faviconProgressBar;
@@ -425,7 +425,6 @@ public class BrowserActivity extends AppCompatActivity {
 
         /* Init VioWebView */
         webview.setUpFavicon(favicon, faviconProgressBar);
-        webview.setUpUrlBox(UrlEdit);
         webview.setUpProgressBar(MainProg);
         webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
 
@@ -449,6 +448,16 @@ public class BrowserActivity extends AppCompatActivity {
             webview.goBack();
         else
             finish();
+    }
+
+    @Override
+    public void onUrlUpdated(String url) {
+        UrlEdit.setText(url);
+    }
+
+    @Override
+    public void onDropDownDismissed() {
+        UrlEdit.dismissDropDown();
     }
 
     /**

@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -14,8 +13,9 @@ import tipz.browservio.R;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.webview.VioWebView;
+import tipz.browservio.webview.VioWebViewActivity;
 
-public class CustomTabsActivity extends AppCompatActivity {
+public class CustomTabsActivity extends VioWebViewActivity {
     private AppCompatTextView title;
     private AppCompatTextView host;
     private VioWebView webview;
@@ -57,14 +57,19 @@ public class CustomTabsActivity extends AppCompatActivity {
         webview.doSettingsCheck();
         webview.setUpProgressBar(MainProg);
         webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
-        webview.setUrlTitleUpdates(true);
+        webview.setUpdateHistory(false);
         Uri dataUri = getIntent().getData();
         if (dataUri != null)
             webview.loadUrl(dataUri.toString());
     }
 
-    public void onReceivedTitle(String urlTitle) {
-        title.setText(urlTitle);
-        host.setText(Uri.parse(webview.currentUrl).getHost());
+    @Override
+    public void onUrlUpdated(String url) {
+        this.host.setText(Uri.parse(UrlUtils.cve_2017_13274(url)).getHost());
+    }
+
+    @Override
+    public void onTitleUpdated(String title) {
+        this.title.setText(title);
     }
 }
