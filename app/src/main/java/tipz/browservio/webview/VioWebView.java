@@ -121,7 +121,13 @@ public class VioWebView extends WebView {
         this.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> {
             DownloadUtils.dmDownloadFile(mContext, url, contentDisposition,
                     mimeType, currentUrl);
-            if (!canGoBack() && CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.closeAppAfterDownload)))
+            if (customBrowse) {
+                updateCurrentUrl(getOriginalUrl());
+                mVioWebViewActivity.onPageLoadProgressChanged(0);
+            }
+            if (!canGoBack() && getOriginalUrl() == null
+                    && CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(
+                            pref, SettingsKeys.closeAppAfterDownload)))
                 mVioWebViewActivity.finish();
         });
 
