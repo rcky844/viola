@@ -216,7 +216,7 @@ public class VioWebView extends WebView {
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
             if (!urlIdentify.equals(CommonUtils.EMPTY_STRING)) {
-                currentUrl = urlIdentify;
+                updateCurrentUrl(urlIdentify);
                 super.loadUrl(urlIdentify);
             }
             return;
@@ -225,7 +225,7 @@ public class VioWebView extends WebView {
         String checkedUrl = UrlUtils.UrlChecker(pref, url,
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
 
-        currentUrl = checkedUrl;
+        updateCurrentUrl(checkedUrl);
         // Load URL
         super.loadUrl(checkedUrl, mRequestHeaders);
         customBrowse = true;
@@ -236,14 +236,18 @@ public class VioWebView extends WebView {
         return currentUrl;
     }
 
+    private void updateCurrentUrl(String url) {
+        mVioWebViewActivity.onUrlUpdated(url);
+        currentUrl = url;
+    }
+
     /**
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
             if (!currentUrl.equals(url) && urlShouldSet(url) || currentUrl == null) {
-                mVioWebViewActivity.onUrlUpdated(url);
-                currentUrl = url;
+                updateCurrentUrl(url);
                 if (update)
                     HistoryUtils.updateData(mContext, null, null, url, null);
                 else if (HistoryUtils.isEmptyCheck(mContext) || !HistoryUtils.lastUrl(mContext).equals(url))
