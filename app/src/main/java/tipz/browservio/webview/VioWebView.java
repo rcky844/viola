@@ -16,7 +16,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -77,8 +76,6 @@ public class VioWebView extends WebView {
     private final Context mContext;
     private VioWebViewActivity mVioWebViewActivity;
     private ProgressBar progressBar;
-    private AppCompatImageView favicon;
-    private ProgressBar faviconProgressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private final IconHashClient iconHashClient;
     private final WebSettings webSettings;
@@ -195,11 +192,6 @@ public class VioWebView extends WebView {
         mVioWebViewActivity = (VioWebViewActivity) mContext;
     }
 
-    public void setUpFavicon(AppCompatImageView favicon, ProgressBar faviconProgressBar) {
-        this.favicon = favicon;
-        this.faviconProgressBar = faviconProgressBar;
-    }
-
     public void setUpProgressBar(ProgressBar progressBar) {
         this.progressBar = progressBar;
     }
@@ -264,14 +256,8 @@ public class VioWebView extends WebView {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (favicon != null) {
-                if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
-                        && urlShouldSet(url)) {
-                    favicon.setVisibility(View.GONE);
-                    faviconProgressBar.setVisibility(View.VISIBLE);
-                }
-                favicon.setImageResource(R.drawable.default_favicon);
-            }
+            mVioWebViewActivity.onFaviconProgressUpdated(true);
+            mVioWebViewActivity.onFaviconUpdated(null, false);
             mVioWebViewActivity.onDropDownDismissed();
         }
 
@@ -280,11 +266,7 @@ public class VioWebView extends WebView {
             if (view.getOriginalUrl() == null || view.getOriginalUrl().equals(url))
                 this.doUpdateVisitedHistory(view, url, true);
 
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
-                && favicon != null) {
-                favicon.setVisibility(View.VISIBLE);
-                faviconProgressBar.setVisibility(View.GONE);
-            }
+            mVioWebViewActivity.onFaviconProgressUpdated(false);
         }
 
         @Override
@@ -294,10 +276,7 @@ public class VioWebView extends WebView {
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (favicon != null) {
-                if (!(favicon.getDrawable() instanceof BitmapDrawable))
-                    favicon.setImageResource(R.drawable.default_favicon);
-            }
+            mVioWebViewActivity.onFaviconUpdated(null, true);
             if (swipeRefreshLayout != null)
                 swipeRefreshLayout.setRefreshing(false);
         }
@@ -437,8 +416,7 @@ public class VioWebView extends WebView {
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            if (favicon != null)
-                favicon.setImageBitmap(icon);
+            mVioWebViewActivity.onFaviconUpdated(icon, false);
             if (updateHistory)
                 HistoryUtils.updateData(mContext, iconHashClient, null, null, icon);
         }

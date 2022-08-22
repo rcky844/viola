@@ -424,7 +424,6 @@ public class BrowserActivity extends VioWebViewActivity {
 
         /* Init VioWebView */
         webview.notifyViewSetup();
-        webview.setUpFavicon(favicon, faviconProgressBar);
         webview.setUpProgressBar(MainProg);
         webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
 
@@ -458,6 +457,31 @@ public class BrowserActivity extends VioWebViewActivity {
     @Override
     public void onDropDownDismissed() {
         UrlEdit.dismissDropDown();
+    }
+
+    @Override
+    public void onFaviconUpdated(Bitmap icon, boolean checkInstance) {
+        if (checkInstance && (favicon.getDrawable() instanceof BitmapDrawable))
+            return;
+
+        if (icon == null)
+            favicon.setImageResource(R.drawable.default_favicon);
+        else
+            favicon.setImageBitmap(icon);
+    }
+
+    @Override
+    public void onFaviconProgressUpdated(boolean isLoading) {
+        if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)))
+            return;
+
+        if (isLoading) {
+            favicon.setVisibility(View.GONE);
+            faviconProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            favicon.setVisibility(View.VISIBLE);
+            faviconProgressBar.setVisibility(View.GONE);
+        }
     }
 
     /**
