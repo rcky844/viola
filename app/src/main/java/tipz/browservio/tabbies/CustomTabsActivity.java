@@ -8,6 +8,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import tipz.browservio.R;
+import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.webview.VioWebViewActivity;
@@ -50,8 +52,8 @@ public class CustomTabsActivity extends VioWebViewActivity {
 
         /* WebView */
         webview = findViewById(R.id.webview);
-        webview.doSettingsCheck();
         webview.notifyViewSetup();
+        webview.doSettingsCheck();
         webview.setUpdateHistory(false);
         Uri dataUri = getIntent().getData();
         if (dataUri != null)
