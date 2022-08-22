@@ -74,6 +74,7 @@ import tipz.browservio.utils.UrlUtils;
 
 public class VioWebView extends WebView {
     private final Context mContext;
+    private VioWebViewActivity mVioWebViewActivity;
     private ProgressBar progressBar;
     private AppCompatImageView favicon;
     private ProgressBar faviconProgressBar;
@@ -186,6 +187,10 @@ public class VioWebView extends WebView {
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
     }
 
+    public void notifyViewSetup() {
+        mVioWebViewActivity = (VioWebViewActivity) mContext;
+    }
+
     public void setUpFavicon(AppCompatImageView favicon, ProgressBar faviconProgressBar) {
         this.favicon = favicon;
         this.faviconProgressBar = faviconProgressBar;
@@ -237,7 +242,7 @@ public class VioWebView extends WebView {
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
             if (!currentUrl.equals(url) && urlShouldSet(url) || currentUrl == null) {
-                ((VioWebViewActivity) mContext).onUrlUpdated(url);
+                mVioWebViewActivity.onUrlUpdated(url);
                 currentUrl = url;
                 if (update)
                     HistoryUtils.updateData(mContext, null, null, url, null);
@@ -259,7 +264,7 @@ public class VioWebView extends WebView {
                 }
                 favicon.setImageResource(R.drawable.default_favicon);
             }
-            ((VioWebViewActivity) mContext).onDropDownDismissed();
+            mVioWebViewActivity.onDropDownDismissed();
         }
 
         @Override
@@ -437,7 +442,7 @@ public class VioWebView extends WebView {
                 HistoryUtils.updateData(mContext, null, title, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(title));
-            ((VioWebViewActivity) mContext).onTitleUpdated(title);
+            mVioWebViewActivity.onTitleUpdated(title);
         }
 
         @Override

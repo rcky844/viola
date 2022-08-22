@@ -55,6 +55,7 @@ public class CustomTabsActivity extends VioWebViewActivity {
         /* WebView */
         webview = findViewById(R.id.webview);
         webview.doSettingsCheck();
+        webview.notifyViewSetup();
         webview.setUpProgressBar(MainProg);
         webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
         webview.setUpdateHistory(false);

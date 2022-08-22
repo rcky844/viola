@@ -424,6 +424,7 @@ public class BrowserActivity extends VioWebViewActivity {
         configChecker();
 
         /* Init VioWebView */
+        webview.notifyViewSetup();
         webview.setUpFavicon(favicon, faviconProgressBar);
         webview.setUpProgressBar(MainProg);
         webview.setUpSwipeRefreshLayout(swipeRefreshLayout);
