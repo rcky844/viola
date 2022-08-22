@@ -69,14 +69,12 @@ import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.UrlUtils;
-import tipz.browservio.webview.VioWebView;
 import tipz.browservio.webview.VioWebViewActivity;
 
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private ProgressBar faviconProgressBar;
     private AppCompatImageView fab;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private VioWebView webview;
     private RelativeLayout actionBarBack;
     private AppCompatImageView favicon;
@@ -479,11 +477,6 @@ public class BrowserActivity extends VioWebViewActivity {
             favicon.setVisibility(View.VISIBLE);
             faviconProgressBar.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
-        swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 
     /**

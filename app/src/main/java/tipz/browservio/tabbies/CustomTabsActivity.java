@@ -6,18 +6,15 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import tipz.browservio.R;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
-import tipz.browservio.webview.VioWebView;
 import tipz.browservio.webview.VioWebViewActivity;
 
 public class CustomTabsActivity extends VioWebViewActivity {
     private AppCompatTextView title;
     private AppCompatTextView host;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private VioWebView webview;
 
     @Override
@@ -70,10 +67,5 @@ public class CustomTabsActivity extends VioWebViewActivity {
     @Override
     public void onTitleUpdated(String title) {
         this.title.setText(title);
-    }
-
-    @Override
-    public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
-        swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 }

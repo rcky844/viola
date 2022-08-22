@@ -4,9 +4,12 @@ import android.graphics.Bitmap;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class VioWebViewActivity extends AppCompatActivity implements VioWebViewInterface {
+    public VioWebView webview;
     public ProgressBar progressBar;
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onUrlUpdated(String url) {
@@ -35,7 +38,7 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
 
     @Override
     public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
-
+        swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 
     @Override
