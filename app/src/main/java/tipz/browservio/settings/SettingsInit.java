@@ -36,6 +36,7 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.useCustomTabs, 1);
         } else {
             protoVer0To1();
             //protoVer1To2();
