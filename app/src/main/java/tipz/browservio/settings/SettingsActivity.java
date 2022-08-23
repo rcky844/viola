@@ -230,9 +230,29 @@ public class SettingsActivity extends AppCompatActivity {
                         .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
-                            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
-                            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[checkedItem[0]]));
+                            if (checkedItem[0] == 8) {
+                                final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
+                                @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                                final AppCompatEditText custom_sg = root.findViewById(R.id.edittext);
+                                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
+                                        .setMessage(settingsActivity.getResources().getString(R.string.custom_search_guide))
+                                        .setView(root)
+                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                            if (!Objects.requireNonNull(custom_sg.getText()).toString().isEmpty()) {
+                                                SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, custom_sg.getText().toString());
+                                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
+                                                search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[checkedItem[0]]));
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.cancel, null)
+                                        .create().show();
+                            }
+
+                            if (checkedItem[0] != 8) {
+                                SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
+                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
+                                search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[checkedItem[0]]));
+                            }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .create().show();
