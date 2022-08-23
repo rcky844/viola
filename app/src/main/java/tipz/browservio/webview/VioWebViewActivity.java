@@ -46,11 +46,14 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         doSettingsCheck();
 
         // Setup swipe refresh layout
-        swipeRefreshLayout.setOnRefreshListener(() -> webview.webviewReload());
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setOnRefreshListener(() -> webview.webviewReload());
+            swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        }
 
         // Setup favicon
-        faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
+        if (favicon != null && faviconProgressBar != null)
+            faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
     }
 
     /**
@@ -73,13 +76,16 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     @CallSuper
     public void doSettingsCheck() {
         // Pull to Refresh
-        swipeRefreshLayout.setEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)));
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)));
 
         // Favicon
-        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
-                && faviconProgressBar.getVisibility() == View.VISIBLE)
-            favicon.setVisibility(View.GONE);
+        if (favicon != null && faviconProgressBar != null) {
+            favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
+                    && faviconProgressBar.getVisibility() == View.VISIBLE)
+                favicon.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -99,36 +105,42 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
 
     @Override
     public void onFaviconUpdated(Bitmap icon, boolean checkInstance) {
-        if (checkInstance && (favicon.getDrawable() instanceof BitmapDrawable))
-            return;
+        if (favicon != null && faviconProgressBar != null) {
+            if (checkInstance && (favicon.getDrawable() instanceof BitmapDrawable))
+                return;
 
-        if (icon == null)
-            favicon.setImageResource(R.drawable.default_favicon);
-        else
-            favicon.setImageBitmap(icon);
+            if (icon == null)
+                favicon.setImageResource(R.drawable.default_favicon);
+            else
+                favicon.setImageBitmap(icon);
+        }
     }
 
     @Override
     public void onFaviconProgressUpdated(boolean isLoading) {
-        if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)))
-            return;
+        if (favicon != null && faviconProgressBar != null) {
+            if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)))
+                return;
 
-        if (isLoading) {
-            favicon.setVisibility(View.GONE);
-            faviconProgressBar.setVisibility(View.VISIBLE);
-        } else {
-            favicon.setVisibility(View.VISIBLE);
-            faviconProgressBar.setVisibility(View.GONE);
+            if (isLoading) {
+                favicon.setVisibility(View.GONE);
+                faviconProgressBar.setVisibility(View.VISIBLE);
+            } else {
+                favicon.setVisibility(View.VISIBLE);
+                faviconProgressBar.setVisibility(View.GONE);
+            }
         }
     }
 
     @Override
     public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
-        swipeRefreshLayout.setRefreshing(isRefreshing);
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 
     @Override
     public void onPageLoadProgressChanged(int progress) {
-        progressBar.setProgress(progress == 100 ? 0 : progress);
+        if (progressBar != null)
+            progressBar.setProgress(progress == 100 ? 0 : progress);
     }
 }
