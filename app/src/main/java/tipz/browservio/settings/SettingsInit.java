@@ -28,6 +28,7 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
@@ -74,6 +75,8 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.useCustomTabs, 1);
             /* 2d6ce244: java: webview: Finish if launched page is a download */
             SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1);
+            /* 89b55613: java: browser: Add support for reverse layout */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 0);
         }
     }
 }
