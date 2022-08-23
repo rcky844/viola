@@ -125,15 +125,6 @@ public class SettingsActivity extends AppCompatActivity {
             final String[] searchHomePageList = settingsActivity.getResources().getStringArray(R.array.search_entries);
             searchHomePageList[7] += settingsActivity.getResources().getString(R.string.search_entries_default);
 
-            final String[] suggestionsList = {
-                    searchHomePageList[0],
-                    searchHomePageList[1],
-                    searchHomePageList[3],
-                    searchHomePageList[4],
-                    searchHomePageList[5],
-                    searchHomePageList[6],
-                    searchHomePageList[7],
-            };
             final String[] themeList = settingsActivity.getResources().getStringArray(R.array.themes);
 
             /* General category */
@@ -236,12 +227,12 @@ public class SettingsActivity extends AppCompatActivity {
             search_suggestions.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)};
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
-                        .setSingleChoiceItems(suggestionsList,
+                        .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                             SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
                             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
-                            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[checkedItem[0]]));
+                            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[checkedItem[0]]));
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .create().show();
@@ -458,7 +449,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.reverseLayout, reverse_layout);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));
-            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
+            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
             theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]));
             version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
             needReload = false;
