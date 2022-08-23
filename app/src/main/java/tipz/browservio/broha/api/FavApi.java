@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 
 import tipz.browservio.Application;
 import tipz.browservio.broha.database.BrohaDao;
+import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 
 public class FavApi {
@@ -15,7 +16,6 @@ public class FavApi {
     private final static int LATEST_API = 1;
 
     /* Old pref keys for migration */
-    private static final String favApi = "favApi";
     private static String bookmarked(int count) {
         return "bookmarked_".concat(Integer.toString(count));
     }
@@ -37,7 +37,7 @@ public class FavApi {
     }
 
     private void verAdapter() {
-        if (SettingsUtils.getPrefNum(browservio_saver(context), favApi) == 0) {
+        if (SettingsUtils.getPrefNum(browservio_saver(context), SettingsKeys.favApi) == 0) {
             int populate_count = 0;
             while (populate_count != -1) {
                 String shouldShow = SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count).concat(bookmarked_show));
@@ -51,12 +51,12 @@ public class FavApi {
             }
             bookmarks(context).edit().clear().apply();
         }
-        SettingsUtils.setPrefNum(browservio_saver(context), favApi, LATEST_API);
+        SettingsUtils.setPrefNum(browservio_saver(context), SettingsKeys.favApi, LATEST_API);
     }
 
     private void verChecker() {
-        if (SettingsUtils.getPrefNum(browservio_saver(context), favApi) > LATEST_API
-                || SettingsUtils.getPrefNum(browservio_saver(context), favApi) <= -1)
+        if (SettingsUtils.getPrefNum(browservio_saver(context), SettingsKeys.favApi) > LATEST_API
+                || SettingsUtils.getPrefNum(browservio_saver(context), SettingsKeys.favApi) <= -1)
             throw new RuntimeException();
     }
 }
