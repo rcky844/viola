@@ -21,14 +21,8 @@ public class SettingsInit {
         if (SettingsUtils.isFirstLaunch(pref)) {
             SettingsUtils.setPrefNum(pref, SettingsKeys.centerActionBar, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1);
-            SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage,
-                    SearchEngineEntries.getHomePageUrl(pref, 7));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, 7);
-            SettingsUtils.setPref(pref, SettingsKeys.defaultSearch,
-                    SearchEngineEntries.getSearchUrl(pref, 7, null));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, 7);
-            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions,
-                    SearchEngineEntries.getSuggestionsUrl(pref, 6, null, null));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 6);
             SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
