@@ -5,7 +5,6 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import tipz.browservio.search.SearchEngineEntries;
 import tipz.browservio.utils.CommonUtils;
 
 public class SettingsInit {
@@ -23,7 +22,7 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, 7);
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, 7);
-            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 6);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 7);
             SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
@@ -77,6 +76,9 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1);
             /* 89b55613: java: browser: Add support for reverse layout */
             SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 0);
+            /* 3cc75065: java: search: Add support for DuckDuckGo search suggestions */
+            if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId) >= 2)
+                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId + 1));
         }
     }
 }
