@@ -9,14 +9,18 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import java.util.Locale;
 
 import tipz.browservio.R;
 
 public class CommonUtils {
     public static final String EMPTY_STRING = "";
+    private static final String DEFAULT_LANGUAGE = "en-US";
 
     public static String LINE_SEPARATOR() {
         return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 ?
@@ -58,5 +62,13 @@ public class CommonUtils {
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo == null || !activeNetworkInfo.isConnected();
+    }
+
+    public static String getLanguage() {
+        String language = Locale.getDefault().getLanguage();
+        String country = Locale.getDefault().getCountry();
+        if (TextUtils.isEmpty(language))
+            language = DEFAULT_LANGUAGE;
+        return language + "-" + country;
     }
 }

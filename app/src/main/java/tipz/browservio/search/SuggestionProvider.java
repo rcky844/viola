@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.utils.CommonUtils;
 
 /*
     "Inspired" by LineageOS' Jelly
@@ -34,7 +35,6 @@ import tipz.browservio.settings.SettingsUtils;
 
 public class SuggestionProvider {
     private static final long INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1);
-    private static final String DEFAULT_LANGUAGE = "en-US";
     private static final String DEFAULT_ENCODING = "UTF-8";
     private final Context mContext;
     @NonNull
@@ -50,11 +50,7 @@ public class SuggestionProvider {
 
     @NonNull
     private static String getLanguage() {
-        String language = Locale.getDefault().getLanguage();
-        String country = Locale.getDefault().getCountry();
-        if (TextUtils.isEmpty(language))
-            language = DEFAULT_LANGUAGE;
-        return language + "-" + country;
+        return CommonUtils.getLanguage();
     }
 
     @NonNull

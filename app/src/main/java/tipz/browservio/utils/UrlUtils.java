@@ -69,7 +69,8 @@ public class UrlUtils {
 
         if (pref != null)
             return SearchEngineEntries.getSearchUrl(pref,
-                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId), trimmedUrl);
+                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId),
+                    trimmedUrl, CommonUtils.getLanguage());
 
         return trimmedUrl;
     }

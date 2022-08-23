@@ -44,12 +44,12 @@ public class SearchEngineEntries {
         return UrlUtils.cve_2017_13274(url);
     }
 
-    public static String getSearchUrl(SharedPreferences pref, int position, String query) {
+    public static String getSearchUrl(SharedPreferences pref, int position, String query, String language) {
         String url = engines[position].getSearch();
         if (url.isEmpty())
             url = SettingsUtils.getPref(pref, SettingsKeys.defaultSearch);
         if (query != null)
-            url = url.replace(queryPlaceholder, query);
+            url = url.replace(queryPlaceholder, query).replace(languagePlaceholder, language);
         return UrlUtils.cve_2017_13274(url);
     }
 
