@@ -4,7 +4,6 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
