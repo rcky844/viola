@@ -111,6 +111,7 @@
     <string name="pref_close_app_after_download_summary">Always close Browservio if the App Link is downloadable.</string>
     <string name="pref_reverse_layout_title">Reverse Layout</string>
     <string name="pref_reverse_layout_summary">Reverse browser layout upside down. (A restart is needed)</string>
+    <string name="custom_search_guide">Format:\n{query}: Query\n{language}: Language</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

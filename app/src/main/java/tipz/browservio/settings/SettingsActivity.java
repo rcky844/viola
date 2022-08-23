@@ -175,6 +175,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
                                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_engine))
+                                        .setMessage(settingsActivity.getResources().getString(R.string.custom_search_guide))
                                         .setView(root)
                                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                                             if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
