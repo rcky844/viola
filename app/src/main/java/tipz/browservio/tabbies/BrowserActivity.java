@@ -69,10 +69,8 @@ import tipz.browservio.webview.VioWebViewActivity;
 
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
-    private ProgressBar faviconProgressBar;
     private AppCompatImageView fab;
     private RelativeLayout actionBarBack;
-    private AppCompatImageView favicon;
 
     private boolean currentPrebuiltUAState = false;
     private String currentCustomUA;
@@ -302,8 +300,6 @@ public class BrowserActivity extends VioWebViewActivity {
             popupMenu.show();
         });
 
-        faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
-
         fab.setOnClickListener(_view -> {
             if (actionBarBack.getVisibility() == View.VISIBLE) {
                 fab.animate().rotation(180).setDuration(250).start();
@@ -446,41 +442,11 @@ public class BrowserActivity extends VioWebViewActivity {
     }
 
     @Override
-    public void onFaviconUpdated(Bitmap icon, boolean checkInstance) {
-        if (checkInstance && (favicon.getDrawable() instanceof BitmapDrawable))
-            return;
-
-        if (icon == null)
-            favicon.setImageResource(R.drawable.default_favicon);
-        else
-            favicon.setImageBitmap(icon);
-    }
-
-    @Override
-    public void onFaviconProgressUpdated(boolean isLoading) {
-        if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)))
-            return;
-
-        if (isLoading) {
-            favicon.setVisibility(View.GONE);
-            faviconProgressBar.setVisibility(View.VISIBLE);
-        } else {
-            favicon.setVisibility(View.VISIBLE);
-            faviconProgressBar.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     public void doSettingsCheck() {
         super.doSettingsCheck();
 
         // Settings check
-        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
         actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
-
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
-                && faviconProgressBar.getVisibility() == View.VISIBLE)
-            favicon.setVisibility(View.GONE);
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {

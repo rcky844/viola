@@ -5,13 +5,16 @@ import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.CallSuper;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import tipz.browservio.R;
@@ -23,6 +26,8 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     private SharedPreferences pref;
 
     public VioWebView webview;
+    public AppCompatImageView favicon;
+    public ProgressBar faviconProgressBar;
     public ProgressBar progressBar;
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -43,6 +48,9 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         // Setup swipe refresh layout
         swipeRefreshLayout.setOnRefreshListener(() -> webview.webviewReload());
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+
+        // Setup favicon
+        faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
     }
 
     /**
@@ -66,6 +74,12 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     public void doSettingsCheck() {
         // Pull to Refresh
         swipeRefreshLayout.setEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)));
+
+        // Favicon
+        favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
+                && faviconProgressBar.getVisibility() == View.VISIBLE)
+            favicon.setVisibility(View.GONE);
     }
 
     @Override
@@ -85,12 +99,27 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
 
     @Override
     public void onFaviconUpdated(Bitmap icon, boolean checkInstance) {
+        if (checkInstance && (favicon.getDrawable() instanceof BitmapDrawable))
+            return;
 
+        if (icon == null)
+            favicon.setImageResource(R.drawable.default_favicon);
+        else
+            favicon.setImageBitmap(icon);
     }
 
     @Override
     public void onFaviconProgressUpdated(boolean isLoading) {
+        if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)))
+            return;
 
+        if (isLoading) {
+            favicon.setVisibility(View.GONE);
+            faviconProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            favicon.setVisibility(View.VISIBLE);
+            faviconProgressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
