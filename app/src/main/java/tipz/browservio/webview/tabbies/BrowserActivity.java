@@ -1,10 +1,7 @@
 package tipz.browservio.webview.tabbies;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -75,7 +72,6 @@ public class BrowserActivity extends VioWebViewActivity {
     private String currentCustomUA;
     private boolean currentCustomUAWideView = false;
     private IconHashClient iconHashClient;
-    private SharedPreferences pref;
 
     private static final List<Integer> actionBarItemList = Arrays.asList(R.drawable.arrow_back_alt,
             R.drawable.arrow_forward_alt,
@@ -94,7 +90,8 @@ public class BrowserActivity extends VioWebViewActivity {
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(
+                pref, SettingsKeys.reverseLayout)) ? R.layout.main_wpmode : R.layout.main);
         initialize();
         initializeLogic();
     }
@@ -301,11 +298,11 @@ public class BrowserActivity extends VioWebViewActivity {
 
         fab.setOnClickListener(_view -> {
             if (actionBarBack.getVisibility() == View.VISIBLE) {
-                fab.animate().rotation(180).setDuration(250).start();
+                fab.animate().rotationBy(180).setDuration(250).start();
                 actionBarBack.animate().alpha(0f).setDuration(250).start();
                 actionBarBack.setVisibility(View.GONE);
             } else {
-                fab.animate().rotation(0).setDuration(250).start();
+                fab.animate().rotationBy(-180).setDuration(250).start();
                 actionBarBack.animate().alpha(1f).setDuration(250).start();
                 actionBarBack.setVisibility(View.VISIBLE);
             }
@@ -399,7 +396,6 @@ public class BrowserActivity extends VioWebViewActivity {
      * sur wen reel Sherk brower pls sand meme sum
      */
     private void initializeLogic() {
-        pref = browservio_saver(this);
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
         /* Init settings check */

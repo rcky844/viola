@@ -109,6 +109,8 @@
     <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
     <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
     <string name="pref_close_app_after_download_summary">Always close Browservio if the App Link is downloadable.</string>
+    <string name="pref_reverse_layout_title">Reverse Layout</string>
+    <string name="pref_reverse_layout_summary">Reverse browser layout upside down. (A restart is needed)</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

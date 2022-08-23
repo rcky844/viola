@@ -23,7 +23,7 @@ import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 
 public class VioWebViewActivity extends AppCompatActivity implements VioWebViewInterface {
-    private SharedPreferences pref;
+    public SharedPreferences pref;
 
     public VioWebView webview;
     public AppCompatImageView favicon;

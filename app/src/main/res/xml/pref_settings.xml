@@ -48,6 +48,10 @@
             android:summary="@string/pref_center_action_desp"
             android:title="@string/pref_center_action" />
         <androidx.preference.SwitchPreference
+            android:key="reverse_layout"
+            android:summary="@string/pref_reverse_layout_summary"
+            android:title="@string/pref_reverse_layout_title" />
+        <androidx.preference.SwitchPreference
             android:key="enable_swipe_refresh"
             android:summary="@string/pref_enable_swipe_refresh_summary"
             android:title="@string/pref_enable_swipe_refresh_title" />

@@ -151,6 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference theme = Objects.requireNonNull(findPreference("theme"));
             SwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
             SwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
+            SwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
             SwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
 
             /* Advanced category */
@@ -314,6 +315,12 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
+            reverse_layout.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.reverseLayout, reverse_layout.isChecked(), false);
+                return true;
+            });
+
             enable_swipe_refresh.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.enableSwipeRefresh, enable_swipe_refresh.isChecked(), false);
@@ -447,6 +454,7 @@ public class SettingsActivity extends AppCompatActivity {
             checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
             checkIfPrefIntIsTrue(SettingsKeys.useCustomTabs, use_custom_tabs);
             checkIfPrefIntIsTrue(SettingsKeys.closeAppAfterDownload, close_app_after_download);
+            checkIfPrefIntIsTrue(SettingsKeys.reverseLayout, reverse_layout);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));
             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
