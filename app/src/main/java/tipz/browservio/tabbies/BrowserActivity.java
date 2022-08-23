@@ -40,6 +40,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -258,8 +259,8 @@ public class BrowserActivity extends VioWebViewActivity {
         UrlEdit = findViewById(R.id.UrlEdit);
         progressBar = findViewById(R.id.MainProg);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
-        swipeRefreshLayout = findViewById(R.id.swipe);
-        webview = findViewById(R.id.webview);
+        swipeRefreshLayout = findViewById(R.id.layout_webview);
+        webview = swipeRefreshLayout.findViewById(R.id.webview);
         RecyclerView actionBar = findViewById(R.id.actionBar);
         actionBarBack = findViewById(R.id.actionBarBack);
         favicon = findViewById(R.id.favicon);
