@@ -496,7 +496,10 @@ public class MainActivity extends AppCompatActivity {
                 if (!UrlEdit.getText().toString().equals(currentUrl))
                     UrlEdit.setText(currentUrl);
                 UrlEdit.setSelection(0);
+                UrlEdit.setDropDownHeight(0);
                 closeKeyboard();
+            } else {
+                UrlEdit.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         });
 
