@@ -650,6 +650,7 @@ public class MainActivity extends AppCompatActivity {
             }
             favicon.setImageResource(R.drawable.default_favicon);
             UrlEdit.dismissDropDown();
+            UrlEdit.clearFocus();
         }
 
         @Override
