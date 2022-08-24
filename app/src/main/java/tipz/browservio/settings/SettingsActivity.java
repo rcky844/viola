@@ -260,26 +260,6 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            adBlocker.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.enableAdBlock, adBlocker.isChecked(), false);
-                needReload = true;
-                return true;
-            });
-
-            do_not_track.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.sendDNT, do_not_track.isChecked(), false);
-                needReload = true;
-                return true;
-            });
-
-            enforce_https.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.enforceHttps, enforce_https.isChecked(), false);
-                return true;
-            });
-
             reset_to_default.setOnPreferenceClickListener(preference -> {
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.reset_btn))
                         .setMessage(getResources().getString(R.string.reset_dialog).concat(getResources().getString(R.string.to_continue)))
@@ -313,55 +293,6 @@ public class SettingsActivity extends AppCompatActivity {
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .create().show();
-                return true;
-            });
-
-            show_favicon.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.showFavicon, show_favicon.isChecked(), false);
-                return true;
-            });
-
-            center_action.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.centerActionBar, center_action.isChecked(), false);
-                return true;
-            });
-
-            reverse_layout.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.reverseLayout, reverse_layout.isChecked(), false);
-                return true;
-            });
-
-            enable_swipe_refresh.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.enableSwipeRefresh, enable_swipe_refresh.isChecked(), false);
-                return true;
-            });
-
-            update_recents_icon.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.updateRecentsIcon, update_recents_icon.isChecked(), false);
-                return true;
-            });
-
-            javascript.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.isJavaScriptEnabled, javascript.isChecked(), false);
-                needReload = true;
-                return true;
-            });
-
-            use_custom_tabs.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.useCustomTabs, use_custom_tabs.isChecked(), false);
-                return true;
-            });
-
-            close_app_after_download.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.closeAppAfterDownload, close_app_after_download.isChecked(), false);
                 return true;
             });
 
@@ -464,16 +395,17 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
-            checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
-            checkIfPrefIntIsTrue(SettingsKeys.enforceHttps, enforce_https);
-            checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
-            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
-            checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);
-            checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
-            checkIfPrefIntIsTrue(SettingsKeys.useCustomTabs, use_custom_tabs);
-            checkIfPrefIntIsTrue(SettingsKeys.closeAppAfterDownload, close_app_after_download);
-            checkIfPrefIntIsTrue(SettingsKeys.reverseLayout, reverse_layout);
+            setupCheckBoxPref(SettingsKeys.enableAdBlock, adBlocker, true);
+            setupCheckBoxPref(SettingsKeys.sendDNT, do_not_track, true);
+            setupCheckBoxPref(SettingsKeys.enforceHttps, enforce_https, false);
+            setupCheckBoxPref(SettingsKeys.showFavicon, show_favicon, false);
+            setupCheckBoxPref(SettingsKeys.centerActionBar, center_action, false);
+            setupCheckBoxPref(SettingsKeys.reverseLayout, reverse_layout, false);
+            setupCheckBoxPref(SettingsKeys.updateRecentsIcon, update_recents_icon, false);
+            setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
+            setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
+            setupCheckBoxPref(SettingsKeys.useCustomTabs, use_custom_tabs, false);
+            setupCheckBoxPref(SettingsKeys.closeAppAfterDownload, close_app_after_download, false);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));
             search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
@@ -482,8 +414,14 @@ public class SettingsActivity extends AppCompatActivity {
             needReload = false;
         }
 
-        private void checkIfPrefIntIsTrue(String tag, SwitchPreference checkBox) {
+        private void setupCheckBoxPref(String tag, SwitchPreference checkBox, boolean needReload) {
             checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, tag)));
+            checkBox.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        tag, checkBox.isChecked(), false);
+                SettingsPrefHandler.needReload = needReload;
+                return true;
+            });
         }
     }
 }
