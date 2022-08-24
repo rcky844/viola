@@ -671,12 +671,30 @@ public class MainActivity extends AppCompatActivity {
                 favicon.setImageResource(R.drawable.default_favicon);
             swipeRefreshLayout.setRefreshing(false);
 
-            /* TODO: Improve detection system */
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow')", value -> {
-                    swipeRefreshLayout.setEnabled(!Objects.equals(value, "\"hidden\""));
+                webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')", value1 -> {
+                    updateSwipeRefreshLayoutEnabled(!Objects.equals(getTrueCSSValue(value1), "hidden"));
+                    if (swipeRefreshLayout.isEnabled())
+                        webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y')", value2 ->
+                                updateSwipeRefreshLayoutEnabled(Objects.equals(getTrueCSSValue(value2), "auto")));
                 });
             }
+        }
+
+        private void updateSwipeRefreshLayoutEnabled(boolean isEnabled) {
+            swipeRefreshLayout.setEnabled(isEnabled);
+        }
+
+        private String getTrueCSSValue(String rawValue) {
+            String[] arrayValue;
+            if (rawValue.contains("\""))
+                rawValue = rawValue.replace("\"", "");
+
+            if (rawValue.equals("null"))
+                return "auto";
+
+            arrayValue = rawValue.split(" ");
+            return arrayValue[arrayValue.length - 1];
         }
 
         @Override
