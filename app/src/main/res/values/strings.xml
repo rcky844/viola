@@ -114,6 +114,8 @@
     <string name="custom_search_guide">Format:\n{query}: Query\n{language}: Language</string>
     <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
     <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
+    <string name="js_page_says">%s says</string>
+    <string name="js_leave_page_prompt">%s says, do you want to leave this page?</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

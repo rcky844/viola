@@ -20,11 +20,14 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -39,6 +42,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
@@ -55,6 +59,7 @@ import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
 import tipz.browservio.Application;
@@ -453,6 +458,55 @@ public class VioWebView extends WebView {
 
             return true;
         }
+
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            jsDialog(url, message, null, result, R.string.js_page_says);
+            return true;
+        }
+
+        @Override
+        public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+            jsDialog(url, message, null, result, R.string.js_leave_page_prompt);
+            return true;
+        }
+
+        @Override
+        public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+            jsDialog(url, message, null, result, R.string.js_page_says);
+            return true;
+        }
+
+        public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+            jsDialog(url, message, defaultValue, result, R.string.js_page_says);
+            return true;
+        }
+    }
+
+    private void jsDialog(String url, String message, String defaultValue, JsResult result, int titleResId) {
+        final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+        final AppCompatEditText jsMessage = root.findViewById(R.id.edittext);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(mContext);
+        dialog.setTitle(mContext.getResources().getString(titleResId, url))
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                    if (defaultValue == null)
+                        result.confirm();
+                    else
+                        ((JsPromptResult) result).confirm(
+                                Objects.requireNonNull(jsMessage.getText()).toString());
+                })
+                .setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
+                    result.cancel();
+                    mVioWebViewActivity.onFaviconProgressUpdated(false);
+                    mVioWebViewActivity.onPageLoadProgressChanged(0);
+                });
+
+        if (defaultValue != null)
+            dialog.setView(root);
+
+        dialog.create().show();
     }
 
     /* Function to update the list of Ad servers */
