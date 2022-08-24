@@ -666,6 +666,13 @@ public class MainActivity extends AppCompatActivity {
             if (!(favicon.getDrawable() instanceof BitmapDrawable))
                 favicon.setImageResource(R.drawable.default_favicon);
             swipeRefreshLayout.setRefreshing(false);
+
+            /* TODO: Improve detection system */
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow')", value -> {
+                    swipeRefreshLayout.setEnabled(!Objects.equals(value, "\"hidden\""));
+                });
+            }
         }
 
         @Override
