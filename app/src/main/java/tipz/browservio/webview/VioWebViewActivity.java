@@ -104,6 +104,7 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     }
 
     @Override
+    @CallSuper
     public void onFaviconUpdated(Bitmap icon, boolean checkInstance) {
         if (favicon != null && faviconProgressBar != null) {
             if (checkInstance && (favicon.getDrawable() instanceof BitmapDrawable))
@@ -117,6 +118,7 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     }
 
     @Override
+    @CallSuper
     public void onFaviconProgressUpdated(boolean isLoading) {
         if (favicon != null && faviconProgressBar != null) {
             if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)))
@@ -133,12 +135,14 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     }
 
     @Override
+    @CallSuper
     public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(isRefreshing);
     }
 
     @Override
+    @CallSuper
     public void onPageLoadProgressChanged(int progress) {
         if (progressBar != null)
             progressBar.setProgress(progress == 100 ? 0 : progress);
