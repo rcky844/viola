@@ -360,7 +360,10 @@ public class BrowserActivity extends VioWebViewActivity {
                 if (!UrlEdit.getText().toString().equals(webview.getUrl()))
                     UrlEdit.setText(webview.getUrl());
                 UrlEdit.setSelection(0);
+                UrlEdit.setDropDownHeight(0);
                 closeKeyboard();
+            } else {
+                UrlEdit.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         });
 
