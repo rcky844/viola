@@ -426,6 +426,7 @@ public class BrowserActivity extends VioWebViewActivity {
     @Override
     public void onDropDownDismissed() {
         UrlEdit.dismissDropDown();
+        UrlEdit.clearFocus();
     }
 
     @Override
