@@ -227,6 +227,18 @@ public class VioWebView extends WebView {
         return currentUrl;
     }
 
+    @Override
+    public void goBack() {
+        mVioWebViewActivity.onDropDownDismissed();
+        super.goBack();
+    }
+
+    @Override
+    public void goForward() {
+        mVioWebViewActivity.onDropDownDismissed();
+        super.goForward();
+    }
+
     private void updateCurrentUrl(String url) {
         mVioWebViewActivity.onUrlUpdated(url);
         currentUrl = url;
