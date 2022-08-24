@@ -32,6 +32,7 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.useCustomTabs, 1);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.updateRecentsIcon, 1);
         } else {
             protoVer0To1();
             //protoVer1To2();
@@ -79,6 +80,8 @@ public class SettingsInit {
             /* 3cc75065: java: search: Add support for DuckDuckGo search suggestions */
             if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId) >= 2)
                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId + 1));
+            /* 9410799f: java: settings: Add switch for updating task label description */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.updateRecentsIcon, 1);
         }
     }
 }
