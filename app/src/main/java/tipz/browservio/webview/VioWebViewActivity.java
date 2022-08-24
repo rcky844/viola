@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.Objects;
+
 import tipz.browservio.R;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
@@ -32,6 +34,8 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     public ProgressBar faviconProgressBar;
     public ProgressBar progressBar;
     public SwipeRefreshLayout swipeRefreshLayout;
+
+    private boolean swipeRefreshLayoutEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +82,9 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     @CallSuper
     public void doSettingsCheck() {
         // Pull to Refresh
-        if (swipeRefreshLayout != null)
+        if (swipeRefreshLayout != null && swipeRefreshLayoutEnabled) {
             swipeRefreshLayout.setEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)));
+        }
 
         // Favicon
         if (favicon != null && faviconProgressBar != null) {
@@ -152,8 +157,18 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     @Override
     @CallSuper
     public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
-        if (swipeRefreshLayout != null)
+        if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setRefreshing(isRefreshing);
+
+            /* TODO: Improve detection system */
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow')", value -> {
+                    swipeRefreshLayoutEnabled = !Objects.equals(value, "\"hidden\"");
+                    if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)))
+                        swipeRefreshLayout.setEnabled(swipeRefreshLayoutEnabled);
+                });
+            }
+        }
     }
 
     @Override
