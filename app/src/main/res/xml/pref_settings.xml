@@ -55,6 +55,10 @@
             android:key="enable_swipe_refresh"
             android:summary="@string/pref_enable_swipe_refresh_summary"
             android:title="@string/pref_enable_swipe_refresh_title" />
+        <androidx.preference.SwitchPreference
+            android:key="update_recents_icon"
+            android:summary="@string/pref_update_recents_icon_summary"
+            android:title="@string/pref_update_recents_icon_title" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/advanced">

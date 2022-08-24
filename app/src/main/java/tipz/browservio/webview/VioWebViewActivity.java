@@ -98,7 +98,8 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     @Override
     @CallSuper
     public void onTitleUpdated(String title) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityManager.TaskDescription description =
                     new ActivityManager.TaskDescription(webview.UrlTitle);
             this.setTaskDescription(description);
@@ -123,7 +124,8 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
                 favicon.setImageBitmap(icon);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityManager.TaskDescription description =
                     new ActivityManager.TaskDescription(webview.UrlTitle, icon);
             this.setTaskDescription(description);

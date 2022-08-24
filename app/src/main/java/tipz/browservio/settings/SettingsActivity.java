@@ -144,6 +144,7 @@ public class SettingsActivity extends AppCompatActivity {
             SwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
             SwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
             SwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
+            SwitchPreference update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
 
             /* Advanced category */
             SwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
@@ -336,6 +337,12 @@ public class SettingsActivity extends AppCompatActivity {
             enable_swipe_refresh.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
                         SettingsKeys.enableSwipeRefresh, enable_swipe_refresh.isChecked(), false);
+                return true;
+            });
+
+            update_recents_icon.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        SettingsKeys.updateRecentsIcon, update_recents_icon.isChecked(), false);
                 return true;
             });
 
