@@ -6,6 +6,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -70,5 +73,15 @@ public class CommonUtils {
         if (TextUtils.isEmpty(language))
             language = DEFAULT_LANGUAGE;
         return language + "-" + country;
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap icon = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(icon);
+
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return icon;
     }
 }

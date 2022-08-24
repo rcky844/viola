@@ -2,8 +2,6 @@ package tipz.browservio.webview.tabbies;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -186,16 +184,10 @@ public class BrowserActivity extends VioWebViewActivity {
         } else if (item == R.drawable.share) {
             CommonUtils.shareUrl(this, webview.getUrl());
         } else if (item == R.drawable.app_shortcut) {
-            Drawable originalIcon = favicon.getDrawable();
-            Bitmap icon = Bitmap.createBitmap(originalIcon.getIntrinsicWidth(), originalIcon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(icon);
-
-            originalIcon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            originalIcon.draw(canvas);
-
             ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.UrlTitle)
                     .setShortLabel(webview.UrlTitle)
-                    .setIcon(IconCompat.createWithBitmap(icon))
+                    .setIcon(IconCompat.createWithBitmap(
+                            CommonUtils.drawableToBitmap(favicon.getDrawable())))
                     .setIntent(new Intent(this, BrowserActivity.class)
                             .setData(Uri.parse(webview.getUrl()))
                             .setAction(Intent.ACTION_VIEW))

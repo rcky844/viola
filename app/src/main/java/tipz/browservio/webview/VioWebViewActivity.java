@@ -2,10 +2,12 @@ package tipz.browservio.webview;
 
 import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -94,8 +96,13 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     }
 
     @Override
+    @CallSuper
     public void onTitleUpdated(String title) {
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityManager.TaskDescription description =
+                    new ActivityManager.TaskDescription(webview.UrlTitle);
+            this.setTaskDescription(description);
+        }
     }
 
     @Override
@@ -114,6 +121,12 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
                 favicon.setImageResource(R.drawable.default_favicon);
             else
                 favicon.setImageBitmap(icon);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityManager.TaskDescription description =
+                    new ActivityManager.TaskDescription(webview.UrlTitle, icon);
+            this.setTaskDescription(description);
         }
     }
 

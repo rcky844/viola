@@ -64,6 +64,7 @@ public class CustomTabsActivity extends VioWebViewActivity {
 
     @Override
     public void onTitleUpdated(String title) {
+        super.onTitleUpdated(title);
         this.title.setText(title);
     }
 }
