@@ -160,15 +160,21 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setRefreshing(isRefreshing);
 
-            /* TODO: Improve detection system */
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow')", value -> {
-                    swipeRefreshLayoutEnabled = !Objects.equals(value, "\"hidden\"");
-                    if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)))
-                        swipeRefreshLayout.setEnabled(swipeRefreshLayoutEnabled);
+                webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')", value1 -> {
+                    updateSwipeRefreshLayoutEnabled(!Objects.equals(getTrueCSSValue(value1), "hidden"));
+                    if (swipeRefreshLayoutEnabled)
+                        webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y')", value2 ->
+                                updateSwipeRefreshLayoutEnabled(Objects.equals(getTrueCSSValue(value2), "auto")));
                 });
             }
         }
+    }
+
+    private void updateSwipeRefreshLayoutEnabled(boolean isEnabled) {
+        swipeRefreshLayoutEnabled = isEnabled;
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)))
+            swipeRefreshLayout.setEnabled(swipeRefreshLayoutEnabled);
     }
 
     @Override
@@ -176,5 +182,17 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     public void onPageLoadProgressChanged(int progress) {
         if (progressBar != null)
             progressBar.setProgress(progress == 100 ? 0 : progress);
+    }
+
+    private String getTrueCSSValue(String rawValue) {
+        String[] arrayValue;
+        if (rawValue.contains("\""))
+            rawValue = rawValue.replace("\"", "");
+
+        if (rawValue.equals("null"))
+            return "auto";
+
+        arrayValue = rawValue.split(" ");
+        return arrayValue[arrayValue.length - 1];
     }
 }
