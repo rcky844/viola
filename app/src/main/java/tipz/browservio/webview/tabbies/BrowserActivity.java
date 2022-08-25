@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.net.http.SslCertificate;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.JsonReader;
+import android.util.JsonToken;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -38,6 +40,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.util.Arrays;
@@ -264,6 +268,9 @@ public class BrowserActivity extends VioWebViewActivity {
             menu.add(getResources().getString(R.string.copy_title));
             if (cert != null)
                 menu.add(getResources().getString(R.string.ssl_info));
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled))
+                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                menu.add(getResources().getString(R.string.view_page_source));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
                     CommonUtils.copyClipboard(BrowserActivity.this, webview.UrlTitle);
@@ -282,6 +289,33 @@ public class BrowserActivity extends VioWebViewActivity {
                             .setPositiveButton(getResources().getString(android.R.string.ok), null)
                             .create().show();
                     return true;
+                } else if (item.getTitle().toString().equals(getResources().getString(R.string.view_page_source))) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        webview.evaluateJavascript(
+                                "document.getElementsByTagName('html')[0].innerHTML", value -> {
+                                    JsonReader reader = new JsonReader(new StringReader(value));
+                                    reader.setLenient(true);
+                                    try {
+                                        if (reader.peek() == JsonToken.STRING) {
+                                            String domStr = reader.nextString();
+                                            reader.close();
+
+                                            if (domStr == null)
+                                                return;
+
+                                            String domStrCopy = "<html>\n" + domStr + "\n</html>";
+
+                                            new MaterialAlertDialogBuilder(BrowserActivity.this)
+                                                    .setTitle(getResources().getString(R.string.view_page_source))
+                                                    .setMessage(domStrCopy)
+                                                    .setPositiveButton(getResources().getString(android.R.string.ok), null)
+                                                    .setNegativeButton(getResources().getString(android.R.string.copy), (dialog, which) -> CommonUtils.copyClipboard(BrowserActivity.this, domStrCopy))
+                                                    .create().show();
+                                        }
+                                    } catch (IOException ignored) {
+                                    }
+                                });
+                    }
                 }
                 return false;
             });
