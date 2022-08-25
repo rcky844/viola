@@ -8,7 +8,7 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/actionBarBack"
+        app:layout_constraintBottom_toTopOf="@id/MainProg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -112,7 +112,7 @@
         android:layout_height="2dp"
         android:indeterminate="false"
         android:progressBackgroundTint="#26000000"
-        app:layout_constraintBottom_toTopOf="@id/swipe"
+        app:layout_constraintBottom_toTopOf="@id/layout_webview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar" />
 
