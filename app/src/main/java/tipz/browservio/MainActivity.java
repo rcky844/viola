@@ -1,7 +1,5 @@
 package tipz.browservio;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent openIntent = new Intent(this,
                 (intent.hasCategory("android.intent.category.LAUNCHER")
-                        || SettingsUtils.getPrefNum(browservio_saver(MainActivity.this),
+                        || SettingsUtils.getPrefNum(((Application) getApplicationContext()).pref,
                                 SettingsKeys.useCustomTabs) == 0) ?
                             BrowserActivity.class : CustomTabsActivity.class);
         Uri uri = null;

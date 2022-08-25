@@ -1,7 +1,5 @@
 package tipz.browservio.search;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -24,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import tipz.browservio.Application;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
@@ -68,7 +67,7 @@ public class SuggestionProvider {
     @NonNull
     protected String createQueryUrl(@NonNull String query,
                                     @NonNull String language) {
-        SharedPreferences pref = browservio_saver(mContext);
+        SharedPreferences pref = ((Application) mContext.getApplicationContext()).pref;
         return SearchEngineEntries.getSuggestionsUrl(pref, SettingsUtils.getPrefNum(
                 pref, SettingsKeys.defaultSuggestionsId), query, language);
     }

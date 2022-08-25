@@ -1,15 +1,9 @@
 package tipz.browservio.settings;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 /* TODO: rewrite to only use browservio_saver */
 public class SettingsUtils {
-    public static SharedPreferences browservio_saver(Context context) {
-        return context.getSharedPreferences(SettingsKeys.browservio_saver, Activity.MODE_PRIVATE);
-    }
-
     public static boolean isFirstLaunch(SharedPreferences pref) {
         return !SettingsUtils.getPref(pref, SettingsKeys.isFirstLaunch).equals("0");
     }

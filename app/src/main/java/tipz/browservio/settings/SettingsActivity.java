@@ -1,6 +1,5 @@
 package tipz.browservio.settings;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import static tipz.browservio.utils.ApkInstaller.installApplication;
 
 import android.annotation.SuppressLint;
@@ -37,6 +36,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
+import tipz.browservio.Application;
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.utils.BrowservioURLs;
@@ -78,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
         public SettingsPrefHandler(AppCompatActivity act) {
             WeakReference<AppCompatActivity> activity = new WeakReference<>(act);
             settingsActivity = activity.get();
-            pref = browservio_saver(settingsActivity);
+            pref = ((Application) settingsActivity.getApplicationContext()).pref;
         }
 
         public static boolean needReload = false;

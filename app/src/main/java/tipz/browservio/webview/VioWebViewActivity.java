@@ -1,7 +1,5 @@
 package tipz.browservio.webview;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.Objects;
 
+import tipz.browservio.Application;
 import tipz.browservio.R;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
@@ -40,7 +39,7 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pref = browservio_saver(this);
+        pref = ((Application) getApplicationContext()).pref;
     }
 
     @Override

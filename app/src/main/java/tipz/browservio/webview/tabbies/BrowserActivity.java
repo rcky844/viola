@@ -57,7 +57,6 @@ import tipz.browservio.broha.database.icons.IconHashClient;
 import tipz.browservio.search.SearchEngineEntries;
 import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.settings.SettingsActivity;
-import tipz.browservio.settings.SettingsInit;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
@@ -426,9 +425,6 @@ public class BrowserActivity extends VioWebViewActivity {
      */
     private void initializeLogic() {
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
-
-        /* Init settings check */
-        new SettingsInit(BrowserActivity.this);
 
         /* Init VioWebView */
         webview.notifyViewSetup();

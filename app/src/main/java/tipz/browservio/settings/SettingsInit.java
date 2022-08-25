@@ -1,16 +1,15 @@
 package tipz.browservio.settings;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import tipz.browservio.utils.CommonUtils;
 
 public class SettingsInit {
-    SharedPreferences pref;
-    public SettingsInit(Context mContext) {
-        pref = browservio_saver(mContext);
+    public SharedPreferences pref;
+    public SettingsInit(Context context) {
+        pref = context.getSharedPreferences(SettingsKeys.browservio_saver, Activity.MODE_PRIVATE);
 
         /* A bloopers fix for migrating from old versions */
         if (SettingsUtils.isFirstLaunch(pref) && SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion) == 0

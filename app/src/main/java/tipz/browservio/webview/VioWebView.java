@@ -1,7 +1,6 @@
 package tipz.browservio.webview;
 
 import static android.content.Context.MODE_PRIVATE;
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -107,7 +106,7 @@ public class VioWebView extends WebView {
     public VioWebView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        pref = browservio_saver(context);
+        pref = ((Application) context.getApplicationContext()).pref;
         iconHashClient = ((Application) mContext.getApplicationContext()).iconHashClient;
         webSettings = this.getSettings();
         mFileChooser = ((AppCompatActivity) mContext).registerForActivityResult(
