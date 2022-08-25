@@ -6,7 +6,6 @@ import static tipz.browservio.search.SearchEngineEntries.getHomepageUrl;
 import static tipz.browservio.search.SearchEngineEntries.getSearchEngineUrl;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -75,11 +74,11 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsPrefHandler extends PreferenceFragmentCompat {
-        private final Activity settingsActivity;
+        private final AppCompatActivity settingsActivity;
         private final SharedPreferences pref;
 
-        public SettingsPrefHandler(Activity act) {
-            WeakReference<Activity> activity = new WeakReference<>(act);
+        public SettingsPrefHandler(AppCompatActivity act) {
+            WeakReference<AppCompatActivity> activity = new WeakReference<>(act);
             settingsActivity = activity.get();
             pref = browservio_saver(settingsActivity);
         }
