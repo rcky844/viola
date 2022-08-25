@@ -25,6 +25,7 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 7);
             SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 0);
@@ -82,6 +83,8 @@ public class SettingsInit {
                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId + 1));
             /* 9410799f: java: settings: Add switch for updating task label description */
             SettingsUtils.setPrefNum(pref, SettingsKeys.updateRecentsIcon, 1);
+            /* bac9b451: java: webview: Allow disabling Google's "Safe" Browsing feature */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse, 0);
         }
     }
 }
