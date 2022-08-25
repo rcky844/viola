@@ -28,6 +28,10 @@
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
             android:title="@string/pref_enforce_https_title" />
+        <androidx.preference.SwitchPreference
+            android:key="google_safe_browsing"
+            android:summary="@string/pref_google_safe_browsing_summary"
+            android:title="@string/pref_google_safe_browsing_title" />
         <androidx.preference.Preference
             android:key="reset_to_default"
             android:summary="@string/reset_btn_desp"

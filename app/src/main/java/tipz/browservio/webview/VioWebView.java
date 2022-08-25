@@ -132,7 +132,7 @@ public class VioWebView extends WebView {
             }
             if (!canGoBack() && getOriginalUrl() == null
                     && CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(
-                            pref, SettingsKeys.closeAppAfterDownload)))
+                    pref, SettingsKeys.closeAppAfterDownload)))
                 mVioWebViewActivity.finish();
         });
 
@@ -198,6 +198,11 @@ public class VioWebView extends WebView {
             webSettings.setMixedContentMode(CommonUtils.isIntStrOne(
                     SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)) ?
                     WebSettings.MIXED_CONTENT_NEVER_ALLOW : WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
+        // Google's "Safe" Browsing
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
+            WebSettingsCompat.setSafeBrowsingEnabled(webSettings,
+                    CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse)));
 
         // Do Not Track request
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));

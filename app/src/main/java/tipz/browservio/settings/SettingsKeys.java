@@ -12,6 +12,7 @@ public class SettingsKeys {
     public static final String defaultSuggestions = "defaultSuggestions"; /* STRING */ /* FIXME: Rename to customSuggestions */
     public static final String defaultSuggestionsId = "defaultSuggestionsId"; /* INTEGER */
     public static final String enableAdBlock = "enableAdBlock"; /* INTEGER */
+    public static final String enableGoogleSafeBrowse = "enableGoogleSafeBrowse"; /* INTEGER */
     public static final String enableSwipeRefresh = "enableSwipeRefresh"; /* INTEGER */
     public static final String enforceHttps = "enforceHttps"; /* INTEGER */
     public static final String favApi = "favApi"; /* INTEGER */ /* Was in bookmarks */

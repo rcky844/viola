@@ -136,6 +136,7 @@ public class SettingsActivity extends AppCompatActivity {
             SwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
             SwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
             SwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
+            SwitchPreference google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
@@ -398,6 +399,7 @@ public class SettingsActivity extends AppCompatActivity {
             setupCheckBoxPref(SettingsKeys.enableAdBlock, adBlocker, true);
             setupCheckBoxPref(SettingsKeys.sendDNT, do_not_track, true);
             setupCheckBoxPref(SettingsKeys.enforceHttps, enforce_https, false);
+            setupCheckBoxPref(SettingsKeys.enableGoogleSafeBrowse, google_safe_browsing, false);
             setupCheckBoxPref(SettingsKeys.showFavicon, show_favicon, false);
             setupCheckBoxPref(SettingsKeys.centerActionBar, center_action, false);
             setupCheckBoxPref(SettingsKeys.reverseLayout, reverse_layout, false);
