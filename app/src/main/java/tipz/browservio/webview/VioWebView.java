@@ -36,6 +36,7 @@ import android.webkit.WebIconDatabase;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -76,6 +77,7 @@ import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.DownloaderThread;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.webview.tabbies.BrowserActivity;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class VioWebView extends WebView {
@@ -172,6 +174,52 @@ public class VioWebView extends WebView {
         this.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
         this.removeJavascriptInterface("accessibility"); /* CVE-2014-7224 */
         this.removeJavascriptInterface("accessibilityTraversal"); /* CVE-2014-7224 */
+
+        /* Hit Test Menu */
+        this.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
+            final WebView.HitTestResult hr = this.getHitTestResult();
+            final String url = hr.getExtra();
+            final int type = hr.getType();
+
+            if (type == WebView.HitTestResult.UNKNOWN_TYPE || type == WebView.HitTestResult.EDIT_TEXT_TYPE)
+                return;
+
+            MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(mContext);
+            webLongPress.setTitle(url.length() > 75 ? url.substring(0, 74).concat("…") : url);
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext, R.layout.recycler_list_item_1);
+            if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
+                arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
+            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                arrayAdapter.add(getResources().getString(R.string.download_image));
+                arrayAdapter.add(getResources().getString(R.string.search_image));
+            }
+            arrayAdapter.add(getResources().getString(R.string.copy_url));
+            arrayAdapter.add(getResources().getString(R.string.share_url));
+
+            webLongPress.setAdapter(arrayAdapter, (dialog, which) -> {
+                String strName = arrayAdapter.getItem(which);
+
+                if (strName.equals(getResources().getString(R.string.copy_url))) {
+                    CommonUtils.copyClipboard(mContext, url);
+                } else if (strName.equals(getResources().getString(R.string.download_image))) {
+                    DownloadUtils.dmDownloadFile(mContext, url,
+                            null, null, this.getUrl());
+                } else if (strName.equals(getResources().getString(R.string.search_image))) {
+                    this.loadUrl("http://images.google.com/searchbyimage?image_url=".concat(url));
+                } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
+                    Intent intent = new Intent(mContext, BrowserActivity.class);
+                    intent.putExtra(Intent.EXTRA_TEXT, url)
+                            .setAction(Intent.ACTION_SEND)
+                            .setType(UrlUtils.TypeSchemeMatch[1]);
+                    mContext.startActivity(intent);
+                } else if (strName.equals(getResources().getString(R.string.share_url))) {
+                    CommonUtils.shareUrl(mContext, url);
+                }
+            });
+
+            webLongPress.show();
+        });
     }
 
     public void doSettingsCheck() {

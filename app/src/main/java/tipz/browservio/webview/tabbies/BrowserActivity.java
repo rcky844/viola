@@ -19,8 +19,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import android.webkit.WebView;
-import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -60,8 +58,6 @@ import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
-import tipz.browservio.utils.DownloadUtils;
-import tipz.browservio.utils.UrlUtils;
 import tipz.browservio.webview.VioWebViewActivity;
 
 public class BrowserActivity extends VioWebViewActivity {
@@ -329,51 +325,6 @@ public class BrowserActivity extends VioWebViewActivity {
                 actionBarBack.animate().alpha(1f).setDuration(250).start();
                 actionBarBack.setVisibility(View.VISIBLE);
             }
-        });
-
-        webview.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
-            final WebView.HitTestResult hr = webview.getHitTestResult();
-            final String url = hr.getExtra();
-            final int type = hr.getType();
-
-            if (type == WebView.HitTestResult.UNKNOWN_TYPE || type == WebView.HitTestResult.EDIT_TEXT_TYPE)
-                return;
-
-            MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(BrowserActivity.this);
-            webLongPress.setTitle(url.length() > 75 ? url.substring(0, 74).concat("…") : url);
-
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(BrowserActivity.this, R.layout.recycler_list_item_1);
-            if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
-                arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
-            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
-                arrayAdapter.add(getResources().getString(R.string.download_image));
-                arrayAdapter.add(getResources().getString(R.string.search_image));
-            }
-            arrayAdapter.add(getResources().getString(R.string.copy_url));
-            arrayAdapter.add(getResources().getString(R.string.share_url));
-
-            webLongPress.setAdapter(arrayAdapter, (dialog, which) -> {
-                String strName = arrayAdapter.getItem(which);
-
-                if (strName.equals(getResources().getString(R.string.copy_url))) {
-                    CommonUtils.copyClipboard(BrowserActivity.this, url);
-                } else if (strName.equals(getResources().getString(R.string.download_image))) {
-                    DownloadUtils.dmDownloadFile(BrowserActivity.this, url,
-                            null, null, webview.getUrl());
-                } else if (strName.equals(getResources().getString(R.string.search_image))) {
-                    webview.loadUrl("http://images.google.com/searchbyimage?image_url=".concat(url));
-                } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
-                    Intent intent = new Intent(this, BrowserActivity.class);
-                    intent.putExtra(Intent.EXTRA_TEXT, url)
-                            .setAction(Intent.ACTION_SEND)
-                            .setType(UrlUtils.TypeSchemeMatch[1]);
-                    startActivity(intent);
-                } else if (strName.equals(getResources().getString(R.string.share_url))) {
-                    CommonUtils.shareUrl(this, url);
-                }
-            });
-
-            webLongPress.show();
         });
 
         /* Code for detecting return key presses */
