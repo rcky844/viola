@@ -340,7 +340,7 @@ public class BrowserActivity extends VioWebViewActivity {
                 return;
 
             MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(BrowserActivity.this);
-            webLongPress.setTitle(url.length() > 48 ? url.substring(0, 47).concat("…") : url);
+            webLongPress.setTitle(url.length() > 75 ? url.substring(0, 74).concat("…") : url);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(BrowserActivity.this, R.layout.recycler_list_item_1);
             if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
