@@ -916,6 +916,7 @@ public class MainActivity extends AppCompatActivity {
      * Used to check if anything has been changed
      * after returning from settings.
      */
+    @SuppressWarnings("deprecation")
     private void configChecker() {
         // Dark mode
         if (SettingsUtils.getPrefNum(pref, SettingsKeys.themeId) == 0)
