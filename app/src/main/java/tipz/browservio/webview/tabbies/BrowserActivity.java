@@ -291,7 +291,7 @@ public class BrowserActivity extends VioWebViewActivity {
                 } else if (item.getTitle().toString().equals(getResources().getString(R.string.view_page_source))) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         webview.evaluateJavascript(
-                                "document.getElementsByTagName('html')[0].innerHTML", value -> {
+                                "document.documentElement.outerHTML", value -> {
                                     JsonReader reader = new JsonReader(new StringReader(value));
                                     reader.setLenient(true);
                                     try {
@@ -302,13 +302,11 @@ public class BrowserActivity extends VioWebViewActivity {
                                             if (domStr == null)
                                                 return;
 
-                                            String domStrCopy = "<html>\n" + domStr + "\n</html>";
-
                                             new MaterialAlertDialogBuilder(BrowserActivity.this)
                                                     .setTitle(getResources().getString(R.string.view_page_source))
-                                                    .setMessage(domStrCopy)
+                                                    .setMessage(domStr)
                                                     .setPositiveButton(getResources().getString(android.R.string.ok), null)
-                                                    .setNegativeButton(getResources().getString(android.R.string.copy), (dialog, which) -> CommonUtils.copyClipboard(BrowserActivity.this, domStrCopy))
+                                                    .setNegativeButton(getResources().getString(android.R.string.copy), (dialog, which) -> CommonUtils.copyClipboard(BrowserActivity.this, domStr))
                                                     .create().show();
                                         }
                                     } catch (IOException ignored) {
