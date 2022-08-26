@@ -442,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
 
             MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(MainActivity.this);
-            webLongPress.setTitle(url.length() > 48 ? url.substring(0, 47).concat("…") : url);
+            webLongPress.setTitle(url.length() > 75 ? url.substring(0, 74).concat("…") : url);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.recycler_list_item_1);
             if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
