@@ -29,6 +29,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -43,6 +44,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -55,6 +57,8 @@ import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
+import androidx.webkit.WebViewRenderProcess;
+import androidx.webkit.WebViewRenderProcessClient;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -85,6 +89,7 @@ public class VioWebView extends WebView {
     private VioWebViewActivity mVioWebViewActivity;
     private final IconHashClient iconHashClient;
     private final WebSettings webSettings;
+    private final WebViewRenderProcess mWebViewRenderProcess;
 
     public String UrlTitle;
     private String currentUrl;
@@ -111,6 +116,8 @@ public class VioWebView extends WebView {
     public VioWebView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+        mWebViewRenderProcess = WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER) ?
+                WebViewCompat.getWebViewRenderProcess(this) : null;
         pref = ((Application) context.getApplicationContext()).pref;
         iconHashClient = ((Application) mContext.getApplicationContext()).iconHashClient;
         webSettings = this.getSettings();
@@ -170,6 +177,8 @@ public class VioWebView extends WebView {
 
         this.setWebViewClient(new WebClient());
         this.setWebChromeClient(new ChromeWebClient());
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE) && mWebViewRenderProcess != null)
+            WebViewCompat.setWebViewRenderProcessClient(this, new RenderClient());
 
         this.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
         this.removeJavascriptInterface("accessibility"); /* CVE-2014-7224 */
@@ -421,6 +430,11 @@ public class VioWebView extends WebView {
         }
 
         @Override
+        public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+            return false;
+        }
+
+        @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
             if (adServers == null)
                 updateAdServerList();
@@ -543,6 +557,29 @@ public class VioWebView extends WebView {
         public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
             jsDialog(url, message, defaultValue, result, R.string.js_page_says);
             return true;
+        }
+    }
+
+    /**
+     * WebViewRenderProcessClient
+     */
+    public class RenderClient extends WebViewRenderProcessClient {
+        AlertDialog dialog = new MaterialAlertDialogBuilder(mContext)
+                .setTitle(R.string.dialog_page_unresponsive_title)
+                .setMessage(R.string.dialog_page_unresponsive_message)
+                .setPositiveButton(R.string.dialog_page_unresponsive_wait, null)
+                .setNegativeButton(R.string.dialog_page_unresponsive_terminate, (_dialog, _which) ->
+                        mWebViewRenderProcess.terminate())
+                .create();
+
+        @Override
+        public void onRenderProcessUnresponsive(@NonNull WebView view, @Nullable WebViewRenderProcess renderer) {
+            dialog.show();
+        }
+
+        @Override
+        public void onRenderProcessResponsive(@NonNull WebView view, @Nullable WebViewRenderProcess renderer) {
+            dialog.dismiss();
         }
     }
 

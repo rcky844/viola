@@ -119,6 +119,10 @@
     <string name="view_page_source">View Page Source</string>
     <string name="pref_google_safe_browsing_title">Enable Google\'s Safe Browsing</string>
     <string name="pref_google_safe_browsing_summary">Allow Google\'s Safe Browsing to block websites it deems dangerous.</string>
+    <string name="dialog_page_unresponsive_title">Page Unresponsive</string>
+    <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
+    <string name="dialog_page_unresponsive_wait">Wait</string>
+    <string name="dialog_page_unresponsive_terminate">Terminate</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
