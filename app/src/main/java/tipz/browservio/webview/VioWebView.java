@@ -233,8 +233,7 @@ public class VioWebView extends WebView {
             return;
         }
 
-        String checkedUrl = UrlUtils.UrlChecker(pref, url,
-                CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
+        String checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url);
 
         updateCurrentUrl(checkedUrl);
         // Load URL
@@ -321,7 +320,7 @@ public class VioWebView extends WebView {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             boolean returnVal = false;
-            boolean normalSchemes = UrlUtils.startsWithMatch(url);
+            boolean normalSchemes = Uri.parse(url).isAbsolute();
             if (!normalSchemes) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)));

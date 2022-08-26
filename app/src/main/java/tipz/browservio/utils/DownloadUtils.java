@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import tipz.browservio.Application;
 import tipz.browservio.R;
 
 public class DownloadUtils {
@@ -32,8 +33,7 @@ public class DownloadUtils {
                                       String customFilename, String requestUrl) {
         if (url.startsWith("http://") || url.startsWith("https://")) {
             DownloadManager.Request request = new DownloadManager.Request(
-                    Uri.parse(UrlUtils.UrlChecker(null, url,
-                            StringUtils.substringBefore(url, ':').equals("https"))));
+                    Uri.parse(UrlUtils.toSearchOrValidUrl(context, url)));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
