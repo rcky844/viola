@@ -18,6 +18,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,6 +74,7 @@ import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
+import tipz.browservio.utils.DownloaderThread;
 import tipz.browservio.utils.UrlUtils;
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -523,17 +526,35 @@ public class VioWebView extends WebView {
 
     /* Function to update the list of Ad servers */
     private void updateAdServerList() {
-        String data = DownloadUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
-        if (data != null) {
-            Scanner scanner = new Scanner(data);
-            StringBuilder builder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if (line.startsWith("127.0.0.1 "))
-                    builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+        adServers = CommonUtils.EMPTY_STRING;
+        DownloaderThread mHandlerThread = new DownloaderThread("adServers");
+        mHandlerThread.start();
+        mHandlerThread.setCallerHandler(new Handler(mHandlerThread.getLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case DownloaderThread.TYPE_SUCCESS:
+                        String data = msg.getData().getString("response");
+                        if (data != null) {
+                            Scanner scanner = new Scanner(data);
+                            StringBuilder builder = new StringBuilder();
+                            while (scanner.hasNextLine()) {
+                                String line = scanner.nextLine();
+                                if (line.startsWith("127.0.0.1 "))
+                                    builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+                            }
+                            adServers = builder.toString();
+                        }
+                        break;
+                    case DownloaderThread.TYPE_FAILED:
+                        adServers = null;
+                        break;
+                }
+                mHandlerThread.quit();
+                super.handleMessage(msg);
             }
-            adServers = builder.toString();
-        }
+        });
+        mHandlerThread.startDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
     }
 
     private boolean urlShouldSet(String url) {

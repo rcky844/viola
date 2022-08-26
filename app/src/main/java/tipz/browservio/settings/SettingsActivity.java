@@ -13,6 +13,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -42,6 +44,7 @@ import tipz.browservio.R;
 import tipz.browservio.utils.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
+import tipz.browservio.utils.DownloaderThread;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -326,7 +329,7 @@ public class SettingsActivity extends AppCompatActivity {
                         eagle.setVisibility(View.VISIBLE);
                         easter_banner_front.setVisibility(View.GONE);
                         eagle.animate().translationX(pressed[1] == 0 ?
-                                easter_banner.getRight() + 200f : easter_banner.getLeft() - 200f)
+                                        easter_banner.getRight() + 200f : easter_banner.getLeft() - 200f)
                                 .setDuration(5000);
                         pressed[0] = 0;
                         pressed[1] = ~pressed[1] & 1;
@@ -339,38 +342,50 @@ public class SettingsActivity extends AppCompatActivity {
                         BuildConfig.VERSION_CODENAME,
                         BuildConfig.VERSION_BUILD_YEAR));
                 update_btn.setOnClickListener(_update_btn -> {
-                    if (CommonUtils.isNetworkAvailable(settingsActivity.getApplicationContext())) {
-                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
-                    } else {
-                        File apkFile = new File(updateDownloadPath);
+                    DownloaderThread mHandlerThread = new DownloaderThread("adServers");
+                    mHandlerThread.start();
+                    mHandlerThread.setCallerHandler(new Handler(mHandlerThread.getLooper()) {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            switch (msg.what) {
+                                case DownloaderThread.TYPE_SUCCESS:
+                                    String data = msg.getData().getString("response");
+                                    File apkFile = new File(updateDownloadPath);
 
-                        String arrayString = DownloadUtils.downloadToString(
-                                "https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg", 5000);
-                        if (arrayString == null) {
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
-                            return;
+                                    if (data == null) {
+                                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
+                                        return;
+                                    }
+                                    String[] array = data.split(CommonUtils.LINE_SEPARATOR());
+
+                                    if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE) {
+                                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
+                                        return;
+                                    }
+
+                                    new MaterialAlertDialogBuilder(settingsActivity)
+                                            .setTitle(getResources().getString(R.string.new_update_detect_title))
+                                            .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
+                                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                                if (!apkFile.exists() || apkFile.delete())
+                                                    downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
+                                                            null, "application/vnd.android.package-archive",
+                                                            getResources().getString(R.string.download_title), "browservio-update.apk", null);
+                                                else
+                                                    CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
+                                            })
+                                            .setNegativeButton(android.R.string.cancel, null)
+                                            .create().show();
+                                    break;
+                                case DownloaderThread.TYPE_FAILED:
+                                    CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
+                                    break;
+                            }
+                            mHandlerThread.quit();
+                            super.handleMessage(msg);
                         }
-                        String[] array = arrayString.split(CommonUtils.LINE_SEPARATOR());
-
-                        if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE) {
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
-                            return;
-                        }
-
-                        new MaterialAlertDialogBuilder(settingsActivity)
-                                .setTitle(getResources().getString(R.string.new_update_detect_title))
-                                .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
-                                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                    if (!apkFile.exists() || apkFile.delete())
-                                        downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
-                                                null, "application/vnd.android.package-archive",
-                                                getResources().getString(R.string.download_title), "browservio-update.apk", null);
-                                    else
-                                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
-                                })
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .create().show();
-                    }
+                    });
+                    mHandlerThread.startDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg");
                 });
                 changelog_btn.setOnClickListener(_license_btn -> {
                     needLoad(BrowservioURLs.realChangelogUrl);
