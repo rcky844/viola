@@ -222,6 +222,7 @@ public class VioWebView extends WebView {
         });
     }
 
+    @SuppressWarnings("deprecation")
     public void doSettingsCheck() {
         // Dark mode
         if (SettingsUtils.getPrefNum(pref, SettingsKeys.themeId) == 0)
