@@ -1,7 +1,6 @@
 package tipz.browservio.webview;
 
 import static android.content.Context.MODE_PRIVATE;
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -16,16 +15,21 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -33,32 +37,36 @@ import android.webkit.WebIconDatabase;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewCompat;
 import androidx.webkit.WebViewFeature;
+import androidx.webkit.WebViewRenderProcess;
+import androidx.webkit.WebViewRenderProcessClient;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
 import tipz.browservio.Application;
@@ -71,22 +79,23 @@ import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
+import tipz.browservio.utils.DownloaderThread;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.webview.tabbies.BrowserActivity;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class VioWebView extends WebView {
     private final Context mContext;
-    private ProgressBar progressBar;
-    private AppCompatImageView favicon;
-    private ProgressBar faviconProgressBar;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private MaterialAutoCompleteTextView urlBox;
+    private VioWebViewActivity mVioWebViewActivity;
     private final IconHashClient iconHashClient;
     private final WebSettings webSettings;
+    private final WebViewRenderProcess mWebViewRenderProcess;
 
     public String UrlTitle;
-    public String currentUrl;
+    private String currentUrl;
     private String adServers;
     private boolean customBrowse = false;
+    private boolean updateHistory = true;
     private final SharedPreferences pref;
     private ValueCallback<Uri[]> mUploadMessage;
     private final ActivityResultLauncher<String> mFileChooser;
@@ -107,7 +116,9 @@ public class VioWebView extends WebView {
     public VioWebView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        pref = browservio_saver(context);
+        mWebViewRenderProcess = WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER) ?
+                WebViewCompat.getWebViewRenderProcess(this) : null;
+        pref = ((Application) context.getApplicationContext()).pref;
         iconHashClient = ((Application) mContext.getApplicationContext()).iconHashClient;
         webSettings = this.getSettings();
         mFileChooser = ((AppCompatActivity) mContext).registerForActivityResult(
@@ -123,9 +134,18 @@ public class VioWebView extends WebView {
         this.setPrebuiltUAMode(null, 0, true);
 
         /* Start the download manager service */
-        this.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) ->
-                DownloadUtils.dmDownloadFile(mContext, url, contentDisposition,
-                        mimeType, currentUrl));
+        this.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> {
+            DownloadUtils.dmDownloadFile(mContext, url, contentDisposition,
+                    mimeType, currentUrl);
+            if (customBrowse) {
+                updateCurrentUrl(getOriginalUrl());
+                mVioWebViewActivity.onPageLoadProgressChanged(0);
+            }
+            if (!canGoBack() && getOriginalUrl() == null
+                    && CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(
+                    pref, SettingsKeys.closeAppAfterDownload)))
+                mVioWebViewActivity.finish();
+        });
 
         this.setLayerType(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ?
                 View.LAYER_TYPE_HARDWARE : View.LAYER_TYPE_SOFTWARE, null);
@@ -157,14 +177,70 @@ public class VioWebView extends WebView {
 
         this.setWebViewClient(new WebClient());
         this.setWebChromeClient(new ChromeWebClient());
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE) && mWebViewRenderProcess != null)
+            WebViewCompat.setWebViewRenderProcessClient(this, new RenderClient());
 
         this.removeJavascriptInterface("searchBoxJavaBridge_"); /* CVE-2014-1939 */
         this.removeJavascriptInterface("accessibility"); /* CVE-2014-7224 */
         this.removeJavascriptInterface("accessibilityTraversal"); /* CVE-2014-7224 */
+
+        /* Hit Test Menu */
+        this.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
+            final WebView.HitTestResult hr = this.getHitTestResult();
+            final String url = hr.getExtra();
+            final int type = hr.getType();
+
+            if (type == WebView.HitTestResult.UNKNOWN_TYPE || type == WebView.HitTestResult.EDIT_TEXT_TYPE)
+                return;
+
+            MaterialAlertDialogBuilder webLongPress = new MaterialAlertDialogBuilder(mContext);
+            webLongPress.setTitle(url.length() > 75 ? url.substring(0, 74).concat("…") : url);
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext, R.layout.recycler_list_item_1);
+            if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE)
+                arrayAdapter.add(getResources().getString(R.string.open_in_new_tab));
+            if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                arrayAdapter.add(getResources().getString(R.string.download_image));
+                arrayAdapter.add(getResources().getString(R.string.search_image));
+            }
+            arrayAdapter.add(getResources().getString(R.string.copy_url));
+            arrayAdapter.add(getResources().getString(R.string.share_url));
+
+            webLongPress.setAdapter(arrayAdapter, (dialog, which) -> {
+                String strName = arrayAdapter.getItem(which);
+
+                if (strName.equals(getResources().getString(R.string.copy_url))) {
+                    CommonUtils.copyClipboard(mContext, url);
+                } else if (strName.equals(getResources().getString(R.string.download_image))) {
+                    DownloadUtils.dmDownloadFile(mContext, url,
+                            null, null, this.getUrl());
+                } else if (strName.equals(getResources().getString(R.string.search_image))) {
+                    this.loadUrl("http://images.google.com/searchbyimage?image_url=".concat(url));
+                } else if (strName.equals(getResources().getString(R.string.open_in_new_tab))) {
+                    Intent intent = new Intent(mContext, BrowserActivity.class);
+                    intent.putExtra(Intent.EXTRA_TEXT, url)
+                            .setAction(Intent.ACTION_SEND)
+                            .setType(UrlUtils.TypeSchemeMatch[1]);
+                    mContext.startActivity(intent);
+                } else if (strName.equals(getResources().getString(R.string.share_url))) {
+                    CommonUtils.shareUrl(mContext, url);
+                }
+            });
+
+            webLongPress.show();
+        });
     }
 
+    @SuppressWarnings("deprecation")
     public void doSettingsCheck() {
         // Dark mode
+        if (SettingsUtils.getPrefNum(pref, SettingsKeys.themeId) == 0)
+            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ?
+                    AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        else
+            AppCompatDelegate.setDefaultNightMode(SettingsUtils.getPrefNum(
+                    pref, SettingsKeys.themeId) == 2 ?
+                    AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         boolean darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
                 Configuration.UI_MODE_NIGHT_YES;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
@@ -183,25 +259,22 @@ public class VioWebView extends WebView {
                     SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)) ?
                     WebSettings.MIXED_CONTENT_NEVER_ALLOW : WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
+        // Google's "Safe" Browsing
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
+            WebSettingsCompat.setSafeBrowsingEnabled(webSettings,
+                    CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse)));
+
         // Do Not Track request
         mRequestHeaders.put("DNT", String.valueOf(SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT)));
     }
 
-    public void setUpFavicon(AppCompatImageView favicon, ProgressBar faviconProgressBar) {
-        this.favicon = favicon;
-        this.faviconProgressBar = faviconProgressBar;
+    public void notifyViewSetup() {
+        mVioWebViewActivity = (VioWebViewActivity) mContext;
+        doSettingsCheck();
     }
 
-    public void setUpUrlBox(MaterialAutoCompleteTextView urlBox) {
-        this.urlBox = urlBox;
-    }
-
-    public void setUpProgressBar(ProgressBar progressBar) {
-        this.progressBar = progressBar;
-    }
-
-    public void setUpSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
-        this.swipeRefreshLayout = swipeRefreshLayout;
+    public void setUpdateHistory(boolean updateHistory) {
+        this.updateHistory = updateHistory;
     }
 
     @Override
@@ -212,19 +285,40 @@ public class VioWebView extends WebView {
         String urlIdentify = URLIdentify(url);
         if (urlIdentify != null) {
             if (!urlIdentify.equals(CommonUtils.EMPTY_STRING)) {
-                currentUrl = urlIdentify;
+                updateCurrentUrl(urlIdentify);
                 super.loadUrl(urlIdentify);
             }
             return;
         }
 
-        String checkedUrl = UrlUtils.UrlChecker(pref, url,
-                CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)));
+        String checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url);
 
-        currentUrl = checkedUrl;
+        updateCurrentUrl(checkedUrl);
         // Load URL
         super.loadUrl(checkedUrl, mRequestHeaders);
         customBrowse = true;
+    }
+
+    @Override
+    public String getUrl() {
+        return currentUrl;
+    }
+
+    @Override
+    public void goBack() {
+        mVioWebViewActivity.onDropDownDismissed();
+        super.goBack();
+    }
+
+    @Override
+    public void goForward() {
+        mVioWebViewActivity.onDropDownDismissed();
+        super.goForward();
+    }
+
+    private void updateCurrentUrl(String url) {
+        mVioWebViewActivity.onUrlUpdated(url);
+        currentUrl = url;
     }
 
     /**
@@ -232,10 +326,8 @@ public class VioWebView extends WebView {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url, boolean update) {
-            if (!urlBox.getText().toString().equals(url) /* FIXME: Don't assume urlBox is always non-null */
-                    && urlShouldSet(url) || currentUrl == null) {
-                urlBox.setText(url);
-                currentUrl = url;
+            if (!currentUrl.equals(url) && urlShouldSet(url) || currentUrl == null) {
+                updateCurrentUrl(url);
                 if (update)
                     HistoryUtils.updateData(mContext, null, null, url, null);
                 else if (HistoryUtils.isEmptyCheck(mContext) || !HistoryUtils.lastUrl(mContext).equals(url))
@@ -248,13 +340,9 @@ public class VioWebView extends WebView {
             UrlSet(url, false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
-                    && urlShouldSet(url)) {
-                favicon.setVisibility(View.GONE);
-                faviconProgressBar.setVisibility(View.VISIBLE);
-            }
-            favicon.setImageResource(R.drawable.default_favicon);
-            urlBox.dismissDropDown();
+            mVioWebViewActivity.onFaviconProgressUpdated(true);
+            mVioWebViewActivity.onFaviconUpdated(null, false);
+            mVioWebViewActivity.onDropDownDismissed();
         }
 
         @Override
@@ -262,10 +350,7 @@ public class VioWebView extends WebView {
             if (view.getOriginalUrl() == null || view.getOriginalUrl().equals(url))
                 this.doUpdateVisitedHistory(view, url, true);
 
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) {
-                favicon.setVisibility(View.VISIBLE);
-                faviconProgressBar.setVisibility(View.GONE);
-            }
+            mVioWebViewActivity.onFaviconProgressUpdated(false);
         }
 
         @Override
@@ -275,10 +360,8 @@ public class VioWebView extends WebView {
                 CookieSyncManager.getInstance().sync();
             else
                 CookieManager.getInstance().flush();
-            if (!(favicon.getDrawable() instanceof BitmapDrawable))
-                favicon.setImageResource(R.drawable.default_favicon);
-            if (swipeRefreshLayout != null)
-                swipeRefreshLayout.setRefreshing(false);
+            mVioWebViewActivity.onFaviconUpdated(null, true);
+            mVioWebViewActivity.onSwipeRefreshLayoutRefreshingUpdated(false);
         }
 
         @Override
@@ -295,11 +378,11 @@ public class VioWebView extends WebView {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             boolean returnVal = false;
-            boolean normalSchemes = UrlUtils.startsWithMatch(url);
+            boolean normalSchemes = Uri.parse(url).isAbsolute();
             if (!normalSchemes) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)));
-                    ((AppCompatActivity) mContext).startActivity(intent);
+                    mContext.startActivity(intent);
                 } catch (ActivityNotFoundException ignored) {
                     view.stopLoading();
                 }
@@ -344,6 +427,11 @@ public class VioWebView extends WebView {
                     .setPositiveButton(getResources().getString(android.R.string.ok), (_dialog, _which) -> handler.proceed())
                     .setNegativeButton(getResources().getString(android.R.string.cancel), (_dialog, _which) -> handler.cancel())
                     .create().show();
+        }
+
+        @Override
+        public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+            return false;
         }
 
         @Override
@@ -410,23 +498,24 @@ public class VioWebView extends WebView {
 
         @Override
         public void onProgressChanged(WebView view, int progress) {
-            if (progressBar != null)
-                progressBar.setProgress(progress == 100 ? 0 : progress);
+            mVioWebViewActivity.onPageLoadProgressChanged(progress);
         }
 
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
-            favicon.setImageBitmap(icon);
-            HistoryUtils.updateData(mContext, iconHashClient, null, null, icon);
+            mVioWebViewActivity.onFaviconUpdated(icon, false);
+            if (updateHistory)
+                HistoryUtils.updateData(mContext, iconHashClient, null, null, icon);
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
             UrlTitle = title;
-            if (urlShouldSet(view.getUrl()) && title != null)
+            if (updateHistory && urlShouldSet(currentUrl) && title != null)
                 HistoryUtils.updateData(mContext, null, title, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(title));
+            mVioWebViewActivity.onTitleUpdated(title);
         }
 
         @Override
@@ -446,21 +535,111 @@ public class VioWebView extends WebView {
 
             return true;
         }
+
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            jsDialog(url, message, null, result, R.string.js_page_says);
+            return true;
+        }
+
+        @Override
+        public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+            jsDialog(url, message, null, result, R.string.js_leave_page_prompt);
+            return true;
+        }
+
+        @Override
+        public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+            jsDialog(url, message, null, result, R.string.js_page_says);
+            return true;
+        }
+
+        public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+            jsDialog(url, message, defaultValue, result, R.string.js_page_says);
+            return true;
+        }
+    }
+
+    /**
+     * WebViewRenderProcessClient
+     */
+    public class RenderClient extends WebViewRenderProcessClient {
+        AlertDialog dialog = new MaterialAlertDialogBuilder(mContext)
+                .setTitle(R.string.dialog_page_unresponsive_title)
+                .setMessage(R.string.dialog_page_unresponsive_message)
+                .setPositiveButton(R.string.dialog_page_unresponsive_wait, null)
+                .setNegativeButton(R.string.dialog_page_unresponsive_terminate, (_dialog, _which) ->
+                        mWebViewRenderProcess.terminate())
+                .create();
+
+        @Override
+        public void onRenderProcessUnresponsive(@NonNull WebView view, @Nullable WebViewRenderProcess renderer) {
+            dialog.show();
+        }
+
+        @Override
+        public void onRenderProcessResponsive(@NonNull WebView view, @Nullable WebViewRenderProcess renderer) {
+            dialog.dismiss();
+        }
+    }
+
+    private void jsDialog(String url, String message, String defaultValue, JsResult result, int titleResId) {
+        final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+        final AppCompatEditText jsMessage = root.findViewById(R.id.edittext);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(mContext);
+        dialog.setTitle(mContext.getResources().getString(titleResId, url))
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                    if (defaultValue == null)
+                        result.confirm();
+                    else
+                        ((JsPromptResult) result).confirm(
+                                Objects.requireNonNull(jsMessage.getText()).toString());
+                })
+                .setNegativeButton(android.R.string.cancel, (_dialog, _which) -> {
+                    result.cancel();
+                    mVioWebViewActivity.onFaviconProgressUpdated(false);
+                    mVioWebViewActivity.onPageLoadProgressChanged(0);
+                });
+
+        if (defaultValue != null)
+            dialog.setView(root);
+
+        dialog.create().show();
     }
 
     /* Function to update the list of Ad servers */
     private void updateAdServerList() {
-        String data = DownloadUtils.downloadToString("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
-        if (data != null) {
-            Scanner scanner = new Scanner(data);
-            StringBuilder builder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if (line.startsWith("127.0.0.1 "))
-                    builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+        adServers = CommonUtils.EMPTY_STRING;
+        DownloaderThread mHandlerThread = new DownloaderThread("adServers");
+        mHandlerThread.start();
+        mHandlerThread.setCallerHandler(new Handler(mHandlerThread.getLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case DownloaderThread.TYPE_SUCCESS:
+                        String data = msg.getData().getString("response");
+                        if (data != null) {
+                            Scanner scanner = new Scanner(data);
+                            StringBuilder builder = new StringBuilder();
+                            while (scanner.hasNextLine()) {
+                                String line = scanner.nextLine();
+                                if (line.startsWith("127.0.0.1 "))
+                                    builder.append(line).append(CommonUtils.LINE_SEPARATOR());
+                            }
+                            adServers = builder.toString();
+                        }
+                        break;
+                    case DownloaderThread.TYPE_FAILED:
+                        adServers = null;
+                        break;
+                }
+                mHandlerThread.quit();
+                super.handleMessage(msg);
             }
-            adServers = builder.toString();
-        }
+        });
+        mHandlerThread.startDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
     }
 
     private boolean urlShouldSet(String url) {

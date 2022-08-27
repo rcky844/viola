@@ -1,17 +1,15 @@
 package tipz.browservio.settings;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import tipz.browservio.search.SearchEngineEntries;
 import tipz.browservio.utils.CommonUtils;
 
 public class SettingsInit {
-    SharedPreferences pref;
-    public SettingsInit(Context mContext) {
-        pref = browservio_saver(mContext);
+    public SharedPreferences pref;
+    public SettingsInit(Context context) {
+        pref = context.getSharedPreferences(SettingsKeys.browservio_saver, Activity.MODE_PRIVATE);
 
         /* A bloopers fix for migrating from old versions */
         if (SettingsUtils.isFirstLaunch(pref) && SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion) == 0
@@ -20,22 +18,21 @@ public class SettingsInit {
 
         if (SettingsUtils.isFirstLaunch(pref)) {
             SettingsUtils.setPrefNum(pref, SettingsKeys.centerActionBar, 1);
-            SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage,
-                    SearchEngineEntries.getHomePageUrl(pref, 7));
+            SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, 7);
-            SettingsUtils.setPref(pref, SettingsKeys.defaultSearch,
-                    SearchEngineEntries.getSearchUrl(pref, 7, null));
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, 7);
-            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions,
-                    SearchEngineEntries.getSuggestionsUrl(pref, 6, null, null));
-            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 6);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, 7);
             SettingsUtils.setPrefNum(pref, SettingsKeys.isJavaScriptEnabled, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableAdBlock, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.useCustomTabs, 1);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.updateRecentsIcon, 1);
         } else {
             protoVer0To1();
             //protoVer1To2();
@@ -74,6 +71,19 @@ public class SettingsInit {
             if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId) != 8)
                 SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, CommonUtils.EMPTY_STRING);
             SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
+            /* 8f2ca067: java: settings: Allow the user to choose if they want Custom Tabs */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.useCustomTabs, 1);
+            /* 2d6ce244: java: webview: Finish if launched page is a download */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1);
+            /* 89b55613: java: browser: Add support for reverse layout */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 0);
+            /* 3cc75065: java: search: Add support for DuckDuckGo search suggestions */
+            if (SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId) >= 2)
+                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId + 1));
+            /* 9410799f: java: settings: Add switch for updating task label description */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.updateRecentsIcon, 1);
+            /* bac9b451: java: webview: Allow disabling Google's "Safe" Browsing feature */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse, 0);
         }
     }
 }

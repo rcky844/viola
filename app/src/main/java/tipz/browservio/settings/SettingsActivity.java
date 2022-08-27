@@ -1,10 +1,8 @@
 package tipz.browservio.settings;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
 import static tipz.browservio.utils.ApkInstaller.installApplication;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -15,6 +13,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -38,11 +38,13 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
+import tipz.browservio.Application;
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.utils.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
+import tipz.browservio.utils.DownloaderThread;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -73,13 +75,13 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsPrefHandler extends PreferenceFragmentCompat {
-        private final Activity settingsActivity;
+        private final AppCompatActivity settingsActivity;
         private final SharedPreferences pref;
 
-        public SettingsPrefHandler(Activity act) {
-            WeakReference<Activity> activity = new WeakReference<>(act);
+        public SettingsPrefHandler(AppCompatActivity act) {
+            WeakReference<AppCompatActivity> activity = new WeakReference<>(act);
             settingsActivity = activity.get();
-            pref = browservio_saver(settingsActivity);
+            pref = ((Application) settingsActivity.getApplicationContext()).pref;
         }
 
         public static boolean needReload = false;
@@ -125,15 +127,6 @@ public class SettingsActivity extends AppCompatActivity {
             final String[] searchHomePageList = settingsActivity.getResources().getStringArray(R.array.search_entries);
             searchHomePageList[7] += settingsActivity.getResources().getString(R.string.search_entries_default);
 
-            final String[] suggestionsList = {
-                    searchHomePageList[0],
-                    searchHomePageList[1],
-                    searchHomePageList[3],
-                    searchHomePageList[4],
-                    searchHomePageList[5],
-                    searchHomePageList[6],
-                    searchHomePageList[7],
-            };
             final String[] themeList = settingsActivity.getResources().getStringArray(R.array.themes);
 
             /* General category */
@@ -145,16 +138,21 @@ public class SettingsActivity extends AppCompatActivity {
             SwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
             SwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
             SwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
+            SwitchPreference google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
             SwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
             SwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
+            SwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
             SwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
+            SwitchPreference update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
 
             /* Advanced category */
             SwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
+            SwitchPreference use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
+            SwitchPreference close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */
             Preference version = Objects.requireNonNull(findPreference("version"));
@@ -172,6 +170,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
                                 final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
                                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_engine))
+                                        .setMessage(settingsActivity.getResources().getString(R.string.custom_search_guide))
                                         .setView(root)
                                         .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                                             if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
@@ -232,35 +231,35 @@ public class SettingsActivity extends AppCompatActivity {
             search_suggestions.setOnPreferenceClickListener(preference -> {
                 final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)};
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
-                        .setSingleChoiceItems(suggestionsList,
+                        .setSingleChoiceItems(searchHomePageList,
                                 SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
-                            SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
-                            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[checkedItem[0]]));
+                            if (checkedItem[0] == 8) {
+                                final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
+                                @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                                final AppCompatEditText custom_sg = root.findViewById(R.id.edittext);
+                                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
+                                        .setMessage(settingsActivity.getResources().getString(R.string.custom_search_guide))
+                                        .setView(root)
+                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                                            if (!Objects.requireNonNull(custom_sg.getText()).toString().isEmpty()) {
+                                                SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, custom_sg.getText().toString());
+                                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
+                                                search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[checkedItem[0]]));
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.cancel, null)
+                                        .create().show();
+                            }
+
+                            if (checkedItem[0] != 8) {
+                                SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
+                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
+                                search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[checkedItem[0]]));
+                            }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .create().show();
-                return true;
-            });
-
-            adBlocker.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.enableAdBlock, adBlocker.isChecked(), false);
-                needReload = true;
-                return true;
-            });
-
-            do_not_track.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.sendDNT, do_not_track.isChecked(), false);
-                needReload = true;
-                return true;
-            });
-
-            enforce_https.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.enforceHttps, enforce_https.isChecked(), false);
                 return true;
             });
 
@@ -300,31 +299,6 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            show_favicon.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.showFavicon, show_favicon.isChecked(), false);
-                return true;
-            });
-
-            center_action.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.centerActionBar, center_action.isChecked(), false);
-                return true;
-            });
-
-            enable_swipe_refresh.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.enableSwipeRefresh, enable_swipe_refresh.isChecked(), false);
-                return true;
-            });
-
-            javascript.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        SettingsKeys.isJavaScriptEnabled, javascript.isChecked(), false);
-                needReload = true;
-                return true;
-            });
-
             version.setOnPreferenceClickListener(preference -> {
                 @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
                 AlertDialog dialog = new MaterialAlertDialogBuilder(settingsActivity).setView(dialogView)
@@ -332,7 +306,7 @@ public class SettingsActivity extends AppCompatActivity {
                         .create();
 
                 ConstraintLayout easter_banner = dialogView.findViewById(R.id.easter_banner);
-                AppCompatImageView easter_banner_front = dialogView.findViewById(R.id.easter_banner_front);
+                View easter_banner_front = dialogView.findViewById(R.id.easter_banner_front);
                 AppCompatImageView eagle = dialogView.findViewById(R.id.eagle);
                 AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
@@ -344,10 +318,7 @@ public class SettingsActivity extends AppCompatActivity {
                         eagle.animate().cancel();
                         eagle.setX(pressed[1] == 0 ?
                                 (easter_banner.getLeft() - 200f) : (easter_banner.getRight() + 200f));
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
-                            easter_banner_front.setImageResource(R.mipmap.ic_launcher_round);
-                        else
-                            easter_banner_front.setImageResource(R.drawable.browservio_banner_front);
+                        easter_banner_front.setVisibility(View.VISIBLE);
                         if (pressed[0] == 0)
                             CommonUtils.showMessage(settingsActivity,
                                     getResources().getString(R.string.app_name)
@@ -356,16 +327,14 @@ public class SettingsActivity extends AppCompatActivity {
                         pressed[0]++;
                     } else {
                         eagle.setVisibility(View.VISIBLE);
-                        easter_banner_front.setImageDrawable(null);
+                        easter_banner_front.setVisibility(View.GONE);
                         eagle.animate().translationX(pressed[1] == 0 ?
-                                easter_banner.getRight() + 200f : easter_banner.getLeft() - 200f)
+                                        easter_banner.getRight() + 200f : easter_banner.getLeft() - 200f)
                                 .setDuration(5000);
                         pressed[0] = 0;
                         pressed[1] = ~pressed[1] & 1;
                     }
                 });
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
-                    easter_banner_front.setImageResource(R.mipmap.ic_launcher_round);
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
                         BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
@@ -373,38 +342,50 @@ public class SettingsActivity extends AppCompatActivity {
                         BuildConfig.VERSION_CODENAME,
                         BuildConfig.VERSION_BUILD_YEAR));
                 update_btn.setOnClickListener(_update_btn -> {
-                    if (CommonUtils.isNetworkAvailable(settingsActivity.getApplicationContext())) {
-                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
-                    } else {
-                        File apkFile = new File(updateDownloadPath);
+                    DownloaderThread mHandlerThread = new DownloaderThread("adServers");
+                    mHandlerThread.start();
+                    mHandlerThread.setCallerHandler(new Handler(mHandlerThread.getLooper()) {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            switch (msg.what) {
+                                case DownloaderThread.TYPE_SUCCESS:
+                                    String data = msg.getData().getString("response");
+                                    File apkFile = new File(updateDownloadPath);
 
-                        String arrayString = DownloadUtils.downloadToString(
-                                "https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg", 5000);
-                        if (arrayString == null) {
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
-                            return;
+                                    if (data == null) {
+                                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
+                                        return;
+                                    }
+                                    String[] array = data.split(CommonUtils.LINE_SEPARATOR());
+
+                                    if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE) {
+                                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
+                                        return;
+                                    }
+
+                                    new MaterialAlertDialogBuilder(settingsActivity)
+                                            .setTitle(getResources().getString(R.string.new_update_detect_title))
+                                            .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
+                                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                                                if (!apkFile.exists() || apkFile.delete())
+                                                    downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
+                                                            null, "application/vnd.android.package-archive",
+                                                            getResources().getString(R.string.download_title), "browservio-update.apk", null);
+                                                else
+                                                    CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
+                                            })
+                                            .setNegativeButton(android.R.string.cancel, null)
+                                            .create().show();
+                                    break;
+                                case DownloaderThread.TYPE_FAILED:
+                                    CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
+                                    break;
+                            }
+                            mHandlerThread.quit();
+                            super.handleMessage(msg);
                         }
-                        String[] array = arrayString.split(CommonUtils.LINE_SEPARATOR());
-
-                        if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE) {
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
-                            return;
-                        }
-
-                        new MaterialAlertDialogBuilder(settingsActivity)
-                                .setTitle(getResources().getString(R.string.new_update_detect_title))
-                                .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
-                                .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                    if (!apkFile.exists() || apkFile.delete())
-                                        downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
-                                                null, "application/vnd.android.package-archive",
-                                                getResources().getString(R.string.download_title), "browservio-update.apk", null);
-                                    else
-                                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
-                                })
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .create().show();
-                    }
+                    });
+                    mHandlerThread.startDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg");
                 });
                 changelog_btn.setOnClickListener(_license_btn -> {
                     needLoad(BrowservioURLs.realChangelogUrl);
@@ -429,23 +410,34 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
-            checkIfPrefIntIsTrue(SettingsKeys.enableAdBlock, adBlocker);
-            checkIfPrefIntIsTrue(SettingsKeys.sendDNT, do_not_track);
-            checkIfPrefIntIsTrue(SettingsKeys.enforceHttps, enforce_https);
-            checkIfPrefIntIsTrue(SettingsKeys.showFavicon, show_favicon);
-            checkIfPrefIntIsTrue(SettingsKeys.centerActionBar, center_action);
-            checkIfPrefIntIsTrue(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh);
-            checkIfPrefIntIsTrue(SettingsKeys.isJavaScriptEnabled, javascript);
+            setupCheckBoxPref(SettingsKeys.enableAdBlock, adBlocker, true);
+            setupCheckBoxPref(SettingsKeys.sendDNT, do_not_track, true);
+            setupCheckBoxPref(SettingsKeys.enforceHttps, enforce_https, false);
+            setupCheckBoxPref(SettingsKeys.enableGoogleSafeBrowse, google_safe_browsing, false);
+            setupCheckBoxPref(SettingsKeys.showFavicon, show_favicon, false);
+            setupCheckBoxPref(SettingsKeys.centerActionBar, center_action, false);
+            setupCheckBoxPref(SettingsKeys.reverseLayout, reverse_layout, false);
+            setupCheckBoxPref(SettingsKeys.updateRecentsIcon, update_recents_icon, false);
+            setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
+            setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
+            setupCheckBoxPref(SettingsKeys.useCustomTabs, use_custom_tabs, false);
+            setupCheckBoxPref(SettingsKeys.closeAppAfterDownload, close_app_after_download, false);
             search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
             homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));
-            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, suggestionsList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
+            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
             theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]));
             version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
             needReload = false;
         }
 
-        private void checkIfPrefIntIsTrue(String tag, SwitchPreference checkBox) {
+        private void setupCheckBoxPref(String tag, SwitchPreference checkBox, boolean needReload) {
             checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, tag)));
+            checkBox.setOnPreferenceClickListener(preference -> {
+                SettingsUtils.setPrefIntBoolAccBool(pref,
+                        tag, checkBox.isChecked(), false);
+                SettingsPrefHandler.needReload = needReload;
+                return true;
+            });
         }
     }
 }

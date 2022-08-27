@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import tipz.browservio.MainActivity;
+import tipz.browservio.webview.tabbies.BrowserActivity;
 import tipz.browservio.R;
 
 /*
@@ -80,7 +80,7 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
             title.setText(suggestion);
         }
 
-        copy_to_search_bar_button.setOnClickListener(view -> ((MainActivity) mContext).copyToSearchBar(suggestion));
+        copy_to_search_bar_button.setOnClickListener(view -> ((BrowserActivity) mContext).copyToSearchBar(suggestion));
         return convertView;
     }
 

@@ -18,7 +18,8 @@ public class SearchEngineEntries {
                     .setSearch("https://www.baidu.com/s?wd={query}")
                     .setSuggestion("http://suggestion.baidu.com/su?ie=UTF-8&wd={query}&action=opensearch"),
             new EngineObject().setHomePage("https://www.duckduckgo.com")
-                    .setSearch("https://www.duckduckgo.com/?q={query}"),
+                    .setSearch("https://www.duckduckgo.com/?q={query}")
+                    .setSuggestion("https://duckduckgo.com/ac/?q={query}&type=list"),
             new EngineObject().setHomePage("https://www.bing.com")
                     .setSearch("https://www.bing.com/search?q={query}")
                     .setSuggestion("https://api.bing.com/osjson.aspx?query={query}&language={language}"),
@@ -44,12 +45,12 @@ public class SearchEngineEntries {
         return UrlUtils.cve_2017_13274(url);
     }
 
-    public static String getSearchUrl(SharedPreferences pref, int position, String query) {
+    public static String getSearchUrl(SharedPreferences pref, int position, String query, String language) {
         String url = engines[position].getSearch();
         if (url.isEmpty())
             url = SettingsUtils.getPref(pref, SettingsKeys.defaultSearch);
         if (query != null)
-            url = url.replace(queryPlaceholder, query);
+            url = url.replace(queryPlaceholder, query).replace(languagePlaceholder, language);
         return UrlUtils.cve_2017_13274(url);
     }
 

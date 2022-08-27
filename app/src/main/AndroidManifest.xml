@@ -21,10 +21,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="s">
+        <meta-data
+            android:name="android.webkit.WebView.EnableSafeBrowsing"
+            android:value="false" />
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
-            android:documentLaunchMode="always"
+            android:excludeFromRecents="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,7 +66,7 @@
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:scheme="content"/>
+                <data android:scheme="content" />
                 <data android:mimeType="text/html" />
                 <data android:mimeType="text/plain" />
                 <data android:mimeType="application/xhtml+xml" />
@@ -75,6 +79,14 @@
                 <data android:scheme="text/plain" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".webview.tabbies.BrowserActivity"
+            android:configChanges="orientation|screenSize"
+            android:documentLaunchMode="always" />
+        <activity
+            android:name=".webview.tabbies.CustomTabsActivity"
+            android:configChanges="orientation|screenSize"
+            android:documentLaunchMode="always" />
         <activity
             android:name=".settings.SettingsActivity"
             android:configChanges="orientation|screenSize" />

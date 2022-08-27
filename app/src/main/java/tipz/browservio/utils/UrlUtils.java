@@ -1,5 +1,6 @@
 package tipz.browservio.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
@@ -14,25 +15,29 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tipz.browservio.Application;
 import tipz.browservio.search.SearchEngineEntries;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 
 public class UrlUtils {
+    /**
+     * An array used for intent filtering
+     */
+    public static final String[] TypeSchemeMatch = {
+            "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
+            "http", "https", "ftp", "file"};
 
-    private static final String[] startsWithMatch = {
-            "http", "https", "content", "ftp", "file",
-            "about", "javascript", "blob", "data"};
-
+    private static final String httpUrlRegex = "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)";
 
     /**
      * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
      * security flaws in producing correct host name from url string in android.net.Uri,
      * patch it ourselves.
-     *
+     * <p>
      * Ref: CVE-2017-13274
      *
-     * @param url         supplied url to check.
+     * @param url supplied url to check.
      * @return fixed up url
      */
     public static String cve_2017_13274(String url) {
@@ -46,34 +51,26 @@ public class UrlUtils {
      * <p>
      * Checks if URL is valid, if not, make it a search term.
      *
-     * @param url         is supplied as the URL to check.
+     * @param input the input to check.
      * @return result
      */
-    public static String UrlChecker(SharedPreferences pref, String url, boolean enforceHttps) {
-        String trimmedUrl = url.trim();
+    public static String toSearchOrValidUrl(Context context, String input) {
+        SharedPreferences pref = ((Application) context.getApplicationContext()).pref;
+        String trimmedInput = cve_2017_13274(input.trim());
 
-        // Decode once to decode %XX and all the nasty Uri stuff
-        trimmedUrl = Uri.decode(cve_2017_13274(trimmedUrl));
-
-        if (startsWithMatch(trimmedUrl) || trimmedUrl.startsWith(BrowservioURLs.prefix))
-            return trimmedUrl;
-
-        if (trimmedUrl.contains("/") || trimmedUrl.contains("."))
-            return (enforceHttps ? "https://" : "http://") + trimmedUrl;
-
-        if (pref != null)
-            return SearchEngineEntries.getSearchUrl(pref,
-                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId), trimmedUrl);
-
-        return trimmedUrl;
-    }
-
-    public static boolean startsWithMatch(String url) {
-        for (String match : startsWithMatch) {
-            if (url.startsWith(match.concat(":")))
-                return true;
+        Uri uri = Uri.parse(trimmedInput);
+        if (uri.isRelative()) {
+            uri = Uri.parse((CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)) ?
+                    "https://" : "http://").concat(trimmedInput));
+            if (!uri.toString().matches(httpUrlRegex)) {
+                return SearchEngineEntries.getSearchUrl(pref,
+                        SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId),
+                        input, CommonUtils.getLanguage());
+            }
+        } else {
+            uri = Uri.parse(trimmedInput.toLowerCase(Locale.ROOT));
         }
-        return false;
+        return uri.toString();
     }
 
     /**
@@ -158,39 +155,37 @@ public class UrlUtils {
 
     /**
      * This is the regular expression to match the content disposition type segment.
-     *
+     * <p>
      * A content disposition header can start either with inline or attachment followed by comma;
-     *  For example: attachment; filename="filename.jpg" or inline; filename="filename.jpg"
+     * For example: attachment; filename="filename.jpg" or inline; filename="filename.jpg"
      * (inline|attachment)\\s*; -> Match either inline or attachment, followed by zero o more
      * optional whitespaces characters followed by a comma.
-     *
      */
     private static final String contentDispositionType = "(inline|attachment)\\s*;";
 
     /**
      * This is the regular expression to match filename* parameter segment.
-     *
+     * <p>
      * A content disposition header could have an optional filename* parameter,
      * the difference between this parameter and the filename is that this uses
      * the encoding defined in RFC 5987.
-     *
+     * <p>
      * Some examples:
-     *  filename*=utf-8''success.html
-     *  filename*=iso-8859-1'en'file%27%20%27name.jpg
-     *  filename*=utf-8'en'filename.jpg
-     *
+     * filename*=utf-8''success.html
+     * filename*=iso-8859-1'en'file%27%20%27name.jpg
+     * filename*=utf-8'en'filename.jpg
+     * <p>
      * For matching this section we use:
      * \\s*filename\\s*=\\s*= -> Zero or more optional whitespaces characters
      * followed by filename followed by any zero or more whitespaces characters and the equal sign;
-     *
+     * <p>
      * (utf-8|iso-8859-1)-> Either utf-8 or iso-8859-1 encoding types.
-     *
+     * <p>
      * '[^']*'-> Zero or more characters that are inside of single quotes '' that are not single
      * quote.
-     *
+     * <p>
      * (\S*) -> Zero or more characters that are not whitespaces. In this group,
      * it's where we are going to have the filename.
-     *
      */
     private static final String contentDispositionFileNameAsterisk =
             "\\s*filename\\*\\s*=\\s*(utf-8|iso-8859-1)'[^']*'([^;\\s]*)";
@@ -200,7 +195,7 @@ public class UrlUtils {
      * Both inline and attachment types are supported.
      * More details can be found
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
-     *
+     * <p>
      * The first segment is the [contentDispositionType], there you can find the documentation,
      * Next, it's the filename segment, where we have a filename="filename.ext"
      * For example, all of these could be possible in this section:
@@ -209,30 +204,30 @@ public class UrlUtils {
      * filename="file\\name.jpg"
      * filename="file\\\"name.jpg"
      * filename=filename.jpg
-     *
+     * <p>
      * For matching this section we use:
      * \\s*filename\\s*=\\s*= -> Zero or more whitespaces followed by filename followed
-     *  by zero or more whitespaces and the equal sign.
-     *
+     * by zero or more whitespaces and the equal sign.
+     * <p>
      * As we want to extract the the content of filename="THIS", we use:
-     *
+     * <p>
      * \\s* -> Zero or more whitespaces
-     *
-     *  (\"((?:\\\\.|[^|"\\\\])*)\" -> A quotation mark, optional : or \\ or any character,
-     *  and any non quotation mark or \\\\ zero or more times.
-     *
-     *  For example: filename="file\\name.jpg", filename="file\"name.jpg" and filename="file\\\"name.jpg"
-     *
+     * <p>
+     * (\"((?:\\\\.|[^|"\\\\])*)\" -> A quotation mark, optional : or \\ or any character,
+     * and any non quotation mark or \\\\ zero or more times.
+     * <p>
+     * For example: filename="file\\name.jpg", filename="file\"name.jpg" and filename="file\\\"name.jpg"
+     * <p>
      * We don't want to match after ; appears, For example filename="filename.jpg"; foo
      * we only want to match before the semicolon, so we use. |[^;]*)
-     *
+     * <p>
      * \\s* ->  Zero or more whitespaces.
-     *
-     *  For supporting cases, where we have both filename and filename*, we use:
+     * <p>
+     * For supporting cases, where we have both filename and filename*, we use:
      * "(?:;$contentDispositionFileNameAsterisk)?"
-     *
+     * <p>
      * Some examples:
-     *
+     * <p>
      * attachment; filename="_.jpg"; filename*=iso-8859-1'en'file%27%20%27name.jpg
      * attachment; filename="_.jpg"; filename*=iso-8859-1'en'file%27%20%27name.jpg
      */
