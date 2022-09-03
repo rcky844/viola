@@ -55,11 +55,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_settings);
 
-        Toolbar _toolbar = findViewById(R.id._toolbar);
-        setSupportActionBar(_toolbar);
+        Toolbar toolbar = findViewById(R.id._toolbar);
+        setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        _toolbar.setNavigationOnClickListener(_v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         SettingsPrefHandler fragment = new SettingsPrefHandler(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.list_container, fragment).commit();

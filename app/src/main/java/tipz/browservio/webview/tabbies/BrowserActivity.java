@@ -85,8 +85,8 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.close);
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(
                 pref, SettingsKeys.reverseLayout)) ? R.layout.main_wpmode : R.layout.main);
         initialize();
@@ -255,7 +255,7 @@ public class BrowserActivity extends VioWebViewActivity {
                 BrowserActivity.this, RecyclerView.HORIZONTAL, false));
         actionBar.setAdapter(new ItemsAdapter(BrowserActivity.this));
 
-        favicon.setOnClickListener(_view -> {
+        favicon.setOnClickListener(v -> {
             final SslCertificate cert = webview.getCertificate();
             PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, favicon);
             Menu menu = popupMenu.getMenu();
@@ -315,7 +315,7 @@ public class BrowserActivity extends VioWebViewActivity {
             popupMenu.show();
         });
 
-        fab.setOnClickListener(_view -> {
+        fab.setOnClickListener(v -> {
             if (actionBarBack.getVisibility() == View.VISIBLE) {
                 fab.animate().rotationBy(180).setDuration(250).start();
                 actionBarBack.animate().alpha(0f).setDuration(250).start();
