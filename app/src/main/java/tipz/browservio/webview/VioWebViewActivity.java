@@ -25,7 +25,7 @@ import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 
-public class VioWebViewActivity extends AppCompatActivity implements VioWebViewInterface {
+public class VioWebViewActivity extends AppCompatActivity {
     public SharedPreferences pref;
 
     public VioWebView webview;
@@ -94,17 +94,14 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         }
     }
 
-    @Override
     public void onUrlUpdated(String url) {
 
     }
 
-    @Override
     public void onUrlUpdated(String url, int position) {
 
     }
 
-    @Override
     @CallSuper
     public void onTitleUpdated(String title) {
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
@@ -115,12 +112,10 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         }
     }
 
-    @Override
     public void onDropDownDismissed() {
 
     }
 
-    @Override
     @CallSuper
     public void onFaviconUpdated(Bitmap icon, boolean checkInstance) {
         if (favicon != null && faviconProgressBar != null) {
@@ -141,7 +136,6 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         }
     }
 
-    @Override
     @CallSuper
     public void onFaviconProgressUpdated(boolean isLoading) {
         if (favicon != null && faviconProgressBar != null) {
@@ -158,7 +152,6 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         }
     }
 
-    @Override
     @CallSuper
     public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
         if (swipeRefreshLayout != null) {
@@ -181,7 +174,6 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
             swipeRefreshLayout.setEnabled(swipeRefreshLayoutEnabled);
     }
 
-    @Override
     @CallSuper
     public void onPageLoadProgressChanged(int progress) {
         if (progressBar != null)
