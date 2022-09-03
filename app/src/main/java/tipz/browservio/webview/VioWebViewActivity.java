@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -59,6 +60,42 @@ public class VioWebViewActivity extends AppCompatActivity {
         // Setup favicon
         if (favicon != null && faviconProgressBar != null)
             faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
+    }
+
+    /**
+     * When back button is pressed, go back in history or finish activity
+     */
+    @Override
+    public void onBackPressed() {
+        if (webview.canGoBack())
+            webview.goBack();
+        else
+            finish();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            webview.freeMemory();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (webview != null) {
+            webview.stopLoading();
+            webview.setWebViewClient(null);
+            webview.setWebChromeClient(null);
+            // According to the doc of WebView#destroy(), webview should be removed from the view
+            // system before calling the WebView#destroy().
+            ((ViewGroup) webview.getParent()).removeView(webview);
+            webview.destroy();
+        }
+        if (!isChangingConfigurations()) {
+            // For removing all WebView thread
+            System.exit(0);
+        }
     }
 
     /**

@@ -93,31 +93,6 @@ public class BrowserActivity extends VioWebViewActivity {
         initializeLogic();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (webview != null) {
-            webview.stopLoading();
-            webview.setWebViewClient(null);
-            webview.setWebChromeClient(null);
-            // According to the doc of WebView#destroy(), webview should be removed from the view
-            // system before calling the WebView#destroy().
-            ((ViewGroup) webview.getParent()).removeView(webview);
-            webview.destroy();
-        }
-        if (!isChangingConfigurations()) {
-            // For removing all WebView thread
-            System.exit(0);
-        }
-    }
-
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-            webview.freeMemory();
-    }
-
     // https://stackoverflow.com/a/57840629/10866268
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -383,17 +358,6 @@ public class BrowserActivity extends VioWebViewActivity {
             webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
                     SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
         }
-    }
-
-    /**
-     * When back button is pressed, go back in history or finish activity
-     */
-    @Override
-    public void onBackPressed() {
-        if (webview.canGoBack())
-            webview.goBack();
-        else
-            finish();
     }
 
     @Override
