@@ -80,7 +80,7 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
             title.setText(suggestion);
         }
 
-        copy_to_search_bar_button.setOnClickListener(view -> ((VioWebViewActivity) mContext).onUrlUpdated(suggestion));
+        copy_to_search_bar_button.setOnClickListener(view -> ((VioWebViewActivity) mContext).onUrlUpdated(suggestion, suggestion.length()));
         return convertView;
     }
 

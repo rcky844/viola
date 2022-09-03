@@ -406,6 +406,12 @@ public class BrowserActivity extends VioWebViewActivity {
     }
 
     @Override
+    public void onUrlUpdated(String url, int position) {
+        UrlEdit.setText(url);
+        UrlEdit.setSelection(position);
+    }
+
+    @Override
     public void onDropDownDismissed() {
         UrlEdit.dismissDropDown();
         UrlEdit.clearFocus();

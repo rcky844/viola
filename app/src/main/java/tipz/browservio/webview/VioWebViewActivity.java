@@ -100,6 +100,11 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     }
 
     @Override
+    public void onUrlUpdated(String url, int position) {
+
+    }
+
+    @Override
     @CallSuper
     public void onTitleUpdated(String title) {
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
