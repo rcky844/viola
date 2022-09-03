@@ -357,10 +357,6 @@ public class BrowserActivity extends VioWebViewActivity {
         UrlEdit.setAdapter(new SuggestionAdapter(BrowserActivity.this, R.layout.recycler_list_item_1));
     }
 
-    public void copyToSearchBar(CharSequence toCopy) {
-        UrlEdit.setText(toCopy);
-    }
-
     private void closeKeyboard() {
         WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
     }
