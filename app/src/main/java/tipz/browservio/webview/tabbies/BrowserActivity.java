@@ -85,37 +85,12 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.close);
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(
                 pref, SettingsKeys.reverseLayout)) ? R.layout.main_wpmode : R.layout.main);
         initialize();
         initializeLogic();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (webview != null) {
-            webview.stopLoading();
-            webview.setWebViewClient(null);
-            webview.setWebChromeClient(null);
-            // According to the doc of WebView#destroy(), webview should be removed from the view
-            // system before calling the WebView#destroy().
-            ((ViewGroup) webview.getParent()).removeView(webview);
-            webview.destroy();
-        }
-        if (!isChangingConfigurations()) {
-            // For removing all WebView thread
-            System.exit(0);
-        }
-    }
-
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-            webview.freeMemory();
     }
 
     // https://stackoverflow.com/a/57840629/10866268
@@ -255,7 +230,7 @@ public class BrowserActivity extends VioWebViewActivity {
                 BrowserActivity.this, RecyclerView.HORIZONTAL, false));
         actionBar.setAdapter(new ItemsAdapter(BrowserActivity.this));
 
-        favicon.setOnClickListener(_view -> {
+        favicon.setOnClickListener(v -> {
             final SslCertificate cert = webview.getCertificate();
             PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, favicon);
             Menu menu = popupMenu.getMenu();
@@ -315,7 +290,7 @@ public class BrowserActivity extends VioWebViewActivity {
             popupMenu.show();
         });
 
-        fab.setOnClickListener(_view -> {
+        fab.setOnClickListener(v -> {
             if (actionBarBack.getVisibility() == View.VISIBLE) {
                 fab.animate().rotationBy(180).setDuration(250).start();
                 actionBarBack.animate().alpha(0f).setDuration(250).start();
@@ -357,10 +332,6 @@ public class BrowserActivity extends VioWebViewActivity {
         UrlEdit.setAdapter(new SuggestionAdapter(BrowserActivity.this, R.layout.recycler_list_item_1));
     }
 
-    public void copyToSearchBar(CharSequence toCopy) {
-        UrlEdit.setText(toCopy);
-    }
-
     private void closeKeyboard() {
         WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
     }
@@ -389,20 +360,15 @@ public class BrowserActivity extends VioWebViewActivity {
         }
     }
 
-    /**
-     * When back button is pressed, go back in history or finish activity
-     */
-    @Override
-    public void onBackPressed() {
-        if (webview.canGoBack())
-            webview.goBack();
-        else
-            finish();
-    }
-
     @Override
     public void onUrlUpdated(String url) {
         UrlEdit.setText(url);
+    }
+
+    @Override
+    public void onUrlUpdated(String url, int position) {
+        UrlEdit.setText(url);
+        UrlEdit.setSelection(position);
     }
 
     @Override

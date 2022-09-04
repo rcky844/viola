@@ -18,8 +18,8 @@ import tipz.browservio.utils.UrlUtils;
 
 public class MainActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (!webViewEnabled()) {
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.no_webview));
             finish();

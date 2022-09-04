@@ -49,8 +49,8 @@ public class BrohaListInterfaceActivity extends AppCompatActivity {
     public static final String mode_favorites = "FAVORITES";
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         activityMode = getIntent().getStringExtra(Intent.EXTRA_TEXT);
         if (!activityMode.equals(mode_history) && !activityMode.equals(mode_favorites))
             finish();

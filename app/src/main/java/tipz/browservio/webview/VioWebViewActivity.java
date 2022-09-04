@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -25,7 +26,7 @@ import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 
-public class VioWebViewActivity extends AppCompatActivity implements VioWebViewInterface {
+public class VioWebViewActivity extends AppCompatActivity {
     public SharedPreferences pref;
 
     public VioWebView webview;
@@ -62,6 +63,42 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
     }
 
     /**
+     * When back button is pressed, go back in history or finish activity
+     */
+    @Override
+    public void onBackPressed() {
+        if (webview.canGoBack())
+            webview.goBack();
+        else
+            finish();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            webview.freeMemory();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (webview != null) {
+            webview.stopLoading();
+            webview.setWebViewClient(null);
+            webview.setWebChromeClient(null);
+            // According to the doc of WebView#destroy(), webview should be removed from the view
+            // system before calling the WebView#destroy().
+            ((ViewGroup) webview.getParent()).removeView(webview);
+            webview.destroy();
+        }
+        if (!isChangingConfigurations()) {
+            // For removing all WebView thread
+            System.exit(0);
+        }
+    }
+
+    /**
      * Need Load Info Receiver
      * <p>
      * Receive needLoadUrl for loading.
@@ -94,12 +131,14 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         }
     }
 
-    @Override
     public void onUrlUpdated(String url) {
 
     }
 
-    @Override
+    public void onUrlUpdated(String url, int position) {
+
+    }
+
     @CallSuper
     public void onTitleUpdated(String title) {
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
@@ -110,12 +149,10 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         }
     }
 
-    @Override
     public void onDropDownDismissed() {
 
     }
 
-    @Override
     @CallSuper
     public void onFaviconUpdated(Bitmap icon, boolean checkInstance) {
         if (favicon != null && faviconProgressBar != null) {
@@ -136,7 +173,6 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         }
     }
 
-    @Override
     @CallSuper
     public void onFaviconProgressUpdated(boolean isLoading) {
         if (favicon != null && faviconProgressBar != null) {
@@ -153,7 +189,6 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
         }
     }
 
-    @Override
     @CallSuper
     public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
         if (swipeRefreshLayout != null) {
@@ -176,7 +211,6 @@ public class VioWebViewActivity extends AppCompatActivity implements VioWebViewI
             swipeRefreshLayout.setEnabled(swipeRefreshLayoutEnabled);
     }
 
-    @Override
     @CallSuper
     public void onPageLoadProgressChanged(int progress) {
         if (progressBar != null)
