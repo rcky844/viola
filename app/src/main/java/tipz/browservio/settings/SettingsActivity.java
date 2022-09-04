@@ -342,7 +342,7 @@ public class SettingsActivity extends AppCompatActivity {
                         BuildConfig.VERSION_CODENAME,
                         BuildConfig.VERSION_BUILD_YEAR));
                 update_btn.setOnClickListener(_update_btn -> {
-                    DownloaderThread mHandlerThread = new DownloaderThread("adServers");
+                    DownloaderThread mHandlerThread = new DownloaderThread("updater");
                     mHandlerThread.start();
                     mHandlerThread.setCallerHandler(new Handler(mHandlerThread.getLooper()) {
                         @Override
