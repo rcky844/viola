@@ -37,13 +37,22 @@ public class DownloaderThread extends HandlerThread {
         client.get(url, new AsyncHttpResponseHandler(getLooper()) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                bundle.putString("response", new String(response));
-                message.what = TYPE_SUCCESS;
+                if (response == null) {
+                    bundle.putString("response", CommonUtils.EMPTY_STRING);
+                    message.what = TYPE_FAILED;
+                } else {
+                    bundle.putString("response", new String(response));
+                    message.what = TYPE_SUCCESS;
+                }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
-                bundle.putString("response", new String(errorResponse));
+                if (errorResponse == null) {
+                    bundle.putString("response", CommonUtils.EMPTY_STRING);
+                } else {
+                    bundle.putString("response", new String(errorResponse));
+                }
                 message.what = TYPE_FAILED;
             }
 
