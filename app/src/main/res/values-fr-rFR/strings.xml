@@ -101,6 +101,28 @@
     <string name="search_image">Rechercher des images similaires</string>
     <string name="desk_mode_text">Activer le mode fenêtre élargie</string>
     <string name="notification_download_successful">%s téléchargé avec succès.</string>
+    <string name="pref_enable_swipe_refresh_title">Activer l’extraction pour actualiser</string>
+    <string name="pref_enable_swipe_refresh_summary">Activez les rechargements de page déclenchés par le sursomulage vertical du contenu.</string>
+    <string name="pref_enforce_https_title">Appliquer HTTPS</string>
+    <string name="pref_enforce_https_summary">Visitez toujours des sites Web utilisant HTTPS pour plus de sécurité. (Expérimental)</string>
+    <string name="pref_use_custom_tabs_title">Utiliser des onglets personnalisés</string>
+    <string name="pref_use_custom_tabs_summary">Ouvrez toujours les liens d’application dans les onglets personnalisés lorsqu’il est ouvert à partir d’une autre application.</string>
+    <string name="pref_close_app_after_download_title">Fermer après un lien d’application téléchargeable</string>
+    <string name="pref_close_app_after_download_summary">Fermez toujours Browservio si le lien de l’application est téléchargeable.</string>
+    <string name="pref_reverse_layout_title">Mise en page inversée</string>
+    <string name="pref_reverse_layout_summary">Inverser la disposition du navigateur à l’envers. (Un redémarrage est nécessaire)</string>
+    <string name="custom_search_guide">Format:\n{query}: Requête\n{language}: Langue</string>
+    <string name="pref_update_recents_icon_title">Mettre à jour l’icône et l’étiquette des onglets dans Récents</string>
+    <string name="pref_update_recents_icon_summary">Mettez automatiquement à jour l’icône et l’étiquette des onglets dans Récents vers celle de la page Web.</string>
+    <string name="js_page_says">%s dit</string>
+    <string name="js_leave_page_prompt">%s dit, voulez-vous quitter cette page?</string>
+    <string name="view_page_source">Afficher la source de la page</string>
+    <string name="pref_google_safe_browsing_title">Activer la navigation sécurisée de Google</string>
+    <string name="pref_google_safe_browsing_summary">Autorisez la navigation sécurisée de Google à bloquer les sites Web qu’il juge dangereux.</string>
+    <string name="dialog_page_unresponsive_title">Page ne répond pas</string>
+    <string name="dialog_page_unresponsive_message">Vous pouvez attendre qu’il devienne réactif ou mettre fin à cet onglet.</string>
+    <string name="dialog_page_unresponsive_wait">Attendre</string>
+    <string name="dialog_page_unresponsive_terminate">Terminer</string>
 
     <string-array name="errMsg">
         <item>Erreur!</item>

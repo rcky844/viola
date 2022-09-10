@@ -100,6 +100,28 @@
     <string name="search_image">Search for similar images</string>
     <string name="desk_mode_text">Enable wide viewport mode</string>
     <string name="notification_download_successful">%s downloaded successfully.</string>
+    <string name="pref_enable_swipe_refresh_title">Enable Pull to Refresh</string>
+    <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
+    <string name="pref_enforce_https_title">Enforce HTTPS</string>
+    <string name="pref_enforce_https_summary">Always visit websites using HTTPS for added security. (Experimental)</string>
+    <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
+    <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
+    <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
+    <string name="pref_close_app_after_download_summary">Always close Browservio if the App Link is downloadable.</string>
+    <string name="pref_reverse_layout_title">Reverse Layout</string>
+    <string name="pref_reverse_layout_summary">Reverse browser layout upside down. (A restart is needed)</string>
+    <string name="custom_search_guide">Format:\n{query}: Query\n{language}: Language</string>
+    <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
+    <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
+    <string name="js_page_says">%s says</string>
+    <string name="js_leave_page_prompt">%s says, do you want to leave this page?</string>
+    <string name="view_page_source">View Page Source</string>
+    <string name="pref_google_safe_browsing_title">Enable Google\'s Safe Browsing</string>
+    <string name="pref_google_safe_browsing_summary">Allow Google\'s Safe Browsing to block websites it deems dangerous.</string>
+    <string name="dialog_page_unresponsive_title">Page Unresponsive</string>
+    <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
+    <string name="dialog_page_unresponsive_wait">Wait</string>
+    <string name="dialog_page_unresponsive_terminate">Terminate</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

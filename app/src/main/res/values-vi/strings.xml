@@ -102,6 +102,28 @@
     <string name="search_image">Tìm kiếm các hình ảnh tương tự</string>
     <string name="desk_mode_text">Bật chế độ xem rộng</string>
     <string name="notification_download_successful">%s đã tải xuống thành công.</string>
+    <string name="pref_enable_swipe_refresh_title">Bật Kéo để Làm mới</string>
+    <string name="pref_enable_swipe_refresh_summary">Cho phép tải lại trang được kích hoạt bởi nội dung ghi đè theo chiều dọc.</string>
+    <string name="pref_enforce_https_title">Thực thi HTTPS</string>
+    <string name="pref_enforce_https_summary">Luôn truy cập các trang web sử dụng HTTPS để tăng cường bảo mật. (Thực nghiệm)</string>
+    <string name="pref_use_custom_tabs_title">Sử dụng tab tùy chỉnh</string>
+    <string name="pref_use_custom_tabs_summary">Luôn mở Liên kết ứng dụng trong Tab tùy chỉnh khi nó được mở từ một ứng dụng khác.</string>
+    <string name="pref_close_app_after_download_title">Đóng sau liên kết ứng dụng có thể tải xuống</string>
+    <string name="pref_close_app_after_download_summary">Luôn đóng Browservio nếu Liên kết ứng dụng có thể tải xuống được.</string>
+    <string name="pref_reverse_layout_title">Bố cục ngược</string>
+    <string name="pref_reverse_layout_summary">Đảo ngược bố cục trình duyệt lộn ngược. (Cần khởi động lại)</string>
+    <string name="custom_search_guide">Định dạng:\n{query}: Truy vấn\n{language}: Ngôn ngữ</string>
+    <string name="pref_update_recents_icon_title">Cập nhật biểu tượng và nhãn của các tab trong Gần đây</string>
+    <string name="pref_update_recents_icon_summary">Tự động cập nhật biểu tượng và nhãn của các tab trong Gần đây thành biểu tượng và nhãn của trang web.</string>
+    <string name="js_page_says">%s nói</string>
+    <string name="js_leave_page_prompt">%s nói, bạn có muốn rời khỏi trang này không?</string>
+    <string name="view_page_source">Xem nguồn trang</string>
+    <string name="pref_google_safe_browsing_title">Bật tính năng Duyệt web an toàn của Google</string>
+    <string name="pref_google_safe_browsing_summary">Cho phép tính năng Duyệt web an toàn của Google chặn các trang web mà họ cho là nguy hiểm.</string>
+    <string name="dialog_page_unresponsive_title">Trang không phản hồi</string>
+    <string name="dialog_page_unresponsive_message">Bạn có thể đợi nó trở nên phản hồi hoặc chấm dứt tab này.</string>
+    <string name="dialog_page_unresponsive_wait">Đợi</string>
+    <string name="dialog_page_unresponsive_terminate">Chấm dứt</string>
 
     <string-array name="errMsg">
         <item>Lỗi!</item>

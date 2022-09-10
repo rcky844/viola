@@ -101,6 +101,28 @@
     <string name="search_image">Benzer resimleri arama</string>
     <string name="desk_mode_text">Geniş görüntüleme çerçevesi modunu etkinleştir</string>
     <string name="notification_download_successful">%s başarıyla indirildi.</string>
+    <string name="pref_enable_swipe_refresh_title">Yenilemek için Çekmeyi Etkinleştir</string>
+    <string name="pref_enable_swipe_refresh_summary">Dikey olarak aşırı kaydırılan içerik tarafından tetiklenen sayfa yeniden yüklemelerini etkinleştirin.</string>
+    <string name="pref_enforce_https_title">HTTPS\'yi zorunlu kılma</string>
+    <string name="pref_enforce_https_summary">Daha fazla güvenlik için her zaman HTTPS kullanan web sitelerini ziyaret edin. (Deneysel)</string>
+    <string name="pref_use_custom_tabs_title">Özel Sekmeleri Kullanma</string>
+    <string name="pref_use_custom_tabs_summary">Uygulama Bağlantıları\'nı başka bir uygulamadan açıldığında her zaman Özel Sekmeler'de açın.</string>
+    <string name="pref_close_app_after_download_title">İndirilebilir bir Uygulama Bağlantısından sonra kapatın</string>
+    <string name="pref_close_app_after_download_summary">Uygulama Bağlantısı indirilebilirse her zaman Browservio\'yu kapatın.</string>
+    <string name="pref_reverse_layout_title">Ters Düzen</string>
+    <string name="pref_reverse_layout_summary">Tarayıcı düzenini baş aşağı çevirin. (Yeniden başlatma gereklidir)</string>
+    <string name="custom_search_guide">Biçim:\n{query}: Sorgu\n{language}: Dil</string>
+    <string name="pref_update_recents_icon_title">Son Kullanılanlar\'daki sekmelerin simgesini ve etiketini güncelleme</string>
+    <string name="pref_update_recents_icon_summary">Son Kullanılanlar\'daki sekmelerin simgesini ve etiketini otomatik olarak web sayfasınınkiyle güncelleştirin.</string>
+    <string name="js_page_says">%s diyor ki</string>
+    <string name="js_leave_page_prompt">%s diyor, bu sayfadan ayrılmak istiyor musunuz?</string>
+    <string name="view_page_source">Sayfa Kaynağını Görüntüle</string>
+    <string name="pref_google_safe_browsing_title">Google\'ın Güvenli Taramasını Etkinleştirme</string>
+    <string name="pref_google_safe_browsing_summary">Google\'ın Güvenli Tarama\'sının tehlikeli bulduğu web sitelerini engellemesine izin verin.</string>
+    <string name="dialog_page_unresponsive_title">Sayfa Yanıt Vermiyor</string>
+    <string name="dialog_page_unresponsive_message">Yanıt vermesini bekleyebilir veya bu sekmeyi sonlandırabilirsiniz.</string>
+    <string name="dialog_page_unresponsive_wait">Beklemek</string>
+    <string name="dialog_page_unresponsive_terminate">Bitirmek</string>
 
     <string-array name="errMsg">
         <item>Hata!</item>
