@@ -16,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import tipz.browservio.Application;
 import tipz.browservio.R;
 
 public class DownloadUtils {
