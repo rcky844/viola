@@ -28,7 +28,7 @@ public class UrlUtils {
             "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
             "http", "https", "ftp", "file"};
 
-    private static final String httpUrlRegex = "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)";
+    private static final String httpUrlRegex = "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?";
 
     /**
      * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
@@ -67,8 +67,6 @@ public class UrlUtils {
                         SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId),
                         input, CommonUtils.getLanguage());
             }
-        } else {
-            uri = Uri.parse(trimmedInput.toLowerCase(Locale.ROOT));
         }
         return uri.toString();
     }

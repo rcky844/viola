@@ -39,9 +39,9 @@
     <string name="help">Hỗ trợ</string>
     <string name="version">Phiên bản</string>
     <string name="feedback">Phản hồi</string>
-    <string name="feedback_desp">"Phản hồi sẽ giúp nâng cao chất lượng của Browservio."</string>
+    <string name="feedback_desp">"Báo cáo lỗi hoặc yêu cầu các tính năng mới."</string>
     <string name="source_code">"Mã nguồn"</string>
-    <string name="source_code_desp">"Dành ít thời gian ngó qua mã nguồn Browservio."</string>
+    <string name="source_code_desp">"Xem mã nguồn của Browservio."</string>
     <string name="download_title">"Cập nhật Browservio"</string>
     <string name="fav">Yêu thích</string>
     <string name="delete">"Xóa"</string>

@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -58,13 +56,6 @@ public class CommonUtils {
 
     public static boolean isIntStrOne(Object obj) {
         return obj.equals(obj instanceof String ? "1" : 1);
-    }
-
-    public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo == null || !activeNetworkInfo.isConnected();
     }
 
     public static String getLanguage() {

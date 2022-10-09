@@ -8,7 +8,6 @@ import tipz.browservio.broha.database.BrohaClient;
 import tipz.browservio.broha.database.BrohaDao;
 import tipz.browservio.broha.database.icons.IconHashClient;
 import tipz.browservio.settings.SettingsInit;
-import tipz.browservio.webview.tabbies.BrowserActivity;
 
 public class Application extends android.app.Application {
     public BrohaDao historyBroha;

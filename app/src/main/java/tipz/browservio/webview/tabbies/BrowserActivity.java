@@ -362,7 +362,8 @@ public class BrowserActivity extends VioWebViewActivity {
 
     @Override
     public void onUrlUpdated(String url) {
-        UrlEdit.setText(url);
+        if (!UrlEdit.isFocused())
+            UrlEdit.setText(url);
     }
 
     @Override
