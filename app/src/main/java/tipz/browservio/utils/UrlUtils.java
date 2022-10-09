@@ -67,8 +67,6 @@ public class UrlUtils {
                         SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId),
                         input, CommonUtils.getLanguage());
             }
-        } else {
-            uri = Uri.parse(trimmedInput.toLowerCase(Locale.ROOT));
         }
         return uri.toString();
     }
