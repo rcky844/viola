@@ -14,6 +14,8 @@ public class DownloaderThread extends HandlerThread {
     public static final int TYPE_SUCCESS = 2;
     public static final int TYPE_FAILED = 3;
 
+    public final static String MSG_RESPONSE = "response";
+
     private Handler mCallerHandler;
 
     public DownloaderThread(String name) {
@@ -38,10 +40,10 @@ public class DownloaderThread extends HandlerThread {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 if (response == null) {
-                    bundle.putString("response", CommonUtils.EMPTY_STRING);
+                    bundle.putString(MSG_RESPONSE, CommonUtils.EMPTY_STRING);
                     message.what = TYPE_FAILED;
                 } else {
-                    bundle.putString("response", new String(response));
+                    bundle.putString(MSG_RESPONSE, new String(response));
                     message.what = TYPE_SUCCESS;
                 }
             }
@@ -49,9 +51,9 @@ public class DownloaderThread extends HandlerThread {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
                 if (errorResponse == null) {
-                    bundle.putString("response", CommonUtils.EMPTY_STRING);
+                    bundle.putString(MSG_RESPONSE, CommonUtils.EMPTY_STRING);
                 } else {
-                    bundle.putString("response", new String(errorResponse));
+                    bundle.putString(MSG_RESPONSE, new String(errorResponse));
                 }
                 message.what = TYPE_FAILED;
             }

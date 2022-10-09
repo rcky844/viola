@@ -619,7 +619,7 @@ public class VioWebView extends WebView {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case DownloaderThread.TYPE_SUCCESS:
-                        String data = msg.getData().getString("response");
+                        String data = msg.getData().getString(DownloaderThread.MSG_RESPONSE);
                         if (data != null) {
                             Scanner scanner = new Scanner(data);
                             StringBuilder builder = new StringBuilder();
