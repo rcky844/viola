@@ -22,11 +22,6 @@ public class DownloaderThread extends HandlerThread {
         super(name);
     }
 
-    @Override
-    protected void onLooperPrepared() {
-        super.onLooperPrepared();
-    }
-
     public void setCallerHandler(Handler callerHandler) {
         mCallerHandler = callerHandler;
     }
