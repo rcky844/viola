@@ -37,9 +37,9 @@
     <string name="help">Help</string>
     <string name="version">Version</string>
     <string name="feedback">Feedback</string>
-    <string name="feedback_desp">"Giving feedback will help improve the quality of Browservio."</string>
+    <string name="feedback_desp">"Report bugs or request new features."</string>
     <string name="source_code">"Source code"</string>
-    <string name="source_code_desp">"Have a look at Browservio\'s source code."</string>
+    <string name="source_code_desp">"View Browservio\'s source code."</string>
     <string name="download_title">"Browservio Update"</string>
     <string name="fav">Favourites</string>
     <string name="delete">"Delete"</string>

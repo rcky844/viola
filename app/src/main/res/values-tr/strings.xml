@@ -38,9 +38,9 @@
     <string name="help">Yardım</string>
     <string name="version">Sürüm</string>
     <string name="feedback">Geri bildirim</string>
-    <string name="feedback_desp">"Geri bildirimde bulunmak Browservio\'nun kalitesini artırmaya yardımcı olacaktır."</string>
+    <string name="feedback_desp">"Hataları bildirin veya yeni özellikler isteyin."</string>
     <string name="source_code">"Kaynak kodu"</string>
-    <string name="source_code_desp">"Browservio\'nun kaynak koduna göz atın."</string>
+    <string name="source_code_desp">"Browservio\'nun kaynak kodunu görüntüleyin."</string>
     <string name="download_title">"Browservio Güncellemesi"</string>
     <string name="fav">Sık kullanılanlar</string>
     <string name="delete">"Sil"</string>

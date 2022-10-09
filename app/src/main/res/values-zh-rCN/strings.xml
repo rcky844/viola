@@ -38,9 +38,9 @@
     <string name="help">帮助</string>
     <string name="version">版本</string>
     <string name="feedback">反馈</string>
-    <string name="feedback_desp">提供反馈将有助于提高Browservio的质量</string>
+    <string name="feedback_desp">报告错误或请求新功能</string>
     <string name="source_code">源代码</string>
-    <string name="source_code_desp">看一下Browservio的源代码</string>
+    <string name="source_code_desp">查看Browservio的源代码</string>
     <string name="fav">收藏夹</string>
     <string name="delete">"删除"</string>
     <string name="delete_all_entries">刪除所有收藏</string>
