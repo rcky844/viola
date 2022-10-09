@@ -32,7 +32,7 @@ public class DownloadUtils {
                                       String customFilename, String requestUrl) {
         if (url.startsWith("http://") || url.startsWith("https://")) {
             DownloadManager.Request request = new DownloadManager.Request(
-                    Uri.parse(UrlUtils.toSearchOrValidUrl(context, url)));
+                    Uri.parse(UrlUtils.cve_2017_13274(url)));
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
