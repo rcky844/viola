@@ -11,10 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
-import tipz.browservio.webview.tabbies.BrowserActivity;
-import tipz.browservio.webview.tabbies.CustomTabsActivity;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.UrlUtils;
+import tipz.browservio.webview.tabbies.BrowserActivity;
+import tipz.browservio.webview.tabbies.CustomTabsActivity;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
             CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.no_webview));
             finish();
         }
-        setContentView(R.layout.main);
         CaocConfig.Builder.create()
                 .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
                 .enabled(true)
