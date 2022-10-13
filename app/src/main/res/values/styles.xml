@@ -7,11 +7,10 @@
         <item name="colorControlNormal">@color/colorElement</item>
         <item name="appBarLayoutStyle">@style/AppTheme.AppBarOverlay</item>
         <item name="materialAlertDialogTheme">@style/materialAlertDialogTheme</item>
-        <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/windowLightStatusBar</item>
     </style>
 
-    <style name="AppTheme.MainActivity" parent="AppTheme">
+    <style name="AppTheme.BrowserActivity" parent="AppTheme">
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 

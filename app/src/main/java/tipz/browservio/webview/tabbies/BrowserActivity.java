@@ -108,7 +108,8 @@ public class BrowserActivity extends VioWebViewActivity {
         } else if (item == R.drawable.refresh) {
             webview.webviewReload();
         } else if (item == R.drawable.home) {
-            webview.loadUrl(SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage));
+            webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
+                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
         } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             currentPrebuiltUAState = !currentPrebuiltUAState;
             webview.setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);

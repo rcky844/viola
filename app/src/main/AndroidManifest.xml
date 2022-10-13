@@ -29,8 +29,7 @@
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
-            android:exported="true"
-            android:theme="@style/AppTheme.MainActivity">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -83,7 +82,8 @@
         <activity
             android:name=".webview.tabbies.BrowserActivity"
             android:configChanges="orientation|screenSize"
-            android:documentLaunchMode="always" />
+            android:documentLaunchMode="always"
+            android:theme="@style/AppTheme.BrowserActivity" />
         <activity
             android:name=".webview.tabbies.CustomTabsActivity"
             android:configChanges="orientation|screenSize"

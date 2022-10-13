@@ -41,6 +41,7 @@ public class VioWebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = ((Application) getApplicationContext()).pref;
+        CommonUtils.setMiuiStatusBarDarkMode(this, true);
     }
 
     @Override
