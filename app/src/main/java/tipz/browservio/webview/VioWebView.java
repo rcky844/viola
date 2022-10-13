@@ -248,7 +248,6 @@ public class VioWebView extends WebView {
         else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
             WebSettingsCompat.setForceDark(webSettings,
                     darkMode ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
-        CommonUtils.setMiuiStatusBarDarkMode(mVioWebViewActivity, darkMode);
 
         // Settings check
         webSettings.setJavaScriptEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled)));
