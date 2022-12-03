@@ -21,7 +21,7 @@
     <string name="search_engine_current">"Current search engine: %s"</string>
     <string name="homepage">"Homepage"</string>
     <string name="homepage_current">"Current homepage: %s"</string>
-    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
     <string name="update_btn">Check for Updates</string>
     <string name="version_latest_toast">"You are currently running the latest version of Browservio."</string>
     <string name="network_unavailable_toast">"Network is unavailable."</string>

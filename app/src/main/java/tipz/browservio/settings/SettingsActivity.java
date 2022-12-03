@@ -338,8 +338,8 @@ public class SettingsActivity extends AppCompatActivity {
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
                         getResources().getString(R.string.app_name),
                         BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
-                        String.valueOf(BuildConfig.VERSION_CODE).concat(".").concat(BuildConfig.BUILD_TYPE).concat(".").concat(BuildConfig.VERSION_BUILD_DATE),
                         BuildConfig.VERSION_CODENAME,
+                        String.valueOf(BuildConfig.VERSION_CODE),
                         BuildConfig.VERSION_BUILD_YEAR));
                 update_btn.setOnClickListener(_update_btn -> {
                     DownloaderThread mHandlerThread = new DownloaderThread("updater");
