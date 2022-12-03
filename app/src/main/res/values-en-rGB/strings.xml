@@ -17,10 +17,8 @@
     <string name="fab_desp">"A button when clicked will show or close the action bar."</string>
     <string name="settings">Settings</string>
     <string name="search_engine">"Search engine"</string>
-    <string name="search_engine_current">"Current search engine: %s"</string>
     <string name="homepage">"Homepage"</string>
-    <string name="homepage_current">"Current homepage: %s"</string>
-    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="version_info_message">%1$s %2$s %3$s (%4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
     <string name="update_btn">Check for Updates</string>
     <string name="version_latest_toast">"You are currently running the latest version of Browservio."</string>
     <string name="network_unavailable_toast">"Network is unavailable."</string>
@@ -65,7 +63,6 @@
     <string name="reset_dialog">This will clear all browser data\n</string>
     <string name="to_continue">Are you sure you want to continue?</string>
     <string name="search_suggestions_title">Search Suggestions</string>
-    <string name="search_suggestions_current">"Current suggestions provider: %s"</string>
     <string name="get_changelog">Read ChangeLogs</string>
     <string name="pref_adBlocker">Enable Ad Blocker</string>
     <string name="pref_adBlocker_desp">Stop annoying ads from distracting you.</string>
@@ -76,7 +73,6 @@
     <string name="open_in_new_tab">Open in new tab</string>
     <string name="no_webview">WebView is required but not installed.</string>
     <string name="share_url">Share link</string>
-    <string name="pref_theme_desp">Current theme: %s</string>
     <string name="pref_theme">Theme</string>
     <string name="pref_center_action">Centre Action Bar Horizontally</string>
     <string name="pref_center_action_desp">Automatically centre the action bar when space is available.</string>
@@ -108,8 +104,8 @@
     <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
     <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
     <string name="pref_close_app_after_download_summary">Always close Browservio if the App Link is downloadable.</string>
-    <string name="pref_reverse_layout_title">Reverse Layout</string>
-    <string name="pref_reverse_layout_summary">Reverse browser layout upside down. (A restart is needed)</string>
+    <string name="pref_reverse_layout_title">Reach mode</string>
+    <string name="pref_reverse_layout_summary">Relocate interface elements for easier one-hand usage.</string>
     <string name="custom_search_guide">Format:\n{query}: Query\n{language}: Language</string>
     <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
     <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
