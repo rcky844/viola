@@ -131,11 +131,6 @@ public class BrowserActivity extends VioWebViewActivity {
                     webview.clearCache(true);
                     CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
                     webview.webviewReload();
-                } else if (_item.getTitle().toString().contains(getResources().getString(R.string.history))) {
-                    webview.clearHistory();
-                    HistoryUtils.clear(BrowserActivity.this);
-                    CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
-                    webview.webviewReload();
                 } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                         CookieManager.getInstance().removeAllCookies(null);
