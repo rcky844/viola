@@ -8,11 +8,13 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -95,5 +97,14 @@ public class CommonUtils {
         } catch (Exception ignored) {
         }
         return false;
+    }
+
+    public static float getDisplayMetrics(Context context, int measuredDp) {
+        Resources r = context.getResources();
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                measuredDp,
+                r.getDisplayMetrics()
+        );
     }
 }

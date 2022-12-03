@@ -22,7 +22,7 @@ public class CustomTabsActivity extends VioWebViewActivity {
         setContentView(R.layout.custom_tab);
 
         /* Back button */
-        AppCompatImageView actionBarBack = findViewById(R.id.actionBarBack);
+        AppCompatImageView actionBarBack = findViewById(R.id.toolsContainer);
         actionBarBack.setOnClickListener(v -> finish());
 
         /* Title and Host */
