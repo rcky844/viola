@@ -176,7 +176,7 @@ public class SettingsActivity extends AppCompatActivity {
                                             if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
                                                 SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, custom_se.getText().toString());
                                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, checkedItem[0]);
-                                                search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
+                                                search_engine.setSummary(searchHomePageList[checkedItem[0]]);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.cancel, null)
@@ -186,7 +186,7 @@ public class SettingsActivity extends AppCompatActivity {
                             if (checkedItem[0] != 8) {
                                 SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, CommonUtils.EMPTY_STRING);
                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, checkedItem[0]);
-                                search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[checkedItem[0]]));
+                                search_engine.setSummary(searchHomePageList[checkedItem[0]]);
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -210,7 +210,7 @@ public class SettingsActivity extends AppCompatActivity {
                                             if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
                                                 SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, custom_se.getText().toString());
                                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, checkedItem[0]);
-                                                homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
+                                                homepage.setSummary(searchHomePageList[checkedItem[0]]);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.cancel, null)
@@ -220,7 +220,7 @@ public class SettingsActivity extends AppCompatActivity {
                             if (checkedItem[0] != 8) {
                                 SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, CommonUtils.EMPTY_STRING);
                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, checkedItem[0]);
-                                homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[checkedItem[0]]));
+                                homepage.setSummary(searchHomePageList[checkedItem[0]]);
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -245,7 +245,7 @@ public class SettingsActivity extends AppCompatActivity {
                                             if (!Objects.requireNonNull(custom_sg.getText()).toString().isEmpty()) {
                                                 SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, custom_sg.getText().toString());
                                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
-                                                search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[checkedItem[0]]));
+                                                search_suggestions.setSummary(searchHomePageList[checkedItem[0]]);
                                             }
                                         })
                                         .setNegativeButton(android.R.string.cancel, null)
@@ -255,7 +255,7 @@ public class SettingsActivity extends AppCompatActivity {
                             if (checkedItem[0] != 8) {
                                 SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
-                                search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[checkedItem[0]]));
+                                search_suggestions.setSummary(searchHomePageList[checkedItem[0]]);
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -292,7 +292,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 SettingsUtils.getPrefNum(pref, SettingsKeys.themeId), (dialog, which) -> checkedItem[0] = which)
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0]);
-                            theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[checkedItem[0]]));
+                            theme.setSummary(themeList[checkedItem[0]]);
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .create().show();
@@ -422,10 +422,10 @@ public class SettingsActivity extends AppCompatActivity {
             setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
             setupCheckBoxPref(SettingsKeys.useCustomTabs, use_custom_tabs, false);
             setupCheckBoxPref(SettingsKeys.closeAppAfterDownload, close_app_after_download, false);
-            search_engine.setSummary(getResources().getString(R.string.search_engine_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]));
-            homepage.setSummary(getResources().getString(R.string.homepage_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]));
-            search_suggestions.setSummary(getResources().getString(R.string.search_suggestions_current, searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]));
-            theme.setSummary(getResources().getString(R.string.pref_theme_desp, themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]));
+            search_engine.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]);
+            homepage.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]);
+            search_suggestions.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]);
+            theme.setSummary(themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]);
             version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
             needReload = false;
         }
