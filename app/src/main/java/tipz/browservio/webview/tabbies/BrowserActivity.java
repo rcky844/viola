@@ -66,6 +66,7 @@ public class BrowserActivity extends VioWebViewActivity {
     private String currentCustomUA;
     private boolean currentCustomUAWideView = false;
     private IconHashClient iconHashClient;
+    private int retractedRotation;
 
     private static final List<Integer> actionBarItemList = Arrays.asList(R.drawable.arrow_back_alt,
             R.drawable.arrow_forward_alt,
@@ -283,12 +284,14 @@ public class BrowserActivity extends VioWebViewActivity {
         });
 
         fab.setOnClickListener(v -> {
+            if (fab.getRotation() != 0 || fab.getRotation() != 180)
+                fab.animate().cancel();
             if (toolsContainer.getVisibility() == View.VISIBLE) {
-                fab.animate().rotationBy(180).setDuration(250).start();
+                fab.animate().rotation(retractedRotation - 180).setDuration(250).start();
                 toolsContainer.animate().alpha(0f).setDuration(250).start();
                 toolsContainer.setVisibility(View.GONE);
             } else {
-                fab.animate().rotationBy(-180).setDuration(250).start();
+                fab.animate().rotation(retractedRotation).setDuration(250).start();
                 toolsContainer.animate().alpha(1f).setDuration(250).start();
                 toolsContainer.setVisibility(View.VISIBLE);
             }
@@ -377,6 +380,10 @@ public class BrowserActivity extends VioWebViewActivity {
 
         // Settings check
         toolsContainer.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
+        fab.setRotation(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout)) ? 0 : 180);
+        retractedRotation = (int) fab.getRotation();
+        if (fab.getVisibility() == View.VISIBLE)
+            fab.animate().rotationBy(180).start();
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
