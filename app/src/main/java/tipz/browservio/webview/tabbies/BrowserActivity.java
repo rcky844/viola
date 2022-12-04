@@ -117,14 +117,15 @@ public class BrowserActivity extends VioWebViewActivity {
         } else if (item == R.drawable.share) {
             CommonUtils.shareUrl(this, webview.getUrl());
         } else if (item == R.drawable.app_shortcut) {
-            ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.UrlTitle)
-                    .setShortLabel(webview.UrlTitle)
-                    .setIcon(IconCompat.createWithBitmap(
-                            CommonUtils.drawableToBitmap(favicon.getDrawable())))
-                    .setIntent(new Intent(this, BrowserActivity.class)
-                            .setData(Uri.parse(webview.getUrl()))
-                            .setAction(Intent.ACTION_VIEW))
-                    .build(), null);
+            if (webview.UrlTitle != null && !webview.UrlTitle.isBlank())
+                ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.UrlTitle)
+                        .setShortLabel(webview.UrlTitle)
+                        .setIcon(IconCompat.createWithBitmap(
+                                CommonUtils.drawableToBitmap(favicon.getDrawable())))
+                        .setIntent(new Intent(this, BrowserActivity.class)
+                                .setData(Uri.parse(webview.getUrl()))
+                                .setAction(Intent.ACTION_VIEW))
+                        .build(), null);
         } else if (item == R.drawable.settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             mGetNeedLoad.launch(intent);
