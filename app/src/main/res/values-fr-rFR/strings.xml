@@ -1,11 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">Browservio</string>
     <string name="customUA">"Agent utilisateur personnalisé"</string>
     <string name="reset_complete">"Réinitialisation effectuée correctement."</string>
-    <string name="clear">"Effacer %s"</string>
-    <string name="cache">"Cache"</string>
-    <string name="history">"Historique"</string>
-    <string name="cookies">"Cookies"</string>
+    <string name="pref_clear_cache">"Effacer cache"</string>
+    <string name="pref_clear_cookies">"Effacer Cookies"</string>
+    <string name="clear">"Effacer"</string>
     <string name="cleared_toast">"%s effacé(s)correctement !"</string>
     <string name="share_url_dialog_title">"Partager URL via"</string>
     <string name="copied_clipboard">"Copié dans le presse-papier !"</string>
@@ -18,9 +16,7 @@
     <string name="fab_desp">"Cliquer sur un bouton affichera ou fermera la barre d’action."</string>
     <string name="settings">Réglages</string>
     <string name="search_engine">"Moteur de recherche"</string>
-    <string name="search_engine_current">"Moteur de recherche actuel : %s"</string>
     <string name="homepage">"Page d’accueil"</string>
-    <string name="homepage_current">"Page d’accueil actuelle : %s"</string>
     <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
     <string name="update_btn">Vérifier les mises à jour</string>
     <string name="version_latest_toast">"Vous disposez actuellement de la dernière version de Browservio."</string>
@@ -66,7 +62,6 @@
     <string name="reset_dialog">Cela effacera toutes les données du navigateur\n</string>
     <string name="to_continue">Voulez-vous continuer?</string>
     <string name="search_suggestions_title">Rechercher les suggestions</string>
-    <string name="search_suggestions_current">"Fournisseur actuel des suggestions: %s"</string>
     <string name="get_changelog">Lire la liste des changements</string>
     <string name="pref_adBlocker">Activer le bloqueur de publicités</string>
     <string name="pref_adBlocker_desp">Empêcher les publicités de vous distraire.</string>
@@ -78,7 +73,6 @@
     <string name="no_webview">WebView est nécessaire mais n’est pas installé.</string>
     <string name="share_url">SPartager le lien</string>
     <string name="pref_theme">Thème</string>
-    <string name="pref_theme_desp">Thème actuel : %s</string>
     <string name="pref_center_action">Centrer la barre d’action horizontalement</string>
     <string name="pref_center_action_desp">Centrer automatiquement la barre d’action quand c’est possible.</string>
     <string name="ssl_info">Détails du certificat SSL</string>

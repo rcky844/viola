@@ -3,10 +3,9 @@
     <string name="app_name" translatable="false">Browservio</string>
     <string name="customUA">"User Agent tùy chỉnh"</string>
     <string name="reset_complete">"Đặt lại thành."</string>
-    <string name="clear">"Xóa %s"</string>
-    <string name="cache">"Bộ nhớ đệm"</string>
-    <string name="history">"Lịch sử"</string>
-    <string name="cookies">"Cookies"</string>
+    <string name="pref_clear_cache">"Xóa Bộ nhớ đệm"</string>
+    <string name="pref_clear_cookies">"Xóa Cookies"</string>
+    <string name="clear">"Xóa"</string>
     <string name="cleared_toast">"Xóa %s thành công!"</string>
     <string name="share_url_dialog_title">"Chia sẻ URL bằng"</string>
     <string name="copied_clipboard">"Đã sao chép vào bảng nhớ tạm!"</string>
@@ -19,9 +18,7 @@
     <string name="fab_desp">"Nút khi nhấn sẽ mở hoặc đóng thanh hành động."</string>
     <string name="settings">Cài đặt</string>
     <string name="search_engine">"Công cụ tìm kiếm"</string>
-    <string name="search_engine_current">"Công cụ tìm kiếm hiện tại: %s"</string>
     <string name="homepage">"Trang chủ"</string>
-    <string name="homepage_current">"Trang chủ hiện tại: %s"</string>
     <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
     <string name="update_btn">Tìm bản cập nhật mới</string>
     <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Browservio."</string>
@@ -67,7 +64,6 @@
     <string name="reset_dialog">Chuẩn bị xóa toàn bộ dữ liệu trình duyệt\n</string>
     <string name="to_continue">Bạn có muốn tiếp tục?</string>
     <string name="search_suggestions_title">Đề xuất tìm kiếm</string>
-    <string name="search_suggestions_current">"Trang cung cấp đề xuất tìm kiếm hiện tại: %s"</string>
     <string name="get_changelog">Đọc bản ghi các thay đổi</string>
     <string name="pref_adBlocker">Bật chặn quảng cáo</string>
     <string name="pref_adBlocker_desp">Chặn các quảng cáo khó chịu.</string>
@@ -79,7 +75,6 @@
     <string name="no_webview">WebView cần thiết nhưng chưa được cài đặt.</string>
     <string name="share_url">Chia sẻ đường dẫn</string>
     <string name="pref_theme">Chủ đề</string>
-    <string name="pref_theme_desp">Chủ đề hiện tại: %s</string>
     <string name="pref_center_action">Căn giữa thanh hành động</string>
     <string name="pref_center_action_desp">Tự động căn giữa thanh hành động khi có khoảng trống.</string>
     <string name="ssl_info">Chi tiết chứng chỉ SSL</string>
