@@ -34,7 +34,7 @@ android {
         buildConfigField "String", "VERSION_NAME_EXTRA", "\" Release Candidate 3\""
         buildConfigField "String", "VERSION_CODENAME", "\"Eagle\""
         buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_eagle_rc3\""
-        buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
+        buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
         vectorDrawables.useSupportLibrary = true
