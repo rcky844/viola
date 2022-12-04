@@ -2,24 +2,21 @@ package tipz.browservio.utils;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
-import android.view.Window;
+import android.util.TypedValue;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Locale;
 
 import tipz.browservio.R;
@@ -81,19 +78,12 @@ public class CommonUtils {
         return icon;
     }
 
-    // https://stackoverflow.com/a/44082295
-    public static boolean setMiuiStatusBarDarkMode(Activity activity, boolean darkmode) {
-        Class<? extends Window> clazz = activity.getWindow().getClass();
-        try {
-            int darkModeFlag = 0;
-            @SuppressLint("PrivateApi") Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-            darkModeFlag = field.getInt(layoutParams);
-            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-            extraFlagField.invoke(activity.getWindow(), darkmode ? darkModeFlag : 0, darkModeFlag);
-            return true;
-        } catch (Exception ignored) {
-        }
-        return false;
+    public static float getDisplayMetrics(Context context, int measuredDp) {
+        Resources r = context.getResources();
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                measuredDp,
+                r.getDisplayMetrics()
+        );
     }
 }

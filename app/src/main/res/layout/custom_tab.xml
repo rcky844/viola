@@ -1,4 +1,4 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,10 +7,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/MainProg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
@@ -26,7 +23,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/actionBarBack"
+                    android:id="@+id/toolsContainer"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
                     android:background="?attr/selectableItemBackground"
@@ -49,7 +46,7 @@
                     android:textColor="@color/colorElement"
                     android:textSize="16dp"
                     app:layout_constraintEnd_toStartOf="@id/share"
-                    app:layout_constraintStart_toEndOf="@id/actionBarBack"
+                    app:layout_constraintStart_toEndOf="@id/toolsContainer"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -65,7 +62,7 @@
                     android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/share"
-                    app:layout_constraintStart_toEndOf="@id/actionBarBack" />
+                    app:layout_constraintStart_toEndOf="@id/toolsContainer" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrier"
@@ -105,25 +102,24 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ProgressBar
-        android:id="@+id/MainProg"
-        style="?android:progressBarStyleHorizontal"
+    <RelativeLayout
+        android:id="@+id/webviewContainer"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:indeterminate="false"
-        android:progressBackgroundTint="#26000000"
-        app:layout_constraintBottom_toTopOf="@id/layout_webview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appbar" />
+        android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/layout_webview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/MainProg"
-        layout="@layout/layout_webview" />
+        <ProgressBar
+            android:id="@+id/MainProg"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:indeterminate="false"
+            android:progressBackgroundTint="#26000000" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/layout_webview"
+            layout="@layout/layout_webview"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

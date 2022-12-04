@@ -7,16 +7,21 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.CallSuper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Objects;
 
@@ -35,18 +40,23 @@ public class VioWebViewActivity extends AppCompatActivity {
     public ProgressBar progressBar;
     public SwipeRefreshLayout swipeRefreshLayout;
 
+    public AppBarLayout appbar;
+    public RelativeLayout toolsContainer;
+    public RelativeLayout webviewContainer;
+
     private boolean swipeRefreshLayoutEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = ((Application) getApplicationContext()).pref;
-        CommonUtils.setMiuiStatusBarDarkMode(this, true);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        appbar = findViewById(R.id.appbar);
+        webviewContainer = findViewById(R.id.webviewContainer);
 
         /* Init VioWebView */
         webview.doSettingsCheck();
@@ -130,6 +140,51 @@ public class VioWebViewActivity extends AppCompatActivity {
                     && faviconProgressBar.getVisibility() == View.VISIBLE)
                 favicon.setVisibility(View.GONE);
         }
+
+        // Reach mode
+        reachModeCheck();
+    }
+
+    public void reachModeCheck() {
+        CoordinatorLayout.LayoutParams appBarParams =
+                (CoordinatorLayout.LayoutParams) appbar.getLayoutParams();
+        CoordinatorLayout.LayoutParams toolsContainerParams = null;
+        CoordinatorLayout.LayoutParams webviewContainerParams =
+                (CoordinatorLayout.LayoutParams) webviewContainer.getLayoutParams();
+
+        if (toolsContainer != null)
+            toolsContainerParams = (CoordinatorLayout.LayoutParams) toolsContainer.getLayoutParams();
+
+        // FIXME: These are hardcoded values
+        int actionBarSize = (int) CommonUtils.getDisplayMetrics(
+                VioWebViewActivity.this, 48);
+        int toolsContainerSize = (int) CommonUtils.getDisplayMetrics(
+                VioWebViewActivity.this, 36);
+        int margin = toolsContainer.getVisibility() == View.VISIBLE
+                ? actionBarSize + toolsContainerSize : actionBarSize;
+
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout))) {
+            appBarParams.gravity = Gravity.BOTTOM;
+            if (toolsContainerParams != null) {
+                toolsContainerParams.gravity = Gravity.BOTTOM;
+                toolsContainerParams.setMargins(0, 0, 0, actionBarSize);
+            }
+            webviewContainerParams.setMargins(0, 0, 0, margin);
+        } else {
+            appBarParams.gravity = Gravity.TOP;
+            if (toolsContainerParams != null) {
+                toolsContainerParams.gravity = Gravity.TOP;
+                toolsContainerParams.setMargins(0, actionBarSize, 0, 0);
+            }
+            webviewContainerParams.setMargins(0, margin, 0, 0);
+        }
+
+        appbar.setLayoutParams(appBarParams);
+        appbar.invalidate();
+        toolsContainer.setLayoutParams(toolsContainerParams);
+        toolsContainer.invalidate();
+        webviewContainer.setLayoutParams(webviewContainerParams);
+        webviewContainer.invalidate();
     }
 
     public void onUrlUpdated(String url) {

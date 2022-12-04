@@ -17,9 +17,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -50,7 +47,6 @@ import tipz.browservio.Application;
 import tipz.browservio.R;
 import tipz.browservio.broha.BrohaListInterfaceActivity;
 import tipz.browservio.broha.api.FavUtils;
-import tipz.browservio.broha.api.HistoryUtils;
 import tipz.browservio.broha.database.icons.IconHashClient;
 import tipz.browservio.search.SearchEngineEntries;
 import tipz.browservio.search.SuggestionAdapter;
@@ -63,12 +59,12 @@ import tipz.browservio.webview.VioWebViewActivity;
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private AppCompatImageView fab;
-    private RelativeLayout actionBarBack;
 
     private boolean currentPrebuiltUAState = false;
     private String currentCustomUA;
     private boolean currentCustomUAWideView = false;
     private IconHashClient iconHashClient;
+    private int retractedRotation;
 
     private static final List<Integer> actionBarItemList = Arrays.asList(R.drawable.arrow_back_alt,
             R.drawable.arrow_forward_alt,
@@ -76,7 +72,6 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.home,
             R.drawable.smartphone,
             R.drawable.new_tab,
-            R.drawable.delete,
             R.drawable.share,
             R.drawable.app_shortcut,
             R.drawable.settings,
@@ -87,8 +82,7 @@ public class BrowserActivity extends VioWebViewActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(
-                pref, SettingsKeys.reverseLayout)) ? R.layout.main_wpmode : R.layout.main);
+        setContentView(R.layout.main);
         initialize();
         initializeLogic();
     }
@@ -120,42 +114,6 @@ public class BrowserActivity extends VioWebViewActivity {
             else
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             startActivity(i);
-        } else if (item == R.drawable.delete) {
-            PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
-                    webview.clearCache(true);
-                    CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
-                    webview.webviewReload();
-                } else if (_item.getTitle().toString().contains(getResources().getString(R.string.history))) {
-                    webview.clearHistory();
-                    HistoryUtils.clear(BrowserActivity.this);
-                    CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.history)));
-                    webview.webviewReload();
-                } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        CookieManager.getInstance().removeAllCookies(null);
-                        CookieManager.getInstance().flush();
-                    } else {
-                        CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(this);
-                        CookieManager cookieManager = CookieManager.getInstance();
-                        cookieSyncMgr.startSync();
-                        cookieManager.removeAllCookie();
-                        cookieManager.removeSessionCookie();
-                        cookieSyncMgr.stopSync();
-                        cookieSyncMgr.sync();
-                    }
-                    CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
-                    webview.webviewReload();
-                }
-
-                return false;
-            });
-            popupMenu.show();
         } else if (item == R.drawable.share) {
             CommonUtils.shareUrl(this, webview.getUrl());
         } else if (item == R.drawable.app_shortcut) {
@@ -224,8 +182,8 @@ public class BrowserActivity extends VioWebViewActivity {
         swipeRefreshLayout = findViewById(R.id.layout_webview);
         webview = swipeRefreshLayout.findViewById(R.id.webview);
         RecyclerView actionBar = findViewById(R.id.actionBar);
-        actionBarBack = findViewById(R.id.actionBarBack);
         favicon = findViewById(R.id.favicon);
+        toolsContainer = findViewById(R.id.toolsContainer);
 
         actionBar.setLayoutManager(new LinearLayoutManager(
                 BrowserActivity.this, RecyclerView.HORIZONTAL, false));
@@ -292,15 +250,18 @@ public class BrowserActivity extends VioWebViewActivity {
         });
 
         fab.setOnClickListener(v -> {
-            if (actionBarBack.getVisibility() == View.VISIBLE) {
-                fab.animate().rotationBy(180).setDuration(250).start();
-                actionBarBack.animate().alpha(0f).setDuration(250).start();
-                actionBarBack.setVisibility(View.GONE);
+            if (fab.getRotation() != 0 || fab.getRotation() != 180)
+                fab.animate().cancel();
+            if (toolsContainer.getVisibility() == View.VISIBLE) {
+                fab.animate().rotation(retractedRotation).setDuration(250).start();
+                toolsContainer.animate().alpha(0f).setDuration(250).start();
+                toolsContainer.setVisibility(View.GONE);
             } else {
-                fab.animate().rotationBy(-180).setDuration(250).start();
-                actionBarBack.animate().alpha(1f).setDuration(250).start();
-                actionBarBack.setVisibility(View.VISIBLE);
+                fab.animate().rotation(retractedRotation - 180).setDuration(250).start();
+                toolsContainer.animate().alpha(1f).setDuration(250).start();
+                toolsContainer.setVisibility(View.VISIBLE);
             }
+            reachModeCheck();
         });
 
         /* Code for detecting return key presses */
@@ -384,7 +345,11 @@ public class BrowserActivity extends VioWebViewActivity {
         super.doSettingsCheck();
 
         // Settings check
-        actionBarBack.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
+        toolsContainer.setGravity(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.centerActionBar)) ? Gravity.CENTER_HORIZONTAL : Gravity.NO_GRAVITY);
+        fab.setRotation(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout)) ? 0 : 180);
+        retractedRotation = (int) fab.getRotation();
+        if (toolsContainer.getVisibility() == View.VISIBLE)
+            fab.setRotation(fab.getRotation() - 180);
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {

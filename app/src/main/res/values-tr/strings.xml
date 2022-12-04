@@ -2,10 +2,9 @@
     <string name="app_name" translatable="false">Browservio</string>
     <string name="customUA">"Özel Kullanıcı Aracısı (Custom User Agent)"</string>
     <string name="reset_complete">"Sıfırlama başarıyla tamamlandı."</string>
-    <string name="clear">"%s temizle"</string>
-    <string name="cache">"Önbellek"</string>
-    <string name="history">"Geçmiş"</string>
-    <string name="cookies">"Çerezler"</string>
+    <string name="pref_clear_cache">"Önbellek temizle"</string>
+    <string name="pref_clear_cookies">"Çerezler temizle"</string>
+    <string name="clear">"Temizle"</string>
     <string name="cleared_toast">"%s başarıyla silindi!"</string>
     <string name="share_url_dialog_title">"URL\'yi şununla paylaş:"</string>
     <string name="copied_clipboard">"Panoya kopyalandı!"</string>
@@ -18,10 +17,8 @@
     <string name="fab_desp">"Dokunulduğunda araç çubuğunu gizleyecek\gösterecek bir tuş."</string>
     <string name="settings">Ayarlar</string>
     <string name="search_engine">"Arama motoru"</string>
-    <string name="search_engine_current">"Güncel arama motoru: %s"</string>
     <string name="homepage">"Ana sayfa"</string>
-    <string name="homepage_current">"Güncel ana sayfa: %s"</string>
-    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nTarihinde derlendi %5$s\nTelif hakkı © 2020-%6$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
     <string name="update_btn">Güncellemeleri denetle</string>
     <string name="version_latest_toast">"Browservio'nun en güncel sürümünü kullanmaktasınız."</string>
     <string name="network_unavailable_toast">"Bağlantı yok."</string>
@@ -66,7 +63,6 @@
     <string name="reset_dialog">Bu, tüm tarayıcı verisini silecek.\n</string>
     <string name="to_continue">Devam etmek istiyor musunuz?</string>
     <string name="search_suggestions_title">Arama önerileri</string>
-    <string name="search_suggestions_current">"Güncel arama önerisi sağlayıcısı: %s"</string>
     <string name="get_changelog">Değişiklik günlüğü</string>
     <string name="pref_adBlocker">Reklam engelleyiciyi etkinleştir</string>
     <string name="pref_adBlocker_desp">Reklamların rahatsızlık vermesini engeller.</string>
@@ -78,7 +74,6 @@
     <string name="no_webview">WebView gereklidir ancak yüklü değildir.</string>
     <string name="share_url">Bağlantıyı paylaş</string>
     <string name="pref_theme">Tema</string>
-    <string name="pref_theme_desp">Güncel tema: %s</string>
     <string name="pref_center_action">Araç çubuğunu yatay olarak ortala</string>
     <string name="pref_center_action_desp">Yer olduğunda, araç çubuğunu yatay olarak ortalar.</string>
     <string name="ssl_info">SSL Sertifika ayrıntıları</string>
