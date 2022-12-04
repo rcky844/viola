@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -405,8 +406,7 @@ public class SettingsActivity extends AppCompatActivity {
                                         CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
                                         return;
                                     }
-
-                                    new MaterialAlertDialogBuilder(settingsActivity)
+                                    new Handler(Looper.getMainLooper()).post(() -> new MaterialAlertDialogBuilder(settingsActivity)
                                             .setTitle(getResources().getString(R.string.new_update_detect_title))
                                             .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
                                             .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
@@ -418,7 +418,7 @@ public class SettingsActivity extends AppCompatActivity {
                                                     CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
                                             })
                                             .setNegativeButton(android.R.string.cancel, null)
-                                            .create().show();
+                                            .create().show());
                                     break;
                                 case DownloaderThread.TYPE_FAILED:
                                     CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
