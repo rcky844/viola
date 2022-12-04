@@ -157,11 +157,12 @@ public class VioWebViewActivity extends AppCompatActivity {
 
         // FIXME: These are hardcoded values
         int actionBarSize = (int) CommonUtils.getDisplayMetrics(
-                VioWebViewActivity.this, 48);
+                VioWebViewActivity.this, 50);
         int toolsContainerSize = (int) CommonUtils.getDisplayMetrics(
                 VioWebViewActivity.this, 36);
-        int margin = toolsContainer.getVisibility() == View.VISIBLE
-                ? actionBarSize + toolsContainerSize : actionBarSize;
+        int margin = actionBarSize;
+        if (toolsContainer != null && toolsContainer.getVisibility() == View.VISIBLE)
+            margin = margin + toolsContainerSize;
 
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout))) {
             appBarParams.gravity = Gravity.BOTTOM;
@@ -181,8 +182,10 @@ public class VioWebViewActivity extends AppCompatActivity {
 
         appbar.setLayoutParams(appBarParams);
         appbar.invalidate();
-        toolsContainer.setLayoutParams(toolsContainerParams);
-        toolsContainer.invalidate();
+        if (toolsContainer != null) {
+            toolsContainer.setLayoutParams(toolsContainerParams);
+            toolsContainer.invalidate();
+        }
         webviewContainer.setLayoutParams(webviewContainerParams);
         webviewContainer.invalidate();
     }

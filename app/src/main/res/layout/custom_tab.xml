@@ -100,13 +100,6 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <RelativeLayout
-        android:id="@+id/webviewContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <ProgressBar
             android:id="@+id/MainProg"
             style="?android:progressBarStyleHorizontal"
@@ -115,11 +108,18 @@
             android:indeterminate="false"
             android:progressBackgroundTint="#26000000" />
 
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/webviewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <include
             android:id="@+id/layout_webview"
             layout="@layout/layout_webview"
-            android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
