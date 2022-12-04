@@ -19,7 +19,7 @@
     <string name="settings">Cài đặt</string>
     <string name="search_engine">"Công cụ tìm kiếm"</string>
     <string name="homepage">"Trang chủ"</string>
-    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nBiên soạn trên %5$s\nBản quyền © 2020-%6$s Tipz Team\n\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
     <string name="update_btn">Tìm bản cập nhật mới</string>
     <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Browservio."</string>
     <string name="network_unavailable_toast">"Không có mạng."</string>

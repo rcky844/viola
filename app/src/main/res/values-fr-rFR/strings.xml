@@ -17,7 +17,7 @@
     <string name="settings">Réglages</string>
     <string name="search_engine">"Moteur de recherche"</string>
     <string name="homepage">"Page d’accueil"</string>
-    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
+    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nCompilé sur %5$s\nDroit d'auteur © 2020-%6$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
     <string name="update_btn">Vérifier les mises à jour</string>
     <string name="version_latest_toast">"Vous disposez actuellement de la dernière version de Browservio."</string>
     <string name="network_unavailable_toast">"Le réseau n’est pas disponible."</string>

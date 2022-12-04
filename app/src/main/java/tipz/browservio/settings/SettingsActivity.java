@@ -382,6 +382,7 @@ public class SettingsActivity extends AppCompatActivity {
                         BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
                         BuildConfig.VERSION_CODENAME,
                         String.valueOf(BuildConfig.VERSION_CODE),
+                        BuildConfig.VERSION_BUILD_DATE,
                         BuildConfig.VERSION_BUILD_YEAR));
                 update_btn.setOnClickListener(_update_btn -> {
                     DownloaderThread mHandlerThread = new DownloaderThread("updater");

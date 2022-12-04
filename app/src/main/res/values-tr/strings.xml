@@ -18,7 +18,7 @@
     <string name="settings">Ayarlar</string>
     <string name="search_engine">"Arama motoru"</string>
     <string name="homepage">"Ana sayfa"</string>
-    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nTarihinde derlendi %5$s\nTelif hakkı © 2020-%6$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
     <string name="update_btn">Güncellemeleri denetle</string>
     <string name="version_latest_toast">"Browservio'nun en güncel sürümünü kullanmaktasınız."</string>
     <string name="network_unavailable_toast">"Bağlantı yok."</string>
