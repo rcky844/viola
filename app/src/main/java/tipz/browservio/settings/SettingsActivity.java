@@ -283,7 +283,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             clear_cookies.setOnPreferenceClickListener(preference -> {
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_clear_cache))
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_clear_cookies))
                         .setMessage(getResources().getString(R.string.to_continue))
                         .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
