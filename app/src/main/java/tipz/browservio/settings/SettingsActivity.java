@@ -17,6 +17,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -139,6 +142,8 @@ public class SettingsActivity extends AppCompatActivity {
             SwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
             SwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
             SwitchPreference google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
+            Preference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
+            Preference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
@@ -263,10 +268,47 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
 
+            clear_cache.setOnPreferenceClickListener(preference -> {
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_clear_cache))
+                        .setMessage(getResources().getString(R.string.to_continue))
+                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
+                            WebView mWebView = new WebView(settingsActivity);
+                            mWebView.clearCache(true);
+                            mWebView.destroy();
+                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show();
+                return true;
+            });
+
+            clear_cookies.setOnPreferenceClickListener(preference -> {
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_clear_cache))
+                        .setMessage(getResources().getString(R.string.to_continue))
+                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                CookieManager.getInstance().removeAllCookies(null);
+                                CookieManager.getInstance().flush();
+                            } else {
+                                CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(settingsActivity);
+                                CookieManager cookieManager = CookieManager.getInstance();
+                                cookieSyncMgr.startSync();
+                                cookieManager.removeAllCookie();
+                                cookieManager.removeSessionCookie();
+                                cookieSyncMgr.stopSync();
+                                cookieSyncMgr.sync();
+                            }
+                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show();
+                return true;
+            });
+
             reset_to_default.setOnPreferenceClickListener(preference -> {
                 new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.reset_btn))
                         .setMessage(getResources().getString(R.string.reset_dialog).concat(getResources().getString(R.string.to_continue)))
-                        .setPositiveButton(getResources().getString(R.string.clear, CommonUtils.EMPTY_STRING).trim(), (_dialog, _which) -> {
+                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
                             CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.reset_complete));
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                 ((ActivityManager) settingsActivity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();

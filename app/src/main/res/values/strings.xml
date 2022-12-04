@@ -2,11 +2,10 @@
     <string name="app_name" translatable="false">Browservio</string>
     <string name="customUA">"Custom User Agent"</string>
     <string name="reset_complete">"Reset completed successfully."</string>
-    <string name="clear">"Clear %s"</string>
-    <string name="cache">"Cache"</string>
-    <string name="history">"History"</string>
-    <string name="cookies">"Cookies"</string>
-    <string name="cleared_toast">"%s cleared successfully!"</string>
+    <string name="pref_clear_cache">"Clear cache"</string>
+    <string name="pref_clear_cookies">"Clear cookies"</string>
+    <string name="clear">"Clear"</string>
+    <string name="cleared_toast">"Cleared successfully!"</string>
     <string name="share_url_dialog_title">"Share URL using"</string>
     <string name="copied_clipboard">"Copied to clipboard!"</string>
     <string name="hist_empty">"History is empty!"</string>

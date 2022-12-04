@@ -17,8 +17,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -74,7 +72,6 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.home,
             R.drawable.smartphone,
             R.drawable.new_tab,
-            R.drawable.delete,
             R.drawable.share,
             R.drawable.app_shortcut,
             R.drawable.settings,
@@ -117,37 +114,6 @@ public class BrowserActivity extends VioWebViewActivity {
             else
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             startActivity(i);
-        } else if (item == R.drawable.delete) {
-            PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, view);
-            Menu menu = popupMenu.getMenu();
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cache)));
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.history)));
-            menu.add(getResources().getString(R.string.clear, getResources().getString(R.string.cookies)));
-            popupMenu.setOnMenuItemClickListener(_item -> {
-                if (_item.getTitle().toString().contains(getResources().getString(R.string.cache))) {
-                    webview.clearCache(true);
-                    CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cache)));
-                    webview.webviewReload();
-                } else if (_item.getTitle().toString().contains(getResources().getString(R.string.cookies))) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        CookieManager.getInstance().removeAllCookies(null);
-                        CookieManager.getInstance().flush();
-                    } else {
-                        CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(this);
-                        CookieManager cookieManager = CookieManager.getInstance();
-                        cookieSyncMgr.startSync();
-                        cookieManager.removeAllCookie();
-                        cookieManager.removeSessionCookie();
-                        cookieSyncMgr.stopSync();
-                        cookieSyncMgr.sync();
-                    }
-                    CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.cleared_toast, getResources().getString(R.string.cookies)));
-                    webview.webviewReload();
-                }
-
-                return false;
-            });
-            popupMenu.show();
         } else if (item == R.drawable.share) {
             CommonUtils.shareUrl(this, webview.getUrl());
         } else if (item == R.drawable.app_shortcut) {
