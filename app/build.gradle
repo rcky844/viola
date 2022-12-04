@@ -56,6 +56,8 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
+            minifyEnabled true
+            shrinkResources true
             buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
             buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
         }

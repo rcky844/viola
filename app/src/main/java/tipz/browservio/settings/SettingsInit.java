@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import tipz.browservio.utils.CommonUtils;
 
 public class SettingsInit {
-    public SharedPreferences pref;
+    public final SharedPreferences pref;
     public SettingsInit(Context context) {
         pref = context.getSharedPreferences(SettingsKeys.browservio_saver, Activity.MODE_PRIVATE);
 
