@@ -1,51 +1,65 @@
 package tipz.browservio.search;
 
-import static tipz.browservio.utils.UrlUtils.composeSearchUrl;
+import android.content.SharedPreferences;
 
-import tipz.browservio.utils.CommonUtils;
+import tipz.browservio.settings.SettingsKeys;
+import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.utils.UrlUtils;
 
 public class SearchEngineEntries {
-    public final static String[] baseSearch = new String[]{
-            "https://www.google.com/%s",
-            "https://www.baidu.com/%s",
-            "https://www.duckduckgo.com/%s",
-            "https://www.bing.com/%s",
-            "https://search.yahoo.com/%s",
-            "https://www.ecosia.org/%s",
-            "https://yandex.com/%s",
-            "https://search.brave.com/%s",
+    private static final String queryPlaceholder = "{query}";
+    private static final String languagePlaceholder = "{language}";
+
+    private final static EngineObject[] engines = new EngineObject[] {
+            new EngineObject().setHomePage("https://www.google.com")
+                    .setSearch("https://www.google.com/search?q={query}")
+                    .setSuggestion("http://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q={query}&hl={language}"),
+            new EngineObject().setHomePage("https://www.baidu.com")
+                    .setSearch("https://www.baidu.com/s?wd={query}")
+                    .setSuggestion("http://suggestion.baidu.com/su?ie=UTF-8&wd={query}&action=opensearch"),
+            new EngineObject().setHomePage("https://www.duckduckgo.com")
+                    .setSearch("https://www.duckduckgo.com/?q={query}")
+                    .setSuggestion("https://duckduckgo.com/ac/?q={query}&type=list"),
+            new EngineObject().setHomePage("https://www.bing.com")
+                    .setSearch("https://www.bing.com/search?q={query}")
+                    .setSuggestion("https://api.bing.com/osjson.aspx?query={query}&language={language}"),
+            new EngineObject().setHomePage("https://search.yahoo.com")
+                    .setSearch("https://search.yahoo.com/search?p={query}")
+                    .setSuggestion("https://sugg.search.yahoo.net/sg/?output=fxjson&command={query}"),
+            new EngineObject().setHomePage("https://www.ecosia.org")
+                    .setSearch("https://www.ecosia.org/search?q={query}")
+                    .setSuggestion("https://ac.ecosia.org/autocomplete?q={query}&type=list"),
+            new EngineObject().setHomePage("https://yandex.com")
+                    .setSearch("https://yandex.com/search/?text={query}")
+                    .setSuggestion("https://yandex.com/suggest/suggest-ya.cgi?v=4&part={query}"),
+            new EngineObject().setHomePage("https://search.brave.com")
+                    .setSearch("https://search.brave.com/search?q={query}")
+                    .setSuggestion("https://search.brave.com/api/suggest?q={query}"),
+            new EngineObject() /* The object for custom URL */
     };
 
-    public final static String[] searchSuffix = new String[]{
-            "search?q=",
-            "s?wd=",
-            "?q=",
-            "search?q=",
-            "search?p=",
-            "search?q=",
-            "search/?text=",
-            "search?q=",
-    };
-
-    public final static String[] searchSuggestionsUrl = new String[]{
-            "http://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q=%s",
-            "http://suggestion.baidu.com/su?ie=UTF-8&wd=%s&action=opensearch",
-            "https://api.bing.com/osjson.aspx?query=%s",
-            "https://sugg.search.yahoo.net/sg/?output=fxjson&command=%s",
-            "https://ac.ecosia.org/autocomplete?q=%s&type=list",
-            "https://yandex.com/suggest/suggest-ya.cgi?v=4&part=%s",
-            "https://search.brave.com/api/suggest?q=%s",
-    };
-
-    public static String getSearchEngineUrl(String homeAdd, String searchSuffix) {
-        return composeSearchUrl(searchSuffix, homeAdd, "%s");
+    public static String getHomePageUrl(SharedPreferences pref, int position) {
+        String url = engines[position].getHomePage();
+        if (url.isEmpty())
+            url = SettingsUtils.getPref(pref, SettingsKeys.defaultHomePage);
+        return UrlUtils.cve_2017_13274(url);
     }
 
-    public static String getHomepageUrl(String homeAdd) {
-        return composeSearchUrl(CommonUtils.EMPTY_STRING, homeAdd, "%s");
+    public static String getSearchUrl(SharedPreferences pref, int position, String query, String language) {
+        String url = engines[position].getSearch();
+        if (url.isEmpty())
+            url = SettingsUtils.getPref(pref, SettingsKeys.defaultSearch);
+        if (query != null)
+            url = url.replace(queryPlaceholder, query).replace(languagePlaceholder, language);
+        return UrlUtils.cve_2017_13274(url);
     }
 
-    public static String getSuggestionsUrl(String homeAdd, String suggestions) {
-        return composeSearchUrl(suggestions, homeAdd, "%s");
+    public static String getSuggestionsUrl(SharedPreferences pref, int position, String query, String language) {
+        String url = engines[position].getSuggestion();
+        if (url.isEmpty())
+            url = SettingsUtils.getPref(pref, SettingsKeys.defaultSuggestions);
+        if (query != null && language != null)
+            url = url.replace(queryPlaceholder, query).replace(languagePlaceholder, language);
+        return UrlUtils.cve_2017_13274(url);
     }
 }

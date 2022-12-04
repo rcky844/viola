@@ -3,10 +3,9 @@
     <string name="app_name" translatable="false">Browservio</string>
     <string name="customUA">"User Agent tùy chỉnh"</string>
     <string name="reset_complete">"Đặt lại thành."</string>
-    <string name="clear">"Xóa %s"</string>
-    <string name="cache">"Bộ nhớ đệm"</string>
-    <string name="history">"Lịch sử"</string>
-    <string name="cookies">"Cookies"</string>
+    <string name="pref_clear_cache">"Xóa Bộ nhớ đệm"</string>
+    <string name="pref_clear_cookies">"Xóa Cookies"</string>
+    <string name="clear">"Xóa"</string>
     <string name="cleared_toast">"Xóa %s thành công!"</string>
     <string name="share_url_dialog_title">"Chia sẻ URL bằng"</string>
     <string name="copied_clipboard">"Đã sao chép vào bảng nhớ tạm!"</string>
@@ -19,10 +18,8 @@
     <string name="fab_desp">"Nút khi nhấn sẽ mở hoặc đóng thanh hành động."</string>
     <string name="settings">Cài đặt</string>
     <string name="search_engine">"Công cụ tìm kiếm"</string>
-    <string name="search_engine_current">"Công cụ tìm kiếm hiện tại: %s"</string>
     <string name="homepage">"Trang chủ"</string>
-    <string name="homepage_current">"Trang chủ hiện tại: %s"</string>
-    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nBiên soạn trên %5$s\nBản quyền © 2020-%6$s Tipz Team\n\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
     <string name="update_btn">Tìm bản cập nhật mới</string>
     <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Browservio."</string>
     <string name="network_unavailable_toast">"Không có mạng."</string>
@@ -39,20 +36,18 @@
     <string name="help">Hỗ trợ</string>
     <string name="version">Phiên bản</string>
     <string name="feedback">Phản hồi</string>
-    <string name="feedback_desp">"Phản hồi sẽ giúp nâng cao chất lượng của Browservio."</string>
+    <string name="feedback_desp">"Báo cáo lỗi hoặc yêu cầu các tính năng mới."</string>
     <string name="source_code">"Mã nguồn"</string>
-    <string name="source_code_desp">"Dành ít thời gian ngó qua mã nguồn Browservio."</string>
+    <string name="source_code_desp">"Xem mã nguồn của Browservio."</string>
     <string name="download_title">"Cập nhật Browservio"</string>
     <string name="fav">Yêu thích</string>
     <string name="delete">"Xóa"</string>
     <string name="delete_all_entries">"Xóa toàn bộ các mục"</string>
     <string name="delete_fav_message">"Bạn đang định xóa toàn bộ các mục yêu thích, bạn chắc chắn chứ?"</string>
     <string name="wiped_success">"Xóa thành công!"</string>
-    <string name="fav_del_fab_desp">"Xóa toàn bộ các mục"</string>
     <string name="hist">Lịch sử</string>
     <string name="add_to_fav">"Lưu vào Yêu thích"</string>
     <string name="del_hist_message">"Bạn đang định xóa toàn bộ lịch sử, bạn chắc chắn chứ?"</string>
-    <string name="del_hist_fab_desp">"Xóa toàn bộ lịch sử"</string>
     <string name="license_btn">Giấy phép</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">Lỗi bất ngờ! Xin lỗi vì sự bất tiện.</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Khởi động lại ứng dụng</string>
@@ -69,7 +64,6 @@
     <string name="reset_dialog">Chuẩn bị xóa toàn bộ dữ liệu trình duyệt\n</string>
     <string name="to_continue">Bạn có muốn tiếp tục?</string>
     <string name="search_suggestions_title">Đề xuất tìm kiếm</string>
-    <string name="search_suggestions_current">"Trang cung cấp đề xuất tìm kiếm hiện tại: %s"</string>
     <string name="get_changelog">Đọc bản ghi các thay đổi</string>
     <string name="pref_adBlocker">Bật chặn quảng cáo</string>
     <string name="pref_adBlocker_desp">Chặn các quảng cáo khó chịu.</string>
@@ -81,7 +75,6 @@
     <string name="no_webview">WebView cần thiết nhưng chưa được cài đặt.</string>
     <string name="share_url">Chia sẻ đường dẫn</string>
     <string name="pref_theme">Chủ đề</string>
-    <string name="pref_theme_desp">Chủ đề hiện tại: %s</string>
     <string name="pref_center_action">Căn giữa thanh hành động</string>
     <string name="pref_center_action_desp">Tự động căn giữa thanh hành động khi có khoảng trống.</string>
     <string name="ssl_info">Chi tiết chứng chỉ SSL</string>
@@ -104,6 +97,28 @@
     <string name="search_image">Tìm kiếm các hình ảnh tương tự</string>
     <string name="desk_mode_text">Bật chế độ xem rộng</string>
     <string name="notification_download_successful">%s đã tải xuống thành công.</string>
+    <string name="pref_enable_swipe_refresh_title">Bật Kéo để Làm mới</string>
+    <string name="pref_enable_swipe_refresh_summary">Cho phép tải lại trang được kích hoạt bởi nội dung ghi đè theo chiều dọc.</string>
+    <string name="pref_enforce_https_title">Thực thi HTTPS</string>
+    <string name="pref_enforce_https_summary">Luôn truy cập các trang web sử dụng HTTPS để tăng cường bảo mật. (Thực nghiệm)</string>
+    <string name="pref_use_custom_tabs_title">Sử dụng tab tùy chỉnh</string>
+    <string name="pref_use_custom_tabs_summary">Luôn mở Liên kết ứng dụng trong Tab tùy chỉnh khi nó được mở từ một ứng dụng khác.</string>
+    <string name="pref_close_app_after_download_title">Đóng sau liên kết ứng dụng có thể tải xuống</string>
+    <string name="pref_close_app_after_download_summary">Luôn đóng Browservio nếu Liên kết ứng dụng có thể tải xuống được.</string>
+    <string name="pref_reverse_layout_title">Bố cục ngược</string>
+    <string name="pref_reverse_layout_summary">Đảo ngược bố cục trình duyệt lộn ngược. (Cần khởi động lại)</string>
+    <string name="custom_search_guide">Định dạng:\n{query}: Truy vấn\n{language}: Ngôn ngữ</string>
+    <string name="pref_update_recents_icon_title">Cập nhật biểu tượng và nhãn của các tab trong Gần đây</string>
+    <string name="pref_update_recents_icon_summary">Tự động cập nhật biểu tượng và nhãn của các tab trong Gần đây thành biểu tượng và nhãn của trang web.</string>
+    <string name="js_page_says">%s nói</string>
+    <string name="js_leave_page_prompt">%s nói, bạn có muốn rời khỏi trang này không?</string>
+    <string name="view_page_source">Xem nguồn trang</string>
+    <string name="pref_google_safe_browsing_title">Bật tính năng Duyệt web an toàn của Google</string>
+    <string name="pref_google_safe_browsing_summary">Cho phép tính năng Duyệt web an toàn của Google chặn các trang web mà họ cho là nguy hiểm.</string>
+    <string name="dialog_page_unresponsive_title">Trang không phản hồi</string>
+    <string name="dialog_page_unresponsive_message">Bạn có thể đợi nó trở nên phản hồi hoặc chấm dứt tab này.</string>
+    <string name="dialog_page_unresponsive_wait">Đợi</string>
+    <string name="dialog_page_unresponsive_terminate">Chấm dứt</string>
 
     <string-array name="errMsg">
         <item>Lỗi!</item>

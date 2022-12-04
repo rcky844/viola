@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     id 'com.android.application'
 }
@@ -5,7 +7,14 @@ plugins {
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
     exec {
-        commandLine 'git', 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            def sdkDir = properties.getProperty('git.exec')
+            commandLine 'cmd', '/c', sdkDir, 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
+        } else {
+            commandLine 'git', 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
+        }
         standardOutput = stdout
     }
     return stdout.toString().trim()
@@ -19,13 +28,13 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 85
-        versionName "3.2"
+        versionCode 94
+        versionName "4.0"
 
-        buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_CODENAME", "\"Dragonified\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_dragonified_rel\""
-        buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("yyMMdd-HHmm") + "\""
+        buildConfigField "String", "VERSION_NAME_EXTRA", "\" Release Candidate 3\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Eagle\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_eagle_rc3\""
+        buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
         vectorDrawables.useSupportLibrary = true
@@ -35,8 +44,8 @@ android {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        resConfigs 'de-rDE', 'en-rGB', 'fr-rFR', 'tr', 'vi', 'zh-rCN', 'zh-rTW'
 
-        resConfigs "de-rDE", "en-rGB", "fr-rFR", "tr", "vi", "zh-rCN", "zh-rTW"
     }
     buildTypes {
         release {
@@ -46,6 +55,8 @@ android {
         }
 
         debug {
+            applicationIdSuffix ".debug"
+            multiDexEnabled true
             buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
             buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
         }
@@ -54,12 +65,20 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
+    sourceSets {
+        debug {
+            res.srcDir "debug/res"
+        }
+    }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'com.google.android.material:material:1.7.0-beta01'
-    implementation 'androidx.webkit:webkit:1.5.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.8.0-alpha03'
+    implementation 'com.loopj.android:android-async-http:1.4.11'
+    implementation "androidx.multidex:multidex:2.0.1"
+    implementation 'androidx.webkit:webkit:1.6.0-alpha03'
     implementation('androidx.preference:preference:1.2.0') {
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
@@ -67,5 +86,6 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
     implementation "androidx.room:room-runtime:2.4.3"
+    annotationProcessor 'androidx.annotation:annotation:1.5.0'
     annotationProcessor "androidx.room:room-compiler:2.4.3"
 }

@@ -1,4 +1,4 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,10 +7,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/actionBarBack"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
@@ -90,7 +87,6 @@
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/fab_desp"
                     android:padding="8dp"
-                    android:rotation="180"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -100,17 +96,22 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
+        <ProgressBar
+            android:id="@+id/MainProg"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:indeterminate="false"
+            android:progressBackgroundTint="#26000000" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/actionBarBack"
+        android:id="@+id/toolsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorTopBar"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/MainProg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appbar">
+        android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/actionBar"
@@ -121,33 +122,16 @@
             android:scrollbars="none" />
     </RelativeLayout>
 
-    <ProgressBar
-        android:id="@+id/MainProg"
-        style="?android:progressBarStyleHorizontal"
+    <RelativeLayout
+        android:id="@+id/webviewContainer"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:indeterminate="false"
-        android:progressBackgroundTint="#26000000"
-        app:layout_constraintBottom_toTopOf="@id/swipe"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/actionBarBack" />
+        android:layout_height="match_parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/MainProg"
-        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/colorAccent"
-        tools:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <WebView
-            android:id="@+id/webview"
+        <include
+            android:id="@+id/layout_webview"
+            layout="@layout/layout_webview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbarStyle="insideOverlay" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent" />
+    </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

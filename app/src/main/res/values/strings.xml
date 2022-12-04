@@ -2,11 +2,10 @@
     <string name="app_name" translatable="false">Browservio</string>
     <string name="customUA">"Custom User Agent"</string>
     <string name="reset_complete">"Reset completed successfully."</string>
-    <string name="clear">"Clear %s"</string>
-    <string name="cache">"Cache"</string>
-    <string name="history">"History"</string>
-    <string name="cookies">"Cookies"</string>
-    <string name="cleared_toast">"%s cleared successfully!"</string>
+    <string name="pref_clear_cache">"Clear cache"</string>
+    <string name="pref_clear_cookies">"Clear cookies"</string>
+    <string name="clear">"Clear"</string>
+    <string name="cleared_toast">"Cleared successfully!"</string>
     <string name="share_url_dialog_title">"Share URL using"</string>
     <string name="copied_clipboard">"Copied to clipboard!"</string>
     <string name="hist_empty">"History is empty!"</string>
@@ -18,10 +17,8 @@
     <string name="fab_desp">"A button when clicked will show or close the action bar."</string>
     <string name="settings">Settings</string>
     <string name="search_engine">"Search engine"</string>
-    <string name="search_engine_current">"Current search engine: %s"</string>
     <string name="homepage">"Homepage"</string>
-    <string name="homepage_current">"Current homepage: %s"</string>
-    <string name="version_info_message">"%1$s\nVersion %2$s (Build %3$s : %4$s)\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nCompiled on %5$s\nCopyright © 2020-%6$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
     <string name="update_btn">Check for Updates</string>
     <string name="version_latest_toast">"You are currently running the latest version of Browservio."</string>
     <string name="network_unavailable_toast">"Network is unavailable."</string>
@@ -38,20 +35,18 @@
     <string name="help">Help</string>
     <string name="version">Version</string>
     <string name="feedback">Feedback</string>
-    <string name="feedback_desp">"Giving feedback will help improve the quality of Browservio."</string>
+    <string name="feedback_desp">"Report bugs or request new features."</string>
     <string name="source_code">"Source code"</string>
-    <string name="source_code_desp">"Have a look at Browservio\'s source code."</string>
+    <string name="source_code_desp">"View Browservio\'s source code."</string>
     <string name="download_title">"Browservio Update"</string>
     <string name="fav">Favorites</string>
     <string name="delete">"Delete"</string>
     <string name="delete_all_entries">"Delete all entries"</string>
     <string name="delete_fav_message">"You are about to delete all favorites entries, are you sure about this?"</string>
     <string name="wiped_success">"Wiped successfully!"</string>
-    <string name="fav_del_fab_desp">"Delete all entries"</string>
     <string name="hist">History</string>
     <string name="add_to_fav">"Save to favorites"</string>
     <string name="del_hist_message">"You are about to delete all history entries, are you sure about this?"</string>
-    <string name="del_hist_fab_desp">"Delete all history"</string>
     <string name="license_btn">License</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">Restart app</string>
@@ -68,7 +63,6 @@
     <string name="reset_dialog">This will clear all browser data\n</string>
     <string name="to_continue">Are you sure you want to continue?</string>
     <string name="search_suggestions_title">Search Suggestions</string>
-    <string name="search_suggestions_current">"Current suggestions provider: %s"</string>
     <string name="get_changelog">Read ChangeLogs</string>
     <string name="pref_adBlocker">Enable Ad Blocker</string>
     <string name="pref_adBlocker_desp">Stop annoying ads from distracting you.</string>
@@ -80,7 +74,6 @@
     <string name="no_webview">WebView is required but not installed.</string>
     <string name="share_url">Share link</string>
     <string name="pref_theme">Theme</string>
-    <string name="pref_theme_desp">Current theme: %s</string>
     <string name="pref_center_action">Center Action Bar Horizontally</string>
     <string name="pref_center_action_desp">Automatically center the action bar when space is available.</string>
     <string name="ssl_info">SSL Certificate Details</string>
@@ -103,6 +96,28 @@
     <string name="search_image">Search for similar images</string>
     <string name="desk_mode_text">Enable wide viewport mode</string>
     <string name="notification_download_successful">%s downloaded successfully.</string>
+    <string name="pref_enable_swipe_refresh_title">Enable Pull to Refresh</string>
+    <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
+    <string name="pref_enforce_https_title">Enforce HTTPS</string>
+    <string name="pref_enforce_https_summary">Always visit websites using HTTPS for added security. (Experimental)</string>
+    <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
+    <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
+    <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
+    <string name="pref_close_app_after_download_summary">Always close Browservio if the App Link is downloadable.</string>
+    <string name="pref_reverse_layout_title">Reach mode</string>
+    <string name="pref_reverse_layout_summary">Relocate interface elements for easier one-hand usage.</string>
+    <string name="custom_search_guide">Format:\n{query}: Query\n{language}: Language</string>
+    <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
+    <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
+    <string name="js_page_says">%s says</string>
+    <string name="js_leave_page_prompt">%s says, do you want to leave this page?</string>
+    <string name="view_page_source">View Page Source</string>
+    <string name="pref_google_safe_browsing_title">Enable Google\'s Safe Browsing</string>
+    <string name="pref_google_safe_browsing_summary">Allow Google\'s Safe Browsing to block websites it deems dangerous.</string>
+    <string name="dialog_page_unresponsive_title">Page Unresponsive</string>
+    <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
+    <string name="dialog_page_unresponsive_wait">Wait</string>
+    <string name="dialog_page_unresponsive_terminate">Terminate</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

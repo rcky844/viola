@@ -1,10 +1,7 @@
 package tipz.browservio.search;
 
-import static tipz.browservio.settings.SettingsUtils.browservio_saver;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +22,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import tipz.browservio.Application;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.utils.CommonUtils;
 
 /*
     "Inspired" by LineageOS' Jelly
@@ -34,7 +33,6 @@ import tipz.browservio.settings.SettingsUtils;
 
 public class SuggestionProvider {
     private static final long INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1);
-    private static final String DEFAULT_LANGUAGE = "en";
     private static final String DEFAULT_ENCODING = "UTF-8";
     private final Context mContext;
     @NonNull
@@ -50,10 +48,7 @@ public class SuggestionProvider {
 
     @NonNull
     private static String getLanguage() {
-        String language = Locale.getDefault().getLanguage();
-        if (TextUtils.isEmpty(language))
-            language = DEFAULT_LANGUAGE;
-        return language;
+        return CommonUtils.getLanguage();
     }
 
     @NonNull
@@ -72,16 +67,9 @@ public class SuggestionProvider {
     @NonNull
     protected String createQueryUrl(@NonNull String query,
                                     @NonNull String language) {
-        SharedPreferences pref = browservio_saver(mContext);
-        String suggestionString = SearchEngineEntries.getSuggestionsUrl(SettingsUtils.getPref(
-                pref, SettingsKeys.defaultSuggestions), query);
-        int suggestionId = SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId);
-        if (suggestionId == 0)
-            return suggestionString + "&hl=" + language;
-        else if (suggestionId == 2)
-            return suggestionString + "&language=" + language;
-        else
-            return suggestionString;
+        SharedPreferences pref = ((Application) mContext.getApplicationContext()).pref;
+        return SearchEngineEntries.getSuggestionsUrl(pref, SettingsUtils.getPrefNum(
+                pref, SettingsKeys.defaultSuggestionsId), query, language);
     }
 
     /**

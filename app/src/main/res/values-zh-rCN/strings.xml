@@ -1,11 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="customUA">自定义用户代理</string>
     <string name="reset_complete">重置已成功完成</string>
-    <string name="clear">清除%s</string>
-    <string name="cache">缓存</string>
-    <string name="history">历史记录</string>
-    <string name="cookies">Cookie设置</string>
-    <string name="cleared_toast">成功清除%s!</string>
+    <string name="pref_clear_cache">清除缓存</string>
+    <string name="pref_clear_cookies">清除Cookie设置</string>
+    <string name="clear">"清除"</string>
+    <string name="cleared_toast">成功清除!</string>
     <string name="share_url_dialog_title">分享URL</string>
     <string name="copied_clipboard">成功复制到了剪贴板!</string>
     <string name="hist_empty">历史记录是空的!</string>
@@ -17,10 +16,8 @@
     <string name="fab_desp">单击按钮时将显示或关闭操作栏</string>
     <string name="settings">设置</string>
     <string name="search_engine">搜索引擎</string>
-    <string name="search_engine_current">"当前的搜索引擎: %s"</string>
     <string name="homepage">主页</string>
-    <string name="homepage_current">"当前的主页: %s"</string>
-    <string name="version_info_message">"%1$s\n版本 %2$s (内部版本号 %3$s : %4$s)\n版权所有 © 2020-%5$s Tipz Team\n\n本产品已获得 Apache 许可</string>
+    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\n编译于%5$s\n版权所有 © 2020-%6$s Tipz Team\n\n本产品已获得 Apache 许可</string>
     <string name="update_btn">检查更新</string>
     <string name="version_latest_toast">您当前使用的是最新版本的Browservio</string>
     <string name="network_unavailable_toast">网络不可用</string>
@@ -38,19 +35,17 @@
     <string name="help">帮助</string>
     <string name="version">版本</string>
     <string name="feedback">反馈</string>
-    <string name="feedback_desp">提供反馈将有助于提高Browservio的质量</string>
+    <string name="feedback_desp">报告错误或请求新功能</string>
     <string name="source_code">源代码</string>
-    <string name="source_code_desp">看一下Browservio的源代码</string>
+    <string name="source_code_desp">查看Browservio的源代码</string>
     <string name="fav">收藏夹</string>
     <string name="delete">"删除"</string>
     <string name="delete_all_entries">刪除所有收藏</string>
     <string name="delete_fav_message">"您将要删除所有收藏, 您确定要这样做吗?"</string>
     <string name="wiped_success">清除成功!</string>
-    <string name="fav_del_fab_desp">删除所有收藏</string>
     <string name="hist">历史记录</string>
     <string name="add_to_fav">保存到收藏夹</string>
     <string name="del_hist_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
-    <string name="del_hist_fab_desp">删除所有历史记录</string>
     <string name="license_btn">许可</string>
     <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">错误发生对于给您带来的不便，我们深表歉意。</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">重启应用</string>
@@ -67,7 +62,6 @@
     <string name="reset_dialog">这将會清除所有浏览器数据。\n</string>
     <string name="to_continue">您确定要继续吗？</string>
     <string name="search_suggestions_title">搜索建议</string>
-    <string name="search_suggestions_current">"搜索建议提供者: %s"</string>
     <string name="get_changelog">阅读变更日志</string>
     <string name="pref_adBlocker">启用广告拦截器</string>
     <string name="pref_adBlocker_desp">拦截分散注意力而且烦人的广告</string>
@@ -79,7 +73,6 @@
     <string name="no_webview">WebView是必需的，但未安裝。</string>
     <string name="share_url">分享链接</string>
     <string name="pref_theme">主题</string>
-    <string name="pref_theme_desp">当前主题: %s</string>
     <string name="pref_center_action">水平居中操作栏</string>
     <string name="pref_center_action_desp">当空间可用时自动居中操作栏</string>
     <string name="ssl_info">SSL证书信息</string>
@@ -102,6 +95,28 @@
     <string name="search_image">搜寻相似图片</string>
     <string name="desk_mode_text">啟用寬窗口模式</string>
     <string name="notification_download_successful">%s下载成功</string>
+    <string name="pref_enable_swipe_refresh_title">启用滑动刷新</string>
+    <string name="pref_enable_swipe_refresh_summary">启用由垂直过度滚动内容触发的页面重新加载</string>
+    <string name="pref_enforce_https_title">强制HTTPS</string>
+    <string name="pref_enforce_https_summary">始终使用HTTPS访问网站以增加安全性 (实验性)</string>
+    <string name="pref_use_custom_tabs_title">使用Custom Tabs</string>
+    <string name="pref_use_custom_tabs_summary">从其他应用程序打开的链接时，始终打开Custom Tabs</string>
+    <string name="pref_close_app_after_download_title">仅下载链接后关闭</string>
+    <string name="pref_close_app_after_download_summary">如果链接是可下载的, 始终自动关闭Browservio</string>
+    <string name="pref_reverse_layout_title">单手模式</string>
+    <string name="pref_reverse_layout_summary">重新排列界面元素以便于单手操作</string>
+    <string name="custom_search_guide">格式:\n{query}: 搜索内容\n{language}: 语言</string>
+    <string name="pref_update_recents_icon_title">更新最近使用的应用中的图标和标签</string>
+    <string name="pref_update_recents_icon_summary">自动将“最近使用的应用”中选项卡的图标和标签更新为网页的</string>
+    <string name="js_page_says">%s说</string>
+    <string name="js_leave_page_prompt">%s说, 你想离开这个页面吗?</string>
+    <string name="view_page_source">查看页面源代码</string>
+    <string name="pref_google_safe_browsing_title">启用谷歌的安全浏览</string>
+    <string name="pref_google_safe_browsing_summary">允许谷歌的安全浏览功能屏蔽其认为危险的网站.</string>
+    <string name="dialog_page_unresponsive_title">页面无响应</string>
+    <string name="dialog_page_unresponsive_message">您可以等待它响应或终止此标签页</string>
+    <string name="dialog_page_unresponsive_wait">等待</string>
+    <string name="dialog_page_unresponsive_terminate">终止</string>
 
     <string-array name="errMsg">
         <item>错误!</item>
