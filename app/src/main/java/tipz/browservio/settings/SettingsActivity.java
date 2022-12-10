@@ -129,8 +129,6 @@ public class SettingsActivity extends BrowservioActivity {
         private void initializeLogic() {
             /* Common */
             final String[] searchHomePageList = settingsActivity.getResources().getStringArray(R.array.search_entries);
-            searchHomePageList[7] += settingsActivity.getResources().getString(R.string.search_entries_default);
-
             final String[] themeList = settingsActivity.getResources().getStringArray(R.array.themes);
 
             /* General category */
