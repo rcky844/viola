@@ -43,6 +43,7 @@ import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 import tipz.browservio.Application;
+import tipz.browservio.BrowservioActivity;
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.utils.BrowservioURLs;
@@ -50,7 +51,7 @@ import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.DownloaderThread;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BrowservioActivity {
 
     public final Intent needLoad = new Intent();
 
@@ -65,8 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        SettingsPrefHandler fragment = new SettingsPrefHandler(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, new SettingsPrefHandler(this)).commit();
     }
 
     @Override
@@ -336,6 +336,8 @@ public class SettingsActivity extends AppCompatActivity {
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0]);
                             theme.setSummary(themeList[checkedItem[0]]);
+                            settingsActivity.getSupportFragmentManager().beginTransaction().remove(this).commit();
+                            darkModeCheck(settingsActivity);
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .create().show();

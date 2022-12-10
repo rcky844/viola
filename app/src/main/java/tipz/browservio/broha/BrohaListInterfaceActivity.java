@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -31,6 +30,7 @@ import java.util.List;
 import java.util.Objects;
 
 import tipz.browservio.Application;
+import tipz.browservio.BrowservioActivity;
 import tipz.browservio.R;
 import tipz.browservio.broha.api.FavApi;
 import tipz.browservio.broha.api.FavUtils;
@@ -40,7 +40,7 @@ import tipz.browservio.broha.database.Broha;
 import tipz.browservio.broha.database.icons.IconHashClient;
 import tipz.browservio.utils.CommonUtils;
 
-public class BrohaListInterfaceActivity extends AppCompatActivity {
+public class BrohaListInterfaceActivity extends BrowservioActivity {
     private static List<Broha> listData;
 
     /* Activity mode */

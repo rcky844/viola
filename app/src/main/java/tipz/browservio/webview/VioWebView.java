@@ -13,7 +13,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -46,7 +45,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
@@ -70,6 +68,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import tipz.browservio.Application;
+import tipz.browservio.BrowservioActivity;
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.broha.api.HistoryUtils;
@@ -234,15 +233,7 @@ public class VioWebView extends WebView {
     @SuppressWarnings("deprecation")
     public void doSettingsCheck() {
         // Dark mode
-        if (SettingsUtils.getPrefNum(pref, SettingsKeys.themeId) == 0)
-            AppCompatDelegate.setDefaultNightMode(Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1 ?
-                    AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        else
-            AppCompatDelegate.setDefaultNightMode(SettingsUtils.getPrefNum(
-                    pref, SettingsKeys.themeId) == 2 ?
-                    AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        boolean darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
-                Configuration.UI_MODE_NIGHT_YES;
+        boolean darkMode = BrowservioActivity.getDarkMode(mContext);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode);
         else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))

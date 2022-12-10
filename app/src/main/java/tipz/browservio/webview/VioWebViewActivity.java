@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.CallSuper;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -26,12 +25,13 @@ import com.google.android.material.appbar.AppBarLayout;
 import java.util.Objects;
 
 import tipz.browservio.Application;
+import tipz.browservio.BrowservioActivity;
 import tipz.browservio.R;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 
-public class VioWebViewActivity extends AppCompatActivity {
+public class VioWebViewActivity extends BrowservioActivity {
     public SharedPreferences pref;
 
     public VioWebView webview;
@@ -54,13 +54,11 @@ public class VioWebViewActivity extends AppCompatActivity {
 
     @Override
     public void onStart() {
-        super.onStart();
         appbar = findViewById(R.id.appbar);
         webviewContainer = findViewById(R.id.webviewContainer);
 
         /* Init VioWebView */
         webview.doSettingsCheck();
-        doSettingsCheck();
 
         // Setup swipe refresh layout
         if (swipeRefreshLayout != null) {
@@ -71,6 +69,7 @@ public class VioWebViewActivity extends AppCompatActivity {
         // Setup favicon
         if (favicon != null && faviconProgressBar != null)
             faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
+        super.onStart();
     }
 
     /**
@@ -126,8 +125,10 @@ public class VioWebViewActivity extends AppCompatActivity {
      * Used to check if anything has been changed
      * after returning from settings.
      */
-    @CallSuper
+    @Override
     public void doSettingsCheck() {
+        super.doSettingsCheck();
+
         // Pull to Refresh
         if (swipeRefreshLayout != null && swipeRefreshLayoutEnabled) {
             swipeRefreshLayout.setEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)));
