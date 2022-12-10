@@ -54,6 +54,7 @@ import tipz.browservio.utils.DownloaderThread;
 public class SettingsActivity extends BrowservioActivity {
 
     public final Intent needLoad = new Intent();
+    public static SettingsPrefHandler settingsPrefHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,8 +66,13 @@ public class SettingsActivity extends BrowservioActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, new SettingsPrefHandler(this)).commit();
+    @Override
+    public void onStart() {
+        super.onStart();
+        settingsPrefHandler = new SettingsPrefHandler(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, settingsPrefHandler).commit();
     }
 
     @Override
@@ -76,6 +82,12 @@ public class SettingsActivity extends BrowservioActivity {
             setResult(0, needLoad);
         }
         finish();
+    }
+
+    @Override
+    protected void onStop() {
+        getSupportFragmentManager().beginTransaction().remove(settingsPrefHandler).commit();
+        super.onStop();
     }
 
     public static class SettingsPrefHandler extends PreferenceFragmentCompat {
@@ -334,7 +346,6 @@ public class SettingsActivity extends BrowservioActivity {
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0]);
                             theme.setSummary(themeList[checkedItem[0]]);
-                            settingsActivity.getSupportFragmentManager().beginTransaction().remove(this).commit();
                             darkModeCheck(settingsActivity);
                         })
                         .setNegativeButton(android.R.string.cancel, null)
