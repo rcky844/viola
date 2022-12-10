@@ -49,6 +49,7 @@ public class BrowservioActivity extends AppCompatActivity {
                     pref, SettingsKeys.themeId) == 2 ?
                     AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
+        windowInsetsController.setAppearanceLightStatusBars(!getDarkMode(context));
         windowInsetsController.setAppearanceLightNavigationBars(!getDarkMode(context));
     }
 
