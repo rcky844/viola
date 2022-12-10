@@ -7,7 +7,6 @@
         <item name="colorControlNormal">@color/colorElement</item>
         <item name="appBarLayoutStyle">@style/AppTheme.AppBarOverlay</item>
         <item name="materialAlertDialogTheme">@style/materialAlertDialogTheme</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/windowLightBar</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorNavigationBar</item>
     </style>
 
