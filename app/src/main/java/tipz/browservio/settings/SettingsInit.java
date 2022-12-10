@@ -35,9 +35,9 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.updateRecentsIcon, 1);
         } else {
             protoVer0To1();
-            //protoVer1To2();
+            protoVer1To2();
         }
-        SettingsUtils.setPrefNum(pref, SettingsKeys.protocolVersion, 1 /* 2 */); /* CURRENT_PROTOCOL_VERSION */
+        SettingsUtils.setPrefNum(pref, SettingsKeys.protocolVersion, 2); /* CURRENT_PROTOCOL_VERSION */
         if (SettingsUtils.isFirstLaunch(pref))
             SettingsUtils.setPref(pref, SettingsKeys.isFirstLaunch, "0");
     }

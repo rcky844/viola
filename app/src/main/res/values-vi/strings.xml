@@ -88,7 +88,6 @@
     <string name="ssl_certificate_notyetvalid">Chứng chỉ SSL chưa tới thời gian hợp lệ.</string>
     <string name="ssl_certificate_untrusted">Chứng chỉ SSL không đáng tin cậy.</string>
     <string name="ssl_certificate_unknown">Lỗi SSL không xác định.</string>
-    <string name="search_entries_default">\u0020(Default)</string>
     <string name="favMenuEdit">Chỉnh sửa</string>
     <string name="favMenuTitle">Tiêu đề</string>
     <string name="favMenuLink">Đường dẫn</string>

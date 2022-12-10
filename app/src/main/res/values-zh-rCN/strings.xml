@@ -86,7 +86,6 @@
     <string name="ssl_certificate_notyetvalid">证书尚未生效。</string>
     <string name="ssl_certificate_untrusted">证书颁发机构不受信任。</string>
     <string name="ssl_certificate_unknown">发生未知SSL错误。</string>
-    <string name="search_entries_default">\u0020(默认)</string>
     <string name="favMenuEdit">编辑</string>
     <string name="favMenuTitle">标题</string>
     <string name="favMenuLink">链接</string>

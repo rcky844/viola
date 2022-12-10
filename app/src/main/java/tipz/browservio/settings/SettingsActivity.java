@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 import tipz.browservio.Application;
+import tipz.browservio.BrowservioActivity;
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
 import tipz.browservio.utils.BrowservioURLs;
@@ -49,7 +51,7 @@ import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.utils.DownloadUtils;
 import tipz.browservio.utils.DownloaderThread;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BrowservioActivity {
 
     public final Intent needLoad = new Intent();
 
@@ -64,8 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        SettingsPrefHandler fragment = new SettingsPrefHandler(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, new SettingsPrefHandler(this)).commit();
     }
 
     @Override
@@ -128,8 +129,6 @@ public class SettingsActivity extends AppCompatActivity {
         private void initializeLogic() {
             /* Common */
             final String[] searchHomePageList = settingsActivity.getResources().getStringArray(R.array.search_entries);
-            searchHomePageList[7] += settingsActivity.getResources().getString(R.string.search_entries_default);
-
             final String[] themeList = settingsActivity.getResources().getStringArray(R.array.themes);
 
             /* General category */
@@ -335,6 +334,8 @@ public class SettingsActivity extends AppCompatActivity {
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0]);
                             theme.setSummary(themeList[checkedItem[0]]);
+                            settingsActivity.getSupportFragmentManager().beginTransaction().remove(this).commit();
+                            darkModeCheck(settingsActivity);
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .create().show();
@@ -405,8 +406,7 @@ public class SettingsActivity extends AppCompatActivity {
                                         CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
                                         return;
                                     }
-
-                                    new MaterialAlertDialogBuilder(settingsActivity)
+                                    new Handler(Looper.getMainLooper()).post(() -> new MaterialAlertDialogBuilder(settingsActivity)
                                             .setTitle(getResources().getString(R.string.new_update_detect_title))
                                             .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
                                             .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
@@ -418,7 +418,7 @@ public class SettingsActivity extends AppCompatActivity {
                                                     CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
                                             })
                                             .setNegativeButton(android.R.string.cancel, null)
-                                            .create().show();
+                                            .create().show());
                                     break;
                                 case DownloaderThread.TYPE_FAILED:
                                     CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));

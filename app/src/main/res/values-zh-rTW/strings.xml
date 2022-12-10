@@ -86,7 +86,6 @@
     <string name="ssl_certificate_notyetvalid">憑證尚未生效。</string>
     <string name="ssl_certificate_untrusted">憑證頒發機構不受信任。</string>
     <string name="ssl_certificate_unknown">發生未知SSL錯誤。</string>
-    <string name="search_entries_default">\u0020(預設)</string>
     <string name="favMenuEdit">編輯</string>
     <string name="favMenuTitle">標題</string>
     <string name="favMenuLink">鏈接</string>

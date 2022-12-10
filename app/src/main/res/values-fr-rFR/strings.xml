@@ -86,7 +86,6 @@
     <string name="ssl_certificate_notyetvalid">Le certificat n’est plus valide.</string>
     <string name="ssl_certificate_untrusted">L’autorité de certification n’est pas de confiance.</string>
     <string name="ssl_certificate_unknown">Une erreur SSL inconnue s’est produite.</string>
-    <string name="search_entries_default">\u0020(Défaut)</string>
     <string name="favMenuEdit">Editer</string>
     <string name="favMenuTitle">Titre</string>
     <string name="favMenuLink">Lien</string>

@@ -86,7 +86,6 @@
     <string name="ssl_certificate_notyetvalid">Das Zertifikat ist noch nicht gültig.</string>
     <string name="ssl_certificate_untrusted">Der Zertifizierungsstelle wird nicht vertraut.</string>
     <string name="ssl_certificate_unknown">Ein unbekannter SSL-Fehler ist aufgetreten.</string>
-    <string name="search_entries_default">\u0020(Standard)</string>
     <string name="favMenuEdit">Bearbeiten</string>
     <string name="favMenuTitle">Titel</string>
     <string name="favMenuLink">Hyperlink</string>

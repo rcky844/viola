@@ -87,7 +87,6 @@
     <string name="ssl_certificate_notyetvalid">Sertifika henüz geçerli değil.</string>
     <string name="ssl_certificate_untrusted">Sertifika yetkilisi güvenilir değil.</string>
     <string name="ssl_certificate_unknown">Bilinmeyen bir SSL hatası meydana geldi.</string>
-    <string name="search_entries_default">\u0020(Varsayılan)</string>
     <string name="favMenuEdit">Düzenle</string>
     <string name="favMenuTitle">Başlık</string>
     <string name="favMenuLink">Bağlantı</string>
