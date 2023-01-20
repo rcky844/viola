@@ -166,12 +166,20 @@ public class VioWebViewActivity extends BrowservioActivity {
             margin = margin + toolsContainerSize;
 
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout))) {
-            appBarParams.gravity = Gravity.BOTTOM;
-            if (toolsContainerParams != null) {
-                toolsContainerParams.gravity = Gravity.BOTTOM;
-                toolsContainerParams.setMargins(0, 0, 0, actionBarSize);
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseOnlyActionBar))) {
+                appBarParams.gravity = Gravity.TOP;
+                if (toolsContainerParams != null)
+                    toolsContainer.setVisibility(View.VISIBLE);
+                webviewContainerParams.setMargins(0, actionBarSize, 0, toolsContainerSize);
+            } else {
+                appBarParams.gravity = Gravity.BOTTOM;
+                if (toolsContainerParams != null)
+                    toolsContainerParams.setMargins(0, 0, 0, actionBarSize);
+                webviewContainerParams.setMargins(0, 0, 0, margin);
             }
-            webviewContainerParams.setMargins(0, 0, 0, margin);
+
+            if (toolsContainerParams != null)
+                toolsContainerParams.gravity = Gravity.BOTTOM;
         } else {
             appBarParams.gravity = Gravity.TOP;
             if (toolsContainerParams != null) {

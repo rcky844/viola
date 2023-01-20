@@ -117,6 +117,8 @@
     <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
     <string name="dialog_page_unresponsive_wait">Wait</string>
     <string name="dialog_page_unresponsive_terminate">Terminate</string>
+    <string name="pref_reverse_only_action_title">Only relocate action bar</string>
+    <string name="pref_reverse_only_action_summary">Relocate only the action bar.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

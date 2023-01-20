@@ -351,6 +351,14 @@ public class BrowserActivity extends VioWebViewActivity {
         retractedRotation = (int) fab.getRotation();
         if (toolsContainer.getVisibility() == View.VISIBLE)
             fab.setRotation(fab.getRotation() - 180);
+        boolean reverseOnlyActionBar = CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout)) &&
+                CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseOnlyActionBar));
+        fab.setVisibility(reverseOnlyActionBar ? View.GONE : View.VISIBLE);
+        int dp8 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 8);
+        int dp48 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 48);
+        UrlEdit.setPadding(dp8, dp8,
+                reverseOnlyActionBar ? dp8 : dp48,
+                dp8);
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {

@@ -162,6 +162,7 @@ public class SettingsActivity extends BrowservioActivity {
             SwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
             SwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
             SwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
+            SwitchPreference reverse_only_action = Objects.requireNonNull(findPreference("reverse_only_action"));
             SwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
             SwitchPreference update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
 
@@ -471,6 +472,7 @@ public class SettingsActivity extends BrowservioActivity {
             setupCheckBoxPref(SettingsKeys.showFavicon, show_favicon, false);
             setupCheckBoxPref(SettingsKeys.centerActionBar, center_action, false);
             setupCheckBoxPref(SettingsKeys.reverseLayout, reverse_layout, false);
+            setupCheckBoxPref(SettingsKeys.reverseOnlyActionBar, reverse_only_action, false);
             setupCheckBoxPref(SettingsKeys.updateRecentsIcon, update_recents_icon, false);
             setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
             setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);

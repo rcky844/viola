@@ -62,6 +62,11 @@
             android:summary="@string/pref_reverse_layout_summary"
             android:title="@string/pref_reverse_layout_title" />
         <androidx.preference.SwitchPreference
+            android:dependency="reverse_layout"
+            android:key="reverse_only_action"
+            android:summary="@string/pref_reverse_only_action_summary"
+            android:title="@string/pref_reverse_only_action_title" />
+        <androidx.preference.SwitchPreference
             android:key="enable_swipe_refresh"
             android:summary="@string/pref_enable_swipe_refresh_summary"
             android:title="@string/pref_enable_swipe_refresh_title" />
