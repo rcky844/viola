@@ -145,7 +145,7 @@ public class UrlUtils {
 
         // Finally, if couldn't get filename from URI, get a generic filename
         if (filename == null) {
-            filename = "downloadfile";
+            filename = "download";
         }
 
         return filename;
