@@ -131,6 +131,11 @@ public class UrlUtils {
             filename = parseContentDisposition(contentDisposition);
             if (filename == null)
                 filename = StringUtils.substringAfterLast(url, "/");
+            // Filenames can't contain "?", otherwise DownloadManager will
+            // throw an exception.
+            // Check whether filename contains "?", reset filename if present
+            if (filename.contains("?"))
+                filename = null;
         }
 
         // If all the other http-related approaches failed, use the plain uri
