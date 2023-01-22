@@ -190,10 +190,8 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
                         notifyItemRemoved(position);
                         notifyItemRangeRemoved(position, getItemCount() - position);
                         brohaListInterfaceActivity.isEmptyCheck();
-                        return true;
                     } else if (item.getTitle().toString().equals(brohaListInterfaceActivity.getResources().getString(R.string.copy_url))) {
                         CommonUtils.copyClipboard(brohaListInterfaceActivity, url);
-                        return true;
                     } else if (item.getTitle().toString().equals(brohaListInterfaceActivity.getResources().getString(R.string.favMenuEdit))) {
                         final LayoutInflater layoutInflater = LayoutInflater.from(brohaListInterfaceActivity);
                         @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_fav_edit, null);
@@ -218,13 +216,13 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
                                 .setNegativeButton(android.R.string.cancel, null)
                                 .setIcon(holder.icon.getDrawable())
                                 .create().show();
-                        return true;
                     } else if (item.getTitle().toString().equals(brohaListInterfaceActivity.getResources().getString(R.string.add_to_fav))) {
                         FavUtils.appendData(brohaListInterfaceActivity, iconHashClient, title, url, icon);
                         CommonUtils.showMessage(brohaListInterfaceActivity, brohaListInterfaceActivity.getResources().getString(R.string.save_successful));
-                        return true;
+                    } else {
+                        return false;
                     }
-                    return false;
+                    return true;
                 });
                 popup1.show();
                 return true;
