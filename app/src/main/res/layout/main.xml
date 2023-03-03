@@ -45,7 +45,6 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:visibility="gone"
-                    app:indicatorColor="@color/colorAccent"
                     app:indicatorSize="28dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
