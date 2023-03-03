@@ -1,35 +1,3 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
-        <item name="colorControlNormal">@color/colorElement</item>
-        <item name="appBarLayoutStyle">@style/AppTheme.AppBarOverlay</item>
-        <item name="materialAlertDialogTheme">@style/materialAlertDialogTheme</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorNavigationBar</item>
-    </style>
+<resources>
 
-    <style name="AppTheme.BrowserActivity" parent="AppTheme">
-        <item name="android:windowAnimationStyle">@null</item>
-    </style>
-
-    <style name="materialAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-    </style>
-
-    <style name="NegativeButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
-    <style name="PositiveButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.Material3.Dark.ActionBar">
-        <item name="android:background">@color/colorTopBar</item>
-        <item name="titleTextColor">@color/colorText</item>
-        <item name="navigationIconTint">@color/colorElement</item>
-    </style>
 </resources>
