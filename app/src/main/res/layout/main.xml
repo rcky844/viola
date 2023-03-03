@@ -35,15 +35,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/default_favicon" />
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/faviconProgressBar"
-                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
                     android:contentDescription="@string/favicon_desp"
                     android:indeterminate="true"
-                    android:padding="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:visibility="gone"
+                    app:indicatorColor="@color/colorAccent"
+                    app:indicatorSize="28dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -96,13 +99,11 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <ProgressBar
-            android:id="@+id/MainProg"
-            style="?android:progressBarStyleHorizontal"
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/webviewProgressBar"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:indeterminate="false"
-            android:progressBackgroundTint="#26000000" />
+            android:layout_height="wrap_content"
+            android:indeterminate="false" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

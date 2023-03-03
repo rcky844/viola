@@ -178,7 +178,7 @@ public class BrowserActivity extends VioWebViewActivity {
     private void initialize() {
         fab = findViewById(R.id.fab);
         UrlEdit = findViewById(R.id.UrlEdit);
-        progressBar = findViewById(R.id.MainProg);
+        progressBar = findViewById(R.id.webviewProgressBar);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         swipeRefreshLayout = findViewById(R.id.layout_webview);
         webview = swipeRefreshLayout.findViewById(R.id.webview);

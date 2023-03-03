@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,6 +20,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.Objects;
 
@@ -36,8 +37,8 @@ public class VioWebViewActivity extends BrowservioActivity {
 
     public VioWebView webview;
     public AppCompatImageView favicon;
-    public ProgressBar faviconProgressBar;
-    public ProgressBar progressBar;
+    public CircularProgressIndicator faviconProgressBar;
+    public LinearProgressIndicator progressBar;
     public SwipeRefreshLayout swipeRefreshLayout;
 
     public AppBarLayout appbar;
