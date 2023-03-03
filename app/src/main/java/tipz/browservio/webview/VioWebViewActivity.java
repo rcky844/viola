@@ -159,7 +159,7 @@ public class VioWebViewActivity extends BrowservioActivity {
 
         // FIXME: These are hardcoded values
         int actionBarSize = (int) CommonUtils.getDisplayMetrics(
-                VioWebViewActivity.this, 50);
+                VioWebViewActivity.this, 52);
         int toolsContainerSize = (int) CommonUtils.getDisplayMetrics(
                 VioWebViewActivity.this, 36);
         int margin = actionBarSize;
