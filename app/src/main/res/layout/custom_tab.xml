@@ -100,13 +100,11 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <ProgressBar
-            android:id="@+id/MainProg"
-            style="?android:progressBarStyleHorizontal"
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/webviewProgressBar"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:indeterminate="false"
-            android:progressBackgroundTint="#26000000" />
+            android:layout_height="wrap_content"
+            android:indeterminate="false" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -43,7 +43,7 @@ public class CustomTabsActivity extends VioWebViewActivity {
         });
 
         /* Progress Bar */
-        progressBar = findViewById(R.id.MainProg);
+        progressBar = findViewById(R.id.webviewProgressBar);
 
         /* Swipe Refresh Layout */
         swipeRefreshLayout = findViewById(R.id.layout_webview);
