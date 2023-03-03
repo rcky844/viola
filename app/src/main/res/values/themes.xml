@@ -9,6 +9,10 @@
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorNavigationBar</item>
 
         <item name="appBarLayoutStyle">@style/Widget.App.Toolbar</item>
+
+        <!-- SUW: AlertDialog -->
+        <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+        <item name="dialogCornerRadius">28dp</item>
     </style>
 
     <style name="Activity.App.Browser" parent="Theme.App">
