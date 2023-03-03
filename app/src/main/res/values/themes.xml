@@ -6,8 +6,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="colorControlNormal">@color/colorElement</item>
-        <item name="appBarLayoutStyle">@style/Widget.App.Toolbar</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorNavigationBar</item>
+
+        <item name="appBarLayoutStyle">@style/Widget.App.Toolbar</item>
     </style>
 
     <style name="Activity.App.Browser" parent="Theme.App">
