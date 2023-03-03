@@ -442,6 +442,7 @@ public class SettingsActivity extends BrowservioActivity {
                     });
                     mHandlerThread.startDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg");
                 });
+                changelog_btn.setVisibility(BuildConfig.DEBUG ? View.GONE : View.VISIBLE);
                 changelog_btn.setOnClickListener(_license_btn -> {
                     needLoad(BrowservioURLs.realChangelogUrl);
                     dialog.dismiss();
