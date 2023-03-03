@@ -1,6 +1,9 @@
 package tipz.browservio;
 
 import android.content.SharedPreferences;
+import android.os.Build;
+
+import com.google.android.material.color.DynamicColors;
 
 import tipz.browservio.broha.api.FavApi;
 import tipz.browservio.broha.api.HistoryApi;
@@ -26,5 +29,8 @@ public class Application extends android.app.Application {
         historyBroha = new BrohaClient(this, "history").getDao();
         favBroha = new BrohaClient(this, "bookmarks").getDao();
         iconHashClient = new IconHashClient(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            DynamicColors.applyToActivitiesIfAvailable(this);
     }
 }
