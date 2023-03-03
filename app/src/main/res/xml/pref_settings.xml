@@ -16,22 +16,26 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/data_privacy">
-        <androidx.preference.SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="adBlocker"
             android:summary="@string/pref_adBlocker_desp"
-            android:title="@string/pref_adBlocker" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/pref_adBlocker"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_desp"
-            android:title="@string/pref_do_not_track" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/pref_do_not_track"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
-            android:title="@string/pref_enforce_https_title" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/pref_enforce_https_title"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="google_safe_browsing"
             android:summary="@string/pref_google_safe_browsing_summary"
-            android:title="@string/pref_google_safe_browsing_title" />
+            android:title="@string/pref_google_safe_browsing_title"
+            android:widgetLayout="@layout/preference_material_switch" />
         <androidx.preference.Preference
             android:key="clear_cache"
             android:title="@string/pref_clear_cache" />
@@ -49,41 +53,49 @@
             android:key="theme"
             android:summary=""
             android:title="@string/pref_theme" />
-        <androidx.preference.SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
-            android:title="@string/show_favicon" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/show_favicon"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="center_action"
             android:summary="@string/pref_center_action_desp"
-            android:title="@string/pref_center_action" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/pref_center_action"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="reverse_layout"
             android:summary="@string/pref_reverse_layout_summary"
-            android:title="@string/pref_reverse_layout_title" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/pref_reverse_layout_title"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="enable_swipe_refresh"
             android:summary="@string/pref_enable_swipe_refresh_summary"
-            android:title="@string/pref_enable_swipe_refresh_title" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/pref_enable_swipe_refresh_title"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="update_recents_icon"
             android:summary="@string/pref_update_recents_icon_summary"
-            android:title="@string/pref_update_recents_icon_title" />
+            android:title="@string/pref_update_recents_icon_title"
+            android:widgetLayout="@layout/preference_material_switch" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/advanced">
-        <androidx.preference.SwitchPreference
+        <androidx.preference.SwitchPreferenceCompat
             android:key="javascript"
             android:summary="@string/javascript_desp"
-            android:title="@string/javascript" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/javascript"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="use_custom_tabs"
             android:summary="@string/pref_use_custom_tabs_summary"
-            android:title="@string/pref_use_custom_tabs_title" />
-        <androidx.preference.SwitchPreference
+            android:title="@string/pref_use_custom_tabs_title"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
             android:key="close_app_after_download"
             android:summary="@string/pref_close_app_after_download_summary"
-            android:title="@string/pref_close_app_after_download_title" />
+            android:title="@string/pref_close_app_after_download_title"
+            android:widgetLayout="@layout/preference_material_switch" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/help">

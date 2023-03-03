@@ -33,7 +33,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -149,26 +149,26 @@ public class SettingsActivity extends BrowservioActivity {
             Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
             /* Data & Privacy category */
-            SwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
-            SwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
-            SwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
-            SwitchPreference google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
+            SwitchPreferenceCompat adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
+            SwitchPreferenceCompat do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
+            SwitchPreferenceCompat enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
+            SwitchPreferenceCompat google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
             Preference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
             Preference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
-            SwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-            SwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
-            SwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
-            SwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
-            SwitchPreference update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
+            SwitchPreferenceCompat show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
+            SwitchPreferenceCompat center_action = Objects.requireNonNull(findPreference("center_action"));
+            SwitchPreferenceCompat reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
+            SwitchPreferenceCompat enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
+            SwitchPreferenceCompat update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
 
             /* Advanced category */
-            SwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
-            SwitchPreference use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
-            SwitchPreference close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
+            SwitchPreferenceCompat javascript = Objects.requireNonNull(findPreference("javascript"));
+            SwitchPreferenceCompat use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
+            SwitchPreferenceCompat close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */
             Preference version = Objects.requireNonNull(findPreference("version"));
@@ -484,7 +484,7 @@ public class SettingsActivity extends BrowservioActivity {
             needReload = false;
         }
 
-        private void setupCheckBoxPref(String tag, SwitchPreference checkBox, boolean needReload) {
+        private void setupCheckBoxPref(String tag, SwitchPreferenceCompat checkBox, boolean needReload) {
             checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, tag)));
             checkBox.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
