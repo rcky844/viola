@@ -7,7 +7,8 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorTopBarWebView">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
@@ -98,7 +99,8 @@
             android:id="@+id/webviewProgressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="false" />
+            android:indeterminate="false"
+            app:trackColor="@color/colorTopBar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -106,7 +108,6 @@
         android:id="@+id/toolsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTopBar"
         android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView

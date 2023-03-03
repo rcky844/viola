@@ -10,8 +10,9 @@
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorNavigationBar</item>
     </style>
 
-    <style name="Activity.App" parent="Theme.App">
+    <style name="Activity.App.Browser" parent="Theme.App">
         <item name="android:windowAnimationStyle">@null</item>
+        <item name="colorPrimaryDark">@color/colorTopBarWebView</item>
     </style>
 
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">

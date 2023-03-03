@@ -82,7 +82,7 @@
             android:name=".webview.tabbies.BrowserActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:documentLaunchMode="always"
-            android:theme="@style/Activity.App" />
+            android:theme="@style/Activity.App.Browser" />
         <activity
             android:name=".webview.tabbies.CustomTabsActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"

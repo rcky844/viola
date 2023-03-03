@@ -1,10 +1,11 @@
 <resources>
     <color name="colorAccent">#52b3ff</color>
-    <color name="colorBackground">#ffffff</color>
-    <color name="colorUrlEditBg">#ffffff</color>
-    <color name="colorElement">#000000</color>
+    <color name="colorBackground">@android:color/white</color>
+    <color name="colorUrlEditBg">@android:color/white</color>
+    <color name="colorElement">@android:color/black</color>
     <color name="colorTopBar">#f8f8f7</color>
-    <color name="colorNavigationBar">@android:color/black</color>
+    <color name="colorTopBarWebView">@color/colorTopBar</color>
+    <color name="colorNavigationBar">@android:color/white</color>
     <color name="colorText">@color/colorElement</color>
     <color name="colorPrimaryDark">@color/colorElement</color>
 </resources>
