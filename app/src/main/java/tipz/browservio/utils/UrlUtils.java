@@ -46,6 +46,10 @@ public class UrlUtils {
         return url;
     }
 
+    public static boolean isUriHttp(String uri) {
+        return uri.matches(httpUrlRegex);
+    }
+
     /**
      * URL Checker
      * <p>

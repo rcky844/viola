@@ -119,6 +119,7 @@
     <string name="dialog_page_unresponsive_terminate">Terminate</string>
     <string name="pref_reverse_only_action_title">Only relocate action bar</string>
     <string name="pref_reverse_only_action_summary">Relocate only the action bar to the bottom.</string>
+    <string name="toast_no_app_to_handle">No application can handle this action.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

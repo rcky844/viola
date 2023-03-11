@@ -5,7 +5,6 @@ import static android.content.Context.MODE_PRIVATE;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -71,7 +70,9 @@ import tipz.browservio.Application;
 import tipz.browservio.BrowservioActivity;
 import tipz.browservio.BuildConfig;
 import tipz.browservio.R;
+import tipz.browservio.broha.api.HistoryApi;
 import tipz.browservio.broha.api.HistoryUtils;
+import tipz.browservio.broha.database.Broha;
 import tipz.browservio.broha.database.icons.IconHashClient;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
@@ -90,11 +91,11 @@ public class VioWebView extends WebView {
     private final WebSettings webSettings;
     private final WebViewRenderProcess mWebViewRenderProcess;
 
-    public String UrlTitle;
     private String currentUrl;
     private String adServers;
-    private boolean customBrowse = false;
+    private Broha currentBroha;
     private boolean updateHistory = true;
+    private boolean historyCommitted = false;
     private final SharedPreferences pref;
     private ValueCallback<Uri[]> mUploadMessage;
     private final ActivityResultLauncher<String> mFileChooser;
@@ -136,10 +137,8 @@ public class VioWebView extends WebView {
         this.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> {
             DownloadUtils.dmDownloadFile(mContext, url, contentDisposition,
                     mimeType, currentUrl);
-            if (customBrowse) {
-                updateCurrentUrl(getOriginalUrl());
-                mVioWebViewActivity.onPageLoadProgressChanged(0);
-            }
+            updateCurrentUrl(getOriginalUrl());
+            mVioWebViewActivity.onPageLoadProgressChanged(0);
             if (!canGoBack() && getOriginalUrl() == null
                     && CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(
                     pref, SettingsKeys.closeAppAfterDownload)))
@@ -264,8 +263,8 @@ public class VioWebView extends WebView {
         doSettingsCheck();
     }
 
-    public void setUpdateHistory(boolean updateHistory) {
-        this.updateHistory = updateHistory;
+    public void setUpdateHistory(boolean value) {
+        updateHistory = value;
     }
 
     @Override
@@ -274,20 +273,14 @@ public class VioWebView extends WebView {
             return;
 
         String urlIdentify = URLIdentify(url);
-        if (urlIdentify != null) {
-            if (!urlIdentify.equals(CommonUtils.EMPTY_STRING)) {
-                updateCurrentUrl(urlIdentify);
-                super.loadUrl(urlIdentify);
-            }
+        if (urlIdentify.equals(CommonUtils.EMPTY_STRING))
             return;
-        }
 
-        String checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url);
-
+        String checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, urlIdentify);
         updateCurrentUrl(checkedUrl);
+
         // Load URL
         super.loadUrl(checkedUrl, mRequestHeaders);
-        customBrowse = true;
     }
 
     @Override
@@ -316,21 +309,14 @@ public class VioWebView extends WebView {
      * WebViewClient
      */
     public class WebClient extends WebViewClientCompat {
-        private void UrlSet(String url, boolean update) {
-            if (!currentUrl.equals(url) && urlShouldSet(url) || currentUrl == null) {
+        private void UrlSet(String url) {
+            if (!currentUrl.equals(url) && urlShouldSet(url) || currentUrl == null)
                 updateCurrentUrl(url);
-                if (update)
-                    HistoryUtils.updateData(mContext, null, null, url, null);
-                else if (HistoryUtils.isEmptyCheck(mContext) || !HistoryUtils.lastUrl(mContext).equals(url))
-                    HistoryUtils.appendData(mContext, url);
-            }
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap icon) {
-            UrlSet(url, false);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(CommonUtils.EMPTY_STRING));
+            UrlSet(url);
             mVioWebViewActivity.onFaviconProgressUpdated(true);
             mVioWebViewActivity.onFaviconUpdated(null, false);
             mVioWebViewActivity.onDropDownDismissed();
@@ -346,7 +332,11 @@ public class VioWebView extends WebView {
 
         @Override
         public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
-            UrlSet(url, true);
+            UrlSet(url);
+            if (updateHistory) {
+                currentBroha = new Broha(getTitle(), currentUrl);
+                historyCommitted = false;
+            }
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH)
                 CookieSyncManager.getInstance().sync();
             else
@@ -368,23 +358,16 @@ public class VioWebView extends WebView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            boolean returnVal = false;
-            boolean normalSchemes = Uri.parse(url).isAbsolute();
-            if (!normalSchemes) {
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)));
-                    mContext.startActivity(intent);
-                } catch (ActivityNotFoundException ignored) {
-                    view.stopLoading();
-                }
-                returnVal = true;
+            if (UrlUtils.isUriHttp(url))
+                return false;
+
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)));
+                mContext.startActivity(intent);
+            } catch (ActivityNotFoundException ignored) {
+                CommonUtils.showMessage(mContext, getResources().getString(R.string.toast_no_app_to_handle));
             }
-            if (!customBrowse && normalSchemes) {
-                view.loadUrl(url);
-                returnVal = true;
-            }
-            customBrowse = false;
-            return returnVal;
+            return true;
         }
 
         @SuppressLint("WebViewClientOnReceivedSslError")
@@ -495,17 +478,16 @@ public class VioWebView extends WebView {
         @Override
         public void onReceivedIcon(WebView view, Bitmap icon) {
             mVioWebViewActivity.onFaviconUpdated(icon, false);
-            if (updateHistory)
-                HistoryUtils.updateData(mContext, iconHashClient, null, null, icon);
+            if (!historyCommitted && updateHistory) {
+                currentBroha.setIconHash(iconHashClient.save(icon));
+                if (!HistoryUtils.lastUrl(mContext).equals(currentUrl))
+                    HistoryApi.historyBroha(mContext).insertAll(currentBroha);
+                historyCommitted = true;
+            }
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            UrlTitle = title;
-            if (updateHistory && urlShouldSet(currentUrl) && title != null)
-                HistoryUtils.updateData(mContext, null, title, null, null);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                ((AppCompatActivity) mContext).setTaskDescription(new ActivityManager.TaskDescription(title));
             mVioWebViewActivity.onTitleUpdated(title);
         }
 
@@ -672,7 +654,7 @@ public class VioWebView extends WebView {
      * @param url is supplied for the url to check
      * @return url to load
      */
-    @Nullable
+    @NonNull
     private String URLIdentify(String url) {
         if (url.equals(BrowservioURLs.licenseUrl) || url.equals(BrowservioURLs.realLicenseUrl))
             return BrowservioURLs.realLicenseUrl;
@@ -682,6 +664,6 @@ public class VioWebView extends WebView {
             return CommonUtils.EMPTY_STRING;
         }
 
-        return null;
+        return url;
     }
 }

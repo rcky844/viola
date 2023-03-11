@@ -215,7 +215,7 @@ public class VioWebViewActivity extends BrowservioActivity {
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityManager.TaskDescription description =
-                    new ActivityManager.TaskDescription(webview.UrlTitle);
+                    new ActivityManager.TaskDescription(title);
             this.setTaskDescription(description);
         }
     }
@@ -239,7 +239,7 @@ public class VioWebViewActivity extends BrowservioActivity {
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ActivityManager.TaskDescription description =
-                    new ActivityManager.TaskDescription(webview.UrlTitle, icon);
+                    new ActivityManager.TaskDescription(webview.getTitle(), icon);
             this.setTaskDescription(description);
         }
     }
