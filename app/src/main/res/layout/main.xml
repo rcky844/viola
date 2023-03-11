@@ -112,6 +112,7 @@
         android:id="@+id/toolsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorTopBarWebView"
         android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
