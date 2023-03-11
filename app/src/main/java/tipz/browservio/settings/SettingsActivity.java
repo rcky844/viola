@@ -22,6 +22,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -84,10 +85,26 @@ public class SettingsActivity extends BrowservioActivity {
         finish();
     }
 
+    // TODO: Investigate why running at onSaveInstanceState doesn't work (API = 33)
     @Override
     protected void onStop() {
-        getSupportFragmentManager().beginTransaction().remove(settingsPrefHandler).commit();
+        try {
+            getSupportFragmentManager().beginTransaction().remove(settingsPrefHandler).commit();
+        } catch (IllegalStateException ignored) {
+            // There's no way to avoid getting this if saveInstanceState has already been called.
+        }
         super.onStop();
+    }
+
+    // TODO: Investigate why running at onStop doesn't work (API = 23, 26)
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        try {
+            getSupportFragmentManager().beginTransaction().remove(settingsPrefHandler).commit();
+        } catch (IllegalStateException ignored) {
+            // There's no way to avoid getting this if saveInstanceState has already been called.
+        }
+        super.onSaveInstanceState(outState);
     }
 
     public static class SettingsPrefHandler extends PreferenceFragmentCompat {
