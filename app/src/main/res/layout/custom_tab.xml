@@ -104,7 +104,8 @@
             android:id="@+id/webviewProgressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="false" />
+            android:indeterminate="false"
+            app:trackColor="@color/colorTopBar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

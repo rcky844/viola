@@ -18,11 +18,16 @@
     <style name="Activity.App.Browser" parent="Theme.App">
         <item name="android:windowAnimationStyle">@null</item>
         <item name="colorPrimaryDark">@color/colorTopBarWebView</item>
+        <item name="appBarLayoutStyle">@style/Widget.App.Browser.Toolbar</item>
     </style>
 
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">@color/colorTopBar</item>
         <item name="titleTextColor">@color/colorText</item>
         <item name="navigationIconTint">@color/colorElement</item>
+    </style>
+
+    <style name="Widget.App.Browser.Toolbar" parent="Widget.App.Toolbar">
+        <item name="android:background">@color/colorTopBarWebView</item>
     </style>
 </resources>
