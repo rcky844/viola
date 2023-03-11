@@ -58,6 +58,7 @@ import tipz.browservio.webview.VioWebViewActivity;
 
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
+    private AppCompatImageView tabs;
     private AppCompatImageView fab;
 
     private boolean currentPrebuiltUAState = false;
@@ -71,7 +72,6 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.refresh,
             R.drawable.home,
             R.drawable.smartphone,
-            R.drawable.new_tab,
             R.drawable.share,
             R.drawable.app_shortcut,
             R.drawable.settings,
@@ -107,13 +107,6 @@ public class BrowserActivity extends VioWebViewActivity {
         } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             currentPrebuiltUAState = !currentPrebuiltUAState;
             webview.setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
-        } else if (item == R.drawable.new_tab) {
-            Intent i = new Intent(this, BrowserActivity.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-            else
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            startActivity(i);
         } else if (item == R.drawable.share) {
             CommonUtils.shareUrl(this, webview.getUrl());
         } else if (item == R.drawable.app_shortcut) {
@@ -177,6 +170,7 @@ public class BrowserActivity extends VioWebViewActivity {
     @SuppressLint("AddJavascriptInterface")
     private void initialize() {
         fab = findViewById(R.id.fab);
+        tabs = findViewById(R.id.tabs);
         UrlEdit = findViewById(R.id.UrlEdit);
         progressBar = findViewById(R.id.webviewProgressBar);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
@@ -248,6 +242,15 @@ public class BrowserActivity extends VioWebViewActivity {
                 return false;
             });
             popupMenu.show();
+        });
+
+        tabs.setOnClickListener(v -> {
+            Intent i = new Intent(this, BrowserActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            else
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            startActivity(i);
         });
 
         fab.setOnClickListener(v -> {
@@ -354,10 +357,12 @@ public class BrowserActivity extends VioWebViewActivity {
         boolean reverseOnlyActionBar = CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout)) &&
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseOnlyActionBar));
         fab.setVisibility(reverseOnlyActionBar ? View.GONE : View.VISIBLE);
+
+        // Set padding for UrlEdit
         int dp8 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 8);
-        int dp48 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 48);
+        int dp72 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 72);
         UrlEdit.setPadding(dp8, dp8,
-                reverseOnlyActionBar ? dp8 : dp48,
+                reverseOnlyActionBar ? dp8 : dp72,
                 dp8);
     }
 
