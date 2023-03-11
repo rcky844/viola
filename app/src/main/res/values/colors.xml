@@ -7,5 +7,6 @@
     <color name="colorTopBarWebView">@color/colorTopBar</color>
     <color name="colorNavigationBar">@android:color/white</color>
     <color name="colorText">@color/colorElement</color>
+    <color name="colorTextFlipped">@color/colorBackground</color>
     <color name="colorPrimaryDark">@color/colorElement</color>
 </resources>

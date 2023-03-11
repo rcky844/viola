@@ -53,25 +53,22 @@
                 android:id="@+id/update_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorAccent"
                 android:text="@string/update_btn"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorTextFlipped" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/changelog_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorAccent"
                 android:text="@string/get_changelog"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorTextFlipped" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/license_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorAccent"
                 android:text="@string/license_btn"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorTextFlipped" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
