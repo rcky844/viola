@@ -480,6 +480,7 @@ public class VioWebView extends WebView {
             mVioWebViewActivity.onFaviconUpdated(icon, false);
             if (!historyCommitted && updateHistory) {
                 currentBroha.setIconHash(iconHashClient.save(icon));
+                currentBroha.setTitle(getTitle()); // For making sure title is up to date
                 if (!HistoryUtils.lastUrl(mContext).equals(currentUrl))
                     HistoryApi.historyBroha(mContext).insertAll(currentBroha);
                 historyCommitted = true;
