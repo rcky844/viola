@@ -365,7 +365,7 @@ public class VioWebView extends WebView {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)));
                 mContext.startActivity(intent);
             } catch (ActivityNotFoundException ignored) {
-                CommonUtils.showMessage(mContext, getResources().getString(R.string.toast_no_app_to_handle));
+                //CommonUtils.showMessage(mContext, getResources().getString(R.string.toast_no_app_to_handle));
             }
             return true;
         }
