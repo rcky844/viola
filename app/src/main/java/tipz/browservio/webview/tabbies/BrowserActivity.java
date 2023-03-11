@@ -117,9 +117,9 @@ public class BrowserActivity extends VioWebViewActivity {
         } else if (item == R.drawable.share) {
             CommonUtils.shareUrl(this, webview.getUrl());
         } else if (item == R.drawable.app_shortcut) {
-            if (webview.UrlTitle != null && !webview.UrlTitle.isBlank())
-                ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.UrlTitle)
-                        .setShortLabel(webview.UrlTitle)
+            if (webview.getTitle() != null && !webview.getTitle().isBlank())
+                ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.getTitle())
+                        .setShortLabel(webview.getTitle())
                         .setIcon(IconCompat.createWithBitmap(
                                 CommonUtils.drawableToBitmap(favicon.getDrawable())))
                         .setIntent(new Intent(this, BrowserActivity.class)
@@ -135,7 +135,7 @@ public class BrowserActivity extends VioWebViewActivity {
             mGetNeedLoad.launch(intent);
         } else if (item == R.drawable.favorites) {
             Drawable icon = favicon.getDrawable();
-            FavUtils.appendData(this, iconHashClient, webview.UrlTitle, webview.getUrl(), icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+            FavUtils.appendData(this, iconHashClient, webview.getTitle(), webview.getUrl(), icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
             CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.save_successful));
         } else if (item == R.drawable.close) {
             finish();
@@ -194,7 +194,7 @@ public class BrowserActivity extends VioWebViewActivity {
             final SslCertificate cert = webview.getCertificate();
             PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, favicon);
             Menu menu = popupMenu.getMenu();
-            menu.add(webview.UrlTitle).setEnabled(false);
+            menu.add(webview.getTitle()).setEnabled(false);
             menu.add(getResources().getString(R.string.copy_title));
             if (cert != null)
                 menu.add(getResources().getString(R.string.ssl_info));
@@ -203,7 +203,7 @@ public class BrowserActivity extends VioWebViewActivity {
                 menu.add(getResources().getString(R.string.view_page_source));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
-                    CommonUtils.copyClipboard(BrowserActivity.this, webview.UrlTitle);
+                    CommonUtils.copyClipboard(BrowserActivity.this, webview.getTitle());
                     return true;
                 } else if (item.getTitle().toString().equals(getResources().getString(R.string.ssl_info))) {
                     assert cert != null;

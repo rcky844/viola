@@ -117,6 +117,7 @@
     <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
     <string name="dialog_page_unresponsive_wait">Wait</string>
     <string name="dialog_page_unresponsive_terminate">Terminate</string>
+    <string name="toast_no_app_to_handle">No application can handle this action.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
