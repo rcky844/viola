@@ -55,7 +55,7 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
         if (!activityMode.equals(mode_history) && !activityMode.equals(mode_favorites))
             finish();
 
-        setContentView(R.layout.recycler_list_item_activity);
+        setContentView(R.layout.recycler_broha_list_activity);
         initialize();
         setTitle(getResources().getString(activityMode.equals(mode_history) ? R.string.hist : R.string.fav));
     }
@@ -138,7 +138,7 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
         @NonNull
         @Override
         public BrohaListInterfaceActivity.ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_broha, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_broha_list_item, parent, false);
 
             return new BrohaListInterfaceActivity.ItemsAdapter.ViewHolder(view);
         }
