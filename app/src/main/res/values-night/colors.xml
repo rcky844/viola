@@ -1,6 +1,6 @@
 <resources>
     <color name="colorAccent">#0e95ff</color>
-    <color name="colorBackground">#000000</color>
+    <color name="colorBackground">@android:color/black</color>
     <color name="colorUrlEditBg">#303030</color>
     <color name="colorElement">@android:color/white</color>
     <color name="colorNavigationBar">@android:color/black</color>
