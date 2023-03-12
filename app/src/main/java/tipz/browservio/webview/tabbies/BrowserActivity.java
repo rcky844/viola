@@ -259,13 +259,11 @@ public class BrowserActivity extends VioWebViewActivity {
                 startActivity(i);
             } else {
                 if (tabsContainer.getVisibility() == View.VISIBLE) {
-                    tabsContainer.animate().alpha(0f).setDuration(250).start();
                     tabsContainer.setVisibility(View.GONE);
                 } else {
                     // TODO: Improve implementation
                     if (toolsContainer.getVisibility() == View.VISIBLE)
                         fab.performClick();
-                    tabsContainer.animate().alpha(1f).setDuration(250).start();
                     tabsContainer.setVisibility(View.VISIBLE);
                 }
                 reachModeCheck();
@@ -273,18 +271,14 @@ public class BrowserActivity extends VioWebViewActivity {
         });
 
         fab.setOnClickListener(v -> {
-            if (fab.getRotation() != 0 || fab.getRotation() != 180)
-                fab.animate().cancel();
             if (toolsContainer.getVisibility() == View.VISIBLE) {
                 fab.animate().rotation(retractedRotation).setDuration(250).start();
-                toolsContainer.animate().alpha(0f).setDuration(250).start();
                 toolsContainer.setVisibility(View.GONE);
             } else {
                 // TODO: Improve implementation
                 if (tabsContainer.getVisibility() == View.VISIBLE)
                     tabs.performClick();
                 fab.animate().rotation(retractedRotation - 180).setDuration(250).start();
-                toolsContainer.animate().alpha(1f).setDuration(250).start();
                 toolsContainer.setVisibility(View.VISIBLE);
             }
             reachModeCheck();

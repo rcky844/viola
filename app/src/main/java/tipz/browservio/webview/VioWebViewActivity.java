@@ -18,6 +18,8 @@ import androidx.annotation.CallSuper;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -211,6 +213,9 @@ public class VioWebViewActivity extends BrowservioActivity {
             webviewContainerParams.setMargins(0, margin, 0, 0);
         }
 
+        TransitionManager.beginDelayedTransition((ViewGroup) toolsContainer, new AutoTransition());
+        TransitionManager.beginDelayedTransition((ViewGroup) tabsContainer, new AutoTransition());
+        TransitionManager.beginDelayedTransition((ViewGroup) webviewContainer, new AutoTransition());
         appbar.setLayoutParams(appBarParams);
         appbar.invalidate();
         if (toolsContainer != null) {
