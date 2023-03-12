@@ -81,7 +81,7 @@
         <activity
             android:name=".webview.tabbies.BrowserActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-            android:documentLaunchMode="always"
+            android:documentLaunchMode="intoExisting"
             android:theme="@style/Activity.App.Browser" />
         <activity
             android:name=".webview.tabbies.CustomTabsActivity"

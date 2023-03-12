@@ -120,6 +120,8 @@
     <string name="pref_reverse_only_action_title">Only relocate action bar</string>
     <string name="pref_reverse_only_action_summary">Relocate only the action bar to the bottom.</string>
     <string name="toast_no_app_to_handle">No application can handle this action.</string>
+    <string name="pref_use_traditional_tabs_title">Use Recents-based tabs</string>
+    <string name="pref_use_traditional_tabs_summary">Manage tabs in the Recents page.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

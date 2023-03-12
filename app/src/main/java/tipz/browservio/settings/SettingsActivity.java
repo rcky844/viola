@@ -186,6 +186,7 @@ public class SettingsActivity extends BrowservioActivity {
             /* Advanced category */
             SwitchPreferenceCompat javascript = Objects.requireNonNull(findPreference("javascript"));
             SwitchPreferenceCompat use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
+            SwitchPreferenceCompat use_traditional_tabs = Objects.requireNonNull(findPreference("use_traditional_tabs"));
             SwitchPreferenceCompat close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */
@@ -385,7 +386,7 @@ public class SettingsActivity extends BrowservioActivity {
                 AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
                 AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
                 final int[] pressed = {0, 0};
-                easter_banner.setOnClickListener(_update_btn -> {
+                easter_banner.setOnClickListener(view -> {
                     if (pressed[0] <= 4) {
                         eagle.animate().cancel();
                         eagle.setX(pressed[1] == 0 ?
@@ -414,7 +415,7 @@ public class SettingsActivity extends BrowservioActivity {
                         String.valueOf(BuildConfig.VERSION_CODE),
                         BuildConfig.VERSION_BUILD_DATE,
                         BuildConfig.VERSION_BUILD_YEAR));
-                update_btn.setOnClickListener(_update_btn -> {
+                update_btn.setOnClickListener(view -> {
                     DownloaderThread mHandlerThread = new DownloaderThread("updater");
                     mHandlerThread.start();
                     mHandlerThread.setCallerHandler(new Handler(mHandlerThread.getLooper()) {
@@ -460,11 +461,11 @@ public class SettingsActivity extends BrowservioActivity {
                     mHandlerThread.startDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg");
                 });
                 changelog_btn.setVisibility(BuildConfig.DEBUG ? View.GONE : View.VISIBLE);
-                changelog_btn.setOnClickListener(_license_btn -> {
+                changelog_btn.setOnClickListener(view -> {
                     needLoad(BrowservioURLs.realChangelogUrl);
                     dialog.dismiss();
                 });
-                license_btn.setOnClickListener(_license_btn -> {
+                license_btn.setOnClickListener(view -> {
                     needLoad(BrowservioURLs.licenseUrl);
                     dialog.dismiss();
                 });
@@ -495,6 +496,7 @@ public class SettingsActivity extends BrowservioActivity {
             setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
             setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
             setupCheckBoxPref(SettingsKeys.useCustomTabs, use_custom_tabs, false);
+            setupCheckBoxPref(SettingsKeys.useTraditionalTabs, use_traditional_tabs, false);
             setupCheckBoxPref(SettingsKeys.closeAppAfterDownload, close_app_after_download, false);
             search_engine.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]);
             homepage.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]);

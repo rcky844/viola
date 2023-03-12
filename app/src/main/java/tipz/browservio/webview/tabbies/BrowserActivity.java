@@ -245,12 +245,18 @@ public class BrowserActivity extends VioWebViewActivity {
         });
 
         tabs.setOnClickListener(v -> {
-            Intent i = new Intent(this, BrowserActivity.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-            else
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            startActivity(i);
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))) {
+                Intent i = new Intent(this, BrowserActivity.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                    i.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                } else {
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                }
+                startActivity(i);
+            } else {
+
+            }
         });
 
         fab.setOnClickListener(v -> {
@@ -357,6 +363,9 @@ public class BrowserActivity extends VioWebViewActivity {
         boolean reverseOnlyActionBar = CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout)) &&
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseOnlyActionBar));
         fab.setVisibility(reverseOnlyActionBar ? View.GONE : View.VISIBLE);
+        tabs.setImageResource(
+                CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))
+                        ? R.drawable.new_tab : R.drawable.tabs);
 
         // Set padding for UrlEdit
         int dp8 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 8);
