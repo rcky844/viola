@@ -28,6 +28,7 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseOnlyActionBar, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
@@ -84,6 +85,13 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.updateRecentsIcon, 1);
             /* bac9b451: java: webview: Allow disabling Google's "Safe" Browsing feature */
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse, 0);
+        }
+    }
+
+    private void protoVer2To3() {
+        if (SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion) == 2) {
+            /* 4bb92167: java: settings: Add the option to reverse only action bar */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseOnlyActionBar, 0);
         }
     }
 }
