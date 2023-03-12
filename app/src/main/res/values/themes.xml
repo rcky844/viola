@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Theme.App" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -8,7 +9,7 @@
         <item name="colorControlNormal">@color/colorElement</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorNavigationBar</item>
 
-        <item name="appBarLayoutStyle">@style/Widget.App.Toolbar</item>
+        <item name="appBarLayoutStyle">@style/ThemeOverlay.App.AppBar</item>
 
         <!-- SUW: AlertDialog -->
         <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
@@ -18,16 +19,17 @@
     <style name="Activity.App.Browser" parent="Theme.App">
         <item name="android:windowAnimationStyle">@null</item>
         <item name="colorPrimaryDark">@color/colorTopBarWebView</item>
-        <item name="appBarLayoutStyle">@style/Widget.App.Browser.Toolbar</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorTopBarWebView</item>
+        <item name="appBarLayoutStyle">@style/ThemeOverlay.App.Browser.AppBar</item>
     </style>
 
-    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+    <style name="ThemeOverlay.App.AppBar" parent="ThemeOverlay.Material3.Dark.ActionBar">
         <item name="android:background">@color/colorTopBar</item>
         <item name="titleTextColor">@color/colorText</item>
         <item name="navigationIconTint">@color/colorElement</item>
     </style>
 
-    <style name="Widget.App.Browser.Toolbar" parent="Widget.App.Toolbar">
+    <style name="ThemeOverlay.App.Browser.AppBar" parent="ThemeOverlay.App.AppBar">
         <item name="android:background">@color/colorTopBarWebView</item>
     </style>
 </resources>
