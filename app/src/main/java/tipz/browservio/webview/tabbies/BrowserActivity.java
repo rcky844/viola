@@ -1,6 +1,8 @@
 package tipz.browservio.webview.tabbies;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -179,6 +181,7 @@ public class BrowserActivity extends VioWebViewActivity {
         RecyclerView actionBar = findViewById(R.id.actionBar);
         favicon = findViewById(R.id.favicon);
         toolsContainer = findViewById(R.id.toolsContainer);
+        tabsContainer = findViewById(R.id.tabsContainer);
 
         actionBar.setLayoutManager(new LinearLayoutManager(
                 BrowserActivity.this, RecyclerView.HORIZONTAL, false));
@@ -255,7 +258,17 @@ public class BrowserActivity extends VioWebViewActivity {
                 }
                 startActivity(i);
             } else {
-
+                if (tabsContainer.getVisibility() == View.VISIBLE) {
+                    tabsContainer.animate().alpha(0f).setDuration(250).start();
+                    tabsContainer.setVisibility(View.GONE);
+                } else {
+                    // TODO: Improve implementation
+                    if (toolsContainer.getVisibility() == View.VISIBLE)
+                        fab.performClick();
+                    tabsContainer.animate().alpha(1f).setDuration(250).start();
+                    tabsContainer.setVisibility(View.VISIBLE);
+                }
+                reachModeCheck();
             }
         });
 
@@ -267,6 +280,9 @@ public class BrowserActivity extends VioWebViewActivity {
                 toolsContainer.animate().alpha(0f).setDuration(250).start();
                 toolsContainer.setVisibility(View.GONE);
             } else {
+                // TODO: Improve implementation
+                if (tabsContainer.getVisibility() == View.VISIBLE)
+                    tabs.performClick();
                 fab.animate().rotation(retractedRotation - 180).setDuration(250).start();
                 toolsContainer.animate().alpha(1f).setDuration(250).start();
                 toolsContainer.setVisibility(View.VISIBLE);
@@ -366,6 +382,15 @@ public class BrowserActivity extends VioWebViewActivity {
         tabs.setImageResource(
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))
                         ? R.drawable.new_tab : R.drawable.tabs);
+        if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // FIXME: Allow dynamic switching of Recents tabs
+            List<ActivityManager.AppTask> appTaskList =
+                    ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).getAppTasks();
+            for (int i = 1; i < appTaskList.size(); i++) {
+                appTaskList.get(i).finishAndRemoveTask();
+            }
+        }
 
         // Set padding for UrlEdit
         int dp8 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 8);

@@ -129,6 +129,22 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/tabsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTopBarWebView"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tabsBar"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:hardwareAccelerated="true"
+            android:orientation="horizontal"
+            android:scrollbars="none" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/webviewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
