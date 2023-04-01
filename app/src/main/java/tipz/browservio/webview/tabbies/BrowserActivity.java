@@ -1,8 +1,6 @@
 package tipz.browservio.webview.tabbies;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;

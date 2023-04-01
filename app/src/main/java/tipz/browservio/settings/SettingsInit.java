@@ -39,7 +39,7 @@ public class SettingsInit {
         }
         SettingsUtils.setPrefNum(pref, SettingsKeys.protocolVersion, 2); /* CURRENT_PROTOCOL_VERSION */
         if (SettingsUtils.isFirstLaunch(pref))
-            SettingsUtils.setPref(pref, SettingsKeys.isFirstLaunch, "0");
+            SettingsUtils.setPref(pref, SettingsKeys.isFirstLaunch, "1");
     }
 
     private void protoVer0To1() {

@@ -1,6 +1,5 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -78,18 +77,28 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/coin"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/fab"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/coin" />
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/fab"
-                    android:layout_width="?attr/minTouchTargetSize"
-                    android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_marginRight="8dp"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/fab_desp"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/arrow_up"
-                    tools:ignore="RedundantDescriptionCheck" />
+                    app:srcCompat="@drawable/arrow_up" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>

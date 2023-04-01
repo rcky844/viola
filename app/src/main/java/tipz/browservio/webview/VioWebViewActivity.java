@@ -22,6 +22,7 @@ import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
@@ -73,6 +74,13 @@ public class VioWebViewActivity extends BrowservioActivity {
         if (favicon != null && faviconProgressBar != null)
             faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
         super.onStart();
+
+        // FOOLS dialog
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(getResources().getString(R.string.a_warm_welcome_title))
+                .setMessage(getResources().getString(R.string.a_warm_welcome_message))
+                .setPositiveButton(android.R.string.ok, null)
+                .create().show();
     }
 
     /**

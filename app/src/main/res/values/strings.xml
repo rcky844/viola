@@ -120,6 +120,8 @@
     <string name="pref_reverse_only_action_title">Only relocate action bar</string>
     <string name="pref_reverse_only_action_summary">Relocate only the action bar to the bottom.</string>
     <string name="toast_no_app_to_handle">No application can handle this action.</string>
+    <string name="a_warm_welcome_title">Welcome!</string>
+    <string name="a_warm_welcome_message">Welcome to Browservio2. Browservio2 is a complete remake of Browservio with features like cryptocurrency wallets. It will offer better stability and performance, while abandoning the idea of keeping it clean. Stay tuned for more updates!\n\n\n\nI found Browservio2 in the deceit\nHe is laughing, laughing at users\nWhy?\nWe will find out soon…</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

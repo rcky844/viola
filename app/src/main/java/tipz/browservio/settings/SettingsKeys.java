@@ -16,6 +16,7 @@ public class SettingsKeys {
     public static final String enableSwipeRefresh = "enableSwipeRefresh"; /* INTEGER */
     public static final String enforceHttps = "enforceHttps"; /* INTEGER */
     public static final String favApi = "favApi"; /* INTEGER */ /* Was in bookmarks */
+    public static final String foolsCoinCount = "foolsCoinCount"; /* INTEGER */ /* FOOLS! */
     public static final String historyApi = "historyApi"; /* INTEGER */ /* Was in history */
     public static final String isFirstLaunch = "isFirstLaunch"; /* STRING */
     public static final String isJavaScriptEnabled = "isJavaScriptEnabled"; /* INTEGER */
