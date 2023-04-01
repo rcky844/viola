@@ -98,11 +98,6 @@
             android:title="@string/pref_use_custom_tabs_title"
             android:widgetLayout="@layout/preference_material_switch" />
         <androidx.preference.SwitchPreferenceCompat
-            android:key="use_traditional_tabs"
-            android:summary="@string/pref_use_traditional_tabs_summary"
-            android:title="@string/pref_use_traditional_tabs_title"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
             android:key="close_app_after_download"
             android:summary="@string/pref_close_app_after_download_summary"
             android:title="@string/pref_close_app_after_download_title"

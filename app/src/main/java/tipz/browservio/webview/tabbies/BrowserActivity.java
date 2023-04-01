@@ -181,7 +181,6 @@ public class BrowserActivity extends VioWebViewActivity {
         RecyclerView actionBar = findViewById(R.id.actionBar);
         favicon = findViewById(R.id.favicon);
         toolsContainer = findViewById(R.id.toolsContainer);
-        tabsContainer = findViewById(R.id.tabsContainer);
 
         actionBar.setLayoutManager(new LinearLayoutManager(
                 BrowserActivity.this, RecyclerView.HORIZONTAL, false));
@@ -258,14 +257,6 @@ public class BrowserActivity extends VioWebViewActivity {
                 }
                 startActivity(i);
             } else {
-                if (tabsContainer.getVisibility() == View.VISIBLE) {
-                    tabsContainer.setVisibility(View.GONE);
-                } else {
-                    // TODO: Improve implementation
-                    if (toolsContainer.getVisibility() == View.VISIBLE)
-                        fab.performClick();
-                    tabsContainer.setVisibility(View.VISIBLE);
-                }
                 reachModeCheck();
             }
         });
@@ -275,9 +266,6 @@ public class BrowserActivity extends VioWebViewActivity {
                 fab.animate().rotation(retractedRotation).setDuration(250).start();
                 toolsContainer.setVisibility(View.GONE);
             } else {
-                // TODO: Improve implementation
-                if (tabsContainer.getVisibility() == View.VISIBLE)
-                    tabs.performClick();
                 fab.animate().rotation(retractedRotation - 180).setDuration(250).start();
                 toolsContainer.setVisibility(View.VISIBLE);
             }

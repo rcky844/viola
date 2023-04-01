@@ -186,7 +186,6 @@ public class SettingsActivity extends BrowservioActivity {
             /* Advanced category */
             SwitchPreferenceCompat javascript = Objects.requireNonNull(findPreference("javascript"));
             SwitchPreferenceCompat use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
-            SwitchPreferenceCompat use_traditional_tabs = Objects.requireNonNull(findPreference("use_traditional_tabs"));
             SwitchPreferenceCompat close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */
@@ -496,7 +495,6 @@ public class SettingsActivity extends BrowservioActivity {
             setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
             setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
             setupCheckBoxPref(SettingsKeys.useCustomTabs, use_custom_tabs, false);
-            setupCheckBoxPref(SettingsKeys.useTraditionalTabs, use_traditional_tabs, false);
             setupCheckBoxPref(SettingsKeys.closeAppAfterDownload, close_app_after_download, false);
             search_engine.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]);
             homepage.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]);
