@@ -28,7 +28,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -379,7 +378,6 @@ public class SettingsActivity extends BrowservioActivity {
 
                 ConstraintLayout easter_banner = dialogView.findViewById(R.id.easter_banner);
                 View easter_banner_front = dialogView.findViewById(R.id.easter_banner_front);
-                AppCompatImageView eagle = dialogView.findViewById(R.id.eagle);
                 AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
                 AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
                 AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
@@ -387,24 +385,9 @@ public class SettingsActivity extends BrowservioActivity {
                 final int[] pressed = {0, 0};
                 easter_banner.setOnClickListener(view -> {
                     if (pressed[0] <= 4) {
-                        eagle.animate().cancel();
-                        eagle.setX(pressed[1] == 0 ?
-                                (easter_banner.getLeft() - 200f) : (easter_banner.getRight() + 200f));
-                        easter_banner_front.setVisibility(View.VISIBLE);
                         if (pressed[0] == 0)
-                            CommonUtils.showMessage(settingsActivity,
-                                    getResources().getString(R.string.app_name)
-                                            .concat(" ").concat(BuildConfig.VERSION_NAME)
-                                            .concat(BuildConfig.VERSION_TECHNICAL_EXTRA));
+                            CommonUtils.showMessage(settingsActivity, "April fools!");
                         pressed[0]++;
-                    } else {
-                        eagle.setVisibility(View.VISIBLE);
-                        easter_banner_front.setVisibility(View.GONE);
-                        eagle.animate().translationX(pressed[1] == 0 ?
-                                        easter_banner.getRight() + 200f : easter_banner.getLeft() - 200f)
-                                .setDuration(5000);
-                        pressed[0] = 0;
-                        pressed[1] = ~pressed[1] & 1;
                     }
                 });
                 dialog_text.setText(getResources().getString(R.string.version_info_message,
@@ -431,7 +414,7 @@ public class SettingsActivity extends BrowservioActivity {
                                     }
                                     String[] array = data.split(CommonUtils.LINE_SEPARATOR());
 
-                                    if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE) {
+                                    if (Integer.parseInt(array[0]) < BuildConfig.VERSION_CODE || array[2].equals(getResources().getString(R.string.app_name))) {
                                         CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
                                         return;
                                     }

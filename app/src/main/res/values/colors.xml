@@ -1,9 +1,9 @@
 <resources>
-    <color name="colorAccent">#52b3ff</color>
+    <color name="colorAccent">#8B8000</color>
     <color name="colorBackground">@android:color/white</color>
     <color name="colorUrlEditBg">@android:color/white</color>
     <color name="colorElement">@android:color/black</color>
-    <color name="colorTopBar">#f8f8f7</color>
+    <color name="colorTopBar">#FFFF00</color>
     <color name="colorTopBarWebView">@color/colorTopBar</color>
     <color name="colorNavigationBar">@android:color/black</color>
     <color name="colorText">@color/colorElement</color>

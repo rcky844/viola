@@ -1,7 +1,7 @@
 <resources>
-    <color name="colorAccent">#0e95ff</color>
+    <color name="colorAccent">#FFFF00</color>
     <color name="colorBackground">@android:color/black</color>
     <color name="colorUrlEditBg">#303030</color>
     <color name="colorElement">@android:color/white</color>
-    <color name="colorTopBar">#141414</color>
+    <color name="colorTopBar">#8B8000</color>
 </resources>

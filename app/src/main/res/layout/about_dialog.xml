@@ -18,8 +18,7 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/eagle" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             android:id="@+id/easter_banner_front"
