@@ -181,12 +181,12 @@ public class SettingsActivity extends BrowservioActivity {
             SwitchPreferenceCompat reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
             SwitchPreferenceCompat reverse_only_action = Objects.requireNonNull(findPreference("reverse_only_action"));
             SwitchPreferenceCompat enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
-            SwitchPreferenceCompat update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
 
             /* Advanced category */
             SwitchPreferenceCompat javascript = Objects.requireNonNull(findPreference("javascript"));
             SwitchPreferenceCompat use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
             SwitchPreferenceCompat use_traditional_tabs = Objects.requireNonNull(findPreference("use_traditional_tabs"));
+            SwitchPreferenceCompat update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
             SwitchPreferenceCompat close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */

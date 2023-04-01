@@ -79,11 +79,6 @@
             android:summary="@string/pref_enable_swipe_refresh_summary"
             android:title="@string/pref_enable_swipe_refresh_title"
             android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
-            android:key="update_recents_icon"
-            android:summary="@string/pref_update_recents_icon_summary"
-            android:title="@string/pref_update_recents_icon_title"
-            android:widgetLayout="@layout/preference_material_switch" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/advanced">
@@ -101,6 +96,12 @@
             android:key="use_traditional_tabs"
             android:summary="@string/pref_use_traditional_tabs_summary"
             android:title="@string/pref_use_traditional_tabs_title"
+            android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.SwitchPreferenceCompat
+            android:dependency="use_traditional_tabs"
+            android:key="update_recents_icon"
+            android:summary="@string/pref_update_recents_icon_summary"
+            android:title="@string/pref_update_recents_icon_title"
             android:widgetLayout="@layout/preference_material_switch" />
         <androidx.preference.SwitchPreferenceCompat
             android:key="close_app_after_download"
