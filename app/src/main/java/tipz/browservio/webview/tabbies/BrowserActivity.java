@@ -59,6 +59,7 @@ import tipz.browservio.webview.VioWebViewActivity;
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private AppCompatImageView fab;
+    private AppCompatImageView coin;
 
     private boolean currentPrebuiltUAState = false;
     private String currentCustomUA;
@@ -177,6 +178,7 @@ public class BrowserActivity extends VioWebViewActivity {
     @SuppressLint("AddJavascriptInterface")
     private void initialize() {
         fab = findViewById(R.id.fab);
+        coin = findViewById(R.id.coin);
         UrlEdit = findViewById(R.id.UrlEdit);
         progressBar = findViewById(R.id.webviewProgressBar);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
@@ -259,6 +261,19 @@ public class BrowserActivity extends VioWebViewActivity {
                 toolsContainer.setVisibility(View.VISIBLE);
             }
             reachModeCheck();
+        });
+
+        coin.setOnClickListener(v -> {
+            new MaterialAlertDialogBuilder(this).setTitle(getResources().getString(R.string.wallet_dialog_title))
+                    .setMessage(getResources().getString(R.string.wallet_dialog_message))
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setNeutralButton(R.string.wallet_dialog_benefits_title, (_dialog, _which) -> {
+                        new MaterialAlertDialogBuilder(this).setTitle(getResources().getString(R.string.wallet_dialog_benefits_title))
+                                .setMessage(getResources().getString(R.string.wallet_dialog_benefits_message))
+                                .setPositiveButton(android.R.string.ok, null)
+                                .create().show();
+                    })
+                    .create().show();
         });
 
         /* Code for detecting return key presses */
