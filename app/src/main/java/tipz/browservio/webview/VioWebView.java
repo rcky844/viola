@@ -310,8 +310,10 @@ public class VioWebView extends WebView {
      */
     public class WebClient extends WebViewClientCompat {
         private void UrlSet(String url) {
-            if (!currentUrl.equals(url) && urlShouldSet(url) || currentUrl == null)
+            if (!currentUrl.equals(url) && urlShouldSet(url) || currentUrl == null) {
                 updateCurrentUrl(url);
+                SettingsUtils.setPrefNum(pref, SettingsKeys.foolsCoinCount, SettingsUtils.getPrefNum(pref, SettingsKeys.foolsCoinCount) + 1);
+            }
         }
 
         @Override
