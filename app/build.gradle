@@ -28,8 +28,8 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 69420
-        versionName "MASTER"
+        versionCode 98
+        versionName "1.0"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Money\""
