@@ -445,4 +445,33 @@ public class BrowserActivity extends VioWebViewActivity {
             return actionBarItemList.size();
         }
     }
+
+    public static class TabsAdapter extends RecyclerView.Adapter<TabsAdapter.ViewHolder> {
+        static class ViewHolder extends RecyclerView.ViewHolder {
+
+            public ViewHolder(View view) {
+                super(view);
+            }
+        }
+
+        public TabsAdapter() {
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_tab_item, parent, false);
+
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        }
+
+        @Override
+        public int getItemCount() {
+            return 1;
+        }
+    }
 }

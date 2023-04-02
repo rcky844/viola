@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.CallSuper;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.transition.AutoTransition;
@@ -45,7 +46,7 @@ public class VioWebViewActivity extends BrowservioActivity {
 
     public AppBarLayout appbar;
     public RelativeLayout toolsContainer;
-    public RelativeLayout tabsContainer;
+    public ConstraintLayout tabsContainer;
     public RelativeLayout webviewContainer;
 
     private boolean swipeRefreshLayoutEnabled = true;
