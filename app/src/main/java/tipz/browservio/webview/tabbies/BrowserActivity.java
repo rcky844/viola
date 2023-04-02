@@ -248,7 +248,7 @@ public class BrowserActivity extends VioWebViewActivity {
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
         /* Initiate tabs */
-        newTab();
+        newTab(true);
 
         Intent intent = getIntent();
         Uri dataUri = intent.getData();
@@ -261,16 +261,18 @@ public class BrowserActivity extends VioWebViewActivity {
         }
     }
 
-    private void newTab() {
+    private void newTab(boolean bringToTop) {
         VioWebView newWebView = new VioWebView(this, null);
         tabsViews.add(newWebView);
 
         /* Init VioWebView */
         newWebView.notifyViewSetup();
 
-        // FIXME: Remove when properly implemented
-        swipeRefreshLayout.addView(tabsViews.get(0), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        webview = tabsViews.get(0);
+        if (bringToTop) {
+            // FIXME: Remove when properly implemented
+            swipeRefreshLayout.addView(tabsViews.get(0), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            webview = tabsViews.get(0);
+        }
     }
 
     // https://stackoverflow.com/a/57840629/10866268
