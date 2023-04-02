@@ -58,6 +58,13 @@ import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.webview.VioWebViewActivity;
 
+/**
+ * Welcome to the Browservio (The Shrek Browser)
+ * This browser was originally designed with Sketchware
+ * This project was started on Aug 13 2020
+ * <p>
+ * sur wen reel Sherk brower pls sand meme sum
+ */
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
     private AppCompatImageView tabs;
@@ -82,11 +89,173 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.close);
 
     @Override
+    @SuppressLint("AddJavascriptInterface")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        initialize();
-        initializeLogic();
+
+        /* Action bar component: Favicon */
+        favicon = findViewById(R.id.favicon);
+        faviconProgressBar = findViewById(R.id.faviconProgressBar);
+        favicon.setOnClickListener(v -> {
+            final SslCertificate cert = webview.getCertificate();
+            PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, favicon);
+            Menu menu = popupMenu.getMenu();
+            menu.add(webview.getTitle()).setEnabled(false);
+            menu.add(getResources().getString(R.string.copy_title));
+            if (cert != null)
+                menu.add(getResources().getString(R.string.ssl_info));
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled))
+                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                menu.add(getResources().getString(R.string.view_page_source));
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
+                    CommonUtils.copyClipboard(BrowserActivity.this, webview.getTitle());
+                    return true;
+                } else if (item.getTitle().toString().equals(getResources().getString(R.string.ssl_info))) {
+                    assert cert != null;
+                    final SslCertificate.DName issuedTo = cert.getIssuedTo();
+                    final SslCertificate.DName issuedBy = cert.getIssuedBy();
+                    final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(BrowserActivity.this);
+                    dialog.setTitle(Uri.parse(webview.getUrl()).getHost())
+                            .setMessage(getResources().getString(R.string.ssl_info_dialog_content,
+                                    issuedTo.getCName(), issuedTo.getOName(), issuedTo.getUName(),
+                                    issuedBy.getCName(), issuedBy.getOName(), issuedBy.getUName(),
+                                    DateFormat.getDateTimeInstance().format(cert.getValidNotBeforeDate()),
+                                    DateFormat.getDateTimeInstance().format(cert.getValidNotAfterDate())))
+                            .setPositiveButton(getResources().getString(android.R.string.ok), null)
+                            .create().show();
+                    return true;
+                } else if (item.getTitle().toString().equals(getResources().getString(R.string.view_page_source))) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        webview.evaluateJavascript(
+                                "document.documentElement.outerHTML", value -> {
+                                    JsonReader reader = new JsonReader(new StringReader(value));
+                                    reader.setLenient(true);
+                                    try {
+                                        if (reader.peek() == JsonToken.STRING) {
+                                            String domStr = reader.nextString();
+                                            reader.close();
+
+                                            if (domStr == null)
+                                                return;
+
+                                            new MaterialAlertDialogBuilder(BrowserActivity.this)
+                                                    .setTitle(getResources().getString(R.string.view_page_source))
+                                                    .setMessage(domStr)
+                                                    .setPositiveButton(getResources().getString(android.R.string.ok), null)
+                                                    .setNegativeButton(getResources().getString(android.R.string.copy), (dialog, which) -> CommonUtils.copyClipboard(BrowserActivity.this, domStr))
+                                                    .create().show();
+                                        }
+                                    } catch (IOException ignored) {
+                                    }
+                                });
+                    }
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+        faviconProgressBar.setOnClickListener(v -> favicon.performClick());
+
+        /* Action bar component: Fab */
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v -> {
+            if (toolsContainer.getVisibility() == View.VISIBLE) {
+                fab.animate().rotation(retractedRotation).setDuration(250).start();
+                toolsContainer.setVisibility(View.GONE);
+            } else {
+                // TODO: Improve implementation
+                if (tabsContainer.getVisibility() == View.VISIBLE)
+                    tabs.performClick();
+                fab.animate().rotation(retractedRotation - 180).setDuration(250).start();
+                toolsContainer.setVisibility(View.VISIBLE);
+            }
+            reachModeCheck();
+        });
+
+        /* Action bar component: Tabs */
+        tabs = findViewById(R.id.tabs);
+        tabs.setOnClickListener(v -> {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))) {
+                Intent i = new Intent(this, BrowserActivity.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                    i.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                } else {
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                }
+                startActivity(i);
+            } else {
+                if (tabsContainer.getVisibility() == View.VISIBLE) {
+                    tabsContainer.setVisibility(View.GONE);
+                } else {
+                    // TODO: Improve implementation
+                    if (toolsContainer.getVisibility() == View.VISIBLE)
+                        fab.performClick();
+                    tabsContainer.setVisibility(View.VISIBLE);
+                }
+                reachModeCheck();
+            }
+        });
+
+        /* Action bar component: Address Bar */
+        UrlEdit = findViewById(R.id.UrlEdit);
+        UrlEdit.setOnEditorActionListener((v, actionId, event) -> { /* Detect return key presses */
+            if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
+                webview.loadUrl(UrlEdit.getText().toString());
+                UrlEdit.clearFocus();
+                return true;
+            }
+            return false;
+        });
+        UrlEdit.setAdapter(new SuggestionAdapter(BrowserActivity.this, R.layout.recycler_list_item_1));
+        UrlEdit.setOnItemClickListener((adapterView, view, pos, l) -> { /* For suggest items */
+            webview.loadUrl(((AppCompatTextView) view.findViewById(android.R.id.text1)).getText().toString());
+            closeKeyboard();
+        });
+        UrlEdit.setOnFocusChangeListener((v, hasFocus) -> { /* Improve experience when unfocusing */
+            if (!hasFocus) {
+                if (!UrlEdit.getText().toString().equals(webview.getUrl()))
+                    UrlEdit.setText(webview.getUrl());
+                UrlEdit.setSelection(0);
+                UrlEdit.setDropDownHeight(0);
+                closeKeyboard();
+            } else {
+                UrlEdit.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+        });
+
+        /* Action bar component: Progress bar */
+        progressBar = findViewById(R.id.webviewProgressBar);
+
+        /* Action bar component: Toolbar */
+        toolsContainer = findViewById(R.id.toolsContainer);
+        tabsContainer = findViewById(R.id.tabsContainer);
+        RecyclerView actionBar = findViewById(R.id.actionBar);
+        actionBar.setLayoutManager(new LinearLayoutManager(
+                BrowserActivity.this, RecyclerView.HORIZONTAL, false));
+        actionBar.setAdapter(new ItemsAdapter(BrowserActivity.this));
+
+        /* Action bar component: WebView */
+        swipeRefreshLayout = findViewById(R.id.layout_webview);
+        webview = swipeRefreshLayout.findViewById(R.id.webview);
+
+        /* Broha */
+        iconHashClient = ((Application) getApplicationContext()).iconHashClient;
+
+        /* Init VioWebView */
+        webview.notifyViewSetup();
+
+        Intent intent = getIntent();
+        Uri dataUri = intent.getData();
+
+        if (dataUri != null) {
+            webview.loadUrl(dataUri.toString());
+        } else {
+            webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
+                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
+        }
     }
 
     // https://stackoverflow.com/a/57840629/10866268
@@ -166,180 +335,8 @@ public class BrowserActivity extends VioWebViewActivity {
         }
     }
 
-    /**
-     * Initialize function
-     */
-    @SuppressLint("AddJavascriptInterface")
-    private void initialize() {
-        fab = findViewById(R.id.fab);
-        tabs = findViewById(R.id.tabs);
-        UrlEdit = findViewById(R.id.UrlEdit);
-        progressBar = findViewById(R.id.webviewProgressBar);
-        faviconProgressBar = findViewById(R.id.faviconProgressBar);
-        swipeRefreshLayout = findViewById(R.id.layout_webview);
-        webview = swipeRefreshLayout.findViewById(R.id.webview);
-        RecyclerView actionBar = findViewById(R.id.actionBar);
-        favicon = findViewById(R.id.favicon);
-        toolsContainer = findViewById(R.id.toolsContainer);
-        tabsContainer = findViewById(R.id.tabsContainer);
-
-        actionBar.setLayoutManager(new LinearLayoutManager(
-                BrowserActivity.this, RecyclerView.HORIZONTAL, false));
-        actionBar.setAdapter(new ItemsAdapter(BrowserActivity.this));
-
-        favicon.setOnClickListener(v -> {
-            final SslCertificate cert = webview.getCertificate();
-            PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, favicon);
-            Menu menu = popupMenu.getMenu();
-            menu.add(webview.getTitle()).setEnabled(false);
-            menu.add(getResources().getString(R.string.copy_title));
-            if (cert != null)
-                menu.add(getResources().getString(R.string.ssl_info));
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.isJavaScriptEnabled))
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                menu.add(getResources().getString(R.string.view_page_source));
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
-                    CommonUtils.copyClipboard(BrowserActivity.this, webview.getTitle());
-                    return true;
-                } else if (item.getTitle().toString().equals(getResources().getString(R.string.ssl_info))) {
-                    assert cert != null;
-                    final SslCertificate.DName issuedTo = cert.getIssuedTo();
-                    final SslCertificate.DName issuedBy = cert.getIssuedBy();
-                    final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(BrowserActivity.this);
-                    dialog.setTitle(Uri.parse(webview.getUrl()).getHost())
-                            .setMessage(getResources().getString(R.string.ssl_info_dialog_content,
-                                    issuedTo.getCName(), issuedTo.getOName(), issuedTo.getUName(),
-                                    issuedBy.getCName(), issuedBy.getOName(), issuedBy.getUName(),
-                                    DateFormat.getDateTimeInstance().format(cert.getValidNotBeforeDate()),
-                                    DateFormat.getDateTimeInstance().format(cert.getValidNotAfterDate())))
-                            .setPositiveButton(getResources().getString(android.R.string.ok), null)
-                            .create().show();
-                    return true;
-                } else if (item.getTitle().toString().equals(getResources().getString(R.string.view_page_source))) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        webview.evaluateJavascript(
-                                "document.documentElement.outerHTML", value -> {
-                                    JsonReader reader = new JsonReader(new StringReader(value));
-                                    reader.setLenient(true);
-                                    try {
-                                        if (reader.peek() == JsonToken.STRING) {
-                                            String domStr = reader.nextString();
-                                            reader.close();
-
-                                            if (domStr == null)
-                                                return;
-
-                                            new MaterialAlertDialogBuilder(BrowserActivity.this)
-                                                    .setTitle(getResources().getString(R.string.view_page_source))
-                                                    .setMessage(domStr)
-                                                    .setPositiveButton(getResources().getString(android.R.string.ok), null)
-                                                    .setNegativeButton(getResources().getString(android.R.string.copy), (dialog, which) -> CommonUtils.copyClipboard(BrowserActivity.this, domStr))
-                                                    .create().show();
-                                        }
-                                    } catch (IOException ignored) {
-                                    }
-                                });
-                    }
-                }
-                return false;
-            });
-            popupMenu.show();
-        });
-
-        tabs.setOnClickListener(v -> {
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))) {
-                Intent i = new Intent(this, BrowserActivity.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-                    i.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                } else {
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                }
-                startActivity(i);
-            } else {
-                if (tabsContainer.getVisibility() == View.VISIBLE) {
-                    tabsContainer.setVisibility(View.GONE);
-                } else {
-                    // TODO: Improve implementation
-                    if (toolsContainer.getVisibility() == View.VISIBLE)
-                        fab.performClick();
-                    tabsContainer.setVisibility(View.VISIBLE);
-                }
-                reachModeCheck();
-            }
-        });
-
-        fab.setOnClickListener(v -> {
-            if (toolsContainer.getVisibility() == View.VISIBLE) {
-                fab.animate().rotation(retractedRotation).setDuration(250).start();
-                toolsContainer.setVisibility(View.GONE);
-            } else {
-                // TODO: Improve implementation
-                if (tabsContainer.getVisibility() == View.VISIBLE)
-                    tabs.performClick();
-                fab.animate().rotation(retractedRotation - 180).setDuration(250).start();
-                toolsContainer.setVisibility(View.VISIBLE);
-            }
-            reachModeCheck();
-        });
-
-        /* Code for detecting return key presses */
-        UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
-                webview.loadUrl(UrlEdit.getText().toString());
-                UrlEdit.clearFocus();
-                return true;
-            }
-            return false;
-        });
-
-        UrlEdit.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                if (!UrlEdit.getText().toString().equals(webview.getUrl()))
-                    UrlEdit.setText(webview.getUrl());
-                UrlEdit.setSelection(0);
-                UrlEdit.setDropDownHeight(0);
-                closeKeyboard();
-            } else {
-                UrlEdit.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-            }
-        });
-
-        UrlEdit.setOnItemClickListener((adapterView, view, pos, l) -> {
-            webview.loadUrl(((AppCompatTextView) view.findViewById(android.R.id.text1)).getText().toString());
-            closeKeyboard();
-        });
-
-        UrlEdit.setAdapter(new SuggestionAdapter(BrowserActivity.this, R.layout.recycler_list_item_1));
-    }
-
     private void closeKeyboard() {
         WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
-    }
-
-    /**
-     * Welcome to the Browservio (The Shrek Browser)
-     * This browser was originally designed with Sketchware
-     * This project was started on Aug 13 2020
-     * <p>
-     * sur wen reel Sherk brower pls sand meme sum
-     */
-    private void initializeLogic() {
-        iconHashClient = ((Application) getApplicationContext()).iconHashClient;
-
-        /* Init VioWebView */
-        webview.notifyViewSetup();
-
-        Intent intent = getIntent();
-        Uri dataUri = intent.getData();
-
-        if (dataUri != null) {
-            webview.loadUrl(dataUri.toString());
-        } else {
-            webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
-                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
-        }
     }
 
     @Override
