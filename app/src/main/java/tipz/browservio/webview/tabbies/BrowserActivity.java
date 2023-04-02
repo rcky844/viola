@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -56,6 +57,7 @@ import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
+import tipz.browservio.webview.VioWebView;
 import tipz.browservio.webview.VioWebViewActivity;
 
 /**
@@ -87,6 +89,8 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.history,
             R.drawable.favorites,
             R.drawable.close);
+
+    private List<VioWebView> tabsViews = new ArrayList<VioWebView>();
 
     @Override
     @SuppressLint("AddJavascriptInterface")
@@ -238,14 +242,13 @@ public class BrowserActivity extends VioWebViewActivity {
         actionBar.setAdapter(new ItemsAdapter(BrowserActivity.this));
 
         /* Action bar component: WebView */
-        swipeRefreshLayout = findViewById(R.id.layout_webview);
-        webview = swipeRefreshLayout.findViewById(R.id.webview);
+        swipeRefreshLayout = findViewById(R.id.swipe);
 
         /* Broha */
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
-        /* Init VioWebView */
-        webview.notifyViewSetup();
+        /* Initiate tabs */
+        newTab();
 
         Intent intent = getIntent();
         Uri dataUri = intent.getData();
@@ -256,6 +259,18 @@ public class BrowserActivity extends VioWebViewActivity {
             webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
                     SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
         }
+    }
+
+    private void newTab() {
+        VioWebView newWebView = new VioWebView(this, null);
+        tabsViews.add(newWebView);
+
+        /* Init VioWebView */
+        newWebView.notifyViewSetup();
+
+        // FIXME: Remove when properly implemented
+        swipeRefreshLayout.addView(tabsViews.get(0), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        webview = tabsViews.get(0);
     }
 
     // https://stackoverflow.com/a/57840629/10866268
