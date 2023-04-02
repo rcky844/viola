@@ -229,8 +229,6 @@ public class VioWebViewActivity extends BrowservioActivity {
             webviewContainerParams.setMargins(0, margin, 0, 0);
         }
 
-        TransitionManager.beginDelayedTransition((ViewGroup) toolsContainer, new AutoTransition());
-        TransitionManager.beginDelayedTransition((ViewGroup) tabsContainer, new AutoTransition());
         TransitionManager.beginDelayedTransition((ViewGroup) webviewContainer, new AutoTransition());
         appbar.setLayoutParams(appBarParams);
         appbar.invalidate();
