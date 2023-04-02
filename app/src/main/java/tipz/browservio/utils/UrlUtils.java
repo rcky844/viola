@@ -61,8 +61,8 @@ public class UrlUtils {
         return url;
     }
 
-    public static boolean isUriHttp(String uri) {
-        return uri.matches(httpUrlRegex);
+    public static boolean isUriLaunchable(String uri) {
+        return uri.matches(httpUrlRegex) || uri.startsWith("data:");
     }
 
     /**

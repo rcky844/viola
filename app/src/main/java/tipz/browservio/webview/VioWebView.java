@@ -373,7 +373,7 @@ public class VioWebView extends WebView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (UrlUtils.isUriHttp(url))
+            if (UrlUtils.isUriLaunchable(url))
                 return false;
 
             try {
