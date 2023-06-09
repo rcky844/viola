@@ -55,6 +55,7 @@ public class VioWebViewActivity extends BrowservioActivity {
     public CircularProgressIndicator faviconProgressBar;
     public LinearProgressIndicator progressBar;
     public SwipeRefreshLayout swipeRefreshLayout;
+    public View startPageLayout;
 
     public AppBarLayout appbar;
     public RelativeLayout toolsContainer;
@@ -81,6 +82,10 @@ public class VioWebViewActivity extends BrowservioActivity {
             swipeRefreshLayout.setOnRefreshListener(() -> webview.webviewReload());
             swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         }
+
+        // Setup start page
+        startPageLayout = findViewById(R.id.layout_startpage);
+        startPageLayout.findViewById(R.id.startPageEditText).setOnClickListener(v -> onStartPageEditTextPressed());
 
         // Setup favicon
         if (favicon != null && faviconProgressBar != null)
@@ -236,6 +241,10 @@ public class VioWebViewActivity extends BrowservioActivity {
     }
 
     public void onDropDownDismissed() {
+
+    }
+
+    public void onStartPageEditTextPressed() {
 
     }
 

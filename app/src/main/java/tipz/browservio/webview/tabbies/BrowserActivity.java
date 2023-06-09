@@ -16,6 +16,7 @@
 package tipz.browservio.webview.tabbies;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -32,6 +33,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -354,6 +356,13 @@ public class BrowserActivity extends VioWebViewActivity {
     public void onDropDownDismissed() {
         UrlEdit.dismissDropDown();
         UrlEdit.clearFocus();
+    }
+
+    @Override
+    public void onStartPageEditTextPressed() {
+        UrlEdit.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @Override
