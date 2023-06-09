@@ -47,16 +47,25 @@
             android:summary="@string/pref_google_safe_browsing_summary"
             android:title="@string/pref_google_safe_browsing_title"
             android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.Preference
+        <tipz.browservio.settings.PromptPreference
             android:key="clear_cache"
-            android:title="@string/pref_clear_cache" />
-        <androidx.preference.Preference
+            android:title="@string/pref_clear_cache"
+            android:dialogTitle="@string/pref_clear_cache"
+            android:dialogMessage="@string/to_continue"
+            android:positiveButtonText="@string/clear" />
+        <tipz.browservio.settings.PromptPreference
             android:key="clear_cookies"
-            android:title="@string/pref_clear_cookies" />
-        <androidx.preference.Preference
+            android:title="@string/pref_clear_cookies"
+            android:dialogTitle="@string/pref_clear_cookies"
+            android:dialogMessage="@string/to_continue"
+            android:positiveButtonText="@string/clear" />
+        <tipz.browservio.settings.PromptPreference
             android:key="reset_to_default"
             android:summary="@string/reset_btn_desp"
-            android:title="@string/reset_btn" />
+            android:title="@string/reset_btn"
+            android:dialogTitle="@string/reset_btn"
+            android:dialogMessage="@string/reset_dialog"
+            android:positiveButtonText="@string/clear" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/visual">

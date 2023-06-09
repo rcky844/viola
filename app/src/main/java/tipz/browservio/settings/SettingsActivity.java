@@ -35,7 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import android.webkit.WebView;
+import android.webkit.WebStorage;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +47,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
@@ -185,9 +186,9 @@ public class SettingsActivity extends BrowservioActivity {
             SwitchPreferenceCompat do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
             SwitchPreferenceCompat enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
             SwitchPreferenceCompat google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
-            Preference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
-            Preference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
-            Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
+            PromptPreference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
+            PromptPreference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
+            PromptPreference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
@@ -312,63 +313,49 @@ public class SettingsActivity extends BrowservioActivity {
                 return true;
             });
 
-            clear_cache.setOnPreferenceClickListener(preference -> {
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_clear_cache))
-                        .setMessage(getResources().getString(R.string.to_continue))
-                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
-                            WebView mWebView = new WebView(settingsActivity);
-                            mWebView.clearCache(true);
-                            mWebView.destroy();
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
+            clear_cache.setPromptPreferenceDialogListener(positiveResult -> {
+                if (!positiveResult)
+                    return;
+
+                WebStorage.getInstance().deleteAllData();
+                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
             });
 
-            clear_cookies.setOnPreferenceClickListener(preference -> {
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_clear_cookies))
-                        .setMessage(getResources().getString(R.string.to_continue))
-                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                CookieManager.getInstance().removeAllCookies(null);
-                                CookieManager.getInstance().flush();
-                            } else {
-                                CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(settingsActivity);
-                                CookieManager cookieManager = CookieManager.getInstance();
-                                cookieSyncMgr.startSync();
-                                cookieManager.removeAllCookie();
-                                cookieManager.removeSessionCookie();
-                                cookieSyncMgr.stopSync();
-                                cookieSyncMgr.sync();
-                            }
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
+            clear_cookies.setPromptPreferenceDialogListener(positiveResult -> {
+                if (!positiveResult)
+                    return;
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    CookieManager.getInstance().removeAllCookies(null);
+                    CookieManager.getInstance().flush();
+                } else {
+                    CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(settingsActivity);
+                    CookieManager cookieManager = CookieManager.getInstance();
+                    cookieSyncMgr.startSync();
+                    cookieManager.removeAllCookie();
+                    cookieManager.removeSessionCookie();
+                    cookieSyncMgr.stopSync();
+                    cookieSyncMgr.sync();
+                }
+                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
             });
 
-            reset_to_default.setOnPreferenceClickListener(preference -> {
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.reset_btn))
-                        .setMessage(getResources().getString(R.string.reset_dialog).concat(getResources().getString(R.string.to_continue)))
-                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.reset_complete));
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                ((ActivityManager) settingsActivity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
-                            } else {
-                                String packageName = settingsActivity.getPackageName();
-                                Runtime runtime = Runtime.getRuntime();
-                                try {
-                                    runtime.exec("pm clear " + packageName);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
+            reset_to_default.setPromptPreferenceDialogListener(positiveResult -> {
+                if (!positiveResult)
+                    return;
+
+                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.reset_complete));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    ((ActivityManager) settingsActivity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+                } else {
+                    String packageName = settingsActivity.getPackageName();
+                    Runtime runtime = Runtime.getRuntime();
+                    try {
+                        runtime.exec("pm clear " + packageName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             });
 
             theme.setOnPreferenceClickListener(preference -> {
@@ -517,6 +504,22 @@ public class SettingsActivity extends BrowservioActivity {
             theme.setSummary(themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]);
             version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
             needReload = false;
+        }
+
+        @Override
+        public void onDisplayPreferenceDialog(@NonNull Preference preference) {
+            DialogFragment dialogFragment = null;
+            if (preference instanceof PromptPreference) {
+                dialogFragment = PromptPreferenceDialogFragmentCompat
+                        .newInstance(preference.getKey(), ((PromptPreference) preference).getPromptPreferenceDialogListener());
+            }
+
+            if (dialogFragment != null) {
+                dialogFragment.setTargetFragment(this, 0);
+                dialogFragment.show(this.getFragmentManager(), "androidx.preference.PreferenceFragment.DIALOG");
+            } else {
+                super.onDisplayPreferenceDialog(preference);
+            }
         }
 
         private void setupCheckBoxPref(String tag, SwitchPreferenceCompat checkBox, boolean needReload) {
