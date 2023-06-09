@@ -186,9 +186,9 @@ public class SettingsActivity extends BrowservioActivity {
             SwitchPreferenceCompat do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
             SwitchPreferenceCompat enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
             SwitchPreferenceCompat google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
-            PromptPreference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
-            PromptPreference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
-            PromptPreference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
+            MaterialDialogPreference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
+            MaterialDialogPreference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
+            MaterialDialogPreference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
@@ -313,7 +313,7 @@ public class SettingsActivity extends BrowservioActivity {
                 return true;
             });
 
-            clear_cache.setPromptPreferenceDialogListener(positiveResult -> {
+            clear_cache.setMaterialDialogPreferenceListener(positiveResult -> {
                 if (!positiveResult)
                     return;
 
@@ -321,7 +321,7 @@ public class SettingsActivity extends BrowservioActivity {
                 CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
             });
 
-            clear_cookies.setPromptPreferenceDialogListener(positiveResult -> {
+            clear_cookies.setMaterialDialogPreferenceListener(positiveResult -> {
                 if (!positiveResult)
                     return;
 
@@ -340,7 +340,7 @@ public class SettingsActivity extends BrowservioActivity {
                 CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
             });
 
-            reset_to_default.setPromptPreferenceDialogListener(positiveResult -> {
+            reset_to_default.setMaterialDialogPreferenceListener(positiveResult -> {
                 if (!positiveResult)
                     return;
 
@@ -509,9 +509,9 @@ public class SettingsActivity extends BrowservioActivity {
         @Override
         public void onDisplayPreferenceDialog(@NonNull Preference preference) {
             DialogFragment dialogFragment = null;
-            if (preference instanceof PromptPreference) {
-                dialogFragment = PromptPreferenceDialogFragmentCompat
-                        .newInstance(preference.getKey(), ((PromptPreference) preference).getPromptPreferenceDialogListener());
+            if (preference instanceof MaterialDialogPreference) {
+                dialogFragment = MaterialPreferenceDialogFragmentCompat
+                        .newInstance(preference.getKey(), ((MaterialDialogPreference) preference).getMaterialDialogPreferenceListener());
             }
 
             if (dialogFragment != null) {

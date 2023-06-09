@@ -11,9 +11,25 @@ import androidx.preference.PreferenceDialogFragmentCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public abstract class MaterialPreferenceDialogFragmentCompat extends PreferenceDialogFragmentCompat {
+public class MaterialPreferenceDialogFragmentCompat extends PreferenceDialogFragmentCompat {
+    private final MaterialDialogPreferenceListener mMaterialPreferenceDialogListener;
+
     /** Which button was clicked. */
     private int mWhichButtonClicked;
+
+    public static MaterialPreferenceDialogFragmentCompat newInstance(String key, MaterialDialogPreferenceListener materialPreferenceDialogListener) {
+        final MaterialPreferenceDialogFragmentCompat
+                fragment = new MaterialPreferenceDialogFragmentCompat(materialPreferenceDialogListener);
+        final Bundle b = new Bundle(1);
+        b.putString(ARG_KEY, key);
+        fragment.setArguments(b);
+
+        return fragment;
+    }
+
+    public MaterialPreferenceDialogFragmentCompat(MaterialDialogPreferenceListener materialPreferenceDialogListener) {
+        mMaterialPreferenceDialogListener = materialPreferenceDialogListener;
+    }
 
     @Override
     public @NonNull Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -50,5 +66,11 @@ public abstract class MaterialPreferenceDialogFragmentCompat extends PreferenceD
     }
 
     @Override
-    public abstract void onDialogClosed(boolean positiveResult);
+    public void onDialogClosed(boolean positiveResult) {
+        mMaterialPreferenceDialogListener.onDialogClosed(positiveResult);
+    }
+
+    public interface MaterialDialogPreferenceListener {
+        void onDialogClosed(boolean positiveResult);
+    }
 }
