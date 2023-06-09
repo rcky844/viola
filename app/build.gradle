@@ -58,6 +58,7 @@ android {
             initWith debug
             applicationIdSuffix ".nightly"
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
