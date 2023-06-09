@@ -74,7 +74,6 @@ import androidx.webkit.WebViewRenderProcessClient;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -432,7 +431,7 @@ public class VioWebView extends WebView {
                 try {
                     if (adServers != null)
                         if (adServers.contains(" ".concat(new URL(url).getHost())))
-                            return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
+                            return new WebResourceResponse(null, null, null);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
