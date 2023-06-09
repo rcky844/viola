@@ -54,6 +54,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
+        nightly {
+            initWith debug
+            applicationIdSuffix ".nightly"
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
         debug {
             applicationIdSuffix ".debug"
             multiDexEnabled true
