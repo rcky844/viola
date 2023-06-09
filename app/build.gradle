@@ -57,7 +57,8 @@ android {
         nightly {
             initWith debug
             applicationIdSuffix ".nightly"
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         debug {
