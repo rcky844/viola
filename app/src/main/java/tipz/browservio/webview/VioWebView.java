@@ -686,6 +686,11 @@ public class VioWebView extends WebView {
             return CommonUtils.EMPTY_STRING;
         }
 
+        if (this.getVisibility() == View.GONE) {
+            this.setVisibility(View.VISIBLE);
+            mVioWebViewActivity.startPageLayout.setVisibility(View.GONE);
+        }
+
         return url;
     }
 }
