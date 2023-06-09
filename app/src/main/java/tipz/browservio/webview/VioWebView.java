@@ -425,14 +425,17 @@ public class VioWebView extends WebView {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            if (adServers == null)
-                updateAdServerList();
-            try {
-                if (adServers != null)
-                    if (adServers.contains(" ".concat(new URL(url).getHost())) && SettingsUtils.getPrefNum(pref, SettingsKeys.enableAdBlock) == 1)
-                        return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+            if (SettingsUtils.getPrefNum(pref, SettingsKeys.enableAdBlock) == 1) {
+                if (adServers == null)
+                    updateAdServerList();
+
+                try {
+                    if (adServers != null)
+                        if (adServers.contains(" ".concat(new URL(url).getHost())))
+                            return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream(CommonUtils.EMPTY_STRING.getBytes()));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
             return super.shouldInterceptRequest(view, url);
         }
@@ -628,7 +631,7 @@ public class VioWebView extends WebView {
                 super.handleMessage(msg);
             }
         });
-        mHandlerThread.startDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt");
+        mHandlerThread.startDownload(SettingsUtils.getPref(pref, SettingsKeys.adBlockListServer));
     }
 
     private boolean urlShouldSet(String url) {
