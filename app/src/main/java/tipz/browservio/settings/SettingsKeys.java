@@ -18,6 +18,7 @@ package tipz.browservio.settings;
 public class SettingsKeys {
     /* browservio_saver */
     public static final String browservio_saver = "browservio.cfg"; /* Pref file name */
+    public static final String adBlockListServer = "adBlockListServer"; /* STRING */
     public static final String centerActionBar = "centerActionBar"; /* INTEGER */
     public static final String closeAppAfterDownload = "closeAppAfterDownload"; /* INTEGER */
     public static final String defaultHomePage = "defaultHomePage"; /* STRING */ /* FIXME: Rename to customHomePage */

@@ -182,6 +182,7 @@ public class SettingsActivity extends BrowservioActivity {
 
             /* Data & Privacy category */
             SwitchPreferenceCompat adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
+            Preference custom_adserver_list = Objects.requireNonNull(findPreference("custom_adserver_list"));
             SwitchPreferenceCompat do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
             SwitchPreferenceCompat enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
             SwitchPreferenceCompat google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
@@ -305,6 +306,22 @@ public class SettingsActivity extends BrowservioActivity {
                                 SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
                                 SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
                                 search_suggestions.setSummary(searchHomePageList[checkedItem[0]]);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show();
+                return true;
+            });
+
+            custom_adserver_list.setOnPreferenceClickListener(preference -> {
+                final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
+                @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
+                final AppCompatEditText adServerList = root.findViewById(R.id.edittext);
+                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_custom_adserver_list_title))
+                        .setView(root)
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            if (!Objects.requireNonNull(adServerList.getText()).toString().isEmpty()) {
+                                SettingsUtils.setPref(pref, SettingsKeys.adBlockListServer, adServerList.getText().toString());
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)

@@ -32,6 +32,11 @@
             android:summary="@string/pref_adBlocker_desp"
             android:title="@string/pref_adBlocker"
             android:widgetLayout="@layout/preference_material_switch" />
+        <androidx.preference.Preference
+            android:dependency="adBlocker"
+            android:key="custom_adserver_list"
+            android:summary="@string/pref_custom_adserver_list_summary"
+            android:title="@string/pref_custom_adserver_list_title" />
         <androidx.preference.SwitchPreferenceCompat
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_desp"
