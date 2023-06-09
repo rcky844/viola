@@ -31,8 +31,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.CallSuper;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -58,6 +61,7 @@ public class VioWebViewActivity extends BrowservioActivity {
 
     public AppBarLayout appbar;
     public RelativeLayout toolsContainer;
+    public ConstraintLayout tabsContainer;
     public RelativeLayout webviewContainer;
 
     private boolean swipeRefreshLayoutEnabled = true;
@@ -166,11 +170,14 @@ public class VioWebViewActivity extends BrowservioActivity {
         CoordinatorLayout.LayoutParams appBarParams =
                 (CoordinatorLayout.LayoutParams) appbar.getLayoutParams();
         CoordinatorLayout.LayoutParams toolsContainerParams = null;
+        CoordinatorLayout.LayoutParams tabsContainerParams = null;
         CoordinatorLayout.LayoutParams webviewContainerParams =
                 (CoordinatorLayout.LayoutParams) webviewContainer.getLayoutParams();
 
         if (toolsContainer != null)
             toolsContainerParams = (CoordinatorLayout.LayoutParams) toolsContainer.getLayoutParams();
+        if (tabsContainer != null)
+            tabsContainerParams = (CoordinatorLayout.LayoutParams) tabsContainer.getLayoutParams();
 
         // FIXME: These are hardcoded values
         int actionBarSize = (int) CommonUtils.getDisplayMetrics(
@@ -178,7 +185,8 @@ public class VioWebViewActivity extends BrowservioActivity {
         int toolsContainerSize = (int) CommonUtils.getDisplayMetrics(
                 VioWebViewActivity.this, 36);
         int margin = actionBarSize;
-        if (toolsContainer != null && toolsContainer.getVisibility() == View.VISIBLE)
+        if ((toolsContainer != null && toolsContainer.getVisibility() == View.VISIBLE)
+                || (tabsContainer != null && tabsContainer.getVisibility() == View.VISIBLE))
             margin = margin + toolsContainerSize;
 
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout))) {
@@ -188,30 +196,49 @@ public class VioWebViewActivity extends BrowservioActivity {
                     toolsContainer.setVisibility(View.VISIBLE);
                     toolsContainerParams.setMargins(0, 0, 0, 0);
                 }
+// TODO: Design and implement tabs for reverse only action bar
+//                if (tabsContainerParams != null) {
+//                    tabsContainer.setVisibility(View.VISIBLE);
+//                    tabsContainerParams.setMargins(0, 0, 0, toolsContainerSize);
+//                }
                 webviewContainerParams.setMargins(0, actionBarSize, 0, toolsContainerSize);
             } else {
                 appBarParams.gravity = Gravity.BOTTOM;
                 if (toolsContainerParams != null)
                     toolsContainerParams.setMargins(0, 0, 0, actionBarSize);
+                if (tabsContainerParams != null)
+                    tabsContainerParams.setMargins(0, 0, 0, actionBarSize);
                 webviewContainerParams.setMargins(0, 0, 0, margin);
             }
 
             if (toolsContainerParams != null)
                 toolsContainerParams.gravity = Gravity.BOTTOM;
+
+            if (tabsContainerParams != null)
+                tabsContainerParams.gravity = Gravity.BOTTOM;
         } else {
             appBarParams.gravity = Gravity.TOP;
             if (toolsContainerParams != null) {
                 toolsContainerParams.gravity = Gravity.TOP;
                 toolsContainerParams.setMargins(0, actionBarSize, 0, 0);
             }
+            if (tabsContainerParams != null) {
+                tabsContainerParams.gravity = Gravity.TOP;
+                tabsContainerParams.setMargins(0, actionBarSize, 0, 0);
+            }
             webviewContainerParams.setMargins(0, margin, 0, 0);
         }
 
+        TransitionManager.beginDelayedTransition((ViewGroup) webviewContainer, new AutoTransition());
         appbar.setLayoutParams(appBarParams);
         appbar.invalidate();
         if (toolsContainer != null) {
             toolsContainer.setLayoutParams(toolsContainerParams);
             toolsContainer.invalidate();
+        }
+        if (tabsContainer != null) {
+            tabsContainer.setLayoutParams(toolsContainerParams);
+            tabsContainer.invalidate();
         }
         webviewContainer.setLayoutParams(webviewContainerParams);
         webviewContainer.invalidate();

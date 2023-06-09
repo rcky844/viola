@@ -64,10 +64,10 @@ public class CustomTabsActivity extends VioWebViewActivity {
         progressBar = findViewById(R.id.webviewProgressBar);
 
         /* Swipe Refresh Layout */
-        swipeRefreshLayout = findViewById(R.id.layout_webview);
+        swipeRefreshLayout = findViewById(R.id.swipe);
 
         /* WebView */
-        webview = swipeRefreshLayout.findViewById(R.id.webview);
+        webview = findViewById(R.id.webview);
         webview.notifyViewSetup();
         webview.setUpdateHistory(false);
         Uri dataUri = getIntent().getData();

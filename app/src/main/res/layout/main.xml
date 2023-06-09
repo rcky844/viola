@@ -12,7 +12,6 @@
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -90,18 +89,28 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/tabs"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/fab"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/new_tab" />
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/fab"
-                    android:layout_width="?attr/minTouchTargetSize"
-                    android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_marginRight="8dp"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/fab_desp"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/arrow_up"
-                    tools:ignore="RedundantDescriptionCheck" />
+                    app:srcCompat="@drawable/arrow_up" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -131,14 +140,40 @@
             android:scrollbars="none" />
     </RelativeLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tabsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTopBarWebView"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tabsBar"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:hardwareAccelerated="true"
+            android:orientation="horizontal"
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/addTabs"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/add" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <RelativeLayout
         android:id="@+id/webviewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/layout_webview"
-            layout="@layout/layout_webview"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>

@@ -16,6 +16,8 @@
 package tipz.browservio.webview.tabbies;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -54,6 +56,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -69,10 +72,19 @@ import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
 import tipz.browservio.utils.CommonUtils;
+import tipz.browservio.webview.VioWebView;
 import tipz.browservio.webview.VioWebViewActivity;
 
+/**
+ * Welcome to the Browservio (The Shrek Browser)
+ * This browser was originally designed with Sketchware
+ * This project was started on Aug 13 2020
+ * <p>
+ * sur wen reel Sherk brower pls sand meme sum
+ */
 public class BrowserActivity extends VioWebViewActivity {
     private MaterialAutoCompleteTextView UrlEdit;
+    private AppCompatImageView tabs;
     private AppCompatImageView fab;
 
     private boolean currentPrebuiltUAState = false;
@@ -86,7 +98,6 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.refresh,
             R.drawable.home,
             R.drawable.smartphone,
-            R.drawable.new_tab,
             R.drawable.share,
             R.drawable.app_shortcut,
             R.drawable.settings,
@@ -94,117 +105,17 @@ public class BrowserActivity extends VioWebViewActivity {
             R.drawable.favorites,
             R.drawable.close);
 
+    private List<VioWebView> tabsViews = new ArrayList<VioWebView>();
+
     @Override
+    @SuppressLint("AddJavascriptInterface")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        initialize();
-        initializeLogic();
-    }
 
-    // https://stackoverflow.com/a/57840629/10866268
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.clear();
-    }
-
-    public void itemSelected(AppCompatImageView view, int item) {
-        if (item == R.drawable.arrow_back_alt && webview.canGoBack()) {
-            webview.goBack();
-        } else if (item == R.drawable.arrow_forward_alt && webview.canGoForward()) {
-            webview.goForward();
-        } else if (item == R.drawable.refresh) {
-            webview.webviewReload();
-        } else if (item == R.drawable.home) {
-            webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
-                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
-        } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
-            currentPrebuiltUAState = !currentPrebuiltUAState;
-            webview.setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
-        } else if (item == R.drawable.new_tab) {
-            Intent i = new Intent(this, BrowserActivity.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-            else
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            startActivity(i);
-        } else if (item == R.drawable.share) {
-            CommonUtils.shareUrl(this, webview.getUrl());
-        } else if (item == R.drawable.app_shortcut) {
-            if (webview.getTitle() != null && !webview.getTitle().isBlank())
-                ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.getTitle())
-                        .setShortLabel(webview.getTitle())
-                        .setIcon(IconCompat.createWithBitmap(
-                                CommonUtils.drawableToBitmap(favicon.getDrawable())))
-                        .setIntent(new Intent(this, BrowserActivity.class)
-                                .setData(Uri.parse(webview.getUrl()))
-                                .setAction(Intent.ACTION_VIEW))
-                        .build(), null);
-        } else if (item == R.drawable.settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            mGetNeedLoad.launch(intent);
-        } else if (item == R.drawable.history) {
-            Intent intent = new Intent(BrowserActivity.this, BrohaListInterfaceActivity.class);
-            intent.putExtra(Intent.EXTRA_TEXT, BrohaListInterfaceActivity.mode_history);
-            mGetNeedLoad.launch(intent);
-        } else if (item == R.drawable.favorites) {
-            Drawable icon = favicon.getDrawable();
-            FavUtils.appendData(this, iconHashClient, webview.getTitle(), webview.getUrl(), icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
-            CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.save_successful));
-        } else if (item == R.drawable.close) {
-            finish();
-        }
-    }
-
-    public void itemLongSelected(AppCompatImageView view, int item) {
-        if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
-            final LayoutInflater layoutInflater = LayoutInflater.from(this);
-            @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
-            final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
-            final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
-            deskMode.setChecked(currentCustomUAWideView);
-            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-            dialog.setTitle(getResources().getString(R.string.customUA))
-                    .setView(root)
-                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                        if (customUserAgent.length() != 0)
-                            webview.setUA(view, deskMode.isChecked(),
-                                    Objects.requireNonNull(customUserAgent.getText()).toString(),
-                                    R.drawable.custom, false);
-                        currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
-                        currentCustomUAWideView = deskMode.isChecked();
-                    })
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create().show();
-            if (currentCustomUA != null)
-                customUserAgent.setText(currentCustomUA);
-        } else if (item == R.drawable.favorites) {
-            Intent intent = new Intent(BrowserActivity.this, BrohaListInterfaceActivity.class);
-            intent.putExtra(Intent.EXTRA_TEXT, BrohaListInterfaceActivity.mode_favorites);
-            mGetNeedLoad.launch(intent);
-        }
-    }
-
-    /**
-     * Initialize function
-     */
-    @SuppressLint("AddJavascriptInterface")
-    private void initialize() {
-        fab = findViewById(R.id.fab);
-        UrlEdit = findViewById(R.id.UrlEdit);
-        progressBar = findViewById(R.id.webviewProgressBar);
-        faviconProgressBar = findViewById(R.id.faviconProgressBar);
-        swipeRefreshLayout = findViewById(R.id.layout_webview);
-        webview = swipeRefreshLayout.findViewById(R.id.webview);
-        RecyclerView actionBar = findViewById(R.id.actionBar);
+        /* Action bar component: Favicon */
         favicon = findViewById(R.id.favicon);
-        toolsContainer = findViewById(R.id.toolsContainer);
-
-        actionBar.setLayoutManager(new LinearLayoutManager(
-                BrowserActivity.this, RecyclerView.HORIZONTAL, false));
-        actionBar.setAdapter(new ItemsAdapter(BrowserActivity.this));
-
+        faviconProgressBar = findViewById(R.id.faviconProgressBar);
         favicon.setOnClickListener(v -> {
             final SslCertificate cert = webview.getCertificate();
             PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, favicon);
@@ -264,24 +175,52 @@ public class BrowserActivity extends VioWebViewActivity {
             });
             popupMenu.show();
         });
+        faviconProgressBar.setOnClickListener(v -> favicon.performClick());
 
+        /* Action bar component: Fab */
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
-            if (fab.getRotation() != 0 || fab.getRotation() != 180)
-                fab.animate().cancel();
             if (toolsContainer.getVisibility() == View.VISIBLE) {
                 fab.animate().rotation(retractedRotation).setDuration(250).start();
-                toolsContainer.animate().alpha(0f).setDuration(250).start();
                 toolsContainer.setVisibility(View.GONE);
             } else {
+                // TODO: Improve implementation
+                if (tabsContainer.getVisibility() == View.VISIBLE)
+                    tabs.performClick();
                 fab.animate().rotation(retractedRotation - 180).setDuration(250).start();
-                toolsContainer.animate().alpha(1f).setDuration(250).start();
                 toolsContainer.setVisibility(View.VISIBLE);
             }
             reachModeCheck();
         });
 
-        /* Code for detecting return key presses */
-        UrlEdit.setOnEditorActionListener((v, actionId, event) -> {
+        /* Action bar component: Tabs */
+        tabs = findViewById(R.id.tabs);
+        tabs.setOnClickListener(v -> {
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))) {
+                Intent i = new Intent(this, BrowserActivity.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                    i.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                } else {
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                }
+                startActivity(i);
+            } else {
+                if (tabsContainer.getVisibility() == View.VISIBLE) {
+                    tabsContainer.setVisibility(View.GONE);
+                } else {
+                    // TODO: Improve implementation
+                    if (toolsContainer.getVisibility() == View.VISIBLE)
+                        fab.performClick();
+                    tabsContainer.setVisibility(View.VISIBLE);
+                }
+                reachModeCheck();
+            }
+        });
+
+        /* Action bar component: Address Bar */
+        UrlEdit = findViewById(R.id.UrlEdit);
+        UrlEdit.setOnEditorActionListener((v, actionId, event) -> { /* Detect return key presses */
             if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                 webview.loadUrl(UrlEdit.getText().toString());
                 UrlEdit.clearFocus();
@@ -289,8 +228,12 @@ public class BrowserActivity extends VioWebViewActivity {
             }
             return false;
         });
-
-        UrlEdit.setOnFocusChangeListener((v, hasFocus) -> {
+        UrlEdit.setAdapter(new SuggestionAdapter(BrowserActivity.this, R.layout.recycler_list_item_1));
+        UrlEdit.setOnItemClickListener((adapterView, view, pos, l) -> { /* For suggest items */
+            webview.loadUrl(((AppCompatTextView) view.findViewById(android.R.id.text1)).getText().toString());
+            closeKeyboard();
+        });
+        UrlEdit.setOnFocusChangeListener((v, hasFocus) -> { /* Improve experience when unfocusing */
             if (!hasFocus) {
                 if (!UrlEdit.getText().toString().equals(webview.getUrl()))
                     UrlEdit.setText(webview.getUrl());
@@ -302,30 +245,25 @@ public class BrowserActivity extends VioWebViewActivity {
             }
         });
 
-        UrlEdit.setOnItemClickListener((adapterView, view, pos, l) -> {
-            webview.loadUrl(((AppCompatTextView) view.findViewById(android.R.id.text1)).getText().toString());
-            closeKeyboard();
-        });
+        /* Action bar component: Progress bar */
+        progressBar = findViewById(R.id.webviewProgressBar);
 
-        UrlEdit.setAdapter(new SuggestionAdapter(BrowserActivity.this, R.layout.recycler_list_item_1));
-    }
+        /* Action bar component: Toolbar */
+        toolsContainer = findViewById(R.id.toolsContainer);
+        tabsContainer = findViewById(R.id.tabsContainer);
+        RecyclerView actionBar = findViewById(R.id.actionBar);
+        actionBar.setLayoutManager(new LinearLayoutManager(
+                BrowserActivity.this, RecyclerView.HORIZONTAL, false));
+        actionBar.setAdapter(new ItemsAdapter(BrowserActivity.this));
 
-    private void closeKeyboard() {
-        WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
-    }
+        /* Action bar component: WebView */
+        swipeRefreshLayout = findViewById(R.id.swipe);
 
-    /**
-     * Welcome to the Browservio (The Shrek Browser)
-     * This browser was originally designed with Sketchware
-     * This project was started on Aug 13 2020
-     * <p>
-     * sur wen reel Sherk brower pls sand meme sum
-     */
-    private void initializeLogic() {
+        /* Broha */
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
-        /* Init VioWebView */
-        webview.notifyViewSetup();
+        /* Initiate tabs */
+        newTab(true);
 
         Intent intent = getIntent();
         Uri dataUri = intent.getData();
@@ -336,6 +274,101 @@ public class BrowserActivity extends VioWebViewActivity {
             webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
                     SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
         }
+    }
+
+    private void newTab(boolean bringToTop) {
+        VioWebView newWebView = new VioWebView(this, null);
+        tabsViews.add(newWebView);
+
+        /* Init VioWebView */
+        newWebView.notifyViewSetup();
+
+        if (bringToTop) {
+            // FIXME: Remove when properly implemented
+            swipeRefreshLayout.addView(tabsViews.get(0), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            webview = tabsViews.get(0);
+        }
+    }
+
+    // https://stackoverflow.com/a/57840629/10866268
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.clear();
+    }
+
+    public void itemSelected(AppCompatImageView view, int item) {
+        if (item == R.drawable.arrow_back_alt && webview.canGoBack()) {
+            webview.goBack();
+        } else if (item == R.drawable.arrow_forward_alt && webview.canGoForward()) {
+            webview.goForward();
+        } else if (item == R.drawable.refresh) {
+            webview.webviewReload();
+        } else if (item == R.drawable.home) {
+            webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
+                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
+        } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
+            currentPrebuiltUAState = !currentPrebuiltUAState;
+            webview.setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
+        } else if (item == R.drawable.share) {
+            CommonUtils.shareUrl(this, webview.getUrl());
+        } else if (item == R.drawable.app_shortcut) {
+            if (webview.getTitle() != null && !webview.getTitle().isBlank())
+                ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.getTitle())
+                        .setShortLabel(webview.getTitle())
+                        .setIcon(IconCompat.createWithBitmap(
+                                CommonUtils.drawableToBitmap(favicon.getDrawable())))
+                        .setIntent(new Intent(this, BrowserActivity.class)
+                                .setData(Uri.parse(webview.getUrl()))
+                                .setAction(Intent.ACTION_VIEW))
+                        .build(), null);
+        } else if (item == R.drawable.settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            mGetNeedLoad.launch(intent);
+        } else if (item == R.drawable.history) {
+            Intent intent = new Intent(BrowserActivity.this, BrohaListInterfaceActivity.class);
+            intent.putExtra(Intent.EXTRA_TEXT, BrohaListInterfaceActivity.mode_history);
+            mGetNeedLoad.launch(intent);
+        } else if (item == R.drawable.favorites) {
+            Drawable icon = favicon.getDrawable();
+            FavUtils.appendData(this, iconHashClient, webview.getTitle(), webview.getUrl(), icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+            CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.save_successful));
+        } else if (item == R.drawable.close) {
+            finish();
+        }
+    }
+
+    public void itemLongSelected(AppCompatImageView view, int item) {
+        if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
+            final LayoutInflater layoutInflater = LayoutInflater.from(this);
+            @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_ua_edit, null);
+            final AppCompatEditText customUserAgent = root.findViewById(R.id.edittext);
+            final AppCompatCheckBox deskMode = root.findViewById(R.id.deskMode);
+            deskMode.setChecked(currentCustomUAWideView);
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+            dialog.setTitle(getResources().getString(R.string.customUA))
+                    .setView(root)
+                    .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+                        if (customUserAgent.length() != 0)
+                            webview.setUA(view, deskMode.isChecked(),
+                                    Objects.requireNonNull(customUserAgent.getText()).toString(),
+                                    R.drawable.custom, false);
+                        currentCustomUA = Objects.requireNonNull(customUserAgent.getText()).toString();
+                        currentCustomUAWideView = deskMode.isChecked();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show();
+            if (currentCustomUA != null)
+                customUserAgent.setText(currentCustomUA);
+        } else if (item == R.drawable.favorites) {
+            Intent intent = new Intent(BrowserActivity.this, BrohaListInterfaceActivity.class);
+            intent.putExtra(Intent.EXTRA_TEXT, BrohaListInterfaceActivity.mode_favorites);
+            mGetNeedLoad.launch(intent);
+        }
+    }
+
+    private void closeKeyboard() {
+        WindowCompat.getInsetsController(getWindow(), UrlEdit).hide(WindowInsetsCompat.Type.ime());
     }
 
     @Override
@@ -369,10 +402,24 @@ public class BrowserActivity extends VioWebViewActivity {
         boolean reverseOnlyActionBar = CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout)) &&
                 CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseOnlyActionBar));
         fab.setVisibility(reverseOnlyActionBar ? View.GONE : View.VISIBLE);
+        tabs.setImageResource(
+                CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))
+                        ? R.drawable.new_tab : R.drawable.tabs);
+        if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useTraditionalTabs))
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // FIXME: Allow dynamic switching of Recents tabs
+            List<ActivityManager.AppTask> appTaskList =
+                    ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).getAppTasks();
+            for (int i = 1; i < appTaskList.size(); i++) {
+                appTaskList.get(i).finishAndRemoveTask();
+            }
+        }
+
+        // Set padding for UrlEdit
         int dp8 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 8);
-        int dp48 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 48);
+        int dp72 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 72);
         UrlEdit.setPadding(dp8, dp8,
-                reverseOnlyActionBar ? dp8 : dp48,
+                reverseOnlyActionBar ? dp8 : dp72,
                 dp8);
     }
 
@@ -413,6 +460,35 @@ public class BrowserActivity extends VioWebViewActivity {
         @Override
         public int getItemCount() {
             return actionBarItemList.size();
+        }
+    }
+
+    public static class TabsAdapter extends RecyclerView.Adapter<TabsAdapter.ViewHolder> {
+        static class ViewHolder extends RecyclerView.ViewHolder {
+
+            public ViewHolder(View view) {
+                super(view);
+            }
+        }
+
+        public TabsAdapter() {
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_tab_item, parent, false);
+
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        }
+
+        @Override
+        public int getItemCount() {
+            return 1;
         }
     }
 }
