@@ -635,7 +635,7 @@ public class VioWebView extends WebView {
 
     private boolean urlShouldSet(String url) {
         return !(url.equals("about:blank")
-                || url.equals(BrowservioURLs.realLicenseUrl));
+                || url.startsWith(BrowservioURLs.prefix));
     }
 
     public void setUA(AppCompatImageView view, Boolean enableDesktop, String ua, Integer image, boolean noReload) {
@@ -680,6 +680,17 @@ public class VioWebView extends WebView {
         if (url.equals(BrowservioURLs.reloadUrl)) {
             webviewReload();
             return CommonUtils.EMPTY_STRING;
+        }
+
+        if (url.equals(BrowservioURLs.startUrl)) {
+            this.setVisibility(View.GONE);
+            mVioWebViewActivity.startPageLayout.setVisibility(View.VISIBLE);
+            return CommonUtils.EMPTY_STRING;
+        }
+
+        if (this.getVisibility() == View.GONE) {
+            this.setVisibility(View.VISIBLE);
+            mVioWebViewActivity.startPageLayout.setVisibility(View.GONE);
         }
 
         return url;
