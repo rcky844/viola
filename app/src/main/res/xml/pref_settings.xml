@@ -10,7 +10,8 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.preference.PreferenceCategory android:title="@string/general">
         <androidx.preference.Preference
             android:key="search_engine"
@@ -27,26 +28,30 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/data_privacy">
-        <androidx.preference.SwitchPreferenceCompat
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="adBlocker"
             android:summary="@string/pref_adBlocker_desp"
             android:title="@string/pref_adBlocker"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="enableAdBlock"
+            app:needReload="true" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_desp"
             android:title="@string/pref_do_not_track"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="sendDNT"
+            app:needReload="true" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
             android:title="@string/pref_enforce_https_title"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="enforceHttps"
+            app:needReload="false" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="google_safe_browsing"
             android:summary="@string/pref_google_safe_browsing_summary"
             android:title="@string/pref_google_safe_browsing_title"
-            android:widgetLayout="@layout/preference_material_switch" />
+            app:preferenceTag="enableGoogleSafeBrowse"
+            app:needReload="false" />
         <tipz.browservio.settings.MaterialDialogPreference
             android:key="clear_cache"
             android:title="@string/pref_clear_cache"
@@ -73,55 +78,64 @@
             android:key="theme"
             android:summary=""
             android:title="@string/pref_theme" />
-        <androidx.preference.SwitchPreferenceCompat
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
             android:title="@string/show_favicon"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="showFavicon"
+            app:needReload="false" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="center_action"
             android:summary="@string/pref_center_action_desp"
             android:title="@string/pref_center_action"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="centerActionBar"
+            app:needReload="false" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="reverse_layout"
             android:summary="@string/pref_reverse_layout_summary"
             android:title="@string/pref_reverse_layout_title"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="reverseLayout"
+            app:needReload="false" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:dependency="reverse_layout"
             android:key="reverse_only_action"
             android:summary="@string/pref_reverse_only_action_summary"
             android:title="@string/pref_reverse_only_action_title"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="reverseOnlyActionBar"
+            app:needReload="false" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="enable_swipe_refresh"
             android:summary="@string/pref_enable_swipe_refresh_summary"
             android:title="@string/pref_enable_swipe_refresh_title"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="enableSwipeRefresh"
+            app:needReload="false" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="update_recents_icon"
             android:summary="@string/pref_update_recents_icon_summary"
             android:title="@string/pref_update_recents_icon_title"
-            android:widgetLayout="@layout/preference_material_switch" />
+            app:preferenceTag="updateRecentsIcon"
+            app:needReload="false" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/advanced">
-        <androidx.preference.SwitchPreferenceCompat
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="javascript"
             android:summary="@string/javascript_desp"
             android:title="@string/javascript"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="isJavaScriptEnabled"
+            app:needReload="true" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="use_custom_tabs"
             android:summary="@string/pref_use_custom_tabs_summary"
             android:title="@string/pref_use_custom_tabs_title"
-            android:widgetLayout="@layout/preference_material_switch" />
-        <androidx.preference.SwitchPreferenceCompat
+            app:preferenceTag="useCustomTabs"
+            app:needReload="false" />
+        <tipz.browservio.settings.MaterialSwitchPreference
             android:key="close_app_after_download"
             android:summary="@string/pref_close_app_after_download_summary"
             android:title="@string/pref_close_app_after_download_title"
-            android:widgetLayout="@layout/preference_material_switch" />
+            app:preferenceTag="closeAppAfterDownload"
+            app:needReload="false" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/help">

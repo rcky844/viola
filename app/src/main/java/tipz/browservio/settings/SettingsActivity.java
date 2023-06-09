@@ -50,7 +50,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -182,27 +181,27 @@ public class SettingsActivity extends BrowservioActivity {
             Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
             /* Data & Privacy category */
-            SwitchPreferenceCompat adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
-            SwitchPreferenceCompat do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
-            SwitchPreferenceCompat enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
-            SwitchPreferenceCompat google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
+            //MaterialSwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
+            //MaterialSwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
+            //MaterialSwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
+            //MaterialSwitchPreference google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
             MaterialDialogPreference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
             MaterialDialogPreference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
             MaterialDialogPreference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
-            SwitchPreferenceCompat show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-            SwitchPreferenceCompat center_action = Objects.requireNonNull(findPreference("center_action"));
-            SwitchPreferenceCompat reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
-            SwitchPreferenceCompat reverse_only_action = Objects.requireNonNull(findPreference("reverse_only_action"));
-            SwitchPreferenceCompat enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
-            SwitchPreferenceCompat update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
+            //MaterialSwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
+            //MaterialSwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
+            //MaterialSwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
+            //MaterialSwitchPreference reverse_only_action = Objects.requireNonNull(findPreference("reverse_only_action"));
+            //MaterialSwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
+            //MaterialSwitchPreference update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
 
             /* Advanced category */
-            SwitchPreferenceCompat javascript = Objects.requireNonNull(findPreference("javascript"));
-            SwitchPreferenceCompat use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
-            SwitchPreferenceCompat close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
+            //MaterialSwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
+            //MaterialSwitchPreference use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
+            //MaterialSwitchPreference close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */
             Preference version = Objects.requireNonNull(findPreference("version"));
@@ -485,19 +484,6 @@ public class SettingsActivity extends BrowservioActivity {
                 return true;
             });
 
-            setupCheckBoxPref(SettingsKeys.enableAdBlock, adBlocker, true);
-            setupCheckBoxPref(SettingsKeys.sendDNT, do_not_track, true);
-            setupCheckBoxPref(SettingsKeys.enforceHttps, enforce_https, false);
-            setupCheckBoxPref(SettingsKeys.enableGoogleSafeBrowse, google_safe_browsing, false);
-            setupCheckBoxPref(SettingsKeys.showFavicon, show_favicon, false);
-            setupCheckBoxPref(SettingsKeys.centerActionBar, center_action, false);
-            setupCheckBoxPref(SettingsKeys.reverseLayout, reverse_layout, false);
-            setupCheckBoxPref(SettingsKeys.reverseOnlyActionBar, reverse_only_action, false);
-            setupCheckBoxPref(SettingsKeys.updateRecentsIcon, update_recents_icon, false);
-            setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
-            setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
-            setupCheckBoxPref(SettingsKeys.useCustomTabs, use_custom_tabs, false);
-            setupCheckBoxPref(SettingsKeys.closeAppAfterDownload, close_app_after_download, false);
             search_engine.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]);
             homepage.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]);
             search_suggestions.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]);
@@ -520,16 +506,6 @@ public class SettingsActivity extends BrowservioActivity {
             } else {
                 super.onDisplayPreferenceDialog(preference);
             }
-        }
-
-        private void setupCheckBoxPref(String tag, SwitchPreferenceCompat checkBox, boolean needReload) {
-            checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, tag)));
-            checkBox.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        tag, checkBox.isChecked(), false);
-                SettingsPrefHandler.needReload = needReload;
-                return true;
-            });
         }
     }
 }
