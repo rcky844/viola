@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2022-2023 Tipz Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package tipz.browservio.settings;
 
 import android.app.Activity;
@@ -28,6 +43,7 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 0);
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseOnlyActionBar, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0);
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1);
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0);
@@ -84,6 +100,13 @@ public class SettingsInit {
             SettingsUtils.setPrefNum(pref, SettingsKeys.updateRecentsIcon, 1);
             /* bac9b451: java: webview: Allow disabling Google's "Safe" Browsing feature */
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse, 0);
+        }
+    }
+
+    private void protoVer2To3() {
+        if (SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion) == 2) {
+            /* 4bb92167: java: settings: Add the option to reverse only action bar */
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseOnlyActionBar, 0);
         }
     }
 }

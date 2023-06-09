@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2022-2023 Tipz Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package tipz.browservio.webview.tabbies;
 
 import android.content.Intent;
@@ -36,14 +51,17 @@ public class CustomTabsActivity extends VioWebViewActivity {
         /* Open in Browser */
         AppCompatImageView open_browser = findViewById(R.id.open_browser);
         open_browser.setOnClickListener(v -> {
+            String url = webview.getUrl();
+            if (url == null)
+                return;
             Intent intent = new Intent(CustomTabsActivity.this, BrowserActivity.class);
-            intent.setData(Uri.parse(UrlUtils.cve_2017_13274(webview.getUrl())));
+            intent.setData(Uri.parse(UrlUtils.cve_2017_13274(url)));
             startActivity(intent);
             finish();
         });
 
         /* Progress Bar */
-        progressBar = findViewById(R.id.MainProg);
+        progressBar = findViewById(R.id.webviewProgressBar);
 
         /* Swipe Refresh Layout */
         swipeRefreshLayout = findViewById(R.id.layout_webview);

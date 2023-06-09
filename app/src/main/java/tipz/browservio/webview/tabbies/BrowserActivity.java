@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020-2023 Tipz Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package tipz.browservio.webview.tabbies;
 
 import android.annotation.SuppressLint;
@@ -117,9 +132,9 @@ public class BrowserActivity extends VioWebViewActivity {
         } else if (item == R.drawable.share) {
             CommonUtils.shareUrl(this, webview.getUrl());
         } else if (item == R.drawable.app_shortcut) {
-            if (webview.UrlTitle != null && !webview.UrlTitle.isBlank())
-                ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.UrlTitle)
-                        .setShortLabel(webview.UrlTitle)
+            if (webview.getTitle() != null && !webview.getTitle().isBlank())
+                ShortcutManagerCompat.requestPinShortcut(this, new ShortcutInfoCompat.Builder(this, webview.getTitle())
+                        .setShortLabel(webview.getTitle())
                         .setIcon(IconCompat.createWithBitmap(
                                 CommonUtils.drawableToBitmap(favicon.getDrawable())))
                         .setIntent(new Intent(this, BrowserActivity.class)
@@ -135,7 +150,7 @@ public class BrowserActivity extends VioWebViewActivity {
             mGetNeedLoad.launch(intent);
         } else if (item == R.drawable.favorites) {
             Drawable icon = favicon.getDrawable();
-            FavUtils.appendData(this, iconHashClient, webview.UrlTitle, webview.getUrl(), icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
+            FavUtils.appendData(this, iconHashClient, webview.getTitle(), webview.getUrl(), icon instanceof BitmapDrawable ? ((BitmapDrawable) icon).getBitmap() : null);
             CommonUtils.showMessage(BrowserActivity.this, getResources().getString(R.string.save_successful));
         } else if (item == R.drawable.close) {
             finish();
@@ -178,7 +193,7 @@ public class BrowserActivity extends VioWebViewActivity {
     private void initialize() {
         fab = findViewById(R.id.fab);
         UrlEdit = findViewById(R.id.UrlEdit);
-        progressBar = findViewById(R.id.MainProg);
+        progressBar = findViewById(R.id.webviewProgressBar);
         faviconProgressBar = findViewById(R.id.faviconProgressBar);
         swipeRefreshLayout = findViewById(R.id.layout_webview);
         webview = swipeRefreshLayout.findViewById(R.id.webview);
@@ -194,7 +209,7 @@ public class BrowserActivity extends VioWebViewActivity {
             final SslCertificate cert = webview.getCertificate();
             PopupMenu popupMenu = new PopupMenu(BrowserActivity.this, favicon);
             Menu menu = popupMenu.getMenu();
-            menu.add(webview.UrlTitle).setEnabled(false);
+            menu.add(webview.getTitle()).setEnabled(false);
             menu.add(getResources().getString(R.string.copy_title));
             if (cert != null)
                 menu.add(getResources().getString(R.string.ssl_info));
@@ -203,7 +218,7 @@ public class BrowserActivity extends VioWebViewActivity {
                 menu.add(getResources().getString(R.string.view_page_source));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equals(getResources().getString(R.string.copy_title))) {
-                    CommonUtils.copyClipboard(BrowserActivity.this, webview.UrlTitle);
+                    CommonUtils.copyClipboard(BrowserActivity.this, webview.getTitle());
                     return true;
                 } else if (item.getTitle().toString().equals(getResources().getString(R.string.ssl_info))) {
                     assert cert != null;
@@ -351,6 +366,14 @@ public class BrowserActivity extends VioWebViewActivity {
         retractedRotation = (int) fab.getRotation();
         if (toolsContainer.getVisibility() == View.VISIBLE)
             fab.setRotation(fab.getRotation() - 180);
+        boolean reverseOnlyActionBar = CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout)) &&
+                CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseOnlyActionBar));
+        fab.setVisibility(reverseOnlyActionBar ? View.GONE : View.VISIBLE);
+        int dp8 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 8);
+        int dp48 = (int) CommonUtils.getDisplayMetrics(BrowserActivity.this, 48);
+        UrlEdit.setPadding(dp8, dp8,
+                reverseOnlyActionBar ? dp8 : dp48,
+                dp8);
     }
 
     public static class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {

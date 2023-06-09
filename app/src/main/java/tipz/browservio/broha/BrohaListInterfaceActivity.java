@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020-2023 Tipz Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package tipz.browservio.broha;
 
 import android.annotation.SuppressLint;
@@ -55,7 +70,7 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
         if (!activityMode.equals(mode_history) && !activityMode.equals(mode_favorites))
             finish();
 
-        setContentView(R.layout.recycler_list_item_activity);
+        setContentView(R.layout.recycler_broha_list_activity);
         initialize();
         setTitle(getResources().getString(activityMode.equals(mode_history) ? R.string.hist : R.string.fav));
     }
@@ -138,7 +153,7 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
         @NonNull
         @Override
         public BrohaListInterfaceActivity.ItemsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_broha, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_broha_list_item, parent, false);
 
             return new BrohaListInterfaceActivity.ItemsAdapter.ViewHolder(view);
         }
@@ -190,10 +205,8 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
                         notifyItemRemoved(position);
                         notifyItemRangeRemoved(position, getItemCount() - position);
                         brohaListInterfaceActivity.isEmptyCheck();
-                        return true;
                     } else if (item.getTitle().toString().equals(brohaListInterfaceActivity.getResources().getString(R.string.copy_url))) {
                         CommonUtils.copyClipboard(brohaListInterfaceActivity, url);
-                        return true;
                     } else if (item.getTitle().toString().equals(brohaListInterfaceActivity.getResources().getString(R.string.favMenuEdit))) {
                         final LayoutInflater layoutInflater = LayoutInflater.from(brohaListInterfaceActivity);
                         @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_fav_edit, null);
@@ -218,13 +231,13 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
                                 .setNegativeButton(android.R.string.cancel, null)
                                 .setIcon(holder.icon.getDrawable())
                                 .create().show();
-                        return true;
                     } else if (item.getTitle().toString().equals(brohaListInterfaceActivity.getResources().getString(R.string.add_to_fav))) {
                         FavUtils.appendData(brohaListInterfaceActivity, iconHashClient, title, url, icon);
                         CommonUtils.showMessage(brohaListInterfaceActivity, brohaListInterfaceActivity.getResources().getString(R.string.save_successful));
-                        return true;
+                    } else {
+                        return false;
                     }
-                    return false;
+                    return true;
                 });
                 popup1.show();
                 return true;

@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2022-2023 Tipz Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package tipz.browservio.settings;
 
 import static tipz.browservio.utils.ApkInstaller.installApplication;
@@ -22,6 +37,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +49,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -54,6 +70,7 @@ import tipz.browservio.utils.DownloaderThread;
 public class SettingsActivity extends BrowservioActivity {
 
     public final Intent needLoad = new Intent();
+    public static SettingsPrefHandler settingsPrefHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,8 +82,13 @@ public class SettingsActivity extends BrowservioActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, new SettingsPrefHandler(this)).commit();
+    @Override
+    public void onStart() {
+        super.onStart();
+        settingsPrefHandler = new SettingsPrefHandler(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, settingsPrefHandler).commit();
     }
 
     @Override
@@ -76,6 +98,28 @@ public class SettingsActivity extends BrowservioActivity {
             setResult(0, needLoad);
         }
         finish();
+    }
+
+    // TODO: Investigate why running at onSaveInstanceState doesn't work (API = 33)
+    @Override
+    protected void onStop() {
+        try {
+            getSupportFragmentManager().beginTransaction().remove(settingsPrefHandler).commit();
+        } catch (IllegalStateException ignored) {
+            // There's no way to avoid getting this if saveInstanceState has already been called.
+        }
+        super.onStop();
+    }
+
+    // TODO: Investigate why running at onStop doesn't work (API = 23, 26)
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        try {
+            getSupportFragmentManager().beginTransaction().remove(settingsPrefHandler).commit();
+        } catch (IllegalStateException ignored) {
+            // There's no way to avoid getting this if saveInstanceState has already been called.
+        }
+        super.onSaveInstanceState(outState);
     }
 
     public static class SettingsPrefHandler extends PreferenceFragmentCompat {
@@ -137,26 +181,27 @@ public class SettingsActivity extends BrowservioActivity {
             Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
             /* Data & Privacy category */
-            SwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
-            SwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
-            SwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
-            SwitchPreference google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
+            SwitchPreferenceCompat adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
+            SwitchPreferenceCompat do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
+            SwitchPreferenceCompat enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
+            SwitchPreferenceCompat google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
             Preference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
             Preference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
             Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
-            SwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-            SwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
-            SwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
-            SwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
-            SwitchPreference update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
+            SwitchPreferenceCompat show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
+            SwitchPreferenceCompat center_action = Objects.requireNonNull(findPreference("center_action"));
+            SwitchPreferenceCompat reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
+            SwitchPreferenceCompat reverse_only_action = Objects.requireNonNull(findPreference("reverse_only_action"));
+            SwitchPreferenceCompat enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
+            SwitchPreferenceCompat update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
 
             /* Advanced category */
-            SwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
-            SwitchPreference use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
-            SwitchPreference close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
+            SwitchPreferenceCompat javascript = Objects.requireNonNull(findPreference("javascript"));
+            SwitchPreferenceCompat use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
+            SwitchPreferenceCompat close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */
             Preference version = Objects.requireNonNull(findPreference("version"));
@@ -334,7 +379,6 @@ public class SettingsActivity extends BrowservioActivity {
                         .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
                             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0]);
                             theme.setSummary(themeList[checkedItem[0]]);
-                            settingsActivity.getSupportFragmentManager().beginTransaction().remove(this).commit();
                             darkModeCheck(settingsActivity);
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -430,6 +474,7 @@ public class SettingsActivity extends BrowservioActivity {
                     });
                     mHandlerThread.startDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg");
                 });
+                changelog_btn.setVisibility(BuildConfig.DEBUG ? View.GONE : View.VISIBLE);
                 changelog_btn.setOnClickListener(_license_btn -> {
                     needLoad(BrowservioURLs.realChangelogUrl);
                     dialog.dismiss();
@@ -460,6 +505,7 @@ public class SettingsActivity extends BrowservioActivity {
             setupCheckBoxPref(SettingsKeys.showFavicon, show_favicon, false);
             setupCheckBoxPref(SettingsKeys.centerActionBar, center_action, false);
             setupCheckBoxPref(SettingsKeys.reverseLayout, reverse_layout, false);
+            setupCheckBoxPref(SettingsKeys.reverseOnlyActionBar, reverse_only_action, false);
             setupCheckBoxPref(SettingsKeys.updateRecentsIcon, update_recents_icon, false);
             setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
             setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
@@ -473,7 +519,7 @@ public class SettingsActivity extends BrowservioActivity {
             needReload = false;
         }
 
-        private void setupCheckBoxPref(String tag, SwitchPreference checkBox, boolean needReload) {
+        private void setupCheckBoxPref(String tag, SwitchPreferenceCompat checkBox, boolean needReload) {
             checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, tag)));
             checkBox.setOnPreferenceClickListener(preference -> {
                 SettingsUtils.setPrefIntBoolAccBool(pref,
