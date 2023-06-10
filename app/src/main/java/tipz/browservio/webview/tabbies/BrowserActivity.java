@@ -371,7 +371,7 @@ public class BrowserActivity extends VioWebViewActivity {
     public void onStartPageEditTextPressed() {
         UrlEdit.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.showSoftInput(UrlEdit, InputMethodManager.SHOW_FORCED);
     }
 
     @Override

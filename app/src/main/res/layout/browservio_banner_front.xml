@@ -37,13 +37,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
+    <!-- TODO: Light variant of the background -->
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:text="@string/app_name"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorElement"
         android:textSize="26dp"
         android:typeface="sans"
         app:layout_constraintBottom_toBottomOf="parent"
