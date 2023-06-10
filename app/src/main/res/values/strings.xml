@@ -132,6 +132,8 @@
     <string name="pref_reverse_only_action_title">Only relocate action bar</string>
     <string name="pref_reverse_only_action_summary">Relocate only the action bar to the bottom.</string>
     <string name="toast_no_app_to_handle">No application can handle this action.</string>
+    <string name="pref_dont_use_start_page_title">Use web-based homepage</string>
+    <string name="pref_dont_use_start_page_summary">Open a webpage instead of start page as homepage.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

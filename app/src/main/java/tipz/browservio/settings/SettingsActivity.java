@@ -177,6 +177,7 @@ public class SettingsActivity extends BrowservioActivity {
 
             /* General category */
             Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));
+            SwitchPreferenceCompat dont_use_start_page = Objects.requireNonNull(findPreference("dont_use_start_page"));
             Preference homepage = Objects.requireNonNull(findPreference("homepage"));
             Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
@@ -510,6 +511,7 @@ public class SettingsActivity extends BrowservioActivity {
             setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
             setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
             setupCheckBoxPref(SettingsKeys.useCustomTabs, use_custom_tabs, false);
+            setupCheckBoxPref(SettingsKeys.useWebHomePage, dont_use_start_page, false);
             setupCheckBoxPref(SettingsKeys.closeAppAfterDownload, close_app_after_download, false);
             search_engine.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]);
             homepage.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]);
