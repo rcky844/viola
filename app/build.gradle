@@ -28,12 +28,12 @@ android {
         applicationId "tipz.browservio"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 20230609
-        versionName "20230609"
+        versionCode 20230610
+        versionName "20230610"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Fruitbat\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_fruitbat_nightly_20230609\""
+        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_fruitbat_nightly_20230610\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
