@@ -36,7 +36,6 @@ public class MaterialSwitchPreference extends SwitchPreferenceCompat {
             SettingsActivity.SettingsPrefHandler.needReload = mNeedReload;
             return true;
         });
-        a.recycle();
 
         // Use material switch
         setWidgetLayoutResource(R.layout.preference_material_switch);
