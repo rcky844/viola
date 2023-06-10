@@ -16,4 +16,7 @@
     <color name="colorUrlEditBg">#303030</color>
     <color name="colorElement">@android:color/white</color>
     <color name="colorTopBar">#141414</color>
+
+    <color name="bannerStartColor">#03a4fb</color>
+    <color name="bannerEndColor">#0030ff</color>
 </resources>

@@ -21,4 +21,7 @@
     <color name="colorText">@color/colorElement</color>
     <color name="colorTextFlipped">@color/colorBackground</color>
     <color name="colorPrimaryDark">@color/colorElement</color>
+
+    <color name="bannerStartColor">#45b9f7</color>
+    <color name="bannerEndColor">#4d6eff</color>
 </resources>
