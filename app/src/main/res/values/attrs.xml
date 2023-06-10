@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MaterialSwitchPreference">
+        <attr name="preferenceTag" format="string" />
+        <attr name="needReload" format="boolean" />
+    </declare-styleable>
+</resources>

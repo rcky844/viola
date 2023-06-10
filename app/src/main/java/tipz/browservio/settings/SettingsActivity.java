@@ -35,7 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import android.webkit.WebView;
+import android.webkit.WebStorage;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,9 +47,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -181,27 +181,27 @@ public class SettingsActivity extends BrowservioActivity {
             Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 
             /* Data & Privacy category */
-            SwitchPreferenceCompat adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
-            SwitchPreferenceCompat do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
-            SwitchPreferenceCompat enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
-            SwitchPreferenceCompat google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
-            Preference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
-            Preference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
-            Preference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
+            //MaterialSwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
+            //MaterialSwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
+            //MaterialSwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
+            //MaterialSwitchPreference google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
+            MaterialDialogPreference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
+            MaterialDialogPreference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
+            MaterialDialogPreference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
 
             /* Visuals category */
             Preference theme = Objects.requireNonNull(findPreference("theme"));
-            SwitchPreferenceCompat show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-            SwitchPreferenceCompat center_action = Objects.requireNonNull(findPreference("center_action"));
-            SwitchPreferenceCompat reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
-            SwitchPreferenceCompat reverse_only_action = Objects.requireNonNull(findPreference("reverse_only_action"));
-            SwitchPreferenceCompat enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
-            SwitchPreferenceCompat update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
+            //MaterialSwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
+            //MaterialSwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
+            //MaterialSwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
+            //MaterialSwitchPreference reverse_only_action = Objects.requireNonNull(findPreference("reverse_only_action"));
+            //MaterialSwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
+            //MaterialSwitchPreference update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
 
             /* Advanced category */
-            SwitchPreferenceCompat javascript = Objects.requireNonNull(findPreference("javascript"));
-            SwitchPreferenceCompat use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
-            SwitchPreferenceCompat close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
+            //MaterialSwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
+            //MaterialSwitchPreference use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
+            //MaterialSwitchPreference close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
 
             /* Help category */
             Preference version = Objects.requireNonNull(findPreference("version"));
@@ -312,63 +312,49 @@ public class SettingsActivity extends BrowservioActivity {
                 return true;
             });
 
-            clear_cache.setOnPreferenceClickListener(preference -> {
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_clear_cache))
-                        .setMessage(getResources().getString(R.string.to_continue))
-                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
-                            WebView mWebView = new WebView(settingsActivity);
-                            mWebView.clearCache(true);
-                            mWebView.destroy();
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
+            clear_cache.setMaterialDialogPreferenceListener(positiveResult -> {
+                if (!positiveResult)
+                    return;
+
+                WebStorage.getInstance().deleteAllData();
+                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
             });
 
-            clear_cookies.setOnPreferenceClickListener(preference -> {
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_clear_cookies))
-                        .setMessage(getResources().getString(R.string.to_continue))
-                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                CookieManager.getInstance().removeAllCookies(null);
-                                CookieManager.getInstance().flush();
-                            } else {
-                                CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(settingsActivity);
-                                CookieManager cookieManager = CookieManager.getInstance();
-                                cookieSyncMgr.startSync();
-                                cookieManager.removeAllCookie();
-                                cookieManager.removeSessionCookie();
-                                cookieSyncMgr.stopSync();
-                                cookieSyncMgr.sync();
-                            }
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
+            clear_cookies.setMaterialDialogPreferenceListener(positiveResult -> {
+                if (!positiveResult)
+                    return;
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    CookieManager.getInstance().removeAllCookies(null);
+                    CookieManager.getInstance().flush();
+                } else {
+                    CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(settingsActivity);
+                    CookieManager cookieManager = CookieManager.getInstance();
+                    cookieSyncMgr.startSync();
+                    cookieManager.removeAllCookie();
+                    cookieManager.removeSessionCookie();
+                    cookieSyncMgr.stopSync();
+                    cookieSyncMgr.sync();
+                }
+                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
             });
 
-            reset_to_default.setOnPreferenceClickListener(preference -> {
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.reset_btn))
-                        .setMessage(getResources().getString(R.string.reset_dialog).concat(getResources().getString(R.string.to_continue)))
-                        .setPositiveButton(getResources().getString(R.string.clear), (_dialog, _which) -> {
-                            CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.reset_complete));
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                ((ActivityManager) settingsActivity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
-                            } else {
-                                String packageName = settingsActivity.getPackageName();
-                                Runtime runtime = Runtime.getRuntime();
-                                try {
-                                    runtime.exec("pm clear " + packageName);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
+            reset_to_default.setMaterialDialogPreferenceListener(positiveResult -> {
+                if (!positiveResult)
+                    return;
+
+                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.reset_complete));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    ((ActivityManager) settingsActivity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+                } else {
+                    String packageName = settingsActivity.getPackageName();
+                    Runtime runtime = Runtime.getRuntime();
+                    try {
+                        runtime.exec("pm clear " + packageName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             });
 
             theme.setOnPreferenceClickListener(preference -> {
@@ -498,19 +484,6 @@ public class SettingsActivity extends BrowservioActivity {
                 return true;
             });
 
-            setupCheckBoxPref(SettingsKeys.enableAdBlock, adBlocker, true);
-            setupCheckBoxPref(SettingsKeys.sendDNT, do_not_track, true);
-            setupCheckBoxPref(SettingsKeys.enforceHttps, enforce_https, false);
-            setupCheckBoxPref(SettingsKeys.enableGoogleSafeBrowse, google_safe_browsing, false);
-            setupCheckBoxPref(SettingsKeys.showFavicon, show_favicon, false);
-            setupCheckBoxPref(SettingsKeys.centerActionBar, center_action, false);
-            setupCheckBoxPref(SettingsKeys.reverseLayout, reverse_layout, false);
-            setupCheckBoxPref(SettingsKeys.reverseOnlyActionBar, reverse_only_action, false);
-            setupCheckBoxPref(SettingsKeys.updateRecentsIcon, update_recents_icon, false);
-            setupCheckBoxPref(SettingsKeys.enableSwipeRefresh, enable_swipe_refresh, false);
-            setupCheckBoxPref(SettingsKeys.isJavaScriptEnabled, javascript, true);
-            setupCheckBoxPref(SettingsKeys.useCustomTabs, use_custom_tabs, false);
-            setupCheckBoxPref(SettingsKeys.closeAppAfterDownload, close_app_after_download, false);
             search_engine.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]);
             homepage.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]);
             search_suggestions.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]);
@@ -519,14 +492,20 @@ public class SettingsActivity extends BrowservioActivity {
             needReload = false;
         }
 
-        private void setupCheckBoxPref(String tag, SwitchPreferenceCompat checkBox, boolean needReload) {
-            checkBox.setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, tag)));
-            checkBox.setOnPreferenceClickListener(preference -> {
-                SettingsUtils.setPrefIntBoolAccBool(pref,
-                        tag, checkBox.isChecked(), false);
-                SettingsPrefHandler.needReload = needReload;
-                return true;
-            });
+        @Override
+        public void onDisplayPreferenceDialog(@NonNull Preference preference) {
+            DialogFragment dialogFragment = null;
+            if (preference instanceof MaterialDialogPreference) {
+                dialogFragment = MaterialPreferenceDialogFragmentCompat
+                        .newInstance(preference.getKey(), ((MaterialDialogPreference) preference).getMaterialDialogPreferenceListener());
+            }
+
+            if (dialogFragment != null) {
+                dialogFragment.setTargetFragment(this, 0);
+                dialogFragment.show(this.getFragmentManager(), "androidx.preference.PreferenceFragment.DIALOG");
+            } else {
+                super.onDisplayPreferenceDialog(preference);
+            }
         }
     }
 }
