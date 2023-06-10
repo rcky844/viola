@@ -43,5 +43,6 @@ public class SettingsKeys {
     public static final String themeId = "themeId"; /* INTEGER */
     public static final String useCustomTabs = "useCustomTabs"; /* INTEGER */
     public static final String useTraditionalTabs = "useTraditionalTabs"; /* INTEGER */
+    public static final String useWebHomePage = "useWebHomePage"; /* INTEGER */
     public static final String updateRecentsIcon = "updateRecentsIcon"; /* INTEGER */
 }

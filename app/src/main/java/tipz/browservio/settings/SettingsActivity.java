@@ -177,6 +177,7 @@ public class SettingsActivity extends BrowservioActivity {
 
             /* General category */
             Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));
+            //MaterialDialogPreference dont_use_start_page = Objects.requireNonNull(findPreference("dont_use_start_page"));
             Preference homepage = Objects.requireNonNull(findPreference("homepage"));
             Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
 

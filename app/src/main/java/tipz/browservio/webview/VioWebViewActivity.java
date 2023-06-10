@@ -88,8 +88,9 @@ public class VioWebViewActivity extends BrowservioActivity {
         }
 
         // Setup start page
-        startPageLayout = findViewById(R.id.layout_startpage);
-        startPageLayout.findViewById(R.id.startPageEditText).setOnClickListener(v -> onStartPageEditTextPressed());
+        if (startPageLayout != null)
+            startPageLayout.findViewById(R.id.startPageEditText)
+                    .setOnClickListener(v ->onStartPageEditTextPressed());
 
         // Setup favicon
         if (favicon != null && faviconProgressBar != null)

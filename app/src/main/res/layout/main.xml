@@ -74,6 +74,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
+                    android:focusable="true"
                     android:background="@drawable/url_edit_bg"
                     android:hint="@string/address_bar_hint"
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"

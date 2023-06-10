@@ -72,6 +72,7 @@ import tipz.browservio.search.SuggestionAdapter;
 import tipz.browservio.settings.SettingsActivity;
 import tipz.browservio.settings.SettingsKeys;
 import tipz.browservio.settings.SettingsUtils;
+import tipz.browservio.utils.BrowservioURLs;
 import tipz.browservio.utils.CommonUtils;
 import tipz.browservio.webview.VioWebView;
 import tipz.browservio.webview.VioWebViewActivity;
@@ -263,18 +264,23 @@ public class BrowserActivity extends VioWebViewActivity {
         /* Broha */
         iconHashClient = ((Application) getApplicationContext()).iconHashClient;
 
+        /* Start Page Layout */
+        startPageLayout = findViewById(R.id.layout_startpage);
+
         /* Initiate tabs */
         newTab(true);
 
         Intent intent = getIntent();
         Uri dataUri = intent.getData();
 
-        if (dataUri != null) {
-            webview.loadUrl(dataUri.toString());
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useWebHomePage))) {
+            webview.loadUrl(dataUri != null ? dataUri.toString() :
+                    SearchEngineEntries.getHomePageUrl(pref,
+                        SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
         } else {
-            webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
-                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
+            webview.loadUrl(BrowservioURLs.startUrl);
         }
+
     }
 
     private void newTab(boolean bringToTop) {
@@ -306,8 +312,13 @@ public class BrowserActivity extends VioWebViewActivity {
         } else if (item == R.drawable.refresh) {
             webview.webviewReload();
         } else if (item == R.drawable.home) {
-            webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
-                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
+            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useWebHomePage))) {
+                webview.loadUrl(SearchEngineEntries.getHomePageUrl(pref,
+                        SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)));
+            } else {
+                UrlEdit.setText(CommonUtils.EMPTY_STRING);
+                webview.loadUrl(BrowservioURLs.startUrl);
+            }
         } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             currentPrebuiltUAState = !currentPrebuiltUAState;
             webview.setPrebuiltUAMode(view, currentPrebuiltUAState ? 1 : 0, false);
@@ -394,7 +405,7 @@ public class BrowserActivity extends VioWebViewActivity {
     public void onStartPageEditTextPressed() {
         UrlEdit.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.showSoftInput(UrlEdit, InputMethodManager.SHOW_FORCED);
     }
 
     @Override
