@@ -680,15 +680,18 @@ public class VioWebView extends WebView {
             return CommonUtils.EMPTY_STRING;
         }
 
-        if (url.equals(BrowservioURLs.startUrl)) {
-            this.setVisibility(View.GONE);
-            mVioWebViewActivity.startPageLayout.setVisibility(View.VISIBLE);
-            return CommonUtils.EMPTY_STRING;
-        }
+        View startPageLayout = mVioWebViewActivity.startPageLayout;
+        if (startPageLayout != null) {
+            if (url.equals(BrowservioURLs.startUrl)) {
+                this.setVisibility(View.GONE);
+                startPageLayout.setVisibility(View.VISIBLE);
+                return CommonUtils.EMPTY_STRING;
+            }
 
-        if (this.getVisibility() == View.GONE) {
-            this.setVisibility(View.VISIBLE);
-            mVioWebViewActivity.startPageLayout.setVisibility(View.GONE);
+            if (this.getVisibility() == View.GONE) {
+                this.setVisibility(View.VISIBLE);
+                startPageLayout.setVisibility(View.GONE);
+            }
         }
 
         return url;

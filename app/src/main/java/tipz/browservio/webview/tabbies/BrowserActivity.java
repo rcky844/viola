@@ -202,6 +202,7 @@ public class BrowserActivity extends VioWebViewActivity {
         RecyclerView actionBar = findViewById(R.id.actionBar);
         favicon = findViewById(R.id.favicon);
         toolsContainer = findViewById(R.id.toolsContainer);
+        startPageLayout = findViewById(R.id.layout_startpage);
 
         actionBar.setLayoutManager(new LinearLayoutManager(
                 BrowserActivity.this, RecyclerView.HORIZONTAL, false));
