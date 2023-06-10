@@ -15,25 +15,27 @@ import tipz.browservio.utils.CommonUtils;
 
 public class MaterialSwitchPreference extends SwitchPreferenceCompat {
     private final SharedPreferences pref;
-    private String mPreferenceTag;
-    private boolean mNeedReload;
+    private final String mPreferenceTag;
+    private final boolean mNeedReload;
 
     public MaterialSwitchPreference(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         pref = ((Application) getContext().getApplicationContext()).pref;
 
-        // Handle checkbox, don't save preference
+        // Get attrs
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.MaterialSwitchPreference);
         mPreferenceTag = a.getString(R.styleable.MaterialSwitchPreference_preferenceTag);
         mNeedReload = a.getBoolean(R.styleable.MaterialSwitchPreference_needReload, false);
-        setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, a.getString(R.styleable.MaterialSwitchPreference_preferenceTag))));
+        a.recycle();
+
+        // Handle checkbox
+        setChecked(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, mPreferenceTag)));
         setOnPreferenceClickListener(preference -> {
             SettingsUtils.setPrefIntBoolAccBool(pref, mPreferenceTag, isChecked(), false);
             SettingsActivity.SettingsPrefHandler.needReload = mNeedReload;
             return true;
         });
-        a.recycle();
 
         // Use material switch
         setWidgetLayoutResource(R.layout.preference_material_switch);
