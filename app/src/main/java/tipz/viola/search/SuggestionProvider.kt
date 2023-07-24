@@ -71,9 +71,11 @@ open class SuggestionProvider(private val mContext: Context) {
         } catch (e: UnsupportedEncodingException) {
             return filter
         }
+
+        // There could be no suggestions for this query, return an empty list.
         val content = downloadSuggestionsForQuery(query, mLanguage)
-            ?: // There are no suggestions for this query, return an empty list.
-            return filter
+            ?.replaceFirst(")]}'", "")
+            ?: return filter
         try {
             parseResults(content) {
                 filter.add(it!!)

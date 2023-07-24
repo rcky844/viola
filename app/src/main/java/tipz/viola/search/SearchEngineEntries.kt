@@ -16,7 +16,7 @@ object SearchEngineEntries {
             name = "google"
             homePage = "https://www.google.com"
             search = "$homePage/search?q=$queryPlaceholder"
-            suggestion = "https://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q=$queryPlaceholder&hl=$languagePlaceholder"
+            suggestion = "https://www.google.com/complete/search?client=android&oe=utf8&ie=utf8&cp=4&xssi=t&gs_pcrt=undefined&hl=$languagePlaceholder&q=$queryPlaceholder"
         },
         EngineObject().apply {
             name = "baidu"
