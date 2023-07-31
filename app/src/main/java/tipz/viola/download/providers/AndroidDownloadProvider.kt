@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.download.providers
@@ -12,6 +12,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.webkit.CookieManager
 import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import tipz.viola.R
@@ -89,6 +90,13 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                     MimeTypeMap.getFileExtensionFromUrl(uriString)
                 )
             )
+
+            // Set user agent and Cookies
+            request.addRequestHeader("User-Agent", userAgent)
+            CookieManager.getInstance().getCookie(uriString)?.takeUnless { it.isEmpty() }?.let {
+                request.addRequestHeader("Cookie", it)
+            }
+
             val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             try {
                 downloadID = dm.enqueue(request)

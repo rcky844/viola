@@ -70,6 +70,7 @@ class DownloadClient(private val context: Application) {
 
             // Set-up for download provider
             it.vWebView = vWebView
+            if (vWebView != null) it.userAgent = vWebView!!.webSettings.userAgentString
             if (it.downloadPath == null) it.downloadPath = defaultDownloadPath
             provider.resolveFilename(it)
 
