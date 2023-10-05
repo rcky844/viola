@@ -91,12 +91,10 @@ open class SuggestionProvider(private val mContext: Context) {
             ?: // There are no suggestions for this query, return an empty list.
             return filter
         try {
-            parseResults(content, object : ResultCallback {
-                override fun addResult(suggestion: String?): Boolean {
-                    if (suggestion != null) filter.add(suggestion)
-                    return filter.size < 5
-                }
-            })
+            parseResults(content) {
+                filter.add(it!!)
+                filter.size < 5
+            }
         } catch (ignored: Exception) {
         }
         return filter
@@ -148,10 +146,6 @@ open class SuggestionProvider(private val mContext: Context) {
         return mEncoding
     }
 
-    interface ResultCallback {
-        fun addResult(suggestion: String?): Boolean
-    }
-
     companion object {
         private val INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1)
 
@@ -159,5 +153,9 @@ open class SuggestionProvider(private val mContext: Context) {
         private const val encoding = "UTF-8"
         private val language: String
             get() = CommonUtils.language
+
+        fun interface ResultCallback {
+            fun addResult(suggestion: String?): Boolean
+        }
     }
 }
