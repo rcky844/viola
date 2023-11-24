@@ -11,5 +11,5 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name" translatable="false">Browservio Debug</string>
+    <string name="app_name" translatable="false">Viola Debug</string>
 </resources>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2021-2023 Tipz Team
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2021-2023 Tipz Team
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
@@ -11,32 +10,20 @@
      limitations under the License.
 -->
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="240dp"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/easter_banner"
         android:layout_width="match_parent"
         android:layout_height="96dp"
         android:background="@drawable/browservio_banner_back">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/eagle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/eagle" />
-
         <include
             android:id="@+id/easter_banner_front"
             layout="@layout/browservio_banner_front" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="fill_parent"

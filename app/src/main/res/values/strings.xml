@@ -11,7 +11,7 @@
      limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">Browservio</string>
+    <string name="app_name" translatable="false">Viola</string>
     <string name="customUA">"Custom User Agent"</string>
     <string name="reset_complete">"Reset completed successfully."</string>
     <string name="pref_clear_cache">"Clear cache"</string>
@@ -30,9 +30,9 @@
     <string name="settings">Settings</string>
     <string name="search_engine">"Search engine"</string>
     <string name="homepage">"Homepage"</string>
-    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nCompiled on %5$s\nCopyright © 2020-%6$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nCompiled on %4$s\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
     <string name="update_btn">Check for Updates</string>
-    <string name="version_latest_toast">"You are currently running the latest version of Browservio."</string>
+    <string name="version_latest_toast">"You are currently running the latest version of Viola."</string>
     <string name="network_unavailable_toast">"Network is unavailable."</string>
     <string name="new_update_detect_title">"Update available"</string>
     <string name="new_update_detect_message">"%1$s (%2$s) is available, do you want to install it?"</string>
@@ -49,8 +49,8 @@
     <string name="feedback">Feedback</string>
     <string name="feedback_desp">"Report bugs or request new features."</string>
     <string name="source_code">"Source code"</string>
-    <string name="source_code_desp">"View Browservio\'s source code."</string>
-    <string name="download_title">"Browservio Update"</string>
+    <string name="source_code_desp">"View Viola\'s source code."</string>
+    <string name="download_title">"Viola Update"</string>
     <string name="fav">Favorites</string>
     <string name="delete">"Delete"</string>
     <string name="delete_all_entries">"Delete all entries"</string>
@@ -114,7 +114,7 @@
     <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
     <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
     <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
-    <string name="pref_close_app_after_download_summary">Always close Browservio if the App Link is downloadable.</string>
+    <string name="pref_close_app_after_download_summary">Always close Viola if the App Link is downloadable.</string>
     <string name="pref_reverse_layout_title">Reach mode</string>
     <string name="pref_reverse_layout_summary">Relocate interface elements for easier one-hand usage.</string>
     <string name="custom_search_guide">Format:\n{query}: Query\n{language}: Language</string>
@@ -138,7 +138,7 @@
     <string-array name="errMsg">
         <item>Error!</item>
         <item>Can\'t open this page</item>
-        <item>Browservio failed to open your webpage.</item>
+        <item>Viola failed to open your webpage.</item>
         <item>Try:</item>
         <item>Checking your internet connection</item>
         <item>Reloading the webpage</item>

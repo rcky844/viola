@@ -25,15 +25,14 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "tipz.browservio"
+        applicationId "tipz.viola"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 69420
-        versionName "MASTER"
+        versionCode 1
+        versionName "6.0.0000.00"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_CODENAME", "\"Eagle\""
-        buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_eagle_master\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Viola\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 

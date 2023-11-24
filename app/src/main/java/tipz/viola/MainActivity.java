@@ -1,0 +1,98 @@
+/*
+ * Copyright (C) 2020-2023 Tipz Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package tipz.viola;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.nfc.NfcAdapter;
+import android.os.Bundle;
+import android.webkit.CookieManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import cat.ereza.customactivityoncrash.config.CaocConfig;
+import tipz.viola.settings.SettingsKeys;
+import tipz.viola.settings.SettingsUtils;
+import tipz.viola.utils.CommonUtils;
+import tipz.viola.utils.UrlUtils;
+import tipz.viola.webview.tabbies.BrowserActivity;
+import tipz.viola.webview.tabbies.CustomTabsActivity;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!webViewEnabled()) {
+            CommonUtils.showMessage(MainActivity.this, getResources().getString(R.string.no_webview));
+            finish();
+        }
+        CaocConfig.Builder.create()
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
+                .enabled(true)
+                .showErrorDetails(true)
+                .showRestartButton(true)
+                .logErrorOnRestart(true)
+                .trackActivities(true)
+                .minTimeBetweenCrashesMs(2000)
+                .restartActivity(MainActivity.class)
+                .errorActivity(null)
+                .apply();
+
+        /*
+         * Getting information from intents, either from
+         * sharing menu or default browser launch.
+         */
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        String scheme = intent.getScheme();
+
+        Intent openIntent = new Intent(this,
+                (intent.hasCategory("android.intent.category.LAUNCHER")
+                        || SettingsUtils.getPrefNum(((Application) getApplicationContext()).pref,
+                                SettingsKeys.useCustomTabs) == 0) ?
+                            BrowserActivity.class : CustomTabsActivity.class);
+        Uri uri = null;
+
+        if (Intent.ACTION_SEND.equals(action) /* From share menu */
+                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) { /* NFC sharing */
+            if (type != null) {
+                if ("text/plain".equals(type)) {
+                    String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                    uri = Uri.parse(UrlUtils.cve_2017_13274(sharedText != null ? sharedText : CommonUtils.EMPTY_STRING));
+                }
+            }
+        } else if (Intent.ACTION_VIEW.equals(action)) { /* From default browser */
+            for (String match : UrlUtils.TypeSchemeMatch) {
+                if (match.equals(type) || match.equals(scheme)) {
+                    uri = getIntent().getData();
+                }
+            }
+        }
+        openIntent.setData(uri);
+        startActivity(openIntent);
+        finish();
+    }
+
+    public boolean webViewEnabled() {
+        try {
+            CookieManager.getInstance();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
