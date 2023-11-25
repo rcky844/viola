@@ -103,10 +103,18 @@ class ListInterfaceActivity : BaseActivity() {
                 if (activityMode == mode_history) HistoryApi.historyBroha(this@ListInterfaceActivity)?.all as MutableList<Broha>?
                 else FavApi.favBroha(this@ListInterfaceActivity)?.all as MutableList<Broha>?
         }
-        val layoutManager =
-            LinearLayoutManager(this@ListInterfaceActivity, RecyclerView.VERTICAL, activityMode == mode_history)
+
+        val layoutManager = LinearLayoutManager(
+            this@ListInterfaceActivity,
+            RecyclerView.VERTICAL,
+            activityMode == mode_history
+        )
         if (activityMode == mode_history) layoutManager.stackFromEnd = true
         brohaList.layoutManager = layoutManager
+        brohaList.adapter = ItemsAdapter(
+            this@ListInterfaceActivity,
+            (applicationContext as Application).iconHashClient
+        )
     }
 
     fun isEmptyCheck() {
@@ -167,10 +175,12 @@ class ListInterfaceActivity : BaseActivity() {
             val data = listData!![position]
             val title = data.title
             val url = data.url
-            lateinit var icon : Bitmap
+            lateinit var icon: Bitmap
             CoroutineScope(Dispatchers.IO).launch {
                 icon = iconHashClient!!.read(data.iconHash)!!
-                if (data.iconHash != null) holder.icon.setImageBitmap(icon) else holder.icon.setImageResource(R.drawable.default_favicon)
+                if (data.iconHash != null) holder.icon.setImageBitmap(icon) else holder.icon.setImageResource(
+                    R.drawable.default_favicon
+                )
             }
             holder.title.text = title ?: url
             holder.url.text = Uri.parse(url ?: CommonUtils.EMPTY_STRING).host

@@ -31,7 +31,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.CookieManager
@@ -50,7 +49,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import tipz.viola.Application
 import tipz.viola.BaseActivity
 import tipz.viola.BuildConfig
@@ -65,7 +63,6 @@ import tipz.viola.utils.DownloadUtils.dmDownloadFile
 import tipz.viola.utils.InternalUrls
 import java.io.File
 import java.lang.ref.WeakReference
-import java.net.URL
 
 class SettingsActivity : BaseActivity() {
     private val needLoad = Intent()
