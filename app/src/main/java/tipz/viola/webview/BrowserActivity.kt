@@ -170,7 +170,7 @@ class BrowserActivity : VWebViewActivity() {
                     if (icon is BitmapDrawable) icon.bitmap else null
                 )
             }
-            CommonUtils.showMessage(this, resources.getString(R.string.save_successful))
+            if (!url.isNullOrEmpty()) CommonUtils.showMessage(this, resources.getString(R.string.save_successful))
         } else if (item == R.drawable.close) {
             finish()
         } else if (item == R.drawable.view_stream) {

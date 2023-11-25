@@ -35,7 +35,7 @@ object FavUtils {
         url: String?,
         icon: Bitmap?
     ) {
-        if (url == null) return
+        if (url.isNullOrEmpty()) return
         if (iconHashClient != null && icon != null)favBroha(context!!)!!
             .insertAll(Broha(iconHashClient.save(icon), title, url)) else favBroha(context!!)!!
             .insertAll(Broha(title, url))
