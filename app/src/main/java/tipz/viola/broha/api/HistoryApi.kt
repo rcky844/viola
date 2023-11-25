@@ -29,13 +29,7 @@ import tipz.viola.settings.SettingsUtils.setPrefNum
 import tipz.viola.utils.CommonUtils
 
 object HistoryApi {
-    private const val LATEST_API = 2
-
-    /* Old pref keys for migration */
-    private const val history = "history"
-    private fun historyPref(context: Context): SharedPreferences {
-        return context.getSharedPreferences("history.cfg", Activity.MODE_PRIVATE)
-    }
+    private const val LATEST_API = 0
 
     fun historyBroha(context: Context): BrohaDao? {
         return (context.applicationContext as Application).historyBroha
@@ -46,35 +40,6 @@ object HistoryApi {
         if (getPrefNum(pref!!, SettingsKeys.historyApi) > LATEST_API
             || getPrefNum(pref, SettingsKeys.historyApi) <= -1
         ) throw RuntimeException()
-        var historyData: String?
-        when (getPrefNum(pref, SettingsKeys.historyApi)) {
-            0 -> {
-                historyData = getPref(pref, history)
-                if (historyData!!.isNotEmpty()) setPref(historyPref(context), history, historyData)
-                setPref(pref, history, CommonUtils.EMPTY_STRING)
-                historyData = getPref(historyPref(context), history)
-                val listData = getPref(historyPref(context), history)!!
-                    .trim { it <= ' ' }.split("\n".toRegex()).dropLastWhile { it.isEmpty() }
-                    .toTypedArray()
-                if (historyData!!.isNotEmpty()) for (listDatum in listData) historyBroha(context)!!
-                    .insertAll(
-                        Broha(listDatum)
-                    )
-                historyPref(context).edit().clear().apply()
-            }
-
-            1 -> {
-                historyData = getPref(historyPref(context), history)
-                val listData = getPref(historyPref(context), history)!!
-                    .trim { it <= ' ' }.split("\n".toRegex()).dropLastWhile { it.isEmpty() }
-                    .toTypedArray()
-                if (historyData!!.isNotEmpty()) for (listDatum in listData) historyBroha(context)!!
-                    .insertAll(
-                        Broha(listDatum)
-                    )
-                historyPref(context).edit().clear().apply()
-            }
-        }
         setPrefNum(pref, SettingsKeys.historyApi, LATEST_API)
     }
 }

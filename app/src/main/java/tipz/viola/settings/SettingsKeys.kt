@@ -29,8 +29,8 @@ object SettingsKeys {
     const val enableGoogleSafeBrowse = "enableGoogleSafeBrowse" /* INTEGER */
     const val enableSwipeRefresh = "enableSwipeRefresh" /* INTEGER */
     const val enforceHttps = "enforceHttps" /* INTEGER */
-    const val favApi = "favApi" /* INTEGER */ /* Was in bookmarks */
-    const val historyApi = "historyApi" /* INTEGER */ /* Was in history */
+    const val favApi = "favApi" /* INTEGER */
+    const val historyApi = "historyApi" /* INTEGER */
     const val isJavaScriptEnabled = "isJavaScriptEnabled" /* INTEGER */
     const val protocolVersion = "protocolVersion" /* INTEGER */
     const val reverseLayout = "reverseLayout" /* INTEGER */

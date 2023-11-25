@@ -26,18 +26,7 @@ import tipz.viola.settings.SettingsUtils.getPrefNum
 import tipz.viola.settings.SettingsUtils.setPrefNum
 
 object FavApi {
-    private const val LATEST_API = 1
-
-    /* Old pref keys for migration */
-    private fun bookmarked(count: Int): String {
-        return "bookmarked_" + Integer.toString(count)
-    }
-
-    private const val bookmarked_title = "_title"
-    private const val bookmarked_show = "_show"
-    private fun bookmarks(context: Context): SharedPreferences {
-        return context.getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE)
-    }
+    private const val LATEST_API = 0
 
     @JvmStatic
     fun favBroha(context: Context): BrohaDao? {
@@ -49,22 +38,6 @@ object FavApi {
         if (getPrefNum(pref!!, SettingsKeys.favApi) > LATEST_API
             || getPrefNum(pref, SettingsKeys.favApi) <= -1
         ) throw RuntimeException()
-        if (getPrefNum(pref, SettingsKeys.favApi) == 0) {
-            var populate_count = 0
-            while (populate_count != -1) {
-                val shouldShow =
-                    getPref(bookmarks(context), bookmarked(populate_count) + bookmarked_show)
-                if (shouldShow != "0") {
-                    if (shouldShow!!.isEmpty()) populate_count = -2 else FavUtils.appendData(
-                        context, null, getPref(
-                            bookmarks(context), bookmarked(populate_count) + bookmarked_title
-                        ), getPref(bookmarks(context), bookmarked(populate_count)), null
-                    )
-                }
-                populate_count++
-            }
-            bookmarks(context).edit().clear().apply()
-        }
         setPrefNum(pref, SettingsKeys.favApi, LATEST_API)
     }
 }
