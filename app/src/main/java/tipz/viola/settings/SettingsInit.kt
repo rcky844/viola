@@ -27,7 +27,6 @@ class SettingsInit(context: Context) {
         pref = context.getSharedPreferences(SettingsKeys.configDataStore, Activity.MODE_PRIVATE)
 
         if (SettingsUtils.getPrefNum(pref, SettingsKeys.protocolVersion) == 0) {
-            SettingsUtils.setPrefNum(pref, SettingsKeys.centerActionBar, 1)
             SettingsUtils.setPrefNum(pref, SettingsKeys.closeAppAfterDownload, 1)
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, 7)
             SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, 7)
@@ -37,8 +36,7 @@ class SettingsInit(context: Context) {
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableGoogleSafeBrowse, 0)
             SettingsUtils.setPrefNum(pref, SettingsKeys.enableSwipeRefresh, 1)
             SettingsUtils.setPrefNum(pref, SettingsKeys.enforceHttps, 1)
-            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseLayout, 1)
-            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseOnlyActionBar, 1)
+            SettingsUtils.setPrefNum(pref, SettingsKeys.reverseAddressBar, 0)
             SettingsUtils.setPrefNum(pref, SettingsKeys.sendDNT, 0)
             SettingsUtils.setPrefNum(pref, SettingsKeys.showFavicon, 1)
             SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, 0)

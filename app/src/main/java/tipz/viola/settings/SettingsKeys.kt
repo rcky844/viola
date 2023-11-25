@@ -17,7 +17,6 @@ package tipz.viola.settings
 
 object SettingsKeys {
     const val configDataStore = "config" /* Pref file name */ /* TODO: Migrate to something newer? */
-    const val centerActionBar = "centerActionBar" /* INTEGER */
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
     const val defaultHomePage = "defaultHomePage" /* STRING */ /* FIXME: Rename to customHomePage */
     const val defaultHomePageId = "defaultHomePageId" /* INTEGER */
@@ -33,8 +32,7 @@ object SettingsKeys {
     const val historyApi = "historyApi" /* INTEGER */
     const val isJavaScriptEnabled = "isJavaScriptEnabled" /* INTEGER */
     const val protocolVersion = "protocolVersion" /* INTEGER */
-    const val reverseLayout = "reverseLayout" /* INTEGER */
-    const val reverseOnlyActionBar = "reverseOnlyActionBar" /* INTEGER */
+    const val reverseAddressBar = "reverseAddressBar" /* INTEGER */
     const val sendDNT = "sendDNT" /* INTEGER */
     const val showFavicon = "showFavicon" /* INTEGER */
     const val themeId = "themeId" /* INTEGER */

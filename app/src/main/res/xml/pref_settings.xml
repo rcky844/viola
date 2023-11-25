@@ -92,23 +92,10 @@
             app:preferenceTag="showFavicon"
             app:needReload="false" />
         <tipz.viola.settings.MaterialSwitchPreference
-            android:key="center_action"
-            android:summary="@string/pref_center_action_desp"
-            android:title="@string/pref_center_action"
-            app:preferenceTag="centerActionBar"
-            app:needReload="false" />
-        <tipz.viola.settings.MaterialSwitchPreference
-            android:key="reverse_layout"
-            android:summary="@string/pref_reverse_layout_summary"
-            android:title="@string/pref_reverse_layout_title"
-            app:preferenceTag="reverseLayout"
-            app:needReload="false" />
-        <tipz.viola.settings.MaterialSwitchPreference
-            android:dependency="reverse_layout"
-            android:key="reverse_only_action"
-            android:summary="@string/pref_reverse_only_action_summary"
-            android:title="@string/pref_reverse_only_action_title"
-            app:preferenceTag="reverseOnlyActionBar"
+            android:key="reverse_address_bar"
+            android:summary="@string/pref_reverse_address_bar_summary"
+            android:title="@string/pref_reverse_address_bar_title"
+            app:preferenceTag="reverseAddressBar"
             app:needReload="false" />
         <tipz.viola.settings.MaterialSwitchPreference
             android:key="enable_swipe_refresh"

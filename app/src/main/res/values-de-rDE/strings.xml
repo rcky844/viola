@@ -85,8 +85,6 @@
     <string name="no_webview">WebView ist erforderlich, aber nicht installiert.</string>
     <string name="share_url">Link teilen</string>
     <string name="pref_theme">Thema</string>
-    <string name="pref_center_action">Aktionsleiste horizontal zentrieren</string>
-    <string name="pref_center_action_desp">Zentrieren Sie die Aktionsleiste automatisch, wenn Platz verfügbar ist.</string>
     <string name="ssl_info">SSL-Zertifikatdetails</string>
     <string name="ssl_info_dialog_content">Ausgestellt für\n\tAllgemeiner Name (CN): %1$s\n\tOrganisation (O): %2$s\n\tOrganisationseinheit (OU): %3$s\n\nAusgestellt von\n\tAllgemeiner Name (CN): %4$s\n\tOrganisation (O): %5$s\n\tOrganisationseinheit (OU): %6$s\n\nGültigkeitsdauer\n\tAusgestellt am: %7$s\n\tGültig bis: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL-Zertifikatsfehler</string>
@@ -114,8 +112,8 @@
     <string name="pref_use_custom_tabs_summary">Öffnen Sie App-Links immer in benutzerdefinierten Registerkarten, wenn sie von einer anderen Anwendung aus geöffnet werden.</string>
     <string name="pref_close_app_after_download_title">Schließen Sie nach einem herunterladbaren App-Link</string>
     <string name="pref_close_app_after_download_summary">Schließen Sie Viola immer, wenn der App-Link herunterladbar ist.</string>
-    <string name="pref_reverse_layout_title">Modus erreichen</string>
-    <string name="pref_reverse_layout_summary">Verschieben Sie Schnittstellenelemente für eine einfachere Einhandbedienung.</string>
+    <string name="pref_reverse_address_bar_title">Modus erreichen</string>
+    <string name="pref_reverse_address_bar_summary">Verschieben Sie Schnittstellenelemente für eine einfachere Einhandbedienung.</string>
     <string name="custom_search_guide">Format:\n{query}: Anfrage\n{language}: Sprache</string>
     <string name="pref_update_recents_icon_title">Aktualisieren Sie das Symbol und die Beschriftung der Registerkarten in den letzten</string>
     <string name="pref_update_recents_icon_summary">Aktualisieren Sie das Symbol und die Bezeichnung der Registerkarten in Recents automatisch auf das der Webseite.</string>

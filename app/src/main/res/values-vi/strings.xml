@@ -85,8 +85,6 @@
     <string name="no_webview">WebView cần thiết nhưng chưa được cài đặt.</string>
     <string name="share_url">Chia sẻ đường dẫn</string>
     <string name="pref_theme">Chủ đề</string>
-    <string name="pref_center_action">Căn giữa thanh hành động</string>
-    <string name="pref_center_action_desp">Tự động căn giữa thanh hành động khi có khoảng trống.</string>
     <string name="ssl_info">Chi tiết chứng chỉ SSL</string>
     <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">Lỗi chứng chỉ SSL</string>
@@ -114,8 +112,8 @@
     <string name="pref_use_custom_tabs_summary">Luôn mở Liên kết ứng dụng trong Tab tùy chỉnh khi nó được mở từ một ứng dụng khác.</string>
     <string name="pref_close_app_after_download_title">Đóng sau liên kết ứng dụng có thể tải xuống</string>
     <string name="pref_close_app_after_download_summary">Luôn đóng Viola nếu Liên kết ứng dụng có thể tải xuống được.</string>
-    <string name="pref_reverse_layout_title">Bố cục ngược</string>
-    <string name="pref_reverse_layout_summary">Đảo ngược bố cục trình duyệt lộn ngược. (Cần khởi động lại)</string>
+    <string name="pref_reverse_address_bar_title">Bố cục ngược</string>
+    <string name="pref_reverse_address_bar_summary">Đảo ngược bố cục trình duyệt lộn ngược. (Cần khởi động lại)</string>
     <string name="custom_search_guide">Định dạng:\n{query}: Truy vấn\n{language}: Ngôn ngữ</string>
     <string name="pref_update_recents_icon_title">Cập nhật biểu tượng và nhãn của các tab trong Gần đây</string>
     <string name="pref_update_recents_icon_summary">Tự động cập nhật biểu tượng và nhãn của các tab trong Gần đây thành biểu tượng và nhãn của trang web.</string>

@@ -86,8 +86,6 @@
     <string name="no_webview">WebView is required but not installed.</string>
     <string name="share_url">Share link</string>
     <string name="pref_theme">Theme</string>
-    <string name="pref_center_action">Center Action Bar Horizontally</string>
-    <string name="pref_center_action_desp">Automatically center the action bar when space is available.</string>
     <string name="ssl_info">SSL Certificate Details</string>
     <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>
@@ -115,8 +113,8 @@
     <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
     <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
     <string name="pref_close_app_after_download_summary">Always close Viola if the App Link is downloadable.</string>
-    <string name="pref_reverse_layout_title">Reach mode</string>
-    <string name="pref_reverse_layout_summary">Relocate interface elements for easier one-hand usage.</string>
+    <string name="pref_reverse_address_bar_title">Reach mode</string>
+    <string name="pref_reverse_address_bar_summary">Relocate interface elements for easier one-hand usage.</string>
     <string name="custom_search_guide">Format:\n{query}: Query\n{language}: Language</string>
     <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
     <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
@@ -129,8 +127,6 @@
     <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
     <string name="dialog_page_unresponsive_wait">Wait</string>
     <string name="dialog_page_unresponsive_terminate">Terminate</string>
-    <string name="pref_reverse_only_action_title">Only relocate action bar</string>
-    <string name="pref_reverse_only_action_summary">Relocate only the action bar to the bottom.</string>
     <string name="toast_no_app_to_handle">No application can handle this action.</string>
     <string name="pref_dont_use_start_page_title">Use web-based homepage</string>
     <string name="pref_dont_use_start_page_summary">Open a webpage instead of start page as homepage.</string>

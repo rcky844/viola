@@ -92,6 +92,7 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUAWideView = false
     private var iconHashClient: IconHashClient? = null
     private var toolsBarExtendableBackground : ConstraintLayout? = null
+    private var viewMode : Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
@@ -397,6 +398,81 @@ class BrowserActivity : VWebViewActivity() {
             )
         } else {
             webview.loadUrl(InternalUrls.startUrl)
+        }
+    }
+
+    override fun doSettingsCheck() {
+        super.doSettingsCheck()
+        val reverseAddressBar : Int = SettingsUtils.getPrefNum(pref, SettingsKeys.reverseAddressBar)
+        if (reverseAddressBar != viewMode) {
+            val constraintLayout = findViewById<ConstraintLayout>(R.id.mainBackground)
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(constraintLayout)
+            constraintSet.clear(R.id.appbar, ConstraintSet.TOP)
+            constraintSet.clear(R.id.appbar, ConstraintSet.BOTTOM)
+            constraintSet.clear(R.id.webviewContainer, ConstraintSet.TOP)
+            constraintSet.clear(R.id.toolsContainer, ConstraintSet.BOTTOM)
+            if (CommonUtils.isIntStrOne(reverseAddressBar)) {
+                constraintSet.connect(
+                    R.id.appbar,
+                    ConstraintSet.TOP,
+                    R.id.toolsContainer,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSet.connect(
+                    R.id.appbar,
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSet.connect(
+                    R.id.webviewContainer,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    0
+                )
+                constraintSet.connect(
+                    R.id.toolsContainer,
+                    ConstraintSet.BOTTOM,
+                    R.id.appbar,
+                    ConstraintSet.TOP,
+                    0
+                )
+            } else {
+                constraintSet.connect(
+                    R.id.appbar,
+                    ConstraintSet.BOTTOM,
+                    R.id.webviewContainer,
+                    ConstraintSet.TOP,
+                    0
+                )
+                constraintSet.connect(
+                    R.id.appbar,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    0
+                )
+                constraintSet.connect(
+                    R.id.webviewContainer,
+                    ConstraintSet.TOP,
+                    R.id.appbar,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+                constraintSet.connect(
+                    R.id.toolsContainer,
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM,
+                    0
+                )
+            }
+            constraintSet.applyTo(constraintLayout)
+            viewMode = reverseAddressBar
         }
     }
 

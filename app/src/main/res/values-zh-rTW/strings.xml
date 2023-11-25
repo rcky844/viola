@@ -85,8 +85,6 @@
     <string name="no_webview">WebView是必要的，但並未安裝。</string>
     <string name="share_url">分享鏈接</string>
     <string name="pref_theme">主題</string>
-    <string name="pref_center_action">水平置中操作列</string>
-    <string name="pref_center_action_desp">當空間可用時自動置中操作列</string>
     <string name="ssl_info">SSL憑證資訊</string>
     <string name="ssl_info_dialog_content">頒發給\n\t通用名 (CN): %1$s\n\t機構 (O): %2$s\n\t機構單位 (OU): %3$s\n\n頒發者\n\t通用名 (CN): %4$s\n\t機構 (O): %5$s\n\t機構單位 (OU): %6$s\n\n有效期\n\t頒發日期: %7$s\n\t到期日期: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL憑證錯誤</string>
@@ -114,8 +112,8 @@
     <string name="pref_use_custom_tabs_summary">從其他應用程式打開連結時，始終打開Custom Tabs</string>
     <string name="pref_close_app_after_download_title">僅下載連結後關閉</string>
     <string name="pref_close_app_after_download_summary">如果連結是可下載的，始終自動關閉Viola</string>
-    <string name="pref_reverse_layout_title">單手模式</string>
-    <string name="pref_reverse_layout_summary">重新定位介面元素以方便單手使用</string>
+    <string name="pref_reverse_address_bar_title">單手模式</string>
+    <string name="pref_reverse_address_bar_summary">重新定位介面元素以方便單手使用</string>
     <string name="custom_search_guide">格式:\n{query}: 搜索內容\n{language}: 語言</string>
     <string name="pref_update_recents_icon_title">更新最近使用的應用中的圖示和標籤</string>
     <string name="pref_update_recents_icon_summary">自動把“最近使用的應用”中選項卡的圖標和標籤更新為網頁的</string>

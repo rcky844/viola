@@ -85,8 +85,6 @@
     <string name="no_webview">WebView est nécessaire mais n’est pas installé.</string>
     <string name="share_url">SPartager le lien</string>
     <string name="pref_theme">Thème</string>
-    <string name="pref_center_action">Centrer la barre d’action horizontalement</string>
-    <string name="pref_center_action_desp">Centrer automatiquement la barre d’action quand c’est possible.</string>
     <string name="ssl_info">Détails du certificat SSL</string>
     <string name="ssl_info_dialog_content">Publié à\n\tNom Commun (NC): %1$s\n\tOrganisation (O): %2$s\n\tUnité Organisationnelle (OU): %3$s\n\nPublié Par\n\tNom Commun (CN): %4$s\n\tOrganisation (O): %5$s\n\tUnité Organisationnelle (OU): %6$s\n\nPériode de Validité\n\tPublié Sur : %7$s\n\tExpire Le: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">Erreur du certificat SSL</string>
@@ -114,8 +112,8 @@
     <string name="pref_use_custom_tabs_summary">Ouvrez toujours les liens d’application dans les onglets personnalisés lorsqu’il est ouvert à partir d’une autre application.</string>
     <string name="pref_close_app_after_download_title">Fermer après un lien d’application téléchargeable</string>
     <string name="pref_close_app_after_download_summary">Fermez toujours Viola si le lien de l’application est téléchargeable.</string>
-    <string name="pref_reverse_layout_title">Mise en page inversée</string>
-    <string name="pref_reverse_layout_summary">Inverser la disposition du navigateur à l’envers. (Un redémarrage est nécessaire)</string>
+    <string name="pref_reverse_address_bar_title">Mise en page inversée</string>
+    <string name="pref_reverse_address_bar_summary">Inverser la disposition du navigateur à l’envers. (Un redémarrage est nécessaire)</string>
     <string name="custom_search_guide">Format:\n{query}: Requête\n{language}: Langue</string>
     <string name="pref_update_recents_icon_title">Mettre à jour l’icône et l’étiquette des onglets dans Récents</string>
     <string name="pref_update_recents_icon_summary">Mettez automatiquement à jour l’icône et l’étiquette des onglets dans Récents vers celle de la page Web.</string>
