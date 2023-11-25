@@ -174,6 +174,10 @@ class BrowserActivity : VWebViewActivity() {
             intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_history)
             mGetNeedLoad.launch(intent)
         } else if (item == R.drawable.favorites) {
+            val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
+            intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_favorites)
+            mGetNeedLoad.launch(intent)
+        } else if (item == R.drawable.favorites_add) {
             val icon = favicon.drawable
             val title = webview.title
             val url = webview.url
@@ -219,10 +223,6 @@ class BrowserActivity : VWebViewActivity() {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
             if (currentCustomUA != null) customUserAgent.setText(currentCustomUA)
-        } else if (item == R.drawable.favorites) {
-            val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
-            intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_favorites)
-            mGetNeedLoad.launch(intent)
         }
     }
 
@@ -617,6 +617,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.favorites,
             R.drawable.history,
             R.drawable.smartphone,
+            R.drawable.favorites_add,
             R.drawable.app_shortcut,
             R.drawable.settings,
             R.drawable.close
@@ -627,6 +628,7 @@ class BrowserActivity : VWebViewActivity() {
             R.string.toolbar_expandable_favorites,
             R.string.toolbar_expandable_history,
             R.string.toolbar_expandable_viewport,
+            R.string.toolbar_expandable_favorites_add,
             R.string.toolbar_expandable_app_shortcut,
             R.string.toolbar_expandable_settings,
             R.string.toolbar_expandable_close
