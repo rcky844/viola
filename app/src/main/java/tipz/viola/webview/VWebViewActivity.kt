@@ -141,9 +141,7 @@ open class VWebViewActivity : BaseActivity() {
         val actionBarSize = CommonUtils.getDisplayMetrics(
             this@VWebViewActivity, 52
         ).toInt()
-        val toolsContainerSize = CommonUtils.getDisplayMetrics(
-            this@VWebViewActivity, 36
-        ).toInt()
+        val toolsContainerSize = resources.getDimension(R.dimen.toolbar_icon_size).toInt()
         var margin = actionBarSize
         if (toolsContainer.visibility == View.VISIBLE) margin += toolsContainerSize
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout))) {

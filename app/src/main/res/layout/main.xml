@@ -118,14 +118,14 @@
     <RelativeLayout
         android:id="@+id/toolsContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/toolbar_icon_size"
         android:background="@color/colorTopBarWebView"
         android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/actionBar"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
             android:hardwareAccelerated="true"
             android:orientation="horizontal"
             android:scrollbars="none" />

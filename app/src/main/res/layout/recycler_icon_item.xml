@@ -12,11 +12,10 @@
 -->
 <androidx.appcompat.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/imageView"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/toolbar_icon_size"
     android:layout_height="match_parent"
     android:background="?attr/selectableItemBackground"
     android:contentDescription="@null"
     android:hardwareAccelerated="true"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
+    android:padding="8dp"
     android:scaleType="center" />
