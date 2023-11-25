@@ -47,6 +47,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import tipz.viola.Application
 import tipz.viola.BaseActivity
 import tipz.viola.BuildConfig
@@ -56,11 +60,12 @@ import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialog
 import tipz.viola.utils.ApkInstaller.installApplication
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
+import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.DownloadUtils.dmDownloadFile
-import tipz.viola.utils.DownloaderThread
 import tipz.viola.utils.InternalUrls
 import java.io.File
 import java.lang.ref.WeakReference
+import java.net.URL
 
 class SettingsActivity : BaseActivity() {
     private val needLoad = Intent()
@@ -430,75 +435,59 @@ class SettingsActivity : BaseActivity() {
                         BuildConfig.VERSION_BUILD_YEAR
                     )
                     update_btn.setOnClickListener {
-                        val mHandlerThread = DownloaderThread("updater")
-                        mHandlerThread.start()
-                        mHandlerThread.setCallerHandler(object : Handler(mHandlerThread.looper) {
-                            override fun handleMessage(msg: Message) {
-                                when (msg.what) {
-                                    DownloaderThread.TYPE_SUCCESS -> {
-                                        val data = msg.data.getString("response")
-                                        val apkFile = File(updateDownloadPath)
-                                        if (data == null) {
-                                            showMessage(
-                                                settingsActivity,
-                                                resources.getString(R.string.network_unavailable_toast)
-                                            )
-                                            return
-                                        }
-                                        val array = data.split(System.lineSeparator().toRegex())
-                                            .dropLastWhile { it.isEmpty() }
-                                            .toTypedArray()
-                                        if (array[0].toInt() <= BuildConfig.VERSION_CODE) {
-                                            showMessage(
-                                                settingsActivity,
-                                                resources.getString(R.string.version_latest_toast)
-                                            )
-                                            return
-                                        }
-                                        Handler(Looper.getMainLooper()).post {
-                                            MaterialAlertDialogBuilder(
-                                                settingsActivity
-                                            )
-                                                .setTitle(resources.getString(R.string.new_update_detect_title))
-                                                .setMessage(
-                                                    resources.getString(
-                                                        R.string.new_update_detect_message,
-                                                        array[2],
-                                                        array[0]
-                                                    )
-                                                )
-                                                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                                    if (!apkFile.exists() || apkFile.delete()) downloadID =
-                                                        dmDownloadFile(
-                                                            settingsActivity,
-                                                            array[1],
-                                                            null,
-                                                            "application/vnd.android.package-archive",
-                                                            resources.getString(R.string.download_title),
-                                                            "browservio-update.apk",
-                                                            null
-                                                        )
-                                                    else
-                                                        showMessage(
-                                                            settingsActivity,
-                                                            resources.getString(R.string.update_down_failed_toast)
-                                                        )
-                                                }
-                                                .setNegativeButton(android.R.string.cancel, null)
-                                                .create().show()
-                                        }
-                                    }
-
-                                    DownloaderThread.TYPE_FAILED -> showMessage(
-                                        settingsActivity,
-                                        resources.getString(R.string.network_unavailable_toast)
-                                    )
-                                }
-                                mHandlerThread.quit()
-                                super.handleMessage(msg)
+                        val scope = CoroutineScope(Dispatchers.IO)
+                        scope.launch {
+                            if (!DownloadUtils.isOnline(settingsActivity)) {
+                                showMessage(
+                                    settingsActivity,
+                                    resources.getString(R.string.network_unavailable_toast)
+                                )
                             }
-                        })
-                        mHandlerThread.startDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
+
+                            val apkFile = File(updateDownloadPath)
+                            val result = DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
+                            val array = result.split(System.lineSeparator().toRegex())
+                                .dropLastWhile { it.isEmpty() }
+                                .toTypedArray()
+                            if (array[0].toInt() <= BuildConfig.VERSION_CODE) {
+                                showMessage(
+                                    settingsActivity,
+                                    resources.getString(R.string.version_latest_toast)
+                                )
+                            }
+                            Handler(Looper.getMainLooper()).post {
+                                MaterialAlertDialogBuilder(
+                                    settingsActivity
+                                )
+                                    .setTitle(resources.getString(R.string.new_update_detect_title))
+                                    .setMessage(
+                                        resources.getString(
+                                            R.string.new_update_detect_message,
+                                            array[2],
+                                            array[0]
+                                        )
+                                    )
+                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                        if (!apkFile.exists() || apkFile.delete()) downloadID =
+                                            dmDownloadFile(
+                                                settingsActivity,
+                                                array[1],
+                                                null,
+                                                "application/vnd.android.package-archive",
+                                                resources.getString(R.string.download_title),
+                                                "browservio-update.apk",
+                                                null
+                                            )
+                                        else
+                                            showMessage(
+                                                settingsActivity,
+                                                resources.getString(R.string.update_down_failed_toast)
+                                            )
+                                    }
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .create().show()
+                            }
+                        }
                     }
                     changelog_btn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
                     changelog_btn.setOnClickListener {

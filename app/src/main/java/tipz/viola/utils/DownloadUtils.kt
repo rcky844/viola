@@ -18,17 +18,22 @@ package tipz.viola.utils
 import android.app.DownloadManager
 import android.content.Context
 import android.media.MediaScannerConnection
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Base64
 import android.webkit.MimeTypeMap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils.showMessage
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.net.URL
 
 object DownloadUtils {
     fun dmDownloadFile(
@@ -117,5 +122,27 @@ object DownloadUtils {
             }
         }
         return -1
+    }
+
+    suspend fun startFileDownload(urlString : String?) =
+        withContext(Dispatchers.IO) {
+            val url = URL(urlString)
+            return@withContext String(url.readBytes())
+        }
+
+    fun isOnline(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val n = cm.activeNetwork
+            if (n != null) {
+                val nc = cm.getNetworkCapabilities(n)
+                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            }
+            return false
+        } else {
+            val netInfo = cm.activeNetworkInfo
+            return netInfo != null && netInfo.isConnectedOrConnecting
+        }
     }
 }

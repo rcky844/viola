@@ -68,6 +68,9 @@ import androidx.webkit.WebViewFeature
 import androidx.webkit.WebViewRenderProcess
 import androidx.webkit.WebViewRenderProcessClient
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.BaseActivity
 import tipz.viola.BuildConfig
@@ -80,7 +83,6 @@ import tipz.viola.settings.SettingsUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
-import tipz.viola.utils.DownloaderThread
 import tipz.viola.utils.UrlUtils
 import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
@@ -403,7 +405,20 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
         override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-            if (adServers == null) updateAdServerList()
+            if (adServers.isNullOrEmpty()) {
+                val scope = CoroutineScope(Dispatchers.IO)
+                scope.launch {
+                    val result = DownloadUtils.startFileDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")
+                    val scanner = Scanner(result)
+                    val builder = StringBuilder()
+                    while (scanner.hasNextLine()) {
+                        val line = scanner.nextLine()
+                        if (line.startsWith("127.0.0.1 ")) builder.append(line)
+                            .append(System.lineSeparator())
+                    }
+                    adServers = builder.toString()
+                }
+            }
             try {
                 if (adServers != null) if (adServers!!.contains(" " + URL(url).host) && SettingsUtils.getPrefNum(
                         pref,
@@ -559,7 +574,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
      * WebViewRenderProcessClient
      */
     inner class RenderClient : WebViewRenderProcessClient() {
-        var dialog = MaterialAlertDialogBuilder(mContext)
+        private var dialog = MaterialAlertDialogBuilder(mContext)
             .setTitle(R.string.dialog_page_unresponsive_title)
             .setMessage(R.string.dialog_page_unresponsive_message)
             .setPositiveButton(R.string.dialog_page_unresponsive_wait, null)
@@ -603,36 +618,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         dialog.create().show()
     }
 
-    /* Function to update the list of Ad servers */
-    private fun updateAdServerList() {
-        adServers = CommonUtils.EMPTY_STRING
-        val mHandlerThread = DownloaderThread("adServers")
-        mHandlerThread.start()
-        mHandlerThread.setCallerHandler(object : Handler(mHandlerThread.looper) {
-            override fun handleMessage(msg: Message) {
-                when (msg.what) {
-                    DownloaderThread.TYPE_SUCCESS -> {
-                        val data = msg.data.getString(DownloaderThread.MSG_RESPONSE)
-                        if (data != null) {
-                            val scanner = Scanner(data)
-                            val builder = StringBuilder()
-                            while (scanner.hasNextLine()) {
-                                val line = scanner.nextLine()
-                                if (line.startsWith("127.0.0.1 ")) builder.append(line)
-                                    .append(System.lineSeparator())
-                            }
-                            adServers = builder.toString()
-                        }
-                    }
 
-                    DownloaderThread.TYPE_FAILED -> adServers = null
-                }
-                mHandlerThread.quit()
-                super.handleMessage(msg)
-            }
-        })
-        mHandlerThread.startDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")
-    }
 
     private fun urlShouldSet(url: String): Boolean {
         return !(url == "about:blank" || url.startsWith(InternalUrls.prefix))
