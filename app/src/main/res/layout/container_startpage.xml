@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/easter_banner_front"
-            layout="@layout/viola_banner_front" />
+            layout="@layout/viola_banner" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatImageView
