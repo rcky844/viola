@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2023 Tipz Team
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2020-2023 Tipz Team
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
@@ -19,6 +18,7 @@
         android:id="@+id/appbar"
         android:layout_width="0dp"
         android:layout_height="@dimen/actionbar_view_height"
+        android:elevation="12dp"
         app:layout_constraintBottom_toTopOf="@id/webviewContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,6 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_icon_size"
         android:background="@color/colorTopBarWebView"
+        android:elevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +131,7 @@
         <View style="@style/Divider" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/actionBar"
+            android:id="@+id/toolsBar"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:hardwareAccelerated="true"
@@ -159,8 +160,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
-
     </RelativeLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolsBarExtendableBackground"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/toolbar_extendable_height"
+        android:layout_margin="8dp"
+        android:background="@drawable/toolbar_expandable_background"
+        android:elevation="6dp"
+        android:foregroundGravity="center_horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/toolsContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/toolsBarExtendableHint"
+            android:layout_width="64dp"
+            android:layout_height="16dp"
+            android:layout_marginBottom="16dp"
+            android:padding="6dp"
+            app:layout_constraintBottom_toTopOf="@id/toolsBarExtendableRecycler"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/toolbar_expandable_hint" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/toolsBarExtendableRecycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolsBarExtendableHint" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,4 +4,7 @@
     <dimen name="actionbar_content_height">48dp</dimen>
     <dimen name="progressbar_height">2dp</dimen>
     <dimen name="toolbar_icon_size">52dp</dimen>
+    <dimen name="toolbar_extendable_height">300dp</dimen>
+    <dimen name="toolbar_extendable_item_size">48dp</dimen>
+    <dimen name="toolbar_extendable_holder_size">100dp</dimen>
 </resources>

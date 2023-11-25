@@ -134,6 +134,13 @@
     <string name="toast_no_app_to_handle">No application can handle this action.</string>
     <string name="pref_dont_use_start_page_title">Use web-based homepage</string>
     <string name="pref_dont_use_start_page_summary">Open a webpage instead of start page as homepage.</string>
+    <string name="toolbar_expandable_new_tab">New Tab</string>
+    <string name="toolbar_expandable_favorites">Favorites</string>
+    <string name="toolbar_expandable_history">History</string>
+    <string name="toolbar_expandable_viewport">Viewing mode</string>
+    <string name="toolbar_expandable_app_shortcut">Create shortcut</string>
+    <string name="toolbar_expandable_settings">Settings</string>
+    <string name="toolbar_expandable_close">Close app</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

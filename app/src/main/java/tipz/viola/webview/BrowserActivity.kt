@@ -40,13 +40,16 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -170,6 +173,9 @@ class BrowserActivity : VWebViewActivity() {
             CommonUtils.showMessage(this, resources.getString(R.string.save_successful))
         } else if (item == R.drawable.close) {
             finish()
+        } else if (item == R.drawable.view_stream) {
+            val toolsBarExtendableBackground : ConstraintLayout = this.findViewById(R.id.toolsBarExtendableBackground)
+            toolsBarExtendableBackground.visibility = if (toolsBarExtendableBackground.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
     }
 
@@ -214,13 +220,27 @@ class BrowserActivity : VWebViewActivity() {
         faviconProgressBar = findViewById(R.id.faviconProgressBar)
         swipeRefreshLayout = findViewById(R.id.layout_webview)
         webview = swipeRefreshLayout.findViewById(R.id.webview)
-        val actionBar = findViewById<RecyclerView>(R.id.actionBar)
         favicon = findViewById(R.id.favicon)
         toolsContainer = findViewById(R.id.toolsContainer)
         startPageLayout = findViewById(R.id.layout_startpage)
-        actionBar.layoutManager = FixedLinearLayoutManager(this, GridLayoutManager.HORIZONTAL, false)
-        actionBar.adapter = ItemsAdapter(this)
-        actionBar.addItemDecoration(CentreSpreadItemDecoration(resources.getDimension(R.dimen.actionbar_content_height), actionBarItemList.size));
+
+        val actionBar = findViewById<RecyclerView>(R.id.toolsBar)
+        actionBar.layoutManager = FixedLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        actionBar.adapter = ItemsAdapter(this, toolsBarItemList)
+        actionBar.addItemDecoration(CentreSpreadItemDecoration(resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
+            useFixedMgr = true,
+            isLinear = true
+        ))
+
+        val toolsBarExtendableRecycler = findViewById<RecyclerView>(R.id.toolsBarExtendableRecycler)
+        toolsBarExtendableRecycler.layoutManager = GridLayoutManager(this,
+            resources.getInteger(R.integer.num_toolbar_expandable_items_per_row), GridLayoutManager.VERTICAL, false)
+        toolsBarExtendableRecycler.adapter = ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
+        toolsBarExtendableRecycler.addItemDecoration(CentreSpreadItemDecoration(
+            resources.getDimension(R.dimen.toolbar_extendable_holder_size), toolsBarItemList.size,
+            useFixedMgr = false,
+            isLinear = false
+        ))
 
         favicon.setOnClickListener {
             val cert = webview.certificate
@@ -390,9 +410,10 @@ class BrowserActivity : VWebViewActivity() {
 
     }
 
-    class ItemsAdapter(mainActivity: BrowserActivity) :
+    class ItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>) :
         RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
-        private val mMainActivity: WeakReference<BrowserActivity>
+        private val mBrowserActivity: WeakReference<BrowserActivity>
+        private val mItemsList: WeakReference<List<Int>>;
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val mImageView: AppCompatImageView
@@ -403,7 +424,8 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         init {
-            mMainActivity = WeakReference(mainActivity)
+            mBrowserActivity = WeakReference(mainActivity)
+            mItemsList = WeakReference(itemsList)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -413,26 +435,75 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.mImageView.setImageResource(actionBarItemList[position])
+            holder.mImageView.setImageResource(mItemsList.get()!![position])
             holder.mImageView.setOnClickListener {
-                mMainActivity.get()!!
-                    .itemSelected(holder.mImageView, actionBarItemList[position])
+                mBrowserActivity.get()!!
+                    .itemSelected(holder.mImageView, mItemsList.get()!![position])
             }
             holder.mImageView.setOnLongClickListener {
-                mMainActivity.get()!!
-                    .itemLongSelected(holder.mImageView, actionBarItemList[position])
+                mBrowserActivity.get()!!
+                    .itemLongSelected(holder.mImageView, mItemsList.get()!![position])
                 true
             }
         }
 
         override fun getItemCount(): Int {
-            return actionBarItemList.size
+            return mItemsList.get()!!.size
+        }
+    }
+
+    class ToolbarItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>, descriptionList: List<Int>) :
+        RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
+        private val mBrowserActivity: WeakReference<BrowserActivity>
+        private val mItemsList: WeakReference<List<Int>>;
+        private val mDescriptionList: WeakReference<List<Int>>;
+
+        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val mItemBox: LinearLayoutCompat
+            val mImageView: AppCompatImageView
+            val mTextView: AppCompatTextView
+
+            init {
+                mItemBox = view as LinearLayoutCompat
+                mImageView = view.findViewById(R.id.imageView)
+                mTextView = view.findViewById(R.id.textView)
+            }
+        }
+
+        init {
+            mBrowserActivity = WeakReference(mainActivity)
+            mItemsList = WeakReference(itemsList)
+            mDescriptionList = WeakReference(descriptionList)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.recycler_toolsbar_expandable_icon_item, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.mItemBox.setOnClickListener {
+                mBrowserActivity.get()!!
+                    .itemSelected(holder.mImageView, mItemsList.get()!![position])
+            }
+            holder.mItemBox.setOnLongClickListener {
+                mBrowserActivity.get()!!
+                    .itemLongSelected(holder.mImageView, mItemsList.get()!![position])
+                true
+            }
+            holder.mImageView.setImageResource(mItemsList.get()!![position])
+            holder.mTextView.setText(mBrowserActivity.get()!!.resources.getString(mDescriptionList.get()!![position]))
+        }
+
+        override fun getItemCount(): Int {
+            return mItemsList.get()!!.size
         }
     }
 
     companion object {
         // TODO: Add support for reverting to legacy layout
-        private val legacyActionBarItemList = listOf(
+        private val legacyToolsBarItemList = listOf(
             R.drawable.arrow_back_alt,
             R.drawable.arrow_forward_alt,
             R.drawable.refresh,
@@ -447,7 +518,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.close
         )
 
-        private val actionBarItemList = listOf(
+        private val toolsBarItemList = listOf(
             R.drawable.arrow_back_alt,
             R.drawable.arrow_forward_alt,
             R.drawable.home,
@@ -455,14 +526,24 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.view_stream
         )
 
-        private val actionBarExpandableItemList = listOf(
-            R.drawable.smartphone,
+        private val toolsBarExpandableItemList = listOf(
             R.drawable.new_tab,
+            R.drawable.favorites,
+            R.drawable.history,
+            R.drawable.smartphone,
             R.drawable.app_shortcut,
             R.drawable.settings,
-            R.drawable.history,
-            R.drawable.favorites,
             R.drawable.close
+        )
+
+        private val toolsBarExpandableDescriptionList = listOf(
+            R.string.toolbar_expandable_new_tab,
+            R.string.toolbar_expandable_favorites,
+            R.string.toolbar_expandable_history,
+            R.string.toolbar_expandable_viewport,
+            R.string.toolbar_expandable_app_shortcut,
+            R.string.toolbar_expandable_settings,
+            R.string.toolbar_expandable_close
         )
     }
 }

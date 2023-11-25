@@ -10,11 +10,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <color name="colorAccent">#0e95ff</color>
-    <color name="colorBackground">@android:color/black</color>
-    <color name="colorUrlEditBg">#303030</color>
-    <color name="colorElement">@android:color/white</color>
-    <color name="colorTopBar">#141414</color>
-    <color name="colorToolbarExpandableHint">@android:color/darker_gray</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/colorTopBar" />
+    <corners android:radius="16dp"/>
+</shape>
