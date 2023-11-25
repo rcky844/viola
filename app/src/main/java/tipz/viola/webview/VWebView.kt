@@ -30,8 +30,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
-import android.os.Handler
-import android.os.Message
 import android.util.AttributeSet
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
@@ -47,7 +45,6 @@ import android.webkit.RenderProcessGoneDetail
 import android.webkit.SslErrorHandler
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
-import android.webkit.WebIconDatabase
 import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -80,9 +77,9 @@ import tipz.viola.broha.api.HistoryUtils
 import tipz.viola.broha.database.Broha
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsUtils
-import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
+import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
 import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
@@ -319,6 +316,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             mVioWebViewActivity!!.onFaviconProgressUpdated(true)
             mVioWebViewActivity!!.onFaviconUpdated(null, false)
             mVioWebViewActivity!!.onDropDownDismissed()
+            mVioWebViewActivity!!.onPageLoadProgressChanged(-1)
         }
 
         override fun onPageFinished(view: WebView, url: String) {
@@ -328,6 +326,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 true
             )
             mVioWebViewActivity!!.onFaviconProgressUpdated(false)
+            mVioWebViewActivity!!.onPageLoadProgressChanged(0)
         }
 
         override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
@@ -374,31 +373,31 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         @SuppressLint("WebViewClientOnReceivedSslError")
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
             val dialog = MaterialAlertDialogBuilder(mContext)
-            var content_summary = resources.getString(R.string.ssl_certificate_unknown)
+            var contentSummary = resources.getString(R.string.ssl_certificate_unknown)
             when (error.primaryError) {
-                SslError.SSL_DATE_INVALID -> content_summary =
+                SslError.SSL_DATE_INVALID -> contentSummary =
                     resources.getString(R.string.ssl_certificate_date_invalid)
 
-                SslError.SSL_INVALID -> content_summary =
+                SslError.SSL_INVALID -> contentSummary =
                     resources.getString(R.string.ssl_certificate_invalid)
 
-                SslError.SSL_EXPIRED -> content_summary =
+                SslError.SSL_EXPIRED -> contentSummary =
                     resources.getString(R.string.ssl_certificate_expired)
 
-                SslError.SSL_IDMISMATCH -> content_summary =
+                SslError.SSL_IDMISMATCH -> contentSummary =
                     resources.getString(R.string.ssl_certificate_idmismatch)
 
-                SslError.SSL_NOTYETVALID -> content_summary =
+                SslError.SSL_NOTYETVALID -> contentSummary =
                     resources.getString(R.string.ssl_certificate_notyetvalid)
 
-                SslError.SSL_UNTRUSTED -> content_summary =
+                SslError.SSL_UNTRUSTED -> contentSummary =
                     resources.getString(R.string.ssl_certificate_untrusted)
             }
             dialog.setTitle(resources.getString(R.string.ssl_certificate_error_dialog_title))
                 .setMessage(
                     resources.getString(
                         R.string.ssl_certificate_error_dialog_content,
-                        content_summary
+                        contentSummary
                     )
                 )
                 .setPositiveButton(resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int -> handler.proceed() }

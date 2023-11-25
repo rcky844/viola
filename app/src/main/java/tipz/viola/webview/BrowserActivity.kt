@@ -24,7 +24,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.JsonReader
 import android.util.JsonToken
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -48,7 +47,6 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -83,7 +81,6 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUA: String? = null
     private var currentCustomUAWideView = false
     private var iconHashClient: IconHashClient? = null
-    private var retractedRotation = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
@@ -294,20 +291,6 @@ class BrowserActivity : VWebViewActivity() {
             }
             popupMenu.show()
         }
-        fab?.setOnClickListener {
-            if (fab?.rotation != 0f || fab?.rotation != 180f) fab?.animate()?.cancel()
-            if (toolsContainer.visibility == View.VISIBLE) {
-                fab?.animate()?.rotation(retractedRotation.toFloat())?.setDuration(250)?.start()
-                toolsContainer.animate()?.alpha(0f)?.setDuration(250)?.start()
-                toolsContainer.visibility = View.GONE
-            } else {
-                fab?.animate()?.rotation((retractedRotation - 180).toFloat())?.setDuration(250)
-                    ?.start()
-                toolsContainer.animate()?.alpha(1f)?.setDuration(250)?.start()
-                toolsContainer.visibility = View.VISIBLE
-            }
-            reachModeCheck()
-        }
 
         /* Code for detecting return key presses */
         UrlEdit?.setOnEditorActionListener(
@@ -337,6 +320,17 @@ class BrowserActivity : VWebViewActivity() {
                 closeKeyboard()
             }
         UrlEdit?.setAdapter(SuggestionAdapter(this@BrowserActivity, R.layout.recycler_list_item_1))
+
+        fab?.setOnClickListener {
+            if (progressBar.progress > 0) webview.stopLoading()
+            if (progressBar.progress == 0) webview.webViewReload()
+        }
+    }
+
+    override fun onPageLoadProgressChanged(progress: Int) {
+        super.onPageLoadProgressChanged(progress)
+        if (progress == -1) fab?.setImageResource(R.drawable.stop)
+        if (progress == 0) fab?.setImageResource(R.drawable.refresh)
     }
 
     private fun closeKeyboard() {
@@ -393,39 +387,7 @@ class BrowserActivity : VWebViewActivity() {
     override fun doSettingsCheck() {
         super.doSettingsCheck()
 
-        // Settings check
-        toolsContainer.gravity = if (CommonUtils.isIntStrOne(
-                SettingsUtils.getPrefNum(
-                    pref,
-                    SettingsKeys.centerActionBar
-                )
-            )
-        ) Gravity.CENTER_HORIZONTAL else Gravity.NO_GRAVITY
-        fab!!.rotation = (if (CommonUtils.isIntStrOne(
-                SettingsUtils.getPrefNum(
-                    pref,
-                    SettingsKeys.reverseLayout
-                )
-            )
-        ) 0 else 180).toFloat()
-        retractedRotation = fab!!.rotation.toInt()
-        if (toolsContainer.visibility == View.VISIBLE) fab!!.rotation = fab!!.rotation - 180
-        val reverseOnlyActionBar =
-            CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout)) &&
-                    CommonUtils.isIntStrOne(
-                        SettingsUtils.getPrefNum(
-                            pref,
-                            SettingsKeys.reverseOnlyActionBar
-                        )
-                    )
-        fab!!.visibility = if (reverseOnlyActionBar) View.GONE else View.VISIBLE
-        val dp8 = CommonUtils.getDisplayMetrics(this@BrowserActivity, 8).toInt()
-        val dp48 = CommonUtils.getDisplayMetrics(this@BrowserActivity, 48).toInt()
-        UrlEdit!!.setPadding(
-            dp8, dp8,
-            if (reverseOnlyActionBar) dp8 else dp48,
-            dp8
-        )
+
     }
 
     class ItemsAdapter(mainActivity: BrowserActivity) :
@@ -469,6 +431,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     companion object {
+        // TODO: Add support for reverting to legacy layout
         private val legacyActionBarItemList = listOf(
             R.drawable.arrow_back_alt,
             R.drawable.arrow_forward_alt,
@@ -490,6 +453,16 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.home,
             R.drawable.share,
             R.drawable.view_stream
+        )
+
+        private val actionBarExpandableItemList = listOf(
+            R.drawable.smartphone,
+            R.drawable.new_tab,
+            R.drawable.app_shortcut,
+            R.drawable.settings,
+            R.drawable.history,
+            R.drawable.favorites,
+            R.drawable.close
         )
     }
 }

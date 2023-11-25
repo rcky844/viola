@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2020-2023 Tipz Team
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020-2023 Tipz Team
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
@@ -9,16 +10,19 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/actionbar_view_height">
+        android:layout_width="0dp"
+        android:layout_height="@dimen/actionbar_view_height"
+        app:layout_constraintBottom_toTopOf="@id/webviewContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
@@ -31,16 +35,16 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/favicon"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
                     android:contentDescription="@string/favicon_desp"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+                    android:padding="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -52,9 +56,7 @@
                     android:layout_height="?attr/minTouchTargetSize"
                     android:contentDescription="@string/favicon_desp"
                     android:indeterminate="true"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+                    android:padding="8dp"
                     android:visibility="gone"
                     app:indicatorSize="28dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -73,19 +75,21 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:focusable="true"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
                     android:background="@drawable/url_edit_bg"
                     android:hint="@string/address_bar_hint"
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
                     android:importantForAutofill="no"
                     android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textColor="@color/colorElement"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/fab"
                     app:layout_constraintStart_toEndOf="@id/barrier"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,15 +97,13 @@
                     android:id="@+id/fab"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
-                    android:layout_marginRight="8dp"
                     android:background="?attr/selectableItemBackground"
-                    android:contentDescription="@string/fab_desp"
+                    android:focusable="true"
                     android:padding="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/arrow_up"
-                    tools:ignore="RedundantDescriptionCheck" />
+                    app:srcCompat="@drawable/refresh" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -120,9 +122,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_icon_size"
         android:background="@color/colorTopBarWebView"
-        android:visibility="gone">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/webviewContainer">
 
-        <View style="@style/Divider"/>
+        <View style="@style/Divider" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/actionBar"
@@ -135,8 +140,12 @@
 
     <RelativeLayout
         android:id="@+id/webviewContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/toolsContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar">
 
         <include
             android:id="@+id/layout_webview"
@@ -153,4 +162,5 @@
 
     </RelativeLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

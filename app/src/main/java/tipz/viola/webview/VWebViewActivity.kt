@@ -21,7 +21,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.activity.addCallback
@@ -29,7 +28,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.CallSuper
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -124,47 +122,6 @@ open class VWebViewActivity : BaseActivity() {
         favicon.visibility = if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) View.VISIBLE else View.GONE
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) && faviconProgressBar.visibility == View.VISIBLE)
             favicon.visibility = View.GONE
-
-        // Reach mode
-        reachModeCheck()
-    }
-
-    fun reachModeCheck() {
-        val appBarParams = appbar.layoutParams as CoordinatorLayout.LayoutParams
-        val toolsContainerParams: CoordinatorLayout.LayoutParams?
-        val webviewContainerParams =
-            webviewContainer.layoutParams as CoordinatorLayout.LayoutParams
-        toolsContainerParams =
-            toolsContainer.layoutParams as CoordinatorLayout.LayoutParams
-
-        val actionBarSize = resources.getDimension(R.dimen.actionbar_view_height).toInt()
-        val toolsContainerSize = resources.getDimension(R.dimen.toolbar_icon_size).toInt()
-        var margin = actionBarSize
-        if (toolsContainer.visibility == View.VISIBLE) margin += toolsContainerSize
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout))) {
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseOnlyActionBar))) {
-                appBarParams.gravity = Gravity.TOP
-                toolsContainer.visibility = View.VISIBLE
-                toolsContainerParams.setMargins(0, 0, 0, 0)
-                webviewContainerParams.setMargins(0, actionBarSize, 0, toolsContainerSize)
-            } else {
-                appBarParams.gravity = Gravity.BOTTOM
-                toolsContainerParams.setMargins(0, 0, 0, actionBarSize)
-                webviewContainerParams.setMargins(0, 0, 0, margin)
-            }
-            toolsContainerParams.gravity = Gravity.BOTTOM
-        } else {
-            appBarParams.gravity = Gravity.TOP
-            toolsContainerParams.gravity = Gravity.TOP
-            toolsContainerParams.setMargins(0, actionBarSize, 0, 0)
-            webviewContainerParams.setMargins(0, margin, 0, 0)
-        }
-        appbar.layoutParams = appBarParams
-        appbar.invalidate()
-        toolsContainer.layoutParams = toolsContainerParams
-        toolsContainer.invalidate()
-        webviewContainer.layoutParams = webviewContainerParams
-        webviewContainer.invalidate()
     }
 
     open fun onUrlUpdated(url: String?) {}
@@ -181,10 +138,12 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     open fun onDropDownDismissed() {}
+
     open fun onStartPageEditTextPressed() {}
+
     @Suppress("DEPRECATION")
     @CallSuper
-    fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {
+    open fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {
         if (checkInstance && favicon.drawable is BitmapDrawable) return
         if (icon == null) favicon.setImageResource(R.drawable.default_favicon) else favicon.setImageBitmap(
             icon
@@ -197,7 +156,7 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     @CallSuper
-    fun onFaviconProgressUpdated(isLoading: Boolean) {
+    open fun onFaviconProgressUpdated(isLoading: Boolean) {
         if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) return
         if (isLoading) {
             favicon.visibility = View.GONE
@@ -209,7 +168,7 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     @CallSuper
-    fun onSwipeRefreshLayoutRefreshingUpdated(isRefreshing: Boolean) {
+    open fun onSwipeRefreshLayoutRefreshingUpdated(isRefreshing: Boolean) {
         swipeRefreshLayout.isRefreshing = isRefreshing
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')") { value1: String ->
@@ -235,7 +194,7 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     @CallSuper
-    fun onPageLoadProgressChanged(progress: Int) {
+    open fun onPageLoadProgressChanged(progress: Int) {
         progressBar.progress = if (progress == 100) 0 else progress
     }
 
