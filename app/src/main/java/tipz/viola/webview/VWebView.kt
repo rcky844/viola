@@ -97,9 +97,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var mVioWebViewActivity: VWebViewActivity? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
-    private val mWebViewRenderProcess = if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER)) WebViewCompat.getWebViewRenderProcess(
-        this
-    ) else null
+    private val mWebViewRenderProcess =
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER)) WebViewCompat.getWebViewRenderProcess(
+            this
+        ) else null
     private var currentUrl: String? = null
     private var adServers: String? = null
     private var currentBroha: Broha? = null
@@ -107,11 +108,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var historyCommitted = false
     private val pref = (mContext.applicationContext as Application).pref!!
     private var mUploadMessage: ValueCallback<Array<Uri>>? = null
-    val mFileChooser = (mContext as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (null == mUploadMessage || uri == null) return@registerForActivityResult
-        mUploadMessage!!.onReceiveValue(arrayOf(uri))
-        mUploadMessage = null
-    }
+    val mFileChooser =
+        (mContext as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (null == mUploadMessage || uri == null) return@registerForActivityResult
+            mUploadMessage!!.onReceiveValue(arrayOf(uri))
+            mUploadMessage = null
+        }
     private val mRequestHeaders = HashMap<String, String>()
     private fun userAgentFull(mode: Double): String {
         val info = WebViewCompat.getCurrentWebViewPackage(mContext)
@@ -184,21 +186,25 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     resources.getString(R.string.copy_url) -> {
                         CommonUtils.copyClipboard(mContext, url)
                     }
+
                     resources.getString(R.string.download_image) -> {
                         DownloadUtils.dmDownloadFile(
                             mContext, url,
                             null, null, url
                         )
                     }
+
                     resources.getString(R.string.search_image) -> {
                         this.loadUrl("http://images.google.com/searchbyimage?image_url=$url")
                     }
+
                     resources.getString(R.string.open_in_new_tab) -> {
                         val intent = Intent(mContext, BrowserActivity::class.java)
                         intent.putExtra(Intent.EXTRA_TEXT, url)
                             .setAction(Intent.ACTION_SEND).type = UrlUtils.TypeSchemeMatch[1]
                         mContext.startActivity(intent)
                     }
+
                     resources.getString(R.string.share_url) -> {
                         CommonUtils.shareUrl(mContext, url)
                     }
@@ -406,9 +412,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
             if (adServers.isNullOrEmpty()) {
-                val scope = CoroutineScope(Dispatchers.IO)
-                scope.launch {
-                    val result = DownloadUtils.startFileDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")
+                CoroutineScope(Dispatchers.IO).launch {
+                    val result =
+                        DownloadUtils.startFileDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")
                     val scanner = Scanner(result)
                     val builder = StringBuilder()
                     while (scanner.hasNextLine()) {
@@ -490,10 +496,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         override fun onReceivedIcon(view: WebView, icon: Bitmap) {
             mVioWebViewActivity!!.onFaviconUpdated(icon, false)
+            val currentTitle = title
             if (!historyCommitted && updateHistory) {
-                currentBroha!!.iconHash = iconHashClient.save(icon)
-                currentBroha!!.title = title // For making sure title is up to date
-                if (HistoryUtils.lastUrl(mContext) != currentUrl) HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha!!)
+                CoroutineScope(Dispatchers.IO).launch {
+                    currentBroha!!.iconHash = iconHashClient.save(icon)
+                    currentBroha!!.title = currentTitle // For making sure title is up to date
+                    if (HistoryUtils.lastUrl(mContext) != currentUrl) {
+                        HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha!!)
+                    }
+                }
                 historyCommitted = true
             }
         }
@@ -617,7 +628,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (defaultValue != null) dialog.setView(root)
         dialog.create().show()
     }
-
 
 
     private fun urlShouldSet(url: String): Boolean {

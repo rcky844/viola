@@ -31,28 +31,22 @@ class IconHashClient(context: Context) {
     private val fileDir: String
 
     init {
-        //appDatabase = Room.databaseBuilder(context, IconHashDatabase.class, "iconHash").build();
-        /* FIXME: Don't run on main thread */
-        appDatabase = databaseBuilder(
-            context,
-            IconHashDatabase::class.java,
-            "iconHash"
-        ).allowMainThreadQueries().build()
+        appDatabase = databaseBuilder(context, IconHashDatabase::class.java, "iconHash").build()
         fileDir = context.filesDir.path + "/favicon"
     }
 
     private val dao: IconHashDao?
         get() = appDatabase.iconHashDao()
 
-    private fun getIconHashById(id: Int): IconHash? {
+    suspend private fun getIconHashById(id: Int): IconHash? {
         return appDatabase.iconHashDao()?.findById(id)
     }
 
-    private fun getIconHashByHash(hash: Int): IconHash? {
+    suspend private fun getIconHashByHash(hash: Int): IconHash? {
         return appDatabase.iconHashDao()?.findByHash(hash)
     }
 
-    fun save(icon: Bitmap): String? {
+    suspend fun save(icon: Bitmap): String? {
         val buffer = ByteBuffer.allocate(icon.byteCount)
         icon.copyPixelsToBuffer(buffer)
         val hashInt = Arrays.hashCode(buffer.array())
@@ -89,7 +83,7 @@ class IconHashClient(context: Context) {
         return null
     }
 
-    fun read(iconId: String?): Bitmap? {
+    suspend fun read(iconId: String?): Bitmap? {
         if (iconId == null) return null
         val data = getIconHashById(iconId.toInt())
         val hash = data?.iconHash.toString()

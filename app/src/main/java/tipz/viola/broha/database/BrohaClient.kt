@@ -22,11 +22,7 @@ class BrohaClient(context: Context?, dbName: String?) {
     private val appDatabase: BrohaDatabase
 
     init {
-        //appDatabase = Room.databaseBuilder(context, BrohaDatabase.class, dbName).build();
-        /* FIXME: Don't run on main thread */
-        appDatabase =
-            databaseBuilder(context!!, BrohaDatabase::class.java, dbName).allowMainThreadQueries()
-                .build()
+        appDatabase = databaseBuilder(context!!, BrohaDatabase::class.java, dbName).build()
     }
 
     val dao: BrohaDao?

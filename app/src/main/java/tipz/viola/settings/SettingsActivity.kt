@@ -435,8 +435,7 @@ class SettingsActivity : BaseActivity() {
                         BuildConfig.VERSION_BUILD_YEAR
                     )
                     update_btn.setOnClickListener {
-                        val scope = CoroutineScope(Dispatchers.IO)
-                        scope.launch {
+                        CoroutineScope(Dispatchers.IO).launch {
                             if (!DownloadUtils.isOnline(settingsActivity)) {
                                 showMessage(
                                     settingsActivity,

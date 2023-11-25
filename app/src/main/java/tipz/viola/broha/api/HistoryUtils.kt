@@ -19,19 +19,19 @@ import android.content.Context
 import tipz.viola.utils.CommonUtils
 
 object HistoryUtils {
-    fun clear(context: Context?) {
+    suspend fun clear(context: Context?) {
         HistoryApi.historyBroha(context!!)?.deleteAll()
     }
 
-    fun deleteById(context: Context?, id: Int) {
+    suspend fun deleteById(context: Context?, id: Int) {
         HistoryApi.historyBroha(context!!)?.deleteById(id)
     }
 
-    fun isEmptyCheck(context: Context?): Boolean {
+    suspend fun isEmptyCheck(context: Context?): Boolean {
         return HistoryApi.historyBroha(context!!)?.isEmpty!!.size === 0
     }
 
-    fun lastUrl(context: Context?): String {
+    suspend fun lastUrl(context: Context?): String {
         val lastUrl = HistoryApi.historyBroha(context!!)?.lastUrl()
         return lastUrl?.url ?: CommonUtils.EMPTY_STRING
     }

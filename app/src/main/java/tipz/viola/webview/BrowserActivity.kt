@@ -51,6 +51,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
@@ -61,8 +64,8 @@ import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsUtils
-import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.CommonUtils
+import tipz.viola.utils.InternalUrls
 import java.io.IOException
 import java.io.StringReader
 import java.lang.ref.WeakReference
@@ -156,11 +159,15 @@ class BrowserActivity : VWebViewActivity() {
             mGetNeedLoad.launch(intent)
         } else if (item == R.drawable.favorites) {
             val icon = favicon.drawable
-            FavUtils.appendData(this, iconHashClient, webview.title, webview.url,
-                if (icon is BitmapDrawable) icon.bitmap else null
-            )
-            CommonUtils.showMessage(this, resources.getString(R.string.save_successful)
-            )
+            val title = webview.title
+            val url = webview.url
+            CoroutineScope(Dispatchers.IO).launch {
+                FavUtils.appendData(
+                    this@BrowserActivity, iconHashClient, title, url,
+                    if (icon is BitmapDrawable) icon.bitmap else null
+                )
+            }
+            CommonUtils.showMessage(this, resources.getString(R.string.save_successful))
         } else if (item == R.drawable.close) {
             finish()
         }
@@ -294,7 +301,8 @@ class BrowserActivity : VWebViewActivity() {
                 toolsContainer.animate()?.alpha(0f)?.setDuration(250)?.start()
                 toolsContainer.visibility = View.GONE
             } else {
-                fab?.animate()?.rotation((retractedRotation - 180).toFloat())?.setDuration(250)?.start()
+                fab?.animate()?.rotation((retractedRotation - 180).toFloat())?.setDuration(250)
+                    ?.start()
                 toolsContainer.animate()?.alpha(1f)?.setDuration(250)?.start()
                 toolsContainer.visibility = View.VISIBLE
             }

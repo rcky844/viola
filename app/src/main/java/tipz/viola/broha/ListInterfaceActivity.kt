@@ -18,6 +18,7 @@ package tipz.viola.broha
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,6 +35,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.BaseActivity
 import tipz.viola.R
@@ -77,9 +81,10 @@ class ListInterfaceActivity : BaseActivity() {
                 .setTitle(resources.getString(R.string.delete_all_entries))
                 .setMessage(resources.getString(if (activityMode == mode_history) R.string.del_hist_message else R.string.delete_fav_message))
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    if (activityMode == mode_history) HistoryUtils.clear(this) else if (activityMode == mode_favorites) FavUtils.clear(
-                        this
-                    )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (activityMode == mode_history) HistoryUtils.clear(this@ListInterfaceActivity)
+                        else if (activityMode == mode_favorites) FavUtils.clear(this@ListInterfaceActivity)
+                    }
                     showMessage(this, resources.getString(R.string.wiped_success))
                     finish()
                 }
@@ -90,12 +95,13 @@ class ListInterfaceActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        isEmptyCheck
+        isEmptyCheck()
         val brohaList = findViewById<RecyclerView>(R.id.recyclerView)
-        listData =
-            if (activityMode == mode_history) HistoryApi.historyBroha(this)?.all as MutableList<Broha>? else FavApi.favBroha(
-                this
-            )?.all as MutableList<Broha>?
+        CoroutineScope(Dispatchers.IO).launch {
+            listData =
+                if (activityMode == mode_history) HistoryApi.historyBroha(this@ListInterfaceActivity)?.all as MutableList<Broha>?
+                else FavApi.favBroha(this@ListInterfaceActivity)?.all as MutableList<Broha>?
+        }
         val layoutManager =
             LinearLayoutManager(this, RecyclerView.VERTICAL, activityMode == mode_history)
         if (activityMode == mode_history) layoutManager.stackFromEnd = true
@@ -106,20 +112,22 @@ class ListInterfaceActivity : BaseActivity() {
         )
     }
 
-    val isEmptyCheck: Unit
-        get() {
-            if (if (activityMode == mode_history) HistoryUtils.isEmptyCheck(this) else FavUtils.isEmptyCheck(
-                    this
-                )
-            ) {
-                showMessage(
-                    this, resources.getString(
-                        if (activityMode == mode_history) R.string.hist_empty else R.string.fav_list_empty
-                    )
-                )
-                finish()
-            }
+    fun isEmptyCheck() {
+        var isEmpty = false
+        CoroutineScope(Dispatchers.IO).launch {
+            isEmpty =
+                if (activityMode == mode_history) HistoryUtils.isEmptyCheck(this@ListInterfaceActivity)
+                else FavUtils.isEmptyCheck(this@ListInterfaceActivity)
         }
+        if (isEmpty) {
+            showMessage(
+                this, resources.getString(
+                    if (activityMode == mode_history) R.string.hist_empty else R.string.fav_list_empty
+                )
+            )
+            finish()
+        }
+    }
 
     class ItemsAdapter(
         brohaListInterfaceActivity: ListInterfaceActivity,
@@ -162,7 +170,11 @@ class ListInterfaceActivity : BaseActivity() {
             val data = listData!![position]
             val title = data.title
             val url = data.url
-            val icon = iconHashClient!!.read(data.iconHash)
+            lateinit var icon : Bitmap
+            CoroutineScope(Dispatchers.IO).launch {
+                icon = iconHashClient!!.read(data.iconHash)!!
+                if (data.iconHash != null) holder.icon.setImageBitmap(icon) else holder.icon.setImageResource(R.drawable.default_favicon)
+            }
             holder.title.text = title ?: url
             holder.url.text = Uri.parse(url ?: CommonUtils.EMPTY_STRING).host
             if (activityMode == mode_history) {
@@ -192,17 +204,19 @@ class ListInterfaceActivity : BaseActivity() {
                 }
                 popup1.setOnMenuItemClickListener { item: MenuItem ->
                     if (item.title.toString() == listInterfaceActivity.resources.getString(R.string.delete)) {
-                        if (activityMode == mode_history) HistoryUtils.deleteById(
-                            listInterfaceActivity,
-                            data.id
-                        ) else if (activityMode == mode_favorites) FavUtils.deleteById(
-                            listInterfaceActivity,
-                            data.id
-                        )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            if (activityMode == mode_history) HistoryUtils.deleteById(
+                                listInterfaceActivity,
+                                data.id
+                            ) else if (activityMode == mode_favorites) FavUtils.deleteById(
+                                listInterfaceActivity,
+                                data.id
+                            )
+                        }
                         listData!!.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeRemoved(position, itemCount - position)
-                        listInterfaceActivity.isEmptyCheck
+                        listInterfaceActivity.isEmptyCheck()
                     } else if (item.title.toString() == listInterfaceActivity.resources.getString(
                             R.string.copy_url
                         )
@@ -231,7 +245,8 @@ class ListInterfaceActivity : BaseActivity() {
                                     data.url = Objects.requireNonNull(urlEditText.text).toString()
                                     data.setTimestamp()
                                     FavApi.favBroha(listInterfaceActivity)?.updateBroha(data)
-                                    listData = FavApi.favBroha(listInterfaceActivity)?.all as MutableList<Broha>?
+                                    listData =
+                                        FavApi.favBroha(listInterfaceActivity)?.all as MutableList<Broha>?
                                     notifyItemRangeRemoved(position, 1)
                                 }
                             }
@@ -242,13 +257,15 @@ class ListInterfaceActivity : BaseActivity() {
                             R.string.add_to_fav
                         )
                     ) {
-                        FavUtils.appendData(
-                            listInterfaceActivity,
-                            iconHashClient,
-                            title,
-                            url,
-                            icon
-                        )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            FavUtils.appendData(
+                                listInterfaceActivity,
+                                iconHashClient,
+                                title,
+                                url,
+                                icon
+                            )
+                        }
                         showMessage(
                             listInterfaceActivity,
                             listInterfaceActivity.resources.getString(R.string.save_successful)
@@ -261,9 +278,6 @@ class ListInterfaceActivity : BaseActivity() {
                 popup1.show()
                 true
             }
-            if (data.iconHash != null && icon != null) holder.icon.setImageBitmap(icon) else holder.icon.setImageResource(
-                R.drawable.default_favicon
-            )
         }
 
         override fun getItemCount(): Int {

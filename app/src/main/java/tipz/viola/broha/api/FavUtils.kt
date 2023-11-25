@@ -28,7 +28,7 @@ object FavUtils {
      *
      * Module to save favourites into a db.
      */
-    fun appendData(
+    suspend fun appendData(
         context: Context?,
         iconHashClient: IconHashClient?,
         title: String?,
@@ -41,15 +41,15 @@ object FavUtils {
             .insertAll(Broha(title, url))
     }
 
-    fun clear(context: Context?) {
+    suspend fun clear(context: Context?) {
         favBroha(context!!)!!.deleteAll()
     }
 
-    fun deleteById(context: Context?, id: Int) {
+    suspend fun deleteById(context: Context?, id: Int) {
         favBroha(context!!)!!.deleteById(id)
     }
 
-    fun isEmptyCheck(context: Context?): Boolean {
+    suspend fun isEmptyCheck(context: Context?): Boolean {
         return favBroha(context!!)!!.isEmpty.size === 0
     }
 }
