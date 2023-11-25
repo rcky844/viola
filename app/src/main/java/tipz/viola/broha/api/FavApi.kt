@@ -13,56 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.api;
+package tipz.viola.broha.api
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
+import tipz.viola.Application
+import tipz.viola.broha.database.BrohaDao
+import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsUtils.getPref
+import tipz.viola.settings.SettingsUtils.getPrefNum
+import tipz.viola.settings.SettingsUtils.setPrefNum
 
-import tipz.viola.Application;
-import tipz.viola.broha.database.BrohaDao;
-import tipz.viola.settings.SettingsKeys;
-import tipz.viola.settings.SettingsUtils;
-
-public class FavApi {
-    private final static int LATEST_API = 1;
+object FavApi {
+    private const val LATEST_API = 1
 
     /* Old pref keys for migration */
-    private static String bookmarked(int count) {
-        return "bookmarked_".concat(Integer.toString(count));
-    }
-    private static final String bookmarked_title = "_title";
-    private static final String bookmarked_show = "_show";
-
-    private static SharedPreferences bookmarks(Context context) {
-        return context.getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE);
+    private fun bookmarked(count: Int): String {
+        return "bookmarked_" + Integer.toString(count)
     }
 
-    public static BrohaDao favBroha(Context context) {
-        return ((Application) context.getApplicationContext()).favBroha;
+    private const val bookmarked_title = "_title"
+    private const val bookmarked_show = "_show"
+    private fun bookmarks(context: Context): SharedPreferences {
+        return context.getSharedPreferences("bookmarks.cfg", Activity.MODE_PRIVATE)
     }
 
-    public static void doApiInitCheck(Context context) {
-        SharedPreferences pref = ((Application) context.getApplicationContext()).pref;
+    @JvmStatic
+    fun favBroha(context: Context): BrohaDao? {
+        return (context.applicationContext as Application).favBroha
+    }
 
-        if (SettingsUtils.getPrefNum(pref, SettingsKeys.favApi) > LATEST_API
-                || SettingsUtils.getPrefNum(pref, SettingsKeys.favApi) <= -1)
-            throw new RuntimeException();
-
-        if (SettingsUtils.getPrefNum(pref, SettingsKeys.favApi) == 0) {
-            int populate_count = 0;
+    fun doApiInitCheck(context: Context) {
+        val pref = (context.applicationContext as Application).pref
+        if (getPrefNum(pref!!, SettingsKeys.favApi) > LATEST_API
+            || getPrefNum(pref, SettingsKeys.favApi) <= -1
+        ) throw RuntimeException()
+        if (getPrefNum(pref, SettingsKeys.favApi) == 0) {
+            var populate_count = 0
             while (populate_count != -1) {
-                String shouldShow = SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count).concat(bookmarked_show));
-                if (!shouldShow.equals("0")) {
-                    if (shouldShow.isEmpty())
-                        populate_count = -2;
-                    else
-                        FavUtils.appendData(context, null, SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count).concat(bookmarked_title)), SettingsUtils.getPref(bookmarks(context), bookmarked(populate_count)), null);
+                val shouldShow =
+                    getPref(bookmarks(context), bookmarked(populate_count) + bookmarked_show)
+                if (shouldShow != "0") {
+                    if (shouldShow!!.isEmpty()) populate_count = -2 else FavUtils.appendData(
+                        context, null, getPref(
+                            bookmarks(context), bookmarked(populate_count) + bookmarked_title
+                        ), getPref(bookmarks(context), bookmarked(populate_count)), null
+                    )
                 }
-                populate_count++;
+                populate_count++
             }
-            bookmarks(context).edit().clear().apply();
+            bookmarks(context).edit().clear().apply()
         }
-        SettingsUtils.setPrefNum(pref, SettingsKeys.favApi, LATEST_API);
+        setPrefNum(pref, SettingsKeys.favApi, LATEST_API)
     }
 }

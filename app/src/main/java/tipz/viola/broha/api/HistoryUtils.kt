@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.api;
+package tipz.viola.broha.api
 
-import android.content.Context;
+import android.content.Context
+import tipz.viola.utils.CommonUtils
 
-import tipz.viola.broha.database.Broha;
-import tipz.viola.utils.CommonUtils;
-
-public class HistoryUtils {
-    public static void clear(Context context) {
-        HistoryApi.historyBroha(context).deleteAll();
+object HistoryUtils {
+    fun clear(context: Context?) {
+        HistoryApi.historyBroha(context!!)?.deleteAll()
     }
 
-    public static void deleteById(Context context, int id) {
-        HistoryApi.historyBroha(context).deleteById(id);
+    fun deleteById(context: Context?, id: Int) {
+        HistoryApi.historyBroha(context!!)?.deleteById(id)
     }
 
-    public static boolean isEmptyCheck(Context context) {
-        return HistoryApi.historyBroha(context).isEmpty().size() == 0;
+    fun isEmptyCheck(context: Context?): Boolean {
+        return HistoryApi.historyBroha(context!!)?.isEmpty!!.size === 0
     }
 
-    public static String lastUrl(Context context) {
-        Broha lastUrl = HistoryApi.historyBroha(context).lastUrl();
-        return lastUrl == null ? CommonUtils.EMPTY_STRING : lastUrl.getUrl();
+    fun lastUrl(context: Context?): String {
+        val lastUrl = HistoryApi.historyBroha(context!!)?.lastUrl()
+        return lastUrl?.url ?: CommonUtils.EMPTY_STRING
     }
 }

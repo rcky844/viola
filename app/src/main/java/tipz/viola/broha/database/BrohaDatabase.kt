@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database;
+package tipz.viola.broha.database
 
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
-@Database(entities = {Broha.class}, version = 1)
-public abstract class BrohaDatabase extends RoomDatabase {
-    public abstract BrohaDao brohaDao();
+@Database(entities = [Broha::class], version = 1)
+abstract class BrohaDatabase : RoomDatabase() {
+    abstract fun brohaDao(): BrohaDao?
 }

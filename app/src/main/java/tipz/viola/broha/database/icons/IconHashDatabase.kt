@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database.icons;
+package tipz.viola.broha.database.icons
 
-import androidx.room.AutoMigration;
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
+import androidx.room.AutoMigration
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import tipz.viola.broha.database.icons.IconHash
 
-@Database(entities = {IconHash.class}, version = 2, autoMigrations = {@AutoMigration(from = 1, to = 2)})
-public abstract class IconHashDatabase extends RoomDatabase {
-    public abstract IconHashDao iconHashDao();
+@Database(entities = [IconHash::class], version = 1)
+abstract class IconHashDatabase : RoomDatabase() {
+    abstract fun iconHashDao(): IconHashDao?
 }

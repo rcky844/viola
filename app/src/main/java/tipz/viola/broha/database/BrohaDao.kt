@@ -13,38 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database;
+package tipz.viola.broha.database
 
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import java.util.List;
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 
 @Dao
-public interface BrohaDao {
-    @Query("SELECT * FROM broha")
-    List<Broha> getAll();
+interface BrohaDao {
+    @get:Query("SELECT * FROM broha")
+    val all: List<Broha>
 
-    @Query("SELECT * FROM broha LIMIT 1")
-    List<Broha> isEmpty();
+    @get:Query("SELECT * FROM broha LIMIT 1")
+    val isEmpty: List<Broha>
 
     @Query("SELECT * FROM broha ORDER BY id DESC LIMIT 1")
-    Broha lastUrl();
+    fun lastUrl(): Broha
 
     @Query("SELECT * FROM broha WHERE id LIKE :id LIMIT 1")
-    Broha findById(int id);
+    fun findById(id: Int): Broha
 
     @Insert
-    void insertAll(Broha... broha);
+    fun insertAll(vararg broha: Broha)
 
     @Update
-    void updateBroha(Broha... broha);
+    fun updateBroha(vararg broha: Broha)
 
     @Query("DELETE FROM broha WHERE id = :id")
-    void deleteById(int id);
+    fun deleteById(id: Int)
 
     @Query("DELETE FROM broha")
-    void deleteAll();
+    fun deleteAll()
 }

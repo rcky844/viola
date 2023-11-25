@@ -53,7 +53,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import tipz.viola.Application
 import tipz.viola.R
-import tipz.viola.broha.BrohaListInterfaceActivity
+import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavUtils
 import tipz.viola.broha.database.icons.IconHashClient
 import tipz.viola.search.SearchEngineEntries
@@ -61,7 +61,7 @@ import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsUtils
-import tipz.viola.utils.BrowservioURLs
+import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.CommonUtils
 import java.io.IOException
 import java.io.StringReader
@@ -114,7 +114,7 @@ class BrowserActivity : VWebViewActivity() {
                 )
             } else {
                 UrlEdit!!.setText(CommonUtils.EMPTY_STRING)
-                webview.loadUrl(BrowservioURLs.startUrl)
+                webview.loadUrl(InternalUrls.startUrl)
             }
         } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             currentPrebuiltUAState = !currentPrebuiltUAState
@@ -151,8 +151,8 @@ class BrowserActivity : VWebViewActivity() {
             val intent = Intent(this, SettingsActivity::class.java)
             mGetNeedLoad.launch(intent)
         } else if (item == R.drawable.history) {
-            val intent = Intent(this@BrowserActivity, BrohaListInterfaceActivity::class.java)
-            intent.putExtra(Intent.EXTRA_TEXT, BrohaListInterfaceActivity.mode_history)
+            val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
+            intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_history)
             mGetNeedLoad.launch(intent)
         } else if (item == R.drawable.favorites) {
             val icon = favicon.drawable
@@ -190,8 +190,8 @@ class BrowserActivity : VWebViewActivity() {
                 .create().show()
             if (currentCustomUA != null) customUserAgent.setText(currentCustomUA)
         } else if (item == R.drawable.favorites) {
-            val intent = Intent(this@BrowserActivity, BrohaListInterfaceActivity::class.java)
-            intent.putExtra(Intent.EXTRA_TEXT, BrohaListInterfaceActivity.mode_favorites)
+            val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
+            intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_favorites)
             mGetNeedLoad.launch(intent)
         }
     }
@@ -358,7 +358,7 @@ class BrowserActivity : VWebViewActivity() {
                     )
             )
         } else {
-            webview.loadUrl(BrowservioURLs.startUrl)
+            webview.loadUrl(InternalUrls.startUrl)
         }
     }
 

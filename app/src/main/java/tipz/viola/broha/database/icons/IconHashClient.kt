@@ -13,98 +13,89 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database.icons;
+package tipz.viola.broha.database.icons
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Build
+import androidx.room.Room.databaseBuilder
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Integer.toString
+import java.nio.ByteBuffer
+import java.util.Arrays
 
-import androidx.room.Room;
+class IconHashClient(context: Context) {
+    private val appDatabase: IconHashDatabase
+    private val fileDir: String
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-
-public class IconHashClient {
-    private final IconHashDatabase appDatabase;
-    private final String fileDir;
-
-    public IconHashClient(Context context) {
+    init {
         //appDatabase = Room.databaseBuilder(context, IconHashDatabase.class, "iconHash").build();
         /* FIXME: Don't run on main thread */
-        appDatabase = Room.databaseBuilder(context, IconHashDatabase.class, "iconHash").allowMainThreadQueries().build();
-        fileDir = context.getFilesDir().getPath().concat("/favicon");
+        appDatabase = databaseBuilder(
+            context,
+            IconHashDatabase::class.java,
+            "iconHash"
+        ).allowMainThreadQueries().build()
+        fileDir = context.filesDir.path + "/favicon"
     }
 
-    public IconHashDao getDao() {
-        return appDatabase.iconHashDao();
+    private val dao: IconHashDao?
+        get() = appDatabase.iconHashDao()
+
+    private fun getIconHashById(id: Int): IconHash? {
+        return appDatabase.iconHashDao()?.findById(id)
     }
 
-    public IconHash getIconHashById(int id) {
-        return appDatabase.iconHashDao().findById(id);
+    private fun getIconHashByHash(hash: Int): IconHash? {
+        return appDatabase.iconHashDao()?.findByHash(hash)
     }
 
-    public IconHash getIconHashByHash(int hash) {
-        return appDatabase.iconHashDao().findByHash(hash);
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public String save(Bitmap icon) {
-        ByteBuffer buffer = ByteBuffer.allocate(icon.getByteCount());
-        icon.copyPixelsToBuffer(buffer);
-        int hashInt = Arrays.hashCode(buffer.array());
-        String hash = Integer.toString(hashInt);
-
-        File dirFile = new File(fileDir);
+    fun save(icon: Bitmap): String? {
+        val buffer = ByteBuffer.allocate(icon.byteCount)
+        icon.copyPixelsToBuffer(buffer)
+        val hashInt = Arrays.hashCode(buffer.array())
+        val hash = hashInt.toString()
+        val dirFile = File(fileDir)
         if (dirFile.exists() || dirFile.mkdirs()) {
-            boolean wasJpg = false;
-            File path = new File(fileDir, hash.concat(".jpg"));
+            var wasJpg = false
+            var path = File(fileDir, "$hash.jpg")
             if (path.exists()) {
-                path.delete(); /* Delete old JPEG files */
-                wasJpg = true;
+                path.delete() /* Delete old JPEG files */
+                wasJpg = true
             }
-
-            path = new File(fileDir, hash.concat(".webp"));
-            if (path.exists())
-                return Integer.toString(getIconHashByHash(hashInt).getId());
-
+            path = File(fileDir, "$hash.webp")
+            if (path.exists()) return getIconHashByHash(hashInt)?.id.toString()
             try {
-                FileOutputStream out = new FileOutputStream(path);
-                icon.compress(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ?
-                        Bitmap.CompressFormat.WEBP_LOSSY : Bitmap.CompressFormat.WEBP, 75, out);
-                out.flush();
-                out.close();
-            } catch (Exception e) {
-                return null;
+                val out = FileOutputStream(path)
+                icon.compress(
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSY else Bitmap.CompressFormat.WEBP,
+                    75,
+                    out
+                )
+                out.flush()
+                out.close()
+            } catch (e: Exception) {
+                return null
             }
-
-            if (wasJpg) {
-                return Integer.toString(getIconHashByHash(hashInt).getId());
+            return if (wasJpg) {
+                getIconHashByHash(hashInt)?.id.toString()
             } else {
-                getDao().insertAll(new IconHash(hashInt));
-                return Integer.toString(getDao().lastIcon().getId());
+                dao?.insertAll(IconHash(hashInt))
+                dao?.lastIcon()?.id.toString()
             }
         }
-        return null;
+        return null
     }
 
-    public Bitmap read(String iconId) {
-        if (iconId == null)
-            return null;
-        IconHash data = getIconHashById(Integer.parseInt(iconId));
-        if (data == null)
-            return null;
-        String hash = String.valueOf(data.getIconHash());
-        File imgFile = new File(fileDir, hash.concat(".webp"));
-        if (imgFile.exists())
-            return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-        imgFile = new File(fileDir, hash.concat(".jpg"));
-        if (imgFile.exists())
-            return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-        return null;
+    fun read(iconId: String?): Bitmap? {
+        if (iconId == null) return null
+        val data = getIconHashById(iconId.toInt())
+        val hash = data?.iconHash.toString()
+        var imgFile = File(fileDir, "$hash.webp")
+        if (imgFile.exists()) return BitmapFactory.decodeFile(imgFile.absolutePath)
+        imgFile = File(fileDir, "$hash.jpg")
+        return if (imgFile.exists()) BitmapFactory.decodeFile(imgFile.absolutePath) else null
     }
 }

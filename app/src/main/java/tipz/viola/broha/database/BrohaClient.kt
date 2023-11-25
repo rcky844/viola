@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database;
+package tipz.viola.broha.database
 
-import android.content.Context;
+import android.content.Context
+import androidx.room.Room.databaseBuilder
 
-import androidx.room.Room;
+class BrohaClient(context: Context?, dbName: String?) {
+    private val appDatabase: BrohaDatabase
 
-public class BrohaClient {
-    private final BrohaDatabase appDatabase;
-
-    public BrohaClient(Context context, String dbName) {
+    init {
         //appDatabase = Room.databaseBuilder(context, BrohaDatabase.class, dbName).build();
         /* FIXME: Don't run on main thread */
-        appDatabase = Room.databaseBuilder(context, BrohaDatabase.class, dbName).allowMainThreadQueries().build();
+        appDatabase =
+            databaseBuilder(context!!, BrohaDatabase::class.java, dbName).allowMainThreadQueries()
+                .build()
     }
 
-    public BrohaDao getDao() {
-        return appDatabase.brohaDao();
-    }
+    val dao: BrohaDao?
+        get() = appDatabase.brohaDao()
 }

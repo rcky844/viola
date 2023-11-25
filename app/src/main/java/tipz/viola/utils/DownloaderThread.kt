@@ -13,66 +13,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.utils;
+package tipz.viola.utils
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Message;
+import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
+import com.loopj.android.http.AsyncHttpClient
+import com.loopj.android.http.AsyncHttpResponseHandler
+import cz.msebera.android.httpclient.Header
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import cz.msebera.android.httpclient.Header;
-
-public class DownloaderThread extends HandlerThread {
-    public static final int TYPE_SUCCESS = 2;
-    public static final int TYPE_FAILED = 3;
-
-    public final static String MSG_RESPONSE = "response";
-
-    private Handler mCallerHandler;
-
-    public DownloaderThread(String name) {
-        super(name);
+class DownloaderThread(name: String?) : HandlerThread(name) {
+    private var mCallerHandler: Handler? = null
+    fun setCallerHandler(callerHandler: Handler?) {
+        mCallerHandler = callerHandler
     }
 
-    public void setCallerHandler(Handler callerHandler) {
-        mCallerHandler = callerHandler;
-    }
-
-    public void startDownload(String url) {
-        Message message = mCallerHandler.obtainMessage();
-        Bundle bundle = new Bundle();
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(url, new AsyncHttpResponseHandler(getLooper()) {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+    fun startDownload(url: String?) {
+        val message = mCallerHandler!!.obtainMessage()
+        val bundle = Bundle()
+        val client = AsyncHttpClient()
+        client[url, object : AsyncHttpResponseHandler(looper) {
+            override fun onSuccess(statusCode: Int, headers: Array<Header>, response: ByteArray?) {
                 if (response == null) {
-                    bundle.putString(MSG_RESPONSE, CommonUtils.EMPTY_STRING);
-                    message.what = TYPE_FAILED;
+                    bundle.putString(MSG_RESPONSE, CommonUtils.EMPTY_STRING)
+                    message.what = TYPE_FAILED
                 } else {
-                    bundle.putString(MSG_RESPONSE, new String(response));
-                    message.what = TYPE_SUCCESS;
+                    bundle.putString(MSG_RESPONSE, String(response))
+                    message.what = TYPE_SUCCESS
                 }
             }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+            override fun onFailure(
+                statusCode: Int,
+                headers: Array<Header>,
+                errorResponse: ByteArray?,
+                e: Throwable
+            ) {
                 if (errorResponse == null) {
-                    bundle.putString(MSG_RESPONSE, CommonUtils.EMPTY_STRING);
+                    bundle.putString(MSG_RESPONSE, CommonUtils.EMPTY_STRING)
                 } else {
-                    bundle.putString(MSG_RESPONSE, new String(errorResponse));
+                    bundle.putString(MSG_RESPONSE, String(errorResponse))
                 }
-                message.what = TYPE_FAILED;
+                message.what = TYPE_FAILED
             }
 
-            @Override
-            public void onFinish() {
-                message.setData(bundle);
-                mCallerHandler.sendMessage(message);
+            override fun onFinish() {
+                message.data = bundle
+                mCallerHandler!!.sendMessage(message)
             }
-        });
+        }]
+    }
+
+    companion object {
+        const val TYPE_SUCCESS = 2
+        const val TYPE_FAILED = 3
+        const val MSG_RESPONSE = "response"
     }
 }

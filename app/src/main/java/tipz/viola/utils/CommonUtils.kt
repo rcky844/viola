@@ -13,43 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.utils;
+package tipz.viola.utils
 
-import static android.content.Context.CLIPBOARD_SERVICE;
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.TextUtils
+import android.util.TypedValue
+import android.widget.Toast
+import tipz.viola.R
+import java.util.Locale
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.text.TextUtils;
-import android.util.TypedValue;
-import android.widget.Toast;
+object CommonUtils {
+    const val EMPTY_STRING = ""
+    private const val DEFAULT_LANGUAGE = "en-US"
 
-import androidx.annotation.NonNull;
-
-import java.util.Locale;
-
-import tipz.viola.R;
-
-public class CommonUtils {
-    public static final String EMPTY_STRING = "";
-    private static final String DEFAULT_LANGUAGE = "en-US";
-
-    public static String LINE_SEPARATOR() {
-        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2 ?
-                System.getProperty("line.separator") : System.lineSeparator();
-    }
-
-    public static void shareUrl(Context context, @NonNull String url) {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, url);
-        context.startActivity(Intent.createChooser(i, context.getResources().getString(R.string.share_url_dialog_title)));
+    fun shareUrl(context: Context, url: String) {
+        val i = Intent(Intent.ACTION_SEND)
+        i.type = "text/plain"
+        i.putExtra(Intent.EXTRA_TEXT, url)
+        context.startActivity(
+            Intent.createChooser(
+                i,
+                context.resources.getString(R.string.share_url_dialog_title)
+            )
+        )
     }
 
     /**
@@ -57,8 +50,9 @@ public class CommonUtils {
      *
      * @param s is supplied for what to show
      */
-    public static void showMessage(Context context, String s) {
-        Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+    @JvmStatic
+    fun showMessage(context: Context?, s: String?) {
+        Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -66,39 +60,46 @@ public class CommonUtils {
      *
      * @param s string to copy
      */
-    public static void copyClipboard(Context context, String s) {
-        ((ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", s));
-        showMessage(context, context.getResources().getString(R.string.copied_clipboard));
+    @JvmStatic
+    fun copyClipboard(context: Context, s: String?) {
+        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
+            ClipData.newPlainText("clipboard", s)
+        )
+        showMessage(context, context.resources.getString(R.string.copied_clipboard))
     }
 
-    public static boolean isIntStrOne(Object obj) {
-        return obj.equals(obj instanceof String ? "1" : 1);
+    @JvmStatic
+    fun isIntStrOne(obj: Any): Boolean {
+        return obj == if (obj is String) "1" else 1
     }
 
-    public static String getLanguage() {
-        String language = Locale.getDefault().getLanguage();
-        String country = Locale.getDefault().getCountry();
-        if (TextUtils.isEmpty(language))
-            language = DEFAULT_LANGUAGE;
-        return language + "-" + country;
+    @JvmStatic
+    val language: String
+        get() {
+            var language = Locale.getDefault().language
+            val country = Locale.getDefault().country
+            if (TextUtils.isEmpty(language)) language = DEFAULT_LANGUAGE
+            return "$language-$country"
+        }
+
+    fun drawableToBitmap(drawable: Drawable): Bitmap {
+        val icon = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(icon)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return icon
     }
 
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap icon = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(icon);
-
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-
-        return icon;
-    }
-
-    public static float getDisplayMetrics(Context context, int measuredDp) {
-        Resources r = context.getResources();
+    fun getDisplayMetrics(context: Context, measuredDp: Int): Float {
+        val r = context.resources
         return TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                measuredDp,
-                r.getDisplayMetrics()
-        );
+            TypedValue.COMPLEX_UNIT_DIP,
+            measuredDp.toFloat(),
+            r.displayMetrics
+        )
     }
 }

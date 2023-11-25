@@ -23,7 +23,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
@@ -41,7 +40,6 @@ import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsUtils
 import tipz.viola.utils.CommonUtils
-import kotlin.system.exitProcess
 
 open class VWebViewActivity : BaseActivity() {
     lateinit var pref: SharedPreferences

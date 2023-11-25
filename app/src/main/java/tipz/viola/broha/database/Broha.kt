@@ -13,95 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database;
+package tipz.viola.broha.database
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 
 @Entity
-public class Broha {
+class Broha {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    var id = 0
+        private set
+
+    @JvmField
+    @ColumnInfo
+    var iconHash: String?
+
+    @JvmField
+    @ColumnInfo
+    var title: String?
+
+    @JvmField
+    @ColumnInfo
+    var url: String?
 
     @ColumnInfo
-    private String iconHash;
+    var timestamp: Long
+        private set
 
-    @ColumnInfo
-    private String title;
-
-    @ColumnInfo
-    private String url;
-
-    @ColumnInfo
-    private long timestamp;
-
-    public Broha(int id, String iconHash, String title, String url, long timestamp) {
-        this.id = id;
-        this.iconHash = iconHash;
-        this.title = title;
-        this.url = url;
-        this.timestamp = timestamp;
+    constructor(id: Int, iconHash: String?, title: String?, url: String, timestamp: Long) {
+        this.id = id
+        this.iconHash = iconHash
+        this.title = title
+        this.url = url
+        this.timestamp = timestamp
     }
 
     @Ignore
-    public Broha(String iconHash, String title, String url) {
-        this.iconHash = iconHash;
-        this.title = title;
-        this.url = url;
-        this.timestamp = System.currentTimeMillis() / 1000L;
+    constructor(iconHash: String?, title: String?, url: String) {
+        this.iconHash = iconHash
+        this.title = title
+        this.url = url
+        timestamp = System.currentTimeMillis() / 1000L
     }
 
     @Ignore
-    public Broha(String title, String url) {
-        this.iconHash = null;
-        this.title = title;
-        this.url = url;
-        this.timestamp = System.currentTimeMillis() / 1000L;
+    constructor(title: String?, url: String) {
+        iconHash = null
+        this.title = title
+        this.url = url
+        timestamp = System.currentTimeMillis() / 1000L
     }
 
     @Ignore
-    public Broha(String url) {
-        this.iconHash = null;
-        this.title = null;
-        this.url = url;
-        this.timestamp = System.currentTimeMillis() / 1000L;
+    constructor(url: String) {
+        iconHash = null
+        title = null
+        this.url = url
+        timestamp = System.currentTimeMillis() / 1000L
     }
 
-    public void setIconHash(String iconHash) {
-        this.iconHash = iconHash;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setTimestamp() {
-        this.timestamp = System.currentTimeMillis() / 1000L;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public String getIconHash() {
-        return this.iconHash;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getUrl() {
-        return this.url;
-    }
-
-    public long getTimestamp() {
-        return this.timestamp;
+    fun setTimestamp() {
+        timestamp = System.currentTimeMillis() / 1000L
     }
 }

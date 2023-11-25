@@ -21,6 +21,8 @@ def getGitHash = { ->
     return stdout.toString().trim()
 }
 
+apply plugin: 'kotlin-kapt'
+
 android {
     namespace "tipz.viola"
     useLibrary 'org.apache.http.legacy'
@@ -28,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId "tipz.viola"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 34
         versionCode 2
         versionName "6.0.0000.01"
@@ -79,6 +81,8 @@ android {
 }
 
 dependencies {
+    def room_version = "2.6.0"
+
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -92,7 +96,9 @@ dependencies {
     }
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
-    implementation "androidx.room:room-runtime:2.6.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     annotationProcessor 'androidx.annotation:annotation:1.7.0'
-    annotationProcessor "androidx.room:room-compiler:2.6.0"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 }

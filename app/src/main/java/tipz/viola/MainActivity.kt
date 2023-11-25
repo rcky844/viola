@@ -28,13 +28,14 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.BrowserActivity
 import tipz.viola.webview.CustomTabsActivity
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!webViewEnabled()) {
             CommonUtils.showMessage(this, resources.getString(R.string.no_webview))
-            finish()
+            exitProcess(0)
         }
         CaocConfig.Builder.create()
             .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             this,
             if (intent.hasCategory("android.intent.category.LAUNCHER")
                 || SettingsUtils.getPrefNum(
-                    (applicationContext as Application).pref,
+                    (applicationContext as Application).pref!!,
                     SettingsKeys.useCustomTabs
                 ) == 0
             ) BrowserActivity::class.java else CustomTabsActivity::class.java

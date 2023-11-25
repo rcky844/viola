@@ -13,34 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.settings;
+package tipz.viola.settings
 
-public class SettingsKeys {
-    /* browservio_saver */
-    public static final String browservio_saver = "browservio.cfg"; /* Pref file name */
-    public static final String centerActionBar = "centerActionBar"; /* INTEGER */
-    public static final String closeAppAfterDownload = "closeAppAfterDownload"; /* INTEGER */
-    public static final String defaultHomePage = "defaultHomePage"; /* STRING */ /* FIXME: Rename to customHomePage */
-    public static final String defaultHomePageId = "defaultHomePageId"; /* INTEGER */
-    public static final String defaultSearch = "defaultSearch"; /* STRING */ /* FIXME: Rename to customSearch */
-    public static final String defaultSearchId = "defaultSearchId"; /* INTEGER */
-    public static final String defaultSuggestions = "defaultSuggestions"; /* STRING */ /* FIXME: Rename to customSuggestions */
-    public static final String defaultSuggestionsId = "defaultSuggestionsId"; /* INTEGER */
-    public static final String enableAdBlock = "enableAdBlock"; /* INTEGER */
-    public static final String enableGoogleSafeBrowse = "enableGoogleSafeBrowse"; /* INTEGER */
-    public static final String enableSwipeRefresh = "enableSwipeRefresh"; /* INTEGER */
-    public static final String enforceHttps = "enforceHttps"; /* INTEGER */
-    public static final String favApi = "favApi"; /* INTEGER */ /* Was in bookmarks */
-    public static final String historyApi = "historyApi"; /* INTEGER */ /* Was in history */
-    public static final String isFirstLaunch = "isFirstLaunch"; /* STRING */
-    public static final String isJavaScriptEnabled = "isJavaScriptEnabled"; /* INTEGER */
-    public static final String protocolVersion = "protocolVersion"; /* INTEGER */
-    public static final String reverseLayout = "reverseLayout"; /* INTEGER */
-    public static final String reverseOnlyActionBar = "reverseOnlyActionBar"; /* INTEGER */
-    public static final String sendDNT = "sendDNT"; /* INTEGER */
-    public static final String showFavicon = "showFavicon"; /* INTEGER */
-    public static final String themeId = "themeId"; /* INTEGER */
-    public static final String useCustomTabs = "useCustomTabs"; /* INTEGER */
-    public static final String useWebHomePage = "useWebHomePage"; /* INTEGER */
-    public static final String updateRecentsIcon = "updateRecentsIcon"; /* INTEGER */
+object SettingsKeys {
+    const val configDataStore = "config" /* Pref file name */ /* TODO: Migrate to something newer? */
+    const val centerActionBar = "centerActionBar" /* INTEGER */
+    const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
+    const val defaultHomePage = "defaultHomePage" /* STRING */ /* FIXME: Rename to customHomePage */
+    const val defaultHomePageId = "defaultHomePageId" /* INTEGER */
+    const val defaultSearch = "defaultSearch" /* STRING */ /* FIXME: Rename to customSearch */
+    const val defaultSearchId = "defaultSearchId" /* INTEGER */
+    const val defaultSuggestions = "defaultSuggestions" /* STRING */ /* FIXME: Rename to customSuggestions */
+    const val defaultSuggestionsId = "defaultSuggestionsId" /* INTEGER */
+    const val enableAdBlock = "enableAdBlock" /* INTEGER */
+    const val enableGoogleSafeBrowse = "enableGoogleSafeBrowse" /* INTEGER */
+    const val enableSwipeRefresh = "enableSwipeRefresh" /* INTEGER */
+    const val enforceHttps = "enforceHttps" /* INTEGER */
+    const val favApi = "favApi" /* INTEGER */ /* Was in bookmarks */
+    const val historyApi = "historyApi" /* INTEGER */ /* Was in history */
+    const val isFirstLaunch = "isFirstLaunch" /* STRING */
+    const val isJavaScriptEnabled = "isJavaScriptEnabled" /* INTEGER */
+    const val protocolVersion = "protocolVersion" /* INTEGER */
+    const val reverseLayout = "reverseLayout" /* INTEGER */
+    const val reverseOnlyActionBar = "reverseOnlyActionBar" /* INTEGER */
+    const val sendDNT = "sendDNT" /* INTEGER */
+    const val showFavicon = "showFavicon" /* INTEGER */
+    const val themeId = "themeId" /* INTEGER */
+    const val useCustomTabs = "useCustomTabs" /* INTEGER */
+    const val useWebHomePage = "useWebHomePage" /* INTEGER */
+    const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
 }

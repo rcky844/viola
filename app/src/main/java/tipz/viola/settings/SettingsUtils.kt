@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.settings;
+package tipz.viola.settings
 
-import android.content.SharedPreferences;
+import android.content.SharedPreferences
 
-/* TODO: rewrite to only use browservio_saver */
-public class SettingsUtils {
-    public static boolean isFirstLaunch(SharedPreferences pref) {
-        return !SettingsUtils.getPref(pref, SettingsKeys.isFirstLaunch).equals("0");
+/* TODO: rewrite to only use config */
+object SettingsUtils {
+    fun isFirstLaunch(pref: SharedPreferences): Boolean {
+        return getPref(pref, SettingsKeys.isFirstLaunch) != "0"
     }
 
     /**
      * Set the tag as integer bool according to boolean
-     * <p>
+     *
+     *
      * Sets the integer bool according to the boolean.
      *
      * @param pref as the SharedPreference to get the value from.
@@ -33,11 +34,12 @@ public class SettingsUtils {
      * @param bool as the bool to check.
      * @param flip if the value needs to be flipped.
      */
-    public static void setPrefIntBoolAccBool(SharedPreferences pref, String tag, boolean bool, boolean flip) {
-        if (bool)
-            setPrefNum(pref, tag, (flip) ? 0 : 1);
-        else
-            setPrefNum(pref, tag, (flip) ? 1 : 0);
+    fun setPrefIntBoolRefBool(pref: SharedPreferences, tag: String?, bool: Boolean, flip: Boolean) {
+        if (bool) setPrefNum(pref, tag, if (flip) 0 else 1) else setPrefNum(
+            pref,
+            tag,
+            if (flip) 1 else 0
+        )
     }
 
     /**
@@ -47,8 +49,9 @@ public class SettingsUtils {
      * @param tag   as the tag to get the value from.
      * @param value as the value to set
      */
-    public static void setPref(SharedPreferences pref, String tag, String value) {
-        pref.edit().putString(tag, value).apply();
+    @JvmStatic
+    fun setPref(pref: SharedPreferences, tag: String?, value: String?) {
+        pref.edit().putString(tag, value).apply()
     }
 
     /**
@@ -58,8 +61,9 @@ public class SettingsUtils {
      * @param tag   as the tag to get the value from.
      * @param value as the value to set
      */
-    public static void setPrefNum(SharedPreferences pref, String tag, int value) {
-        pref.edit().putInt(tag, value).apply();
+    @JvmStatic
+    fun setPrefNum(pref: SharedPreferences, tag: String?, value: Int) {
+        pref.edit().putInt(tag, value).apply()
     }
 
     /**
@@ -69,8 +73,9 @@ public class SettingsUtils {
      * @param tag  as the tag to get the value from.
      * @return the perf asked for.
      */
-    public static String getPref(SharedPreferences pref, String tag) {
-        return pref.getString(tag, "");
+    @JvmStatic
+    fun getPref(pref: SharedPreferences, tag: String?): String? {
+        return pref.getString(tag, "")
     }
 
     /**
@@ -80,7 +85,8 @@ public class SettingsUtils {
      * @param tag  as the tag to get the value from.
      * @return the perf asked for.
      */
-    public static int getPrefNum(SharedPreferences pref, String tag) {
-        return pref.getInt(tag, 0);
+    @JvmStatic
+    fun getPrefNum(pref: SharedPreferences, tag: String?): Int {
+        return pref.getInt(tag, 0)
     }
 }

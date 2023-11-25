@@ -13,23 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.utils;
+package tipz.viola.utils
 
-import tipz.viola.BuildConfig;
+import tipz.viola.BuildConfig
 
-public class BrowservioURLs {
-    public static final String prefix = "browservio://";
-
-    public static final String realChangelogUrl = "https://gitlab.com/TipzTeam/browservio/-/releases/"
-            .concat(BuildConfig.VERSION_NAME).concat(BuildConfig.VERSION_TECHNICAL_EXTRA);
-
-    public static final String licenseUrl = prefix.concat("license");
-    public static final String realLicenseUrl = "file:///android_asset/LICENSE.txt";
-
-    public static final String reloadUrl = prefix.concat("reload");
-
-    public static final String startUrl = prefix.concat("start");
-
-    public static final String sourceUrl = "https://gitlab.com/TipzTeam/browservio/";
-    public static final String feedbackUrl = sourceUrl.concat("-/issues");
+object InternalUrls {
+    const val prefix = "viola://"
+    const val realChangelogUrl = "https://gitlab.com/TipzTeam/viola/-/releases/" + BuildConfig.VERSION_NAME + BuildConfig.VERSION_TECHNICAL_EXTRA
+    const val licenseUrl = prefix + "license"
+    const val realLicenseUrl = "file:///android_asset/LICENSE.txt"
+    const val reloadUrl = prefix + "reload"
+    const val startUrl = prefix + "start"
+    const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
+    const val feedbackUrl = "$sourceUrl-/issues"
 }

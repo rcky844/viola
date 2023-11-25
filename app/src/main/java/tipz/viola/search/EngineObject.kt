@@ -13,44 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.search;
+package tipz.viola.search
 
-import androidx.annotation.NonNull;
+import tipz.viola.utils.CommonUtils
 
-import tipz.viola.utils.CommonUtils;
+class EngineObject {
+    var homePage = CommonUtils.EMPTY_STRING
+    var search = CommonUtils.EMPTY_STRING
+    var suggestion = CommonUtils.EMPTY_STRING
 
-public class EngineObject {
-    private String mHomePage = CommonUtils.EMPTY_STRING;
-    private String mSearch = CommonUtils.EMPTY_STRING;
-    private String mSuggestion = CommonUtils.EMPTY_STRING;
-
-    public EngineObject setHomePage(@NonNull String homePage) {
-        mHomePage = homePage;
-        return this;
+    fun setHomePage(homePage: String): EngineObject {
+        this.homePage = homePage
+        return this
     }
 
-    @NonNull
-    public String getHomePage() {
-        return mHomePage;
+    fun setSearch(search: String): EngineObject {
+        this.search = search
+        return this
     }
 
-    public EngineObject setSearch(@NonNull String search) {
-        mSearch = search;
-        return this;
-    }
-
-    @NonNull
-    public String getSearch() {
-        return mSearch;
-    }
-
-    public EngineObject setSuggestion(@NonNull String suggestion) {
-        mSuggestion = suggestion;
-        return this;
-    }
-
-    @NonNull
-    public String getSuggestion() {
-        return mSuggestion;
+    fun setSuggestion(suggestion: String): EngineObject {
+        this.suggestion = suggestion
+        return this
     }
 }

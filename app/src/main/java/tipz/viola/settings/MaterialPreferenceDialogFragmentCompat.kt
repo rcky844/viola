@@ -1,76 +1,61 @@
-package tipz.viola.settings;
+package tipz.viola.settings
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.View;
+import android.app.Dialog
+import android.content.DialogInterface
+import android.os.Bundle
+import androidx.preference.PreferenceDialogFragmentCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.preference.PreferenceDialogFragmentCompat;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-public class MaterialPreferenceDialogFragmentCompat extends PreferenceDialogFragmentCompat {
-    private final MaterialDialogPreferenceListener mMaterialPreferenceDialogListener;
-
-    /** Which button was clicked. */
-    private int mWhichButtonClicked;
-
-    public static MaterialPreferenceDialogFragmentCompat newInstance(String key, MaterialDialogPreferenceListener materialPreferenceDialogListener) {
-        final MaterialPreferenceDialogFragmentCompat
-                fragment = new MaterialPreferenceDialogFragmentCompat(materialPreferenceDialogListener);
-        final Bundle b = new Bundle(1);
-        b.putString(ARG_KEY, key);
-        fragment.setArguments(b);
-
-        return fragment;
-    }
-
-    public MaterialPreferenceDialogFragmentCompat(MaterialDialogPreferenceListener materialPreferenceDialogListener) {
-        mMaterialPreferenceDialogListener = materialPreferenceDialogListener;
-    }
-
-    @Override
-    public @NonNull Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        mWhichButtonClicked = DialogInterface.BUTTON_NEGATIVE;
-
-        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getPreference().getDialogTitle())
-                .setIcon(getPreference().getDialogIcon())
-                .setPositiveButton(getPreference().getPositiveButtonText(), this)
-                .setNegativeButton(getPreference().getNegativeButtonText(), this);
-
-        View contentView = onCreateDialogView(requireContext());
+class MaterialPreferenceDialogFragmentCompat(private val mMaterialPreferenceDialogListener: MaterialDialogPreferenceListener) :
+    PreferenceDialogFragmentCompat() {
+    /** Which button was clicked.  */
+    private var mWhichButtonClicked = 0
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        mWhichButtonClicked = DialogInterface.BUTTON_NEGATIVE
+        val builder = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(preference.dialogTitle)
+            .setIcon(preference.dialogIcon)
+            .setPositiveButton(preference.positiveButtonText, this)
+            .setNegativeButton(preference.negativeButtonText, this)
+        val contentView = onCreateDialogView(requireContext())
         if (contentView != null) {
-            onBindDialogView(contentView);
-            builder.setView(contentView);
+            onBindDialogView(contentView)
+            builder.setView(contentView)
         } else {
-            builder.setMessage(getPreference().getDialogMessage());
+            builder.setMessage(preference.dialogMessage)
         }
-
-        onPrepareDialogBuilder(builder);
-
-        return builder.create();
+        onPrepareDialogBuilder(builder)
+        return builder.create()
     }
 
-    @Override
-    public void onClick(@NonNull DialogInterface dialog, int which) {
-        mWhichButtonClicked = which;
+    override fun onClick(dialog: DialogInterface, which: Int) {
+        mWhichButtonClicked = which
     }
 
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        onDialogClosed(mWhichButtonClicked == DialogInterface.BUTTON_POSITIVE);
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDialogClosed(mWhichButtonClicked == DialogInterface.BUTTON_POSITIVE)
     }
 
-    @Override
-    public void onDialogClosed(boolean positiveResult) {
-        mMaterialPreferenceDialogListener.onDialogClosed(positiveResult);
+    override fun onDialogClosed(positiveResult: Boolean) {
+        mMaterialPreferenceDialogListener.onDialogClosed(positiveResult)
     }
 
-    public interface MaterialDialogPreferenceListener {
-        void onDialogClosed(boolean positiveResult);
+    interface MaterialDialogPreferenceListener {
+        fun onDialogClosed(positiveResult: Boolean)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(
+            key: String?,
+            materialPreferenceDialogListener: MaterialDialogPreferenceListener
+        ): MaterialPreferenceDialogFragmentCompat {
+            val fragment = MaterialPreferenceDialogFragmentCompat(materialPreferenceDialogListener)
+            val b = Bundle(1)
+            b.putString(ARG_KEY, key)
+            fragment.arguments = b
+            return fragment
+        }
     }
 }

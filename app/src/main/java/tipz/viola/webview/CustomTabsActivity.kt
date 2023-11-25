@@ -69,7 +69,7 @@ class CustomTabsActivity : VWebViewActivity() {
     }
 
     override fun onUrlUpdated(url: String?) {
-        host!!.text = Uri.parse(UrlUtils.cve_2017_13274(url)).host
+        host!!.text = Uri.parse(UrlUtils.cve_2017_13274(url!!)).host
     }
 
     override fun onTitleUpdated(title: String?) {

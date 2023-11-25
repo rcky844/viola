@@ -1,28 +1,13 @@
-package tipz.viola.settings;
+package tipz.viola.settings
 
-import android.content.Context;
-import android.util.AttributeSet;
+import android.content.Context
+import android.util.AttributeSet
+import androidx.preference.DialogPreference
+import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.preference.DialogPreference;
+class MaterialDialogPreference : DialogPreference {
+    var materialDialogPreferenceListener: MaterialDialogPreferenceListener? = null
 
-public class MaterialDialogPreference extends DialogPreference {
-    private MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener mMaterialDialogPreferenceListener;
-
-    public MaterialDialogPreference(@NonNull Context context) {
-        super(context, null);
-    }
-
-    public MaterialDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public void setMaterialDialogPreferenceListener(MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener materialDialogPreferenceListener) {
-        mMaterialDialogPreferenceListener = materialDialogPreferenceListener;
-    }
-
-    public MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener getMaterialDialogPreferenceListener() {
-        return mMaterialDialogPreferenceListener;
-    }
+    constructor(context: Context) : super(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 }

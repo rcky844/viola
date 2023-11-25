@@ -13,57 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.api;
+package tipz.viola.broha.api
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
+import tipz.viola.Application
+import tipz.viola.broha.database.Broha
+import tipz.viola.broha.database.BrohaDao
+import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsUtils.getPref
+import tipz.viola.settings.SettingsUtils.getPrefNum
+import tipz.viola.settings.SettingsUtils.setPref
+import tipz.viola.settings.SettingsUtils.setPrefNum
+import tipz.viola.utils.CommonUtils
 
-import tipz.viola.Application;
-import tipz.viola.broha.database.Broha;
-import tipz.viola.broha.database.BrohaDao;
-import tipz.viola.settings.SettingsKeys;
-import tipz.viola.settings.SettingsUtils;
-import tipz.viola.utils.CommonUtils;
-
-public class HistoryApi {
-    private final static int LATEST_API = 2;
+object HistoryApi {
+    private const val LATEST_API = 2
 
     /* Old pref keys for migration */
-    private static final String history = "history";
-
-    private static SharedPreferences historyPref(Context context) {
-        return context.getSharedPreferences("history.cfg", Activity.MODE_PRIVATE);
+    private const val history = "history"
+    private fun historyPref(context: Context): SharedPreferences {
+        return context.getSharedPreferences("history.cfg", Activity.MODE_PRIVATE)
     }
 
-    public static BrohaDao historyBroha(Context context) {
-        return ((Application) context.getApplicationContext()).historyBroha;
+    fun historyBroha(context: Context): BrohaDao? {
+        return (context.applicationContext as Application).historyBroha
     }
 
-    public static void doApiInitCheck(Context context) {
-        SharedPreferences pref = ((Application) context.getApplicationContext()).pref;
+    fun doApiInitCheck(context: Context) {
+        val pref = (context.applicationContext as Application).pref
+        if (getPrefNum(pref!!, SettingsKeys.historyApi) > LATEST_API
+            || getPrefNum(pref, SettingsKeys.historyApi) <= -1
+        ) throw RuntimeException()
+        var historyData: String?
+        when (getPrefNum(pref, SettingsKeys.historyApi)) {
+            0 -> {
+                historyData = getPref(pref, history)
+                if (historyData!!.isNotEmpty()) setPref(historyPref(context), history, historyData)
+                setPref(pref, history, CommonUtils.EMPTY_STRING)
+                historyData = getPref(historyPref(context), history)
+                val listData = getPref(historyPref(context), history)!!
+                    .trim { it <= ' ' }.split("\n".toRegex()).dropLastWhile { it.isEmpty() }
+                    .toTypedArray()
+                if (historyData!!.isNotEmpty()) for (listDatum in listData) historyBroha(context)!!
+                    .insertAll(
+                        Broha(listDatum)
+                    )
+                historyPref(context).edit().clear().apply()
+            }
 
-        if (SettingsUtils.getPrefNum(pref, SettingsKeys.historyApi) > LATEST_API
-                || SettingsUtils.getPrefNum(pref, SettingsKeys.historyApi) <= -1)
-            throw new RuntimeException();
-
-        String historyData;
-        switch (SettingsUtils.getPrefNum(pref, SettingsKeys.historyApi)) {
-            case 0:
-                historyData = SettingsUtils.getPref(pref, history);
-                if (!historyData.isEmpty())
-                    SettingsUtils.setPref(historyPref(context), history, historyData);
-
-                SettingsUtils.setPref(pref, history, CommonUtils.EMPTY_STRING);
-            case 1:
-                historyData = SettingsUtils.getPref(historyPref(context), history);
-                String[] listData = SettingsUtils.getPref(historyPref(context), history).trim().split("\n");
-                if (!historyData.isEmpty())
-                    for (String listDatum : listData)
-                        historyBroha(context).insertAll(
-                                new Broha(listDatum));
-                historyPref(context).edit().clear().apply();
+            1 -> {
+                historyData = getPref(historyPref(context), history)
+                val listData = getPref(historyPref(context), history)!!
+                    .trim { it <= ' ' }.split("\n".toRegex()).dropLastWhile { it.isEmpty() }
+                    .toTypedArray()
+                if (historyData!!.isNotEmpty()) for (listDatum in listData) historyBroha(context)!!
+                    .insertAll(
+                        Broha(listDatum)
+                    )
+                historyPref(context).edit().clear().apply()
+            }
         }
-        SettingsUtils.setPrefNum(pref, SettingsKeys.historyApi, LATEST_API);
+        setPrefNum(pref, SettingsKeys.historyApi, LATEST_API)
     }
 }

@@ -13,36 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database.icons;
+package tipz.viola.broha.database.icons
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 
 @Entity
-public class IconHash {
+class IconHash {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    var id = 0
 
     @ColumnInfo
-    private int iconHash;
+    var iconHash: Int
 
-    public IconHash(int id, int iconHash) {
-        this.id = id;
-        this.iconHash = iconHash;
+    constructor(id: Int, iconHash: Int) {
+        this.id = id
+        this.iconHash = iconHash
     }
 
     @Ignore
-    public IconHash(int iconHash) {
-        this.iconHash = iconHash;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getIconHash() {
-        return iconHash;
+    constructor(iconHash: Int) {
+        this.iconHash = iconHash
     }
 }

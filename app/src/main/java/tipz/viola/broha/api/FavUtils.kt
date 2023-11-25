@@ -13,36 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.api;
+package tipz.viola.broha.api
 
-import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.Context
+import android.graphics.Bitmap
+import tipz.viola.broha.api.FavApi.favBroha
+import tipz.viola.broha.database.Broha
+import tipz.viola.broha.database.icons.IconHashClient
 
-import tipz.viola.broha.database.Broha;
-import tipz.viola.broha.database.icons.IconHashClient;
-
-public class FavUtils {
+object FavUtils {
     /**
      * Favourites Saviour
-     * <p>
+     *
+     *
      * Module to save favourites into a db.
      */
-    public static void appendData(Context context, IconHashClient iconHashClient, String title, String url, Bitmap icon) {
-        if (iconHashClient != null && icon != null)
-            FavApi.favBroha(context).insertAll(new Broha(iconHashClient.save(icon), title, url));
-        else
-            FavApi.favBroha(context).insertAll(new Broha(title, url));
+    fun appendData(
+        context: Context?,
+        iconHashClient: IconHashClient?,
+        title: String?,
+        url: String?,
+        icon: Bitmap?
+    ) {
+        if (url == null) return
+        if (iconHashClient != null && icon != null)favBroha(context!!)!!
+            .insertAll(Broha(iconHashClient.save(icon), title, url)) else favBroha(context!!)!!
+            .insertAll(Broha(title, url))
     }
 
-    public static void clear(Context context) {
-        FavApi.favBroha(context).deleteAll();
+    fun clear(context: Context?) {
+        favBroha(context!!)!!.deleteAll()
     }
 
-    public static void deleteById(Context context, int id) {
-        FavApi.favBroha(context).deleteById(id);
+    fun deleteById(context: Context?, id: Int) {
+        favBroha(context!!)!!.deleteById(id)
     }
 
-    public static boolean isEmptyCheck(Context context) {
-        return FavApi.favBroha(context).isEmpty().size() == 0;
+    fun isEmptyCheck(context: Context?): Boolean {
+        return favBroha(context!!)!!.isEmpty.size === 0
     }
 }

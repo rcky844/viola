@@ -53,7 +53,6 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
@@ -78,7 +77,7 @@ import tipz.viola.broha.api.HistoryUtils
 import tipz.viola.broha.database.Broha
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsUtils
-import tipz.viola.utils.BrowservioURLs
+import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.DownloaderThread
@@ -125,7 +124,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         /* Start the download manager service */
         setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
             DownloadUtils.dmDownloadFile(
-                mContext, url, contentDisposition,
+                mContext, url!!, contentDisposition,
                 mimeType, currentUrl
             )
             updateCurrentUrl(originalUrl)
@@ -137,30 +136,22 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 )
             ) mVioWebViewActivity!!.finish()
         }
-        setLayerType(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) LAYER_TYPE_HARDWARE else LAYER_TYPE_SOFTWARE,
-            null
-        )
+        setLayerType(LAYER_TYPE_HARDWARE, null)
 
         /* zoom related stuff - From SCMPNews project */webSettings.setSupportZoom(true)
         webSettings.builtInZoomControls = true
 
         // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
         // Chrome does this in the current Chrome Dev, but not Chrome release).
-        webSettings.layoutAlgorithm =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING else WebSettings.LayoutAlgorithm.NORMAL
+        webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
         webSettings.displayZoomControls = false
         webSettings.allowFileAccess = false
         webSettings.allowContentAccess = false
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webSettings.allowFileAccessFromFileURLs = false
-            webSettings.allowUniversalAccessFromFileURLs = false
-        }
+        webSettings.allowFileAccessFromFileURLs = false
+        webSettings.allowUniversalAccessFromFileURLs = false
 
         /* HTML5 API flags */webSettings.databaseEnabled = false
         webSettings.domStorageEnabled = true
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2) WebIconDatabase.getInstance()
-            .open(mContext.getDir("icons", Context.MODE_PRIVATE).path)
         this.webViewClient = WebClient()
         this.webChromeClient = ChromeWebClient()
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE) && mWebViewRenderProcess != null) WebViewCompat.setWebViewRenderProcessClient(
@@ -334,7 +325,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
             UrlSet(url)
             if (updateHistory) {
-                currentBroha = Broha(title, currentUrl)
+                currentBroha = Broha(title, currentUrl!!)
                 historyCommitted = false
             }
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) CookieSyncManager.getInstance()
@@ -487,8 +478,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             if (!historyCommitted && updateHistory) {
                 currentBroha!!.iconHash = iconHashClient.save(icon)
                 currentBroha!!.title = title // For making sure title is up to date
-                if (HistoryUtils.lastUrl(mContext) != currentUrl) HistoryApi.historyBroha(mContext)
-                    .insertAll(currentBroha)
+                if (HistoryUtils.lastUrl(mContext) != currentUrl) HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha!!)
                 historyCommitted = true
             }
         }
@@ -573,7 +563,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             .setTitle(R.string.dialog_page_unresponsive_title)
             .setMessage(R.string.dialog_page_unresponsive_message)
             .setPositiveButton(R.string.dialog_page_unresponsive_wait, null)
-            .setNegativeButton(R.string.dialog_page_unresponsive_terminate) { _dialog: DialogInterface?, _which: Int -> mWebViewRenderProcess!!.terminate() }
+            .setNegativeButton(R.string.dialog_page_unresponsive_terminate) { _: DialogInterface?, _: Int -> mWebViewRenderProcess!!.terminate() }
             .create()
 
         override fun onRenderProcessUnresponsive(view: WebView, renderer: WebViewRenderProcess?) {
@@ -629,7 +619,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                             while (scanner.hasNextLine()) {
                                 val line = scanner.nextLine()
                                 if (line.startsWith("127.0.0.1 ")) builder.append(line)
-                                    .append(CommonUtils.LINE_SEPARATOR())
+                                    .append(System.lineSeparator())
                             }
                             adServers = builder.toString()
                         }
@@ -645,7 +635,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     private fun urlShouldSet(url: String): Boolean {
-        return !(url == "about:blank" || url.startsWith(BrowservioURLs.prefix))
+        return !(url == "about:blank" || url.startsWith(InternalUrls.prefix))
     }
 
     fun setUA(
@@ -692,13 +682,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
      * @return url to load
      */
     private fun URLIdentify(url: String): String {
-        if (url == BrowservioURLs.licenseUrl || url == BrowservioURLs.realLicenseUrl) return BrowservioURLs.realLicenseUrl
-        if (url == BrowservioURLs.reloadUrl) {
+        if (url == InternalUrls.licenseUrl || url == InternalUrls.realLicenseUrl) return InternalUrls.realLicenseUrl
+        if (url == InternalUrls.reloadUrl) {
             webViewReload()
             return CommonUtils.EMPTY_STRING
         }
         val startPageLayout = mVioWebViewActivity!!.startPageLayout
-        if (url == BrowservioURLs.startUrl) {
+        if (url == InternalUrls.startUrl) {
             this.visibility = GONE
             startPageLayout.visibility = VISIBLE
             return CommonUtils.EMPTY_STRING

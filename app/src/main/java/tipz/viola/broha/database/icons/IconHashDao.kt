@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database.icons;
+package tipz.viola.broha.database.icons
 
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-
-import java.util.List;
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
 
 @Dao
-public interface IconHashDao {
+interface IconHashDao {
     @Query("SELECT * FROM iconHash WHERE id LIKE :id LIMIT 1")
-    IconHash findById(int id);
+    fun findById(id: Int): IconHash
 
     @Query("SELECT * FROM iconHash WHERE iconHash LIKE :hash LIMIT 1")
-    IconHash findByHash(int hash);
+    fun findByHash(hash: Int): IconHash
 
-    @Query("SELECT * FROM iconHash LIMIT 1")
-    List<IconHash> isEmpty();
+    @get:Query("SELECT * FROM iconHash LIMIT 1")
+    val isEmpty: List<IconHash>
 
     @Query("SELECT * FROM iconHash ORDER BY id DESC LIMIT 1")
-    IconHash lastIcon();
+    fun lastIcon(): IconHash
 
     @Insert
-    void insertAll(IconHash... iconHash);
+    fun insertAll(vararg iconHash: IconHash)
 }

@@ -53,12 +53,12 @@ open class BaseActivity : AppCompatActivity() {
         fun darkModeCheck(context: Context) {
             // Dark mode
             if (SettingsUtils.getPrefNum(
-                    pref,
+                    pref!!,
                     SettingsKeys.themeId
                 ) == 0
             ) AppCompatDelegate.setDefaultNightMode(if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) else AppCompatDelegate.setDefaultNightMode(
                 if (SettingsUtils.getPrefNum(
-                        pref, SettingsKeys.themeId
+                        pref!!, SettingsKeys.themeId
                     ) == 2
                 ) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )

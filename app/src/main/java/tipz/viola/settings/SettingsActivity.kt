@@ -13,471 +13,551 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.settings;
+@file:Suppress("DEPRECATION")
 
-import static tipz.viola.utils.ApkInstaller.installApplication;
+package tipz.viola.settings
 
-import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.WebStorage;
+import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import android.view.LayoutInflater
+import android.view.View
+import android.webkit.CookieManager
+import android.webkit.CookieSyncManager
+import android.webkit.WebStorage
+import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.DialogFragment
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import tipz.viola.Application
+import tipz.viola.BaseActivity
+import tipz.viola.BuildConfig
+import tipz.viola.R
+import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
+import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
+import tipz.viola.utils.ApkInstaller.installApplication
+import tipz.viola.utils.CommonUtils
+import tipz.viola.utils.CommonUtils.showMessage
+import tipz.viola.utils.DownloadUtils.dmDownloadFile
+import tipz.viola.utils.DownloaderThread
+import tipz.viola.utils.InternalUrls
+import java.io.File
+import java.lang.ref.WeakReference
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
+class SettingsActivity : BaseActivity() {
+    private val needLoad = Intent()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.new_settings)
+        val toolbar = findViewById<Toolbar>(R.id._toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.Objects;
-
-import tipz.viola.Application;
-import tipz.viola.BaseActivity;
-import tipz.viola.BuildConfig;
-import tipz.viola.R;
-import tipz.viola.utils.BrowservioURLs;
-import tipz.viola.utils.CommonUtils;
-import tipz.viola.utils.DownloadUtils;
-import tipz.viola.utils.DownloaderThread;
-
-public class SettingsActivity extends BaseActivity {
-
-    public final Intent needLoad = new Intent();
-    public static SettingsPrefHandler settingsPrefHandler;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_settings);
-
-        Toolbar toolbar = findViewById(R.id._toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        settingsPrefHandler = new SettingsPrefHandler(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, settingsPrefHandler).commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (SettingsPrefHandler.needReload) {
-            needLoad.putExtra("needLoadUrl", BrowservioURLs.reloadUrl);
-            setResult(0, needLoad);
+        onBackPressedDispatcher.addCallback(this) {
+            if (SettingsPrefHandler.needReload) {
+                needLoad.putExtra("needLoadUrl", InternalUrls.reloadUrl)
+                setResult(0, needLoad)
+            }
+            finish()
         }
-        finish();
+    }
+
+    override fun onStart() {
+        super.onStart()
+        settingsPrefHandler = SettingsPrefHandler(this)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.list_container, settingsPrefHandler!!).commit()
     }
 
     // TODO: Investigate why running at onSaveInstanceState doesn't work (API = 33)
-    @Override
-    protected void onStop() {
+    override fun onStop() {
         try {
-            getSupportFragmentManager().beginTransaction().remove(settingsPrefHandler).commit();
-        } catch (IllegalStateException ignored) {
+            supportFragmentManager.beginTransaction().remove(settingsPrefHandler!!).commit()
+        } catch (ignored: IllegalStateException) {
             // There's no way to avoid getting this if saveInstanceState has already been called.
         }
-        super.onStop();
+        super.onStop()
     }
 
     // TODO: Investigate why running at onStop doesn't work (API = 23, 26)
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
+    public override fun onSaveInstanceState(outState: Bundle) {
         try {
-            getSupportFragmentManager().beginTransaction().remove(settingsPrefHandler).commit();
-        } catch (IllegalStateException ignored) {
+            supportFragmentManager.beginTransaction().remove(settingsPrefHandler!!).commit()
+        } catch (ignored: IllegalStateException) {
             // There's no way to avoid getting this if saveInstanceState has already been called.
         }
-        super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState)
     }
 
-    public static class SettingsPrefHandler extends PreferenceFragmentCompat {
-        private final AppCompatActivity settingsActivity;
-        private final SharedPreferences pref;
-
-        public SettingsPrefHandler(AppCompatActivity act) {
-            WeakReference<AppCompatActivity> activity = new WeakReference<>(act);
-            settingsActivity = activity.get();
-            pref = ((Application) settingsActivity.getApplicationContext()).pref;
-        }
-
-        public static boolean needReload = false;
-        private long downloadID;
-        private final String updateDownloadPath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                .concat("/").concat(Environment.DIRECTORY_DOWNLOADS).concat("/browservio-update.apk");
-
-        final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+    class SettingsPrefHandler(act: AppCompatActivity) : PreferenceFragmentCompat() {
+        private lateinit var settingsActivity: AppCompatActivity
+        private val pref: SharedPreferences?
+        private var downloadID: Long = 0
+        private val updateDownloadPath =
+            Environment.getExternalStorageDirectory().absolutePath + "/" + Environment.DIRECTORY_DOWNLOADS + "/browservio-update.apk"
+        private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
                 if (downloadID == id) {
-                    installApplication(settingsActivity, updateDownloadPath);
+                    installApplication(settingsActivity, updateDownloadPath)
                 }
             }
-        };
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.pref_settings, rootKey);
-            initializeLogic();
-            settingsActivity.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), RECEIVER_EXPORTED);
         }
 
-        @Override
-        public void onDestroyView() {
-            super.onDestroyView();
-            settingsActivity.unregisterReceiver(onDownloadComplete);
+        init {
+            val activity = WeakReference(act)
+            settingsActivity = activity.get()!!
+            pref = (settingsActivity.applicationContext as Application).pref
         }
 
-        private void needLoad(String Url) {
-            Intent needLoad = new Intent();
-            needLoad.putExtra("needLoadUrl", Url);
-            settingsActivity.setResult(0, needLoad);
-            settingsActivity.finish();
+        @SuppressLint("UnspecifiedRegisterReceiverFlag") // For older SDKs
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.pref_settings, rootKey)
+            initializeLogic()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                settingsActivity.registerReceiver(
+                    onDownloadComplete,
+                    IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
+                    RECEIVER_EXPORTED
+                )
+            } else {
+                settingsActivity.registerReceiver(
+                    onDownloadComplete,
+                    IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+                )
+            }
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            settingsActivity.unregisterReceiver(onDownloadComplete)
+        }
+
+        private fun needLoad(Url: String) {
+            val needLoad = Intent()
+            needLoad.putExtra("needLoadUrl", Url)
+            settingsActivity.setResult(0, needLoad)
+            settingsActivity.finish()
         }
 
         /**
          * Initialize Logic
          */
-        private void initializeLogic() {
-            /* Common */
-            final String[] searchHomePageList = settingsActivity.getResources().getStringArray(R.array.search_entries);
-            final String[] themeList = settingsActivity.getResources().getStringArray(R.array.themes);
+        private fun initializeLogic() {
+            /* Lists */
+            val searchHomePageList = settingsActivity.resources.getStringArray(R.array.search_entries)
+            val themeList = settingsActivity.resources.getStringArray(R.array.themes)
 
-            /* General category */
-            Preference search_engine = Objects.requireNonNull(findPreference("search_engine"));
-            //MaterialDialogPreference dont_use_start_page = Objects.requireNonNull(findPreference("dont_use_start_page"));
-            Preference homepage = Objects.requireNonNull(findPreference("homepage"));
-            Preference search_suggestions = Objects.requireNonNull(findPreference("search_suggestions"));
+            /* Settings */
+            val search_engine = findPreference<Preference>("search_engine")!!
+            val homepage = findPreference<Preference>("homepage")!!
+            val search_suggestions = findPreference<Preference>("search_suggestions")!!
+            val clear_cache = findPreference<MaterialDialogPreference>("clear_cache")!!
+            val clear_cookies = findPreference<MaterialDialogPreference>("clear_cookies")!!
+            val reset_to_default = findPreference<MaterialDialogPreference>("reset_to_default")!!
+            val theme = findPreference<Preference>("theme")!!
+            val version = findPreference<Preference>("version")!!
+            val feedback = findPreference<Preference>("feedback")!!
+            val source_code = findPreference<Preference>("source_code")!!
 
-            /* Data & Privacy category */
-            //MaterialSwitchPreference adBlocker = Objects.requireNonNull(findPreference("adBlocker"));
-            //MaterialSwitchPreference do_not_track = Objects.requireNonNull(findPreference("do_not_track"));
-            //MaterialSwitchPreference enforce_https = Objects.requireNonNull(findPreference("enforce_https"));
-            //MaterialSwitchPreference google_safe_browsing = Objects.requireNonNull(findPreference("google_safe_browsing"));
-            MaterialDialogPreference clear_cache = Objects.requireNonNull(findPreference("clear_cache"));
-            MaterialDialogPreference clear_cookies = Objects.requireNonNull(findPreference("clear_cookies"));
-            MaterialDialogPreference reset_to_default = Objects.requireNonNull(findPreference("reset_to_default"));
-
-            /* Visuals category */
-            Preference theme = Objects.requireNonNull(findPreference("theme"));
-            //MaterialSwitchPreference show_favicon = Objects.requireNonNull(findPreference("show_favicon"));
-            //MaterialSwitchPreference center_action = Objects.requireNonNull(findPreference("center_action"));
-            //MaterialSwitchPreference reverse_layout = Objects.requireNonNull(findPreference("reverse_layout"));
-            //MaterialSwitchPreference reverse_only_action = Objects.requireNonNull(findPreference("reverse_only_action"));
-            //MaterialSwitchPreference enable_swipe_refresh = Objects.requireNonNull(findPreference("enable_swipe_refresh"));
-            //MaterialSwitchPreference update_recents_icon = Objects.requireNonNull(findPreference("update_recents_icon"));
-
-            /* Advanced category */
-            //MaterialSwitchPreference javascript = Objects.requireNonNull(findPreference("javascript"));
-            //MaterialSwitchPreference use_custom_tabs = Objects.requireNonNull(findPreference("use_custom_tabs"));
-            //MaterialSwitchPreference close_app_after_download = Objects.requireNonNull(findPreference("close_app_after_download"));
-
-            /* Help category */
-            Preference version = Objects.requireNonNull(findPreference("version"));
-            Preference feedback = Objects.requireNonNull(findPreference("feedback"));
-            Preference source_code = Objects.requireNonNull(findPreference("source_code"));
-
-            search_engine.setOnPreferenceClickListener(preference -> {
-                final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)};
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_engine))
-                        .setSingleChoiceItems(searchHomePageList,
-                                SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId), (dialog, which) -> checkedItem[0] = which)
-                        .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
+            search_engine.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    val checkedItem =
+                        intArrayOf(SettingsUtils.getPrefNum(pref!!, SettingsKeys.defaultSearchId))
+                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.search_engine))
+                        .setSingleChoiceItems(
+                            searchHomePageList,
+                            SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)
+                        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
+                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                             if (checkedItem[0] == 8) {
-                                final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
-                                @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
-                                final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
-                                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_engine))
-                                        .setMessage(settingsActivity.getResources().getString(R.string.custom_search_guide))
-                                        .setView(root)
-                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                                            if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
-                                                SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, custom_se.getText().toString());
-                                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, checkedItem[0]);
-                                                search_engine.setSummary(searchHomePageList[checkedItem[0]]);
-                                            }
-                                        })
-                                        .setNegativeButton(android.R.string.cancel, null)
-                                        .create().show();
+                                val layoutInflater = LayoutInflater.from(settingsActivity)
+                                @SuppressLint("InflateParams") val root =
+                                    layoutInflater.inflate(R.layout.dialog_edittext, null)
+                                val customSearch = root.findViewById<AppCompatEditText>(R.id.edittext)
+                                MaterialAlertDialogBuilder(settingsActivity).setTitle(
+                                    resources.getString(
+                                        R.string.search_engine
+                                    )
+                                )
+                                    .setMessage(settingsActivity.resources.getString(R.string.custom_search_guide))
+                                    .setView(root)
+                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                        if (customSearch.text.toString().isNotEmpty()
+                                        ) {
+                                            SettingsUtils.setPref(
+                                                pref,
+                                                SettingsKeys.defaultSearch,
+                                                customSearch.text.toString()
+                                            )
+                                            SettingsUtils.setPrefNum(
+                                                pref,
+                                                SettingsKeys.defaultSearchId,
+                                                checkedItem[0]
+                                            )
+                                            search_engine.summary =
+                                                searchHomePageList[checkedItem[0]]
+                                        }
+                                    }
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .create().show()
                             }
-
                             if (checkedItem[0] != 8) {
-                                SettingsUtils.setPref(pref, SettingsKeys.defaultSearch, CommonUtils.EMPTY_STRING);
-                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSearchId, checkedItem[0]);
-                                search_engine.setSummary(searchHomePageList[checkedItem[0]]);
+                                SettingsUtils.setPref(
+                                    pref,
+                                    SettingsKeys.defaultSearch,
+                                    CommonUtils.EMPTY_STRING
+                                )
+                                SettingsUtils.setPrefNum(
+                                    pref,
+                                    SettingsKeys.defaultSearchId,
+                                    checkedItem[0]
+                                )
+                                search_engine.summary = searchHomePageList[checkedItem[0]]
                             }
-                        })
+                        }
                         .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
-            });
-
-            homepage.setOnPreferenceClickListener(preference -> {
-                final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)};
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.homepage))
-                        .setSingleChoiceItems(searchHomePageList,
-                                SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId), (dialog, which) -> checkedItem[0] = which)
-                        .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 8) {
-                                final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
-                                @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
-                                final AppCompatEditText custom_se = root.findViewById(R.id.edittext);
-                                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.homepage))
-                                        .setView(root)
-                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                                            if (!Objects.requireNonNull(custom_se.getText()).toString().isEmpty()) {
-                                                SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, custom_se.getText().toString());
-                                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, checkedItem[0]);
-                                                homepage.setSummary(searchHomePageList[checkedItem[0]]);
-                                            }
-                                        })
-                                        .setNegativeButton(android.R.string.cancel, null)
-                                        .create().show();
-                            }
-
-                            if (checkedItem[0] != 8) {
-                                SettingsUtils.setPref(pref, SettingsKeys.defaultHomePage, CommonUtils.EMPTY_STRING);
-                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultHomePageId, checkedItem[0]);
-                                homepage.setSummary(searchHomePageList[checkedItem[0]]);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
-            });
-
-            search_suggestions.setOnPreferenceClickListener(preference -> {
-                final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)};
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
-                        .setSingleChoiceItems(searchHomePageList,
-                                SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId), (dialog, which) -> checkedItem[0] = which)
-                        .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            if (checkedItem[0] == 8) {
-                                final LayoutInflater layoutInflater = LayoutInflater.from(settingsActivity);
-                                @SuppressLint("InflateParams") final View root = layoutInflater.inflate(R.layout.dialog_edittext, null);
-                                final AppCompatEditText custom_sg = root.findViewById(R.id.edittext);
-                                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.search_suggestions_title))
-                                        .setMessage(settingsActivity.getResources().getString(R.string.custom_search_guide))
-                                        .setView(root)
-                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                                            if (!Objects.requireNonNull(custom_sg.getText()).toString().isEmpty()) {
-                                                SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, custom_sg.getText().toString());
-                                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
-                                                search_suggestions.setSummary(searchHomePageList[checkedItem[0]]);
-                                            }
-                                        })
-                                        .setNegativeButton(android.R.string.cancel, null)
-                                        .create().show();
-                            }
-
-                            if (checkedItem[0] != 8) {
-                                SettingsUtils.setPref(pref, SettingsKeys.defaultSuggestions, CommonUtils.EMPTY_STRING);
-                                SettingsUtils.setPrefNum(pref, SettingsKeys.defaultSuggestionsId, checkedItem[0]);
-                                search_suggestions.setSummary(searchHomePageList[checkedItem[0]]);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
-            });
-
-            clear_cache.setMaterialDialogPreferenceListener(positiveResult -> {
-                if (!positiveResult)
-                    return;
-
-                WebStorage.getInstance().deleteAllData();
-                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
-            });
-
-            clear_cookies.setMaterialDialogPreferenceListener(positiveResult -> {
-                if (!positiveResult)
-                    return;
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                    CookieManager.getInstance().removeAllCookies(null);
-                    CookieManager.getInstance().flush();
-                } else {
-                    CookieSyncManager cookieSyncMgr = CookieSyncManager.createInstance(settingsActivity);
-                    CookieManager cookieManager = CookieManager.getInstance();
-                    cookieSyncMgr.startSync();
-                    cookieManager.removeAllCookie();
-                    cookieManager.removeSessionCookie();
-                    cookieSyncMgr.stopSync();
-                    cookieSyncMgr.sync();
+                        .create().show()
+                    true
                 }
-                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.cleared_toast));
-            });
-
-            reset_to_default.setMaterialDialogPreferenceListener(positiveResult -> {
-                if (!positiveResult)
-                    return;
-
-                CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.reset_complete));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    ((ActivityManager) settingsActivity.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
-                } else {
-                    String packageName = settingsActivity.getPackageName();
-                    Runtime runtime = Runtime.getRuntime();
-                    try {
-                        runtime.exec("pm clear " + packageName);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            homepage.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    val checkedItem =
+                        intArrayOf(SettingsUtils.getPrefNum(pref!!, SettingsKeys.defaultSearchId))
+                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.homepage))
+                        .setSingleChoiceItems(
+                            searchHomePageList,
+                            SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)
+                        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
+                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                            if (checkedItem[0] == 8) {
+                                val layoutInflater = LayoutInflater.from(settingsActivity)
+                                @SuppressLint("InflateParams") val root =
+                                    layoutInflater.inflate(R.layout.dialog_edittext, null)
+                                val customHomepage =
+                                    root.findViewById<AppCompatEditText>(R.id.edittext)
+                                MaterialAlertDialogBuilder(settingsActivity)
+                                    .setTitle(resources.getString(R.string.homepage))
+                                    .setView(root)
+                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                        if (customHomepage.text.toString().isNotEmpty()) {
+                                            SettingsUtils.setPref(
+                                                pref,
+                                                SettingsKeys.defaultHomePage,
+                                                customHomepage.text.toString()
+                                            )
+                                            SettingsUtils.setPrefNum(
+                                                pref,
+                                                SettingsKeys.defaultHomePageId,
+                                                checkedItem[0]
+                                            )
+                                            homepage.summary = searchHomePageList[checkedItem[0]]
+                                        }
+                                    }
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .create().show()
+                            }
+                            if (checkedItem[0] != 8) {
+                                SettingsUtils.setPref(
+                                    pref,
+                                    SettingsKeys.defaultHomePage,
+                                    CommonUtils.EMPTY_STRING
+                                )
+                                SettingsUtils.setPrefNum(
+                                    pref,
+                                    SettingsKeys.defaultHomePageId,
+                                    checkedItem[0]
+                                )
+                                homepage.summary = searchHomePageList[checkedItem[0]]
+                            }
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show()
+                    true
+                }
+            search_suggestions.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    val checkedItem = intArrayOf(
+                        SettingsUtils.getPrefNum(
+                            pref!!,
+                            SettingsKeys.defaultSuggestionsId
+                        )
+                    )
+                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.search_suggestions_title))
+                        .setSingleChoiceItems(
+                            searchHomePageList,
+                            SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)
+                        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
+                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                            if (checkedItem[0] == 8) {
+                                val layoutInflater = LayoutInflater.from(settingsActivity)
+                                @SuppressLint("InflateParams") val root =
+                                    layoutInflater.inflate(R.layout.dialog_edittext, null)
+                                val customSearchSuggestions =
+                                    root.findViewById<AppCompatEditText>(R.id.edittext)
+                                MaterialAlertDialogBuilder(settingsActivity)
+                                    .setTitle(resources.getString(R.string.search_suggestions_title))
+                                    .setMessage(settingsActivity.resources.getString(R.string.custom_search_guide))
+                                    .setView(root)
+                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                        if (customSearchSuggestions.text.toString().isNotEmpty()) {
+                                            SettingsUtils.setPref(
+                                                pref,
+                                                SettingsKeys.defaultSuggestions,
+                                                customSearchSuggestions.text.toString()
+                                            )
+                                            SettingsUtils.setPrefNum(
+                                                pref,
+                                                SettingsKeys.defaultSuggestionsId,
+                                                checkedItem[0]
+                                            )
+                                            search_suggestions.summary =
+                                                searchHomePageList[checkedItem[0]]
+                                        }
+                                    }
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .create().show()
+                            }
+                            if (checkedItem[0] != 8) {
+                                SettingsUtils.setPref(
+                                    pref,
+                                    SettingsKeys.defaultSuggestions,
+                                    CommonUtils.EMPTY_STRING
+                                )
+                                SettingsUtils.setPrefNum(
+                                    pref,
+                                    SettingsKeys.defaultSuggestionsId,
+                                    checkedItem[0]
+                                )
+                                search_suggestions.summary = searchHomePageList[checkedItem[0]]
+                            }
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show()
+                    true
+                }
+            clear_cache.materialDialogPreferenceListener =
+                object : MaterialDialogPreferenceListener {
+                    override fun onDialogClosed(positiveResult: Boolean) {
+                        if (!positiveResult) return
+                        WebStorage.getInstance().deleteAllData()
+                        showMessage(settingsActivity, resources.getString(R.string.cleared_toast))
                     }
                 }
-            });
-
-            theme.setOnPreferenceClickListener(preference -> {
-                final int[] checkedItem = {SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)};
-                new MaterialAlertDialogBuilder(settingsActivity).setTitle(getResources().getString(R.string.pref_theme))
-                        .setSingleChoiceItems(themeList,
-                                SettingsUtils.getPrefNum(pref, SettingsKeys.themeId), (dialog, which) -> checkedItem[0] = which)
-                        .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                            SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0]);
-                            theme.setSummary(themeList[checkedItem[0]]);
-                            darkModeCheck(settingsActivity);
-                        })
+            clear_cookies.materialDialogPreferenceListener =
+                object : MaterialDialogPreferenceListener {
+                    override fun onDialogClosed(positiveResult: Boolean) {
+                        if (!positiveResult) return
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            CookieManager.getInstance().removeAllCookies(null)
+                            CookieManager.getInstance().flush()
+                        } else {
+                            val cookieSyncMgr = CookieSyncManager.createInstance(settingsActivity)
+                            val cookieManager = CookieManager.getInstance()
+                            cookieSyncMgr.startSync()
+                            cookieManager.removeAllCookie()
+                            cookieManager.removeSessionCookie()
+                            cookieSyncMgr.stopSync()
+                            cookieSyncMgr.sync()
+                        }
+                        showMessage(settingsActivity, resources.getString(R.string.cleared_toast))
+                    }
+                }
+            reset_to_default.materialDialogPreferenceListener =
+                object : MaterialDialogPreferenceListener {
+                    override fun onDialogClosed(positiveResult: Boolean) {
+                        if (!positiveResult) return
+                        showMessage(settingsActivity, resources.getString(R.string.reset_complete))
+                        (settingsActivity.getSystemService(ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
+                    }
+                }
+            theme.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    val checkedItem =
+                        intArrayOf(SettingsUtils.getPrefNum(pref!!, SettingsKeys.themeId))
+                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.pref_theme))
+                        .setSingleChoiceItems(
+                            themeList,
+                            SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)
+                        )
+                        { _: DialogInterface?, which: Int -> checkedItem[0] = which }
+                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                            SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0])
+                            theme.summary = themeList[checkedItem[0]]
+                            darkModeCheck(settingsActivity)
+                        }
                         .setNegativeButton(android.R.string.cancel, null)
-                        .create().show();
-                return true;
-            });
-
-            version.setOnPreferenceClickListener(preference -> {
-                @SuppressLint("InflateParams") View dialogView = this.getLayoutInflater().inflate(R.layout.about_dialog, null);
-                AlertDialog dialog = new MaterialAlertDialogBuilder(settingsActivity).setView(dialogView)
+                        .create().show()
+                    true
+                }
+            version.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    @SuppressLint("InflateParams") val dialogView =
+                        this.layoutInflater.inflate(R.layout.about_dialog, null)
+                    val dialog = MaterialAlertDialogBuilder(settingsActivity).setView(dialogView)
                         .setPositiveButton(android.R.string.ok, null)
-                        .create();
-
-                AppCompatTextView dialog_text = dialogView.findViewById(R.id.dialog_text);
-                AppCompatButton update_btn = dialogView.findViewById(R.id.update_btn);
-                AppCompatButton changelog_btn = dialogView.findViewById(R.id.changelog_btn);
-                AppCompatButton license_btn = dialogView.findViewById(R.id.license_btn);
-                dialog_text.setText(getResources().getString(R.string.version_info_message,
-                        getResources().getString(R.string.app_name),
-                        BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA),
+                        .create()
+                    val dialog_text = dialogView.findViewById<AppCompatTextView>(R.id.dialog_text)
+                    val update_btn = dialogView.findViewById<AppCompatButton>(R.id.update_btn)
+                    val changelog_btn = dialogView.findViewById<AppCompatButton>(R.id.changelog_btn)
+                    val license_btn = dialogView.findViewById<AppCompatButton>(R.id.license_btn)
+                    dialog_text.text = resources.getString(
+                        R.string.version_info_message,
+                        resources.getString(R.string.app_name),
+                        BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA,
                         BuildConfig.VERSION_CODENAME,
                         BuildConfig.VERSION_BUILD_DATE,
-                        BuildConfig.VERSION_BUILD_YEAR));
-                update_btn.setOnClickListener(_update_btn -> {
-                    DownloaderThread mHandlerThread = new DownloaderThread("updater");
-                    mHandlerThread.start();
-                    mHandlerThread.setCallerHandler(new Handler(mHandlerThread.getLooper()) {
-                        @Override
-                        public void handleMessage(Message msg) {
-                            switch (msg.what) {
-                                case DownloaderThread.TYPE_SUCCESS:
-                                    String data = msg.getData().getString("response");
-                                    File apkFile = new File(updateDownloadPath);
-
-                                    if (data == null) {
-                                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
-                                        return;
+                        BuildConfig.VERSION_BUILD_YEAR
+                    )
+                    update_btn.setOnClickListener {
+                        val mHandlerThread = DownloaderThread("updater")
+                        mHandlerThread.start()
+                        mHandlerThread.setCallerHandler(object : Handler(mHandlerThread.looper) {
+                            override fun handleMessage(msg: Message) {
+                                when (msg.what) {
+                                    DownloaderThread.TYPE_SUCCESS -> {
+                                        val data = msg.data.getString("response")
+                                        val apkFile = File(updateDownloadPath)
+                                        if (data == null) {
+                                            showMessage(
+                                                settingsActivity,
+                                                resources.getString(R.string.network_unavailable_toast)
+                                            )
+                                            return
+                                        }
+                                        val array = data.split(System.lineSeparator().toRegex())
+                                            .dropLastWhile { it.isEmpty() }
+                                            .toTypedArray()
+                                        if (array[0].toInt() <= BuildConfig.VERSION_CODE) {
+                                            showMessage(
+                                                settingsActivity,
+                                                resources.getString(R.string.version_latest_toast)
+                                            )
+                                            return
+                                        }
+                                        Handler(Looper.getMainLooper()).post {
+                                            MaterialAlertDialogBuilder(
+                                                settingsActivity
+                                            )
+                                                .setTitle(resources.getString(R.string.new_update_detect_title))
+                                                .setMessage(
+                                                    resources.getString(
+                                                        R.string.new_update_detect_message,
+                                                        array[2],
+                                                        array[0]
+                                                    )
+                                                )
+                                                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                                    if (!apkFile.exists() || apkFile.delete()) downloadID =
+                                                        dmDownloadFile(
+                                                            settingsActivity,
+                                                            array[1],
+                                                            null,
+                                                            "application/vnd.android.package-archive",
+                                                            resources.getString(R.string.download_title),
+                                                            "browservio-update.apk",
+                                                            null
+                                                        )
+                                                    else
+                                                        showMessage(
+                                                            settingsActivity,
+                                                            resources.getString(R.string.update_down_failed_toast)
+                                                        )
+                                                }
+                                                .setNegativeButton(android.R.string.cancel, null)
+                                                .create().show()
+                                        }
                                     }
-                                    String[] array = data.split(CommonUtils.LINE_SEPARATOR());
 
-                                    if (Integer.parseInt(array[0]) <= BuildConfig.VERSION_CODE) {
-                                        CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.version_latest_toast));
-                                        return;
-                                    }
-                                    new Handler(Looper.getMainLooper()).post(() -> new MaterialAlertDialogBuilder(settingsActivity)
-                                            .setTitle(getResources().getString(R.string.new_update_detect_title))
-                                            .setMessage(getResources().getString(R.string.new_update_detect_message, array[2], array[0]))
-                                            .setPositiveButton(android.R.string.ok, (_dialog, _which) -> {
-                                                if (!apkFile.exists() || apkFile.delete())
-                                                    downloadID = DownloadUtils.dmDownloadFile(settingsActivity, array[1],
-                                                            null, "application/vnd.android.package-archive",
-                                                            getResources().getString(R.string.download_title), "browservio-update.apk", null);
-                                                else
-                                                    CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.update_down_failed_toast));
-                                            })
-                                            .setNegativeButton(android.R.string.cancel, null)
-                                            .create().show());
-                                    break;
-                                case DownloaderThread.TYPE_FAILED:
-                                    CommonUtils.showMessage(settingsActivity, getResources().getString(R.string.network_unavailable_toast));
-                                    break;
+                                    DownloaderThread.TYPE_FAILED -> showMessage(
+                                        settingsActivity,
+                                        resources.getString(R.string.network_unavailable_toast)
+                                    )
+                                }
+                                mHandlerThread.quit()
+                                super.handleMessage(msg)
                             }
-                            mHandlerThread.quit();
-                            super.handleMessage(msg);
-                        }
-                    });
-                    mHandlerThread.startDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg");
-                });
-                changelog_btn.setVisibility(BuildConfig.DEBUG ? View.GONE : View.VISIBLE);
-                changelog_btn.setOnClickListener(_license_btn -> {
-                    needLoad(BrowservioURLs.realChangelogUrl);
-                    dialog.dismiss();
-                });
-                license_btn.setOnClickListener(_license_btn -> {
-                    needLoad(BrowservioURLs.licenseUrl);
-                    dialog.dismiss();
-                });
-
-                dialog.show();
-                return true;
-            });
-
-            feedback.setOnPreferenceClickListener(preference -> {
-                needLoad(BrowservioURLs.feedbackUrl);
-                return true;
-            });
-
-            source_code.setOnPreferenceClickListener(preference -> {
-                needLoad(BrowservioURLs.sourceUrl);
-                return true;
-            });
-
-            search_engine.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)]);
-            homepage.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]);
-            search_suggestions.setSummary(searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)]);
-            theme.setSummary(themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]);
-            version.setSummary(getResources().getString(R.string.app_name).concat(" ").concat(BuildConfig.VERSION_NAME.concat(BuildConfig.VERSION_NAME_EXTRA)));
-            needReload = false;
+                        })
+                        mHandlerThread.startDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
+                    }
+                    changelog_btn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
+                    changelog_btn.setOnClickListener {
+                        needLoad(InternalUrls.realChangelogUrl)
+                        dialog.dismiss()
+                    }
+                    license_btn.setOnClickListener {
+                        needLoad(InternalUrls.licenseUrl)
+                        dialog.dismiss()
+                    }
+                    dialog.show()
+                    true
+                }
+            Preference.OnPreferenceClickListener {
+                needLoad(InternalUrls.feedbackUrl)
+                true
+            }.also { feedback.onPreferenceClickListener = it }
+            source_code.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    needLoad(InternalUrls.sourceUrl)
+                    true
+                }
+            search_engine.summary =
+                searchHomePageList[SettingsUtils.getPrefNum(pref!!, SettingsKeys.defaultSearchId)]
+            homepage.summary =
+                searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]
+            search_suggestions.summary = searchHomePageList[SettingsUtils.getPrefNum(
+                pref,
+                SettingsKeys.defaultSuggestionsId
+            )]
+            theme.summary = themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]
+            version.summary =
+                resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA
+            needReload = false
         }
 
-        @Override
-        public void onDisplayPreferenceDialog(@NonNull Preference preference) {
-            DialogFragment dialogFragment = null;
-            if (preference instanceof MaterialDialogPreference) {
-                dialogFragment = MaterialPreferenceDialogFragmentCompat
-                        .newInstance(preference.getKey(), ((MaterialDialogPreference) preference).getMaterialDialogPreferenceListener());
+        override fun onDisplayPreferenceDialog(preference: Preference) {
+            var dialogFragment: DialogFragment? = null
+            if (preference is MaterialDialogPreference) {
+                dialogFragment =
+                    newInstance(preference.getKey(), preference.materialDialogPreferenceListener!!)
             }
-
             if (dialogFragment != null) {
-                dialogFragment.setTargetFragment(this, 0);
-                dialogFragment.show(this.getFragmentManager(), "androidx.preference.PreferenceFragment.DIALOG");
+                dialogFragment.setTargetFragment(this, 0)
+                dialogFragment.show(
+                    requireFragmentManager(),
+                    "androidx.preference.PreferenceFragment.DIALOG"
+                )
             } else {
-                super.onDisplayPreferenceDialog(preference);
+                super.onDisplayPreferenceDialog(preference)
             }
         }
+
+        companion object {
+            var needReload = false
+        }
+    }
+
+    companion object {
+        var settingsPrefHandler: SettingsPrefHandler? = null
     }
 }
