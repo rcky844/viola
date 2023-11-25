@@ -3,6 +3,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.devtools.ksp'
 }
 
 def getGitHash = { ->
@@ -20,8 +21,6 @@ def getGitHash = { ->
     }
     return stdout.toString().trim()
 }
-
-apply plugin: 'kotlin-kapt'
 
 android {
     namespace "tipz.viola"
@@ -97,7 +96,7 @@ dependencies {
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
     annotationProcessor 'androidx.annotation:annotation:1.7.0'
     annotationProcessor "androidx.room:room-compiler:$room_version"
 }
