@@ -112,15 +112,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             mUploadMessage = null
         }
     private val mRequestHeaders = HashMap<String, String>()
-    private fun userAgentFull(mode: Double): String {
-        val info = WebViewCompat.getCurrentWebViewPackage(mContext)
-        val webkitVersion = if (info == null) "534.30" else "537.36"
-        return "Mozilla/5.0 (" + "Linux; Device with Viola " + BuildConfig.VERSION_NAME + ") AppleWebKit/" + webkitVersion + " KHTML, like Gecko) Chrome/" + if (info == null) "12.0.742" else info.versionName + if (mode == 0.0) " Mobile " else " Safari/$webkitVersion"
+    private fun userAgentFull(mode: Int): String {
+        val mobile = if (mode == 0) "Mobile" else CommonUtils.EMPTY_STRING
+        return "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${WebViewCompat.getCurrentWebViewPackage(mContext)?.versionName} $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
     }
 
     init {
         /* User agent init code */
-        setPrebuiltUAMode(null, 0.0, true)
+        setPrebuiltUAMode(null, 0, true)
 
         /* Start the download manager service */
         setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
@@ -341,6 +340,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             mVioWebViewActivity!!.onSwipeRefreshLayoutRefreshingUpdated(false)
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onReceivedError(
             view: WebView,
             errorCode: Int,
@@ -356,6 +356,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             view.loadDataWithBaseURL(null, returnVal, "text/html", "UTF-8", null)
         }
 
+        @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             if (UrlUtils.isUriLaunchable(url)) return false
             try {
@@ -409,6 +410,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             return false
         }
 
+        @Deprecated("Deprecated in Java")
         override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
             if (adServers.isNullOrEmpty()) {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -651,12 +653,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (!noReload) webViewReload()
     }
 
-    fun setPrebuiltUAMode(view: AppCompatImageView?, mode: Double, noReload: Boolean) {
+    fun setPrebuiltUAMode(view: AppCompatImageView?, mode: Int, noReload: Boolean) {
         setUA(
             view,
-            mode == 1.0,
+            mode == 1,
             userAgentFull(mode),
-            if (mode == 0.0) R.drawable.smartphone else R.drawable.desktop,
+            if (mode == 0) R.drawable.smartphone else R.drawable.desktop,
             noReload
         )
     }
