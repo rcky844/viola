@@ -138,7 +138,7 @@ class BrowserActivity : VWebViewActivity() {
             currentPrebuiltUAState = !currentPrebuiltUAState
             webview.setPrebuiltUAMode(
                 view,
-                (if (currentPrebuiltUAState) 1 else 0).toDouble(),
+                if (currentPrebuiltUAState) 1 else 0,
                 false
             )
         } else if (item == R.drawable.new_tab) {
