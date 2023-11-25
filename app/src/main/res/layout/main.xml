@@ -18,11 +18,11 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/actionbar_view_height">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
-            android:layout_height="?attr/minTouchTargetSize"
+            android:layout_height="@dimen/actionbar_content_height"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             app:contentInsetEnd="0dp"
@@ -109,7 +109,7 @@
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/webviewProgressBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/progressbar_height"
             android:indeterminate="false"
             app:trackColor="@color/colorTopBar" />
 

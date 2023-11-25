@@ -137,10 +137,7 @@ open class VWebViewActivity : BaseActivity() {
         toolsContainerParams =
             toolsContainer.layoutParams as CoordinatorLayout.LayoutParams
 
-        // FIXME: These are hardcoded values
-        val actionBarSize = CommonUtils.getDisplayMetrics(
-            this@VWebViewActivity, 52
-        ).toInt()
+        val actionBarSize = resources.getDimension(R.dimen.actionbar_view_height).toInt()
         val toolsContainerSize = resources.getDimension(R.dimen.toolbar_icon_size).toInt()
         var margin = actionBarSize
         if (toolsContainer.visibility == View.VISIBLE) margin += toolsContainerSize
