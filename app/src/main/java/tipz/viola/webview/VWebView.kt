@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("DEPRECATION")
+
 package tipz.viola.webview
 
 import android.Manifest
@@ -22,7 +24,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -69,13 +70,12 @@ import androidx.webkit.WebViewRenderProcess
 import androidx.webkit.WebViewRenderProcessClient
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.Application
-import tipz.viola.BrowservioActivity
+import tipz.viola.BaseActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.broha.api.HistoryApi
 import tipz.viola.broha.api.HistoryUtils
 import tipz.viola.broha.database.Broha
-import tipz.viola.broha.database.icons.IconHashClient
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsUtils
 import tipz.viola.utils.BrowservioURLs
@@ -83,7 +83,6 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.DownloaderThread
 import tipz.viola.utils.UrlUtils
-import tipz.viola.webview.tabbies.BrowserActivity
 import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
 import java.net.URL
@@ -91,47 +90,40 @@ import java.util.Objects
 import java.util.Scanner
 
 @SuppressLint("SetJavaScriptEnabled")
-class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
+class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     mContext, attrs
 ) {
-    private var mVioWebViewActivity: VioWebViewActivity? = null
-    private val iconHashClient: IconHashClient
-    private val webSettings: WebSettings
-    private val mWebViewRenderProcess: WebViewRenderProcess?
+    private var mVioWebViewActivity: VWebViewActivity? = null
+    private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
+    private val webSettings = this.settings
+    private val mWebViewRenderProcess = if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER)) WebViewCompat.getWebViewRenderProcess(
+        this
+    ) else null
     private var currentUrl: String? = null
     private var adServers: String? = null
     private var currentBroha: Broha? = null
     private var updateHistory = true
     private var historyCommitted = false
-    private val pref: SharedPreferences
+    private val pref = (mContext.applicationContext as Application).pref!!
     private var mUploadMessage: ValueCallback<Array<Uri>>? = null
-    private val mFileChooser: ActivityResultLauncher<String>
+    val mFileChooser = (mContext as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (null == mUploadMessage || uri == null) return@registerForActivityResult
+        mUploadMessage!!.onReceiveValue(arrayOf(uri))
+        mUploadMessage = null
+    }
     private val mRequestHeaders = HashMap<String, String>()
     private fun userAgentFull(mode: Double): String {
         val info = WebViewCompat.getCurrentWebViewPackage(mContext)
         val webkitVersion = if (info == null) "534.30" else "537.36"
-        return "Mozilla/5.0 (" + "Linux; Device with Browservio " + BuildConfig.VERSION_NAME + ") AppleWebKit/" + webkitVersion + " KHTML, like Gecko) Chrome/" + if (info == null) "12.0.742" else info.versionName + if (mode == 0.0) " Mobile " else " Safari/$webkitVersion"
+        return "Mozilla/5.0 (" + "Linux; Device with Viola " + BuildConfig.VERSION_NAME + ") AppleWebKit/" + webkitVersion + " KHTML, like Gecko) Chrome/" + if (info == null) "12.0.742" else info.versionName + if (mode == 0.0) " Mobile " else " Safari/$webkitVersion"
     }
 
     init {
-        mWebViewRenderProcess =
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER)) WebViewCompat.getWebViewRenderProcess(
-                this
-            ) else null
-        pref = (mContext.applicationContext as Application).pref
-        iconHashClient = (mContext.applicationContext as Application).iconHashClient
-        webSettings = this.settings
-        mFileChooser = (mContext as AppCompatActivity).registerForActivityResult(
-            ActivityResultContracts.GetContent()
-        ) { uri: Uri? ->
-            if (null == mUploadMessage || uri == null) return@registerForActivityResult
-            mUploadMessage!!.onReceiveValue(arrayOf(uri))
-            mUploadMessage = null
-        }
+        /* User agent init code */
+        setPrebuiltUAMode(null, 0.0, true)
 
-        /* User agent init code */setPrebuiltUAMode(null, 0.0, true)
-
-        /* Start the download manager service */setDownloadListener { url: String?, userAgent: String?, contentDisposition: String?, mimeType: String?, contentLength: Long ->
+        /* Start the download manager service */
+        setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
             DownloadUtils.dmDownloadFile(
                 mContext, url, contentDisposition,
                 mimeType, currentUrl
@@ -179,7 +171,7 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         removeJavascriptInterface("accessibility") /* CVE-2014-7224 */
         removeJavascriptInterface("accessibilityTraversal") /* CVE-2014-7224 */
 
-        /* Hit Test Menu */setOnCreateContextMenuListener { menu: ContextMenu?, v: View?, menuInfo: ContextMenuInfo? ->
+        /* Hit Test Menu */setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
             val hr = this.hitTestResult
             val url = hr.extra
             val type = hr.type
@@ -194,24 +186,29 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
             arrayAdapter.add(resources.getString(R.string.copy_url))
             arrayAdapter.add(resources.getString(R.string.share_url))
-            webLongPress.setAdapter(arrayAdapter) { dialog: DialogInterface?, which: Int ->
-                val strName = arrayAdapter.getItem(which)
-                if (strName == resources.getString(R.string.copy_url)) {
-                    CommonUtils.copyClipboard(mContext, url)
-                } else if (strName == resources.getString(R.string.download_image)) {
-                    DownloadUtils.dmDownloadFile(
-                        mContext, url,
-                        null, null, url
-                    )
-                } else if (strName == resources.getString(R.string.search_image)) {
-                    this.loadUrl("http://images.google.com/searchbyimage?image_url=$url")
-                } else if (strName == resources.getString(R.string.open_in_new_tab)) {
-                    val intent = Intent(mContext, BrowserActivity::class.java)
-                    intent.putExtra(Intent.EXTRA_TEXT, url)
-                        .setAction(Intent.ACTION_SEND).type = UrlUtils.TypeSchemeMatch[1]
-                    mContext.startActivity(intent)
-                } else if (strName == resources.getString(R.string.share_url)) {
-                    CommonUtils.shareUrl(mContext, url)
+            webLongPress.setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
+                when (arrayAdapter.getItem(which)) {
+                    resources.getString(R.string.copy_url) -> {
+                        CommonUtils.copyClipboard(mContext, url)
+                    }
+                    resources.getString(R.string.download_image) -> {
+                        DownloadUtils.dmDownloadFile(
+                            mContext, url,
+                            null, null, url
+                        )
+                    }
+                    resources.getString(R.string.search_image) -> {
+                        this.loadUrl("http://images.google.com/searchbyimage?image_url=$url")
+                    }
+                    resources.getString(R.string.open_in_new_tab) -> {
+                        val intent = Intent(mContext, BrowserActivity::class.java)
+                        intent.putExtra(Intent.EXTRA_TEXT, url)
+                            .setAction(Intent.ACTION_SEND).type = UrlUtils.TypeSchemeMatch[1]
+                        mContext.startActivity(intent)
+                    }
+                    resources.getString(R.string.share_url) -> {
+                        CommonUtils.shareUrl(mContext, url)
+                    }
                 }
             }
             webLongPress.show()
@@ -221,7 +218,7 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     @Suppress("deprecation")
     fun doSettingsCheck() {
         // Dark mode
-        val darkMode = BrowservioActivity.getDarkMode(mContext)
+        val darkMode = BaseActivity.getDarkMode(mContext)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(
                 WebViewFeature.ALGORITHMIC_DARKENING
             )
@@ -272,7 +269,7 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun notifyViewSetup() {
-        mVioWebViewActivity = mContext as VioWebViewActivity
+        mVioWebViewActivity = mContext as VWebViewActivity
         doSettingsCheck()
     }
 
@@ -354,7 +351,7 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         ) {
             var returnVal = template
             for (i in 0..5) returnVal = returnVal.replace(
-                "$" + Integer.toString(i),
+                "$$i",
                 mContext.resources.getStringArray(R.array.errMsg)[i]
             )
             returnVal = returnVal.replace("$6", description)
@@ -405,8 +402,8 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                         content_summary
                     )
                 )
-                .setPositiveButton(resources.getString(android.R.string.ok)) { _dialog: DialogInterface?, _which: Int -> handler.proceed() }
-                .setNegativeButton(resources.getString(android.R.string.cancel)) { _dialog: DialogInterface?, _which: Int -> handler.cancel() }
+                .setPositiveButton(resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int -> handler.proceed() }
+                .setNegativeButton(resources.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> handler.cancel() }
                 .create().show()
         }
 
@@ -602,12 +599,12 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         val dialog = MaterialAlertDialogBuilder(mContext)
         dialog.setTitle(mContext.resources.getString(titleResId, url))
             .setMessage(message)
-            .setPositiveButton(android.R.string.ok) { _dialog: DialogInterface?, _which: Int ->
+            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 if (defaultValue == null) result.confirm() else (result as JsPromptResult).confirm(
                     Objects.requireNonNull(jsMessage.text).toString()
                 )
             }
-            .setNegativeButton(android.R.string.cancel) { _dialog: DialogInterface?, _which: Int ->
+            .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                 result.cancel()
                 mVioWebViewActivity!!.onFaviconProgressUpdated(false)
                 mVioWebViewActivity!!.onPageLoadProgressChanged(0)
@@ -666,7 +663,7 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             view.setImageResource(image!!)
             view.tag = image
         }
-        if (!noReload) webviewReload()
+        if (!noReload) webViewReload()
     }
 
     fun setPrebuiltUAMode(view: AppCompatImageView?, mode: Double, noReload: Boolean) {
@@ -679,7 +676,8 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         )
     }
 
-    fun webviewReload() {
+    fun webViewReload() {
+        if (currentUrl.isNullOrBlank()) return
         super.loadUrl(currentUrl!!)
     }
 
@@ -696,20 +694,18 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private fun URLIdentify(url: String): String {
         if (url == BrowservioURLs.licenseUrl || url == BrowservioURLs.realLicenseUrl) return BrowservioURLs.realLicenseUrl
         if (url == BrowservioURLs.reloadUrl) {
-            webviewReload()
+            webViewReload()
             return CommonUtils.EMPTY_STRING
         }
         val startPageLayout = mVioWebViewActivity!!.startPageLayout
-        if (startPageLayout != null) {
-            if (url == BrowservioURLs.startUrl) {
-                this.visibility = GONE
-                startPageLayout.visibility = VISIBLE
-                return CommonUtils.EMPTY_STRING
-            }
-            if (this.visibility == GONE) {
-                this.visibility = VISIBLE
-                startPageLayout.visibility = GONE
-            }
+        if (url == BrowservioURLs.startUrl) {
+            this.visibility = GONE
+            startPageLayout.visibility = VISIBLE
+            return CommonUtils.EMPTY_STRING
+        }
+        if (this.visibility == GONE) {
+            this.visibility = VISIBLE
+            startPageLayout.visibility = GONE
         }
         return url
     }

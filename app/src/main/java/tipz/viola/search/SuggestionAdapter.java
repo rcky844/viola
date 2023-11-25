@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Locale;
 
 import tipz.viola.R;
-import tipz.viola.webview.VioWebViewActivity;
+import tipz.viola.webview.VWebViewActivity;
 
 /*
     "Inspired" by LineageOS' Jelly
@@ -95,7 +95,7 @@ public class SuggestionAdapter extends ArrayAdapter<String> {
             title.setText(suggestion);
         }
 
-        copy_to_search_bar_button.setOnClickListener(view -> ((VioWebViewActivity) mContext).onUrlUpdated(suggestion, suggestion.length()));
+        copy_to_search_bar_button.setOnClickListener(view -> ((VWebViewActivity) mContext).onUrlUpdated(suggestion, suggestion.length()));
         return convertView;
     }
 

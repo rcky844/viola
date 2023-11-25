@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Objects;
 
 import tipz.viola.Application;
-import tipz.viola.BrowservioActivity;
+import tipz.viola.BaseActivity;
 import tipz.viola.R;
 import tipz.viola.broha.api.FavApi;
 import tipz.viola.broha.api.FavUtils;
@@ -55,7 +55,7 @@ import tipz.viola.broha.database.Broha;
 import tipz.viola.broha.database.icons.IconHashClient;
 import tipz.viola.utils.CommonUtils;
 
-public class BrohaListInterfaceActivity extends BrowservioActivity {
+public class BrohaListInterfaceActivity extends BaseActivity {
     private static List<Broha> listData;
 
     /* Activity mode */
@@ -169,7 +169,7 @@ public class BrohaListInterfaceActivity extends BrowservioActivity {
             Bitmap icon = iconHashClient.read(data.getIconHash());
 
             holder.title.setText(title == null ? url : title);
-            holder.url.setText(Uri.parse(url).getHost());
+            holder.url.setText(Uri.parse(url == null ? CommonUtils.EMPTY_STRING : url).getHost());
             if (activityMode.equals(mode_history)) {
                 Calendar date = Calendar.getInstance();
                 date.setTimeInMillis(data.getTimestamp() * 1000L);

@@ -13,39 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola;
+package tipz.viola
 
-import android.content.SharedPreferences;
-import android.os.Build;
+import android.app.Application
+import android.content.SharedPreferences
+import android.os.Build
+import com.google.android.material.color.DynamicColors
+import tipz.viola.broha.api.FavApi
+import tipz.viola.broha.api.HistoryApi
+import tipz.viola.broha.database.BrohaClient
+import tipz.viola.broha.database.BrohaDao
+import tipz.viola.broha.database.icons.IconHashClient
+import tipz.viola.settings.SettingsInit
 
-import com.google.android.material.color.DynamicColors;
-
-import tipz.viola.broha.api.FavApi;
-import tipz.viola.broha.api.HistoryApi;
-import tipz.viola.broha.database.BrohaClient;
-import tipz.viola.broha.database.BrohaDao;
-import tipz.viola.broha.database.icons.IconHashClient;
-import tipz.viola.settings.SettingsInit;
-
-public class Application extends android.app.Application {
-    public BrohaDao historyBroha;
-    public BrohaDao favBroha;
-    public IconHashClient iconHashClient;
-    public SharedPreferences pref;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        pref = new SettingsInit(this).pref; /* Init settings check */
-        HistoryApi.doApiInitCheck(this);
-        FavApi.doApiInitCheck(this);
-
-        historyBroha = new BrohaClient(this, "history").getDao();
-        favBroha = new BrohaClient(this, "bookmarks").getDao();
-        iconHashClient = new IconHashClient(this);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            DynamicColors.applyToActivitiesIfAvailable(this);
+class Application : Application() {
+    @JvmField
+    var historyBroha: BrohaDao? = null
+    @JvmField
+    var favBroha: BrohaDao? = null
+    @JvmField
+    var iconHashClient: IconHashClient? = null
+    @JvmField
+    var pref: SharedPreferences? = null
+    override fun onCreate() {
+        super.onCreate()
+        pref = SettingsInit(this).pref /* Init settings check */
+        HistoryApi.doApiInitCheck(this)
+        FavApi.doApiInitCheck(this)
+        historyBroha = BrohaClient(this, "history").dao
+        favBroha = BrohaClient(this, "bookmarks").dao
+        iconHashClient = IconHashClient(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) DynamicColors.applyToActivitiesIfAvailable(
+            this
+        )
     }
 }

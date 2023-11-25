@@ -13,315 +13,245 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.webview;
+package tipz.viola.webview
 
-import android.app.ActivityManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.app.ActivityManager.TaskDescription
+import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.os.Build
+import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.widget.RelativeLayout
+import androidx.activity.addCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.CallSuper
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import tipz.viola.Application
+import tipz.viola.BaseActivity
+import tipz.viola.R
+import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsUtils
+import tipz.viola.utils.CommonUtils
+import kotlin.system.exitProcess
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.CallSuper;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+open class VWebViewActivity : BaseActivity() {
+    lateinit var pref: SharedPreferences
+    lateinit var webview: VWebView
+    lateinit var favicon: AppCompatImageView
+    lateinit var faviconProgressBar: CircularProgressIndicator
+    lateinit var progressBar: LinearProgressIndicator
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    lateinit var startPageLayout: View
+    private lateinit var appbar: AppBarLayout
+    lateinit var toolsContainer: RelativeLayout
+    private lateinit var webviewContainer: RelativeLayout
+    private var swipeRefreshLayoutEnabled = true
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        pref = (applicationContext as Application).pref!!
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
-
-import java.util.Objects;
-
-import tipz.viola.Application;
-import tipz.viola.BrowservioActivity;
-import tipz.viola.R;
-import tipz.viola.settings.SettingsKeys;
-import tipz.viola.settings.SettingsUtils;
-import tipz.viola.utils.CommonUtils;
-
-public class VioWebViewActivity extends BrowservioActivity {
-    public SharedPreferences pref;
-
-    public VioWebView webview;
-    public AppCompatImageView favicon;
-    public CircularProgressIndicator faviconProgressBar;
-    public LinearProgressIndicator progressBar;
-    public SwipeRefreshLayout swipeRefreshLayout;
-    public View startPageLayout;
-
-    public AppBarLayout appbar;
-    public RelativeLayout toolsContainer;
-    public RelativeLayout webviewContainer;
-
-    private boolean swipeRefreshLayoutEnabled = true;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        pref = ((Application) getApplicationContext()).pref;
+        onBackPressedDispatcher.addCallback(this) {
+            if (webview.canGoBack()) webview.goBack() else finish()
+        }
     }
 
-    @Override
-    public void onStart() {
-        appbar = findViewById(R.id.appbar);
-        webviewContainer = findViewById(R.id.webviewContainer);
+    override fun onStart() {
+        appbar = findViewById(R.id.appbar)
+        webviewContainer = findViewById(R.id.webviewContainer)
 
         /* Init VioWebView */
-        webview.doSettingsCheck();
+        webview.doSettingsCheck()
 
         // Setup swipe refresh layout
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.setOnRefreshListener(() -> webview.webviewReload());
-            swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        }
+        swipeRefreshLayout.setOnRefreshListener { webview.webViewReload() }
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
 
         // Setup start page
-        if (startPageLayout != null)
-            startPageLayout.findViewById(R.id.startPageEditText)
-                    .setOnClickListener(v ->onStartPageEditTextPressed());
+        startPageLayout.findViewById<View>(R.id.startPageEditText)
+            .setOnClickListener { onStartPageEditTextPressed() }
 
         // Setup favicon
-        if (favicon != null && faviconProgressBar != null)
-            faviconProgressBar.setOnClickListener(_view -> favicon.performClick());
-        super.onStart();
+        faviconProgressBar.setOnClickListener { favicon.performClick() }
+        super.onStart()
     }
 
-    /**
-     * When back button is pressed, go back in history or finish activity
-     */
-    @Override
-    public void onBackPressed() {
-        if (webview.canGoBack())
-            webview.goBack();
-        else
-            finish();
-    }
-
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-            webview.freeMemory();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (webview != null) {
-            webview.stopLoading();
-            webview.setWebViewClient(null);
-            webview.setWebChromeClient(null);
-            // According to the doc of WebView#destroy(), webview should be removed from the view
-            // system before calling the WebView#destroy().
-            ((ViewGroup) webview.getParent()).removeView(webview);
-            webview.destroy();
-        }
-        if (!isChangingConfigurations()) {
-            // For removing all WebView thread
-            System.exit(0);
-        }
+    @Suppress("DEPRECATION")
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) webview.freeMemory()
     }
 
     /**
      * Need Load Info Receiver
-     * <p>
+     *
+     *
      * Receive needLoadUrl for loading.
      */
-    public final ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                doSettingsCheck();
-                webview.loadUrl(result.getData() != null ? result.getData().getStringExtra("needLoadUrl") : CommonUtils.EMPTY_STRING);
-            });
+    @JvmField
+    val mGetNeedLoad = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        doSettingsCheck()
+        webview.loadUrl((if (result.data != null) result.data!!.getStringExtra("needLoadUrl") else CommonUtils.EMPTY_STRING)!!)
+    }
 
     /**
      * Config Checker
-     * <p>
+     *
+     *
      * Used to check if anything has been changed
      * after returning from settings.
      */
-    @Override
-    public void doSettingsCheck() {
-        super.doSettingsCheck();
+    override fun doSettingsCheck() {
+        super.doSettingsCheck()
 
         // Pull to Refresh
-        if (swipeRefreshLayout != null && swipeRefreshLayoutEnabled) {
-            swipeRefreshLayout.setEnabled(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)));
+        if (swipeRefreshLayoutEnabled) {
+            swipeRefreshLayout.isEnabled = CommonUtils.isIntStrOne(
+                SettingsUtils.getPrefNum(
+                    pref,
+                    SettingsKeys.enableSwipeRefresh
+                )
+            )
         }
 
         // Favicon
-        if (favicon != null && faviconProgressBar != null) {
-            favicon.setVisibility(CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) ? View.VISIBLE : View.GONE);
-            if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))
-                    && faviconProgressBar.getVisibility() == View.VISIBLE)
-                favicon.setVisibility(View.GONE);
-        }
+        favicon.visibility = if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) View.VISIBLE else View.GONE
+        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) && faviconProgressBar.visibility == View.VISIBLE)
+            favicon.visibility = View.GONE
 
         // Reach mode
-        reachModeCheck();
+        reachModeCheck()
     }
 
-    public void reachModeCheck() {
-        CoordinatorLayout.LayoutParams appBarParams =
-                (CoordinatorLayout.LayoutParams) appbar.getLayoutParams();
-        CoordinatorLayout.LayoutParams toolsContainerParams = null;
-        CoordinatorLayout.LayoutParams webviewContainerParams =
-                (CoordinatorLayout.LayoutParams) webviewContainer.getLayoutParams();
-
-        if (toolsContainer != null)
-            toolsContainerParams = (CoordinatorLayout.LayoutParams) toolsContainer.getLayoutParams();
+    fun reachModeCheck() {
+        val appBarParams = appbar.layoutParams as CoordinatorLayout.LayoutParams
+        val toolsContainerParams: CoordinatorLayout.LayoutParams?
+        val webviewContainerParams =
+            webviewContainer.layoutParams as CoordinatorLayout.LayoutParams
+        toolsContainerParams =
+            toolsContainer.layoutParams as CoordinatorLayout.LayoutParams
 
         // FIXME: These are hardcoded values
-        int actionBarSize = (int) CommonUtils.getDisplayMetrics(
-                VioWebViewActivity.this, 52);
-        int toolsContainerSize = (int) CommonUtils.getDisplayMetrics(
-                VioWebViewActivity.this, 36);
-        int margin = actionBarSize;
-        if (toolsContainer != null && toolsContainer.getVisibility() == View.VISIBLE)
-            margin = margin + toolsContainerSize;
-
+        val actionBarSize = CommonUtils.getDisplayMetrics(
+            this@VWebViewActivity, 52
+        ).toInt()
+        val toolsContainerSize = CommonUtils.getDisplayMetrics(
+            this@VWebViewActivity, 36
+        ).toInt()
+        var margin = actionBarSize
+        if (toolsContainer.visibility == View.VISIBLE) margin += toolsContainerSize
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseLayout))) {
             if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.reverseOnlyActionBar))) {
-                appBarParams.gravity = Gravity.TOP;
-                if (toolsContainerParams != null) {
-                    toolsContainer.setVisibility(View.VISIBLE);
-                    toolsContainerParams.setMargins(0, 0, 0, 0);
-                }
-                webviewContainerParams.setMargins(0, actionBarSize, 0, toolsContainerSize);
+                appBarParams.gravity = Gravity.TOP
+                toolsContainer.visibility = View.VISIBLE
+                toolsContainerParams.setMargins(0, 0, 0, 0)
+                webviewContainerParams.setMargins(0, actionBarSize, 0, toolsContainerSize)
             } else {
-                appBarParams.gravity = Gravity.BOTTOM;
-                if (toolsContainerParams != null)
-                    toolsContainerParams.setMargins(0, 0, 0, actionBarSize);
-                webviewContainerParams.setMargins(0, 0, 0, margin);
+                appBarParams.gravity = Gravity.BOTTOM
+                toolsContainerParams.setMargins(0, 0, 0, actionBarSize)
+                webviewContainerParams.setMargins(0, 0, 0, margin)
             }
-
-            if (toolsContainerParams != null)
-                toolsContainerParams.gravity = Gravity.BOTTOM;
+            toolsContainerParams.gravity = Gravity.BOTTOM
         } else {
-            appBarParams.gravity = Gravity.TOP;
-            if (toolsContainerParams != null) {
-                toolsContainerParams.gravity = Gravity.TOP;
-                toolsContainerParams.setMargins(0, actionBarSize, 0, 0);
-            }
-            webviewContainerParams.setMargins(0, margin, 0, 0);
+            appBarParams.gravity = Gravity.TOP
+            toolsContainerParams.gravity = Gravity.TOP
+            toolsContainerParams.setMargins(0, actionBarSize, 0, 0)
+            webviewContainerParams.setMargins(0, margin, 0, 0)
         }
-
-        appbar.setLayoutParams(appBarParams);
-        appbar.invalidate();
-        if (toolsContainer != null) {
-            toolsContainer.setLayoutParams(toolsContainerParams);
-            toolsContainer.invalidate();
-        }
-        webviewContainer.setLayoutParams(webviewContainerParams);
-        webviewContainer.invalidate();
+        appbar.layoutParams = appBarParams
+        appbar.invalidate()
+        toolsContainer.layoutParams = toolsContainerParams
+        toolsContainer.invalidate()
+        webviewContainer.layoutParams = webviewContainerParams
+        webviewContainer.invalidate()
     }
 
-    public void onUrlUpdated(String url) {
-
-    }
-
-    public void onUrlUpdated(String url, int position) {
-
-    }
-
+    open fun onUrlUpdated(url: String?) {}
+    open fun onUrlUpdated(url: String?, position: Int) {}
+    @Suppress("DEPRECATION")
     @CallSuper
-    public void onTitleUpdated(String title) {
+    open fun onTitleUpdated(title: String?) {
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityManager.TaskDescription description =
-                    new ActivityManager.TaskDescription(title);
-            this.setTaskDescription(description);
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+        ) {
+            val description = TaskDescription(title)
+            setTaskDescription(description)
         }
     }
 
-    public void onDropDownDismissed() {
-
-    }
-
-    public void onStartPageEditTextPressed() {
-
-    }
-
+    open fun onDropDownDismissed() {}
+    open fun onStartPageEditTextPressed() {}
+    @Suppress("DEPRECATION")
     @CallSuper
-    public void onFaviconUpdated(Bitmap icon, boolean checkInstance) {
-        if (favicon != null && faviconProgressBar != null) {
-            if (checkInstance && (favicon.getDrawable() instanceof BitmapDrawable))
-                return;
-
-            if (icon == null)
-                favicon.setImageResource(R.drawable.default_favicon);
-            else
-                favicon.setImageBitmap(icon);
-        }
-
+    fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {
+        if (checkInstance && favicon.drawable is BitmapDrawable) return
+        if (icon == null) favicon.setImageResource(R.drawable.default_favicon) else favicon.setImageBitmap(
+            icon
+        )
         if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityManager.TaskDescription description =
-                    new ActivityManager.TaskDescription(webview.getTitle(), icon);
-            this.setTaskDescription(description);
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val description = TaskDescription(webview.title, icon)
+            setTaskDescription(description)
         }
     }
 
     @CallSuper
-    public void onFaviconProgressUpdated(boolean isLoading) {
-        if (favicon != null && faviconProgressBar != null) {
-            if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)))
-                return;
+    fun onFaviconProgressUpdated(isLoading: Boolean) {
+        if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) return
+        if (isLoading) {
+            favicon.visibility = View.GONE
+            faviconProgressBar.visibility = View.VISIBLE
+        } else {
+            favicon.visibility = View.VISIBLE
+            faviconProgressBar.visibility = View.GONE
+        }
+    }
 
-            if (isLoading) {
-                favicon.setVisibility(View.GONE);
-                faviconProgressBar.setVisibility(View.VISIBLE);
-            } else {
-                favicon.setVisibility(View.VISIBLE);
-                faviconProgressBar.setVisibility(View.GONE);
+    @CallSuper
+    fun onSwipeRefreshLayoutRefreshingUpdated(isRefreshing: Boolean) {
+        swipeRefreshLayout.isRefreshing = isRefreshing
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')") { value1: String ->
+                updateSwipeRefreshLayoutEnabled(getTrueCSSValue(value1) != "hidden")
+                if (swipeRefreshLayoutEnabled) webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y')") { value2: String ->
+                    updateSwipeRefreshLayoutEnabled(
+                        getTrueCSSValue(value2) == "auto"
+                    )
+                }
             }
         }
     }
 
-    @CallSuper
-    public void onSwipeRefreshLayoutRefreshingUpdated(boolean isRefreshing) {
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.setRefreshing(isRefreshing);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')", value1 -> {
-                    updateSwipeRefreshLayoutEnabled(!Objects.equals(getTrueCSSValue(value1), "hidden"));
-                    if (swipeRefreshLayoutEnabled)
-                        webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y')", value2 ->
-                                updateSwipeRefreshLayoutEnabled(Objects.equals(getTrueCSSValue(value2), "auto")));
-                });
-            }
-        }
-    }
-
-    private void updateSwipeRefreshLayoutEnabled(boolean isEnabled) {
-        swipeRefreshLayoutEnabled = isEnabled;
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.enableSwipeRefresh)))
-            swipeRefreshLayout.setEnabled(swipeRefreshLayoutEnabled);
+    private fun updateSwipeRefreshLayoutEnabled(isEnabled: Boolean) {
+        swipeRefreshLayoutEnabled = isEnabled
+        if (CommonUtils.isIntStrOne(
+                SettingsUtils.getPrefNum(
+                    pref,
+                    SettingsKeys.enableSwipeRefresh
+                )
+            )
+        ) swipeRefreshLayout.isEnabled = swipeRefreshLayoutEnabled
     }
 
     @CallSuper
-    public void onPageLoadProgressChanged(int progress) {
-        if (progressBar != null)
-            progressBar.setProgress(progress == 100 ? 0 : progress);
+    fun onPageLoadProgressChanged(progress: Int) {
+        progressBar.progress = if (progress == 100) 0 else progress
     }
 
-    private String getTrueCSSValue(String rawValue) {
-        String[] arrayValue;
-        if (rawValue.contains("\""))
-            rawValue = rawValue.replace("\"", "");
-
-        if (rawValue.equals("null"))
-            return "auto";
-
-        arrayValue = rawValue.split(" ");
-        return arrayValue[arrayValue.length - 1];
+    private fun getTrueCSSValue(rawValue: String): String {
+        var mValue = rawValue
+        if (mValue.contains("\"")) mValue = mValue.replace("\"", "")
+        if (mValue == "null") return "auto"
+        val arrayValue: Array<String> =
+            mValue.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        return arrayValue[arrayValue.size - 1]
     }
 }

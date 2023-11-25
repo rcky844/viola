@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <tipz.viola.webview.VioWebView
+    <tipz.viola.webview.VWebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

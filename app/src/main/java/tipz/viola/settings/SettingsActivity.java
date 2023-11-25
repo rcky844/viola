@@ -57,7 +57,7 @@ import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 import tipz.viola.Application;
-import tipz.viola.BrowservioActivity;
+import tipz.viola.BaseActivity;
 import tipz.viola.BuildConfig;
 import tipz.viola.R;
 import tipz.viola.utils.BrowservioURLs;
@@ -65,7 +65,7 @@ import tipz.viola.utils.CommonUtils;
 import tipz.viola.utils.DownloadUtils;
 import tipz.viola.utils.DownloaderThread;
 
-public class SettingsActivity extends BrowservioActivity {
+public class SettingsActivity extends BaseActivity {
 
     public final Intent needLoad = new Intent();
     public static SettingsPrefHandler settingsPrefHandler;
