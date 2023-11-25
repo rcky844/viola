@@ -1,0 +1,18 @@
+{
+  "channels": [
+    "stable",
+    "debug"
+  ],
+  "stable": {
+    "channel_name": "Stable"
+  },
+  "debug": {
+    "channel_name": "Debug",
+    "latest_update": {
+      "name": "6.0.0002.01",
+      "code": 5,
+      "timestamp": 1700937646,
+      "url": ""
+    }
+  }
+}
