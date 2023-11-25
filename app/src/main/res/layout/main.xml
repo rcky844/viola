@@ -122,6 +122,8 @@
         android:background="@color/colorTopBarWebView"
         android:visibility="gone">
 
+        <View style="@style/Divider"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/actionBar"
             android:layout_width="wrap_content"

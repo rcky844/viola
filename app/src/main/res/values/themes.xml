@@ -23,7 +23,6 @@
         <item name="appBarLayoutStyle">@style/ThemeOverlay.App.AppBar</item>
     </style>
 
-
     <style name="Activity.App.Browser" parent="Theme.App">
         <item name="android:windowAnimationStyle">@null</item>
         <item name="colorPrimaryDark">@color/colorTopBarWebView</item>
@@ -39,5 +38,11 @@
 
     <style name="ThemeOverlay.App.Browser.AppBar" parent="ThemeOverlay.App.AppBar">
         <item name="android:background">@color/colorTopBarWebView</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
     </style>
 </resources>
