@@ -21,7 +21,6 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
         android:scaleType="fitXY"
         app:srcCompat="@mipmap/ic_launcher_foreground"/>
 

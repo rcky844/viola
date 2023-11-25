@@ -18,7 +18,6 @@ package tipz.viola.settings
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import tipz.viola.utils.CommonUtils
 
 class SettingsInit(context: Context) {
     val pref: SharedPreferences
