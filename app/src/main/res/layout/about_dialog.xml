@@ -14,16 +14,10 @@
     android:layout_height="240dp"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/easter_banner"
+    <include
+        layout="@layout/viola_banner_front"
         android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:background="@drawable/browservio_banner_back">
-
-        <include
-            android:id="@+id/easter_banner_front"
-            layout="@layout/browservio_banner_front" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_height="96dp" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="fill_parent"
