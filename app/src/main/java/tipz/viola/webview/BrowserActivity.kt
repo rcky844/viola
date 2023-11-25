@@ -22,8 +22,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.JsonReader
 import android.util.JsonToken
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -43,6 +45,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -51,6 +54,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
@@ -76,6 +82,7 @@ import java.lang.ref.WeakReference
 import java.text.DateFormat
 import java.util.Objects
 
+
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
     private var UrlEdit: MaterialAutoCompleteTextView? = null
@@ -84,11 +91,16 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUA: String? = null
     private var currentCustomUAWideView = false
     private var iconHashClient: IconHashClient? = null
+    private var toolsBarExtendableBackground : ConstraintLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
         initialize()
         initializeLogic()
+        toolsBarExtendableBackground = this.findViewById(R.id.toolsBarExtendableBackground)
+        toolsBarExtendableBackground!!.post {
+            toolsBarExtendableBackground!!.visibility = View.GONE
+        }
     }
 
     // https://stackoverflow.com/a/57840629/10866268
@@ -174,8 +186,12 @@ class BrowserActivity : VWebViewActivity() {
         } else if (item == R.drawable.close) {
             finish()
         } else if (item == R.drawable.view_stream) {
-            val toolsBarExtendableBackground : ConstraintLayout = this.findViewById(R.id.toolsBarExtendableBackground)
-            toolsBarExtendableBackground.visibility = if (toolsBarExtendableBackground.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            val viewVisible : Boolean = toolsBarExtendableBackground!!.visibility == View.VISIBLE
+            val transition: Transition = Slide(Gravity.BOTTOM)
+            transition.duration = (200 * Settings.Global.getFloat(contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)).toLong()
+            transition.addTarget(R.id.toolsBarExtendableBackground)
+            TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
+            toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
         }
     }
 
@@ -404,16 +420,10 @@ class BrowserActivity : VWebViewActivity() {
         imm.showSoftInput(UrlEdit, InputMethodManager.SHOW_FORCED)
     }
 
-    override fun doSettingsCheck() {
-        super.doSettingsCheck()
-
-
-    }
-
     class ItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>) :
         RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
         private val mBrowserActivity: WeakReference<BrowserActivity>
-        private val mItemsList: WeakReference<List<Int>>;
+        private val mItemsList: WeakReference<List<Int>>
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val mImageView: AppCompatImageView
@@ -455,8 +465,8 @@ class BrowserActivity : VWebViewActivity() {
     class ToolbarItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>, descriptionList: List<Int>) :
         RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
         private val mBrowserActivity: WeakReference<BrowserActivity>
-        private val mItemsList: WeakReference<List<Int>>;
-        private val mDescriptionList: WeakReference<List<Int>>;
+        private val mItemsList: WeakReference<List<Int>>
+        private val mDescriptionList: WeakReference<List<Int>>
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val mItemBox: LinearLayoutCompat
@@ -493,7 +503,7 @@ class BrowserActivity : VWebViewActivity() {
                 true
             }
             holder.mImageView.setImageResource(mItemsList.get()!![position])
-            holder.mTextView.setText(mBrowserActivity.get()!!.resources.getString(mDescriptionList.get()!![position]))
+            holder.mTextView.text = mBrowserActivity.get()!!.resources.getString(mDescriptionList.get()!![position])
         }
 
         override fun getItemCount(): Int {

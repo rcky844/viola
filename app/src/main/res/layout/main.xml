@@ -170,7 +170,6 @@
         android:background="@drawable/toolbar_expandable_background"
         android:elevation="6dp"
         android:foregroundGravity="center_horizontal"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
