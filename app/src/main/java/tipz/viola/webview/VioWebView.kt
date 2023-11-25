@@ -281,7 +281,7 @@ class VioWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun loadUrl(url: String) {
-        if (url == null || url.isEmpty()) return
+        if (url.isEmpty()) return
         val urlIdentify = URLIdentify(url)
         if (urlIdentify == CommonUtils.EMPTY_STRING) return
         val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, urlIdentify)

@@ -138,7 +138,7 @@ public class VioWebViewActivity extends BrowservioActivity {
     public final ActivityResultLauncher<Intent> mGetNeedLoad = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 doSettingsCheck();
-                webview.loadUrl(result.getData() != null ? result.getData().getStringExtra("needLoadUrl") : null);
+                webview.loadUrl(result.getData() != null ? result.getData().getStringExtra("needLoadUrl") : CommonUtils.EMPTY_STRING);
             });
 
     /**
