@@ -34,7 +34,7 @@
     <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Viola."</string>
     <string name="network_unavailable_toast">"Không có mạng."</string>
     <string name="new_update_detect_title">"Có bản cập nhật mới"</string>
-    <string name="new_update_detect_message">"%1$s (%2$s) tồn tại, bạn có muốn cài đặt?"</string>
+    <string name="new_update_detect_message">"Viola %1$s (%2$s) tồn tại, bạn có muốn cài đặt?"</string>
     <string name="update_down_failed_toast">"Tải bản cập nhật bị lỗi!"</string>
     <string name="general">Chung</string>
     <string name="reset_btn">"Đặt lại về mặc định"</string>

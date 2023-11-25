@@ -34,7 +34,7 @@
     <string name="version_latest_toast">"Viola'nun en güncel sürümünü kullanmaktasınız."</string>
     <string name="network_unavailable_toast">"Bağlantı yok."</string>
     <string name="new_update_detect_title">"Güncelleme mevcut"</string>
-    <string name="new_update_detect_message">"%1$s (%2$s) mevcut, yüklemek ister misiniz?"</string>
+    <string name="new_update_detect_message">"Viola %1$s (%2$s) mevcut, yüklemek ister misiniz?"</string>
     <string name="update_down_failed_toast">"Güncelleme indirilirken hata!"</string>
     <string name="general">Genel</string>
     <string name="reset_btn">"Varsayılanlara sıfırla"</string>

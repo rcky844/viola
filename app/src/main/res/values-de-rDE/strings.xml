@@ -34,7 +34,7 @@
     <string name="version_latest_toast">"Sie verwenden aktuell die neueste Version von Viola."</string>
     <string name="network_unavailable_toast">"Netzwerk nicht verfügnbar."</string>
     <string name="new_update_detect_title">"Update verfügbar"</string>
-    <string name="new_update_detect_message">"%1$s (%2$s) ist verfügbar, möchten Sie es installieren?"</string>
+    <string name="new_update_detect_message">"Viola %1$s (%2$s) ist verfügbar, möchten Sie es installieren?"</string>
     <string name="update_down_failed_toast">"Herunterladen der Aktualisierung fehlgeschlagen!"</string>
     <string name="general">Allgemein</string>
     <string name="reset_btn">"Auf Standard zurücksetzen"</string>

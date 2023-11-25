@@ -36,6 +36,7 @@ import android.view.View
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -49,6 +50,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 import tipz.viola.Application
 import tipz.viola.BaseActivity
 import tipz.viola.BuildConfig
@@ -63,6 +66,7 @@ import tipz.viola.utils.DownloadUtils.dmDownloadFile
 import tipz.viola.utils.InternalUrls
 import java.io.File
 import java.lang.ref.WeakReference
+
 
 class SettingsActivity : BaseActivity() {
     private val needLoad = Intent()
@@ -441,11 +445,12 @@ class SettingsActivity : BaseActivity() {
                             }
 
                             val apkFile = File(updateDownloadPath)
-                            val result = DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/api2.cfg")
-                            val array = result.split(System.lineSeparator().toRegex())
-                                .dropLastWhile { it.isEmpty() }
-                                .toTypedArray()
-                            if (array[0].toInt() <= BuildConfig.VERSION_CODE) {
+                            val result = DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/updates.json")
+                            val jObject = JSONObject(result)
+                            // FIXME: Stop hardcoding channels
+                            val jChannelObject = jObject.getJSONObject("debug").getJSONObject("latest_update")
+
+                            if (jChannelObject.getInt("code") <= BuildConfig.VERSION_CODE) {
                                 showMessage(
                                     settingsActivity,
                                     resources.getString(R.string.version_latest_toast)
@@ -459,15 +464,15 @@ class SettingsActivity : BaseActivity() {
                                     .setMessage(
                                         resources.getString(
                                             R.string.new_update_detect_message,
-                                            array[2],
-                                            array[0]
+                                            jChannelObject.getString("name"),
+                                            jChannelObject.getInt("code").toString()
                                         )
                                     )
                                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                         if (!apkFile.exists() || apkFile.delete()) downloadID =
                                             dmDownloadFile(
                                                 settingsActivity,
-                                                array[1],
+                                                jChannelObject.getString("url"),
                                                 null,
                                                 "application/vnd.android.package-archive",
                                                 resources.getString(R.string.download_title),
