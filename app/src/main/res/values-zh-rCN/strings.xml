@@ -29,14 +29,14 @@
     <string name="settings">设置</string>
     <string name="search_engine">搜索引擎</string>
     <string name="homepage">主页</string>
-    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\n编译于%5$s\n版权所有 © 2020-%6$s Tipz Team\n\n本产品已获得 Apache 许可</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\n编译于%4$s\n版权所有 © 2020-%5$s Tipz Team\n\n本产品已获得 Apache 许可</string>
     <string name="update_btn">检查更新</string>
-    <string name="version_latest_toast">您当前使用的是最新版本的Browservio</string>
+    <string name="version_latest_toast">您当前使用的是最新版本的Viola</string>
     <string name="network_unavailable_toast">网络不可用</string>
     <string name="new_update_detect_title">"检测到新的版本"</string>
     <string name="new_update_detect_message">"%1$s (%2$s) 可用, 你想更新吗?"</string>
     <string name="update_down_failed_toast">更新下载失败!</string>
-    <string name="download_title">"Browservio 更新"</string>
+    <string name="download_title">"Viola 更新"</string>
     <string name="general">基本</string>
     <string name="reset_btn">重置为默认值</string>
     <string name="advanced">进阶</string>
@@ -49,7 +49,7 @@
     <string name="feedback">反馈</string>
     <string name="feedback_desp">报告错误或请求新功能</string>
     <string name="source_code">源代码</string>
-    <string name="source_code_desp">查看Browservio的源代码</string>
+    <string name="source_code_desp">查看Viola的源代码</string>
     <string name="fav">收藏夹</string>
     <string name="delete">"删除"</string>
     <string name="delete_all_entries">刪除所有收藏</string>
@@ -113,7 +113,7 @@
     <string name="pref_use_custom_tabs_title">使用Custom Tabs</string>
     <string name="pref_use_custom_tabs_summary">从其他应用程序打开的链接时，始终打开Custom Tabs</string>
     <string name="pref_close_app_after_download_title">仅下载链接后关闭</string>
-    <string name="pref_close_app_after_download_summary">如果链接是可下载的, 始终自动关闭Browservio</string>
+    <string name="pref_close_app_after_download_summary">如果链接是可下载的, 始终自动关闭Viola</string>
     <string name="pref_reverse_layout_title">单手模式</string>
     <string name="pref_reverse_layout_summary">重新排列界面元素以便于单手操作</string>
     <string name="custom_search_guide">格式:\n{query}: 搜索内容\n{language}: 语言</string>
@@ -132,7 +132,7 @@
     <string-array name="errMsg">
         <item>错误!</item>
         <item>无法打开此页面</item>
-        <item>Browservio 无法打开您的网页</item>
+        <item>Viola 无法打开您的网页</item>
         <item>你可以尝试:</item>
         <item>检查您的互联网连接</item>
         <item>重新加载网页</item>

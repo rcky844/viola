@@ -29,9 +29,9 @@
     <string name="settings">Réglages</string>
     <string name="search_engine">"Moteur de recherche"</string>
     <string name="homepage">"Page d’accueil"</string>
-    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nCompilé sur %5$s\nDroit d'auteur © 2020-%6$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nCompilé sur %4$s\nDroit d'auteur © 2020-%5$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
     <string name="update_btn">Vérifier les mises à jour</string>
-    <string name="version_latest_toast">"Vous disposez actuellement de la dernière version de Browservio."</string>
+    <string name="version_latest_toast">"Vous disposez actuellement de la dernière version de Viola."</string>
     <string name="network_unavailable_toast">"Le réseau n’est pas disponible."</string>
     <string name="new_update_detect_title">"Mise à jour disponible"</string>
     <string name="new_update_detect_message">"%1$s (%2$s) est disponible, voulez-vous l’installer ?"</string>
@@ -48,8 +48,8 @@
     <string name="feedback">Suggestions</string>
     <string name="feedback_desp">"Signaler des bugs ou demander de nouvelles fonctionnalités."</string>
     <string name="source_code">"Code source"</string>
-    <string name="source_code_desp">"Afficher le code source de Browservio."</string>
-    <string name="download_title">"Mise à jour Browservio"</string>
+    <string name="source_code_desp">"Afficher le code source de Viola."</string>
+    <string name="download_title">"Mise à jour Viola"</string>
     <string name="fav">Favoris</string>
     <string name="delete">"Effacer"</string>
     <string name="delete_all_entries">"Effacer toutes les entrées"</string>
@@ -113,7 +113,7 @@
     <string name="pref_use_custom_tabs_title">Utiliser des onglets personnalisés</string>
     <string name="pref_use_custom_tabs_summary">Ouvrez toujours les liens d’application dans les onglets personnalisés lorsqu’il est ouvert à partir d’une autre application.</string>
     <string name="pref_close_app_after_download_title">Fermer après un lien d’application téléchargeable</string>
-    <string name="pref_close_app_after_download_summary">Fermez toujours Browservio si le lien de l’application est téléchargeable.</string>
+    <string name="pref_close_app_after_download_summary">Fermez toujours Viola si le lien de l’application est téléchargeable.</string>
     <string name="pref_reverse_layout_title">Mise en page inversée</string>
     <string name="pref_reverse_layout_summary">Inverser la disposition du navigateur à l’envers. (Un redémarrage est nécessaire)</string>
     <string name="custom_search_guide">Format:\n{query}: Requête\n{language}: Langue</string>
@@ -132,7 +132,7 @@
     <string-array name="errMsg">
         <item>Erreur!</item>
         <item>Impossible d’ouvrir cette page</item>
-        <item>Browservio n’a pas réussi à ouvrir la page.</item>
+        <item>Viola n’a pas réussi à ouvrir la page.</item>
         <item>Essai:</item>
         <item>Vérification de votre connexion internet</item>
         <item>Actualisation de la page web</item>

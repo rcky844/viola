@@ -31,7 +31,7 @@
     <string name="homepage">"Startseite"</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\nErstellt am %4$s\nCopyright © 2020-%5$s Tipz Team\n\nDieses Produkt ist lizenziert unter der Apache License.</string>
     <string name="update_btn">Auf Aktualisierungen prüfen</string>
-    <string name="version_latest_toast">"Sie verwenden aktuell die neueste Version von Browservio."</string>
+    <string name="version_latest_toast">"Sie verwenden aktuell die neueste Version von Viola."</string>
     <string name="network_unavailable_toast">"Netzwerk nicht verfügnbar."</string>
     <string name="new_update_detect_title">"Update verfügbar"</string>
     <string name="new_update_detect_message">"%1$s (%2$s) ist verfügbar, möchten Sie es installieren?"</string>
@@ -48,8 +48,8 @@
     <string name="feedback">Feedback</string>
     <string name="feedback_desp">"Melden Sie Fehler oder fordern Sie neue Funktionen an."</string>
     <string name="source_code">"Quellcode"</string>
-    <string name="source_code_desp">"Sehen Sie sich den Quellcode von Browservio an."</string>
-    <string name="download_title">"Browservio-Aktualisierung"</string>
+    <string name="source_code_desp">"Sehen Sie sich den Quellcode von Viola an."</string>
+    <string name="download_title">"Viola-Aktualisierung"</string>
     <string name="fav">Favoriten</string>
     <string name="delete">"Diesen"</string>
     <string name="delete_all_entries">"Alle Einträge löschen"</string>
@@ -113,7 +113,7 @@
     <string name="pref_use_custom_tabs_title">Verwenden Sie benutzerdefinierte Registerkarten</string>
     <string name="pref_use_custom_tabs_summary">Öffnen Sie App-Links immer in benutzerdefinierten Registerkarten, wenn sie von einer anderen Anwendung aus geöffnet werden.</string>
     <string name="pref_close_app_after_download_title">Schließen Sie nach einem herunterladbaren App-Link</string>
-    <string name="pref_close_app_after_download_summary">Schließen Sie Browservio immer, wenn der App-Link herunterladbar ist.</string>
+    <string name="pref_close_app_after_download_summary">Schließen Sie Viola immer, wenn der App-Link herunterladbar ist.</string>
     <string name="pref_reverse_layout_title">Modus erreichen</string>
     <string name="pref_reverse_layout_summary">Verschieben Sie Schnittstellenelemente für eine einfachere Einhandbedienung.</string>
     <string name="custom_search_guide">Format:\n{query}: Anfrage\n{language}: Sprache</string>
@@ -132,7 +132,7 @@
     <string-array name="errMsg">
         <item>Fehler!</item>
         <item>Webseite kann nicht angezeigt werden</item>
-        <item>Browservio konnte Ihre Webseite nicht anzeigen.</item>
+        <item>Viola konnte Ihre Webseite nicht anzeigen.</item>
         <item>Versuchen Sie:</item>
         <item>Ihre Internetverbindung zu überprüfen</item>
         <item>Die Webseite neu zu laden</item>

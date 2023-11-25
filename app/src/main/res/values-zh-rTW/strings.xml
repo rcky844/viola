@@ -29,14 +29,14 @@
     <string name="settings">設定</string>
     <string name="search_engine">搜尋引擎</string>
     <string name="homepage">首頁</string>
-    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\n編譯於%5$s\n版權所有 © 2020-%6$s Tipz Team\n\n本產品已獲得 Apache 證書</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\n編譯於%4$s\n版權所有 © 2020-%5$s Tipz Team\n\n本產品已獲得 Apache 證書</string>
     <string name="update_btn">檢查更新</string>
-    <string name="version_latest_toast">您目前使用的是最新版本的Browservio</string>
+    <string name="version_latest_toast">您目前使用的是最新版本的Viola</string>
     <string name="network_unavailable_toast">網路不可用</string>
     <string name="new_update_detect_title">"檢測到新的版本"</string>
     <string name="new_update_detect_message">"%1$s (%2$s) 可用, 你想更新嗎?"</string>
     <string name="update_down_failed_toast">更新下載失敗!</string>
-    <string name="download_title">"Browservio 更新"</string>
+    <string name="download_title">"Viola 更新"</string>
     <string name="general">一般</string>
     <string name="reset_btn">重設為預設值</string>
     <string name="advanced">進階</string>
@@ -49,7 +49,7 @@
     <string name="feedback">回饋</string>
     <string name="feedback_desp">報告錯誤或請求新功能</string>
     <string name="source_code">原始碼</string>
-    <string name="source_code_desp">查看Browservio的源代碼</string>
+    <string name="source_code_desp">查看Viola的源代碼</string>
     <string name="fav">書籤</string>
     <string name="delete">"刪除"</string>
     <string name="delete_all_entries">刪除全部書籤</string>
@@ -113,7 +113,7 @@
     <string name="pref_use_custom_tabs_title">使用Custom Tabs</string>
     <string name="pref_use_custom_tabs_summary">從其他應用程式打開連結時，始終打開Custom Tabs</string>
     <string name="pref_close_app_after_download_title">僅下載連結後關閉</string>
-    <string name="pref_close_app_after_download_summary">如果連結是可下載的，始終自動關閉Browservio</string>
+    <string name="pref_close_app_after_download_summary">如果連結是可下載的，始終自動關閉Viola</string>
     <string name="pref_reverse_layout_title">單手模式</string>
     <string name="pref_reverse_layout_summary">重新定位介面元素以方便單手使用</string>
     <string name="custom_search_guide">格式:\n{query}: 搜索內容\n{language}: 語言</string>
@@ -132,7 +132,7 @@
     <string-array name="errMsg">
         <item>錯誤!</item>
         <item>無法打開此頁面</item>
-        <item>Browservio 無法打開您的網頁</item>
+        <item>Viola 無法打開您的網頁</item>
         <item>您可以嘗試:</item>
         <item>檢查您的網路連接</item>
         <item>重新載入網頁</item>

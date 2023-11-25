@@ -11,7 +11,6 @@
      limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">Browservio</string>
     <string name="customUA">"Özel Kullanıcı Aracısı (Custom User Agent)"</string>
     <string name="reset_complete">"Sıfırlama başarıyla tamamlandı."</string>
     <string name="pref_clear_cache">"Önbellek temizle"</string>
@@ -30,9 +29,9 @@
     <string name="settings">Ayarlar</string>
     <string name="search_engine">"Arama motoru"</string>
     <string name="homepage">"Ana sayfa"</string>
-    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nTarihinde derlendi %5$s\nTelif hakkı © 2020-%6$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nTarihinde derlendi %4$s\nTelif hakkı © 2020-%5$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
     <string name="update_btn">Güncellemeleri denetle</string>
-    <string name="version_latest_toast">"Browservio'nun en güncel sürümünü kullanmaktasınız."</string>
+    <string name="version_latest_toast">"Viola'nun en güncel sürümünü kullanmaktasınız."</string>
     <string name="network_unavailable_toast">"Bağlantı yok."</string>
     <string name="new_update_detect_title">"Güncelleme mevcut"</string>
     <string name="new_update_detect_message">"%1$s (%2$s) mevcut, yüklemek ister misiniz?"</string>
@@ -49,8 +48,8 @@
     <string name="feedback">Geri bildirim</string>
     <string name="feedback_desp">"Hataları bildirin veya yeni özellikler isteyin."</string>
     <string name="source_code">"Kaynak kodu"</string>
-    <string name="source_code_desp">"Browservio\'nun kaynak kodunu görüntüleyin."</string>
-    <string name="download_title">"Browservio Güncellemesi"</string>
+    <string name="source_code_desp">"Viola\'nun kaynak kodunu görüntüleyin."</string>
+    <string name="download_title">"Viola Güncellemesi"</string>
     <string name="fav">Sık kullanılanlar</string>
     <string name="delete">"Sil"</string>
     <string name="delete_all_entries">"Tüm girişleri sil"</string>
@@ -114,7 +113,7 @@
     <string name="pref_use_custom_tabs_title">Özel Sekmeleri Kullanma</string>
     <string name="pref_use_custom_tabs_summary">Uygulama Bağlantıları\'nı başka bir uygulamadan açıldığında her zaman Özel Sekmeler\'de açın.</string>
     <string name="pref_close_app_after_download_title">İndirilebilir bir Uygulama Bağlantısından sonra kapatın</string>
-    <string name="pref_close_app_after_download_summary">Uygulama Bağlantısı indirilebilirse her zaman Browservio\'yu kapatın.</string>
+    <string name="pref_close_app_after_download_summary">Uygulama Bağlantısı indirilebilirse her zaman Viola\'yu kapatın.</string>
     <string name="pref_reverse_layout_title">Ters Düzen</string>
     <string name="pref_reverse_layout_summary">Tarayıcı düzenini baş aşağı çevirin. (Yeniden başlatma gereklidir)</string>
     <string name="custom_search_guide">Biçim:\n{query}: Sorgu\n{language}: Dil</string>
@@ -133,7 +132,7 @@
     <string-array name="errMsg">
         <item>Hata!</item>
         <item>Bu sayfa açılamıyor</item>
-        <item>Browservio siteyi açamadı.</item>
+        <item>Viola siteyi açamadı.</item>
         <item>Şunları deneyin:</item>
         <item>İnternet bağlantınızı kontrol edin</item>
         <item>Sayfayı yenileyin</item>

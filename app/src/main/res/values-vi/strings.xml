@@ -11,7 +11,6 @@
      limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">Browservio</string>
     <string name="customUA">"User Agent tùy chỉnh"</string>
     <string name="reset_complete">"Đặt lại thành."</string>
     <string name="pref_clear_cache">"Xóa Bộ nhớ đệm"</string>
@@ -30,9 +29,9 @@
     <string name="settings">Cài đặt</string>
     <string name="search_engine">"Công cụ tìm kiếm"</string>
     <string name="homepage">"Trang chủ"</string>
-    <string name="version_info_message">"%1$s %2$s %3$s (%4$s)\nBiên soạn trên %5$s\nBản quyền © 2020-%6$s Tipz Team\n\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nBiên soạn trên %4$s\nBản quyền © 2020-%5$s Tipz Team\n\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
     <string name="update_btn">Tìm bản cập nhật mới</string>
-    <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Browservio."</string>
+    <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Viola."</string>
     <string name="network_unavailable_toast">"Không có mạng."</string>
     <string name="new_update_detect_title">"Có bản cập nhật mới"</string>
     <string name="new_update_detect_message">"%1$s (%2$s) tồn tại, bạn có muốn cài đặt?"</string>
@@ -49,8 +48,8 @@
     <string name="feedback">Phản hồi</string>
     <string name="feedback_desp">"Báo cáo lỗi hoặc yêu cầu các tính năng mới."</string>
     <string name="source_code">"Mã nguồn"</string>
-    <string name="source_code_desp">"Xem mã nguồn của Browservio."</string>
-    <string name="download_title">"Cập nhật Browservio"</string>
+    <string name="source_code_desp">"Xem mã nguồn của Viola."</string>
+    <string name="download_title">"Cập nhật Viola"</string>
     <string name="fav">Yêu thích</string>
     <string name="delete">"Xóa"</string>
     <string name="delete_all_entries">"Xóa toàn bộ các mục"</string>
@@ -114,7 +113,7 @@
     <string name="pref_use_custom_tabs_title">Sử dụng tab tùy chỉnh</string>
     <string name="pref_use_custom_tabs_summary">Luôn mở Liên kết ứng dụng trong Tab tùy chỉnh khi nó được mở từ một ứng dụng khác.</string>
     <string name="pref_close_app_after_download_title">Đóng sau liên kết ứng dụng có thể tải xuống</string>
-    <string name="pref_close_app_after_download_summary">Luôn đóng Browservio nếu Liên kết ứng dụng có thể tải xuống được.</string>
+    <string name="pref_close_app_after_download_summary">Luôn đóng Viola nếu Liên kết ứng dụng có thể tải xuống được.</string>
     <string name="pref_reverse_layout_title">Bố cục ngược</string>
     <string name="pref_reverse_layout_summary">Đảo ngược bố cục trình duyệt lộn ngược. (Cần khởi động lại)</string>
     <string name="custom_search_guide">Định dạng:\n{query}: Truy vấn\n{language}: Ngôn ngữ</string>
@@ -133,7 +132,7 @@
     <string-array name="errMsg">
         <item>Lỗi!</item>
         <item>Không thể mở trang này</item>
-        <item>Browservio không thể mở trang web này.</item>
+        <item>Viola không thể mở trang web này.</item>
         <item>Hãy thử:</item>
         <item>Kiểm tra kết nối Internet</item>
         <item>Tải lại trang web</item>
