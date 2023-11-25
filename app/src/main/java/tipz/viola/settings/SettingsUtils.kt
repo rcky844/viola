@@ -19,10 +19,6 @@ import android.content.SharedPreferences
 
 /* TODO: rewrite to only use config */
 object SettingsUtils {
-    fun isFirstLaunch(pref: SharedPreferences): Boolean {
-        return getPref(pref, SettingsKeys.isFirstLaunch) != "0"
-    }
-
     /**
      * Set the tag as integer bool according to boolean
      *

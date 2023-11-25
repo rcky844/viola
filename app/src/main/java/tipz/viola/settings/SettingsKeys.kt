@@ -31,7 +31,6 @@ object SettingsKeys {
     const val enforceHttps = "enforceHttps" /* INTEGER */
     const val favApi = "favApi" /* INTEGER */ /* Was in bookmarks */
     const val historyApi = "historyApi" /* INTEGER */ /* Was in history */
-    const val isFirstLaunch = "isFirstLaunch" /* STRING */
     const val isJavaScriptEnabled = "isJavaScriptEnabled" /* INTEGER */
     const val protocolVersion = "protocolVersion" /* INTEGER */
     const val reverseLayout = "reverseLayout" /* INTEGER */
