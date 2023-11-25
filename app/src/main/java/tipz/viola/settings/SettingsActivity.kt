@@ -445,7 +445,7 @@ class SettingsActivity : BaseActivity() {
                             }
 
                             val apkFile = File(updateDownloadPath)
-                            val result = DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/browservio/-/raw/update_files/updates.json")
+                            val result = DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")
                             val jObject = JSONObject(result)
                             // FIXME: Stop hardcoding channels
                             val jChannelObject = jObject.getJSONObject("debug").getJSONObject("latest_update")
