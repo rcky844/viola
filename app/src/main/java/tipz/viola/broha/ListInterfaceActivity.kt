@@ -101,15 +101,16 @@ class ListInterfaceActivity : BaseActivity() {
             listData =
                 if (activityMode == mode_history) HistoryApi.historyBroha(this@ListInterfaceActivity)?.all as MutableList<Broha>?
                 else FavApi.favBroha(this@ListInterfaceActivity)?.all as MutableList<Broha>?
+            val layoutManager =
+                LinearLayoutManager(this@ListInterfaceActivity, RecyclerView.VERTICAL, activityMode == mode_history)
+            if (activityMode == mode_history) layoutManager.stackFromEnd = true
+            brohaList.layoutManager = layoutManager
+            brohaList.adapter = ItemsAdapter(
+                this@ListInterfaceActivity,
+                (applicationContext as Application).iconHashClient
+            )
         }
-        val layoutManager =
-            LinearLayoutManager(this, RecyclerView.VERTICAL, activityMode == mode_history)
-        if (activityMode == mode_history) layoutManager.stackFromEnd = true
-        brohaList.layoutManager = layoutManager
-        brohaList.adapter = ItemsAdapter(
-            this,
-            (applicationContext as Application).iconHashClient
-        )
+
     }
 
     fun isEmptyCheck() {
