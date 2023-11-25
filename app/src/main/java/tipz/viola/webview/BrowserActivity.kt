@@ -47,6 +47,7 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -66,6 +67,8 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsUtils
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
+import tipz.viola.webview.view.CentreSpreadItemDecoration
+import tipz.viola.webview.view.FixedLinearLayoutManager
 import java.io.IOException
 import java.io.StringReader
 import java.lang.ref.WeakReference
@@ -218,10 +221,10 @@ class BrowserActivity : VWebViewActivity() {
         favicon = findViewById(R.id.favicon)
         toolsContainer = findViewById(R.id.toolsContainer)
         startPageLayout = findViewById(R.id.layout_startpage)
-        actionBar.layoutManager = LinearLayoutManager(
-            this, RecyclerView.HORIZONTAL, false
-        )
+        actionBar.layoutManager = FixedLinearLayoutManager(this, GridLayoutManager.HORIZONTAL, false)
         actionBar.adapter = ItemsAdapter(this)
+        actionBar.addItemDecoration(CentreSpreadItemDecoration(resources.getDimension(R.dimen.actionbar_content_height), actionBarItemList.size));
+
         favicon.setOnClickListener {
             val cert = webview.certificate
             val popupMenu = PopupMenu(this, favicon)
@@ -235,7 +238,6 @@ class BrowserActivity : VWebViewActivity() {
                         SettingsKeys.isJavaScriptEnabled
                     )
                 )
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
             ) menu.add(resources.getString(R.string.view_page_source))
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                 if (item.title.toString() == resources.getString(R.string.copy_title)) {
@@ -259,36 +261,34 @@ class BrowserActivity : VWebViewActivity() {
                         .create().show()
                     return@setOnMenuItemClickListener true
                 } else if (item.title.toString() == resources.getString(R.string.view_page_source)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        webview.evaluateJavascript(
-                            "document.documentElement.outerHTML",
-                            ValueCallback { value: String? ->
-                                val reader = JsonReader(StringReader(value))
-                                reader.isLenient = true
-                                try {
-                                    if (reader.peek() == JsonToken.STRING) {
-                                        val domStr = reader.nextString()
-                                        reader.close()
-                                        if (domStr == null) return@ValueCallback
-                                        MaterialAlertDialogBuilder(this@BrowserActivity)
-                                            .setTitle(resources.getString(R.string.view_page_source))
-                                            .setMessage(domStr)
-                                            .setPositiveButton(
-                                                resources.getString(android.R.string.ok),
-                                                null
+                    webview.evaluateJavascript(
+                        "document.documentElement.outerHTML",
+                        ValueCallback { value: String? ->
+                            val reader = JsonReader(StringReader(value))
+                            reader.isLenient = true
+                            try {
+                                if (reader.peek() == JsonToken.STRING) {
+                                    val domStr = reader.nextString()
+                                    reader.close()
+                                    if (domStr == null) return@ValueCallback
+                                    MaterialAlertDialogBuilder(this@BrowserActivity)
+                                        .setTitle(resources.getString(R.string.view_page_source))
+                                        .setMessage(domStr)
+                                        .setPositiveButton(
+                                            resources.getString(android.R.string.ok),
+                                            null
+                                        )
+                                        .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
+                                            CommonUtils.copyClipboard(
+                                                this@BrowserActivity,
+                                                domStr
                                             )
-                                            .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
-                                                CommonUtils.copyClipboard(
-                                                    this@BrowserActivity,
-                                                    domStr
-                                                )
-                                            }
-                                            .create().show()
-                                    }
-                                } catch (ignored: IOException) {
+                                        }
+                                        .create().show()
                                 }
-                            })
-                    }
+                            } catch (ignored: IOException) {
+                            }
+                        })
                 }
                 false
             }
@@ -469,7 +469,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     companion object {
-        private val actionBarItemList = listOf(
+        private val legacyActionBarItemList = listOf(
             R.drawable.arrow_back_alt,
             R.drawable.arrow_forward_alt,
             R.drawable.refresh,
@@ -482,6 +482,14 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.history,
             R.drawable.favorites,
             R.drawable.close
+        )
+
+        private val actionBarItemList = listOf(
+            R.drawable.arrow_back_alt,
+            R.drawable.arrow_forward_alt,
+            R.drawable.home,
+            R.drawable.share,
+            R.drawable.view_stream
         )
     }
 }
