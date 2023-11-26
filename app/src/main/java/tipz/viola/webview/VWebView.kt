@@ -205,6 +205,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
             webLongPress.show()
         }
+
+        downloadAdServers()
     }
 
     @Suppress("deprecation")
@@ -280,6 +282,21 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private fun updateCurrentUrl(url: String?) {
         mVioWebViewActivity!!.onUrlUpdated(url)
         currentUrl = url
+    }
+
+    fun downloadAdServers() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result =
+                    DownloadUtils.startFileDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")
+            val scanner = Scanner(result)
+            val builder = StringBuilder()
+            while (scanner.hasNextLine()) {
+                val line = scanner.nextLine()
+                if (line.startsWith("127.0.0.1 ")) builder.append(line)
+                        .append(System.lineSeparator())
+            }
+            adServers = builder.toString()
+        }
     }
 
     /**
@@ -393,18 +410,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         @Deprecated("Deprecated in Java")
         override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
             if (adServers.isNullOrEmpty()) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val result =
-                        DownloadUtils.startFileDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")
-                    val scanner = Scanner(result)
-                    val builder = StringBuilder()
-                    while (scanner.hasNextLine()) {
-                        val line = scanner.nextLine()
-                        if (line.startsWith("127.0.0.1 ")) builder.append(line)
-                            .append(System.lineSeparator())
-                    }
-                    adServers = builder.toString()
-                }
+                (view as VWebView).downloadAdServers()
             }
             try {
                 if (adServers != null) if (adServers!!.contains(" " + URL(url).host) && settingsPreference.getInt(
@@ -663,15 +669,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             webViewReload()
             return CommonUtils.EMPTY_STRING
         }
-        val startPageLayout = mVioWebViewActivity!!.startPageLayout
+        val startPageLayout = mVioWebViewActivity?.startPageLayout
         if (url == InternalUrls.startUrl) {
             this.visibility = GONE
-            startPageLayout.visibility = VISIBLE
+            startPageLayout?.visibility = VISIBLE
             return CommonUtils.EMPTY_STRING
         }
         if (this.visibility == GONE) {
             this.visibility = VISIBLE
-            startPageLayout.visibility = GONE
+            startPageLayout?.visibility = GONE
         }
         return url
     }

@@ -105,7 +105,6 @@ class BrowserActivity : VWebViewActivity() {
         swipeRefreshLayout = findViewById(R.id.layout_webview)
         webview = swipeRefreshLayout.findViewById(R.id.webview)
         favicon = findViewById(R.id.favicon)
-        toolsContainer = findViewById(R.id.toolsContainer)
         startPageLayout = findViewById(R.id.layout_startpage)
         iconHashClient = (applicationContext as Application).iconHashClient
 
@@ -150,9 +149,9 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup favicon
-        favicon.setOnClickListener {
+        favicon?.setOnClickListener {
             val cert = webview.certificate
-            val popupMenu = PopupMenu(this, favicon)
+            val popupMenu = PopupMenu(this, favicon!!)
             val menu = popupMenu.menu
             menu.add(if (webview.visibility == View.GONE) resources.getString(R.string.start_page) else webview.title).isEnabled = false
             menu.add(resources.getString(R.string.copy_title))
@@ -363,7 +362,7 @@ class BrowserActivity : VWebViewActivity() {
                         .setShortLabel(webview.title!!)
                         .setIcon(
                             IconCompat.createWithBitmap(
-                                CommonUtils.drawableToBitmap(favicon.drawable)
+                                CommonUtils.drawableToBitmap(favicon!!.drawable)
                             )
                         )
                         .setIntent(
@@ -393,7 +392,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.favorites_add -> {
-                val icon = favicon.drawable
+                val icon = favicon!!.drawable
                 val title = webview.title
                 val url = webview.url
                 CoroutineScope(Dispatchers.IO).launch {

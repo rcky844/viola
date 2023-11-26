@@ -37,7 +37,8 @@ class CustomTabsActivity : VWebViewActivity() {
         val actionBarBack = findViewById<AppCompatImageView>(R.id.toolsContainer)
         actionBarBack.setOnClickListener { finish() }
 
-        /* Title and Host */title = findViewById(R.id.title)
+        /* Title and Host */
+        title = findViewById(R.id.title)
         host = findViewById(R.id.host)
 
         /* Share */
