@@ -115,7 +115,9 @@ open class VWebViewActivity : BaseActivity() {
             favicon.visibility = View.GONE
 
         // Start Page Wallpaper
-        if (!settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
+        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
+            startPageLayout.setBackgroundColor(resources.getColor(R.color.colorTopBar))
+        } else {
             val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper)) )
             startPageLayout.background = BitmapDrawable(resources, bitmap)
         }
