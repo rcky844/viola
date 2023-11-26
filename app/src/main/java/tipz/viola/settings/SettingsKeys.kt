@@ -35,6 +35,7 @@ object SettingsKeys {
     const val reverseAddressBar = "reverseAddressBar" /* INTEGER */
     const val sendDNT = "sendDNT" /* INTEGER */
     const val showFavicon = "showFavicon" /* INTEGER */
+    const val startPageWallpaper = "startPageWallpaper" /* STRING */
     const val themeId = "themeId" /* INTEGER */
     const val useCustomTabs = "useCustomTabs" /* INTEGER */
     const val useWebHomePage = "useWebHomePage" /* INTEGER */

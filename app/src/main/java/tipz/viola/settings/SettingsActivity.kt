@@ -25,6 +25,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -34,11 +35,16 @@ import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
 import androidx.activity.addCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -124,12 +130,27 @@ class SettingsActivity : BaseActivity() {
                 }
             }
         }
+        private var pickMedia : ActivityResultLauncher<PickVisualMediaRequest>
 
         init {
             val activity = WeakReference(act)
             settingsActivity = activity.get()!!
             settingsPreference =
                 (settingsActivity.applicationContext as Application).settingsPreference!!
+            pickMedia =
+                registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                    if (uri != null) {
+                        val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        settingsActivity.contentResolver.takePersistableUriPermission(
+                            uri,
+                            flag
+                        )
+                        settingsPreference.setString(
+                            SettingsKeys.startPageWallpaper,
+                            uri.toString()
+                        )
+                    }
+                }
         }
 
         @SuppressLint("UnspecifiedRegisterReceiverFlag") // For older SDKs
@@ -179,6 +200,7 @@ class SettingsActivity : BaseActivity() {
             val clear_cookies = findPreference<MaterialDialogPreference>("clear_cookies")!!
             val reset_to_default = findPreference<MaterialDialogPreference>("reset_to_default")!!
             val theme = findPreference<Preference>("theme")!!
+            val start_page_wallpaper = findPreference<Preference>("start_page_wallpaper")!!
             val version = findPreference<Preference>("version")!!
             val feedback = findPreference<Preference>("feedback")!!
             val source_code = findPreference<Preference>("source_code")!!
@@ -400,6 +422,24 @@ class SettingsActivity : BaseActivity() {
                         .create().show()
                     true
                 }
+            start_page_wallpaper.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
+                        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    } else {
+                        start_page_wallpaper.setSummary(
+                            resources.getString(
+                                R.string.pref_start_page_wallpaper_summary,
+                                resources.getString(R.string.default_res)
+                            )
+                        )
+                        settingsPreference.setString(
+                            SettingsKeys.startPageWallpaper,
+                            CommonUtils.EMPTY_STRING
+                        )
+                    }
+                    true
+                }
             version.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
                     @SuppressLint("InflateParams") val dialogView =
@@ -505,6 +545,24 @@ class SettingsActivity : BaseActivity() {
             search_suggestions.summary =
                 searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)]
             theme.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
+            if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
+                start_page_wallpaper.setSummary(
+                    resources.getString(
+                        R.string.pref_start_page_wallpaper_summary,
+                        resources.getString(R.string.default_res)
+                    )
+                )
+            } else {
+                start_page_wallpaper.setSummary(
+                    resources.getString(
+                        R.string.pref_start_page_wallpaper_summary,
+                        DocumentFile.fromSingleUri(
+                            settingsActivity,
+                            Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+                        )?.name
+                    )
+                )
+            }
             version.summary =
                 resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA
             needReload = false

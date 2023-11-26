@@ -18,8 +18,10 @@ package tipz.viola.webview
 import android.app.ActivityManager.TaskDescription
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.activity.addCallback
@@ -111,6 +113,12 @@ open class VWebViewActivity : BaseActivity() {
             if (settingsPreference.getIntBool(SettingsKeys.showFavicon)) View.VISIBLE else View.GONE
         if (settingsPreference.getIntBool(SettingsKeys.showFavicon) && faviconProgressBar.visibility == View.VISIBLE)
             favicon.visibility = View.GONE
+
+        // Start Page Wallpaper
+        if (!settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
+            val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper)) )
+            startPageLayout.background = BitmapDrawable(resources, bitmap)
+        }
     }
 
     open fun onUrlUpdated(url: String?) {}

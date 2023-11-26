@@ -85,6 +85,10 @@
             android:key="theme"
             android:summary=""
             android:title="@string/pref_theme" />
+        <androidx.preference.Preference
+            android:key="start_page_wallpaper"
+            android:summary=""
+            android:title="@string/pref_start_page_wallpaper_title" />
         <tipz.viola.settings.MaterialSwitchPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
