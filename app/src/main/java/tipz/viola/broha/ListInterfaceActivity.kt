@@ -61,9 +61,9 @@ class ListInterfaceActivity : BaseActivity() {
         activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
         if (activityMode != mode_history && activityMode != mode_favorites) finish()
         setContentView(R.layout.recycler_broha_list_activity)
+        isEmptyCheck()
         initialize()
-        title =
-            resources.getString(if (activityMode == mode_history) R.string.hist else R.string.fav)
+        title = resources.getString(if (activityMode == mode_history) R.string.hist else R.string.fav)
     }
 
     /**
@@ -95,7 +95,6 @@ class ListInterfaceActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        isEmptyCheck()
         val brohaList = findViewById<RecyclerView>(R.id.recyclerView)
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -118,19 +117,20 @@ class ListInterfaceActivity : BaseActivity() {
     }
 
     fun isEmptyCheck() {
-        var isEmpty = false
         CoroutineScope(Dispatchers.IO).launch {
-            isEmpty =
+            val isEmpty =
                 if (activityMode == mode_history) HistoryUtils.isEmptyCheck(this@ListInterfaceActivity)
                 else FavUtils.isEmptyCheck(this@ListInterfaceActivity)
-        }
-        if (isEmpty) {
-            showMessage(
-                this, resources.getString(
-                    if (activityMode == mode_history) R.string.hist_empty else R.string.fav_list_empty
-                )
-            )
-            finish()
+            if (isEmpty) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    showMessage(
+                        this@ListInterfaceActivity, resources.getString(
+                            if (activityMode == mode_history) R.string.hist_empty else R.string.fav_list_empty
+                        )
+                    )
+                    finish()
+                }
+            }
         }
     }
 
@@ -177,10 +177,12 @@ class ListInterfaceActivity : BaseActivity() {
             val url = data.url
             lateinit var icon: Bitmap
             CoroutineScope(Dispatchers.IO).launch {
-                icon = iconHashClient!!.read(data.iconHash)!!
-                if (data.iconHash != null) holder.icon.setImageBitmap(icon) else holder.icon.setImageResource(
-                    R.drawable.default_favicon
-                )
+                if (data.iconHash != null) {
+                    icon = iconHashClient!!.read(data.iconHash)!!
+                    holder.icon.setImageBitmap(icon)
+                } else {
+                    holder.icon.setImageResource(R.drawable.default_favicon)
+                }
             }
             holder.title.text = title ?: url
             holder.url.text = Uri.parse(url ?: CommonUtils.EMPTY_STRING).host
@@ -288,6 +290,7 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
+            if (listData == null) return 0
             return listData!!.size
         }
     }

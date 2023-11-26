@@ -29,14 +29,11 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -50,7 +47,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONArray
 import org.json.JSONObject
 import tipz.viola.Application
 import tipz.viola.BaseActivity
@@ -436,27 +432,28 @@ class SettingsActivity : BaseActivity() {
                         BuildConfig.VERSION_BUILD_YEAR
                     )
                     update_btn.setOnClickListener {
+                        if (!DownloadUtils.isOnline(settingsActivity)) {
+                            showMessage(
+                                settingsActivity,
+                                resources.getString(R.string.network_unavailable_toast)
+                            )
+                        }
                         CoroutineScope(Dispatchers.IO).launch {
-                            if (!DownloadUtils.isOnline(settingsActivity)) {
-                                showMessage(
-                                    settingsActivity,
-                                    resources.getString(R.string.network_unavailable_toast)
-                                )
-                            }
-
                             val apkFile = File(updateDownloadPath)
                             val result = DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")
                             val jObject = JSONObject(result)
                             // FIXME: Stop hardcoding channels
                             val jChannelObject = jObject.getJSONObject("debug").getJSONObject("latest_update")
 
-                            if (jChannelObject.getInt("code") <= BuildConfig.VERSION_CODE) {
-                                showMessage(
-                                    settingsActivity,
-                                    resources.getString(R.string.version_latest_toast)
-                                )
-                            }
-                            Handler(Looper.getMainLooper()).post {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                if (jChannelObject.getInt("code") <= BuildConfig.VERSION_CODE) {
+                                    showMessage(
+                                        settingsActivity,
+                                        resources.getString(R.string.version_latest_toast)
+                                    )
+                                    return@launch
+                                }
+
                                 MaterialAlertDialogBuilder(
                                     settingsActivity
                                 )
