@@ -18,12 +18,15 @@ package tipz.viola.utils
 import tipz.viola.BuildConfig
 
 object InternalUrls {
-    const val prefix = "viola://"
-    const val realChangelogUrl = "https://gitlab.com/TipzTeam/viola/-/releases/" + BuildConfig.VERSION_NAME + BuildConfig.VERSION_TECHNICAL_EXTRA
-    const val licenseUrl = prefix + "license"
+
+    const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
+    const val realChangelogUrl = sourceUrl + "-/releases/" + BuildConfig.VERSION_NAME
+    const val feedbackUrl = "$sourceUrl-/issues"
     const val realLicenseUrl = "file:///android_asset/LICENSE.txt"
+    const val prefix = "viola://"
+    const val licenseUrl = prefix + "license"
     const val reloadUrl = prefix + "reload"
     const val startUrl = prefix + "start"
-    const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
-    const val feedbackUrl = "$sourceUrl-/issues"
+
+
 }
