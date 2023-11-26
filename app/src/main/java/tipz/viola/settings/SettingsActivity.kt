@@ -43,7 +43,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
@@ -67,7 +66,6 @@ import tipz.viola.utils.DownloadUtils.dmDownloadFile
 import tipz.viola.utils.InternalUrls
 import java.io.File
 import java.lang.ref.WeakReference
-
 
 class SettingsActivity : BaseActivity() {
     private val needLoad = Intent()
@@ -120,8 +118,9 @@ class SettingsActivity : BaseActivity() {
         private lateinit var settingsActivity: AppCompatActivity
         private val settingsPreference: SettingsSharedPreference
         private var downloadID: Long = 0
-        private val updateDownloadPath =
-            Environment.getExternalStorageDirectory().absolutePath + "/" + Environment.DIRECTORY_DOWNLOADS + "/browservio-update.apk"
+        private val updateDownloadPathBase =
+            Environment.getExternalStorageDirectory().absolutePath + "/" + Environment.DIRECTORY_DOWNLOADS + "/"
+        private var updateDownloadPath: String? = null
         private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
@@ -130,7 +129,7 @@ class SettingsActivity : BaseActivity() {
                 }
             }
         }
-        private var pickMedia : ActivityResultLauncher<PickVisualMediaRequest>
+        private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
         init {
             val activity = WeakReference(act)
@@ -424,7 +423,9 @@ class SettingsActivity : BaseActivity() {
                 }
             start_page_wallpaper.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
+                    if (settingsPreference.getString(SettingsKeys.startPageWallpaper)
+                            .isNullOrEmpty()
+                    ) {
                         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     } else {
                         start_page_wallpaper.setSummary(
@@ -467,13 +468,11 @@ class SettingsActivity : BaseActivity() {
                             )
                         }
                         CoroutineScope(Dispatchers.IO).launch {
-                            val apkFile = File(updateDownloadPath)
                             val result =
                                 DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")
                             val jObject = JSONObject(result)
-                            // FIXME: Stop hardcoding channels
                             val jChannelObject =
-                                jObject.getJSONObject("debug").getJSONObject("latest_update")
+                                jObject.getJSONObject(BuildConfig.BUILD_TYPE).getJSONObject("latest_update")
 
                             CoroutineScope(Dispatchers.Main).launch {
                                 if (jChannelObject.getInt("code") <= BuildConfig.VERSION_CODE) {
@@ -496,6 +495,15 @@ class SettingsActivity : BaseActivity() {
                                         )
                                     )
                                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                        val filename =
+                                            updateDownloadPathBase + DocumentFile.fromSingleUri(
+                                                settingsActivity,
+                                                Uri.parse(jChannelObject.getString("url"))
+                                            )?.name
+                                        this@SettingsPrefHandler.updateDownloadPath =
+                                            updateDownloadPathBase + filename
+                                        val apkFile = File(updateDownloadPath!!)
+
                                         if (!apkFile.exists() || apkFile.delete()) downloadID =
                                             dmDownloadFile(
                                                 settingsActivity,
@@ -503,7 +511,7 @@ class SettingsActivity : BaseActivity() {
                                                 null,
                                                 "application/vnd.android.package-archive",
                                                 resources.getString(R.string.download_title),
-                                                "browservio-update.apk",
+                                                filename,
                                                 null
                                             )
                                         else
