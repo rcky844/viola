@@ -9,10 +9,10 @@
   "debug": {
     "channel_name": "Debug",
     "latest_update": {
-      "name": "6.0.0003.00",
-      "code": 6,
-      "timestamp": 1700985918,
-      "url": "https://gitlab.com/TipzTeam/viola/uploads/141b7a72fc609180e5a15590cd48443e/app-debug.apk"
+      "name": "6.0.0003.01",
+      "code": 7,
+      "timestamp": 1700986642,
+      "url": "https://gitlab.com/TipzTeam/viola/uploads/62b3907faf33a9a15c0b093fb485f537/app-debug.apk"
     }
   }
 }
