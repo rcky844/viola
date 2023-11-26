@@ -167,7 +167,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             val webLongPress = MaterialAlertDialogBuilder(mContext)
             webLongPress.setTitle(if (url!!.length > 75) url.substring(0, 74) + "…" else url)
             val arrayAdapter = ArrayAdapter<String>(mContext, R.layout.recycler_list_item_1)
-            if (type == HitTestResult.SRC_ANCHOR_TYPE) arrayAdapter.add(resources.getString(R.string.open_in_new_tab))
+            arrayAdapter.add(resources.getString(R.string.open_in_new_tab))
             if (type == HitTestResult.IMAGE_TYPE || type == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
                 arrayAdapter.add(resources.getString(R.string.download_image))
                 arrayAdapter.add(resources.getString(R.string.search_image))
@@ -193,8 +193,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
                     resources.getString(R.string.open_in_new_tab) -> {
                         val intent = Intent(mContext, BrowserActivity::class.java)
-                        intent.putExtra(Intent.EXTRA_TEXT, url)
-                            .setAction(Intent.ACTION_SEND).type = UrlUtils.TypeSchemeMatch[1]
+                        intent.data = Uri.parse(UrlUtils.cve_2017_13274(url))
                         mContext.startActivity(intent)
                     }
 

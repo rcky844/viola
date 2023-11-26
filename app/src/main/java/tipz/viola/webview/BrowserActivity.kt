@@ -234,15 +234,13 @@ class BrowserActivity : VWebViewActivity() {
     /* Init VioWebView */
     private fun webViewInit() {
         webview.notifyViewSetup()
-        val intent = intent
         val dataUri = intent.data
-        if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
-            webview.loadUrl(
-                dataUri?.toString() ?: SearchEngineEntries.getHomePageUrl(
+        if (dataUri != null) {
+            webview.loadUrl(dataUri.toString())
+        } else if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
+            webview.loadUrl(SearchEngineEntries.getHomePageUrl(
                     settingsPreference,
-                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)
-                )
-            )
+                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)))
         } else {
             webview.loadUrl(InternalUrls.startUrl)
         }
