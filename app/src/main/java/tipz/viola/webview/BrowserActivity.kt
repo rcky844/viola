@@ -153,7 +153,7 @@ class BrowserActivity : VWebViewActivity() {
             val cert = webview.certificate
             val popupMenu = PopupMenu(this, favicon)
             val menu = popupMenu.menu
-            menu.add(webview.title).isEnabled = false
+            menu.add(if (webview.visibility == View.GONE) resources.getString(R.string.start_page) else webview.title).isEnabled = false
             menu.add(resources.getString(R.string.copy_title))
             if (cert != null) menu.add(resources.getString(R.string.ssl_info))
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
