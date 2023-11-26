@@ -119,7 +119,7 @@
     <string name="pref_update_recents_icon_summary">自动将“最近使用的应用”中选项卡的图标和标签更新为网页的</string>
     <string name="js_page_says">%s说</string>
     <string name="js_leave_page_prompt">%s说, 你想离开这个页面吗?</string>
-    <string name="view_page_source">查看页面源代码</string>
+    <string name="toolbar_expandable_view_page_source">查看页面源代码</string>
     <string name="pref_google_safe_browsing_title">启用谷歌的安全浏览</string>
     <string name="pref_google_safe_browsing_summary">允许谷歌的安全浏览功能屏蔽其认为危险的网站.</string>
     <string name="dialog_page_unresponsive_title">页面无响应</string>

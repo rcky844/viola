@@ -197,6 +197,35 @@ class BrowserActivity : VWebViewActivity() {
             transition.addTarget(R.id.toolsBarExtendableBackground)
             TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
             toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
+        } else if (item == R.drawable.code) {
+            webview.evaluateJavascript(
+                "document.documentElement.outerHTML",
+                ValueCallback { value: String? ->
+                    val reader = JsonReader(StringReader(value))
+                    reader.isLenient = true
+                    try {
+                        if (reader.peek() == JsonToken.STRING) {
+                            val domStr = reader.nextString()
+                            reader.close()
+                            if (domStr == null) return@ValueCallback
+                            MaterialAlertDialogBuilder(this@BrowserActivity)
+                                .setTitle(resources.getString(R.string.toolbar_expandable_view_page_source))
+                                .setMessage(domStr)
+                                .setPositiveButton(
+                                    resources.getString(android.R.string.ok),
+                                    null
+                                )
+                                .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
+                                    CommonUtils.copyClipboard(
+                                        this@BrowserActivity,
+                                        domStr
+                                    )
+                                }
+                                .create().show()
+                        }
+                    } catch (ignored: IOException) {
+                    }
+                })
         }
     }
 
@@ -272,7 +301,7 @@ class BrowserActivity : VWebViewActivity() {
                         SettingsKeys.isJavaScriptEnabled
                     )
                 )
-            ) menu.add(resources.getString(R.string.view_page_source))
+            )
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                 if (item.title.toString() == resources.getString(R.string.copy_title)) {
                     CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
@@ -294,35 +323,6 @@ class BrowserActivity : VWebViewActivity() {
                         .setPositiveButton(resources.getString(android.R.string.ok), null)
                         .create().show()
                     return@setOnMenuItemClickListener true
-                } else if (item.title.toString() == resources.getString(R.string.view_page_source)) {
-                    webview.evaluateJavascript(
-                        "document.documentElement.outerHTML",
-                        ValueCallback { value: String? ->
-                            val reader = JsonReader(StringReader(value))
-                            reader.isLenient = true
-                            try {
-                                if (reader.peek() == JsonToken.STRING) {
-                                    val domStr = reader.nextString()
-                                    reader.close()
-                                    if (domStr == null) return@ValueCallback
-                                    MaterialAlertDialogBuilder(this@BrowserActivity)
-                                        .setTitle(resources.getString(R.string.view_page_source))
-                                        .setMessage(domStr)
-                                        .setPositiveButton(
-                                            resources.getString(android.R.string.ok),
-                                            null
-                                        )
-                                        .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
-                                            CommonUtils.copyClipboard(
-                                                this@BrowserActivity,
-                                                domStr
-                                            )
-                                        }
-                                        .create().show()
-                                }
-                            } catch (ignored: IOException) {
-                            }
-                        })
                 }
                 false
             }
@@ -620,6 +620,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.favorites_add,
             R.drawable.app_shortcut,
             R.drawable.settings,
+            R.drawable.code,
             R.drawable.close
         )
 
@@ -631,6 +632,7 @@ class BrowserActivity : VWebViewActivity() {
             R.string.toolbar_expandable_favorites_add,
             R.string.toolbar_expandable_app_shortcut,
             R.string.toolbar_expandable_settings,
+            R.string.toolbar_expandable_view_page_source,
             R.string.toolbar_expandable_close
         )
     }

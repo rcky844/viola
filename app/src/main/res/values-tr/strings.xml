@@ -119,7 +119,7 @@
     <string name="pref_update_recents_icon_summary">Son Kullanılanlar\'daki sekmelerin simgesini ve etiketini otomatik olarak web sayfasınınkiyle güncelleştirin.</string>
     <string name="js_page_says">%s diyor ki</string>
     <string name="js_leave_page_prompt">%s diyor, bu sayfadan ayrılmak istiyor musunuz?</string>
-    <string name="view_page_source">Sayfa Kaynağını Görüntüle</string>
+    <string name="toolbar_expandable_view_page_source">Sayfa Kaynağını Görüntüle</string>
     <string name="pref_google_safe_browsing_title">Google\'ın Güvenli Taramasını Etkinleştirme</string>
     <string name="pref_google_safe_browsing_summary">Google\'ın Güvenli Tarama\'sının tehlikeli bulduğu web sitelerini engellemesine izin verin.</string>
     <string name="dialog_page_unresponsive_title">Sayfa Yanıt Vermiyor</string>

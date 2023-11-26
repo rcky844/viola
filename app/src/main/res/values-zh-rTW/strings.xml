@@ -119,7 +119,7 @@
     <string name="pref_update_recents_icon_summary">自動把“最近使用的應用”中選項卡的圖標和標籤更新為網頁的</string>
     <string name="js_page_says">%s說</string>
     <string name="js_leave_page_prompt">%s說, 你想離開這個頁面嗎?</string>
-    <string name="view_page_source">查看頁面原始程式碼</string>
+    <string name="toolbar_expandable_view_page_source">查看頁面原始程式碼</string>
     <string name="pref_google_safe_browsing_title">啟用Google的安全流覽</string>
     <string name="pref_google_safe_browsing_summary">允許Google的安全流覽功能遮罩其認為危險的網站.</string>
     <string name="dialog_page_unresponsive_title">頁面無回應</string>

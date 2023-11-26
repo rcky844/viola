@@ -119,7 +119,7 @@
     <string name="pref_update_recents_icon_summary">Tự động cập nhật biểu tượng và nhãn của các tab trong Gần đây thành biểu tượng và nhãn của trang web.</string>
     <string name="js_page_says">%s nói</string>
     <string name="js_leave_page_prompt">%s nói, bạn có muốn rời khỏi trang này không?</string>
-    <string name="view_page_source">Xem nguồn trang</string>
+    <string name="toolbar_expandable_view_page_source">Xem nguồn trang</string>
     <string name="pref_google_safe_browsing_title">Bật tính năng Duyệt web an toàn của Google</string>
     <string name="pref_google_safe_browsing_summary">Cho phép tính năng Duyệt web an toàn của Google chặn các trang web mà họ cho là nguy hiểm.</string>
     <string name="dialog_page_unresponsive_title">Trang không phản hồi</string>
