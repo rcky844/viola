@@ -18,7 +18,6 @@
     <color name="colorTopBar">#f8f8f7</color>
     <color name="colorTopBarWebView">@color/colorTopBar</color>
     <color name="colorNavigationBar">@android:color/black</color>
-    <color name="colorText">@color/colorElement</color>
     <color name="colorTextFlipped">@color/colorBackground</color>
     <color name="colorPrimaryDark">@color/colorElement</color>
     <color name="colorToolbarExpandableHint">#5A5A5A</color>

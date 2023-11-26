@@ -32,7 +32,6 @@
 
     <style name="ThemeOverlay.App.AppBar" parent="ThemeOverlay.Material3.Dark.ActionBar">
         <item name="android:background">@color/colorTopBar</item>
-        <item name="titleTextColor">@color/colorText</item>
         <item name="navigationIconTint">@color/colorElement</item>
     </style>
 
