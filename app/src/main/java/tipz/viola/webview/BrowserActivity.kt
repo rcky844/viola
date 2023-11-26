@@ -20,6 +20,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.JsonReader
@@ -438,6 +439,13 @@ class BrowserActivity : VWebViewActivity() {
                         } catch (ignored: IOException) {
                         }
                     })
+            }
+
+            R.drawable.new_tab -> {
+                val i = Intent(this, BrowserActivity::class.java)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+                else i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
+                startActivity(i)
             }
         }
     }
