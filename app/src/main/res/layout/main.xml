@@ -190,7 +190,7 @@
             android:id="@+id/toolsBarExtendableHint"
             android:layout_width="64dp"
             android:layout_height="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
             android:padding="6dp"
             app:layout_constraintBottom_toTopOf="@id/toolsBarExtendableRecycler"
             app:layout_constraintEnd_toEndOf="parent"

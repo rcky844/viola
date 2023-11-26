@@ -20,7 +20,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.JsonReader
@@ -30,7 +29,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -209,7 +207,7 @@ class BrowserActivity : VWebViewActivity() {
             }
         }
         urlEditText?.setOnClickListener {
-            if (toolsBarExtendableBackground?.visibility == VISIBLE) expandToolBar()
+            if (toolsBarExtendableBackground?.visibility == View.VISIBLE) expandToolBar()
         }
         urlEditText?.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
@@ -471,17 +469,18 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     fun expandToolBar() {
-        val viewVisible: Boolean = toolsBarExtendableBackground!!.visibility == VISIBLE
+        val viewVisible: Boolean = toolsBarExtendableBackground!!.visibility == View.VISIBLE
         val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration = (200 * Settings.Global.getFloat(
-            contentResolver,
-            Settings.Global.ANIMATOR_DURATION_SCALE,
-            1.0f
-        )).toLong()
+        transition.duration =
+            (resources.getInteger(R.integer.anim_expandable_speed) * Settings.Global.getFloat(
+                contentResolver,
+                Settings.Global.ANIMATOR_DURATION_SCALE,
+                1.0f
+            )).toLong()
         transition.addTarget(R.id.toolsBarExtendableBackground)
         TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
-        toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else VISIBLE
-        toolsBarExtendableCloseHitBox!!.visibility = if (viewVisible) View.GONE else VISIBLE
+        toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
+        toolsBarExtendableCloseHitBox!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
     }
 
     override fun onPageLoadProgressChanged(progress: Int) {
