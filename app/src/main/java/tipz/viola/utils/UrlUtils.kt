@@ -22,12 +22,9 @@ import android.webkit.MimeTypeMap
 import tipz.viola.Application
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils
-import tipz.viola.utils.CommonUtils.isIntStrOne
 import tipz.viola.utils.CommonUtils.language
 import java.io.ByteArrayOutputStream
 import java.io.UnsupportedEncodingException
-import java.util.Arrays
 import java.util.Locale
 import java.util.regex.Pattern
 
@@ -75,23 +72,15 @@ object UrlUtils {
      * @return result
      */
     fun toSearchOrValidUrl(context: Context, input: String): String {
-        val pref = (context.applicationContext as Application).pref
+        val settingsPreference = (context.applicationContext as Application).settingsPreference!!
         val trimmedInput = cve_2017_13274(input.trim { it <= ' ' })
         var uri = Uri.parse(trimmedInput)
         if (uri.isRelative) {
-            uri = Uri.parse(
-                (if (isIntStrOne(
-                        SettingsUtils.getPrefNum(
-                            pref!!,
-                            SettingsKeys.enforceHttps
-                        )
-                    )
-                ) "https://" else "http://") + trimmedInput
-            )
+            uri = Uri.parse((if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://" else "http://") + trimmedInput)
             if (!uri.toString().matches(httpUrlRegex.toRegex())) {
                 return SearchEngineEntries.getSearchUrl(
-                    pref,
-                    SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId),
+                    settingsPreference,
+                    settingsPreference.getInt(SettingsKeys.defaultSearchId),
                     input, language
                 )
             }

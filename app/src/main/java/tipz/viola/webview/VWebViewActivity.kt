@@ -16,7 +16,6 @@
 package tipz.viola.webview
 
 import android.app.ActivityManager.TaskDescription
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
@@ -36,11 +35,11 @@ import tipz.viola.Application
 import tipz.viola.BaseActivity
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils
+import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
 
 open class VWebViewActivity : BaseActivity() {
-    lateinit var pref: SharedPreferences
+    lateinit var settingsPreference: SettingsSharedPreference
     lateinit var webview: VWebView
     lateinit var favicon: AppCompatImageView
     lateinit var faviconProgressBar: CircularProgressIndicator
@@ -53,7 +52,7 @@ open class VWebViewActivity : BaseActivity() {
     private var swipeRefreshLayoutEnabled = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pref = (applicationContext as Application).pref!!
+        settingsPreference = (applicationContext as Application).settingsPreference!!
 
         onBackPressedDispatcher.addCallback(this) {
             if (webview.canGoBack()) webview.goBack() else finish()
@@ -80,12 +79,6 @@ open class VWebViewActivity : BaseActivity() {
         super.onStart()
     }
 
-    @Suppress("DEPRECATION")
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) webview.freeMemory()
-    }
-
     /**
      * Need Load Info Receiver
      *
@@ -93,10 +86,11 @@ open class VWebViewActivity : BaseActivity() {
      * Receive needLoadUrl for loading.
      */
     @JvmField
-    val mGetNeedLoad = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        doSettingsCheck()
-        webview.loadUrl((if (result.data != null) result.data!!.getStringExtra("needLoadUrl") else CommonUtils.EMPTY_STRING)!!)
-    }
+    val mGetNeedLoad =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            doSettingsCheck()
+            webview.loadUrl((if (result.data != null) result.data!!.getStringExtra("needLoadUrl") else CommonUtils.EMPTY_STRING)!!)
+        }
 
     /**
      * Config Checker
@@ -109,29 +103,23 @@ open class VWebViewActivity : BaseActivity() {
         super.doSettingsCheck()
 
         // Pull to Refresh
-        if (swipeRefreshLayoutEnabled) {
-            swipeRefreshLayout.isEnabled = CommonUtils.isIntStrOne(
-                SettingsUtils.getPrefNum(
-                    pref,
-                    SettingsKeys.enableSwipeRefresh
-                )
-            )
-        }
+        if (swipeRefreshLayoutEnabled) swipeRefreshLayout.isEnabled =
+            settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh)
 
         // Favicon
-        favicon.visibility = if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) View.VISIBLE else View.GONE
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon)) && faviconProgressBar.visibility == View.VISIBLE)
+        favicon.visibility =
+            if (settingsPreference.getIntBool(SettingsKeys.showFavicon)) View.VISIBLE else View.GONE
+        if (settingsPreference.getIntBool(SettingsKeys.showFavicon) && faviconProgressBar.visibility == View.VISIBLE)
             favicon.visibility = View.GONE
     }
 
     open fun onUrlUpdated(url: String?) {}
     open fun onUrlUpdated(url: String?, position: Int) {}
+
     @Suppress("DEPRECATION")
     @CallSuper
     open fun onTitleUpdated(title: String?) {
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
-            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-        ) {
+        if (settingsPreference.getIntBool(SettingsKeys.updateRecentsIcon) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val description = TaskDescription(title)
             setTaskDescription(description)
         }
@@ -148,8 +136,7 @@ open class VWebViewActivity : BaseActivity() {
         if (icon == null) favicon.setImageResource(R.drawable.default_favicon) else favicon.setImageBitmap(
             icon
         )
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.updateRecentsIcon))
-            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (settingsPreference.getIntBool(SettingsKeys.updateRecentsIcon) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val description = TaskDescription(webview.title, icon)
             setTaskDescription(description)
         }
@@ -157,7 +144,7 @@ open class VWebViewActivity : BaseActivity() {
 
     @CallSuper
     open fun onFaviconProgressUpdated(isLoading: Boolean) {
-        if (!CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.showFavicon))) return
+        if (!settingsPreference.getIntBool(SettingsKeys.showFavicon)) return
         if (isLoading) {
             favicon.visibility = View.GONE
             faviconProgressBar.visibility = View.VISIBLE
@@ -170,27 +157,19 @@ open class VWebViewActivity : BaseActivity() {
     @CallSuper
     open fun onSwipeRefreshLayoutRefreshingUpdated(isRefreshing: Boolean) {
         swipeRefreshLayout.isRefreshing = isRefreshing
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')") { value1: String ->
-                updateSwipeRefreshLayoutEnabled(getTrueCSSValue(value1) != "hidden")
-                if (swipeRefreshLayoutEnabled) webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y')") { value2: String ->
-                    updateSwipeRefreshLayoutEnabled(
-                        getTrueCSSValue(value2) == "auto"
-                    )
-                }
+        webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')") { value1: String ->
+            updateSwipeRefreshLayoutEnabled(getTrueCSSValue(value1) != "hidden")
+            if (swipeRefreshLayoutEnabled) webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y')") { value2: String ->
+                updateSwipeRefreshLayoutEnabled(
+                    getTrueCSSValue(value2) == "auto"
+                )
             }
         }
     }
 
     private fun updateSwipeRefreshLayoutEnabled(isEnabled: Boolean) {
         swipeRefreshLayoutEnabled = isEnabled
-        if (CommonUtils.isIntStrOne(
-                SettingsUtils.getPrefNum(
-                    pref,
-                    SettingsKeys.enableSwipeRefresh
-                )
-            )
-        ) swipeRefreshLayout.isEnabled = swipeRefreshLayoutEnabled
+        if (settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh)) swipeRefreshLayout.isEnabled = swipeRefreshLayoutEnabled
     }
 
     @CallSuper

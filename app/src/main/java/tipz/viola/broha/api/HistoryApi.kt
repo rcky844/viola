@@ -15,18 +15,10 @@
  */
 package tipz.viola.broha.api
 
-import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
 import tipz.viola.Application
-import tipz.viola.broha.database.Broha
 import tipz.viola.broha.database.BrohaDao
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils.getPref
-import tipz.viola.settings.SettingsUtils.getPrefNum
-import tipz.viola.settings.SettingsUtils.setPref
-import tipz.viola.settings.SettingsUtils.setPrefNum
-import tipz.viola.utils.CommonUtils
 
 object HistoryApi {
     private const val LATEST_API = 0
@@ -36,10 +28,9 @@ object HistoryApi {
     }
 
     fun doApiInitCheck(context: Context) {
-        val pref = (context.applicationContext as Application).pref
-        if (getPrefNum(pref!!, SettingsKeys.historyApi) > LATEST_API
-            || getPrefNum(pref, SettingsKeys.historyApi) <= -1
-        ) throw RuntimeException()
-        setPrefNum(pref, SettingsKeys.historyApi, LATEST_API)
+        val settingsPreference = (context.applicationContext as Application).settingsPreference!!
+        val historyApiVer = settingsPreference.getInt(SettingsKeys.historyApi)
+        if (historyApiVer > LATEST_API || historyApiVer <= -1) throw RuntimeException()
+        settingsPreference.setInt(SettingsKeys.historyApi, LATEST_API)
     }
 }

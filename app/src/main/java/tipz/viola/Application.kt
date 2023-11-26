@@ -16,7 +16,6 @@
 package tipz.viola
 
 import android.app.Application
-import android.content.SharedPreferences
 import android.os.Build
 import com.google.android.material.color.DynamicColors
 import tipz.viola.broha.api.FavApi
@@ -24,20 +23,16 @@ import tipz.viola.broha.api.HistoryApi
 import tipz.viola.broha.database.BrohaClient
 import tipz.viola.broha.database.BrohaDao
 import tipz.viola.broha.database.icons.IconHashClient
-import tipz.viola.settings.SettingsInit
+import tipz.viola.settings.SettingsSharedPreference
 
 class Application : Application() {
-    @JvmField
+    var settingsPreference: SettingsSharedPreference? = null
     var historyBroha: BrohaDao? = null
-    @JvmField
     var favBroha: BrohaDao? = null
-    @JvmField
     var iconHashClient: IconHashClient? = null
-    @JvmField
-    var pref: SharedPreferences? = null
     override fun onCreate() {
         super.onCreate()
-        pref = SettingsInit(this).pref /* Init settings check */
+        settingsPreference = SettingsSharedPreference(this)
         HistoryApi.doApiInitCheck(this)
         FavApi.doApiInitCheck(this)
         historyBroha = BrohaClient(this, "history").dao

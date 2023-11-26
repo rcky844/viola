@@ -20,7 +20,6 @@ import org.json.JSONArray
 import tipz.viola.Application
 import tipz.viola.search.SearchEngineEntries.getSuggestionsUrl
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils.getPrefNum
 import tipz.viola.utils.CommonUtils
 import java.io.BufferedInputStream
 import java.io.BufferedReader
@@ -50,12 +49,8 @@ open class SuggestionProvider(private val mContext: Context) {
         query: String,
         language: String
     ): String {
-        val pref = (mContext.applicationContext as Application).pref
-        return getSuggestionsUrl(
-            pref, getPrefNum(
-                pref!!, SettingsKeys.defaultSuggestionsId
-            ), query, language
-        )
+        val settingsPreference = (mContext.applicationContext as Application).settingsPreference!!
+        return getSuggestionsUrl(settingsPreference, settingsPreference.getInt(SettingsKeys.defaultSuggestionsId), query, language)
     }
 
     /**

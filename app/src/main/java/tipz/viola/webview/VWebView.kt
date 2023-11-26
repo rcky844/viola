@@ -76,7 +76,6 @@ import tipz.viola.broha.api.HistoryApi
 import tipz.viola.broha.api.HistoryUtils
 import tipz.viola.broha.database.Broha
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.InternalUrls
@@ -103,7 +102,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var currentBroha: Broha? = null
     private var updateHistory = true
     private var historyCommitted = false
-    private val pref = (mContext.applicationContext as Application).pref!!
+    private val settingsPreference =
+        (mContext.applicationContext as Application).settingsPreference!!
     private var mUploadMessage: ValueCallback<Array<Uri>>? = null
     val mFileChooser =
         (mContext as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -114,7 +114,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private val mRequestHeaders = HashMap<String, String>()
     private fun userAgentFull(mode: Int): String {
         val mobile = if (mode == 0) "Mobile" else CommonUtils.EMPTY_STRING
-        return "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${WebViewCompat.getCurrentWebViewPackage(mContext)?.versionName} $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
+        return "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
+            WebViewCompat.getCurrentWebViewPackage(
+                mContext
+            )?.versionName
+        } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
     }
 
     init {
@@ -129,12 +133,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             )
             updateCurrentUrl(originalUrl)
             mVioWebViewActivity!!.onPageLoadProgressChanged(0)
-            if (!canGoBack() && originalUrl == null && CommonUtils.isIntStrOne(
-                    SettingsUtils.getPrefNum(
-                        pref, SettingsKeys.closeAppAfterDownload
-                    )
-                )
-            ) mVioWebViewActivity!!.finish()
+            if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
+                mVioWebViewActivity!!.finish()
         }
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
@@ -227,40 +227,23 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         // Settings check
         webSettings.javaScriptEnabled =
-            CommonUtils.isIntStrOne(
-                SettingsUtils.getPrefNum(
-                    pref,
-                    SettingsKeys.isJavaScriptEnabled
-                )
-            )
+            settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled)
         webSettings.javaScriptCanOpenWindowsAutomatically =
-            CommonUtils.isIntStrOne(
-                SettingsUtils.getPrefNum(
-                    pref,
-                    SettingsKeys.isJavaScriptEnabled
-                )
-            )
+            settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled)
 
         // HTTPS enforce setting
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) webSettings.mixedContentMode =
-            if (CommonUtils.isIntStrOne(
-                    SettingsUtils.getPrefNum(pref, SettingsKeys.enforceHttps)
-                )
-            ) WebSettings.MIXED_CONTENT_NEVER_ALLOW else WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) WebSettings.MIXED_CONTENT_NEVER_ALLOW else WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
         // Google's "Safe" Browsing
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE)) WebSettingsCompat.setSafeBrowsingEnabled(
-            webSettings,
-            CommonUtils.isIntStrOne(
-                SettingsUtils.getPrefNum(
-                    pref,
-                    SettingsKeys.enableGoogleSafeBrowse
-                )
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
+            WebSettingsCompat.setSafeBrowsingEnabled(
+                webSettings,
+                settingsPreference.getIntBool(SettingsKeys.enableGoogleSafeBrowse)
             )
-        )
 
         // Do Not Track request
-        mRequestHeaders["DNT"] = SettingsUtils.getPrefNum(pref, SettingsKeys.sendDNT).toString()
+        mRequestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
     }
 
     fun notifyViewSetup() {
@@ -427,15 +410,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 }
             }
             try {
-                if (adServers != null) if (adServers!!.contains(" " + URL(url).host) && SettingsUtils.getPrefNum(
-                        pref,
+                if (adServers != null) if (adServers!!.contains(" " + URL(url).host) && settingsPreference.getInt(
                         SettingsKeys.enableAdBlock
                     ) == 1
-                ) return WebResourceResponse(
-                    "text/plain",
-                    "utf-8",
-                    ByteArrayInputStream(CommonUtils.EMPTY_STRING.toByteArray())
                 )
+                    return WebResourceResponse(
+                        "text/plain", "utf-8",
+                        ByteArrayInputStream(CommonUtils.EMPTY_STRING.toByteArray())
+                    )
             } catch (e: MalformedURLException) {
                 e.printStackTrace()
             }

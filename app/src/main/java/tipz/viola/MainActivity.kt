@@ -23,7 +23,6 @@ import android.webkit.CookieManager
 import androidx.appcompat.app.AppCompatActivity
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.BrowserActivity
@@ -60,11 +59,8 @@ class MainActivity : AppCompatActivity() {
         val openIntent = Intent(
             this,
             if (intent.hasCategory("android.intent.category.LAUNCHER")
-                || SettingsUtils.getPrefNum(
-                    (applicationContext as Application).pref!!,
-                    SettingsKeys.useCustomTabs
-                ) == 0
-            ) BrowserActivity::class.java else CustomTabsActivity::class.java
+                || (applicationContext as Application).settingsPreference!!.getInt(SettingsKeys.useCustomTabs) == 0)
+                BrowserActivity::class.java else CustomTabsActivity::class.java
         )
         var uri: Uri? = null
         if (Intent.ACTION_SEND == action || NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) { /* NFC sharing */

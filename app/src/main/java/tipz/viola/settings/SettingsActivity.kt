@@ -25,7 +25,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -113,7 +112,7 @@ class SettingsActivity : BaseActivity() {
 
     class SettingsPrefHandler(act: AppCompatActivity) : PreferenceFragmentCompat() {
         private lateinit var settingsActivity: AppCompatActivity
-        private val pref: SharedPreferences?
+        private val settingsPreference: SettingsSharedPreference
         private var downloadID: Long = 0
         private val updateDownloadPath =
             Environment.getExternalStorageDirectory().absolutePath + "/" + Environment.DIRECTORY_DOWNLOADS + "/browservio-update.apk"
@@ -129,7 +128,8 @@ class SettingsActivity : BaseActivity() {
         init {
             val activity = WeakReference(act)
             settingsActivity = activity.get()!!
-            pref = (settingsActivity.applicationContext as Application).pref
+            settingsPreference =
+                (settingsActivity.applicationContext as Application).settingsPreference!!
         }
 
         @SuppressLint("UnspecifiedRegisterReceiverFlag") // For older SDKs
@@ -167,7 +167,8 @@ class SettingsActivity : BaseActivity() {
          */
         private fun initializeLogic() {
             /* Lists */
-            val searchHomePageList = settingsActivity.resources.getStringArray(R.array.search_entries)
+            val searchHomePageList =
+                settingsActivity.resources.getStringArray(R.array.search_entries)
             val themeList = settingsActivity.resources.getStringArray(R.array.themes)
 
             /* Settings */
@@ -185,18 +186,19 @@ class SettingsActivity : BaseActivity() {
             search_engine.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
                     val checkedItem =
-                        intArrayOf(SettingsUtils.getPrefNum(pref!!, SettingsKeys.defaultSearchId))
+                        intArrayOf(settingsPreference.getInt(SettingsKeys.defaultSearchId))
                     MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.search_engine))
                         .setSingleChoiceItems(
                             searchHomePageList,
-                            SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSearchId)
+                            settingsPreference.getInt(SettingsKeys.defaultSearchId)
                         ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
                         .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                             if (checkedItem[0] == 8) {
                                 val layoutInflater = LayoutInflater.from(settingsActivity)
                                 @SuppressLint("InflateParams") val root =
                                     layoutInflater.inflate(R.layout.dialog_edittext, null)
-                                val customSearch = root.findViewById<AppCompatEditText>(R.id.edittext)
+                                val customSearch =
+                                    root.findViewById<AppCompatEditText>(R.id.edittext)
                                 MaterialAlertDialogBuilder(settingsActivity).setTitle(
                                     resources.getString(
                                         R.string.search_engine
@@ -205,15 +207,12 @@ class SettingsActivity : BaseActivity() {
                                     .setMessage(settingsActivity.resources.getString(R.string.custom_search_guide))
                                     .setView(root)
                                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                        if (customSearch.text.toString().isNotEmpty()
-                                        ) {
-                                            SettingsUtils.setPref(
-                                                pref,
+                                        if (customSearch.text.toString().isNotEmpty()) {
+                                            settingsPreference.setString(
                                                 SettingsKeys.defaultSearch,
                                                 customSearch.text.toString()
                                             )
-                                            SettingsUtils.setPrefNum(
-                                                pref,
+                                            settingsPreference.setInt(
                                                 SettingsKeys.defaultSearchId,
                                                 checkedItem[0]
                                             )
@@ -225,13 +224,11 @@ class SettingsActivity : BaseActivity() {
                                     .create().show()
                             }
                             if (checkedItem[0] != 8) {
-                                SettingsUtils.setPref(
-                                    pref,
+                                settingsPreference.setString(
                                     SettingsKeys.defaultSearch,
                                     CommonUtils.EMPTY_STRING
                                 )
-                                SettingsUtils.setPrefNum(
-                                    pref,
+                                settingsPreference.setInt(
                                     SettingsKeys.defaultSearchId,
                                     checkedItem[0]
                                 )
@@ -245,11 +242,11 @@ class SettingsActivity : BaseActivity() {
             homepage.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
                     val checkedItem =
-                        intArrayOf(SettingsUtils.getPrefNum(pref!!, SettingsKeys.defaultSearchId))
+                        intArrayOf(settingsPreference.getInt(SettingsKeys.defaultSearchId))
                     MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.homepage))
                         .setSingleChoiceItems(
                             searchHomePageList,
-                            SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)
+                            settingsPreference.getInt(SettingsKeys.defaultHomePageId)
                         ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
                         .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                             if (checkedItem[0] == 8) {
@@ -263,13 +260,11 @@ class SettingsActivity : BaseActivity() {
                                     .setView(root)
                                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                         if (customHomepage.text.toString().isNotEmpty()) {
-                                            SettingsUtils.setPref(
-                                                pref,
+                                            settingsPreference.setString(
                                                 SettingsKeys.defaultHomePage,
                                                 customHomepage.text.toString()
                                             )
-                                            SettingsUtils.setPrefNum(
-                                                pref,
+                                            settingsPreference.setInt(
                                                 SettingsKeys.defaultHomePageId,
                                                 checkedItem[0]
                                             )
@@ -280,13 +275,11 @@ class SettingsActivity : BaseActivity() {
                                     .create().show()
                             }
                             if (checkedItem[0] != 8) {
-                                SettingsUtils.setPref(
-                                    pref,
+                                settingsPreference.setString(
                                     SettingsKeys.defaultHomePage,
                                     CommonUtils.EMPTY_STRING
                                 )
-                                SettingsUtils.setPrefNum(
-                                    pref,
+                                settingsPreference.setInt(
                                     SettingsKeys.defaultHomePageId,
                                     checkedItem[0]
                                 )
@@ -299,16 +292,12 @@ class SettingsActivity : BaseActivity() {
                 }
             search_suggestions.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    val checkedItem = intArrayOf(
-                        SettingsUtils.getPrefNum(
-                            pref!!,
-                            SettingsKeys.defaultSuggestionsId
-                        )
-                    )
+                    val checkedItem =
+                        intArrayOf(settingsPreference.getInt(SettingsKeys.defaultSuggestionsId))
                     MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.search_suggestions_title))
                         .setSingleChoiceItems(
                             searchHomePageList,
-                            SettingsUtils.getPrefNum(pref, SettingsKeys.defaultSuggestionsId)
+                            settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)
                         ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
                         .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                             if (checkedItem[0] == 8) {
@@ -323,13 +312,11 @@ class SettingsActivity : BaseActivity() {
                                     .setView(root)
                                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                         if (customSearchSuggestions.text.toString().isNotEmpty()) {
-                                            SettingsUtils.setPref(
-                                                pref,
+                                            settingsPreference.setString(
                                                 SettingsKeys.defaultSuggestions,
                                                 customSearchSuggestions.text.toString()
                                             )
-                                            SettingsUtils.setPrefNum(
-                                                pref,
+                                            settingsPreference.setInt(
                                                 SettingsKeys.defaultSuggestionsId,
                                                 checkedItem[0]
                                             )
@@ -341,13 +328,11 @@ class SettingsActivity : BaseActivity() {
                                     .create().show()
                             }
                             if (checkedItem[0] != 8) {
-                                SettingsUtils.setPref(
-                                    pref,
+                                settingsPreference.setString(
                                     SettingsKeys.defaultSuggestions,
                                     CommonUtils.EMPTY_STRING
                                 )
-                                SettingsUtils.setPrefNum(
-                                    pref,
+                                settingsPreference.setInt(
                                     SettingsKeys.defaultSuggestionsId,
                                     checkedItem[0]
                                 )
@@ -396,15 +381,18 @@ class SettingsActivity : BaseActivity() {
             theme.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
                     val checkedItem =
-                        intArrayOf(SettingsUtils.getPrefNum(pref!!, SettingsKeys.themeId))
+                        intArrayOf(settingsPreference.getInt(SettingsKeys.themeId))
                     MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.pref_theme))
                         .setSingleChoiceItems(
                             themeList,
-                            SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)
+                            settingsPreference.getInt(SettingsKeys.themeId)
                         )
                         { _: DialogInterface?, which: Int -> checkedItem[0] = which }
                         .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                            SettingsUtils.setPrefNum(pref, SettingsKeys.themeId, checkedItem[0])
+                            settingsPreference.setInt(
+                                SettingsKeys.themeId,
+                                checkedItem[0]
+                            )
                             theme.summary = themeList[checkedItem[0]]
                             darkModeCheck(settingsActivity)
                         }
@@ -440,10 +428,12 @@ class SettingsActivity : BaseActivity() {
                         }
                         CoroutineScope(Dispatchers.IO).launch {
                             val apkFile = File(updateDownloadPath)
-                            val result = DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")
+                            val result =
+                                DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")
                             val jObject = JSONObject(result)
                             // FIXME: Stop hardcoding channels
-                            val jChannelObject = jObject.getJSONObject("debug").getJSONObject("latest_update")
+                            val jChannelObject =
+                                jObject.getJSONObject("debug").getJSONObject("latest_update")
 
                             CoroutineScope(Dispatchers.Main).launch {
                                 if (jChannelObject.getInt("code") <= BuildConfig.VERSION_CODE) {
@@ -509,14 +499,12 @@ class SettingsActivity : BaseActivity() {
                     true
                 }
             search_engine.summary =
-                searchHomePageList[SettingsUtils.getPrefNum(pref!!, SettingsKeys.defaultSearchId)]
+                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSearchId)]
             homepage.summary =
-                searchHomePageList[SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)]
-            search_suggestions.summary = searchHomePageList[SettingsUtils.getPrefNum(
-                pref,
-                SettingsKeys.defaultSuggestionsId
-            )]
-            theme.summary = themeList[SettingsUtils.getPrefNum(pref, SettingsKeys.themeId)]
+                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultHomePageId)]
+            search_suggestions.summary =
+                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)]
+            theme.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
             version.summary =
                 resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA
             needReload = false

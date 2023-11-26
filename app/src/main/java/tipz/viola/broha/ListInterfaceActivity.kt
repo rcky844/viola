@@ -239,7 +239,7 @@ class ListInterfaceActivity : BaseActivity() {
                         @SuppressLint("InflateParams") val root =
                             layoutInflater.inflate(R.layout.dialog_fav_edit, null)
                         val titleEditText = root.findViewById<AppCompatEditText>(R.id.titleEditText)
-                        val urlEditText = root.findViewById<AppCompatEditText>(R.id.urlEditText)
+                        val urlEditText = root.findViewById<AppCompatEditText>(R.id.favUrlEditText)
                         titleEditText.setText(title)
                         urlEditText.setText(url)
                         MaterialAlertDialogBuilder(listInterfaceActivity)

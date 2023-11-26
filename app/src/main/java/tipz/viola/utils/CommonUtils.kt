@@ -22,7 +22,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.text.TextUtils
 import android.util.TypedValue
 import android.widget.Toast
@@ -50,7 +49,6 @@ object CommonUtils {
      *
      * @param s is supplied for what to show
      */
-    @JvmStatic
     fun showMessage(context: Context?, s: String?) {
         Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
     }
@@ -60,7 +58,6 @@ object CommonUtils {
      *
      * @param s string to copy
      */
-    @JvmStatic
     fun copyClipboard(context: Context, s: String?) {
         (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
             ClipData.newPlainText("clipboard", s)
@@ -68,12 +65,6 @@ object CommonUtils {
         showMessage(context, context.resources.getString(R.string.copied_clipboard))
     }
 
-    @JvmStatic
-    fun isIntStrOne(obj: Any): Boolean {
-        return obj == if (obj is String) "1" else 1
-    }
-
-    @JvmStatic
     val language: String
         get() {
             var language = Locale.getDefault().language

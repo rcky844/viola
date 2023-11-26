@@ -15,15 +15,10 @@
  */
 package tipz.viola.broha.api
 
-import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
 import tipz.viola.Application
 import tipz.viola.broha.database.BrohaDao
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils.getPref
-import tipz.viola.settings.SettingsUtils.getPrefNum
-import tipz.viola.settings.SettingsUtils.setPrefNum
 
 object FavApi {
     private const val LATEST_API = 0
@@ -34,10 +29,9 @@ object FavApi {
     }
 
     fun doApiInitCheck(context: Context) {
-        val pref = (context.applicationContext as Application).pref
-        if (getPrefNum(pref!!, SettingsKeys.favApi) > LATEST_API
-            || getPrefNum(pref, SettingsKeys.favApi) <= -1
-        ) throw RuntimeException()
-        setPrefNum(pref, SettingsKeys.favApi, LATEST_API)
+        val settingsPreference = (context.applicationContext as Application).settingsPreference!!
+        val favApiVer = settingsPreference.getInt(SettingsKeys.favApi)
+        if (favApiVer > LATEST_API || favApiVer <= -1) throw RuntimeException()
+        settingsPreference.setInt(SettingsKeys.favApi, LATEST_API)
     }
 }

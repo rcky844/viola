@@ -72,7 +72,7 @@
                     app:constraint_referenced_ids="favicon,faviconProgressBar" />
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/UrlEdit"
+                    android:id="@+id/urlEditText"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
@@ -90,12 +90,12 @@
                     android:textColor="@color/colorElement"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/fab"
+                    app:layout_constraintEnd_toStartOf="@id/upRightFab"
                     app:layout_constraintStart_toEndOf="@id/barrier"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/fab"
+                    android:id="@+id/upRightFab"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
                     android:background="?attr/selectableItemBackground"

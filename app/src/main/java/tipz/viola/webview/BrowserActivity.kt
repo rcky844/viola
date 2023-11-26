@@ -25,13 +25,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.JsonReader
 import android.util.JsonToken
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -74,7 +72,6 @@ import tipz.viola.search.SearchEngineEntries
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.view.CentreSpreadItemDecoration
@@ -88,20 +85,62 @@ import java.util.Objects
 
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
-    private var UrlEdit: MaterialAutoCompleteTextView? = null
-    private var fab: AppCompatImageView? = null
+    private var urlEditText: MaterialAutoCompleteTextView? = null
+    private var upRightFab: AppCompatImageView? = null
     private var currentPrebuiltUAState = false
     private var currentCustomUA: String? = null
     private var currentCustomUAWideView = false
     private var iconHashClient: IconHashClient? = null
-    private var toolsBarExtendableBackground : ConstraintLayout? = null
-    private var toolsBarExtendableCloseHitBox : LinearLayoutCompat? = null
-    private var viewMode : Int = 0
+    private var toolsBarExtendableBackground: ConstraintLayout? = null
+    private var toolsBarExtendableCloseHitBox: LinearLayoutCompat? = null
+    private var viewMode: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
-        initialize()
-        initializeLogic()
+
+        // Initialize variables
+        upRightFab = findViewById(R.id.upRightFab)
+        urlEditText = findViewById(R.id.urlEditText)
+        progressBar = findViewById(R.id.webviewProgressBar)
+        faviconProgressBar = findViewById(R.id.faviconProgressBar)
+        swipeRefreshLayout = findViewById(R.id.layout_webview)
+        webview = swipeRefreshLayout.findViewById(R.id.webview)
+        favicon = findViewById(R.id.favicon)
+        toolsContainer = findViewById(R.id.toolsContainer)
+        startPageLayout = findViewById(R.id.layout_startpage)
+        iconHashClient = (applicationContext as Application).iconHashClient
+
+        // Setup toolbar
+        val toolBar = findViewById<RecyclerView>(R.id.toolBar)
+        toolBar.layoutManager =
+            FixedLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        toolBar.adapter = ItemsAdapter(this, toolsBarItemList)
+        toolBar.addItemDecoration(
+            CentreSpreadItemDecoration(
+                resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
+                useFixedMgr = true,
+                isLinear = true
+            )
+        )
+
+        // Setup toolbar expandable
+        val toolsBarExtendableRecycler = findViewById<RecyclerView>(R.id.toolsBarExtendableRecycler)
+        toolsBarExtendableRecycler.layoutManager = GridLayoutManager(
+            this,
+            resources.getInteger(R.integer.num_toolbar_expandable_items_per_row),
+            GridLayoutManager.VERTICAL,
+            false
+        )
+        toolsBarExtendableRecycler.adapter =
+            ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
+        toolsBarExtendableRecycler.addItemDecoration(
+            CentreSpreadItemDecoration(
+                resources.getDimension(R.dimen.toolbar_extendable_holder_size),
+                toolsBarItemList.size,
+                useFixedMgr = false,
+                isLinear = false
+            )
+        )
         toolsBarExtendableBackground = this.findViewById(R.id.toolsBarExtendableBackground)
         toolsBarExtendableBackground!!.post {
             toolsBarExtendableBackground!!.visibility = View.GONE
@@ -110,198 +149,8 @@ class BrowserActivity : VWebViewActivity() {
         toolsBarExtendableCloseHitBox?.setOnClickListener {
             expandToolBar()
         }
-    }
 
-    // https://stackoverflow.com/a/57840629/10866268
-    public override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.clear()
-    }
-
-    fun itemSelected(view: AppCompatImageView?, item: Int) {
-        if (item == R.drawable.arrow_back_alt && webview.canGoBack()) {
-            webview.goBack()
-        } else if (item == R.drawable.arrow_forward_alt && webview.canGoForward()) {
-            webview.goForward()
-        } else if (item == R.drawable.refresh) {
-            webview.webViewReload()
-        } else if (item == R.drawable.home) {
-            if (CommonUtils.isIntStrOne(
-                    SettingsUtils.getPrefNum(
-                        pref,
-                        SettingsKeys.useWebHomePage
-                    )
-                )
-            ) {
-                webview.loadUrl(
-                    SearchEngineEntries.getHomePageUrl(
-                        pref,
-                        SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)
-                    )
-                )
-            } else {
-                UrlEdit!!.setText(CommonUtils.EMPTY_STRING)
-                webview.loadUrl(InternalUrls.startUrl)
-            }
-        } else if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
-            currentPrebuiltUAState = !currentPrebuiltUAState
-            webview.setPrebuiltUAMode(
-                view,
-                if (currentPrebuiltUAState) 1 else 0,
-                false
-            )
-        } else if (item == R.drawable.new_tab) {
-            val i = Intent(this, BrowserActivity::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT) else i.addFlags(
-                Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET
-            )
-            startActivity(i)
-        } else if (item == R.drawable.share) {
-            CommonUtils.shareUrl(this, webview.url!!)
-        } else if (item == R.drawable.app_shortcut) {
-            if (webview.title != null && webview.title!!.isNotBlank()) ShortcutManagerCompat.requestPinShortcut(
-                this, ShortcutInfoCompat.Builder(this, webview.title!!)
-                    .setShortLabel(webview.title!!)
-                    .setIcon(
-                        IconCompat.createWithBitmap(
-                            CommonUtils.drawableToBitmap(favicon.drawable)
-                        )
-                    )
-                    .setIntent(
-                        Intent(this, BrowserActivity::class.java)
-                            .setData(Uri.parse(webview.url))
-                            .setAction(Intent.ACTION_VIEW)
-                    )
-                    .build(), null
-            )
-        } else if (item == R.drawable.settings) {
-            val intent = Intent(this, SettingsActivity::class.java)
-            mGetNeedLoad.launch(intent)
-        } else if (item == R.drawable.history) {
-            val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
-            intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_history)
-            mGetNeedLoad.launch(intent)
-        } else if (item == R.drawable.favorites) {
-            val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
-            intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_favorites)
-            mGetNeedLoad.launch(intent)
-        } else if (item == R.drawable.favorites_add) {
-            val icon = favicon.drawable
-            val title = webview.title
-            val url = webview.url
-            CoroutineScope(Dispatchers.IO).launch {
-                FavUtils.appendData(
-                    this@BrowserActivity, iconHashClient, title, url,
-                    if (icon is BitmapDrawable) icon.bitmap else null
-                )
-            }
-            if (!url.isNullOrEmpty()) CommonUtils.showMessage(this, resources.getString(R.string.save_successful))
-        } else if (item == R.drawable.close) {
-            finish()
-        } else if (item == R.drawable.view_stream) {
-            expandToolBar()
-            toolsBarExtendableBackground?.requestFocus()
-        } else if (item == R.drawable.code) {
-            webview.evaluateJavascript(
-                "document.documentElement.outerHTML",
-                ValueCallback { value: String? ->
-                    val reader = JsonReader(StringReader(value))
-                    reader.isLenient = true
-                    try {
-                        if (reader.peek() == JsonToken.STRING) {
-                            val domStr = reader.nextString()
-                            reader.close()
-                            if (domStr == null) return@ValueCallback
-                            MaterialAlertDialogBuilder(this@BrowserActivity)
-                                .setTitle(resources.getString(R.string.toolbar_expandable_view_page_source))
-                                .setMessage(domStr)
-                                .setPositiveButton(
-                                    resources.getString(android.R.string.ok),
-                                    null
-                                )
-                                .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
-                                    CommonUtils.copyClipboard(
-                                        this@BrowserActivity,
-                                        domStr
-                                    )
-                                }
-                                .create().show()
-                        }
-                    } catch (ignored: IOException) {
-                    }
-                })
-        }
-    }
-
-    fun itemLongSelected(view: AppCompatImageView?, item: Int) {
-        if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
-            val layoutInflater = LayoutInflater.from(this)
-            @SuppressLint("InflateParams") val root =
-                layoutInflater.inflate(R.layout.dialog_ua_edit, null)
-            val customUserAgent = root.findViewById<AppCompatEditText>(R.id.edittext)
-            val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
-            deskMode.isChecked = currentCustomUAWideView
-            val dialog = MaterialAlertDialogBuilder(this)
-            dialog.setTitle(resources.getString(R.string.customUA))
-                .setView(root)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    if (customUserAgent.length() != 0) webview.setUA(
-                        view, deskMode.isChecked,
-                        Objects.requireNonNull(customUserAgent.text).toString(),
-                        R.drawable.custom, false
-                    )
-                    currentCustomUA = Objects.requireNonNull(customUserAgent.text).toString()
-                    currentCustomUAWideView = deskMode.isChecked
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
-            if (currentCustomUA != null) customUserAgent.setText(currentCustomUA)
-        }
-    }
-
-    fun expandToolBar() {
-        val viewVisible : Boolean = toolsBarExtendableBackground!!.visibility == View.VISIBLE
-        val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration = (200 * Settings.Global.getFloat(contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)).toLong()
-        transition.addTarget(R.id.toolsBarExtendableBackground)
-        TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
-        toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
-        toolsBarExtendableCloseHitBox!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
-    }
-
-    /**
-     * Initialize function
-     */
-    @SuppressLint("AddJavascriptInterface")
-    private fun initialize() {
-        fab = findViewById(R.id.fab)
-        UrlEdit = findViewById(R.id.UrlEdit)
-        progressBar = findViewById(R.id.webviewProgressBar)
-        faviconProgressBar = findViewById(R.id.faviconProgressBar)
-        swipeRefreshLayout = findViewById(R.id.layout_webview)
-        webview = swipeRefreshLayout.findViewById(R.id.webview)
-        favicon = findViewById(R.id.favicon)
-        toolsContainer = findViewById(R.id.toolsContainer)
-        startPageLayout = findViewById(R.id.layout_startpage)
-
-        val toolBar = findViewById<RecyclerView>(R.id.toolBar)
-        toolBar.layoutManager = FixedLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        toolBar.adapter = ItemsAdapter(this, toolsBarItemList)
-        toolBar.addItemDecoration(CentreSpreadItemDecoration(resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
-            useFixedMgr = true,
-            isLinear = true
-        ))
-
-        val toolsBarExtendableRecycler = findViewById<RecyclerView>(R.id.toolsBarExtendableRecycler)
-        toolsBarExtendableRecycler.layoutManager = GridLayoutManager(this,
-            resources.getInteger(R.integer.num_toolbar_expandable_items_per_row), GridLayoutManager.VERTICAL, false)
-        toolsBarExtendableRecycler.adapter = ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
-        toolsBarExtendableRecycler.addItemDecoration(CentreSpreadItemDecoration(
-            resources.getDimension(R.dimen.toolbar_extendable_holder_size), toolsBarItemList.size,
-            useFixedMgr = false,
-            isLinear = false
-        ))
-
+        // Setup favicon
         favicon.setOnClickListener {
             val cert = webview.certificate
             val popupMenu = PopupMenu(this, favicon)
@@ -309,13 +158,6 @@ class BrowserActivity : VWebViewActivity() {
             menu.add(webview.title).isEnabled = false
             menu.add(resources.getString(R.string.copy_title))
             if (cert != null) menu.add(resources.getString(R.string.ssl_info))
-            if (CommonUtils.isIntStrOne(
-                    SettingsUtils.getPrefNum(
-                        pref,
-                        SettingsKeys.isJavaScriptEnabled
-                    )
-                )
-            )
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                 if (item.title.toString() == resources.getString(R.string.copy_title)) {
                     CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
@@ -330,7 +172,8 @@ class BrowserActivity : VWebViewActivity() {
                                 R.string.ssl_info_dialog_content,
                                 issuedTo.cName, issuedTo.oName, issuedTo.uName,
                                 issuedBy.cName, issuedBy.oName, issuedBy.uName,
-                                DateFormat.getDateTimeInstance().format(cert.validNotBeforeDate),
+                                DateFormat.getDateTimeInstance()
+                                    .format(cert.validNotBeforeDate),
                                 DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
                             )
                         )
@@ -343,84 +186,79 @@ class BrowserActivity : VWebViewActivity() {
             popupMenu.show()
         }
 
-        /* Code for detecting return key presses */
-        UrlEdit?.setOnEditorActionListener(
+        // Setup Url EditText box
+        urlEditText?.setOnEditorActionListener(
             OnEditorActionListener { _: TextView?, actionId: Int, _: KeyEvent? ->
                 if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
-                    webview.loadUrl(UrlEdit?.text.toString())
-                    UrlEdit?.clearFocus()
+                    webview.loadUrl(urlEditText?.text.toString())
+                    urlEditText?.clearFocus()
                     return@OnEditorActionListener true
                 }
                 false
             })
-        UrlEdit?.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
+        urlEditText?.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
-                if (UrlEdit?.text
+                if (urlEditText?.text
                         .toString() != webview.url
-                ) UrlEdit?.setText(webview.url)
-                UrlEdit?.setSelection(0)
-                UrlEdit?.dropDownHeight = 0
+                ) urlEditText?.setText(webview.url)
+                urlEditText?.setSelection(0)
+                urlEditText?.dropDownHeight = 0
                 closeKeyboard()
             } else {
-                UrlEdit?.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+                urlEditText?.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
             }
         }
-        UrlEdit?.setOnClickListener {
+        urlEditText?.setOnClickListener {
             if (toolsBarExtendableBackground?.visibility == VISIBLE) expandToolBar()
         }
-        UrlEdit?.onItemClickListener =
+        urlEditText?.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
                 webview.loadUrl((view.findViewById<View>(android.R.id.text1) as AppCompatTextView).text.toString())
                 closeKeyboard()
             }
-        UrlEdit?.setAdapter(SuggestionAdapter(this@BrowserActivity, R.layout.recycler_list_item_1))
+        urlEditText?.setAdapter(
+            SuggestionAdapter(
+                this@BrowserActivity,
+                R.layout.recycler_list_item_1
+            )
+        )
 
-        fab?.setOnClickListener {
+        // Setup the up most fab (currently for reload)
+        upRightFab?.setOnClickListener {
             if (progressBar.progress > 0) webview.stopLoading()
             if (progressBar.progress == 0) webview.webViewReload()
         }
+
+        // Finally, setup WebView
+        webViewInit()
     }
 
-    override fun onPageLoadProgressChanged(progress: Int) {
-        super.onPageLoadProgressChanged(progress)
-        if (progress == -1) fab?.setImageResource(R.drawable.stop)
-        if (progress == 0) fab?.setImageResource(R.drawable.refresh)
-    }
-
-    private fun closeKeyboard() {
-        WindowCompat.getInsetsController(window, UrlEdit!!).hide(WindowInsetsCompat.Type.ime())
-    }
-
-    /**
-     * Welcome to the Browservio (The Shrek Browser)
-     * This browser was originally designed with Sketchware
-     * This project was started on Aug 13 2020
-     *
-     *
-     * sur wen reel Sherk brower pls sand meme sum
-     */
-    private fun initializeLogic() {
-        iconHashClient = (applicationContext as Application).iconHashClient
-
-        /* Init VioWebView */webview.notifyViewSetup()
+    /* Init VioWebView */
+    private fun webViewInit() {
+        webview.notifyViewSetup()
         val intent = intent
         val dataUri = intent.data
-        if (CommonUtils.isIntStrOne(SettingsUtils.getPrefNum(pref, SettingsKeys.useWebHomePage))) {
+        if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
             webview.loadUrl(
-                dataUri?.toString()
-                    ?: SearchEngineEntries.getHomePageUrl(
-                        pref,
-                        SettingsUtils.getPrefNum(pref, SettingsKeys.defaultHomePageId)
-                    )
+                dataUri?.toString() ?: SearchEngineEntries.getHomePageUrl(
+                    settingsPreference,
+                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)
+                )
             )
         } else {
             webview.loadUrl(InternalUrls.startUrl)
         }
     }
 
+    // https://stackoverflow.com/a/57840629/10866268
+    public override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.clear()
+    }
+
     override fun doSettingsCheck() {
         super.doSettingsCheck()
-        val reverseAddressBar : Int = SettingsUtils.getPrefNum(pref, SettingsKeys.reverseAddressBar)
+        val reverseAddressBar: Int = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
         if (reverseAddressBar != viewMode) {
             val constraintLayout = findViewById<ConstraintLayout>(R.id.mainBackground)
             val constraintSet = ConstraintSet()
@@ -429,7 +267,7 @@ class BrowserActivity : VWebViewActivity() {
             constraintSet.clear(R.id.appbar, ConstraintSet.BOTTOM)
             constraintSet.clear(R.id.webviewContainer, ConstraintSet.TOP)
             constraintSet.clear(R.id.toolsContainer, ConstraintSet.BOTTOM)
-            if (CommonUtils.isIntStrOne(reverseAddressBar)) {
+            if (reverseAddressBar == 1) {
                 constraintSet.connect(
                     R.id.appbar,
                     ConstraintSet.TOP,
@@ -493,24 +331,188 @@ class BrowserActivity : VWebViewActivity() {
         }
     }
 
+    fun itemSelected(view: AppCompatImageView?, item: Int) {
+        when (item) {
+            R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
+            R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
+            R.drawable.refresh -> webview.webViewReload()
+            R.drawable.home -> {
+                if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
+                    webview.loadUrl(
+                        SearchEngineEntries.getHomePageUrl(
+                            settingsPreference,
+                            settingsPreference.getInt(SettingsKeys.defaultHomePageId)
+                        )
+                    )
+                } else {
+                    urlEditText!!.setText(CommonUtils.EMPTY_STRING)
+                    webview.loadUrl(InternalUrls.startUrl)
+                }
+            }
+
+            R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
+                currentPrebuiltUAState = !currentPrebuiltUAState
+                webview.setPrebuiltUAMode(
+                    view, if (currentPrebuiltUAState) 1 else 0, false
+                )
+            }
+
+            R.drawable.share -> CommonUtils.shareUrl(this, webview.url!!)
+            R.drawable.app_shortcut -> {
+                if (webview.title != null && webview.title!!.isNotBlank()) ShortcutManagerCompat.requestPinShortcut(
+                    this, ShortcutInfoCompat.Builder(this, webview.title!!)
+                        .setShortLabel(webview.title!!)
+                        .setIcon(
+                            IconCompat.createWithBitmap(
+                                CommonUtils.drawableToBitmap(favicon.drawable)
+                            )
+                        )
+                        .setIntent(
+                            Intent(this, BrowserActivity::class.java)
+                                .setData(Uri.parse(webview.url))
+                                .setAction(Intent.ACTION_VIEW)
+                        )
+                        .build(), null
+                )
+            }
+
+            R.drawable.settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                mGetNeedLoad.launch(intent)
+            }
+
+            R.drawable.history -> {
+                val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
+                intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_history)
+                mGetNeedLoad.launch(intent)
+            }
+
+            R.drawable.favorites -> {
+                val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
+                intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_favorites)
+                mGetNeedLoad.launch(intent)
+            }
+
+            R.drawable.favorites_add -> {
+                val icon = favicon.drawable
+                val title = webview.title
+                val url = webview.url
+                CoroutineScope(Dispatchers.IO).launch {
+                    FavUtils.appendData(
+                        this@BrowserActivity, iconHashClient, title, url,
+                        if (icon is BitmapDrawable) icon.bitmap else null
+                    )
+                }
+                if (!url.isNullOrEmpty()) CommonUtils.showMessage(
+                    this,
+                    resources.getString(R.string.save_successful)
+                )
+            }
+
+            R.drawable.close -> finish()
+            R.drawable.view_stream -> expandToolBar()
+            R.drawable.code -> {
+                webview.evaluateJavascript(
+                    "document.documentElement.outerHTML",
+                    ValueCallback { value: String? ->
+                        val reader = JsonReader(StringReader(value))
+                        reader.isLenient = true
+                        try {
+                            if (reader.peek() == JsonToken.STRING) {
+                                val domStr = reader.nextString()
+                                reader.close()
+                                if (domStr == null) return@ValueCallback
+                                MaterialAlertDialogBuilder(this@BrowserActivity)
+                                    .setTitle(resources.getString(R.string.toolbar_expandable_view_page_source))
+                                    .setMessage(domStr)
+                                    .setPositiveButton(
+                                        resources.getString(android.R.string.ok),
+                                        null
+                                    )
+                                    .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
+                                        CommonUtils.copyClipboard(
+                                            this@BrowserActivity,
+                                            domStr
+                                        )
+                                    }
+                                    .create().show()
+                            }
+                        } catch (ignored: IOException) {
+                        }
+                    })
+            }
+        }
+    }
+
+    fun itemLongSelected(view: AppCompatImageView?, item: Int) {
+        if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
+            val layoutInflater = LayoutInflater.from(this)
+            @SuppressLint("InflateParams") val root =
+                layoutInflater.inflate(R.layout.dialog_ua_edit, null)
+            val customUserAgent = root.findViewById<AppCompatEditText>(R.id.edittext)
+            val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
+            deskMode.isChecked = currentCustomUAWideView
+            val dialog = MaterialAlertDialogBuilder(this)
+            dialog.setTitle(resources.getString(R.string.customUA))
+                .setView(root)
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    if (customUserAgent.length() != 0) webview.setUA(
+                        view, deskMode.isChecked,
+                        Objects.requireNonNull(customUserAgent.text).toString(),
+                        R.drawable.custom, false
+                    )
+                    currentCustomUA = Objects.requireNonNull(customUserAgent.text).toString()
+                    currentCustomUAWideView = deskMode.isChecked
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show()
+            if (currentCustomUA != null) customUserAgent.setText(currentCustomUA)
+        }
+    }
+
+    fun expandToolBar() {
+        val viewVisible: Boolean = toolsBarExtendableBackground!!.visibility == VISIBLE
+        val transition: Transition = Slide(Gravity.BOTTOM)
+        transition.duration = (200 * Settings.Global.getFloat(
+            contentResolver,
+            Settings.Global.ANIMATOR_DURATION_SCALE,
+            1.0f
+        )).toLong()
+        transition.addTarget(R.id.toolsBarExtendableBackground)
+        TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
+        toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else VISIBLE
+        toolsBarExtendableCloseHitBox!!.visibility = if (viewVisible) View.GONE else VISIBLE
+    }
+
+    override fun onPageLoadProgressChanged(progress: Int) {
+        super.onPageLoadProgressChanged(progress)
+        if (progress == -1) upRightFab?.setImageResource(R.drawable.stop)
+        if (progress == 0) upRightFab?.setImageResource(R.drawable.refresh)
+    }
+
+    private fun closeKeyboard() {
+        WindowCompat.getInsetsController(window, urlEditText!!).hide(WindowInsetsCompat.Type.ime())
+    }
+
+
     override fun onUrlUpdated(url: String?) {
-        if (!UrlEdit!!.isFocused) UrlEdit!!.setText(url)
+        if (!urlEditText!!.isFocused) urlEditText!!.setText(url)
     }
 
     override fun onUrlUpdated(url: String?, position: Int) {
-        UrlEdit!!.setText(url)
-        UrlEdit!!.setSelection(position)
+        urlEditText!!.setText(url)
+        urlEditText!!.setSelection(position)
     }
 
     override fun onDropDownDismissed() {
-        UrlEdit!!.dismissDropDown()
-        UrlEdit!!.clearFocus()
+        urlEditText!!.dismissDropDown()
+        urlEditText!!.clearFocus()
     }
 
     override fun onStartPageEditTextPressed() {
-        UrlEdit!!.requestFocus()
+        urlEditText!!.requestFocus()
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(UrlEdit, InputMethodManager.SHOW_FORCED)
+        imm.showSoftInput(urlEditText, InputMethodManager.SHOW_FORCED)
     }
 
     class ItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>) :
@@ -555,7 +557,11 @@ class BrowserActivity : VWebViewActivity() {
         }
     }
 
-    class ToolbarItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>, descriptionList: List<Int>) :
+    class ToolbarItemsAdapter(
+        mainActivity: BrowserActivity,
+        itemsList: List<Int>,
+        descriptionList: List<Int>
+    ) :
         RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
         private val mBrowserActivity: WeakReference<BrowserActivity>
         private val mItemsList: WeakReference<List<Int>>
@@ -597,7 +603,8 @@ class BrowserActivity : VWebViewActivity() {
                 true
             }
             holder.mImageView.setImageResource(mItemsList.get()!![position])
-            holder.mTextView.text = mBrowserActivity.get()!!.resources.getString(mDescriptionList.get()!![position])
+            holder.mTextView.text =
+                mBrowserActivity.get()!!.resources.getString(mDescriptionList.get()!![position])
         }
 
         override fun getItemCount(): Int {

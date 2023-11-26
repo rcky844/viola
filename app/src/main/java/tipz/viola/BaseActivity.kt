@@ -16,7 +16,6 @@
 package tipz.viola
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -26,12 +25,13 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils
+import tipz.viola.settings.SettingsSharedPreference
+
 
 open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pref = (applicationContext as Application).pref
+        settingsPreference = (applicationContext as Application).settingsPreference
         windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
     }
 
@@ -47,23 +47,18 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     companion object {
-        var pref: SharedPreferences? = null
+        var settingsPreference: SettingsSharedPreference? = null
         var windowInsetsController: WindowInsetsControllerCompat? = null
         @JvmStatic
         fun darkModeCheck(context: Context) {
             // Dark mode
-            if (SettingsUtils.getPrefNum(
-                    pref!!,
-                    SettingsKeys.themeId
-                ) == 0
-            ) AppCompatDelegate.setDefaultNightMode(if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) else AppCompatDelegate.setDefaultNightMode(
-                if (SettingsUtils.getPrefNum(
-                        pref!!, SettingsKeys.themeId
-                    ) == 2
-                ) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            if (settingsPreference!!.getInt(SettingsKeys.themeId) == 0) AppCompatDelegate.setDefaultNightMode(
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            else AppCompatDelegate.setDefaultNightMode(
+                if (settingsPreference!!.getInt(SettingsKeys.themeId) == 2) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
-            windowInsetsController!!.isAppearanceLightStatusBars =
-                !getDarkMode(context)
+
+            windowInsetsController!!.isAppearanceLightStatusBars = !getDarkMode(context)
             windowInsetsController!!.isAppearanceLightNavigationBars = !getDarkMode(context)
         }
 

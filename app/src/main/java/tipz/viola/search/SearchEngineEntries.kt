@@ -17,7 +17,7 @@ package tipz.viola.search
 
 import android.content.SharedPreferences
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsUtils.getPref
+import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.UrlUtils.cve_2017_13274
 
 object SearchEngineEntries {
@@ -51,20 +51,20 @@ object SearchEngineEntries {
         EngineObject() /* The object for custom URL */
     )
 
-    fun getHomePageUrl(pref: SharedPreferences?, position: Int): String {
+    fun getHomePageUrl(pref: SettingsSharedPreference?, position: Int): String {
         var url: String? = engines[position].homePage
-        if (url!!.isEmpty()) url = getPref(pref!!, SettingsKeys.defaultHomePage)
+        if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultHomePage)
         return cve_2017_13274(url!!)
     }
 
     fun getSearchUrl(
-        pref: SharedPreferences?,
+        pref: SettingsSharedPreference?,
         position: Int,
         query: String?,
         language: String?
     ): String {
         var url: String? = engines[position].search
-        if (url!!.isEmpty()) url = getPref(pref!!, SettingsKeys.defaultSearch)
+        if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultSearch)
         if (query != null) url =
             url!!.replace(queryPlaceholder, query).replace(languagePlaceholder, language!!)
         return cve_2017_13274(url!!)
@@ -72,13 +72,13 @@ object SearchEngineEntries {
 
     @JvmStatic
     fun getSuggestionsUrl(
-        pref: SharedPreferences?,
+        pref: SettingsSharedPreference?,
         position: Int,
         query: String?,
         language: String?
     ): String {
         var url: String? = engines[position].suggestion
-        if (url!!.isEmpty()) url = getPref(pref!!, SettingsKeys.defaultSuggestions)
+        if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultSuggestions)
         if (query != null && language != null) url = url!!.replace(queryPlaceholder, query).replace(
             languagePlaceholder, language
         )

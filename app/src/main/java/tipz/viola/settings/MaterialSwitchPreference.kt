@@ -1,17 +1,15 @@
 package tipz.viola.settings
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.AttributeSet
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.SwitchPreferenceCompat
 import tipz.viola.Application
 import tipz.viola.R
-import tipz.viola.utils.CommonUtils.isIntStrOne
 
 class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
     SwitchPreferenceCompat(context, attrs) {
-    private val pref: SharedPreferences? = (getContext().applicationContext as Application).pref
+    private val settingsPreference: SettingsSharedPreference = (getContext().applicationContext as Application).settingsPreference!!
     private val mPreferenceTag: String?
     private val mNeedReload: Boolean
 
@@ -23,9 +21,9 @@ class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
         a.recycle()
 
         // Handle checkbox
-        isChecked = isIntStrOne(SettingsUtils.getPrefNum(pref!!, mPreferenceTag))
+        isChecked = settingsPreference.getIntBool(mPreferenceTag!!)
         onPreferenceClickListener = OnPreferenceClickListener {
-            SettingsUtils.setPrefIntBoolRefBool(pref, mPreferenceTag, isChecked, false)
+            settingsPreference.setIntBool(mPreferenceTag, isChecked)
             SettingsActivity.SettingsPrefHandler.needReload = mNeedReload
             true
         }
