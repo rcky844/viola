@@ -118,8 +118,13 @@ open class VWebViewActivity : BaseActivity() {
         if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
             startPageLayout.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
         } else {
-            val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper)) )
-            startPageLayout.background = BitmapDrawable(resources, bitmap)
+            try {
+                val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper)) )
+                startPageLayout.background = BitmapDrawable(resources, bitmap)
+            } catch (_: SecurityException) {
+                startPageLayout.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
+                settingsPreference.setString(SettingsKeys.startPageWallpaper, CommonUtils.EMPTY_STRING)
+            }
         }
     }
 
