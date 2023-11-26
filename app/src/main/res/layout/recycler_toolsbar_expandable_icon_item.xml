@@ -18,9 +18,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"
-        android:background="@drawable/toolbar_expandable_item_background"
         android:layout_width="@dimen/toolbar_extendable_item_size"
         android:layout_height="@dimen/toolbar_extendable_item_size"
+        android:background="@drawable/toolbar_expandable_item_background"
         android:contentDescription="@null"
         android:hardwareAccelerated="true"
         android:padding="4dp"
@@ -34,8 +34,11 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="28dp"
+        android:gravity="top|center_horizontal"
+        android:maxLines="2"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:textSize="12sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>
 
