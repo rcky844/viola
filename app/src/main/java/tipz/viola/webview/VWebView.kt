@@ -158,9 +158,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             this,
             RenderClient()
         )
-        removeJavascriptInterface("searchBoxJavaBridge_") /* CVE-2014-1939 */
-        removeJavascriptInterface("accessibility") /* CVE-2014-7224 */
-        removeJavascriptInterface("accessibilityTraversal") /* CVE-2014-7224 */
 
         /* Hit Test Menu */setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
             val hr = this.hitTestResult
