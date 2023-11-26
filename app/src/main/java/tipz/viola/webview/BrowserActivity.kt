@@ -25,11 +25,14 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.JsonReader
 import android.util.JsonToken
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -92,6 +95,7 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUAWideView = false
     private var iconHashClient: IconHashClient? = null
     private var toolsBarExtendableBackground : ConstraintLayout? = null
+    private var toolsBarExtendableCloseHitBox : LinearLayoutCompat? = null
     private var viewMode : Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,6 +105,10 @@ class BrowserActivity : VWebViewActivity() {
         toolsBarExtendableBackground = this.findViewById(R.id.toolsBarExtendableBackground)
         toolsBarExtendableBackground!!.post {
             toolsBarExtendableBackground!!.visibility = View.GONE
+        }
+        toolsBarExtendableCloseHitBox = this.findViewById(R.id.toolsBarExtendableCloseHitBox)
+        toolsBarExtendableCloseHitBox?.setOnClickListener {
+            expandToolBar()
         }
     }
 
@@ -191,12 +199,8 @@ class BrowserActivity : VWebViewActivity() {
         } else if (item == R.drawable.close) {
             finish()
         } else if (item == R.drawable.view_stream) {
-            val viewVisible : Boolean = toolsBarExtendableBackground!!.visibility == View.VISIBLE
-            val transition: Transition = Slide(Gravity.BOTTOM)
-            transition.duration = (200 * Settings.Global.getFloat(contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)).toLong()
-            transition.addTarget(R.id.toolsBarExtendableBackground)
-            TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
-            toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
+            expandToolBar()
+            toolsBarExtendableBackground?.requestFocus()
         } else if (item == R.drawable.code) {
             webview.evaluateJavascript(
                 "document.documentElement.outerHTML",
@@ -255,6 +259,16 @@ class BrowserActivity : VWebViewActivity() {
         }
     }
 
+    fun expandToolBar() {
+        val viewVisible : Boolean = toolsBarExtendableBackground!!.visibility == View.VISIBLE
+        val transition: Transition = Slide(Gravity.BOTTOM)
+        transition.duration = (200 * Settings.Global.getFloat(contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)).toLong()
+        transition.addTarget(R.id.toolsBarExtendableBackground)
+        TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
+        toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
+        toolsBarExtendableCloseHitBox!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
+    }
+
     /**
      * Initialize function
      */
@@ -270,10 +284,10 @@ class BrowserActivity : VWebViewActivity() {
         toolsContainer = findViewById(R.id.toolsContainer)
         startPageLayout = findViewById(R.id.layout_startpage)
 
-        val actionBar = findViewById<RecyclerView>(R.id.toolsBar)
-        actionBar.layoutManager = FixedLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        actionBar.adapter = ItemsAdapter(this, toolsBarItemList)
-        actionBar.addItemDecoration(CentreSpreadItemDecoration(resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
+        val toolBar = findViewById<RecyclerView>(R.id.toolBar)
+        toolBar.layoutManager = FixedLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        toolBar.adapter = ItemsAdapter(this, toolsBarItemList)
+        toolBar.addItemDecoration(CentreSpreadItemDecoration(resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
             useFixedMgr = true,
             isLinear = true
         ))
@@ -350,6 +364,9 @@ class BrowserActivity : VWebViewActivity() {
             } else {
                 UrlEdit?.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
             }
+        }
+        UrlEdit?.setOnClickListener {
+            if (toolsBarExtendableBackground?.visibility == VISIBLE) expandToolBar()
         }
         UrlEdit?.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
@@ -572,6 +589,7 @@ class BrowserActivity : VWebViewActivity() {
             holder.mItemBox.setOnClickListener {
                 mBrowserActivity.get()!!
                     .itemSelected(holder.mImageView, mItemsList.get()!![position])
+                mBrowserActivity.get()!!.expandToolBar()
             }
             holder.mItemBox.setOnLongClickListener {
                 mBrowserActivity.get()!!

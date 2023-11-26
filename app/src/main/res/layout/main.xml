@@ -132,7 +132,7 @@
         <View style="@style/Divider" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/toolsBar"
+            android:id="@+id/toolBar"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:hardwareAccelerated="true"
@@ -162,6 +162,17 @@
             android:layout_height="match_parent"
             android:visibility="gone" />
     </RelativeLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/toolsBarExtendableCloseHitBox"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="6dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/toolsBarExtendableBackground"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolsBarExtendableBackground"
