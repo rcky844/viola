@@ -116,7 +116,7 @@ open class VWebViewActivity : BaseActivity() {
 
         // Start Page Wallpaper
         if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
-            startPageLayout.setBackgroundColor(resources.getColor(R.color.colorTopBar))
+            startPageLayout.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
         } else {
             val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper)) )
             startPageLayout.background = BitmapDrawable(resources, bitmap)
