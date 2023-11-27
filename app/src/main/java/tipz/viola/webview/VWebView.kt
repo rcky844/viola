@@ -245,9 +245,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun downloadAdServers() {
         CoroutineScope(Dispatchers.IO).launch {
-            val result =
-                    DownloadUtils.startFileDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")
-            val scanner = Scanner(result)
+            val scanner = Scanner(String(DownloadUtils.startFileDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")))
             val builder = StringBuilder()
             while (scanner.hasNextLine()) {
                 val line = scanner.nextLine()

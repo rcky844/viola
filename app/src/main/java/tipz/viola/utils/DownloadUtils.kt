@@ -127,7 +127,7 @@ object DownloadUtils {
     suspend fun startFileDownload(urlString : String?) =
         withContext(Dispatchers.IO) {
             val url = URL(urlString)
-            return@withContext String(url.readBytes())
+            return@withContext url.readBytes()
         }
 
     fun isOnline(context: Context): Boolean {
