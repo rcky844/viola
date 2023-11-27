@@ -255,6 +255,7 @@ class BrowserActivity : VWebViewActivity() {
         outState.clear()
     }
 
+    @SuppressLint("NotifyDataSetChanged") // We want it to scan the whole dataset
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
