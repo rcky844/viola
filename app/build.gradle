@@ -31,8 +31,8 @@ android {
         applicationId "tipz.viola"
         minSdkVersion 19
         targetSdkVersion 34
-        versionCode 8
-        versionName "6.0.0004.00"
+        versionCode 9
+        versionName "6.0.0005.00"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Viola\""
@@ -56,11 +56,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
+        beta {
+            initWith(debug)
+            applicationIdSuffix ".beta"
+            multiDexEnabled true
+            buildConfigField "String", "VERSION_NAME_EXTRA", "\" Beta 1\""
+        }
+
         debug {
             applicationIdSuffix ".debug"
             multiDexEnabled true
             buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
-            buildConfigField "String", "VERSION_TECHNICAL_EXTRA", "\"_${getGitHash()}\""
         }
     }
     compileOptions {
