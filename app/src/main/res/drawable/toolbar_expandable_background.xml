@@ -11,6 +11,6 @@
      limitations under the License.
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/colorTopBar" />
+    <solid android:color="@color/colorToolbarExpandableBackground" />
     <corners android:radius="16dp"/>
 </shape>
