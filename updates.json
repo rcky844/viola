@@ -11,10 +11,10 @@
   "beta": {
     "channel_name": "Beta",
     "latest_update": {
-      "name": "6.0.0005.00",
-      "code": 9,
-      "timestamp": 1701072809,
-      "url": "https://gitlab.com/TipzTeam/viola/uploads/4745368d83c957867471c5a7470b4e4f/app-beta.apk"
+      "name": "6.0.0006.01",
+      "code": 11,
+      "timestamp": 1701090919,
+      "url": "https://gitlab.com/TipzTeam/viola/uploads/158d6de8324c6954c1c19fe269c1b6d6/app-beta.apk"
     }
   },
   "alpha": {
@@ -24,7 +24,7 @@
     "channel_name": "Debug",
     "latest_update": {
       "name": "6.0.0006.00",
-      "code": 8,
+      "code": 10,
       "timestamp": 1701083356,
       "url": "https://gitlab.com/TipzTeam/viola/uploads/a601e7de72aa0772414830e8fd8a6d8d/app-debug.apk"
     }
