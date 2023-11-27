@@ -48,6 +48,18 @@ object SearchEngineEntries {
         EngineObject().setHomePage("https://search.brave.com")
             .setSearch("https://search.brave.com/search?q={query}")
             .setSuggestion("https://search.brave.com/api/suggest?q={query}"),
+        EngineObject().setHomePage("https://www.startpage.com/")
+            .setSearch("https://startpage.com/do/search?query={query}")
+            .setSuggestion("https://www.startpage.com/suggestions?q={query}"),
+        EngineObject().setHomePage("https://whoogle.io/")
+            .setSearch("https://whoogle.io/search?q={query}")
+            .setSuggestion("https://whoogle.io/autocomplete?q={query}"),
+        EngineObject().setHomePage("https://swisscows.com/")
+            .setSearch("https://swisscows.com/web?query={query}")
+            .setSuggestion("https://api.swisscows.com/suggest?query={query}"),
+        EngineObject().setHomePage("https://www.qwant.com/")
+            .setSearch("https://www.qwant.com/?q={query}")
+            .setSuggestion("https://api.qwant.com/v3/suggest?q={query}"),
         EngineObject() /* The object for custom URL */
     )
 
@@ -83,5 +95,13 @@ object SearchEngineEntries {
             languagePlaceholder, language
         )
         return cve_2017_13274(url!!)
+    }
+
+    fun getEngineListSize(): Int {
+        return engines.size
+    }
+
+    fun getCustomIndex(): Int {
+        return engines.size - 1
     }
 }
