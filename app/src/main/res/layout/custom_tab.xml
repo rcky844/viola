@@ -58,6 +58,7 @@
                     android:maxLines="1"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
+                    android:textColor="@color/colorElement"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@id/share"
                     app:layout_constraintStart_toEndOf="@id/toolsContainer"
