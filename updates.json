@@ -9,7 +9,7 @@
     "channel_name": "Stable"
   },
   "beta": {
-    "channel_name": "Beta"
+    "channel_name": "Beta",
     "latest_update": {
       "name": "6.0.0005.00",
       "code": 9,
