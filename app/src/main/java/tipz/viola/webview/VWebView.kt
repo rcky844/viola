@@ -48,7 +48,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -80,7 +79,6 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
-import tipz.viola.webview.view.HitTestAlertDialog
 import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
 import java.net.URL

@@ -1,4 +1,4 @@
-package tipz.viola.webview.view
+package tipz.viola.webview
 
 import android.content.Context
 import android.content.DialogInterface
@@ -11,8 +11,7 @@ import tipz.viola.R
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.UrlUtils
-import tipz.viola.webview.BrowserActivity
-import tipz.viola.webview.VWebView
+import tipz.viola.ui.BrowserActivity
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
     private var arrayAdapter : ArrayAdapter<String>? = null

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.webview
+package tipz.viola.ui
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
@@ -74,8 +74,9 @@ import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
-import tipz.viola.webview.view.CentreSpreadItemDecoration
-import tipz.viola.webview.view.FixedLinearLayoutManager
+import tipz.viola.webview.VWebViewActivity
+import tipz.viola.ui.view.CentreSpreadItemDecoration
+import tipz.viola.ui.view.FixedLinearLayoutManager
 import java.io.IOException
 import java.io.StringReader
 import java.lang.ref.WeakReference
@@ -576,9 +577,9 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     class ToolbarItemsAdapter(
-        mainActivity: BrowserActivity,
-        itemsList: List<Int>,
-        descriptionList: List<Int>
+            mainActivity: BrowserActivity,
+            itemsList: List<Int>,
+            descriptionList: List<Int>
     ) :
         RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
         private val mBrowserActivity: WeakReference<BrowserActivity>

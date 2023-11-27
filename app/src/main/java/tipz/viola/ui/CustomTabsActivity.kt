@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.webview
+package tipz.viola.ui
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
-import tipz.viola.webview.BrowserActivity
+import tipz.viola.webview.VWebViewActivity
 
 class CustomTabsActivity : VWebViewActivity() {
     private var title: AppCompatTextView? = null
