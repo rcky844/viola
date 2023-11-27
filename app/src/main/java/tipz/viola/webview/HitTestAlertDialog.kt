@@ -30,8 +30,8 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
 
     private val hitTestDialogItems = listOf(
             R.string.open_in_new_tab,
-            imageId,
             R.string.copy_url,
+            imageId,
             R.string.share_url
     )
 
@@ -95,25 +95,29 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         }
 
         setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
-            when (which) {
-                0 -> CommonUtils.copyClipboard(context, url)
+            when (arrayAdapter!!.getItem(which)) {
+                context.resources.getString(R.string.copy_url) -> CommonUtils.copyClipboard(context, url)
 
-                1 -> {
+                context.resources.getString(R.string.download_image) -> {
+                    val fileDownload = src ?: url
                     DownloadUtils.dmDownloadFile(
-                            context, url,
-                            null, null, url
+                            context, fileDownload,
+                            null, null, fileDownload
                     )
                 }
 
-                2 -> vWebView.loadUrl("http://images.google.com/searchbyimage?image_url=$url")
+                context.resources.getString(R.string.search_image) -> {
+                    val fileSearch = src ?: url
+                    vWebView.loadUrl("http://images.google.com/searchbyimage?image_url=$fileSearch")
+                }
 
-                3 -> {
+                context.resources.getString(R.string.open_in_new_tab) -> {
                     val intent = Intent(context, BrowserActivity::class.java)
                     intent.data = Uri.parse(UrlUtils.cve_2017_13274(url))
                     context.startActivity(intent)
                 }
 
-                4 -> CommonUtils.shareUrl(context, url)
+                context.resources.getString(R.string.share_url) -> CommonUtils.shareUrl(context, url)
             }
         }
         return true
