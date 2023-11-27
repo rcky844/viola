@@ -38,7 +38,7 @@
             android:value="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".LauncherActivity"
             android:excludeFromRecents="true"
             android:exported="true">
             <intent-filter>

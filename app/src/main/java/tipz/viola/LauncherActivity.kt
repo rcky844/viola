@@ -23,15 +23,16 @@ import android.webkit.CookieManager
 import androidx.appcompat.app.AppCompatActivity
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.UrlUtils
 import tipz.viola.ui.BrowserActivity
 import tipz.viola.ui.CustomTabsActivity
+import tipz.viola.utils.CommonUtils
+import tipz.viola.utils.UrlUtils
 import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity() {
+class LauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setBackgroundDrawableResource(android.R.color.transparent)
         if (!webViewEnabled()) {
             CommonUtils.showMessage(this, resources.getString(R.string.no_webview))
             exitProcess(0)
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             .logErrorOnRestart(true)
             .trackActivities(true)
             .minTimeBetweenCrashesMs(2000)
-            .restartActivity(MainActivity::class.java)
+            .restartActivity(LauncherActivity::class.java)
             .errorActivity(null)
             .apply()
 
