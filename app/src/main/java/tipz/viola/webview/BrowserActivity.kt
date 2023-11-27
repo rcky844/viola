@@ -18,6 +18,7 @@ package tipz.viola.webview
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -90,6 +91,8 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUA: String? = null
     private var currentCustomUAWideView = false
     private var iconHashClient: IconHashClient? = null
+    private var toolBar: RecyclerView? = null
+    private var toolsBarExtendableRecycler: RecyclerView? = null
     private var toolsBarExtendableBackground: ConstraintLayout? = null
     private var toolsBarExtendableCloseHitBox: LinearLayoutCompat? = null
     private var viewMode: Int = 0
@@ -109,11 +112,11 @@ class BrowserActivity : VWebViewActivity() {
         iconHashClient = (applicationContext as Application).iconHashClient
 
         // Setup toolbar
-        val toolBar = findViewById<RecyclerView>(R.id.toolBar)
-        toolBar.layoutManager =
+        toolBar = findViewById(R.id.toolBar)
+        toolBar?.layoutManager =
             FixedLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        toolBar.adapter = ItemsAdapter(this, toolsBarItemList)
-        toolBar.addItemDecoration(
+        toolBar?.adapter = ItemsAdapter(this, toolsBarItemList)
+        toolBar?.addItemDecoration(
             CentreSpreadItemDecoration(
                 resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
                 useFixedMgr = true,
@@ -122,16 +125,16 @@ class BrowserActivity : VWebViewActivity() {
         )
 
         // Setup toolbar expandable
-        val toolsBarExtendableRecycler = findViewById<RecyclerView>(R.id.toolsBarExtendableRecycler)
-        toolsBarExtendableRecycler.layoutManager = GridLayoutManager(
+        toolsBarExtendableRecycler = findViewById<RecyclerView>(R.id.toolsBarExtendableRecycler)
+        toolsBarExtendableRecycler?.layoutManager = GridLayoutManager(
             this,
             resources.getInteger(R.integer.num_toolbar_expandable_items_per_row),
             GridLayoutManager.VERTICAL,
             false
         )
-        toolsBarExtendableRecycler.adapter =
+        toolsBarExtendableRecycler?.adapter =
             ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
-        toolsBarExtendableRecycler.addItemDecoration(
+        toolsBarExtendableRecycler?.addItemDecoration(
             CentreSpreadItemDecoration(
                 resources.getDimension(R.dimen.toolbar_extendable_holder_size),
                 toolsBarItemList.size,
@@ -250,6 +253,16 @@ class BrowserActivity : VWebViewActivity() {
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.clear()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        val orientation : Int = getResources().configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE || orientation == Configuration.ORIENTATION_PORTRAIT) {
+            toolBar?.adapter?.notifyDataSetChanged()
+            toolsBarExtendableRecycler?.adapter?.notifyDataSetChanged()
+        }
     }
 
     override fun doSettingsCheck() {
