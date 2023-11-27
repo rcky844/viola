@@ -80,6 +80,7 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
+import tipz.viola.webview.view.HitTestAlertDialog
 import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
 import java.net.URL
@@ -159,49 +160,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             RenderClient()
         )
 
-        /* Hit Test Menu */setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
-            val hr = this.hitTestResult
-            val url = hr.extra
-            val type = hr.type
-            if (type == HitTestResult.UNKNOWN_TYPE || type == HitTestResult.EDIT_TEXT_TYPE) return@setOnCreateContextMenuListener
-            val webLongPress = MaterialAlertDialogBuilder(mContext)
-            webLongPress.setTitle(if (url!!.length > 75) url.substring(0, 74) + "…" else url)
-            val arrayAdapter = ArrayAdapter<String>(mContext, R.layout.recycler_list_item_1)
-            arrayAdapter.add(resources.getString(R.string.open_in_new_tab))
-            if (type == HitTestResult.IMAGE_TYPE || type == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
-                arrayAdapter.add(resources.getString(R.string.download_image))
-                arrayAdapter.add(resources.getString(R.string.search_image))
-            }
-            arrayAdapter.add(resources.getString(R.string.copy_url))
-            arrayAdapter.add(resources.getString(R.string.share_url))
-            webLongPress.setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
-                when (arrayAdapter.getItem(which)) {
-                    resources.getString(R.string.copy_url) -> {
-                        CommonUtils.copyClipboard(mContext, url)
-                    }
-
-                    resources.getString(R.string.download_image) -> {
-                        DownloadUtils.dmDownloadFile(
-                            mContext, url,
-                            null, null, url
-                        )
-                    }
-
-                    resources.getString(R.string.search_image) -> {
-                        this.loadUrl("http://images.google.com/searchbyimage?image_url=$url")
-                    }
-
-                    resources.getString(R.string.open_in_new_tab) -> {
-                        val intent = Intent(mContext, BrowserActivity::class.java)
-                        intent.data = Uri.parse(UrlUtils.cve_2017_13274(url))
-                        mContext.startActivity(intent)
-                    }
-
-                    resources.getString(R.string.share_url) -> {
-                        CommonUtils.shareUrl(mContext, url)
-                    }
-                }
-            }
+        /* Hit Test Menu */
+        setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
+            val webLongPress = HitTestAlertDialog(mContext)
+            if (!webLongPress.setupDialogForShowing(this)) return@setOnCreateContextMenuListener
             webLongPress.show()
         }
 
