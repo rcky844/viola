@@ -18,10 +18,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
-import tipz.viola.webviewui.BrowserActivity
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.UrlUtils
+import tipz.viola.webviewui.BrowserActivity
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
     private var arrayAdapter : ArrayAdapter<String>? = null
@@ -76,7 +76,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 }
             }
 
-            this.setCustomTitle(root);
+            this.setCustomTitle(root)
         }
 
         arrayAdapter = ArrayAdapter<String>(context, R.layout.recycler_list_item_1)

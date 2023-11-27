@@ -22,8 +22,8 @@ import android.os.Build
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
-import java.util.Arrays
 
+@Suppress("DEPRECATION")
 class IconHashUtils(context: Context) {
     private val fileDir: String
 
@@ -31,20 +31,18 @@ class IconHashUtils(context: Context) {
         fileDir = context.filesDir.path + "/favicon"
     }
 
-    suspend fun save(icon: Bitmap): Int? {
+    fun save(icon: Bitmap): Int? {
         val buffer = ByteBuffer.allocate(icon.byteCount)
         icon.copyPixelsToBuffer(buffer)
-        val hashInt = Arrays.hashCode(buffer.array())
+        val hashInt = buffer.array().contentHashCode()
         val dirFile = File(fileDir)
         if (dirFile.exists() || dirFile.mkdirs()) {
-            var path = File(fileDir, "$hashInt.webp")
+            val path = File(fileDir, "$hashInt.webp")
             if (path.exists()) return hashInt
             try {
                 val out = FileOutputStream(path)
                 icon.compress(
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSY else Bitmap.CompressFormat.WEBP,
-                    75,
-                    out
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSY else Bitmap.CompressFormat.WEBP, 75, out
                 )
                 out.flush()
                 out.close()
@@ -55,7 +53,7 @@ class IconHashUtils(context: Context) {
         return hashInt
     }
 
-    suspend fun read(hash: Int?): Bitmap? {
+    fun read(hash: Int?): Bitmap? {
         if (hash == null) return null
         val imgFile = File(fileDir, "$hash.webp")
         if (imgFile.exists()) return BitmapFactory.decodeFile(imgFile.absolutePath)
