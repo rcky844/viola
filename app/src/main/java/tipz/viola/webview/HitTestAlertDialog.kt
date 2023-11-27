@@ -53,7 +53,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         // Truncate url string to make things load faster
         url = if (url.length > 75) url.substring(0, 74) + "…" else url
 
-        if (title == null) {
+        if (title.isNullOrBlank()) {
             setTitle(url)
         } else {
             val layoutInflater = LayoutInflater.from(context)
@@ -64,7 +64,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             root.findViewById<AppCompatTextView>(R.id.url).text = url
 
             val icon = root.findViewById<AppCompatImageView>(R.id.icon)
-            if (src == null) icon.visibility = View.GONE
+            if (src.isNullOrBlank()) icon.visibility = View.GONE
             else {
                 CoroutineScope(Dispatchers.IO).launch {
                     val data = DownloadUtils.startFileDownload(src)
@@ -83,7 +83,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         for (item in hitTestDialogItems) {
             // Insert Image items
             if (item == imageId) {
-                if (src != null) {
+                if (src.isNullOrBlank()) {
                     for (imageItem in hitTestDialogImageItems) {
                         arrayAdapter?.add(context.resources.getString(imageItem))
                     }
