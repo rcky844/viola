@@ -69,7 +69,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
-import tipz.viola.BaseActivity
+import tipz.viola.webviewui.BaseActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.broha.api.HistoryApi

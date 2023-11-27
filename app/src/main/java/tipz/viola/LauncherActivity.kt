@@ -23,8 +23,8 @@ import android.webkit.CookieManager
 import androidx.appcompat.app.AppCompatActivity
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.ui.BrowserActivity
-import tipz.viola.ui.CustomTabsActivity
+import tipz.viola.webviewui.BrowserActivity
+import tipz.viola.webviewui.CustomTabsActivity
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import kotlin.system.exitProcess

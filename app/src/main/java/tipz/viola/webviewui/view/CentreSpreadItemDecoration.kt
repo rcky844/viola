@@ -1,4 +1,4 @@
-package tipz.viola.ui.view
+package tipz.viola.webviewui.view
 
 import android.graphics.Rect
 import android.util.DisplayMetrics

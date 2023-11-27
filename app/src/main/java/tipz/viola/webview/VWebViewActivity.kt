@@ -34,7 +34,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tipz.viola.Application
-import tipz.viola.BaseActivity
+import tipz.viola.webviewui.BaseActivity
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference

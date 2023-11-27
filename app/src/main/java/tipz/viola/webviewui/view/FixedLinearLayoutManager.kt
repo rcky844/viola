@@ -1,4 +1,4 @@
-package tipz.viola.ui.view
+package tipz.viola.webviewui.view
 
 import android.content.Context
 import android.util.AttributeSet

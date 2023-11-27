@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.ui
+package tipz.viola.webviewui
 
 import android.content.Intent
 import android.net.Uri

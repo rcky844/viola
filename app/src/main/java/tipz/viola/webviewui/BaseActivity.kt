@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola
+package tipz.viola.webviewui
 
 import android.content.Context
 import android.content.res.Configuration
@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import tipz.viola.Application
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 
@@ -49,7 +50,7 @@ open class BaseActivity : AppCompatActivity() {
     companion object {
         var settingsPreference: SettingsSharedPreference? = null
         var windowInsetsController: WindowInsetsControllerCompat? = null
-        @JvmStatic
+
         fun darkModeCheck(context: Context) {
             // Dark mode
             if (settingsPreference!!.getInt(SettingsKeys.themeId) == 0) AppCompatDelegate.setDefaultNightMode(

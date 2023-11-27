@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.ui
+package tipz.viola.webviewui
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
@@ -72,8 +72,8 @@ import tipz.viola.search.SearchEngineEntries
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.ui.view.CentreSpreadItemDecoration
-import tipz.viola.ui.view.FixedLinearLayoutManager
+import tipz.viola.webviewui.view.CentreSpreadItemDecoration
+import tipz.viola.webviewui.view.FixedLinearLayoutManager
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebViewActivity

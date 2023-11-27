@@ -53,7 +53,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import tipz.viola.Application
-import tipz.viola.BaseActivity
+import tipz.viola.webviewui.BaseActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.Companion.newInstance

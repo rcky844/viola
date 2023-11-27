@@ -91,12 +91,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.BrowserActivity"
+            android:name=".webviewui.BrowserActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:documentLaunchMode="always"
             android:theme="@style/Activity.App.Browser" />
         <activity
-            android:name=".ui.CustomTabsActivity"
+            android:name=".webviewui.CustomTabsActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:documentLaunchMode="always"
             android:theme="@style/Activity.App.Browser" />
