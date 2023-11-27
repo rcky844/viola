@@ -144,6 +144,13 @@
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Brave 搜索</item>
+        <!-- TODO: Check Translation -->
+        <item>Startpage</item>
+        <item>Whoogle</item>
+        <item>Swisscows</item>
+        <item>Qwant</item>
+        <item>搜狗</item>
+        <item>360搜索</item>
         <item>自定义</item>
     </string-array>
     <string-array name="themes">

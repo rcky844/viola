@@ -55,6 +55,7 @@ import org.json.JSONObject
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
+import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.utils.ApkInstaller.installApplication
@@ -214,7 +215,7 @@ class SettingsActivity : BaseActivity() {
                                         settingsPreference.getInt(SettingsKeys.defaultSearchId)
                                 ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
                                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                    if (checkedItem[0] == 8) {
+                                    if (checkedItem[0] == SearchEngineEntries.getCustomIndex()) {
                                         val layoutInflater = LayoutInflater.from(settingsActivity)
                                         @SuppressLint("InflateParams") val root =
                                                 layoutInflater.inflate(R.layout.dialog_edittext, null)
@@ -244,7 +245,7 @@ class SettingsActivity : BaseActivity() {
                                                 .setNegativeButton(android.R.string.cancel, null)
                                                 .create().show()
                                     }
-                                    if (checkedItem[0] != 8) {
+                                    if (checkedItem[0] != SearchEngineEntries.getCustomIndex()) {
                                         settingsPreference.setString(
                                                 SettingsKeys.defaultSearch,
                                                 CommonUtils.EMPTY_STRING
@@ -270,7 +271,7 @@ class SettingsActivity : BaseActivity() {
                                         settingsPreference.getInt(SettingsKeys.defaultHomePageId)
                                 ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
                                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                    if (checkedItem[0] == 8) {
+                                    if (checkedItem[0] == SearchEngineEntries.getCustomIndex()) {
                                         val layoutInflater = LayoutInflater.from(settingsActivity)
                                         @SuppressLint("InflateParams") val root =
                                                 layoutInflater.inflate(R.layout.dialog_edittext, null)
@@ -295,7 +296,7 @@ class SettingsActivity : BaseActivity() {
                                                 .setNegativeButton(android.R.string.cancel, null)
                                                 .create().show()
                                     }
-                                    if (checkedItem[0] != 8) {
+                                    if (checkedItem[0] != SearchEngineEntries.getCustomIndex()) {
                                         settingsPreference.setString(
                                                 SettingsKeys.defaultHomePage,
                                                 CommonUtils.EMPTY_STRING
@@ -321,7 +322,7 @@ class SettingsActivity : BaseActivity() {
                                         settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)
                                 ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
                                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                    if (checkedItem[0] == 8) {
+                                    if (checkedItem[0] == SearchEngineEntries.getCustomIndex()) {
                                         val layoutInflater = LayoutInflater.from(settingsActivity)
                                         @SuppressLint("InflateParams") val root =
                                                 layoutInflater.inflate(R.layout.dialog_edittext, null)
@@ -348,7 +349,7 @@ class SettingsActivity : BaseActivity() {
                                                 .setNegativeButton(android.R.string.cancel, null)
                                                 .create().show()
                                     }
-                                    if (checkedItem[0] != 8) {
+                                    if (checkedItem[0] != SearchEngineEntries.getCustomIndex()) {
                                         settingsPreference.setString(
                                                 SettingsKeys.defaultSuggestions,
                                                 CommonUtils.EMPTY_STRING
