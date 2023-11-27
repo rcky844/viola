@@ -121,11 +121,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
     }
     private val titleHandler = Handler { message ->
-        val bundle = message.data
         val webLongPress = HitTestAlertDialog(mContext)
         if (!webLongPress.setupDialogForShowing(this, message.data)) return@Handler false
         webLongPress.show()
-        val linkText = bundle.get("title") // here is your link text
 
         return@Handler true
     }
