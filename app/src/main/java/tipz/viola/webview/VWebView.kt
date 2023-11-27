@@ -223,6 +223,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     override fun loadUrl(url: String) {
         if (url.isEmpty()) return
+        if (url == InternalUrls.aboutBlankUrl) {
+            super.loadUrl(url)
+            return
+        }
+
         val urlIdentify = URLIdentify(url)
         if (urlIdentify == CommonUtils.EMPTY_STRING) return
         val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, urlIdentify)
@@ -269,6 +274,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
      */
     inner class WebClient : WebViewClientCompat() {
         private fun UrlSet(url: String) {
+            if (url == InternalUrls.aboutBlankUrl) {
+                currentUrl = null
+                return
+            }
             if (currentUrl != url && urlShouldSet(url) || currentUrl == null) updateCurrentUrl(url)
         }
 
@@ -293,6 +302,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
             UrlSet(url)
             if (updateHistory) {
+                if (currentUrl == null) return
                 currentBroha = Broha(title, currentUrl!!)
                 historyCommitted = false
             }
@@ -636,6 +646,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
         val startPageLayout = mVioWebViewActivity?.startPageLayout
         if (url == InternalUrls.startUrl) {
+            this.loadUrl(InternalUrls.aboutBlankUrl)
             this.visibility = GONE
             startPageLayout?.visibility = VISIBLE
             return CommonUtils.EMPTY_STRING

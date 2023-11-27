@@ -27,6 +27,7 @@ object InternalUrls {
     const val licenseUrl = prefix + "license"
     const val reloadUrl = prefix + "reload"
     const val startUrl = prefix + "start"
+    const val aboutBlankUrl = "about:blank"
 
 
 }
