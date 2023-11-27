@@ -22,27 +22,27 @@ import androidx.room.Update
 
 @Dao
 interface BrohaDao {
-    @get:Query("SELECT * FROM broha")
-    val all: List<Broha>
+    @Query("SELECT * FROM broha")
+    suspend fun getAllValues(): List<Broha>
 
-    @get:Query("SELECT * FROM broha LIMIT 1")
-    val isEmpty: List<Broha>
+    @Query("SELECT * FROM broha LIMIT 1")
+    suspend fun isEmpty(): List<Broha>
 
     @Query("SELECT * FROM broha ORDER BY id DESC LIMIT 1")
-    fun lastUrl(): Broha
+    suspend fun lastUrl(): Broha
 
     @Query("SELECT * FROM broha WHERE id LIKE :id LIMIT 1")
-    fun findById(id: Int): Broha
+    suspend fun findById(id: Int): Broha
 
     @Insert
-    fun insertAll(vararg broha: Broha)
+    suspend fun insertAll(vararg broha: Broha)
 
     @Update
-    fun updateBroha(vararg broha: Broha)
+    suspend fun updateBroha(vararg broha: Broha)
 
     @Query("DELETE FROM broha WHERE id = :id")
-    fun deleteById(id: Int)
+    suspend fun deleteById(id: Int)
 
     @Query("DELETE FROM broha")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

@@ -99,8 +99,8 @@ class ListInterfaceActivity : BaseActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             listData =
-                if (activityMode == mode_history) HistoryApi.historyBroha(this@ListInterfaceActivity)?.all as MutableList<Broha>?
-                else FavApi.favBroha(this@ListInterfaceActivity)?.all as MutableList<Broha>?
+                if (activityMode == mode_history) HistoryApi.historyBroha(this@ListInterfaceActivity)?.getAllValues() as MutableList<Broha>?
+                else FavApi.favBroha(this@ListInterfaceActivity)?.getAllValues() as MutableList<Broha>?
         }
 
         val layoutManager = LinearLayoutManager(
@@ -253,10 +253,14 @@ class ListInterfaceActivity : BaseActivity() {
                                         Objects.requireNonNull(titleEditText.text).toString()
                                     data.url = Objects.requireNonNull(urlEditText.text).toString()
                                     data.setTimestamp()
-                                    FavApi.favBroha(listInterfaceActivity)?.updateBroha(data)
-                                    listData =
-                                        FavApi.favBroha(listInterfaceActivity)?.all as MutableList<Broha>?
-                                    notifyItemRangeRemoved(position, 1)
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        FavApi.favBroha(listInterfaceActivity)?.updateBroha(data)
+                                        listData =
+                                                FavApi.favBroha(listInterfaceActivity)?.getAllValues() as MutableList<Broha>? // FIXME: Update list dynamically to save system resources
+                                        CoroutineScope(Dispatchers.Main).launch {
+                                            notifyItemRangeRemoved(position, 1)
+                                        }
+                                    }
                                 }
                             }
                             .setNegativeButton(android.R.string.cancel, null)

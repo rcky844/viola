@@ -50,6 +50,6 @@ object FavUtils {
     }
 
     suspend fun isEmptyCheck(context: Context?): Boolean {
-        return favBroha(context!!)!!.isEmpty.size === 0
+        return favBroha(context!!)!!.isEmpty().isEmpty()
     }
 }

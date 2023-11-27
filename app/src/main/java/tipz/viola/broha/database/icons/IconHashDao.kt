@@ -22,17 +22,17 @@ import androidx.room.Query
 @Dao
 interface IconHashDao {
     @Query("SELECT * FROM iconHash WHERE id LIKE :id LIMIT 1")
-    fun findById(id: Int): IconHash
+    suspend fun findById(id: Int): IconHash
 
     @Query("SELECT * FROM iconHash WHERE iconHash LIKE :hash LIMIT 1")
-    fun findByHash(hash: Int): IconHash
+    suspend fun findByHash(hash: Int): IconHash
 
-    @get:Query("SELECT * FROM iconHash LIMIT 1")
-    val isEmpty: List<IconHash>
+    @Query("SELECT * FROM iconHash LIMIT 1")
+    suspend fun isEmpty(): List<IconHash>
 
     @Query("SELECT * FROM iconHash ORDER BY id DESC LIMIT 1")
-    fun lastIcon(): IconHash
+    suspend fun lastIcon(): IconHash
 
     @Insert
-    fun insertAll(vararg iconHash: IconHash)
+    suspend fun insertAll(vararg iconHash: IconHash)
 }
