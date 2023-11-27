@@ -30,6 +30,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
+import android.os.Handler
 import android.util.AttributeSet
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
@@ -119,6 +120,16 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             )?.versionName
         } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
     }
+    private val titleHandler = Handler { message ->
+        val bundle = message.data
+        val webLongPress = HitTestAlertDialog(mContext)
+        if (!webLongPress.setupDialogForShowing(this, message.data)) return@Handler false
+        webLongPress.show()
+        val linkText = bundle.get("title") // here is your link text
+
+        return@Handler true
+    }
+
 
     init {
         /* User agent init code */
@@ -160,9 +171,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         /* Hit Test Menu */
         setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
-            val webLongPress = HitTestAlertDialog(mContext)
-            if (!webLongPress.setupDialogForShowing(this)) return@setOnCreateContextMenuListener
-            webLongPress.show()
+            val message = titleHandler.obtainMessage()
+            this.requestFocusNodeHref(message)
         }
 
         downloadAdServers()
