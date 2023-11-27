@@ -22,14 +22,14 @@ import tipz.viola.broha.api.FavApi
 import tipz.viola.broha.api.HistoryApi
 import tipz.viola.broha.database.BrohaClient
 import tipz.viola.broha.database.BrohaDao
-import tipz.viola.broha.database.icons.IconHashClient
+import tipz.viola.broha.database.IconHashUtils
 import tipz.viola.settings.SettingsSharedPreference
 
 class Application : Application() {
     var settingsPreference: SettingsSharedPreference? = null
     var historyBroha: BrohaDao? = null
     var favBroha: BrohaDao? = null
-    var iconHashClient: IconHashClient? = null
+    var iconHashClient: IconHashUtils? = null
     override fun onCreate() {
         super.onCreate()
         settingsPreference = SettingsSharedPreference(this)
@@ -37,7 +37,7 @@ class Application : Application() {
         FavApi.doApiInitCheck(this)
         historyBroha = BrohaClient(this, "history").dao
         favBroha = BrohaClient(this, "bookmarks").dao
-        iconHashClient = IconHashClient(this)
+        iconHashClient = IconHashUtils(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) DynamicColors.applyToActivitiesIfAvailable(
             this
         )

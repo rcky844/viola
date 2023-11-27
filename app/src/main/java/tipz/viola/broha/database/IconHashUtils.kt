@@ -13,54 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.broha.database.icons
+package tipz.viola.broha.database
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
-import androidx.room.Room.databaseBuilder
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Integer.toString
 import java.nio.ByteBuffer
 import java.util.Arrays
 
-class IconHashClient(context: Context) {
-    private val appDatabase: IconHashDatabase
+class IconHashUtils(context: Context) {
     private val fileDir: String
 
     init {
-        appDatabase = databaseBuilder(context, IconHashDatabase::class.java, "iconHash").build()
         fileDir = context.filesDir.path + "/favicon"
     }
 
-    private val dao: IconHashDao?
-        get() = appDatabase.iconHashDao()
-
-    suspend private fun getIconHashById(id: Int): IconHash? {
-        return appDatabase.iconHashDao()?.findById(id)
-    }
-
-    suspend private fun getIconHashByHash(hash: Int): IconHash? {
-        return appDatabase.iconHashDao()?.findByHash(hash)
-    }
-
-    suspend fun save(icon: Bitmap): String? {
+    suspend fun save(icon: Bitmap): Int? {
         val buffer = ByteBuffer.allocate(icon.byteCount)
         icon.copyPixelsToBuffer(buffer)
         val hashInt = Arrays.hashCode(buffer.array())
-        val hash = hashInt.toString()
         val dirFile = File(fileDir)
         if (dirFile.exists() || dirFile.mkdirs()) {
-            var wasJpg = false
-            var path = File(fileDir, "$hash.jpg")
-            if (path.exists()) {
-                path.delete() /* Delete old JPEG files */
-                wasJpg = true
-            }
-            path = File(fileDir, "$hash.webp")
-            if (path.exists()) return getIconHashByHash(hashInt)?.id.toString()
+            var path = File(fileDir, "$hashInt.webp")
+            if (path.exists()) return hashInt
             try {
                 val out = FileOutputStream(path)
                 icon.compress(
@@ -73,23 +51,14 @@ class IconHashClient(context: Context) {
             } catch (e: Exception) {
                 return null
             }
-            return if (wasJpg) {
-                getIconHashByHash(hashInt)?.id.toString()
-            } else {
-                dao?.insertAll(IconHash(hashInt))
-                dao?.lastIcon()?.id.toString()
-            }
         }
-        return null
+        return hashInt
     }
 
-    suspend fun read(iconId: String?): Bitmap? {
-        if (iconId == null) return null
-        val data = getIconHashById(iconId.toInt())
-        val hash = data?.iconHash.toString()
-        var imgFile = File(fileDir, "$hash.webp")
+    suspend fun read(hash: Int?): Bitmap? {
+        if (hash == null) return null
+        val imgFile = File(fileDir, "$hash.webp")
         if (imgFile.exists()) return BitmapFactory.decodeFile(imgFile.absolutePath)
-        imgFile = File(fileDir, "$hash.jpg")
-        return if (imgFile.exists()) BitmapFactory.decodeFile(imgFile.absolutePath) else null
+        return null
     }
 }

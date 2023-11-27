@@ -24,11 +24,9 @@ import androidx.room.PrimaryKey
 class Broha {
     @PrimaryKey(autoGenerate = true)
     var id = 0
-        private set
 
-    @JvmField
     @ColumnInfo
-    var iconHash: String?
+    var iconHash: Int?
 
     @JvmField
     @ColumnInfo
@@ -42,7 +40,7 @@ class Broha {
     var timestamp: Long
         private set
 
-    constructor(id: Int, iconHash: String?, title: String?, url: String, timestamp: Long) {
+    constructor(id: Int, iconHash: Int?, title: String?, url: String, timestamp: Long) {
         this.id = id
         this.iconHash = iconHash
         this.title = title
@@ -51,7 +49,7 @@ class Broha {
     }
 
     @Ignore
-    constructor(iconHash: String?, title: String?, url: String) {
+    constructor(iconHash: Int?, title: String?, url: String) {
         this.iconHash = iconHash
         this.title = title
         this.url = url

@@ -20,19 +20,19 @@ import tipz.viola.utils.CommonUtils
 
 object HistoryUtils {
     suspend fun clear(context: Context?) {
-        HistoryApi.historyBroha(context!!)!!.deleteAll()
+        HistoryApi.historyBroha(context!!)?.deleteAll()
     }
 
     suspend fun deleteById(context: Context?, id: Int) {
-        HistoryApi.historyBroha(context!!)!!.deleteById(id)
+        HistoryApi.historyBroha(context!!)?.deleteById(id)
     }
 
     suspend fun isEmptyCheck(context: Context?): Boolean {
-        return HistoryApi.historyBroha(context!!)!!.isEmpty().isEmpty()
+        return HistoryApi.historyBroha(context!!)?.isEmpty()?.isEmpty() == true
     }
 
     suspend fun lastUrl(context: Context?): String {
-        val lastUrl = HistoryApi.historyBroha(context!!)!!.lastUrl()
-        return lastUrl.url ?: CommonUtils.EMPTY_STRING
+        val lastUrl = HistoryApi.historyBroha(context!!)?.lastUrl()
+        return lastUrl?.url ?: CommonUtils.EMPTY_STRING
     }
 }

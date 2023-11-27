@@ -19,7 +19,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import tipz.viola.broha.api.FavApi.favBroha
 import tipz.viola.broha.database.Broha
-import tipz.viola.broha.database.icons.IconHashClient
+import tipz.viola.broha.database.IconHashUtils
 
 object FavUtils {
     /**
@@ -29,11 +29,11 @@ object FavUtils {
      * Module to save favourites into a db.
      */
     suspend fun appendData(
-        context: Context?,
-        iconHashClient: IconHashClient?,
-        title: String?,
-        url: String?,
-        icon: Bitmap?
+            context: Context?,
+            iconHashClient: IconHashUtils?,
+            title: String?,
+            url: String?,
+            icon: Bitmap?
     ) {
         if (url.isNullOrEmpty()) return
         if (iconHashClient != null && icon != null)favBroha(context!!)!!
