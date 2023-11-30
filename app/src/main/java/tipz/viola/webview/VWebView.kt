@@ -592,7 +592,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
 
     private fun urlShouldSet(url: String): Boolean {
-        return !(url == "about:blank" || url.startsWith(InternalUrls.prefix))
+        return !(url == InternalUrls.aboutBlankUrl || url.startsWith(InternalUrls.prefix))
     }
 
     fun setUA(
