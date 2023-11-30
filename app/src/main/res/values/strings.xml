@@ -142,6 +142,8 @@
     <string name="pref_start_page_wallpaper_summary">Current: %s (Click to reset, refresh to update)</string>
     <string name="default_res">Default</string>
     <string name="start_page">Start Page</string>
+    <string name="copy_text_url">Copy link text</string>
+    <string name="copy_src_url">Copy image link</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

@@ -31,12 +31,14 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
     private val hitTestDialogItems = listOf(
             R.string.open_in_new_tab,
             R.string.copy_url,
+            R.string.copy_text_url,
             imageId,
             R.string.share_url
     )
 
     private val hitTestDialogImageItems = listOf(
             R.string.download_image,
+            R.string.copy_src_url,
             R.string.search_image
     )
 
@@ -81,9 +83,11 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
 
         arrayAdapter = ArrayAdapter<String>(context, R.layout.recycler_list_item_1)
         for (item in hitTestDialogItems) {
+            if (item == R.string.copy_text_url && title.isNullOrBlank()) continue
+
             // Insert Image items
             if (item == imageId) {
-                if (src.isNullOrBlank()) {
+                if (!src.isNullOrBlank()) {
                     for (imageItem in hitTestDialogImageItems) {
                         arrayAdapter?.add(context.resources.getString(imageItem))
                     }
@@ -97,6 +101,10 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
             when (arrayAdapter!!.getItem(which)) {
                 context.resources.getString(R.string.copy_url) -> CommonUtils.copyClipboard(context, url)
+
+                context.resources.getString(R.string.copy_text_url) -> CommonUtils.copyClipboard(context, title)
+
+                context.resources.getString(R.string.copy_src_url) -> CommonUtils.copyClipboard(context, src)
 
                 context.resources.getString(R.string.download_image) -> {
                     val fileDownload = src ?: url
