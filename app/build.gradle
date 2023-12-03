@@ -31,8 +31,8 @@ android {
         applicationId "tipz.viola"
         minSdkVersion 19
         targetSdkVersion 34
-        versionCode 9
-        versionName "6.0.0005.00"
+        versionCode 1
+        versionName "6.0.0000.00"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Viola\""
