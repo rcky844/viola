@@ -639,11 +639,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
      * @return url to load
      */
     private fun URLIdentify(url: String): String {
-        if (url == InternalUrls.licenseUrl || url == InternalUrls.realLicenseUrl) return InternalUrls.realLicenseUrl
-        if (url == InternalUrls.reloadUrl) {
-            webViewReload()
-            return CommonUtils.EMPTY_STRING
-        }
         val startPageLayout = mVioWebViewActivity?.startPageLayout
         if (url == InternalUrls.startUrl) {
             this.loadUrl(InternalUrls.aboutBlankUrl)
@@ -654,6 +649,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (this.visibility == GONE) {
             this.visibility = VISIBLE
             startPageLayout?.visibility = GONE
+        }
+        if (url == InternalUrls.licenseUrl || url == InternalUrls.realLicenseUrl) return InternalUrls.realLicenseUrl
+        if (url == InternalUrls.reloadUrl) {
+            webViewReload()
+            return CommonUtils.EMPTY_STRING
         }
         return url
     }
