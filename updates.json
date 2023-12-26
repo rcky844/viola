@@ -6,7 +6,18 @@
     "debug"
   ],
   "stable": {
-    "channel_name": "Stable"
+    "channel_name": "Stable",
+    "latest_update": {
+    }
+  },
+  "stable_test": {
+    "channel_name": "Release Preview",
+    "latest_update": {
+      "name": "6.0.0006.03",
+      "code": 13,
+      "timestamp": 1703592437,
+      "url": "https://gitlab.com/TipzTeam/viola/uploads/1568627ef14577a3a1b22d4d97e17ef1/app-release.apk"
+    }
   },
   "beta": {
     "channel_name": "Beta",
