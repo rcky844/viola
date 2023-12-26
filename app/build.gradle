@@ -31,8 +31,8 @@ android {
         applicationId "tipz.viola"
         minSdkVersion 19
         targetSdkVersion 34
-        versionCode 12
-        versionName "6.0.0006.02"
+        versionCode 13
+        versionName "6.0.0006.03"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Viola\""
@@ -60,7 +60,7 @@ android {
             initWith(debug)
             applicationIdSuffix ".beta"
             multiDexEnabled true
-            buildConfigField "String", "VERSION_NAME_EXTRA", "\" Beta 1\""
+            buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         }
 
         debug {
