@@ -69,7 +69,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
-import tipz.viola.webviewui.BaseActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.broha.api.HistoryApi
@@ -80,11 +79,11 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
+import tipz.viola.webviewui.BaseActivity
 import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.Objects
-import java.util.Scanner
 
 @SuppressLint("SetJavaScriptEnabled")
 class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
@@ -93,12 +92,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var mVioWebViewActivity: VWebViewActivity? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
+    private var adServersHandler: AdServersHandler
     private val mWebViewRenderProcess =
         if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER)) WebViewCompat.getWebViewRenderProcess(
             this
         ) else null
     private var currentUrl: String? = null
-    private var adServers: String? = null
     private var currentBroha: Broha? = null
     private var updateHistory = true
     private var historyCommitted = false
@@ -173,7 +172,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             this.requestFocusNodeHref(message)
         }
 
-        downloadAdServers()
+        /* Init Ad Servers Handler */
+        adServersHandler = AdServersHandler(settingsPreference)
     }
 
     @Suppress("deprecation")
@@ -242,9 +242,21 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Check for internal URLs
-        if (url == InternalUrls.licenseUrl || url == InternalUrls.realLicenseUrl) return
+        if (url == InternalUrls.licenseUrl) {
+            super.loadUrl(InternalUrls.realLicenseUrl)
+            return
+        }
+
         if (url == InternalUrls.reloadUrl) {
             webViewReload()
+            return
+        }
+
+        // TODO: Remove, see InternalUrls.kt
+        if (BuildConfig.DEBUG && url == InternalUrls.tempTest1226Url) {
+            if (settingsPreference.getInt(SettingsKeys.adServerId) == 0) settingsPreference.setInt(SettingsKeys.adServerId, 1)
+            if (settingsPreference.getInt(SettingsKeys.adServerId) == 1) settingsPreference.setInt(SettingsKeys.adServerId, 0)
+            CommonUtils.showMessage(mVioWebViewActivity, "Triggered!")
             return
         }
 
@@ -272,19 +284,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private fun updateCurrentUrl(url: String?) {
         mVioWebViewActivity!!.onUrlUpdated(url)
         currentUrl = url
-    }
-
-    fun downloadAdServers() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val scanner = Scanner(String(DownloadUtils.startFileDownload("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt")))
-            val builder = StringBuilder()
-            while (scanner.hasNextLine()) {
-                val line = scanner.nextLine()
-                if (line.startsWith("127.0.0.1 ")) builder.append(line)
-                        .append(System.lineSeparator())
-            }
-            adServers = builder.toString()
-        }
     }
 
     /**
@@ -402,11 +401,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         @Deprecated("Deprecated in Java")
         override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-            if (adServers.isNullOrEmpty()) {
-                (view as VWebView).downloadAdServers()
+            if (adServersHandler.adServers.isNullOrEmpty()) {
+                adServersHandler.downloadAdServers()
+                return super.shouldInterceptRequest(view, url)
             }
             try {
-                if (adServers != null) if (adServers!!.contains(" " + URL(url).host) && settingsPreference.getInt(
+                if (adServersHandler.adServers!!.contains(" " + URL(url).host) && settingsPreference.getInt(
                         SettingsKeys.enableAdBlock
                     ) == 1
                 )

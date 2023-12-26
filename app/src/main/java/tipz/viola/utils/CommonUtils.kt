@@ -32,7 +32,9 @@ object CommonUtils {
     const val EMPTY_STRING = ""
     private const val DEFAULT_LANGUAGE = "en-US"
 
-    fun shareUrl(context: Context, url: String) {
+    fun shareUrl(context: Context, url: String?) {
+        if (url.isNullOrBlank()) return
+
         val i = Intent(Intent.ACTION_SEND)
         i.type = "text/plain"
         i.putExtra(Intent.EXTRA_TEXT, url)

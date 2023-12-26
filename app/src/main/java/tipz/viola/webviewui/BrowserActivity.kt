@@ -369,9 +369,10 @@ class BrowserActivity : VWebViewActivity() {
                 )
             }
 
-            R.drawable.share -> CommonUtils.shareUrl(this, webview.url!!)
+            R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
             R.drawable.app_shortcut -> {
-                if (webview.title != null && webview.title!!.isNotBlank()) ShortcutManagerCompat.requestPinShortcut(
+                if (webview.title.isNullOrBlank() || webview.url.isNullOrBlank()) return
+                ShortcutManagerCompat.requestPinShortcut(
                         this, ShortcutInfoCompat.Builder(this, webview.title!!)
                         .setShortLabel(webview.title!!)
                         .setIcon(
@@ -406,16 +407,19 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.favorites_add -> {
+                val url = webview.url
+                if (url.isNullOrBlank()) return
+
                 val icon = favicon!!.drawable
                 val title = webview.title
-                val url = webview.url
+
                 CoroutineScope(Dispatchers.IO).launch {
                     FavUtils.appendData(
                             this@BrowserActivity, iconHashClient, title, url,
                             if (icon is BitmapDrawable) icon.bitmap else null
                     )
                 }
-                if (!url.isNullOrEmpty()) CommonUtils.showMessage(
+                CommonUtils.showMessage(
                         this,
                         resources.getString(R.string.save_successful)
                 )

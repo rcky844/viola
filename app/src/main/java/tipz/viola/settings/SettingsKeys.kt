@@ -17,6 +17,9 @@ package tipz.viola.settings
 
 object SettingsKeys {
     const val configDataStore = "config" /* Pref file name */ /* TODO: Migrate to something newer? */
+
+    const val adServerId = "adServerId" /* STRING */
+    const val adServerUrl = "adServerUrl" /* STRING */
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
     const val defaultHomePage = "defaultHomePage" /* STRING */ /* FIXME: Rename to customHomePage */
     const val defaultHomePageId = "defaultHomePageId" /* INTEGER */
