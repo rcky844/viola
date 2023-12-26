@@ -15,6 +15,7 @@ class SettingsSharedPreference(context: Context) {
 
     private fun settingsInit() {
         if (this.getInt(SettingsKeys.protocolVersion) == 0) {
+            this.setInt(SettingsKeys.adServerId, 0)
             this.setInt(SettingsKeys.closeAppAfterDownload, 1)
             this.setInt(SettingsKeys.defaultHomePageId, 7)
             this.setInt(SettingsKeys.defaultSearchId, 7)
