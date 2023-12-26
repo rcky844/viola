@@ -1,17 +1,12 @@
 {
   "channels": [
-    "stable",
+    "release",
     "beta",
     "alpha",
     "debug"
   ],
-  "stable": {
-    "channel_name": "Stable",
-    "latest_update": {
-    }
-  },
-  "stable_test": {
-    "channel_name": "Release Preview",
+  "release": {
+    "channel_name": "Release",
     "latest_update": {
       "name": "6.0.0006.03",
       "code": 13,
