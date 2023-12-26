@@ -14,13 +14,14 @@ class AdServersHandler(settingsPreference: SettingsSharedPreference) {
 
     // TODO: Add support for dialog selection and merged lists
     private val adServersList = arrayOf("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt",
-        "https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardMobileAds.txt",
+        "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt",
         null)
 
     init {
         mSettingsPreference = settingsPreference
     }
 
+    // TODO: Don't always download at launch
     fun downloadAdServers() {
         CoroutineScope(Dispatchers.IO).launch {
             val scanner = Scanner(String(DownloadUtils.startFileDownload(adServersList[mSettingsPreference.getInt(SettingsKeys.adServerId)])))

@@ -252,6 +252,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             return
         }
 
+        // TODO: Remove, see InternalUrls.kt
+        if (url == InternalUrls.tempTest1226Url) {
+            if (settingsPreference.getInt(SettingsKeys.adServerId) == 0) settingsPreference.setInt(SettingsKeys.adServerId, 1)
+            if (settingsPreference.getInt(SettingsKeys.adServerId) == 1) settingsPreference.setInt(SettingsKeys.adServerId, 0)
+            CommonUtils.showMessage(mVioWebViewActivity, "Triggered!")
+            return
+        }
+
         val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
         updateCurrentUrl(checkedUrl)
 
