@@ -242,7 +242,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Check for internal URLs
-        if (url == InternalUrls.licenseUrl || url == InternalUrls.realLicenseUrl) return
+        if (url == InternalUrls.licenseUrl) {
+            super.loadUrl(InternalUrls.realLicenseUrl)
+            return
+        }
+
         if (url == InternalUrls.reloadUrl) {
             webViewReload()
             return
