@@ -31,6 +31,7 @@
     <string name="homepage">"Homepage"</string>
     <string name="version_info_message">%1$s %2$s (%3$s)\nCompiled on %4$s\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
     <string name="pref_check_for_updates_title">Check for Updates</string>
+    <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
     <string name="version_latest_toast">"You are currently running the latest version of Viola."</string>
     <string name="network_unavailable_toast">"Network is unavailable."</string>
     <string name="new_update_detect_title">"Update available"</string>
@@ -126,6 +127,25 @@
     <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
     <string name="dialog_page_unresponsive_wait">Wait</string>
     <string name="dialog_page_unresponsive_terminate">Terminate</string>
+    <string name="toast_no_app_to_handle">No application can handle this action.</string>
+    <string name="pref_dont_use_start_page_title">Use web-based homepage</string>
+    <string name="pref_dont_use_start_page_summary">Open a webpage instead of start page as homepage.</string>
+    <string name="toolbar_expandable_new_tab">New Tab</string>
+    <string name="toolbar_expandable_favorites">Favourites</string>
+    <string name="toolbar_expandable_history">History</string>
+    <string name="toolbar_expandable_viewport">Viewing mode</string>
+    <string name="toolbar_expandable_favorites_add">Add to favourites</string>
+    <string name="toolbar_expandable_app_shortcut">Create shortcut</string>
+    <string name="toolbar_expandable_settings">Settings</string>
+    <string name="toolbar_expandable_close">Close app</string>
+    <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
+    <string name="pref_start_page_wallpaper_summary">Current: %s (Click to reset, refresh to update)</string>
+    <string name="default_res">Default</string>
+    <string name="start_page">Start Page</string>
+    <string name="copy_text_url">Copy link text</string>
+    <string name="copy_src_url">Copy image link</string>
+    <string name="software_updates">Software updates</string>
+    <string name="pref_update_channel_title">Select update channel</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

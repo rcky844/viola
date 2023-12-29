@@ -31,6 +31,7 @@
     <string name="homepage">"Trang chủ"</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\nBiên soạn trên %4$s\nBản quyền © 2020-%5$s Tipz Team\n\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
     <string name="pref_check_for_updates_title">Tìm bản cập nhật mới</string>
+    <string name="pref_check_for_updates_summary">Kiểm tra bản cập nhật mới và cho phép bạn tải xuống nếu có.</string>
     <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Viola."</string>
     <string name="network_unavailable_toast">"Không có mạng."</string>
     <string name="new_update_detect_title">"Có bản cập nhật mới"</string>
@@ -126,6 +127,25 @@
     <string name="dialog_page_unresponsive_message">Bạn có thể đợi nó trở nên phản hồi hoặc chấm dứt tab này.</string>
     <string name="dialog_page_unresponsive_wait">Đợi</string>
     <string name="dialog_page_unresponsive_terminate">Chấm dứt</string>
+    <string name="toast_no_app_to_handle">Không ứng dụng nào có thể xử lý hành động này.</string>
+    <string name="pref_dont_use_start_page_title">Sử dụng trang chủ dựa trên web</string>
+    <string name="pref_dont_use_start_page_summary">Mở một trang web thay vì trang bắt đầu làm trang chủ.</string>
+    <string name="toolbar_expandable_new_tab">Tab mới</string>
+    <string name="toolbar_expandable_favorites">Yêu thích</string>
+    <string name="toolbar_expandable_history">Lịch sử</string>
+    <string name="toolbar_expandable_viewport">Chế độ xem</string>
+    <string name="toolbar_expandable_favorites_add">Thêm vào mục yêu thích</string>
+    <string name="toolbar_expandable_app_shortcut">Tạo lối tắt</string>
+    <string name="toolbar_expandable_settings">Cài đặt</string>
+    <string name="toolbar_expandable_close">Đóng ứng dụng</string>
+    <string name="pref_start_page_wallpaper_title">Chọn hình nền cho trang bắt đầu</string>
+    <string name="pref_start_page_wallpaper_summary">Hiện tại: %s (Nhấp để đặt lại, làm mới để cập nhật)</string>
+    <string name="default_res">Mặc định</string>
+    <string name="start_page">Trang bắt đầu</string>
+    <string name="copy_text_url">Sao chép văn bản liên kết</string>
+    <string name="copy_src_url">Sao chép liên kết hình ảnh</string>
+    <string name="software_updates">Cập nhật phần mềm</string>
+    <string name="pref_update_channel_title">Chọn kênh cập nhật</string>
 
     <string-array name="errMsg">
         <item>Lỗi!</item>

@@ -31,6 +31,7 @@
     <string name="homepage">"Page d’accueil"</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\nCompilé sur %4$s\nDroit d'auteur © 2020-%5$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
     <string name="pref_check_for_updates_title">Vérifier les mises à jour</string>
+    <string name="pref_check_for_updates_summary">Recherchez une nouvelle mise à jour et autorisez-la à la télécharger si elle est disponible.</string>
     <string name="version_latest_toast">"Vous disposez actuellement de la dernière version de Viola."</string>
     <string name="network_unavailable_toast">"Le réseau n’est pas disponible."</string>
     <string name="new_update_detect_title">"Mise à jour disponible"</string>
@@ -126,6 +127,25 @@
     <string name="dialog_page_unresponsive_message">Vous pouvez attendre qu’il devienne réactif ou mettre fin à cet onglet.</string>
     <string name="dialog_page_unresponsive_wait">Attendre</string>
     <string name="dialog_page_unresponsive_terminate">Terminer</string>
+    <string name="toast_no_app_to_handle">Aucune application ne peut gérer cette action.</string>
+    <string name="pref_dont_use_start_page_title">Utiliser la page d\'accueil Web</string>
+    <string name="pref_dont_use_start_page_summary">Ouvrez une page Web au lieu de la page de démarrage comme page d\'accueil.</string>
+    <string name="toolbar_expandable_new_tab">Nouvel onglet</string>
+    <string name="toolbar_expandable_favorites">Favoris</string>
+    <string name="toolbar_expandable_history">Histoire</string>
+    <string name="toolbar_expandable_viewport">Mode de visualisation</string>
+    <string name="toolbar_expandable_favorites_add">Ajouter aux Favoris</string>
+    <string name="toolbar_expandable_app_shortcut">Créer un raccourci</string>
+    <string name="toolbar_expandable_settings">Paramètres</string>
+    <string name="toolbar_expandable_close">Fermer l\'application</string>
+    <string name="pref_start_page_wallpaper_title">Sélectionnez un fond d\'écran pour la page de démarrage</string>
+    <string name="pref_start_page_wallpaper_summary">Actuel: %s (cliquez pour réinitialiser, actualisez pour mettre à jour)</string>
+    <string name="default_res">Défaut</string>
+    <string name="start_page">Page de démarrage</string>
+    <string name="copy_text_url">Copier le texte du lien</string>
+    <string name="copy_src_url">Copier le lien de l\'image</string>
+    <string name="software_updates">Mises à jour de logiciel</string>
+    <string name="pref_update_channel_title">Sélectionnez le canal de mise à jour</string>
 
     <string-array name="errMsg">
         <item>Erreur!</item>

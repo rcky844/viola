@@ -31,6 +31,7 @@
     <string name="homepage">首頁</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\n編譯於%4$s\n版權所有 © 2020-%5$s Tipz Team\n\n本產品已獲得 Apache 證書</string>
     <string name="pref_check_for_updates_title">檢查更新</string>
+    <string name="pref_check_for_updates_summary">檢查是否有新更新，如果有可用則允許您下載。</string>
     <string name="version_latest_toast">您目前使用的是最新版本的Viola</string>
     <string name="network_unavailable_toast">網路不可用</string>
     <string name="new_update_detect_title">"檢測到新的版本"</string>
@@ -126,6 +127,25 @@
     <string name="dialog_page_unresponsive_message">您可以等待它回應或終止此分頁頁</string>
     <string name="dialog_page_unresponsive_wait">等待</string>
     <string name="dialog_page_unresponsive_terminate">終止</string>
+    <string name="toast_no_app_to_handle">沒有應用程式可以處理此操作。</string>
+    <string name="pref_dont_use_start_page_title">使用基於網路的主頁</string>
+    <string name="pref_dont_use_start_page_summary">開啟一個網頁而不是起始頁作為首頁。</string>
+    <string name="toolbar_expandable_new_tab">新標籤</string>
+    <string name="toolbar_expandable_favorites">收藏夾</string>
+    <string name="toolbar_expandable_history">歷史記錄</string>
+    <string name="toolbar_expandable_viewport">檢視模式</string>
+    <string name="toolbar_expandable_favorites_add">加入到收藏夾</string>
+    <string name="toolbar_expandable_app_shortcut">建立捷徑</string>
+    <string name="toolbar_expandable_settings">設定</string>
+    <string name="toolbar_expandable_close">關閉應用程式</string>
+    <string name="pref_start_page_wallpaper_title">選擇起始頁桌布</string>
+    <string name="pref_start_page_wallpaper_summary">目前：%s（點選重置，刷新更新）</string>
+    <string name="default_res">預設</string>
+    <string name="start_page">起始頁</string>
+    <string name="copy_text_url">複製連結文字</string>
+    <string name="copy_src_url">複製圖片連結</string>
+    <string name="software_updates">軟體更新</string>
+    <string name="pref_update_channel_title">選擇更新頻道</string>
 
     <string-array name="errMsg">
         <item>錯誤!</item>
