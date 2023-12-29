@@ -30,7 +30,8 @@
     <string name="search_engine">搜索引擎</string>
     <string name="homepage">主页</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\n编译于%4$s\n版权所有 © 2020-%5$s Tipz Team\n\n本产品已获得 Apache 许可</string>
-    <string name="update_btn">检查更新</string>
+    <string name="pref_check_for_updates_title">检查更新</string>
+    <string name="pref_check_for_updates_summary">检查是否有新更新，如果有可用则允许您下载。</string>
     <string name="version_latest_toast">您当前使用的是最新版本的Viola</string>
     <string name="network_unavailable_toast">网络不可用</string>
     <string name="new_update_detect_title">"检测到新的版本"</string>
@@ -126,6 +127,25 @@
     <string name="dialog_page_unresponsive_message">您可以等待它响应或终止此标签页</string>
     <string name="dialog_page_unresponsive_wait">等待</string>
     <string name="dialog_page_unresponsive_terminate">终止</string>
+    <string name="toast_no_app_to_handle">没有应用程序可以处理此操作。</string>
+    <string name="pref_dont_use_start_page_title">使用基于网络的主页</string>
+    <string name="pref_dont_use_start_page_summary">打开一个网页而不是起始页作为主页。</string>
+    <string name="toolbar_expandable_new_tab">新标签</string>
+    <string name="toolbar_expandable_favorites">收藏夹</string>
+    <string name="toolbar_expandable_history">历史记录</string>
+    <string name="toolbar_expandable_viewport">查看模式</string>
+    <string name="toolbar_expandable_favorites_add">添加到收藏夹</string>
+    <string name="toolbar_expandable_app_shortcut">创建快捷方式</string>
+    <string name="toolbar_expandable_settings">设置</string>
+    <string name="toolbar_expandable_close">关闭应用</string>
+    <string name="pref_start_page_wallpaper_title">选择起始页壁纸</string>
+    <string name="pref_start_page_wallpaper_summary">当前：%s（点击重置，刷新更新）</string>
+    <string name="default_res">默认</string>
+    <string name="start_page">起始页</string>
+    <string name="copy_text_url">复制链接文本</string>
+    <string name="copy_src_url">复制图片链接</string>
+    <string name="software_updates">软件更新</string>
+    <string name="pref_update_channel_title">选择更新频道</string>
 
     <string-array name="errMsg">
         <item>错误!</item>

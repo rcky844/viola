@@ -30,7 +30,7 @@
         android:layout_width="128dp"
         android:layout_height="36dp"
         android:layout_marginLeft="4dp"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:text="@string/app_name"
         android:textColor="@color/colorElement"
         android:autoSizeTextType="uniform"

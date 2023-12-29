@@ -30,7 +30,8 @@
     <string name="search_engine">"Suchmaschine"</string>
     <string name="homepage">"Startseite"</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\nErstellt am %4$s\nCopyright © 2020-%5$s Tipz Team\n\nDieses Produkt ist lizenziert unter der Apache License.</string>
-    <string name="update_btn">Auf Aktualisierungen prüfen</string>
+    <string name="pref_check_for_updates_title">Auf Aktualisierungen prüfen</string>
+    <string name="pref_check_for_updates_summary">Suchen Sie nach einem neuen Update und ermöglichen Sie Ihnen den Download, falls eines verfügbar ist.</string>
     <string name="version_latest_toast">"Sie verwenden aktuell die neueste Version von Viola."</string>
     <string name="network_unavailable_toast">"Netzwerk nicht verfügnbar."</string>
     <string name="new_update_detect_title">"Update verfügbar"</string>
@@ -126,6 +127,25 @@
     <string name="dialog_page_unresponsive_message">Sie können warten, bis es reagiert, oder diese Registerkarte beenden.</string>
     <string name="dialog_page_unresponsive_wait">Warte ab</string>
     <string name="dialog_page_unresponsive_terminate">Kündigen</string>
+    <string name="toast_no_app_to_handle">Keine Anwendung kann diese Aktion verarbeiten.</string>
+    <string name="pref_dont_use_start_page_title">Verwenden Sie eine webbasierte Homepage</string>
+    <string name="pref_dont_use_start_page_summary">Öffnen Sie eine Webseite anstelle der Startseite als Startseite.</string>
+    <string name="toolbar_expandable_new_tab">Neue Registerkarte</string>
+    <string name="toolbar_expandable_favorites">Favoriten</string>
+    <string name="toolbar_expandable_history">Geschichte</string>
+    <string name="toolbar_expandable_viewport">Ansichtsmodus</string>
+    <string name="toolbar_expandable_favorites_add">Zu den Favoriten hinzufügen</string>
+    <string name="toolbar_expandable_app_shortcut">Verknüpfung erstellen</string>
+    <string name="toolbar_expandable_settings">Einstellungen</string>
+    <string name="toolbar_expandable_close">App schließen</string>
+    <string name="pref_start_page_wallpaper_title">Wählen Sie ein Hintergrundbild für die Startseite aus</string>
+    <string name="pref_start_page_wallpaper_summary">Aktuell: %s (Zum Zurücksetzen klicken, zum Aktualisieren aktualisieren)</string>
+    <string name="default_res">Standard</string>
+    <string name="start_page">Startseite</string>
+    <string name="copy_text_url">Linktext kopieren</string>
+    <string name="copy_src_url">Bildlink kopieren</string>
+    <string name="software_updates">Software-Updates</string>
+    <string name="pref_update_channel_title">Wählen Sie den Update-Kanal aus</string>
 
     <string-array name="errMsg">
         <item>Fehler!</item>

@@ -30,7 +30,8 @@
     <string name="search_engine">"Arama motoru"</string>
     <string name="homepage">"Ana sayfa"</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\nTarihinde derlendi %4$s\nTelif hakkı © 2020-%5$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
-    <string name="update_btn">Güncellemeleri denetle</string>
+    <string name="pref_check_for_updates_title">Güncellemeleri denetle</string>
+    <string name="pref_check_for_updates_summary">Yeni güncellemeyi kontrol edin ve varsa indirmenize izin verin.</string>
     <string name="version_latest_toast">"Viola'nun en güncel sürümünü kullanmaktasınız."</string>
     <string name="network_unavailable_toast">"Bağlantı yok."</string>
     <string name="new_update_detect_title">"Güncelleme mevcut"</string>
@@ -126,6 +127,25 @@
     <string name="dialog_page_unresponsive_message">Yanıt vermesini bekleyebilir veya bu sekmeyi sonlandırabilirsiniz.</string>
     <string name="dialog_page_unresponsive_wait">Beklemek</string>
     <string name="dialog_page_unresponsive_terminate">Bitirmek</string>
+    <string name="toast_no_app_to_handle">Hiçbir uygulama bu eylemi gerçekleştiremez.</string>
+    <string name="pref_dont_use_start_page_title">Web tabanlı ana sayfayı kullanın</string>
+    <string name="pref_dont_use_start_page_summary">Ana sayfa olarak başlangıç sayfası yerine bir web sayfası açın.</string>
+    <string name="toolbar_expandable_new_tab">Yeni sekme</string>
+    <string name="toolbar_expandable_favorites">Favoriler</string>
+    <string name="toolbar_expandable_history">Tarih</string>
+    <string name="toolbar_expandable_viewport">Görüntüleme modu</string>
+    <string name="toolbar_expandable_favorites_add">Favorilere ekle</string>
+    <string name="toolbar_expandable_app_shortcut">Kısayol oluştur</string>
+    <string name="toolbar_expandable_settings">Ayarlar</string>
+    <string name="toolbar_expandable_close">Uygulamayı kapat</string>
+    <string name="pref_start_page_wallpaper_title">Başlangıç sayfası için bir duvar kağıdı seçin</string>
+    <string name="pref_start_page_wallpaper_summary">Güncel: %s (Sıfırlamak için tıklayın, güncellemek için yenileyin)</string>
+    <string name="default_res">Varsayılan</string>
+    <string name="start_page">Başlangıç sayfası</string>
+    <string name="copy_text_url">Bağlantı metnini kopyala</string>
+    <string name="copy_src_url">Resim bağlantısını kopyala</string>
+    <string name="software_updates">Yazılım güncellemeleri</string>
+    <string name="pref_update_channel_title">Güncelleme kanalını seçin</string>
 
     <string-array name="errMsg">
         <item>Hata!</item>
