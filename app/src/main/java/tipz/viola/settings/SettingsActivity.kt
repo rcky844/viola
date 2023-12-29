@@ -455,11 +455,27 @@ class SettingsActivity : BaseActivity() {
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         val jObject = JSONObject(String(DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")))
-                        val updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName) ?: BuildConfig.BUILD_TYPE
-                        val jChannelObject = jObject.getJSONObject(updateChannelName).getJSONObject("latest_update")
 
                         CoroutineScope(Dispatchers.Main).launch {
-                            if (jChannelObject.getInt("code") <= BuildConfig.VERSION_CODE) {
+                            val updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName) ?: BuildConfig.BUILD_TYPE
+                            if (!jObject.has(updateChannelName)) {
+                                showMessage(
+                                    settingsActivity,
+                                    resources.getString(R.string.update_down_failed_toast)
+                                )
+                                return@launch
+                            }
+                            val jChannelObject = jObject.getJSONObject(updateChannelName)
+                            if (!jChannelObject.has("latest_update")) {
+                                showMessage(
+                                    settingsActivity,
+                                    resources.getString(R.string.version_latest_toast)
+                                )
+                                return@launch
+                            }
+
+                            val jChannelUpdateObject = jChannelObject.getJSONObject("latest_update")
+                            if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
                                 showMessage(
                                     settingsActivity,
                                     resources.getString(R.string.version_latest_toast)
@@ -474,15 +490,15 @@ class SettingsActivity : BaseActivity() {
                                 .setMessage(
                                     resources.getString(
                                         R.string.new_update_detect_message,
-                                        jChannelObject.getString("name"),
-                                        jChannelObject.getInt("code").toString()
+                                        jChannelUpdateObject.getString("name"),
+                                        jChannelUpdateObject.getInt("code").toString()
                                     )
                                 )
                                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                     val filename =
                                         updateDownloadPathBase + DocumentFile.fromSingleUri(
                                             settingsActivity,
-                                            Uri.parse(jChannelObject.getString("url"))
+                                            Uri.parse(jChannelUpdateObject.getString("url"))
                                         )?.name
                                     this@SettingsPrefHandler.updateDownloadPath =
                                         updateDownloadPathBase + filename
@@ -491,7 +507,7 @@ class SettingsActivity : BaseActivity() {
                                     if (!apkFile.exists() || apkFile.delete()) downloadID =
                                         dmDownloadFile(
                                             settingsActivity,
-                                            jChannelObject.getString("url"),
+                                            jChannelUpdateObject.getString("url"),
                                             null,
                                             "application/vnd.android.package-archive",
                                             resources.getString(R.string.download_title),
@@ -583,6 +599,7 @@ class SettingsActivity : BaseActivity() {
             search_suggestions.summary =
                     searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)]
             theme.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
+            update_channel.summary = settingsPreference.getString(SettingsKeys.updateChannelName)
             if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
                 start_page_wallpaper.setSummary(
                         resources.getString(
