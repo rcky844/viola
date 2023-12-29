@@ -30,7 +30,7 @@
     <string name="search_engine">搜尋引擎</string>
     <string name="homepage">首頁</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\n編譯於%4$s\n版權所有 © 2020-%5$s Tipz Team\n\n本產品已獲得 Apache 證書</string>
-    <string name="update_btn">檢查更新</string>
+    <string name="pref_check_for_updates_title">檢查更新</string>
     <string name="version_latest_toast">您目前使用的是最新版本的Viola</string>
     <string name="network_unavailable_toast">網路不可用</string>
     <string name="new_update_detect_title">"檢測到新的版本"</string>

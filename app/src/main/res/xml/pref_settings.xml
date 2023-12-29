@@ -136,6 +136,17 @@
             app:needReload="false" />
     </androidx.preference.PreferenceCategory>
 
+    <androidx.preference.PreferenceCategory android:title="@string/software_updates">
+        <androidx.preference.Preference
+            android:key="check_for_updates"
+            android:summary="@string/pref_check_for_updates_summary"
+            android:title="@string/pref_check_for_updates_title" />
+        <androidx.preference.Preference
+            android:key="update_channel"
+            android:summary=""
+            android:title="@string/pref_update_channel_title" />
+    </androidx.preference.PreferenceCategory>
+
     <androidx.preference.PreferenceCategory android:title="@string/help">
         <androidx.preference.Preference
             android:key="version"

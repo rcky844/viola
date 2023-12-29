@@ -30,7 +30,7 @@
     <string name="search_engine">"Arama motoru"</string>
     <string name="homepage">"Ana sayfa"</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\nTarihinde derlendi %4$s\nTelif hakkı © 2020-%5$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
-    <string name="update_btn">Güncellemeleri denetle</string>
+    <string name="pref_check_for_updates_title">Güncellemeleri denetle</string>
     <string name="version_latest_toast">"Viola'nun en güncel sürümünü kullanmaktasınız."</string>
     <string name="network_unavailable_toast">"Bağlantı yok."</string>
     <string name="new_update_detect_title">"Güncelleme mevcut"</string>

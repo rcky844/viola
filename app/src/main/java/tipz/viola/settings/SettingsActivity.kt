@@ -201,6 +201,8 @@ class SettingsActivity : BaseActivity() {
             val reset_to_default = findPreference<MaterialDialogPreference>("reset_to_default")!!
             val theme = findPreference<Preference>("theme")!!
             val start_page_wallpaper = findPreference<Preference>("start_page_wallpaper")!!
+            val check_for_updates = findPreference<Preference>("check_for_updates")!!
+            val update_channel = findPreference<Preference>("update_channel")!!
             val version = findPreference<Preference>("version")!!
             val feedback = findPreference<Preference>("feedback")!!
             val source_code = findPreference<Preference>("source_code")!!
@@ -442,6 +444,99 @@ class SettingsActivity : BaseActivity() {
                         }
                         true
                     }
+
+            check_for_updates.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    if (!DownloadUtils.isOnline(settingsActivity)) {
+                        showMessage(
+                            settingsActivity,
+                            resources.getString(R.string.network_unavailable_toast)
+                        )
+                    }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val jObject = JSONObject(String(DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")))
+                        val updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName) ?: BuildConfig.BUILD_TYPE
+                        val jChannelObject = jObject.getJSONObject(updateChannelName).getJSONObject("latest_update")
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            if (jChannelObject.getInt("code") <= BuildConfig.VERSION_CODE) {
+                                showMessage(
+                                    settingsActivity,
+                                    resources.getString(R.string.version_latest_toast)
+                                )
+                                return@launch
+                            }
+
+                            MaterialAlertDialogBuilder(
+                                settingsActivity
+                            )
+                                .setTitle(resources.getString(R.string.new_update_detect_title))
+                                .setMessage(
+                                    resources.getString(
+                                        R.string.new_update_detect_message,
+                                        jChannelObject.getString("name"),
+                                        jChannelObject.getInt("code").toString()
+                                    )
+                                )
+                                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                    val filename =
+                                        updateDownloadPathBase + DocumentFile.fromSingleUri(
+                                            settingsActivity,
+                                            Uri.parse(jChannelObject.getString("url"))
+                                        )?.name
+                                    this@SettingsPrefHandler.updateDownloadPath =
+                                        updateDownloadPathBase + filename
+                                    val apkFile = File(updateDownloadPath!!)
+
+                                    if (!apkFile.exists() || apkFile.delete()) downloadID =
+                                        dmDownloadFile(
+                                            settingsActivity,
+                                            jChannelObject.getString("url"),
+                                            null,
+                                            "application/vnd.android.package-archive",
+                                            resources.getString(R.string.download_title),
+                                            filename,
+                                            null
+                                        )
+                                    else
+                                        showMessage(
+                                            settingsActivity,
+                                            resources.getString(R.string.update_down_failed_toast)
+                                        )
+                                }
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .create().show()
+                        }
+                    }
+                    true
+                }
+
+            // TODO: Load update channels from online JSON
+            update_channel.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    val layoutInflater = LayoutInflater.from(settingsActivity)
+                    @SuppressLint("InflateParams") val root =
+                        layoutInflater.inflate(R.layout.dialog_edittext, null)
+                    val updateChannel =
+                        root.findViewById<AppCompatEditText>(R.id.edittext)
+                    MaterialAlertDialogBuilder(settingsActivity).setTitle(
+                        resources.getString(R.string.pref_update_channel_title)
+                    )
+                        .setView(root)
+                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                            if (updateChannel.text.toString().isNotEmpty()) {
+                                settingsPreference.setString(
+                                    SettingsKeys.updateChannelName,
+                                    updateChannel.text.toString()
+                                )
+                                update_channel.summary = updateChannel.text.toString()
+                            }
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show()
+                    true
+                }
+
             version.onPreferenceClickListener =
                     Preference.OnPreferenceClickListener {
                         @SuppressLint("InflateParams") val dialogView =
@@ -450,7 +545,6 @@ class SettingsActivity : BaseActivity() {
                                 .setPositiveButton(android.R.string.ok, null)
                                 .create()
                         val dialog_text = dialogView.findViewById<AppCompatTextView>(R.id.dialog_text)
-                        val update_btn = dialogView.findViewById<AppCompatButton>(R.id.update_btn)
                         val changelog_btn = dialogView.findViewById<AppCompatButton>(R.id.changelog_btn)
                         val license_btn = dialogView.findViewById<AppCompatButton>(R.id.license_btn)
                         dialog_text.text = resources.getString(
@@ -461,69 +555,6 @@ class SettingsActivity : BaseActivity() {
                                 BuildConfig.VERSION_BUILD_DATE,
                                 BuildConfig.VERSION_BUILD_YEAR
                         )
-                        update_btn.setOnClickListener {
-                            if (!DownloadUtils.isOnline(settingsActivity)) {
-                                showMessage(
-                                        settingsActivity,
-                                        resources.getString(R.string.network_unavailable_toast)
-                                )
-                            }
-                            CoroutineScope(Dispatchers.IO).launch {
-                                val jObject = JSONObject(String(DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")))
-                                val jChannelObject =
-                                        jObject.getJSONObject(BuildConfig.BUILD_TYPE).getJSONObject("latest_update")
-
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    if (jChannelObject.getInt("code") <= BuildConfig.VERSION_CODE) {
-                                        showMessage(
-                                                settingsActivity,
-                                                resources.getString(R.string.version_latest_toast)
-                                        )
-                                        return@launch
-                                    }
-
-                                    MaterialAlertDialogBuilder(
-                                            settingsActivity
-                                    )
-                                            .setTitle(resources.getString(R.string.new_update_detect_title))
-                                            .setMessage(
-                                                    resources.getString(
-                                                            R.string.new_update_detect_message,
-                                                            jChannelObject.getString("name"),
-                                                            jChannelObject.getInt("code").toString()
-                                                    )
-                                            )
-                                            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                                val filename =
-                                                        updateDownloadPathBase + DocumentFile.fromSingleUri(
-                                                                settingsActivity,
-                                                                Uri.parse(jChannelObject.getString("url"))
-                                                        )?.name
-                                                this@SettingsPrefHandler.updateDownloadPath =
-                                                        updateDownloadPathBase + filename
-                                                val apkFile = File(updateDownloadPath!!)
-
-                                                if (!apkFile.exists() || apkFile.delete()) downloadID =
-                                                        dmDownloadFile(
-                                                                settingsActivity,
-                                                                jChannelObject.getString("url"),
-                                                                null,
-                                                                "application/vnd.android.package-archive",
-                                                                resources.getString(R.string.download_title),
-                                                                filename,
-                                                                null
-                                                        )
-                                                else
-                                                    showMessage(
-                                                            settingsActivity,
-                                                            resources.getString(R.string.update_down_failed_toast)
-                                                    )
-                                            }
-                                            .setNegativeButton(android.R.string.cancel, null)
-                                            .create().show()
-                                }
-                            }
-                        }
                         changelog_btn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
                         changelog_btn.setOnClickListener {
                             needLoad(InternalUrls.realChangelogUrl)

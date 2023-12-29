@@ -30,7 +30,7 @@
     <string name="search_engine">"Công cụ tìm kiếm"</string>
     <string name="homepage">"Trang chủ"</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\nBiên soạn trên %4$s\nBản quyền © 2020-%5$s Tipz Team\n\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
-    <string name="update_btn">Tìm bản cập nhật mới</string>
+    <string name="pref_check_for_updates_title">Tìm bản cập nhật mới</string>
     <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Viola."</string>
     <string name="network_unavailable_toast">"Không có mạng."</string>
     <string name="new_update_detect_title">"Có bản cập nhật mới"</string>

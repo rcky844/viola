@@ -30,7 +30,7 @@
     <string name="search_engine">搜索引擎</string>
     <string name="homepage">主页</string>
     <string name="version_info_message">"%1$s %2$s (%3$s)\n编译于%4$s\n版权所有 © 2020-%5$s Tipz Team\n\n本产品已获得 Apache 许可</string>
-    <string name="update_btn">检查更新</string>
+    <string name="pref_check_for_updates_title">检查更新</string>
     <string name="version_latest_toast">您当前使用的是最新版本的Viola</string>
     <string name="network_unavailable_toast">网络不可用</string>
     <string name="new_update_detect_title">"检测到新的版本"</string>

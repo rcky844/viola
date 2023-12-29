@@ -30,7 +30,7 @@
     <string name="search_engine">"Search engine"</string>
     <string name="homepage">"Homepage"</string>
     <string name="version_info_message">%1$s %2$s (%3$s)\nCompiled on %4$s\nCopyright © 2020-%5$s Tipz Team\n\nThis product is licensed under the Apache License.</string>
-    <string name="update_btn">Check for Updates</string>
+    <string name="pref_check_for_updates_title">Check for Updates</string>
     <string name="version_latest_toast">"You are currently running the latest version of Viola."</string>
     <string name="network_unavailable_toast">"Network is unavailable."</string>
     <string name="new_update_detect_title">"Update available"</string>
