@@ -39,7 +39,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
-import tipz.viola.webviewui.BaseActivity
 import tipz.viola.R
 import tipz.viola.broha.api.FavApi
 import tipz.viola.broha.api.FavUtils
@@ -50,6 +49,7 @@ import tipz.viola.broha.database.IconHashUtils
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.copyClipboard
 import tipz.viola.utils.CommonUtils.showMessage
+import tipz.viola.webviewui.BaseActivity
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -103,13 +103,10 @@ class ListInterfaceActivity : BaseActivity() {
                 else FavApi.favBroha(this@ListInterfaceActivity)?.getAllValues() as MutableList<Broha>?
         }
 
-        val layoutManager = LinearLayoutManager(
-            this@ListInterfaceActivity,
-            RecyclerView.VERTICAL,
-            activityMode == mode_history
-        )
-        if (activityMode == mode_history) layoutManager.stackFromEnd = true
-        brohaList.layoutManager = layoutManager
+
+        val layoutManager = brohaList.layoutManager as LinearLayoutManager
+        layoutManager.reverseLayout = activityMode == mode_history
+        layoutManager.stackFromEnd = activityMode == mode_history
         brohaList.adapter = ItemsAdapter(
             this@ListInterfaceActivity,
             (applicationContext as Application).iconHashClient

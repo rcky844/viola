@@ -6,12 +6,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-class CentreSpreadItemDecoration(private val itemWidth: Float, private val itemCount: Int, private val useFixedMgr: Boolean, private val isLinear: Boolean) : ItemDecoration() {
+class CentreSpreadItemDecoration(private val itemWidth: Float, private val itemCount: Int, private val isLinear: Boolean) : ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect, view: View,
         parent: RecyclerView, state: RecyclerView.State
     ) {
-        if (useFixedMgr && parent.layoutManager !is FixedLinearLayoutManager) return
+        val useFixedMgr = parent.layoutManager is FixedLinearLayoutManager
 
         val displayMetrics: DisplayMetrics = parent.resources.displayMetrics
         val totalWidth = displayMetrics.widthPixels
