@@ -17,4 +17,5 @@
     <color name="colorElement">@android:color/white</color>
     <color name="colorTopBar">#141414</color>
     <color name="colorToolbarExpandableHint">@android:color/darker_gray</color>
+    <color name="colorToolbarExpandableItem">#1b1b1b</color>
 </resources>

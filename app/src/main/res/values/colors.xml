@@ -13,12 +13,14 @@
 <resources>
     <color name="colorAccent">#52b3ff</color>
     <color name="colorBackground">@android:color/white</color>
-    <color name="colorUrlEditBg">@android:color/white</color>
+    <color name="colorUrlEditBg">@color/colorBackground</color>
     <color name="colorElement">@android:color/black</color>
-    <color name="colorTopBar">#f8f8f7</color>
+    <color name="colorTopBar">#f8f8f8</color>
     <color name="colorTopBarWebView">@color/colorTopBar</color>
     <color name="colorNavigationBar">@android:color/black</color>
     <color name="colorTextFlipped">@color/colorBackground</color>
     <color name="colorPrimaryDark">@color/colorElement</color>
-    <color name="colorToolbarExpandableHint">#5A5A5A</color>
+    <color name="colorToolbarExpandableHint">#5a5a5a</color>
+    <color name="colorToolbarExpandableItem">#c6c6c6</color>
+    <color name="colorToolbarExpandableBackground">@color/colorTopBar</color>
 </resources>
