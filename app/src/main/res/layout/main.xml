@@ -133,11 +133,12 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/toolBar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hardwareAccelerated="true"
+            android:scrollbars="none"
             android:orientation="horizontal"
-            android:scrollbars="none" />
+            app:layoutManager="tipz.viola.webviewui.view.FixedLinearLayoutManager"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -206,6 +207,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="@integer/num_toolbar_expandable_items_per_row"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

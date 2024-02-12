@@ -53,7 +53,6 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -72,11 +71,10 @@ import tipz.viola.search.SearchEngineEntries
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.webviewui.view.CentreSpreadItemDecoration
-import tipz.viola.webviewui.view.FixedLinearLayoutManager
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebViewActivity
+import tipz.viola.webviewui.view.CentreSpreadItemDecoration
 import java.io.IOException
 import java.io.StringReader
 import java.lang.ref.WeakReference
@@ -114,32 +112,22 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup toolbar
         toolBar = findViewById(R.id.toolBar)
-        toolBar?.layoutManager =
-                FixedLinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         toolBar?.adapter = ItemsAdapter(this, toolsBarItemList)
         toolBar?.addItemDecoration(
                 CentreSpreadItemDecoration(
                         resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
-                        useFixedMgr = true,
                         isLinear = true
                 )
         )
 
         // Setup toolbar expandable
         toolsBarExtendableRecycler = findViewById(R.id.toolsBarExtendableRecycler)
-        toolsBarExtendableRecycler?.layoutManager = GridLayoutManager(
-                this,
-                resources.getInteger(R.integer.num_toolbar_expandable_items_per_row),
-                GridLayoutManager.VERTICAL,
-                false
-        )
         toolsBarExtendableRecycler?.adapter =
                 ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
         toolsBarExtendableRecycler?.addItemDecoration(
                 CentreSpreadItemDecoration(
                         resources.getDimension(R.dimen.toolbar_extendable_holder_size),
                         toolsBarItemList.size,
-                        useFixedMgr = false,
                         isLinear = false
                 )
         )
