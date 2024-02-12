@@ -489,7 +489,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
         override fun onReceivedTitle(view: WebView, title: String) {
-            mVioWebViewActivity!!.onTitleUpdated(title)
+            mVioWebViewActivity!!.onTitleUpdated(if (view.visibility == View.GONE) resources.getString(R.string.start_page) else title)
         }
 
         override fun onGeolocationPermissionsShowPrompt(
