@@ -336,13 +336,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             description: String,
             failingUrl: String
         ) {
-            var returnVal = template
-            for (i in 0..5) returnVal = returnVal.replace(
+            var errorContent = template
+            for (i in 0..5) errorContent = errorContent.replace(
                 "$$i",
                 mContext.resources.getStringArray(R.array.errMsg)[i]
             )
-            returnVal = returnVal.replace("$6", description)
-            view.loadDataWithBaseURL(null, returnVal, "text/html", "UTF-8", null)
+            errorContent = errorContent.replace("$6", description)
+
+            view.evaluateJavascript("""document.documentElement.innerHTML = `$errorContent`""", null)
+            view.stopLoading()
         }
 
         @Deprecated("Deprecated in Java")
