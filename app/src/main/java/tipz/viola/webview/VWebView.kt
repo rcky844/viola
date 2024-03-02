@@ -509,6 +509,17 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             if (ContextCompat.checkSelfPermission(
                     mContext,
                     Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_DENIED
+                || ContextCompat.checkSelfPermission(
+                    mContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_DENIED
+            ) ActivityCompat.requestPermissions(mVioWebViewActivity!!,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 0)
+
+            if (ContextCompat.checkSelfPermission(
+                    mContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(
                     mContext,
