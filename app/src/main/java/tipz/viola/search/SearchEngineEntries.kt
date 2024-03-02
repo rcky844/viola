@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2023 Tipz Team
+ * Copyright (c) 2022-2024 Tipz Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package tipz.viola.search
 
-import android.content.SharedPreferences
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.UrlUtils.cve_2017_13274

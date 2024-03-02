@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2020-2023 The LineageOS Project
- * Copyright (C) 2022-2023 Tipz Team
+ * Copyright (c) 2020-2023 The LineageOS Project
+ * Copyright (c) 2022-2024 Tipz Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

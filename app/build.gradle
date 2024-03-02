@@ -9,14 +9,7 @@ plugins {
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
     exec {
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            Properties properties = new Properties()
-            properties.load(project.rootProject.file('local.properties').newDataInputStream())
-            def sdkDir = properties.getProperty('git.exec')
-            commandLine 'cmd', '/c', sdkDir, 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
-        } else {
-            commandLine 'git', 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
-        }
+        commandLine 'git', 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
         standardOutput = stdout
     }
     return stdout.toString().trim()

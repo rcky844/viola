@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2023 Tipz Team
+ * Copyright (c) 2022-2024 Tipz Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tipz.viola.Application
-import tipz.viola.webviewui.BaseActivity
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
+import tipz.viola.webviewui.BaseActivity
 
 open class VWebViewActivity : BaseActivity() {
     lateinit var settingsPreference: SettingsSharedPreference

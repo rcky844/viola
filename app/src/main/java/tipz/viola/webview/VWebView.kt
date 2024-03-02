@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020-2023 Tipz Team
+ * Copyright (c) 2020-2024 Tipz Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,6 +54,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -134,6 +135,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         /* Start the download manager service */
         setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
+            if (ContextCompat.checkSelfPermission(
+                    mVioWebViewActivity!!,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_DENIED)
+                ActivityCompat.requestPermissions(mVioWebViewActivity!!,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
+
             DownloadUtils.dmDownloadFile(
                 mContext, url!!, contentDisposition,
                 mimeType, currentUrl
@@ -336,13 +344,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             description: String,
             failingUrl: String
         ) {
-            var returnVal = template
-            for (i in 0..5) returnVal = returnVal.replace(
+            var errorContent = template
+            for (i in 0..5) errorContent = errorContent.replace(
                 "$$i",
                 mContext.resources.getStringArray(R.array.errMsg)[i]
             )
-            returnVal = returnVal.replace("$6", description)
-            view.loadDataWithBaseURL(null, returnVal, "text/html", "UTF-8", null)
+            errorContent = errorContent.replace("$6", description)
+
+            view.evaluateJavascript("""document.documentElement.innerHTML = `$errorContent`""", null)
+            view.stopLoading()
         }
 
         @Deprecated("Deprecated in Java")
@@ -496,6 +506,17 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             origin: String,
             callback: GeolocationPermissions.Callback
         ) {
+            if (ContextCompat.checkSelfPermission(
+                    mContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_DENIED
+                || ContextCompat.checkSelfPermission(
+                    mContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_DENIED
+            ) ActivityCompat.requestPermissions(mVioWebViewActivity!!,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 0)
+
             if (ContextCompat.checkSelfPermission(
                     mContext,
                     Manifest.permission.ACCESS_FINE_LOCATION

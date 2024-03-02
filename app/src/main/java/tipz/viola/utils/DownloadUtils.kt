@@ -24,6 +24,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Base64
+import android.util.Log
 import android.webkit.MimeTypeMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -36,6 +37,8 @@ import java.io.OutputStream
 import java.net.URL
 
 object DownloadUtils {
+    private var LOG_TAG = "DownloadUtils"
+
     fun dmDownloadFile(
         context: Context, url: String,
         contentDisposition: String?,
@@ -52,6 +55,8 @@ object DownloadUtils {
         mimeType: String?, title: String?,
         customFilename: String?, requestUrl: String?
     ): Long {
+        Log.w(LOG_TAG, "Using Android's DownloadManager will be deprecated in 7.x, please fix.")
+
         if (url.startsWith("http://") || url.startsWith("https://")) {
             val request = DownloadManager.Request(
                 Uri.parse(UrlUtils.cve_2017_13274(url))
