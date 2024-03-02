@@ -54,6 +54,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -134,6 +135,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         /* Start the download manager service */
         setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
+            if (ContextCompat.checkSelfPermission(
+                    mVioWebViewActivity!!,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_DENIED)
+                ActivityCompat.requestPermissions(mVioWebViewActivity!!,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
+
             DownloadUtils.dmDownloadFile(
                 mContext, url!!, contentDisposition,
                 mimeType, currentUrl
