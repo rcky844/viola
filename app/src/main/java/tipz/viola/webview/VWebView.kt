@@ -19,40 +19,23 @@ package tipz.viola.webview
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
-import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
-import android.webkit.GeolocationPermissions
-import android.webkit.JsPromptResult
-import android.webkit.JsResult
-import android.webkit.ValueCallback
-import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.widget.FrameLayout
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
@@ -74,7 +57,6 @@ import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BaseActivity
-import java.util.Objects
 
 @SuppressLint("SetJavaScriptEnabled")
 class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
@@ -93,13 +75,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var historyCommitted = false
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
-    private var mUploadMessage: ValueCallback<Array<Uri>>? = null
-    val mFileChooser =
-        (mContext as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if (null == mUploadMessage || uri == null) return@registerForActivityResult
-            mUploadMessage!!.onReceiveValue(arrayOf(uri))
-            mUploadMessage = null
-        }
+
     private val mRequestHeaders = HashMap<String, String>()
     private fun userAgentFull(mode: Int): String {
         val mobile = if (mode == 0) "Mobile" else CommonUtils.EMPTY_STRING
@@ -117,8 +93,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         return@Handler true
     }
 
-    public enum class PageLoadState {
-        PAGE_STARTED, PAGE_FINISHED, UPDATE_HISTORY, URL_UPDATE
+    enum class PageLoadState {
+        PAGE_STARTED, PAGE_FINISHED, UPDATE_HISTORY, UPDATE_FAVICON, UPDATE_TITLE, UNKNOWN
     }
 
     init {
@@ -138,7 +114,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 mContext, url!!, contentDisposition,
                 mimeType, currentUrl
             )
-            onPageInformationUpdated(PageLoadState.URL_UPDATE, originalUrl!!, null)
+            onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
             mVioWebViewActivity!!.onPageLoadProgressChanged(0)
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 mVioWebViewActivity!!.finish()
@@ -160,7 +136,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         /* HTML5 API flags */webSettings.databaseEnabled = false
         webSettings.domStorageEnabled = true
         this.webViewClient = VWebViewClient(mContext, this, AdServersHandler(settingsPreference))
-        this.webChromeClient = ChromeWebClient()
+        this.webChromeClient = VChromeWebClient(mContext, this)
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE) && mWebViewRenderProcess != null) WebViewCompat.setWebViewRenderProcessClient(
             this,
             RenderClient()
@@ -258,7 +234,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
         val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
-        onPageInformationUpdated(PageLoadState.URL_UPDATE, checkedUrl, null)
+        onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
 
         // Load URL
         super.loadUrl(checkedUrl, mRequestHeaders)
@@ -278,9 +254,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         super.goForward()
     }
 
-    fun onPageInformationUpdated(state : PageLoadState, url: String, favicon: Bitmap?) {
+    fun onPageInformationUpdated(state : PageLoadState, url: String?, favicon: Bitmap?) {
         if (url == InternalUrls.aboutBlankUrl) return
-        currentUrl = url
+        if (url != null) currentUrl = url
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
@@ -301,165 +277,34 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 mVioWebViewActivity!!.onSwipeRefreshLayoutRefreshingUpdated(false)
             }
 
-            PageLoadState.URL_UPDATE -> {
+            PageLoadState.UPDATE_FAVICON -> {
+                if (!historyCommitted && updateHistory) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        currentBroha!!.iconHash = iconHashClient.save(favicon!!)
+                        if (HistoryUtils.lastUrl(mContext) != currentUrl) {
+                            HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha!!)
+                        }
+                    }
+                    historyCommitted = true
+                }
+            }
+
+            PageLoadState.UPDATE_TITLE -> {
+                mVioWebViewActivity!!.onTitleUpdated(if (this.visibility == View.GONE) resources.getString(R.string.start_page) else title)
+            }
+
+            PageLoadState.UNKNOWN -> {
             }
         }
 
-        mVioWebViewActivity!!.onUrlUpdated(url)
+        if (url != null) mVioWebViewActivity!!.onUrlUpdated(url)
         mVioWebViewActivity!!.onFaviconUpdated(favicon, false)
         mVioWebViewActivity!!.onDropDownDismissed()
     }
 
-    private fun setImmersiveMode(enable: Boolean) {
-        val windowInsetsController = WindowCompat.getInsetsController(
-            (mContext as AppCompatActivity).window,
-            mContext.window.decorView
-        )
-        WindowCompat.setDecorFitsSystemWindows(mContext.window, !enable)
-        if (enable) {
-            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-            windowInsetsController.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        } else {
-            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
-        }
+    fun onPageLoadProgressChanged(progress : Int) {
+        mVioWebViewActivity!!.onPageLoadProgressChanged(progress)
     }
-
-    /**
-     * WebChromeClient
-     */
-    inner class ChromeWebClient : WebChromeClient() {
-        private var mCustomView: View? = null
-        private var mCustomViewCallback: CustomViewCallback? = null
-        override fun onShowCustomView(paramView: View, viewCallback: CustomViewCallback) {
-            if (mCustomView != null) {
-                onHideCustomView()
-                return
-            }
-            mCustomView = paramView
-            (mContext as AppCompatActivity).requestedOrientation =
-                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            mCustomViewCallback = viewCallback
-            setImmersiveMode(true)
-            (mContext.window.decorView as FrameLayout).addView(
-                mCustomView,
-                FrameLayout.LayoutParams(-1, -1)
-            )
-            mContext.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
-
-        override fun onHideCustomView() {
-            (mContext as AppCompatActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            ((mContext as Activity).window.decorView as FrameLayout).removeView(mCustomView)
-            mCustomView = null
-            setImmersiveMode(false)
-            mContext.requestedOrientation = resources.configuration.orientation
-            mCustomViewCallback!!.onCustomViewHidden()
-            mCustomViewCallback = null
-        }
-
-        override fun onProgressChanged(view: WebView, progress: Int) {
-            mVioWebViewActivity!!.onPageLoadProgressChanged(progress)
-        }
-
-        override fun onReceivedIcon(view: WebView, icon: Bitmap) {
-            mVioWebViewActivity!!.onFaviconUpdated(icon, false)
-            val currentTitle = title
-            if (!historyCommitted && updateHistory) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    currentBroha!!.iconHash = iconHashClient.save(icon)
-                    currentBroha!!.title = currentTitle // For making sure title is up to date
-                    if (HistoryUtils.lastUrl(mContext) != currentUrl) {
-                        HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha!!)
-                    }
-                }
-                historyCommitted = true
-            }
-        }
-
-        override fun onReceivedTitle(view: WebView, title: String) {
-            mVioWebViewActivity!!.onTitleUpdated(if (view.visibility == View.GONE) resources.getString(R.string.start_page) else title)
-        }
-
-        override fun onGeolocationPermissionsShowPrompt(
-            origin: String,
-            callback: GeolocationPermissions.Callback
-        ) {
-            if (ContextCompat.checkSelfPermission(
-                    mContext,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_DENIED
-                || ContextCompat.checkSelfPermission(
-                    mContext,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_DENIED
-            ) ActivityCompat.requestPermissions(mVioWebViewActivity!!,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 0)
-
-            if (ContextCompat.checkSelfPermission(
-                    mContext,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(
-                    mContext,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) callback.invoke(origin, true, false)
-        }
-
-        override fun onShowFileChooser(
-            webView: WebView,
-            filePathCallback: ValueCallback<Array<Uri>>,
-            fileChooserParams: FileChooserParams
-        ): Boolean {
-            if (mUploadMessage != null) mUploadMessage!!.onReceiveValue(null)
-            mUploadMessage = filePathCallback
-            mFileChooser.launch("*/*")
-            return true
-        }
-
-        override fun onJsAlert(
-            view: WebView,
-            url: String,
-            message: String,
-            result: JsResult
-        ): Boolean {
-            jsDialog(url, message, null, result, R.string.js_page_says)
-            return true
-        }
-
-        override fun onJsBeforeUnload(
-            view: WebView,
-            url: String,
-            message: String,
-            result: JsResult
-        ): Boolean {
-            jsDialog(url, message, null, result, R.string.js_leave_page_prompt)
-            return true
-        }
-
-        override fun onJsConfirm(
-            view: WebView,
-            url: String,
-            message: String,
-            result: JsResult
-        ): Boolean {
-            jsDialog(url, message, null, result, R.string.js_page_says)
-            return true
-        }
-
-        override fun onJsPrompt(
-            view: WebView,
-            url: String,
-            message: String,
-            defaultValue: String,
-            result: JsPromptResult
-        ): Boolean {
-            jsDialog(url, message, defaultValue, result, R.string.js_page_says)
-            return true
-        }
-    }
-
     /**
      * WebViewRenderProcessClient
      */
@@ -480,33 +325,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
     }
 
-    private fun jsDialog(
-        url: String,
-        message: String,
-        defaultValue: String?,
-        result: JsResult,
-        titleResId: Int
-    ) {
-        val layoutInflater = LayoutInflater.from(mContext)
-        @SuppressLint("InflateParams") val root =
-            layoutInflater.inflate(R.layout.dialog_edittext, null)
-        val jsMessage = root.findViewById<AppCompatEditText>(R.id.edittext)
-        val dialog = MaterialAlertDialogBuilder(mContext)
-        dialog.setTitle(mContext.resources.getString(titleResId, url))
-            .setMessage(message)
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                if (defaultValue == null) result.confirm() else (result as JsPromptResult).confirm(
-                    Objects.requireNonNull(jsMessage.text).toString()
-                )
-            }
-            .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
-                result.cancel()
-                mVioWebViewActivity!!.onFaviconProgressUpdated(false)
-                mVioWebViewActivity!!.onPageLoadProgressChanged(0)
-            }
-        if (defaultValue != null) dialog.setView(root)
-        dialog.create().show()
-    }
 
     fun setUA(
         view: AppCompatImageView?,
