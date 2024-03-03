@@ -20,7 +20,6 @@ package tipz.viola.webview
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Build
@@ -39,9 +38,6 @@ import androidx.core.content.ContextCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
-import androidx.webkit.WebViewRenderProcess
-import androidx.webkit.WebViewRenderProcessClient
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,10 +61,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var mVioWebViewActivity: VWebViewActivity? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
-    private val mWebViewRenderProcess =
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER)) WebViewCompat.getWebViewRenderProcess(
-            this
-        ) else null
     private var currentUrl: String? = null
     private var currentBroha: Broha? = null
     private var updateHistory = true
@@ -137,9 +129,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         webSettings.domStorageEnabled = true
         this.webViewClient = VWebViewClient(mContext, this, AdServersHandler(settingsPreference))
         this.webChromeClient = VChromeWebClient(mContext, this)
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE) && mWebViewRenderProcess != null) WebViewCompat.setWebViewRenderProcessClient(
-            this,
-            RenderClient()
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE))
+            WebViewCompat.setWebViewRenderProcessClient(this,
+                VWebViewRenderProcessClient(mContext, this)
         )
 
         /* Hit Test Menu */
@@ -305,26 +297,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     fun onPageLoadProgressChanged(progress : Int) {
         mVioWebViewActivity!!.onPageLoadProgressChanged(progress)
     }
-    /**
-     * WebViewRenderProcessClient
-     */
-    inner class RenderClient : WebViewRenderProcessClient() {
-        private var dialog = MaterialAlertDialogBuilder(mContext)
-            .setTitle(R.string.dialog_page_unresponsive_title)
-            .setMessage(R.string.dialog_page_unresponsive_message)
-            .setPositiveButton(R.string.dialog_page_unresponsive_wait, null)
-            .setNegativeButton(R.string.dialog_page_unresponsive_terminate) { _: DialogInterface?, _: Int -> mWebViewRenderProcess!!.terminate() }
-            .create()
-
-        override fun onRenderProcessUnresponsive(view: WebView, renderer: WebViewRenderProcess?) {
-            dialog.show()
-        }
-
-        override fun onRenderProcessResponsive(view: WebView, renderer: WebViewRenderProcess?) {
-            dialog.dismiss()
-        }
-    }
-
 
     fun setUA(
         view: AppCompatImageView?,
