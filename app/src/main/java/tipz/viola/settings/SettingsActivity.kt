@@ -82,7 +82,7 @@ class SettingsActivity : BaseActivity() {
 
         onBackPressedDispatcher.addCallback(this) {
             if (SettingsPrefHandler.needReload) {
-                needLoad.putExtra("needLoadUrl", InternalUrls.reloadUrl)
+                needLoad.putExtra(SettingsKeys.needLoadUrl, InternalUrls.reloadUrl)
                 setResult(0, needLoad)
             }
             finish()
@@ -179,7 +179,7 @@ class SettingsActivity : BaseActivity() {
 
         private fun needLoad(Url: String) {
             val needLoad = Intent()
-            needLoad.putExtra("needLoadUrl", Url)
+            needLoad.putExtra(SettingsKeys.needLoadUrl, Url)
             settingsActivity.setResult(0, needLoad)
             settingsActivity.finish()
         }
