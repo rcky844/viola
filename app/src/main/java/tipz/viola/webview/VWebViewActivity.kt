@@ -162,7 +162,7 @@ open class VWebViewActivity : BaseActivity() {
 
     open fun onDropDownDismissed() {}
 
-    open fun onPageFinished() {}
+    open fun onSslCertificateUpdated() {}
 
     open fun onSslErrorProceed() {}
 

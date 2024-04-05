@@ -548,7 +548,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     // FIXME: CLeanup needed
-    override fun onPageFinished() {
+    override fun onSslCertificateUpdated() {
         if (isSslError && sslState == SslState.NONE) {
             if (sslErrorHost == Uri.parse(webview.url).host) {
                 sslState = SslState.ERROR

@@ -229,6 +229,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             this.visibility = GONE
             mVioWebViewActivity?.swipeRefreshLayout?.visibility = GONE
             startPageLayout?.visibility = VISIBLE
+            mVioWebViewActivity?.onSslCertificateUpdated()
             return
         }
         if (this.visibility == GONE) {
@@ -270,7 +271,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.PAGE_FINISHED -> {
                 mVioWebViewActivity!!.onFaviconProgressUpdated(false)
                 mVioWebViewActivity!!.onPageLoadProgressChanged(0)
-                mVioWebViewActivity!!.onPageFinished()
+                mVioWebViewActivity!!.onSslCertificateUpdated()
             }
             PageLoadState.UPDATE_HISTORY -> {
                 if (updateHistory && currentUrl != null) {
