@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2024 Tipz Team
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2020-2024 Tipz Team
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
@@ -80,16 +79,18 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
                     android:background="@drawable/url_edit_bg"
+                    android:completionThreshold="1"
+                    android:fadingEdge="vertical"
                     android:hint="@string/address_bar_hint"
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
                     android:importantForAutofill="no"
-                    android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
+                    android:inputType="textUri"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textColor="@color/colorElement"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/upRightFab"
                     app:layout_constraintStart_toEndOf="@id/barrier"
@@ -115,7 +116,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/progressbar_height"
             android:indeterminate="false"
-            app:trackColor="@color/colorTopBar" />
+            android:progress="22"
+            app:indicatorColor="?attr/colorAccent"
+            app:trackColor="@android:color/transparent" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -137,9 +140,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hardwareAccelerated="true"
-            android:scrollbars="none"
             android:orientation="horizontal"
-            app:layoutManager="tipz.viola.webviewui.view.FixedLinearLayoutManager"/>
+            android:scrollbars="none"
+            app:layoutManager="tipz.viola.webviewui.view.FixedLinearLayoutManager" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -171,10 +174,10 @@
         android:layout_height="0dp"
         android:elevation="6dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/toolsBarExtendableBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/toolsBarExtendableBackground"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolsBarExtendableBackground"
@@ -209,11 +212,11 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="@integer/num_toolbar_expandable_items_per_row"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolsBarExtendableHint" />
+            app:layout_constraintTop_toBottomOf="@id/toolsBarExtendableHint"
+            app:spanCount="@integer/num_toolbar_expandable_items_per_row" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
