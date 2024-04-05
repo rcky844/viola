@@ -149,6 +149,7 @@
     <string name="software_updates">Software updates</string>
     <string name="pref_update_channel_title">Select update channel</string>
     <string name="pref_adBlockerDownload_title">Download Ad Blocker Hosts File</string>
+    <string name="pref_adBlockerSource_title">Ad Blocker Hosts Source</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
@@ -173,6 +174,13 @@
         <item>Qwant</item>
         <item>Sogou</item>
         <item>360 Search</item>
+        <item>Custom</item>
+    </string-array>
+    <string-array name="ad_blocker_hosts_entries">
+        <item>AdAway</item>
+        <item>GoodbyeAds</item>
+        <item>Unified hosts</item>
+        <item>Eulaurarien First-Party Trackers</item>
         <item>Custom</item>
     </string-array>
     <string-array name="themes">

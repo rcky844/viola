@@ -43,6 +43,11 @@
             app:needReload="true" />
         <androidx.preference.Preference
             android:dependency="adBlocker"
+            android:key="adBlockerSource"
+            android:summary=""
+            android:title="@string/pref_adBlockerSource_title" />
+        <androidx.preference.Preference
+            android:dependency="adBlocker"
             android:key="adBlockerDownload"
             android:title="@string/pref_adBlockerDownload_title" />
         <tipz.viola.settings.MaterialSwitchPreference

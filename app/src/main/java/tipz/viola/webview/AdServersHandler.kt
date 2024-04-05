@@ -30,15 +30,10 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.util.Scanner
 
-class AdServersHandler(context: Context, settingsPreference: SettingsSharedPreference) {
+open class AdServersHandler(context: Context, settingsPreference: SettingsSharedPreference) {
     private var mContext : Context
     private var mSettingsPreference : SettingsSharedPreference
     var adServers: String? = null
-
-    // TODO: Add support for dialog selection and merged lists
-    private val adServersList = arrayOf("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt",
-        "https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt",
-        null)
 
     private val adServersFilePath = "ad_servers_hosts.txt"
 
@@ -69,11 +64,13 @@ class AdServersHandler(context: Context, settingsPreference: SettingsSharedPrefe
 
     fun downloadAdServers() {
         CoroutineScope(Dispatchers.IO).launch {
-            val scanner = Scanner(String(DownloadUtils.startFileDownload(adServersList[mSettingsPreference.getInt(SettingsKeys.adServerId)])))
+            var hostsUrl = adServersList[mSettingsPreference.getInt(SettingsKeys.adServerId)]
+            if (hostsUrl == null) hostsUrl = mSettingsPreference.getString(SettingsKeys.adServerUrl)
+            val scanner = Scanner(String(DownloadUtils.startFileDownload(hostsUrl)))
             val builder = StringBuilder()
             while (scanner.hasNextLine()) {
                 val line = scanner.nextLine()
-                if (line.startsWith("127.0.0.1 ")) builder.append(line)
+                if (line.startsWith("127.0.0.1") || line.startsWith("0.0.0.0")) builder.append(line)
                     .append(System.lineSeparator())
             }
             adServers = builder.toString()
@@ -86,5 +83,17 @@ class AdServersHandler(context: Context, settingsPreference: SettingsSharedPrefe
             } catch (_: IOException) {
             }
         }
+    }
+
+    companion object {
+        fun getCustomIndex(): Int {
+            return adServersList.size - 1
+        }
+
+        val adServersList = arrayOf("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt",
+            "https://cdn.jsdelivr.net/gh/jerryn70/GoodbyeAds@master/Hosts/GoodbyeAds.txt",
+            "http://sbc.io/hosts/hosts",
+            "https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt",
+            null)
     }
 }

@@ -222,14 +222,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             return
         }
 
-        // TODO: Remove, see InternalUrls.kt
-        if (BuildConfig.DEBUG && url == InternalUrls.tempTest1226Url) {
-            if (settingsPreference.getInt(SettingsKeys.adServerId) == 0) settingsPreference.setInt(SettingsKeys.adServerId, 1)
-            if (settingsPreference.getInt(SettingsKeys.adServerId) == 1) settingsPreference.setInt(SettingsKeys.adServerId, 0)
-            CommonUtils.showMessage(mVioWebViewActivity, "Triggered!")
-            return
-        }
-
         // Update to start page layout
         val startPageLayout = mVioWebViewActivity?.startPageLayout
         if (url == InternalUrls.startUrl) {
