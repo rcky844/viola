@@ -189,7 +189,9 @@
         android:foregroundGravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_max="@dimen/toolbar_extendable_max_width">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toolsBarExtendableHint"
@@ -207,10 +209,7 @@
             android:id="@+id/toolsBarExtendableRecycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_margin="4dp"
             app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

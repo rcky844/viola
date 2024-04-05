@@ -15,6 +15,7 @@
  */
 package tipz.viola.webviewui
 
+import android.R.attr.button
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
@@ -249,6 +250,17 @@ class BrowserActivity : VWebViewActivity() {
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.clear()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        val params = toolsBarExtendableBackground?.getLayoutParams() as ConstraintLayout.LayoutParams
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            params.height = resources.getDimension(R.dimen.toolbar_extendable_height).toInt()
+            params.matchConstraintMaxWidth = resources.getDimension(R.dimen.toolbar_extendable_max_width).toInt()
+        }
     }
 
     override fun doSettingsCheck() {
