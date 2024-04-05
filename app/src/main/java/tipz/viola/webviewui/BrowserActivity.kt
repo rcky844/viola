@@ -15,7 +15,6 @@
  */
 package tipz.viola.webviewui
 
-import android.R.attr.button
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
@@ -31,6 +30,7 @@ import android.print.PrintManager
 import android.provider.Settings
 import android.util.JsonReader
 import android.util.JsonToken
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -102,7 +102,15 @@ class BrowserActivity : VWebViewActivity() {
     private var toolsBarExtendableRecycler: RecyclerView? = null
     private var toolsBarExtendableBackground: ConstraintLayout? = null
     private var toolsBarExtendableCloseHitBox: LinearLayoutCompat? = null
+    private var sslLock: AppCompatImageView? = null
     private var viewMode: Int = 0
+    private var sslState: SslState = SslState.NONE
+    private var isSslError: Boolean = false
+    private var sslErrorHost: String = ""
+
+    enum class SslState {
+        NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
@@ -117,6 +125,7 @@ class BrowserActivity : VWebViewActivity() {
         favicon = findViewById(R.id.favicon)
         startPageLayout = findViewById(R.id.layout_startpage)
         iconHashClient = (applicationContext as Application).iconHashClient
+        sslLock = findViewById(R.id.ssl_lock)
 
         // Setup toolbar
         toolBar = findViewById(R.id.toolBar)
@@ -150,38 +159,39 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup favicon
         favicon?.setOnClickListener {
-            val cert = webview.certificate
             val popupMenu = PopupMenu(this, favicon!!)
             val menu = popupMenu.menu
             menu.add(if (webview.visibility == View.GONE) resources.getString(R.string.start_page) else webview.title).isEnabled = false
             menu.add(resources.getString(R.string.copy_title))
-            if (cert != null) menu.add(resources.getString(R.string.ssl_info))
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                 if (item.title.toString() == resources.getString(R.string.copy_title)) {
                     CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
-                    return@setOnMenuItemClickListener true
-                } else if (item.title.toString() == resources.getString(R.string.ssl_info)) {
-                    val issuedTo = cert!!.issuedTo
-                    val issuedBy = cert.issuedBy
-                    val dialog = MaterialAlertDialogBuilder(this@BrowserActivity)
-                    dialog.setTitle(Uri.parse(webview.url).host)
-                            .setMessage(
-                                    resources.getString(
-                                            R.string.ssl_info_dialog_content,
-                                            issuedTo.cName, issuedTo.oName, issuedTo.uName,
-                                            issuedBy.cName, issuedBy.oName, issuedBy.uName,
-                                            DateFormat.getDateTimeInstance()
-                                                    .format(cert.validNotBeforeDate),
-                                            DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
-                                    )
-                            )
-                            .setPositiveButton(resources.getString(android.R.string.ok), null)
-                            .create().show()
                     return@setOnMenuItemClickListener true
                 }
                 false
             }
             popupMenu.show()
+        }
+
+        // Setup SSL Lock
+        sslLock?.setOnClickListener {
+            val cert = webview.certificate
+            val issuedTo = cert!!.issuedTo
+            val issuedBy = cert.issuedBy
+            val dialog = MaterialAlertDialogBuilder(this@BrowserActivity)
+            dialog.setTitle(Uri.parse(webview.url).host)
+                .setMessage(
+                    resources.getString(
+                        R.string.ssl_info_dialog_content,
+                        issuedTo.cName, issuedTo.oName, issuedTo.uName,
+                        issuedBy.cName, issuedBy.oName, issuedBy.uName,
+                        DateFormat.getDateTimeInstance()
+                            .format(cert.validNotBeforeDate),
+                        DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
+                    )
+                )
+                .setPositiveButton(resources.getString(android.R.string.ok), null)
+                .create().show()
         }
 
         // Setup Url EditText box
@@ -540,6 +550,46 @@ class BrowserActivity : VWebViewActivity() {
     override fun onDropDownDismissed() {
         urlEditText!!.dismissDropDown()
         urlEditText!!.clearFocus()
+    }
+
+    // FIXME: CLeanup needed
+    override fun onPageFinished() {
+        if (isSslError && sslState == SslState.NONE) {
+            if (sslErrorHost == Uri.parse(webview.url).host) {
+                sslState = SslState.ERROR
+                isSslError = true
+            } else {
+                // We hit a case of the user leaving the original webpage.
+                isSslError = false
+            }
+        }
+
+        if (startPageLayout?.visibility == View.VISIBLE) {
+            sslState = SslState.SEARCH
+            sslLock?.setImageResource(R.drawable.search)
+            sslLock?.isClickable = false
+            return
+        }
+
+        if (webview.certificate == null) {
+            sslState = SslState.NONE
+            sslLock?.setImageResource(R.drawable.warning)
+            sslLock?.isClickable = false // TODO: Handle failed states in dialog
+        } else if (sslState == SslState.ERROR) { // State error is set before SECURE
+            isSslError = true
+            sslErrorHost = Uri.parse(webview.url).host!!
+            sslState = SslState.NONE
+        } else {
+            sslState = SslState.SECURE
+            sslLock?.setImageResource(R.drawable.lock)
+            sslLock?.isClickable = true
+        }
+    }
+
+    override fun onSslErrorProceed() {
+        sslState = SslState.ERROR
+        sslLock?.setImageResource(R.drawable.warning)
+        sslLock?.isClickable = false // TODO: Handle failed states in dialog
     }
 
     override fun onStartPageEditTextPressed() {

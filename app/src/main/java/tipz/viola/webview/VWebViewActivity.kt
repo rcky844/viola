@@ -162,6 +162,10 @@ open class VWebViewActivity : BaseActivity() {
 
     open fun onDropDownDismissed() {}
 
+    open fun onPageFinished() {}
+
+    open fun onSslErrorProceed() {}
+
     open fun onStartPageEditTextPressed() {}
 
     @Suppress("DEPRECATION")

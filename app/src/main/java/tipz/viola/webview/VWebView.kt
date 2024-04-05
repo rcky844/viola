@@ -195,6 +195,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         updateHistory = value
     }
 
+    fun onSslErrorProceed() {
+        mVioWebViewActivity?.onSslErrorProceed()
+    }
+
     override fun loadUrl(url: String) {
         if (url.isEmpty()) return
         if (url == InternalUrls.aboutBlankUrl) {
@@ -272,6 +276,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.PAGE_FINISHED -> {
                 mVioWebViewActivity!!.onFaviconProgressUpdated(false)
                 mVioWebViewActivity!!.onPageLoadProgressChanged(0)
+                mVioWebViewActivity!!.onPageFinished()
             }
             PageLoadState.UPDATE_HISTORY -> {
                 if (updateHistory && currentUrl != null) {

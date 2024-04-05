@@ -59,7 +59,7 @@
                     android:indeterminate="true"
                     android:padding="8dp"
                     android:visibility="gone"
-                    app:indicatorSize="28dp"
+                    app:indicatorSize="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -70,6 +70,19 @@
                     android:layout_height="wrap_content"
                     app:barrierDirection="right"
                     app:constraint_referenced_ids="favicon,faviconProgressBar" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ssl_lock"
+                    android:layout_width="@dimen/actionbar_widget_height"
+                    android:layout_height="@dimen/actionbar_widget_height"
+                    android:layout_marginStart="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:elevation="2dp"
+                    android:padding="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/barrier"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/search" />
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/urlEditText"
@@ -85,7 +98,7 @@
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
                     android:importantForAutofill="no"
                     android:inputType="textUri"
-                    android:paddingStart="16dp"
+                    android:paddingStart="52dp"
                     android:paddingEnd="16dp"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"

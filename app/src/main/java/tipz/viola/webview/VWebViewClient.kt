@@ -101,7 +101,12 @@ open class VWebViewClient(private val mContext: Context, private val mVWebView: 
                     contentSummary
                 )
             )
-            .setPositiveButton(mContext.resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int -> handler.proceed() }
+            .setPositiveButton(mContext.resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+                run {
+                    handler.proceed()
+                    mVWebView.onSslErrorProceed()
+                }
+            }
             .setNegativeButton(mContext.resources.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> handler.cancel() }
             .create().show()
     }
