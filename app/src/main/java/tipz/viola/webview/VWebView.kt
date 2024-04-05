@@ -202,19 +202,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             return
         }
 
-        // Update to start page layout
-        val startPageLayout = mVioWebViewActivity?.startPageLayout
-        if (url == InternalUrls.startUrl) {
-            this.loadUrl(InternalUrls.aboutBlankUrl)
-            this.visibility = GONE
-            startPageLayout?.visibility = VISIBLE
-            return
-        }
-        if (this.visibility == GONE) {
-            this.visibility = VISIBLE
-            startPageLayout?.visibility = GONE
-        }
-
         // Check for internal URLs
         if (url == InternalUrls.licenseUrl) {
             super.loadUrl(InternalUrls.realLicenseUrl)
@@ -237,6 +224,19 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             if (settingsPreference.getInt(SettingsKeys.adServerId) == 1) settingsPreference.setInt(SettingsKeys.adServerId, 0)
             CommonUtils.showMessage(mVioWebViewActivity, "Triggered!")
             return
+        }
+
+        // Update to start page layout
+        val startPageLayout = mVioWebViewActivity?.startPageLayout
+        if (url == InternalUrls.startUrl) {
+            this.loadUrl(InternalUrls.aboutBlankUrl)
+            this.visibility = GONE
+            startPageLayout?.visibility = VISIBLE
+            return
+        }
+        if (this.visibility == GONE) {
+            this.visibility = VISIBLE
+            startPageLayout?.visibility = GONE
         }
 
         val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
@@ -341,7 +341,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun webViewReload() {
-        if (currentUrl.isNullOrBlank()) return
+        if (currentUrl.isNullOrBlank() || currentUrl == InternalUrls.aboutBlankUrl) return
         super.loadUrl(currentUrl!!)
     }
 }
