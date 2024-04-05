@@ -23,6 +23,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.print.PrintAttributes
+import android.print.PrintDocumentAdapter
+import android.print.PrintJob
+import android.print.PrintManager
 import android.provider.Settings
 import android.util.JsonReader
 import android.util.JsonToken
@@ -452,6 +456,20 @@ class BrowserActivity : VWebViewActivity() {
                 else i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
                 startActivity(i)
             }
+
+            R.drawable.print -> {
+                val jobName = getString(R.string.app_name) + " Document"
+                val printAdapter: PrintDocumentAdapter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    webview.createPrintDocumentAdapter(jobName)
+                } else {
+                    webview.createPrintDocumentAdapter()
+                }
+                val printManager = getSystemService(PRINT_SERVICE) as PrintManager
+                val printJob: PrintJob = printManager.print(
+                        jobName, printAdapter,
+                        PrintAttributes.Builder().build()
+                    )
+            }
         }
     }
 
@@ -658,6 +676,7 @@ class BrowserActivity : VWebViewActivity() {
                 R.drawable.app_shortcut,
                 R.drawable.settings,
                 R.drawable.code,
+                R.drawable.print,
                 R.drawable.close
         )
 
@@ -670,6 +689,7 @@ class BrowserActivity : VWebViewActivity() {
                 R.string.toolbar_expandable_app_shortcut,
                 R.string.toolbar_expandable_settings,
                 R.string.toolbar_expandable_view_page_source,
+                R.string.toolbar_expandable_print,
                 R.string.toolbar_expandable_close
         )
     }
