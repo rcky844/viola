@@ -184,12 +184,12 @@
         android:id="@+id/toolsBarExtendableCloseHitBox"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:elevation="6dp"
+        android:elevation="4dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/toolsBarExtendableBackground"
+        app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/appbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolsBarExtendableBackground"
