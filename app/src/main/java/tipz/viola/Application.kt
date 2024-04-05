@@ -16,7 +16,6 @@
 package tipz.viola
 
 import android.app.Application
-import android.os.Build
 import com.google.android.material.color.DynamicColors
 import tipz.viola.broha.api.FavApi
 import tipz.viola.broha.api.HistoryApi

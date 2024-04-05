@@ -25,12 +25,10 @@ import android.os.Build
 import android.os.Bundle
 import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
-import android.print.PrintJob
 import android.print.PrintManager
 import android.provider.Settings
 import android.util.JsonReader
 import android.util.JsonToken
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -478,10 +476,7 @@ class BrowserActivity : VWebViewActivity() {
                     webview.createPrintDocumentAdapter()
                 }
                 val printManager = getSystemService(PRINT_SERVICE) as PrintManager
-                val printJob: PrintJob = printManager.print(
-                        jobName, printAdapter,
-                        PrintAttributes.Builder().build()
-                    )
+                printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
             }
         }
     }
