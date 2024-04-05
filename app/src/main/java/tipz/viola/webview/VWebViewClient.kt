@@ -23,7 +23,11 @@ import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
 import java.net.URL
 
-open class VWebViewClient(private val mContext: Context, private val mVWebView: VWebView, private val adServersHandler : AdServersHandler) : WebViewClientCompat() {
+open class VWebViewClient(
+    private val mContext: Context,
+    private val mVWebView: VWebView,
+    private val adServersHandler: AdServersHandler
+) : WebViewClientCompat() {
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
 
@@ -43,7 +47,8 @@ open class VWebViewClient(private val mContext: Context, private val mVWebView: 
     }
 
     @Deprecated("Deprecated in Java")
-    override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String
+    override fun onReceivedError(
+        view: WebView, errorCode: Int, description: String, failingUrl: String
     ) {
         var errorContent = template
         for (i in 0..5) errorContent = errorContent.replace(

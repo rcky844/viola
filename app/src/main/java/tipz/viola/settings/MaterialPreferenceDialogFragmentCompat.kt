@@ -21,7 +21,7 @@ import android.os.Bundle
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class MaterialPreferenceDialogFragmentCompat(private val mMaterialPreferenceDialogListener: MaterialDialogPreferenceListener) :
+open class MaterialPreferenceDialogFragmentCompat(private val mMaterialPreferenceDialogListener: MaterialDialogPreferenceListener) :
     PreferenceDialogFragmentCompat() {
     /** Which button was clicked.  */
     private var mWhichButtonClicked = 0
@@ -61,7 +61,6 @@ class MaterialPreferenceDialogFragmentCompat(private val mMaterialPreferenceDial
     }
 
     companion object {
-        @JvmStatic
         fun newInstance(
             key: String?,
             materialPreferenceDialogListener: MaterialDialogPreferenceListener

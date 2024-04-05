@@ -16,6 +16,13 @@
 package tipz.viola.settings
 
 object SettingsKeys {
+
+    /*
+     * Configuration keys for shared preferences.
+     *
+     * Includes all possibly used keys. Comment next to the definition
+     * indicates data type.
+     */
     const val configDataStore = "config" /* Pref file name */ /* TODO: Migrate to something newer? */
 
     const val adServerId = "adServerId" /* STRING */
@@ -44,4 +51,12 @@ object SettingsKeys {
     const val useWebHomePage = "useWebHomePage" /* INTEGER */
     const val updateChannelName = "updateChannelName" /* STRING */
     const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
+
+    /*
+     * Intent keys used in SettingsActivity communication
+     *
+     * Includes all possibly used keys. Comment next to the definition
+     * indicates data type.
+     */
+    const val needLoadUrl = "needLoadUrl"  /* STRING */
 }

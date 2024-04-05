@@ -41,6 +41,14 @@ open class BaseActivity : AppCompatActivity() {
         doSettingsCheck()
     }
 
+    /*
+     * Settings config checker
+     *
+     * This function is called every time a user returns to the app, where
+     * onStart() is executed. It checks all configuration items and performs
+     * actions to perform the actions required. Activities that implement us
+     * will need to call this function.
+     */
     @CallSuper
     open fun doSettingsCheck() {
         // Dark Mode
