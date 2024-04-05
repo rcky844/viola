@@ -214,214 +214,70 @@ class SettingsActivity : BaseActivity() {
 
             search_engine.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    val checkedItem =
-                        intArrayOf(settingsPreference.getInt(SettingsKeys.defaultSearchId))
-                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.search_engine))
-                        .setSingleChoiceItems(
-                            searchHomePageList,
-                            settingsPreference.getInt(SettingsKeys.defaultSearchId)
-                        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                            if (checkedItem[0] == SearchEngineEntries.getCustomIndex()) {
-                                val layoutInflater = LayoutInflater.from(settingsActivity)
-                                @SuppressLint("InflateParams") val root =
-                                    layoutInflater.inflate(R.layout.dialog_edittext, null)
-                                val customSearch =
-                                    root.findViewById<AppCompatEditText>(R.id.edittext)
-                                MaterialAlertDialogBuilder(settingsActivity).setTitle(
-                                    resources.getString(
-                                        R.string.search_engine
-                                    )
-                                )
-                                    .setMessage(settingsActivity.resources.getString(R.string.custom_search_guide))
-                                    .setView(root)
-                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                        if (customSearch.text.toString().isNotEmpty()) {
-                                            settingsPreference.setString(
-                                                SettingsKeys.defaultSearch,
-                                                customSearch.text.toString()
-                                            )
-                                            settingsPreference.setInt(
-                                                SettingsKeys.defaultSearchId,
-                                                checkedItem[0]
-                                            )
-                                            search_engine.summary =
-                                                searchHomePageList[checkedItem[0]]
-                                        }
-                                    }
-                                    .setNegativeButton(android.R.string.cancel, null)
-                                    .create().show()
-                            }
-                            if (checkedItem[0] != SearchEngineEntries.getCustomIndex()) {
-                                settingsPreference.setString(
-                                    SettingsKeys.defaultSearch,
-                                    CommonUtils.EMPTY_STRING
-                                )
-                                settingsPreference.setInt(
-                                    SettingsKeys.defaultSearchId,
-                                    checkedItem[0]
-                                )
-                                search_engine.summary = searchHomePageList[checkedItem[0]]
-                            }
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show()
+                    val listPickerAlertDialog =
+                        ListPickerAlertDialog(settingsActivity, settingsPreference)
+                    val listPickerObject = listPickerAlertDialog.getListPickerObject()
+                    listPickerObject.preference = search_engine
+                    listPickerObject.nameList = searchHomePageList
+                    listPickerObject.idPreference = SettingsKeys.defaultSearchId
+                    listPickerObject.stringPreference = SettingsKeys.defaultSearch
+                    listPickerObject.dialogTitle =
+                        resources.getString(R.string.search_engine)
+                    listPickerObject.dialogCustomMessage =
+                        settingsActivity.resources.getString(R.string.custom_search_guide)
+
+                    listPickerAlertDialog.setupDialogForShowing()
+                    listPickerAlertDialog.create().show()
                     true
                 }
             homepage.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    val checkedItem =
-                        intArrayOf(settingsPreference.getInt(SettingsKeys.defaultSearchId))
-                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.homepage))
-                        .setSingleChoiceItems(
-                            searchHomePageList,
-                            settingsPreference.getInt(SettingsKeys.defaultHomePageId)
-                        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                            if (checkedItem[0] == SearchEngineEntries.getCustomIndex()) {
-                                val layoutInflater = LayoutInflater.from(settingsActivity)
-                                @SuppressLint("InflateParams") val root =
-                                    layoutInflater.inflate(R.layout.dialog_edittext, null)
-                                val customHomepage =
-                                    root.findViewById<AppCompatEditText>(R.id.edittext)
-                                MaterialAlertDialogBuilder(settingsActivity)
-                                    .setTitle(resources.getString(R.string.homepage))
-                                    .setView(root)
-                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                        if (customHomepage.text.toString().isNotEmpty()) {
-                                            settingsPreference.setString(
-                                                SettingsKeys.defaultHomePage,
-                                                customHomepage.text.toString()
-                                            )
-                                            settingsPreference.setInt(
-                                                SettingsKeys.defaultHomePageId,
-                                                checkedItem[0]
-                                            )
-                                            homepage.summary = searchHomePageList[checkedItem[0]]
-                                        }
-                                    }
-                                    .setNegativeButton(android.R.string.cancel, null)
-                                    .create().show()
-                            }
-                            if (checkedItem[0] != SearchEngineEntries.getCustomIndex()) {
-                                settingsPreference.setString(
-                                    SettingsKeys.defaultHomePage,
-                                    CommonUtils.EMPTY_STRING
-                                )
-                                settingsPreference.setInt(
-                                    SettingsKeys.defaultHomePageId,
-                                    checkedItem[0]
-                                )
-                                homepage.summary = searchHomePageList[checkedItem[0]]
-                            }
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show()
+                    val listPickerAlertDialog =
+                        ListPickerAlertDialog(settingsActivity, settingsPreference)
+                    val listPickerObject = listPickerAlertDialog.getListPickerObject()
+                    listPickerObject.preference = homepage
+                    listPickerObject.nameList = searchHomePageList
+                    listPickerObject.idPreference = SettingsKeys.defaultHomePageId
+                    listPickerObject.stringPreference = SettingsKeys.defaultHomePage
+                    listPickerObject.dialogTitle =
+                        resources.getString(R.string.homepage)
+
+                    listPickerAlertDialog.setupDialogForShowing()
+                    listPickerAlertDialog.create().show()
                     true
                 }
             search_suggestions.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    val checkedItem =
-                        intArrayOf(settingsPreference.getInt(SettingsKeys.defaultSuggestionsId))
-                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.search_suggestions_title))
-                        .setSingleChoiceItems(
-                            searchHomePageList,
-                            settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)
-                        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                            if (checkedItem[0] == SearchEngineEntries.getCustomIndex()) {
-                                val layoutInflater = LayoutInflater.from(settingsActivity)
-                                @SuppressLint("InflateParams") val root =
-                                    layoutInflater.inflate(R.layout.dialog_edittext, null)
-                                val customSearchSuggestions =
-                                    root.findViewById<AppCompatEditText>(R.id.edittext)
-                                MaterialAlertDialogBuilder(settingsActivity)
-                                    .setTitle(resources.getString(R.string.search_suggestions_title))
-                                    .setMessage(settingsActivity.resources.getString(R.string.custom_search_guide))
-                                    .setView(root)
-                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                        if (customSearchSuggestions.text.toString().isNotEmpty()) {
-                                            settingsPreference.setString(
-                                                SettingsKeys.defaultSuggestions,
-                                                customSearchSuggestions.text.toString()
-                                            )
-                                            settingsPreference.setInt(
-                                                SettingsKeys.defaultSuggestionsId,
-                                                checkedItem[0]
-                                            )
-                                            search_suggestions.summary =
-                                                searchHomePageList[checkedItem[0]]
-                                        }
-                                    }
-                                    .setNegativeButton(android.R.string.cancel, null)
-                                    .create().show()
-                            }
-                            if (checkedItem[0] != SearchEngineEntries.getCustomIndex()) {
-                                settingsPreference.setString(
-                                    SettingsKeys.defaultSuggestions,
-                                    CommonUtils.EMPTY_STRING
-                                )
-                                settingsPreference.setInt(
-                                    SettingsKeys.defaultSuggestionsId,
-                                    checkedItem[0]
-                                )
-                                search_suggestions.summary = searchHomePageList[checkedItem[0]]
-                            }
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show()
+                    val listPickerAlertDialog =
+                        ListPickerAlertDialog(settingsActivity, settingsPreference)
+                    val listPickerObject = listPickerAlertDialog.getListPickerObject()
+                    listPickerObject.preference = search_suggestions
+                    listPickerObject.nameList = searchHomePageList
+                    listPickerObject.idPreference = SettingsKeys.defaultSuggestionsId
+                    listPickerObject.stringPreference = SettingsKeys.defaultSuggestions
+                    listPickerObject.dialogTitle =
+                        resources.getString(R.string.search_suggestions_title)
+                    listPickerObject.dialogCustomMessage =
+                        settingsActivity.resources.getString(R.string.custom_search_guide)
+
+                    listPickerAlertDialog.setupDialogForShowing()
+                    listPickerAlertDialog.create().show()
                     true
                 }
             adBlockerSource.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    val checkedItem =
-                        intArrayOf(settingsPreference.getInt(SettingsKeys.adServerId))
-                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.pref_adBlockerSource_title))
-                        .setSingleChoiceItems(
-                            adBlockerHostsEntries,
-                            settingsPreference.getInt(SettingsKeys.adServerId)
-                        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                            if (checkedItem[0] == AdServersHandler.getCustomIndex()) {
-                                val layoutInflater = LayoutInflater.from(settingsActivity)
-                                @SuppressLint("InflateParams") val root =
-                                    layoutInflater.inflate(R.layout.dialog_edittext, null)
-                                val customSource =
-                                    root.findViewById<AppCompatEditText>(R.id.edittext)
-                                MaterialAlertDialogBuilder(settingsActivity)
-                                    .setTitle(resources.getString(R.string.pref_adBlockerSource_title))
-                                    .setView(root)
-                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                        if (customSource.text.toString().isNotEmpty()) {
-                                            settingsPreference.setString(
-                                                SettingsKeys.adServerUrl,
-                                                customSource.text.toString()
-                                            )
-                                            settingsPreference.setInt(
-                                                SettingsKeys.adServerId,
-                                                checkedItem[0]
-                                            )
-                                            adBlockerSource.summary =
-                                                adBlockerHostsEntries[checkedItem[0]]
-                                        }
-                                    }
-                                    .setNegativeButton(android.R.string.cancel, null)
-                                    .create().show()
-                            }
-                            if (checkedItem[0] != AdServersHandler.getCustomIndex()) {
-                                settingsPreference.setString(
-                                    SettingsKeys.adServerUrl,
-                                    CommonUtils.EMPTY_STRING
-                                )
-                                settingsPreference.setInt(
-                                    SettingsKeys.adServerId,
-                                    checkedItem[0]
-                                )
-                                adBlockerSource.summary = adBlockerHostsEntries[checkedItem[0]]
-                            }
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show()
+                    val listPickerAlertDialog =
+                        ListPickerAlertDialog(settingsActivity, settingsPreference)
+                    val listPickerObject = listPickerAlertDialog.getListPickerObject()
+                    listPickerObject.preference = adBlockerSource
+                    listPickerObject.nameList = adBlockerHostsEntries
+                    listPickerObject.idPreference = SettingsKeys.adServerId
+                    listPickerObject.stringPreference = SettingsKeys.adServerUrl
+                    listPickerObject.dialogTitle =
+                        resources.getString(R.string.pref_adBlockerSource_title)
+
+                    listPickerAlertDialog.setupDialogForShowing()
+                    listPickerAlertDialog.create().show()
                     true
                 }
             adBlockerDownload.onPreferenceClickListener =
