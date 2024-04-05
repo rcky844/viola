@@ -89,7 +89,6 @@
                     android:paddingEnd="16dp"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
-                    android:textColor="@color/colorElement"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/upRightFab"
@@ -106,7 +105,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/refresh" />
+                    app:srcCompat="@drawable/refresh"
+                    app:tint="?attr/colorOnSurface" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -126,7 +126,6 @@
         android:id="@+id/toolsContainer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_icon_size"
-        android:background="@color/colorTopBarWebView"
         android:elevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -69,7 +69,7 @@ open class VWebViewActivity : BaseActivity() {
 
         // Setup swipe refresh layout
         swipeRefreshLayout.setOnRefreshListener { webview.webViewReload() }
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
+        //swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
 
         // Setup start page
         startPageLayout?.findViewById<View>(R.id.startPageEditText)?.setOnClickListener { onStartPageEditTextPressed() }
@@ -136,13 +136,13 @@ open class VWebViewActivity : BaseActivity() {
 
         // Start Page Wallpaper
         if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
-            startPageLayout?.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
+            //startPageLayout?.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
         } else {
             try {
                 val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper)) )
                 startPageLayout?.background = BitmapDrawable(resources, bitmap)
             } catch (_: SecurityException) {
-                startPageLayout?.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
+                //startPageLayout?.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
                 settingsPreference.setString(SettingsKeys.startPageWallpaper, CommonUtils.EMPTY_STRING)
             }
         }

@@ -38,8 +38,8 @@ class Application : Application() {
         historyBroha = BrohaClient(this, "history").dao
         favBroha = BrohaClient(this, "bookmarks").dao
         iconHashClient = IconHashUtils(this)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) DynamicColors.applyToActivitiesIfAvailable(
-            this
-        )
+
+        // Observe dynamic colors changes
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 }
