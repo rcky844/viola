@@ -26,7 +26,7 @@ android {
         versionName "6.1-MASTER"
 
         buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_CODENAME", "\"Viola\""
+        buildConfigField "String", "VERSION_CODENAME", "\"Crusader\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
@@ -51,7 +51,7 @@ android {
             initWith(debug)
             applicationIdSuffix ".beta"
             multiDexEnabled true
-            buildConfigField "String", "VERSION_NAME_EXTRA", "\" Beta 1\""
+            buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         }
 
         debug {
