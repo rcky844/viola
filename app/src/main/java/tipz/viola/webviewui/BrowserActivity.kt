@@ -56,11 +56,15 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
@@ -78,7 +82,6 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebViewActivity
-import tipz.viola.webviewui.view.CentreSpreadItemDecoration
 import java.io.IOException
 import java.io.StringReader
 import java.lang.ref.WeakReference
@@ -117,24 +120,24 @@ class BrowserActivity : VWebViewActivity() {
         // Setup toolbar
         toolBar = findViewById(R.id.toolBar)
         toolBar?.adapter = ItemsAdapter(this, toolsBarItemList)
-        toolBar?.addItemDecoration(
-                CentreSpreadItemDecoration(
-                        resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
-                        isLinear = true
-                )
-        )
+        (toolBar?.layoutManager as FlexboxLayoutManager).apply {
+            justifyContent = JustifyContent.SPACE_AROUND
+            alignItems = AlignItems.CENTER
+            flexDirection = FlexDirection.ROW
+            flexWrap = FlexWrap.WRAP
+        }
 
         // Setup toolbar expandable
         toolsBarExtendableRecycler = findViewById(R.id.toolsBarExtendableRecycler)
         toolsBarExtendableRecycler?.adapter =
                 ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
-        toolsBarExtendableRecycler?.addItemDecoration(
-                CentreSpreadItemDecoration(
-                        resources.getDimension(R.dimen.toolbar_extendable_holder_size),
-                        toolsBarItemList.size,
-                        isLinear = false
-                )
-        )
+        (toolsBarExtendableRecycler?.layoutManager as FlexboxLayoutManager).apply {
+            justifyContent = JustifyContent.FLEX_START
+            alignItems = AlignItems.CENTER
+            flexDirection = FlexDirection.ROW
+            flexWrap = FlexWrap.WRAP
+        }
+
         toolsBarExtendableBackground = this.findViewById(R.id.toolsBarExtendableBackground)
         toolsBarExtendableBackground!!.post {
             toolsBarExtendableBackground!!.visibility = View.GONE
@@ -246,18 +249,6 @@ class BrowserActivity : VWebViewActivity() {
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.clear()
-    }
-
-    @SuppressLint("NotifyDataSetChanged") // We want it to scan the whole dataset
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        val orientation: Int = getResources().configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE || orientation == Configuration.ORIENTATION_PORTRAIT) {
-            toolBar?.adapter?.notifyDataSetChanged()
-            (toolsBarExtendableRecycler?.layoutManager!! as GridLayoutManager).spanCount = resources.getInteger(R.integer.num_toolbar_expandable_items_per_row)
-            toolsBarExtendableRecycler?.adapter?.notifyDataSetChanged()
-        }
     }
 
     override fun doSettingsCheck() {

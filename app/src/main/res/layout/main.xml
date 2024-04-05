@@ -142,7 +142,7 @@
             android:hardwareAccelerated="true"
             android:orientation="horizontal"
             android:scrollbars="none"
-            app:layoutManager="tipz.viola.webviewui.view.FixedLinearLayoutManager" />
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -211,12 +211,11 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolsBarExtendableHint"
-            app:spanCount="@integer/num_toolbar_expandable_items_per_row" />
+            app:layout_constraintTop_toBottomOf="@id/toolsBarExtendableHint" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
