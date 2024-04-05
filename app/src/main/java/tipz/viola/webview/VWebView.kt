@@ -179,7 +179,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun notifyViewSetup() {
         mVioWebViewActivity = mContext as VWebViewActivity
-        doSettingsCheck()
     }
 
     fun setUpdateHistory(value: Boolean) {
