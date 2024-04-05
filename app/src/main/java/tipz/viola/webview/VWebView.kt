@@ -67,6 +67,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var historyCommitted = false
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
+    private var adServersHandler: AdServersHandler
 
     private val mRequestHeaders = HashMap<String, String>()
     private fun userAgentFull(mode: Int): String {
@@ -125,9 +126,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         webSettings.allowFileAccessFromFileURLs = false
         webSettings.allowUniversalAccessFromFileURLs = false
 
-        /* HTML5 API flags */webSettings.databaseEnabled = false
+        // Ad Server Hosts
+        adServersHandler = AdServersHandler(mContext, settingsPreference)
+
+        /* HTML5 API flags */
+        webSettings.databaseEnabled = false
         webSettings.domStorageEnabled = true
-        this.webViewClient = VWebViewClient(mContext, this, AdServersHandler(settingsPreference))
+
+        this.webViewClient = VWebViewClient(mContext, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(mContext, this)
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE))
             WebViewCompat.setWebViewRenderProcessClient(this,
@@ -175,6 +181,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         // Do Not Track request
         mRequestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
+
+        // Ad Servers Hosts
+        if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock))
+            adServersHandler.importAdServers()
     }
 
     fun notifyViewSetup() {
@@ -213,6 +223,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         if (url == InternalUrls.reloadUrl) {
             webViewReload()
+            return
+        }
+
+        if (url == InternalUrls.updateAdServersHostsUrl) {
+            adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress
             return
         }
 

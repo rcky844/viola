@@ -196,6 +196,7 @@ class SettingsActivity : BaseActivity() {
             val search_engine = findPreference<Preference>("search_engine")!!
             val homepage = findPreference<Preference>("homepage")!!
             val search_suggestions = findPreference<Preference>("search_suggestions")!!
+            val adBlockerDownload = findPreference<Preference>("adBlockerDownload")!!
             val clear_cache = findPreference<MaterialDialogPreference>("clear_cache")!!
             val clear_cookies = findPreference<MaterialDialogPreference>("clear_cookies")!!
             val reset_to_default = findPreference<MaterialDialogPreference>("reset_to_default")!!
@@ -367,6 +368,11 @@ class SettingsActivity : BaseActivity() {
                                 .create().show()
                         true
                     }
+            adBlockerDownload.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    needLoad(InternalUrls.updateAdServersHostsUrl)
+                    true
+                }
             clear_cache.materialDialogPreferenceListener =
                     object : MaterialDialogPreferenceListener {
                         override fun onDialogClosed(positiveResult: Boolean) {

@@ -109,7 +109,7 @@ open class VWebViewActivity : BaseActivity() {
     val mGetNeedLoad =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             doSettingsCheck()
-            webview.loadUrl((if (result.data != null) result.data!!.getStringExtra("needLoadUrl") else CommonUtils.EMPTY_STRING)!!)
+            if (result.data != null) result.data!!.getStringExtra("needLoadUrl")?.let { webview.loadUrl(it) }
         }
 
     /**

@@ -41,6 +41,10 @@
             android:title="@string/pref_adBlocker"
             app:preferenceTag="enableAdBlock"
             app:needReload="true" />
+        <androidx.preference.Preference
+            android:dependency="adBlocker"
+            android:key="adBlockerDownload"
+            android:title="@string/pref_adBlockerDownload_title" />
         <tipz.viola.settings.MaterialSwitchPreference
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_desp"

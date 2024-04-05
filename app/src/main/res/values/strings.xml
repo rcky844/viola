@@ -148,6 +148,7 @@
     <string name="copy_src_url">Copy image link</string>
     <string name="software_updates">Software updates</string>
     <string name="pref_update_channel_title">Select update channel</string>
+    <string name="pref_adBlockerDownload_title">Download Ad Blocker Hosts File</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

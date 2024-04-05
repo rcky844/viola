@@ -113,7 +113,7 @@ open class VWebViewClient(private val mContext: Context, private val mVWebView: 
     @Deprecated("Deprecated in Java")
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         if (adServersHandler.adServers.isNullOrEmpty()) {
-            adServersHandler.downloadAdServers()
+            // TODO: Add dialog to warn users of this issue
             return super.shouldInterceptRequest(view, url)
         }
         try {
