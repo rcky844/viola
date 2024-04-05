@@ -39,25 +39,25 @@ import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BrowserActivity
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
-    private var arrayAdapter : ArrayAdapter<String>? = null
+    private var arrayAdapter: ArrayAdapter<String>? = null
 
     private val imageId = -1
 
     private val hitTestDialogItems = listOf(
-            R.string.open_in_new_tab,
-            R.string.copy_url,
-            R.string.copy_text_url,
-            imageId,
-            R.string.share_url
+        R.string.open_in_new_tab,
+        R.string.copy_url,
+        R.string.copy_text_url,
+        imageId,
+        R.string.share_url
     )
 
     private val hitTestDialogImageItems = listOf(
-            R.string.download_image,
-            R.string.copy_src_url,
-            R.string.search_image
+        R.string.download_image,
+        R.string.copy_src_url,
+        R.string.search_image
     )
 
-    open fun setupDialogForShowing(vWebView : VWebView, bundle : Bundle) : Boolean {
+    open fun setupDialogForShowing(vWebView: VWebView, bundle: Bundle): Boolean {
         val hr = vWebView.hitTestResult
         val type = hr.type
         var url = bundle.getString("url") ?: return false
@@ -75,7 +75,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         } else {
             val layoutInflater = LayoutInflater.from(context)
             @SuppressLint("InflateParams") val root =
-                    layoutInflater.inflate(R.layout.hit_test_dialog_title, null)
+                layoutInflater.inflate(R.layout.hit_test_dialog_title, null)
 
             root.findViewById<AppCompatTextView>(R.id.title).text = title
             root.findViewById<AppCompatTextView>(R.id.url).text = url
@@ -115,17 +115,26 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
 
         setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
             when (arrayAdapter!!.getItem(which)) {
-                context.resources.getString(R.string.copy_url) -> CommonUtils.copyClipboard(context, url)
+                context.resources.getString(R.string.copy_url) -> CommonUtils.copyClipboard(
+                    context,
+                    url
+                )
 
-                context.resources.getString(R.string.copy_text_url) -> CommonUtils.copyClipboard(context, title)
+                context.resources.getString(R.string.copy_text_url) -> CommonUtils.copyClipboard(
+                    context,
+                    title
+                )
 
-                context.resources.getString(R.string.copy_src_url) -> CommonUtils.copyClipboard(context, src)
+                context.resources.getString(R.string.copy_src_url) -> CommonUtils.copyClipboard(
+                    context,
+                    src
+                )
 
                 context.resources.getString(R.string.download_image) -> {
                     val fileDownload = src ?: url
                     DownloadUtils.dmDownloadFile(
-                            context, fileDownload,
-                            null, null, fileDownload
+                        context, fileDownload,
+                        null, null, fileDownload
                     )
                 }
 
@@ -140,7 +149,10 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                     context.startActivity(intent)
                 }
 
-                context.resources.getString(R.string.share_url) -> CommonUtils.shareUrl(context, url)
+                context.resources.getString(R.string.share_url) -> CommonUtils.shareUrl(
+                    context,
+                    url
+                )
             }
         }
         return true

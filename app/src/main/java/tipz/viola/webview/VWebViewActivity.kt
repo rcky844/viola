@@ -51,6 +51,7 @@ open class VWebViewActivity : BaseActivity() {
     private lateinit var appbar: AppBarLayout
     private lateinit var webviewContainer: RelativeLayout
     private var swipeRefreshLayoutEnabled = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         settingsPreference = (applicationContext as Application).settingsPreference!!
@@ -64,15 +65,15 @@ open class VWebViewActivity : BaseActivity() {
         appbar = findViewById(R.id.appbar)
         webviewContainer = findViewById(R.id.webviewContainer)
 
-        /* Init VioWebView */
+        // Init VioWebView
         webview.doSettingsCheck()
 
         // Setup swipe refresh layout
         swipeRefreshLayout.setOnRefreshListener { webview.webViewReload() }
-        //swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
 
         // Setup start page
-        startPageLayout?.findViewById<View>(R.id.startPageEditText)?.setOnClickListener { onStartPageEditTextPressed() }
+        startPageLayout?.findViewById<View>(R.id.startPageEditText)
+            ?.setOnClickListener { onStartPageEditTextPressed() }
 
         // Setup favicon
         faviconProgressBar?.setOnClickListener { favicon?.performClick() }
@@ -83,14 +84,12 @@ open class VWebViewActivity : BaseActivity() {
         super.onPause()
         webview.onPause()
         webview.pauseTimers()
-        webview.freeMemory()
     }
 
     override fun onResume() {
         super.onResume()
         webview.onResume()
         webview.resumeTimers()
-        webview.freeMemory()
     }
 
     override fun onDestroy() {
@@ -99,26 +98,13 @@ open class VWebViewActivity : BaseActivity() {
         webview.removeAllViews()
     }
 
-    /**
-     * Need Load Info Receiver
-     *
-     *
-     * Receive needLoadUrl for loading.
-     */
-    @JvmField
     val mGetNeedLoad =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             doSettingsCheck()
-            if (result.data != null) result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadUrl(it) }
+            if (result.data != null) result.data!!.getStringExtra(SettingsKeys.needLoadUrl)
+                ?.let { webview.loadUrl(it) } // FROM: SettingsActivity
         }
 
-    /**
-     * Config Checker
-     *
-     *
-     * Used to check if anything has been changed
-     * after returning from settings.
-     */
     override fun doSettingsCheck() {
         super.doSettingsCheck()
 
@@ -129,7 +115,7 @@ open class VWebViewActivity : BaseActivity() {
         // Favicon
         if (favicon != null) {
             favicon!!.visibility =
-                    if (settingsPreference.getIntBool(SettingsKeys.showFavicon)) View.VISIBLE else View.GONE
+                if (settingsPreference.getIntBool(SettingsKeys.showFavicon)) View.VISIBLE else View.GONE
             if (settingsPreference.getIntBool(SettingsKeys.showFavicon) && faviconProgressBar?.visibility == View.VISIBLE)
                 favicon!!.visibility = View.GONE
         }
@@ -139,11 +125,17 @@ open class VWebViewActivity : BaseActivity() {
             startPageLayout?.setBackgroundResource(0)
         } else {
             try {
-                val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper)) )
+                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+                )
                 startPageLayout?.background = BitmapDrawable(resources, bitmap)
             } catch (_: SecurityException) {
                 startPageLayout?.setBackgroundResource(0)
-                settingsPreference.setString(SettingsKeys.startPageWallpaper, CommonUtils.EMPTY_STRING)
+                settingsPreference.setString(
+                    SettingsKeys.startPageWallpaper,
+                    CommonUtils.EMPTY_STRING
+                )
             }
         }
     }
@@ -208,12 +200,8 @@ open class VWebViewActivity : BaseActivity() {
 
     private fun updateSwipeRefreshLayoutEnabled(isEnabled: Boolean) {
         swipeRefreshLayoutEnabled = isEnabled
-        if (settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh)) swipeRefreshLayout.isEnabled = swipeRefreshLayoutEnabled
-    }
-
-    @CallSuper
-    open fun onPageLoadProgressChanged(progress: Int) {
-        progressBar.progress = if (progress == 100) 0 else progress
+        if (settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh)) swipeRefreshLayout.isEnabled =
+            swipeRefreshLayoutEnabled
     }
 
     private fun getTrueCSSValue(rawValue: String): String {
@@ -223,5 +211,10 @@ open class VWebViewActivity : BaseActivity() {
         val arrayValue: Array<String> =
             mValue.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         return arrayValue[arrayValue.size - 1]
+    }
+
+    @CallSuper
+    open fun onPageLoadProgressChanged(progress: Int) {
+        progressBar.progress = if (progress == 100) 0 else progress
     }
 }

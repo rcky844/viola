@@ -31,8 +31,8 @@ import java.io.OutputStreamWriter
 import java.util.Scanner
 
 open class AdServersHandler(context: Context, settingsPreference: SettingsSharedPreference) {
-    private var mContext : Context
-    private var mSettingsPreference : SettingsSharedPreference
+    private var mContext: Context
+    private var mSettingsPreference: SettingsSharedPreference
     var adServers: String? = null
 
     private val adServersFilePath = "ad_servers_hosts.txt"
@@ -77,7 +77,12 @@ open class AdServersHandler(context: Context, settingsPreference: SettingsShared
 
             try {
                 val outputStreamWriter =
-                    OutputStreamWriter(mContext.openFileOutput(adServersFilePath, Context.MODE_PRIVATE))
+                    OutputStreamWriter(
+                        mContext.openFileOutput(
+                            adServersFilePath,
+                            Context.MODE_PRIVATE
+                        )
+                    )
                 outputStreamWriter.write(adServers)
                 outputStreamWriter.close()
             } catch (_: IOException) {
@@ -90,10 +95,12 @@ open class AdServersHandler(context: Context, settingsPreference: SettingsShared
             return adServersList.size - 1
         }
 
-        val adServersList = arrayOf("https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt",
+        val adServersList = arrayOf(
+            "https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt",
             "https://cdn.jsdelivr.net/gh/jerryn70/GoodbyeAds@master/Hosts/GoodbyeAds.txt",
             "http://sbc.io/hosts/hosts",
             "https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt",
-            null)
+            null
+        )
     }
 }

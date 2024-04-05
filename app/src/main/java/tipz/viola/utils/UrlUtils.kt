@@ -76,7 +76,8 @@ object UrlUtils {
         val trimmedInput = cve_2017_13274(input.trim { it <= ' ' })
         var uri = Uri.parse(trimmedInput)
         if (uri.isRelative) {
-            uri = Uri.parse((if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://" else "http://") + trimmedInput)
+            uri =
+                Uri.parse((if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://" else "http://") + trimmedInput)
             if (!uri.toString().matches(httpUrlRegex.toRegex())) {
                 return SearchEngineEntries.getSearchUrl(
                     settingsPreference,

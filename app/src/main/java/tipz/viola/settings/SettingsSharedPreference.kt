@@ -21,10 +21,11 @@ import android.content.SharedPreferences
 import tipz.viola.Application
 
 class SettingsSharedPreference(context: Context) {
-    private var preference : SharedPreferences
+    private var preference: SharedPreferences
 
     init {
-        preference = context.getSharedPreferences(SettingsKeys.configDataStore, Activity.MODE_PRIVATE)!!
+        preference =
+            context.getSharedPreferences(SettingsKeys.configDataStore, Activity.MODE_PRIVATE)!!
         if (context is Application) settingsInit()
     }
 
@@ -52,7 +53,7 @@ class SettingsSharedPreference(context: Context) {
         this.setInt(SettingsKeys.protocolVersion, 1)
     }
 
-    fun getInt(prefName: String) : Int {
+    fun getInt(prefName: String): Int {
         return preference.getInt(prefName, 0)
     }
 
@@ -60,7 +61,7 @@ class SettingsSharedPreference(context: Context) {
         preference.edit().putInt(prefName, value).apply()
     }
 
-    fun getString(prefName: String) : String? {
+    fun getString(prefName: String): String? {
         return preference.getString(prefName, null)
     }
 

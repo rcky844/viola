@@ -109,6 +109,7 @@ class BrowserActivity : VWebViewActivity() {
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
@@ -138,7 +139,7 @@ class BrowserActivity : VWebViewActivity() {
         // Setup toolbar expandable
         toolsBarExtendableRecycler = findViewById(R.id.toolsBarExtendableRecycler)
         toolsBarExtendableRecycler?.adapter =
-                ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
+            ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
         (toolsBarExtendableRecycler?.layoutManager as FlexboxLayoutManager).apply {
             justifyContent = JustifyContent.FLEX_START
             alignItems = AlignItems.CENTER
@@ -159,7 +160,8 @@ class BrowserActivity : VWebViewActivity() {
         favicon?.setOnClickListener {
             val popupMenu = PopupMenu(this, favicon!!)
             val menu = popupMenu.menu
-            menu.add(if (webview.visibility == View.GONE) resources.getString(R.string.start_page) else webview.title).isEnabled = false
+            menu.add(if (webview.visibility == View.GONE) resources.getString(R.string.start_page) else webview.title).isEnabled =
+                false
             menu.add(resources.getString(R.string.copy_title))
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                 if (item.title.toString() == resources.getString(R.string.copy_title)) {
@@ -194,15 +196,15 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup Url EditText box
         urlEditText?.setOnEditorActionListener(
-                OnEditorActionListener { _: TextView?, actionId: Int, _: KeyEvent? ->
-                    if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
-                        webview.loadUrl(urlEditText?.text.toString())
-                        urlEditText?.clearFocus()
-                        closeKeyboard()
-                        return@OnEditorActionListener true
-                    }
-                    false
-                })
+            OnEditorActionListener { _: TextView?, actionId: Int, _: KeyEvent? ->
+                if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
+                    webview.loadUrl(urlEditText?.text.toString())
+                    urlEditText?.clearFocus()
+                    closeKeyboard()
+                    return@OnEditorActionListener true
+                }
+                false
+            })
         urlEditText?.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
                 if (urlEditText?.text.toString() != webview.url) urlEditText?.setText(webview.url)
@@ -216,15 +218,15 @@ class BrowserActivity : VWebViewActivity() {
             if (toolsBarExtendableBackground?.visibility == View.VISIBLE) expandToolBar()
         }
         urlEditText?.onItemClickListener =
-                OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
-                    webview.loadUrl((view.findViewById<View>(android.R.id.text1) as AppCompatTextView).text.toString())
-                    closeKeyboard()
-                }
+            OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
+                webview.loadUrl((view.findViewById<View>(android.R.id.text1) as AppCompatTextView).text.toString())
+                closeKeyboard()
+            }
         urlEditText?.setAdapter(
-                SuggestionAdapter(
-                        this@BrowserActivity,
-                        R.layout.recycler_list_item_1
-                )
+            SuggestionAdapter(
+                this@BrowserActivity,
+                R.layout.recycler_list_item_1
+            )
         )
 
         // Setup the up most fab (currently for reload)
@@ -244,9 +246,12 @@ class BrowserActivity : VWebViewActivity() {
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
         } else if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
-            webview.loadUrl(SearchEngineEntries.getHomePageUrl(
+            webview.loadUrl(
+                SearchEngineEntries.getHomePageUrl(
                     settingsPreference,
-                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)))
+                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)
+                )
+            )
         } else {
             webview.loadUrl(InternalUrls.startUrl)
         }
@@ -261,11 +266,13 @@ class BrowserActivity : VWebViewActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
-        val params = toolsBarExtendableBackground?.getLayoutParams() as ConstraintLayout.LayoutParams
+        val params =
+            toolsBarExtendableBackground?.layoutParams as ConstraintLayout.LayoutParams
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             params.height = resources.getDimension(R.dimen.toolbar_extendable_height).toInt()
-            params.matchConstraintMaxWidth = resources.getDimension(R.dimen.toolbar_extendable_max_width).toInt()
+            params.matchConstraintMaxWidth =
+                resources.getDimension(R.dimen.toolbar_extendable_max_width).toInt()
         }
     }
 
@@ -282,61 +289,61 @@ class BrowserActivity : VWebViewActivity() {
             constraintSet.clear(R.id.toolsContainer, ConstraintSet.BOTTOM)
             if (reverseAddressBar == 1) {
                 constraintSet.connect(
-                        R.id.appbar,
-                        ConstraintSet.TOP,
-                        R.id.toolsContainer,
-                        ConstraintSet.BOTTOM,
-                        0
+                    R.id.appbar,
+                    ConstraintSet.TOP,
+                    R.id.toolsContainer,
+                    ConstraintSet.BOTTOM,
+                    0
                 )
                 constraintSet.connect(
-                        R.id.appbar,
-                        ConstraintSet.BOTTOM,
-                        ConstraintSet.PARENT_ID,
-                        ConstraintSet.BOTTOM,
-                        0
+                    R.id.appbar,
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM,
+                    0
                 )
                 constraintSet.connect(
-                        R.id.webviewContainer,
-                        ConstraintSet.TOP,
-                        ConstraintSet.PARENT_ID,
-                        ConstraintSet.TOP,
-                        0
+                    R.id.webviewContainer,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    0
                 )
                 constraintSet.connect(
-                        R.id.toolsContainer,
-                        ConstraintSet.BOTTOM,
-                        R.id.appbar,
-                        ConstraintSet.TOP,
-                        0
+                    R.id.toolsContainer,
+                    ConstraintSet.BOTTOM,
+                    R.id.appbar,
+                    ConstraintSet.TOP,
+                    0
                 )
             } else {
                 constraintSet.connect(
-                        R.id.appbar,
-                        ConstraintSet.BOTTOM,
-                        R.id.webviewContainer,
-                        ConstraintSet.TOP,
-                        0
+                    R.id.appbar,
+                    ConstraintSet.BOTTOM,
+                    R.id.webviewContainer,
+                    ConstraintSet.TOP,
+                    0
                 )
                 constraintSet.connect(
-                        R.id.appbar,
-                        ConstraintSet.TOP,
-                        ConstraintSet.PARENT_ID,
-                        ConstraintSet.TOP,
-                        0
+                    R.id.appbar,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    0
                 )
                 constraintSet.connect(
-                        R.id.webviewContainer,
-                        ConstraintSet.TOP,
-                        R.id.appbar,
-                        ConstraintSet.BOTTOM,
-                        0
+                    R.id.webviewContainer,
+                    ConstraintSet.TOP,
+                    R.id.appbar,
+                    ConstraintSet.BOTTOM,
+                    0
                 )
                 constraintSet.connect(
-                        R.id.toolsContainer,
-                        ConstraintSet.BOTTOM,
-                        ConstraintSet.PARENT_ID,
-                        ConstraintSet.BOTTOM,
-                        0
+                    R.id.toolsContainer,
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM,
+                    0
                 )
             }
             constraintSet.applyTo(constraintLayout)
@@ -352,10 +359,10 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.home -> {
                 if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
                     webview.loadUrl(
-                            SearchEngineEntries.getHomePageUrl(
-                                    settingsPreference,
-                                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)
-                            )
+                        SearchEngineEntries.getHomePageUrl(
+                            settingsPreference,
+                            settingsPreference.getInt(SettingsKeys.defaultHomePageId)
+                        )
                     )
                 } else {
                     urlEditText!!.setText(CommonUtils.EMPTY_STRING)
@@ -366,7 +373,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
                 currentPrebuiltUAState = !currentPrebuiltUAState
                 webview.setPrebuiltUAMode(
-                        view, if (currentPrebuiltUAState) 1 else 0, false
+                    view, if (currentPrebuiltUAState) 1 else 0, false
                 )
             }
 
@@ -374,17 +381,17 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.app_shortcut -> {
                 if (webview.title.isNullOrBlank() || webview.url.isNullOrBlank()) return
                 ShortcutManagerCompat.requestPinShortcut(
-                        this, ShortcutInfoCompat.Builder(this, webview.title!!)
+                    this, ShortcutInfoCompat.Builder(this, webview.title!!)
                         .setShortLabel(webview.title!!)
                         .setIcon(
-                                IconCompat.createWithBitmap(
-                                        CommonUtils.drawableToBitmap(favicon!!.drawable)
-                                )
+                            IconCompat.createWithBitmap(
+                                CommonUtils.drawableToBitmap(favicon!!.drawable)
+                            )
                         )
                         .setIntent(
-                                Intent(this, BrowserActivity::class.java)
-                                        .setData(Uri.parse(webview.url))
-                                        .setAction(Intent.ACTION_VIEW)
+                            Intent(this, BrowserActivity::class.java)
+                                .setData(Uri.parse(webview.url))
+                                .setAction(Intent.ACTION_VIEW)
                         )
                         .build(), null
                 )
@@ -416,13 +423,13 @@ class BrowserActivity : VWebViewActivity() {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     FavUtils.appendData(
-                            this@BrowserActivity, iconHashClient, title, url,
-                            if (icon is BitmapDrawable) icon.bitmap else null
+                        this@BrowserActivity, iconHashClient, title, url,
+                        if (icon is BitmapDrawable) icon.bitmap else null
                     )
                 }
                 CommonUtils.showMessage(
-                        this,
-                        resources.getString(R.string.save_successful)
+                    this,
+                    resources.getString(R.string.save_successful)
                 )
             }
 
@@ -430,33 +437,33 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.view_stream -> expandToolBar()
             R.drawable.code -> {
                 webview.evaluateJavascript(
-                        "document.documentElement.outerHTML",
-                        ValueCallback { value: String? ->
-                            val reader = JsonReader(StringReader(value))
-                            reader.isLenient = true
-                            try {
-                                if (reader.peek() == JsonToken.STRING) {
-                                    val domStr = reader.nextString()
-                                    reader.close()
-                                    if (domStr == null) return@ValueCallback
-                                    MaterialAlertDialogBuilder(this@BrowserActivity)
-                                            .setTitle(resources.getString(R.string.toolbar_expandable_view_page_source))
-                                            .setMessage(domStr)
-                                            .setPositiveButton(
-                                                    resources.getString(android.R.string.ok),
-                                                    null
-                                            )
-                                            .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
-                                                CommonUtils.copyClipboard(
-                                                        this@BrowserActivity,
-                                                        domStr
-                                                )
-                                            }
-                                            .create().show()
-                                }
-                            } catch (ignored: IOException) {
+                    "document.documentElement.outerHTML",
+                    ValueCallback { value: String? ->
+                        val reader = JsonReader(StringReader(value))
+                        reader.isLenient = true
+                        try {
+                            if (reader.peek() == JsonToken.STRING) {
+                                val domStr = reader.nextString()
+                                reader.close()
+                                if (domStr == null) return@ValueCallback
+                                MaterialAlertDialogBuilder(this@BrowserActivity)
+                                    .setTitle(resources.getString(R.string.toolbar_expandable_view_page_source))
+                                    .setMessage(domStr)
+                                    .setPositiveButton(
+                                        resources.getString(android.R.string.ok),
+                                        null
+                                    )
+                                    .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
+                                        CommonUtils.copyClipboard(
+                                            this@BrowserActivity,
+                                            domStr
+                                        )
+                                    }
+                                    .create().show()
                             }
-                        })
+                        } catch (ignored: IOException) {
+                        }
+                    })
             }
 
             R.drawable.new_tab -> {
@@ -468,11 +475,12 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.print -> {
                 val jobName = getString(R.string.app_name) + " Document"
-                val printAdapter: PrintDocumentAdapter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    webview.createPrintDocumentAdapter(jobName)
-                } else {
-                    webview.createPrintDocumentAdapter()
-                }
+                val printAdapter: PrintDocumentAdapter =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        webview.createPrintDocumentAdapter(jobName)
+                    } else {
+                        webview.createPrintDocumentAdapter()
+                    }
                 val printManager = getSystemService(PRINT_SERVICE) as PrintManager
                 printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
             }
@@ -483,24 +491,24 @@ class BrowserActivity : VWebViewActivity() {
         if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
             val layoutInflater = LayoutInflater.from(this)
             @SuppressLint("InflateParams") val root =
-                    layoutInflater.inflate(R.layout.dialog_ua_edit, null)
+                layoutInflater.inflate(R.layout.dialog_ua_edit, null)
             val customUserAgent = root.findViewById<AppCompatEditText>(R.id.edittext)
             val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
             deskMode.isChecked = currentCustomUAWideView
             val dialog = MaterialAlertDialogBuilder(this)
             dialog.setTitle(resources.getString(R.string.customUA))
-                    .setView(root)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        if (customUserAgent.length() != 0) webview.setUA(
-                                view, deskMode.isChecked,
-                                Objects.requireNonNull(customUserAgent.text).toString(),
-                                R.drawable.custom, false
-                        )
-                        currentCustomUA = Objects.requireNonNull(customUserAgent.text).toString()
-                        currentCustomUAWideView = deskMode.isChecked
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create().show()
+                .setView(root)
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    if (customUserAgent.length() != 0) webview.setUA(
+                        view, deskMode.isChecked,
+                        Objects.requireNonNull(customUserAgent.text).toString(),
+                        R.drawable.custom, false
+                    )
+                    currentCustomUA = Objects.requireNonNull(customUserAgent.text).toString()
+                    currentCustomUAWideView = deskMode.isChecked
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show()
             if (currentCustomUA != null) customUserAgent.setText(currentCustomUA)
         }
     }
@@ -509,11 +517,11 @@ class BrowserActivity : VWebViewActivity() {
         val viewVisible: Boolean = toolsBarExtendableBackground!!.visibility == View.VISIBLE
         val transition: Transition = Slide(Gravity.BOTTOM)
         transition.duration =
-                (resources.getInteger(R.integer.anim_expandable_speed) * Settings.Global.getFloat(
-                        contentResolver,
-                        Settings.Global.ANIMATOR_DURATION_SCALE,
-                        1.0f
-                )).toLong()
+            (resources.getInteger(R.integer.anim_expandable_speed) * Settings.Global.getFloat(
+                contentResolver,
+                Settings.Global.ANIMATOR_DURATION_SCALE,
+                1.0f
+            )).toLong()
         transition.addTarget(R.id.toolsBarExtendableBackground)
         TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
         toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
@@ -592,7 +600,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     class ItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>) :
-            RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+        RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
         private val mBrowserActivity: WeakReference<BrowserActivity>
         private val mItemsList: WeakReference<List<Int>>
 
@@ -611,7 +619,7 @@ class BrowserActivity : VWebViewActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.recycler_icon_item, parent, false)
+                .inflate(R.layout.recycler_icon_item, parent, false)
             return ViewHolder(view)
         }
 
@@ -619,11 +627,11 @@ class BrowserActivity : VWebViewActivity() {
             holder.mImageView.setImageResource(mItemsList.get()!![position])
             holder.mImageView.setOnClickListener {
                 mBrowserActivity.get()!!
-                        .itemSelected(holder.mImageView, mItemsList.get()!![position])
+                    .itemSelected(holder.mImageView, mItemsList.get()!![position])
             }
             holder.mImageView.setOnLongClickListener {
                 mBrowserActivity.get()!!
-                        .itemLongSelected(holder.mImageView, mItemsList.get()!![position])
+                    .itemLongSelected(holder.mImageView, mItemsList.get()!![position])
                 true
             }
         }
@@ -634,11 +642,11 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     class ToolbarItemsAdapter(
-            mainActivity: BrowserActivity,
-            itemsList: List<Int>,
-            descriptionList: List<Int>
+        mainActivity: BrowserActivity,
+        itemsList: List<Int>,
+        descriptionList: List<Int>
     ) :
-            RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
+        RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
         private val mBrowserActivity: WeakReference<BrowserActivity>
         private val mItemsList: WeakReference<List<Int>>
         private val mDescriptionList: WeakReference<List<Int>>
@@ -663,24 +671,24 @@ class BrowserActivity : VWebViewActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.recycler_toolsbar_expandable_icon_item, parent, false)
+                .inflate(R.layout.recycler_toolsbar_expandable_icon_item, parent, false)
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.mItemBox.setOnClickListener {
                 mBrowserActivity.get()!!
-                        .itemSelected(holder.mImageView, mItemsList.get()!![position])
+                    .itemSelected(holder.mImageView, mItemsList.get()!![position])
                 mBrowserActivity.get()!!.expandToolBar()
             }
             holder.mItemBox.setOnLongClickListener {
                 mBrowserActivity.get()!!
-                        .itemLongSelected(holder.mImageView, mItemsList.get()!![position])
+                    .itemLongSelected(holder.mImageView, mItemsList.get()!![position])
                 true
             }
             holder.mImageView.setImageResource(mItemsList.get()!![position])
             holder.mTextView.text =
-                    mBrowserActivity.get()!!.resources.getString(mDescriptionList.get()!![position])
+                mBrowserActivity.get()!!.resources.getString(mDescriptionList.get()!![position])
         }
 
         override fun getItemCount(): Int {
@@ -691,52 +699,52 @@ class BrowserActivity : VWebViewActivity() {
     companion object {
         // TODO: Add support for reverting to legacy layout
         private val legacyToolsBarItemList = listOf(
-                R.drawable.arrow_back_alt,
-                R.drawable.arrow_forward_alt,
-                R.drawable.refresh,
-                R.drawable.home,
-                R.drawable.smartphone,
-                R.drawable.new_tab,
-                R.drawable.share,
-                R.drawable.app_shortcut,
-                R.drawable.settings,
-                R.drawable.history,
-                R.drawable.favorites,
-                R.drawable.close
+            R.drawable.arrow_back_alt,
+            R.drawable.arrow_forward_alt,
+            R.drawable.refresh,
+            R.drawable.home,
+            R.drawable.smartphone,
+            R.drawable.new_tab,
+            R.drawable.share,
+            R.drawable.app_shortcut,
+            R.drawable.settings,
+            R.drawable.history,
+            R.drawable.favorites,
+            R.drawable.close
         )
 
         private val toolsBarItemList = listOf(
-                R.drawable.arrow_back_alt,
-                R.drawable.arrow_forward_alt,
-                R.drawable.home,
-                R.drawable.share,
-                R.drawable.view_stream
+            R.drawable.arrow_back_alt,
+            R.drawable.arrow_forward_alt,
+            R.drawable.home,
+            R.drawable.share,
+            R.drawable.view_stream
         )
 
         private val toolsBarExpandableItemList = listOf(
-                R.drawable.new_tab,
-                R.drawable.favorites,
-                R.drawable.history,
-                R.drawable.smartphone,
-                R.drawable.favorites_add,
-                R.drawable.app_shortcut,
-                R.drawable.settings,
-                R.drawable.code,
-                R.drawable.print,
-                R.drawable.close
+            R.drawable.new_tab,
+            R.drawable.favorites,
+            R.drawable.history,
+            R.drawable.smartphone,
+            R.drawable.favorites_add,
+            R.drawable.app_shortcut,
+            R.drawable.settings,
+            R.drawable.code,
+            R.drawable.print,
+            R.drawable.close
         )
 
         private val toolsBarExpandableDescriptionList = listOf(
-                R.string.toolbar_expandable_new_tab,
-                R.string.toolbar_expandable_favorites,
-                R.string.toolbar_expandable_history,
-                R.string.toolbar_expandable_viewport,
-                R.string.toolbar_expandable_favorites_add,
-                R.string.toolbar_expandable_app_shortcut,
-                R.string.toolbar_expandable_settings,
-                R.string.toolbar_expandable_view_page_source,
-                R.string.toolbar_expandable_print,
-                R.string.toolbar_expandable_close
+            R.string.toolbar_expandable_new_tab,
+            R.string.toolbar_expandable_favorites,
+            R.string.toolbar_expandable_history,
+            R.string.toolbar_expandable_viewport,
+            R.string.toolbar_expandable_favorites_add,
+            R.string.toolbar_expandable_app_shortcut,
+            R.string.toolbar_expandable_settings,
+            R.string.toolbar_expandable_view_page_source,
+            R.string.toolbar_expandable_print,
+            R.string.toolbar_expandable_close
         )
     }
 }

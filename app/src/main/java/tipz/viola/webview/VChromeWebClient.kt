@@ -30,7 +30,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
 import java.util.Objects
 
-open class VChromeWebClient(private val mContext: Context, private val mVWebView: VWebView,) : WebChromeClient() {
+open class VChromeWebClient(private val mContext: Context, private val mVWebView: VWebView) :
+    WebChromeClient() {
     private var mCustomView: View? = null
     private var mCustomViewCallback: CustomViewCallback? = null
 
@@ -56,6 +57,7 @@ open class VChromeWebClient(private val mContext: Context, private val mVWebView
             windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
         }
     }
+
     override fun onShowCustomView(paramView: View, viewCallback: CustomViewCallback) {
         if (mCustomView != null) {
             onHideCustomView()

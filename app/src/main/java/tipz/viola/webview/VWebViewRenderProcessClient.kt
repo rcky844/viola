@@ -10,7 +10,8 @@ import androidx.webkit.WebViewRenderProcessClient
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
 
-class VWebViewRenderProcessClient(private val mContext: Context, private val mVWebView: VWebView) : WebViewRenderProcessClient() {
+class VWebViewRenderProcessClient(mContext: Context, mVWebView: VWebView) :
+    WebViewRenderProcessClient() {
     private val mWebViewRenderProcess =
         if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER)) WebViewCompat.getWebViewRenderProcess(
             mVWebView

@@ -96,7 +96,10 @@ object DownloadUtils {
                 val dataInfo = url.substring(url.indexOf(":") + 1, url.indexOf(","))
                 val filename = (System.currentTimeMillis().toString() + "."
                         + MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                    dataInfo.substring(0, if (dataInfo.contains(";")) dataInfo.indexOf(";") else dataInfo.length)
+                    dataInfo.substring(
+                        0,
+                        if (dataInfo.contains(";")) dataInfo.indexOf(";") else dataInfo.length
+                    )
                 ))
                 val file = File(path, filename)
                 try {
@@ -129,7 +132,7 @@ object DownloadUtils {
         return -1
     }
 
-    suspend fun startFileDownload(urlString : String?) =
+    suspend fun startFileDownload(urlString: String?) =
         withContext(Dispatchers.IO) {
             val url = URL(urlString)
             return@withContext url.readBytes()
@@ -142,7 +145,9 @@ object DownloadUtils {
             val n = cm.activeNetwork
             if (n != null) {
                 val nc = cm.getNetworkCapabilities(n)
-                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
+                    NetworkCapabilities.TRANSPORT_WIFI
+                )
             }
             return false
         } else {

@@ -78,6 +78,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             )?.versionName
         } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
     }
+
     private val titleHandler = Handler { message ->
         val webLongPress = HitTestAlertDialog(mContext)
         if (!webLongPress.setupDialogForShowing(this, message.data)) return@Handler false
@@ -99,9 +100,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             if (ContextCompat.checkSelfPermission(
                     mVioWebViewActivity!!,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_DENIED)
-                ActivityCompat.requestPermissions(mVioWebViewActivity!!,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
+                ) == PackageManager.PERMISSION_DENIED
+            )
+                ActivityCompat.requestPermissions(
+                    mVioWebViewActivity!!,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0
+                )
 
             DownloadUtils.dmDownloadFile(
                 mContext, url!!, contentDisposition,
@@ -136,9 +140,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         this.webViewClient = VWebViewClient(mContext, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(mContext, this)
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE))
-            WebViewCompat.setWebViewRenderProcessClient(this,
+            WebViewCompat.setWebViewRenderProcessClient(
+                this,
                 VWebViewRenderProcessClient(mContext, this)
-        )
+            )
 
         /* Hit Test Menu */
         setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
@@ -154,13 +159,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(
                 WebViewFeature.ALGORITHMIC_DARKENING
             )
-        ) WebSettingsCompat.setAlgorithmicDarkeningAllowed(
-            webSettings,
-            darkMode
-        ) else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) WebSettingsCompat.setForceDark(
-            webSettings,
-            if (darkMode) WebSettingsCompat.FORCE_DARK_ON else WebSettingsCompat.FORCE_DARK_OFF
         )
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode)
+        else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
+            WebSettingsCompat.setForceDark(
+                webSettings,
+                if (darkMode) WebSettingsCompat.FORCE_DARK_ON else WebSettingsCompat.FORCE_DARK_OFF
+            )
 
         // Settings check
         webSettings.javaScriptEnabled =
@@ -259,7 +264,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         super.goForward()
     }
 
-    fun onPageInformationUpdated(state : PageLoadState, url: String?, favicon: Bitmap?) {
+    fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
         if (url == InternalUrls.aboutBlankUrl) return
         if (url != null) currentUrl = url
 
@@ -268,11 +273,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 mVioWebViewActivity!!.onFaviconProgressUpdated(true)
                 mVioWebViewActivity!!.onPageLoadProgressChanged(-1)
             }
+
             PageLoadState.PAGE_FINISHED -> {
                 mVioWebViewActivity!!.onFaviconProgressUpdated(false)
                 mVioWebViewActivity!!.onPageLoadProgressChanged(0)
                 mVioWebViewActivity!!.onSslCertificateUpdated()
             }
+
             PageLoadState.UPDATE_HISTORY -> {
                 if (updateHistory && currentUrl != null) {
                     currentBroha = Broha(title, currentUrl!!)
@@ -296,7 +303,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_TITLE -> {
-                mVioWebViewActivity!!.onTitleUpdated(if (this.visibility == View.GONE) resources.getString(R.string.start_page) else title)
+                mVioWebViewActivity!!.onTitleUpdated(
+                    if (this.visibility == View.GONE) resources.getString(
+                        R.string.start_page
+                    ) else title
+                )
             }
 
             PageLoadState.UNKNOWN -> {
@@ -308,7 +319,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         mVioWebViewActivity!!.onDropDownDismissed()
     }
 
-    fun onPageLoadProgressChanged(progress : Int) {
+    fun onPageLoadProgressChanged(progress: Int) {
         mVioWebViewActivity!!.onPageLoadProgressChanged(progress)
     }
 
