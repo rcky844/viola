@@ -198,18 +198,16 @@ class BrowserActivity : VWebViewActivity() {
                     if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                         webview.loadUrl(urlEditText?.text.toString())
                         urlEditText?.clearFocus()
+                        closeKeyboard()
                         return@OnEditorActionListener true
                     }
                     false
                 })
         urlEditText?.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
-                if (urlEditText?.text
-                                .toString() != webview.url
-                ) urlEditText?.setText(webview.url)
+                if (urlEditText?.text.toString() != webview.url) urlEditText?.setText(webview.url)
                 urlEditText?.setSelection(0)
                 urlEditText?.dropDownHeight = 0
-                closeKeyboard()
             } else {
                 urlEditText?.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
             }
