@@ -11,11 +11,13 @@
      limitations under the License.
 -->
 <resources>
-    <dimen name="actionbar_view_height">52dp</dimen>
-    <dimen name="actionbar_content_height">48dp</dimen>
+    <dimen name="actionbar_view_height">64dp</dimen> <!-- @dimen/actionbar_content_height + 4dp -->
+    <dimen name="actionbar_content_height">60dp</dimen> <!-- From ?attr/actionBarSize -->
+    <dimen name="actionbar_widget_height">48dp</dimen> <!-- @dimen/actionbar_content_height - 12dp -->
     <dimen name="progressbar_height">2dp</dimen>
     <dimen name="toolbar_icon_size">52dp</dimen>
     <dimen name="toolbar_extendable_height">300dp</dimen>
+    <dimen name="toolbar_extendable_max_width">0dp</dimen> <!-- MATCH_PARENT -->
     <dimen name="toolbar_extendable_item_size">48dp</dimen>
     <dimen name="toolbar_extendable_holder_size">100dp</dimen>
 </resources>

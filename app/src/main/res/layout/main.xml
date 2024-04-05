@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2024 Tipz Team
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2020-2024 Tipz Team
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
@@ -43,8 +42,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/favicon"
-                    android:layout_width="?attr/minTouchTargetSize"
-                    android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_width="@dimen/actionbar_widget_height"
+                    android:layout_height="@dimen/actionbar_widget_height"
                     android:contentDescription="@string/favicon_desp"
                     android:padding="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -54,13 +53,13 @@
 
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/faviconProgressBar"
-                    android:layout_width="?attr/minTouchTargetSize"
-                    android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_width="@dimen/actionbar_widget_height"
+                    android:layout_height="@dimen/actionbar_widget_height"
                     android:contentDescription="@string/favicon_desp"
                     android:indeterminate="true"
                     android:padding="8dp"
                     android:visibility="gone"
-                    app:indicatorSize="28dp"
+                    app:indicatorSize="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -72,24 +71,38 @@
                     app:barrierDirection="right"
                     app:constraint_referenced_ids="favicon,faviconProgressBar" />
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ssl_lock"
+                    android:layout_width="@dimen/actionbar_widget_height"
+                    android:layout_height="@dimen/actionbar_widget_height"
+                    android:layout_marginStart="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:elevation="2dp"
+                    android:padding="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/barrier"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/search" />
+
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/urlEditText"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="@dimen/actionbar_widget_height"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
                     android:background="@drawable/url_edit_bg"
+                    android:completionThreshold="1"
+                    android:fadingEdge="vertical"
                     android:hint="@string/address_bar_hint"
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
                     android:importantForAutofill="no"
-                    android:inputType="textUri|textWebEditText|textNoSuggestions|textEmailAddress"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
+                    android:inputType="textUri"
+                    android:paddingStart="52dp"
+                    android:paddingEnd="16dp"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
-                    android:textColor="@color/colorElement"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/upRightFab"
                     app:layout_constraintStart_toEndOf="@id/barrier"
@@ -97,15 +110,16 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/upRightFab"
-                    android:layout_width="?attr/minTouchTargetSize"
-                    android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_width="@dimen/actionbar_widget_height"
+                    android:layout_height="@dimen/actionbar_widget_height"
                     android:background="?attr/selectableItemBackground"
                     android:focusable="true"
                     android:padding="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/refresh" />
+                    app:srcCompat="@drawable/refresh"
+                    app:tint="?attr/colorOnSurface" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -115,7 +129,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/progressbar_height"
             android:indeterminate="false"
-            app:trackColor="@color/colorTopBar" />
+            android:progress="22"
+            app:indicatorColor="?attr/colorAccent"
+            app:trackColor="@android:color/transparent" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -123,7 +139,6 @@
         android:id="@+id/toolsContainer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_icon_size"
-        android:background="@color/colorTopBarWebView"
         android:elevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -137,9 +152,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hardwareAccelerated="true"
-            android:scrollbars="none"
             android:orientation="horizontal"
-            app:layoutManager="tipz.viola.webviewui.view.FixedLinearLayoutManager"/>
+            android:scrollbars="none"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -169,12 +184,12 @@
         android:id="@+id/toolsBarExtendableCloseHitBox"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:elevation="6dp"
+        android:elevation="4dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/toolsBarExtendableBackground"/>
+        app:layout_constraintTop_toBottomOf="@id/appbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolsBarExtendableBackground"
@@ -186,7 +201,9 @@
         android:foregroundGravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_max="@dimen/toolbar_extendable_max_width">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toolsBarExtendableHint"
@@ -204,12 +221,8 @@
             android:id="@+id/toolsBarExtendableRecycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="@integer/num_toolbar_expandable_items_per_row"
+            android:layout_margin="4dp"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -64,6 +64,7 @@ import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.DownloadUtils.dmDownloadFile
 import tipz.viola.utils.InternalUrls
+import tipz.viola.webview.AdServersHandler
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
@@ -190,12 +191,16 @@ class SettingsActivity : BaseActivity() {
             /* Lists */
             val searchHomePageList =
                     settingsActivity.resources.getStringArray(R.array.search_entries)
+            val adBlockerHostsEntries =
+                settingsActivity.resources.getStringArray(R.array.ad_blocker_hosts_entries)
             val themeList = settingsActivity.resources.getStringArray(R.array.themes)
 
             /* Settings */
             val search_engine = findPreference<Preference>("search_engine")!!
             val homepage = findPreference<Preference>("homepage")!!
             val search_suggestions = findPreference<Preference>("search_suggestions")!!
+            val adBlockerSource = findPreference<Preference>("adBlockerSource")!!
+            val adBlockerDownload = findPreference<Preference>("adBlockerDownload")!!
             val clear_cache = findPreference<MaterialDialogPreference>("clear_cache")!!
             val clear_cookies = findPreference<MaterialDialogPreference>("clear_cookies")!!
             val reset_to_default = findPreference<MaterialDialogPreference>("reset_to_default")!!
@@ -367,6 +372,62 @@ class SettingsActivity : BaseActivity() {
                                 .create().show()
                         true
                     }
+            adBlockerSource.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    val checkedItem =
+                        intArrayOf(settingsPreference.getInt(SettingsKeys.adServerId))
+                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.pref_adBlockerSource_title))
+                        .setSingleChoiceItems(
+                            adBlockerHostsEntries,
+                            settingsPreference.getInt(SettingsKeys.adServerId)
+                        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
+                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                            if (checkedItem[0] == AdServersHandler.getCustomIndex()) {
+                                val layoutInflater = LayoutInflater.from(settingsActivity)
+                                @SuppressLint("InflateParams") val root =
+                                    layoutInflater.inflate(R.layout.dialog_edittext, null)
+                                val customSource =
+                                    root.findViewById<AppCompatEditText>(R.id.edittext)
+                                MaterialAlertDialogBuilder(settingsActivity)
+                                    .setTitle(resources.getString(R.string.pref_adBlockerSource_title))
+                                    .setView(root)
+                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                        if (customSource.text.toString().isNotEmpty()) {
+                                            settingsPreference.setString(
+                                                SettingsKeys.adServerUrl,
+                                                customSource.text.toString()
+                                            )
+                                            settingsPreference.setInt(
+                                                SettingsKeys.adServerId,
+                                                checkedItem[0]
+                                            )
+                                            adBlockerSource.summary = adBlockerHostsEntries[checkedItem[0]]
+                                        }
+                                    }
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .create().show()
+                            }
+                            if (checkedItem[0] != AdServersHandler.getCustomIndex()) {
+                                settingsPreference.setString(
+                                    SettingsKeys.adServerUrl,
+                                    CommonUtils.EMPTY_STRING
+                                )
+                                settingsPreference.setInt(
+                                    SettingsKeys.adServerId,
+                                    checkedItem[0]
+                                )
+                                adBlockerSource.summary = adBlockerHostsEntries[checkedItem[0]]
+                            }
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show()
+                    true
+                }
+            adBlockerDownload.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    needLoad(InternalUrls.updateAdServersHostsUrl)
+                    true
+                }
             clear_cache.materialDialogPreferenceListener =
                     object : MaterialDialogPreferenceListener {
                         override fun onDialogClosed(positiveResult: Boolean) {
@@ -598,6 +659,8 @@ class SettingsActivity : BaseActivity() {
                     searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultHomePageId)]
             search_suggestions.summary =
                     searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)]
+            adBlockerSource.summary =
+                    adBlockerHostsEntries[settingsPreference.getInt(SettingsKeys.adServerId)]
             theme.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
             update_channel.summary = settingsPreference.getString(SettingsKeys.updateChannelName)
             if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {

@@ -23,6 +23,9 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.print.PrintAttributes
+import android.print.PrintDocumentAdapter
+import android.print.PrintManager
 import android.provider.Settings
 import android.util.JsonReader
 import android.util.JsonToken
@@ -52,11 +55,15 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
@@ -74,7 +81,6 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebViewActivity
-import tipz.viola.webviewui.view.CentreSpreadItemDecoration
 import java.io.IOException
 import java.io.StringReader
 import java.lang.ref.WeakReference
@@ -94,7 +100,15 @@ class BrowserActivity : VWebViewActivity() {
     private var toolsBarExtendableRecycler: RecyclerView? = null
     private var toolsBarExtendableBackground: ConstraintLayout? = null
     private var toolsBarExtendableCloseHitBox: LinearLayoutCompat? = null
+    private var sslLock: AppCompatImageView? = null
     private var viewMode: Int = 0
+    private var sslState: SslState = SslState.NONE
+    private var isSslError: Boolean = false
+    private var sslErrorHost: String = ""
+
+    enum class SslState {
+        NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
@@ -109,28 +123,29 @@ class BrowserActivity : VWebViewActivity() {
         favicon = findViewById(R.id.favicon)
         startPageLayout = findViewById(R.id.layout_startpage)
         iconHashClient = (applicationContext as Application).iconHashClient
+        sslLock = findViewById(R.id.ssl_lock)
 
         // Setup toolbar
         toolBar = findViewById(R.id.toolBar)
         toolBar?.adapter = ItemsAdapter(this, toolsBarItemList)
-        toolBar?.addItemDecoration(
-                CentreSpreadItemDecoration(
-                        resources.getDimension(R.dimen.actionbar_content_height), toolsBarItemList.size,
-                        isLinear = true
-                )
-        )
+        (toolBar?.layoutManager as FlexboxLayoutManager).apply {
+            justifyContent = JustifyContent.SPACE_AROUND
+            alignItems = AlignItems.CENTER
+            flexDirection = FlexDirection.ROW
+            flexWrap = FlexWrap.WRAP
+        }
 
         // Setup toolbar expandable
         toolsBarExtendableRecycler = findViewById(R.id.toolsBarExtendableRecycler)
         toolsBarExtendableRecycler?.adapter =
                 ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
-        toolsBarExtendableRecycler?.addItemDecoration(
-                CentreSpreadItemDecoration(
-                        resources.getDimension(R.dimen.toolbar_extendable_holder_size),
-                        toolsBarItemList.size,
-                        isLinear = false
-                )
-        )
+        (toolsBarExtendableRecycler?.layoutManager as FlexboxLayoutManager).apply {
+            justifyContent = JustifyContent.FLEX_START
+            alignItems = AlignItems.CENTER
+            flexDirection = FlexDirection.ROW
+            flexWrap = FlexWrap.WRAP
+        }
+
         toolsBarExtendableBackground = this.findViewById(R.id.toolsBarExtendableBackground)
         toolsBarExtendableBackground!!.post {
             toolsBarExtendableBackground!!.visibility = View.GONE
@@ -142,38 +157,39 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup favicon
         favicon?.setOnClickListener {
-            val cert = webview.certificate
             val popupMenu = PopupMenu(this, favicon!!)
             val menu = popupMenu.menu
             menu.add(if (webview.visibility == View.GONE) resources.getString(R.string.start_page) else webview.title).isEnabled = false
             menu.add(resources.getString(R.string.copy_title))
-            if (cert != null) menu.add(resources.getString(R.string.ssl_info))
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                 if (item.title.toString() == resources.getString(R.string.copy_title)) {
                     CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
-                    return@setOnMenuItemClickListener true
-                } else if (item.title.toString() == resources.getString(R.string.ssl_info)) {
-                    val issuedTo = cert!!.issuedTo
-                    val issuedBy = cert.issuedBy
-                    val dialog = MaterialAlertDialogBuilder(this@BrowserActivity)
-                    dialog.setTitle(Uri.parse(webview.url).host)
-                            .setMessage(
-                                    resources.getString(
-                                            R.string.ssl_info_dialog_content,
-                                            issuedTo.cName, issuedTo.oName, issuedTo.uName,
-                                            issuedBy.cName, issuedBy.oName, issuedBy.uName,
-                                            DateFormat.getDateTimeInstance()
-                                                    .format(cert.validNotBeforeDate),
-                                            DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
-                                    )
-                            )
-                            .setPositiveButton(resources.getString(android.R.string.ok), null)
-                            .create().show()
                     return@setOnMenuItemClickListener true
                 }
                 false
             }
             popupMenu.show()
+        }
+
+        // Setup SSL Lock
+        sslLock?.setOnClickListener {
+            val cert = webview.certificate
+            val issuedTo = cert!!.issuedTo
+            val issuedBy = cert.issuedBy
+            val dialog = MaterialAlertDialogBuilder(this@BrowserActivity)
+            dialog.setTitle(Uri.parse(webview.url).host)
+                .setMessage(
+                    resources.getString(
+                        R.string.ssl_info_dialog_content,
+                        issuedTo.cName, issuedTo.oName, issuedTo.uName,
+                        issuedBy.cName, issuedBy.oName, issuedBy.uName,
+                        DateFormat.getDateTimeInstance()
+                            .format(cert.validNotBeforeDate),
+                        DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
+                    )
+                )
+                .setPositiveButton(resources.getString(android.R.string.ok), null)
+                .create().show()
         }
 
         // Setup Url EditText box
@@ -182,18 +198,16 @@ class BrowserActivity : VWebViewActivity() {
                     if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                         webview.loadUrl(urlEditText?.text.toString())
                         urlEditText?.clearFocus()
+                        closeKeyboard()
                         return@OnEditorActionListener true
                     }
                     false
                 })
         urlEditText?.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
-                if (urlEditText?.text
-                                .toString() != webview.url
-                ) urlEditText?.setText(webview.url)
+                if (urlEditText?.text.toString() != webview.url) urlEditText?.setText(webview.url)
                 urlEditText?.setSelection(0)
                 urlEditText?.dropDownHeight = 0
-                closeKeyboard()
             } else {
                 urlEditText?.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
             }
@@ -244,15 +258,14 @@ class BrowserActivity : VWebViewActivity() {
         outState.clear()
     }
 
-    @SuppressLint("NotifyDataSetChanged") // We want it to scan the whole dataset
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
-        val orientation: Int = getResources().configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE || orientation == Configuration.ORIENTATION_PORTRAIT) {
-            toolBar?.adapter?.notifyDataSetChanged()
-            (toolsBarExtendableRecycler?.layoutManager!! as GridLayoutManager).spanCount = resources.getInteger(R.integer.num_toolbar_expandable_items_per_row)
-            toolsBarExtendableRecycler?.adapter?.notifyDataSetChanged()
+        val params = toolsBarExtendableBackground?.getLayoutParams() as ConstraintLayout.LayoutParams
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            params.height = resources.getDimension(R.dimen.toolbar_extendable_height).toInt()
+            params.matchConstraintMaxWidth = resources.getDimension(R.dimen.toolbar_extendable_max_width).toInt()
         }
     }
 
@@ -452,6 +465,17 @@ class BrowserActivity : VWebViewActivity() {
                 else i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
                 startActivity(i)
             }
+
+            R.drawable.print -> {
+                val jobName = getString(R.string.app_name) + " Document"
+                val printAdapter: PrintDocumentAdapter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    webview.createPrintDocumentAdapter(jobName)
+                } else {
+                    webview.createPrintDocumentAdapter()
+                }
+                val printManager = getSystemService(PRINT_SERVICE) as PrintManager
+                printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
+            }
         }
     }
 
@@ -519,6 +543,46 @@ class BrowserActivity : VWebViewActivity() {
     override fun onDropDownDismissed() {
         urlEditText!!.dismissDropDown()
         urlEditText!!.clearFocus()
+    }
+
+    // FIXME: CLeanup needed
+    override fun onSslCertificateUpdated() {
+        if (isSslError && sslState == SslState.NONE) {
+            if (sslErrorHost == Uri.parse(webview.url).host) {
+                sslState = SslState.ERROR
+                isSslError = true
+            } else {
+                // We hit a case of the user leaving the original webpage.
+                isSslError = false
+            }
+        }
+
+        if (startPageLayout?.visibility == View.VISIBLE) {
+            sslState = SslState.SEARCH
+            sslLock?.setImageResource(R.drawable.search)
+            sslLock?.isClickable = false
+            return
+        }
+
+        if (webview.certificate == null) {
+            sslState = SslState.NONE
+            sslLock?.setImageResource(R.drawable.warning)
+            sslLock?.isClickable = false // TODO: Handle failed states in dialog
+        } else if (sslState == SslState.ERROR) { // State error is set before SECURE
+            isSslError = true
+            sslErrorHost = Uri.parse(webview.url).host!!
+            sslState = SslState.NONE
+        } else {
+            sslState = SslState.SECURE
+            sslLock?.setImageResource(R.drawable.lock)
+            sslLock?.isClickable = true
+        }
+    }
+
+    override fun onSslErrorProceed() {
+        sslState = SslState.ERROR
+        sslLock?.setImageResource(R.drawable.warning)
+        sslLock?.isClickable = false // TODO: Handle failed states in dialog
     }
 
     override fun onStartPageEditTextPressed() {
@@ -658,6 +722,7 @@ class BrowserActivity : VWebViewActivity() {
                 R.drawable.app_shortcut,
                 R.drawable.settings,
                 R.drawable.code,
+                R.drawable.print,
                 R.drawable.close
         )
 
@@ -670,6 +735,7 @@ class BrowserActivity : VWebViewActivity() {
                 R.string.toolbar_expandable_app_shortcut,
                 R.string.toolbar_expandable_settings,
                 R.string.toolbar_expandable_view_page_source,
+                R.string.toolbar_expandable_print,
                 R.string.toolbar_expandable_close
         )
     }

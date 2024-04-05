@@ -45,15 +45,13 @@
                 android:id="@+id/changelog_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/get_changelog"
-                android:textColor="@color/colorTextFlipped" />
+                android:text="@string/get_changelog" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/license_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/license_btn"
-                android:textColor="@color/colorTextFlipped" />
+                android:text="@string/license_btn" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>

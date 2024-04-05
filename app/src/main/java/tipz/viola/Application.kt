@@ -16,7 +16,6 @@
 package tipz.viola
 
 import android.app.Application
-import android.os.Build
 import com.google.android.material.color.DynamicColors
 import tipz.viola.broha.api.FavApi
 import tipz.viola.broha.api.HistoryApi
@@ -38,8 +37,8 @@ class Application : Application() {
         historyBroha = BrohaClient(this, "history").dao
         favBroha = BrohaClient(this, "bookmarks").dao
         iconHashClient = IconHashUtils(this)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) DynamicColors.applyToActivitiesIfAvailable(
-            this
-        )
+
+        // Observe dynamic colors changes
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 }

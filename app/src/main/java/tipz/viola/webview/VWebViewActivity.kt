@@ -69,7 +69,7 @@ open class VWebViewActivity : BaseActivity() {
 
         // Setup swipe refresh layout
         swipeRefreshLayout.setOnRefreshListener { webview.webViewReload() }
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
+        //swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
 
         // Setup start page
         startPageLayout?.findViewById<View>(R.id.startPageEditText)?.setOnClickListener { onStartPageEditTextPressed() }
@@ -109,7 +109,7 @@ open class VWebViewActivity : BaseActivity() {
     val mGetNeedLoad =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             doSettingsCheck()
-            webview.loadUrl((if (result.data != null) result.data!!.getStringExtra("needLoadUrl") else CommonUtils.EMPTY_STRING)!!)
+            if (result.data != null) result.data!!.getStringExtra("needLoadUrl")?.let { webview.loadUrl(it) }
         }
 
     /**
@@ -136,13 +136,13 @@ open class VWebViewActivity : BaseActivity() {
 
         // Start Page Wallpaper
         if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
-            startPageLayout?.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
+            startPageLayout?.setBackgroundResource(0)
         } else {
             try {
                 val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper)) )
                 startPageLayout?.background = BitmapDrawable(resources, bitmap)
             } catch (_: SecurityException) {
-                startPageLayout?.setBackgroundColor(resources.getColor(R.color.colorTopBarWebView))
+                startPageLayout?.setBackgroundResource(0)
                 settingsPreference.setString(SettingsKeys.startPageWallpaper, CommonUtils.EMPTY_STRING)
             }
         }
@@ -161,6 +161,10 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     open fun onDropDownDismissed() {}
+
+    open fun onSslCertificateUpdated() {}
+
+    open fun onSslErrorProceed() {}
 
     open fun onStartPageEditTextPressed() {}
 
