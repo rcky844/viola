@@ -235,11 +235,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (url == InternalUrls.startUrl) {
             this.loadUrl(InternalUrls.aboutBlankUrl)
             this.visibility = GONE
+            mVioWebViewActivity?.swipeRefreshLayout?.visibility = GONE
             startPageLayout?.visibility = VISIBLE
             return
         }
         if (this.visibility == GONE) {
             this.visibility = VISIBLE
+            mVioWebViewActivity?.swipeRefreshLayout?.visibility = VISIBLE
             startPageLayout?.visibility = GONE
         }
 
