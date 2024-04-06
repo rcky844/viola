@@ -44,6 +44,7 @@ class SettingsSharedPreference(context: Context) {
             this.setInt(SettingsKeys.reverseAddressBar, 0)
             this.setInt(SettingsKeys.sendDNT, 0)
             this.setInt(SettingsKeys.sendSaveData, 0)
+            this.setInt(SettingsKeys.sendSecGPC, 0)
             this.setInt(SettingsKeys.showFavicon, 1)
             this.setInt(SettingsKeys.themeId, 0)
             this.setInt(SettingsKeys.useCustomTabs, 1)

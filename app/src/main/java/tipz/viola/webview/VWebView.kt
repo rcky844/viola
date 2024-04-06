@@ -187,6 +187,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Do Not Track request
         mRequestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
 
+        // Global Privacy Control
+        mRequestHeaders["Sec-GPC"] = settingsPreference.getInt(SettingsKeys.sendSecGPC).toString()
+
         // Data Saver
         mRequestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
 

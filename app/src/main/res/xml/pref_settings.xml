@@ -57,6 +57,12 @@
             app:preferenceTag="sendDNT"
             app:needReload="true" />
         <tipz.viola.settings.MaterialSwitchPreference
+            android:key="send_sec_gpc"
+            android:summary="@string/pref_send_sec_gpc_summary"
+            android:title="@string/pref_send_sec_gpc_title"
+            app:preferenceTag="sendSecGPC"
+            app:needReload="true" />
+        <tipz.viola.settings.MaterialSwitchPreference
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
             android:title="@string/pref_enforce_https_title"
