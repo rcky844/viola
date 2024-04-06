@@ -101,9 +101,11 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             if (item == R.string.copy_text_url && title.isNullOrBlank()) continue
 
             // Insert Image items
-            if (item == imageId && !src.isNullOrBlank()) {
-                for (imageItem in hitTestDialogImageItems) {
-                    arrayAdapter?.add(context.resources.getString(imageItem))
+            if (item == imageId) {
+                if (!src.isNullOrBlank()) {
+                    for (imageItem in hitTestDialogImageItems) {
+                        arrayAdapter?.add(context.resources.getString(imageItem))
+                    }
                 }
                 continue
             }

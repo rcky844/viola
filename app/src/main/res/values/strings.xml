@@ -150,6 +150,10 @@
     <string name="pref_update_channel_title">Select update channel</string>
     <string name="pref_adBlockerDownload_title">Download Ad Blocker Hosts File</string>
     <string name="pref_adBlockerSource_title">Ad Blocker Hosts Source</string>
+    <string name="pref_send_save_data_title">Data Saver</string>
+    <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
+    <string name="pref_send_sec_gpc_title">Global Privacy Control</string>
+    <string name="pref_send_sec_gpc_summary">Enable to consent to the selling or sharing of your personal information on websites you visit with third parties.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

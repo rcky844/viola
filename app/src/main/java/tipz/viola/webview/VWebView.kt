@@ -187,6 +187,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Do Not Track request
         mRequestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
 
+        // Global Privacy Control
+        mRequestHeaders["Sec-GPC"] = settingsPreference.getInt(SettingsKeys.sendSecGPC).toString()
+
+        // Data Saver
+        mRequestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
+
         // Ad Servers Hosts
         if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock))
             adServersHandler.importAdServers()
@@ -353,6 +359,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun webViewReload() {
         if (currentUrl.isNullOrBlank() || currentUrl == InternalUrls.aboutBlankUrl) return
-        super.loadUrl(currentUrl!!)
+        loadUrl(currentUrl!!)
     }
 }

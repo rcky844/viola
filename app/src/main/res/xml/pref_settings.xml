@@ -57,6 +57,12 @@
             app:preferenceTag="sendDNT"
             app:needReload="true" />
         <tipz.viola.settings.MaterialSwitchPreference
+            android:key="send_sec_gpc"
+            android:summary="@string/pref_send_sec_gpc_summary"
+            android:title="@string/pref_send_sec_gpc_title"
+            app:preferenceTag="sendSecGPC"
+            app:needReload="true" />
+        <tipz.viola.settings.MaterialSwitchPreference
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
             android:title="@string/pref_enforce_https_title"
@@ -137,6 +143,12 @@
             android:title="@string/pref_use_custom_tabs_title"
             app:preferenceTag="useCustomTabs"
             app:needReload="false" />
+        <tipz.viola.settings.MaterialSwitchPreference
+            android:key="send_save_data"
+            android:summary="@string/pref_send_save_data_summary"
+            android:title="@string/pref_send_save_data_title"
+            app:preferenceTag="sendSaveData"
+            app:needReload="true" />
         <tipz.viola.settings.MaterialSwitchPreference
             android:key="close_app_after_download"
             android:summary="@string/pref_close_app_after_download_summary"
