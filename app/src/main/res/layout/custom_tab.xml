@@ -61,7 +61,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@id/share"
                     app:layout_constraintStart_toEndOf="@id/toolsContainer"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/host" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/host"
@@ -75,7 +76,8 @@
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/share"
-                    app:layout_constraintStart_toEndOf="@id/toolsContainer" />
+                    app:layout_constraintStart_toEndOf="@id/toolsContainer"
+                    app:layout_constraintTop_toBottomOf="@id/title" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrier"
