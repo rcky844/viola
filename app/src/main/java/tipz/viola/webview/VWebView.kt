@@ -187,6 +187,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Do Not Track request
         mRequestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
 
+        // Data Saver
+        mRequestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
+
         // Ad Servers Hosts
         if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock))
             adServersHandler.importAdServers()
