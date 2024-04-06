@@ -141,7 +141,7 @@ class BrowserActivity : VWebViewActivity() {
         toolsBarExtendableRecycler?.adapter =
             ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
         (toolsBarExtendableRecycler?.layoutManager as FlexboxLayoutManager).apply {
-            justifyContent = JustifyContent.FLEX_START
+            justifyContent = JustifyContent.SPACE_AROUND
             alignItems = AlignItems.CENTER
             flexDirection = FlexDirection.ROW
             flexWrap = FlexWrap.WRAP
