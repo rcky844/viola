@@ -23,7 +23,6 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
-import tipz.viola.search.SearchEngineEntries
 import tipz.viola.utils.CommonUtils
 
 class ListPickerAlertDialog(context: Context, settingsPreference: SettingsSharedPreference) :
@@ -46,7 +45,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
             mSettingsPreference.getInt(mListPickerObject.idPreference)
         ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
         setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-            if (checkedItem[0] == SearchEngineEntries.getCustomIndex()) {
+            if (checkedItem[0] == mListPickerObject.customIndex) {
                 val layoutInflater = LayoutInflater.from(context)
                 @SuppressLint("InflateParams") val root =
                     layoutInflater.inflate(R.layout.dialog_edittext, null)
@@ -73,7 +72,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show()
             }
-            if (checkedItem[0] != SearchEngineEntries.getCustomIndex()) {
+            if (checkedItem[0] != mListPickerObject.customIndex) {
                 mSettingsPreference.setString(
                     mListPickerObject.stringPreference,
                     CommonUtils.EMPTY_STRING
@@ -96,5 +95,6 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         var stringPreference = CommonUtils.EMPTY_STRING // Preference key for storing strings
         var dialogTitle = CommonUtils.EMPTY_STRING // Dialog title
         var dialogCustomMessage = CommonUtils.EMPTY_STRING // Message for custom dialog
+        var customIndex = 0 // Custom item index
     }
 }
