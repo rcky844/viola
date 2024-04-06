@@ -77,7 +77,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             @SuppressLint("InflateParams") val root =
                 layoutInflater.inflate(R.layout.hit_test_dialog_title, null)
 
-            root.findViewById<AppCompatTextView>(R.id.title).text = title
+            root.findViewById<AppCompatTextView>(R.id.title).text = title.trim()
             root.findViewById<AppCompatTextView>(R.id.url).text = url
 
             val icon = root.findViewById<AppCompatImageView>(R.id.icon)
@@ -101,11 +101,9 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             if (item == R.string.copy_text_url && title.isNullOrBlank()) continue
 
             // Insert Image items
-            if (item == imageId) {
-                if (!src.isNullOrBlank()) {
-                    for (imageItem in hitTestDialogImageItems) {
-                        arrayAdapter?.add(context.resources.getString(imageItem))
-                    }
+            if (item == imageId && !src.isNullOrBlank()) {
+                for (imageItem in hitTestDialogImageItems) {
+                    arrayAdapter?.add(context.resources.getString(imageItem))
                 }
                 continue
             }

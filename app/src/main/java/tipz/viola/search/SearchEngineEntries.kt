@@ -68,6 +68,8 @@ object SearchEngineEntries {
             EngineObject() /* The object for custom URL */
     )
 
+    val customIndex = engines.size - 1
+
     fun getHomePageUrl(pref: SettingsSharedPreference?, position: Int): String {
         var url: String? = engines[position].homePage
         if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultHomePage)
@@ -100,13 +102,5 @@ object SearchEngineEntries {
                 languagePlaceholder, language
         )
         return cve_2017_13274(url!!)
-    }
-
-    fun getEngineListSize(): Int {
-        return engines.size
-    }
-
-    fun getCustomIndex(): Int {
-        return engines.size - 1
     }
 }

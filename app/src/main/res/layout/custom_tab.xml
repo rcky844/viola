@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022-2024 Tipz Team
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2022-2024 Tipz Team
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
@@ -62,7 +61,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@id/share"
                     app:layout_constraintStart_toEndOf="@id/toolsContainer"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/host" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/host"
@@ -76,7 +76,8 @@
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/share"
-                    app:layout_constraintStart_toEndOf="@id/toolsContainer" />
+                    app:layout_constraintStart_toEndOf="@id/toolsContainer"
+                    app:layout_constraintTop_toBottomOf="@id/title" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrier"
@@ -121,7 +122,8 @@
             android:indeterminate="false"
             android:progress="22"
             app:indicatorColor="?attr/colorAccent"
-            app:trackColor="@android:color/transparent" />
+            app:trackColor="@android:color/transparent"
+            app:trackStopIndicatorSize="0dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

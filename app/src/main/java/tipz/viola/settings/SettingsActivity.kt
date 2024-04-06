@@ -64,7 +64,6 @@ import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.DownloadUtils.dmDownloadFile
 import tipz.viola.utils.InternalUrls
-import tipz.viola.webview.AdServersHandler
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
@@ -225,6 +224,7 @@ class SettingsActivity : BaseActivity() {
                         resources.getString(R.string.search_engine)
                     listPickerObject.dialogCustomMessage =
                         settingsActivity.resources.getString(R.string.custom_search_guide)
+                    listPickerObject.customIndex = SearchEngineEntries.customIndex
 
                     listPickerAlertDialog.setupDialogForShowing()
                     listPickerAlertDialog.create().show()
@@ -241,6 +241,7 @@ class SettingsActivity : BaseActivity() {
                     listPickerObject.stringPreference = SettingsKeys.defaultHomePage
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.homepage)
+                    listPickerObject.customIndex = SearchEngineEntries.customIndex
 
                     listPickerAlertDialog.setupDialogForShowing()
                     listPickerAlertDialog.create().show()
@@ -259,6 +260,7 @@ class SettingsActivity : BaseActivity() {
                         resources.getString(R.string.search_suggestions_title)
                     listPickerObject.dialogCustomMessage =
                         settingsActivity.resources.getString(R.string.custom_search_guide)
+                    listPickerObject.customIndex = SearchEngineEntries.customIndex
 
                     listPickerAlertDialog.setupDialogForShowing()
                     listPickerAlertDialog.create().show()
@@ -275,6 +277,7 @@ class SettingsActivity : BaseActivity() {
                     listPickerObject.stringPreference = SettingsKeys.adServerUrl
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.pref_adBlockerSource_title)
+                    listPickerObject.customIndex = SearchEngineEntries.customIndex
 
                     listPickerAlertDialog.setupDialogForShowing()
                     listPickerAlertDialog.create().show()
