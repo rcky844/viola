@@ -8,10 +8,10 @@
   "release": {
     "channel_name": "Release",
     "latest_update": {
-      "name": "6.1.1 Patch 1",
+      "name": "6.1.1 Patch 2",
       "code": 19,
-      "timestamp": 1712391697,
-      "url": "https://gitlab.com/TipzTeam/viola/uploads/5dfe3dfbe219a72a371c29e0c981b11f/app-release.apk"
+      "timestamp": 1712434578,
+      "url": "https://gitlab.com/TipzTeam/viola/uploads/04ea0688e6ded1c20fbfe3dc817f94df/app-release.apk"
     }
   },
   "beta": {
