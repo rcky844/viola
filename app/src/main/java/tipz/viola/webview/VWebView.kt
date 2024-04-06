@@ -353,6 +353,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun webViewReload() {
         if (currentUrl.isNullOrBlank() || currentUrl == InternalUrls.aboutBlankUrl) return
-        super.loadUrl(currentUrl!!)
+        loadUrl(currentUrl!!)
     }
 }
