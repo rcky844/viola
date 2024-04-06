@@ -77,7 +77,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             @SuppressLint("InflateParams") val root =
                 layoutInflater.inflate(R.layout.hit_test_dialog_title, null)
 
-            root.findViewById<AppCompatTextView>(R.id.title).text = title
+            root.findViewById<AppCompatTextView>(R.id.title).text = title.trim()
             root.findViewById<AppCompatTextView>(R.id.url).text = url
 
             val icon = root.findViewById<AppCompatImageView>(R.id.icon)
