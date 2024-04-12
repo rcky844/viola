@@ -76,7 +76,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             WebViewCompat.getCurrentWebViewPackage(
                 mContext
             )?.versionName
-        } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
+        } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA}"
     }
 
     private val titleHandler = Handler { message ->
