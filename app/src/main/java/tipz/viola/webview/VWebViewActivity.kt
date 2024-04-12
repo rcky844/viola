@@ -110,6 +110,9 @@ open class VWebViewActivity : BaseActivity() {
 
             if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
                 webview.webViewReload()
+
+            if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0)
+                webview.adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress
         }
 
     override fun doSettingsCheck() {

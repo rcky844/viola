@@ -67,7 +67,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var historyCommitted = false
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
-    private var adServersHandler: AdServersHandler
+    internal var adServersHandler: AdServersHandler
 
     private val mRequestHeaders = HashMap<String, String>()
     private fun userAgentFull(mode: Int): String {
@@ -220,16 +220,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Check for internal URLs
         if (url == InternalUrls.licenseUrl) {
             super.loadUrl(InternalUrls.realLicenseUrl)
-            return
-        }
-
-        if (url == InternalUrls.reloadUrl) {
-            webViewReload()
-            return
-        }
-
-        if (url == InternalUrls.updateAdServersHostsUrl) {
-            adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress
             return
         }
 

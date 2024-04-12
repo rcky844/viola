@@ -26,6 +26,5 @@ object InternalUrls {
     const val prefix = "viola://"
     const val licenseUrl = prefix + "license"
     const val startUrl = prefix + "start"
-    const val updateAdServersHostsUrl = prefix + "updateAdServers"
     const val aboutBlankUrl = "about:blank"
 }

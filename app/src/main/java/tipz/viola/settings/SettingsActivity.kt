@@ -283,7 +283,10 @@ class SettingsActivity : BaseActivity() {
                 }
             adBlockerDownload.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    needLoad(InternalUrls.updateAdServersHostsUrl)
+                    val intent = Intent()
+                    intent.putExtra(SettingsKeys.updateAdServers, 1)
+                    settingsActivity.setResult(0, intent)
+                    settingsActivity.finish()
                     true
                 }
             clear_cache.materialDialogPreferenceListener =
