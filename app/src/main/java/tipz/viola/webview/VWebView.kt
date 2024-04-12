@@ -246,6 +246,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         super.loadUrl(checkedUrl, mRequestHeaders)
     }
 
+    override fun reload() {
+        if (currentUrl.isNullOrBlank() || currentUrl == InternalUrls.aboutBlankUrl) return
+        loadUrl(currentUrl!!)
+    }
+
     override fun getUrl(): String? {
         return currentUrl
     }
@@ -334,7 +339,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             view.setImageResource(image!!)
             view.tag = image
         }
-        if (!noReload) webViewReload()
+        if (!noReload) reload()
     }
 
     fun setPrebuiltUAMode(view: AppCompatImageView?, mode: Int, noReload: Boolean) {
@@ -345,10 +350,5 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             if (mode == 0) R.drawable.smartphone else R.drawable.desktop,
             noReload
         )
-    }
-
-    fun webViewReload() {
-        if (currentUrl.isNullOrBlank() || currentUrl == InternalUrls.aboutBlankUrl) return
-        loadUrl(currentUrl!!)
     }
 }

@@ -69,7 +69,7 @@ open class VWebViewActivity : BaseActivity() {
         webview.doSettingsCheck()
 
         // Setup swipe refresh layout
-        swipeRefreshLayout.setOnRefreshListener { webview.webViewReload() }
+        swipeRefreshLayout.setOnRefreshListener { webview.reload() }
 
         // Setup start page
         startPageLayout?.findViewById<View>(R.id.startPageEditText)
@@ -106,7 +106,7 @@ open class VWebViewActivity : BaseActivity() {
             result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadUrl(it) } // FROM: SettingsActivity
 
             if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
-                webview.webViewReload()
+                webview.reload()
 
             if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0)
                 webview.adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress

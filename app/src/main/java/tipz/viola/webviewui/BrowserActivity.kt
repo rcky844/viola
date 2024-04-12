@@ -232,7 +232,7 @@ class BrowserActivity : VWebViewActivity() {
         // Setup the up most fab (currently for reload)
         upRightFab?.setOnClickListener {
             if (progressBar.progress > 0) webview.stopLoading()
-            if (progressBar.progress == 0) webview.webViewReload()
+            if (progressBar.progress == 0) webview.reload()
         }
 
         // Finally, setup WebView
@@ -355,7 +355,7 @@ class BrowserActivity : VWebViewActivity() {
         when (item) {
             R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
-            R.drawable.refresh -> webview.webViewReload()
+            R.drawable.refresh -> webview.reload()
             R.drawable.home -> {
                 if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
                     webview.loadUrl(
