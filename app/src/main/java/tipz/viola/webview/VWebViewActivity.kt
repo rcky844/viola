@@ -103,10 +103,7 @@ open class VWebViewActivity : BaseActivity() {
             doSettingsCheck()
             if (result.data == null) return@registerForActivityResult
 
-            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let {
-                webview.loadUrl(it)
-                return@registerForActivityResult
-            } // FROM: SettingsActivity
+            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadUrl(it) } // FROM: SettingsActivity
 
             if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
                 webview.webViewReload()
