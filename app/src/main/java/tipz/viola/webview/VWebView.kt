@@ -61,7 +61,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var mVioWebViewActivity: VWebViewActivity? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
-    private var currentUrl: String? = null
+    private var currentUrl: String = CommonUtils.EMPTY_STRING
     private var currentBroha: Broha? = null
     private var updateHistory = true
     private var historyCommitted = false
@@ -211,7 +211,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun loadUrl(url: String) {
-        if (url.isEmpty()) return
+        if (url.isBlank()) return
         if (url == InternalUrls.aboutBlankUrl) {
             super.loadUrl(url)
             return
@@ -247,11 +247,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun reload() {
-        if (currentUrl.isNullOrBlank() || currentUrl == InternalUrls.aboutBlankUrl) return
-        loadUrl(currentUrl!!)
+        loadUrl(currentUrl)
     }
 
-    override fun getUrl(): String? {
+    override fun getUrl(): String {
         return currentUrl
     }
 
@@ -282,8 +281,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_HISTORY -> {
-                if (updateHistory && currentUrl != null) {
-                    currentBroha = Broha(title, currentUrl!!)
+                if (updateHistory) {
+                    currentBroha = Broha(title, currentUrl)
                     historyCommitted = false
                 }
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) CookieSyncManager.getInstance()
