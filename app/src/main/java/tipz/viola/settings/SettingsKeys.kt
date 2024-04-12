@@ -61,4 +61,6 @@ object SettingsKeys {
      * indicates data type.
      */
     const val needLoadUrl = "needLoadUrl"  /* STRING */
+    const val needReload = "needReload" /* INTEGER */
+    const val updateAdServers = "updateAdServers" /* INTEGER */
 }

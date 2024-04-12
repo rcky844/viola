@@ -101,8 +101,15 @@ open class VWebViewActivity : BaseActivity() {
     val mGetNeedLoad =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             doSettingsCheck()
-            if (result.data != null) result.data!!.getStringExtra(SettingsKeys.needLoadUrl)
-                ?.let { webview.loadUrl(it) } // FROM: SettingsActivity
+            if (result.data == null) return@registerForActivityResult
+
+            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let {
+                webview.loadUrl(it)
+                return@registerForActivityResult
+            } // FROM: SettingsActivity
+
+            if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
+                webview.webViewReload()
         }
 
     override fun doSettingsCheck() {

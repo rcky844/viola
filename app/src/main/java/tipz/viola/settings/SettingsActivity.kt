@@ -80,10 +80,8 @@ class SettingsActivity : BaseActivity() {
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         onBackPressedDispatcher.addCallback(this) {
-            if (SettingsPrefHandler.needReload) {
-                needLoad.putExtra(SettingsKeys.needLoadUrl, InternalUrls.reloadUrl)
-                setResult(0, needLoad)
-            }
+            needLoad.putExtra(SettingsKeys.needReload, SettingsPrefHandler.needReload)
+            setResult(0, needLoad)
             finish()
         }
     }

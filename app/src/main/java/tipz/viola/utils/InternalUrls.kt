@@ -25,7 +25,6 @@ object InternalUrls {
     const val realLicenseUrl = "file:///android_asset/LICENSE.txt"
     const val prefix = "viola://"
     const val licenseUrl = prefix + "license"
-    const val reloadUrl = prefix + "reload"
     const val startUrl = prefix + "start"
     const val updateAdServersHostsUrl = prefix + "updateAdServers"
     const val aboutBlankUrl = "about:blank"
