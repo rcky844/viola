@@ -70,14 +70,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     internal var adServersHandler: AdServersHandler
 
     private val mRequestHeaders = HashMap<String, String>()
-    private fun userAgentFull(mode: Int): String {
-        val mobile = if (mode == 0) "Mobile" else CommonUtils.EMPTY_STRING
-        return "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
-            WebViewCompat.getCurrentWebViewPackage(
-                mContext
-            )?.versionName
-        } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA}"
-    }
 
     private val titleHandler = Handler { message ->
         val webLongPress = HitTestAlertDialog(mContext)
@@ -93,7 +85,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     init {
         /* User agent init code */
-        setPrebuiltUAMode(null, 0, true)
+        setUserAgent(UserAgentMode.MOBILE, UserAgentBundle())
 
         /* Start the download manager service */
         setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
@@ -323,31 +315,51 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         mVioWebViewActivity!!.onPageLoadProgressChanged(progress)
     }
 
-    fun setUA(
-        view: AppCompatImageView?,
-        enableDesktop: Boolean,
-        ua: String?,
-        image: Int?,
-        noReload: Boolean
-    ) {
-        webSettings.userAgentString = ua
-        webSettings.loadWithOverviewMode = enableDesktop
-        webSettings.useWideViewPort = enableDesktop
-        super.setScrollBarStyle(if (enableDesktop) SCROLLBARS_OUTSIDE_OVERLAY else SCROLLBARS_INSIDE_OVERLAY)
-        if (view != null) {
-            view.setImageResource(image!!)
-            view.tag = image
+    fun setUserAgent(agentMode: UserAgentMode, dataBundle: UserAgentBundle) {
+        if (agentMode == UserAgentMode.CUSTOM && dataBundle.userAgentString.isBlank()) return
+
+        val targetResId = {
+            when (agentMode) {
+                UserAgentMode.MOBILE -> R.drawable.smartphone
+                UserAgentMode.DESKTOP -> R.drawable.desktop
+                UserAgentMode.CUSTOM -> R.drawable.custom
+            }
         }
-        if (!noReload) reload()
+        val mobile = if (agentMode == UserAgentMode.MOBILE) "Mobile" else CommonUtils.EMPTY_STRING
+        val userAgentHolder = if (agentMode == UserAgentMode.MOBILE || agentMode == UserAgentMode.DESKTOP) {
+            "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
+                    WebViewCompat.getCurrentWebViewPackage(
+                        mContext
+                    )?.versionName
+                } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA}"
+        } else if (agentMode == UserAgentMode.CUSTOM) {
+            dataBundle.userAgentString
+        } else {
+            CommonUtils.EMPTY_STRING
+        }
+
+        if (agentMode == UserAgentMode.DESKTOP) dataBundle.enableDesktop = true
+
+        webSettings.userAgentString = userAgentHolder
+        if (dataBundle.iconView != null) {
+            dataBundle.iconView!!.setImageResource(targetResId())
+            dataBundle.iconView!!.tag = targetResId()
+        }
+        webSettings.loadWithOverviewMode = dataBundle.enableDesktop
+        webSettings.useWideViewPort = dataBundle.enableDesktop
+        super.setScrollBarStyle(if (dataBundle.enableDesktop) SCROLLBARS_OUTSIDE_OVERLAY else SCROLLBARS_INSIDE_OVERLAY)
+
+        if (!dataBundle.noReload) reload()
     }
 
-    fun setPrebuiltUAMode(view: AppCompatImageView?, mode: Int, noReload: Boolean) {
-        setUA(
-            view,
-            mode == 1,
-            userAgentFull(mode),
-            if (mode == 0) R.drawable.smartphone else R.drawable.desktop,
-            noReload
-        )
+    enum class UserAgentMode {
+        MOBILE, DESKTOP, CUSTOM
+    }
+
+    class UserAgentBundle {
+        var userAgentString = CommonUtils.EMPTY_STRING
+        var iconView: AppCompatImageView? = null
+        var enableDesktop = false // Defaults to true with UserAgentMode.DESKTOP
+        var noReload = false
     }
 }

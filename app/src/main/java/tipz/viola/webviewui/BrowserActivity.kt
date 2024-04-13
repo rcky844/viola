@@ -80,20 +80,20 @@ import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
+import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import java.io.IOException
 import java.io.StringReader
 import java.lang.ref.WeakReference
 import java.text.DateFormat
-import java.util.Objects
 
 
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
     private var urlEditText: MaterialAutoCompleteTextView? = null
     private var upRightFab: AppCompatImageView? = null
-    private var currentPrebuiltUAState = false
-    private var currentCustomUA: String? = null
+    private var currentUserAgentState = VWebView.UserAgentMode.MOBILE
+    private var currentCustomUserAgent: String? = null
     private var currentCustomUAWideView = false
     private var iconHashClient: IconHashUtils? = null
     private var toolBar: RecyclerView? = null
@@ -371,10 +371,18 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
-                currentPrebuiltUAState = !currentPrebuiltUAState
-                webview.setPrebuiltUAMode(
-                    view, if (currentPrebuiltUAState) 1 else 0, false
-                )
+                val userAgentMode = {
+                    when (currentUserAgentState) {
+                        VWebView.UserAgentMode.MOBILE -> VWebView.UserAgentMode.DESKTOP
+                        VWebView.UserAgentMode.DESKTOP -> VWebView.UserAgentMode.MOBILE
+                        VWebView.UserAgentMode.CUSTOM -> VWebView.UserAgentMode.MOBILE
+                    }
+                }
+
+                val dataBundle = VWebView.UserAgentBundle()
+                dataBundle.iconView = view
+                webview.setUserAgent(userAgentMode(), dataBundle)
+                currentUserAgentState = userAgentMode()
             }
 
             R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
@@ -499,17 +507,19 @@ class BrowserActivity : VWebViewActivity() {
             dialog.setTitle(resources.getString(R.string.customUA))
                 .setView(root)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    if (customUserAgent.length() != 0) webview.setUA(
-                        view, deskMode.isChecked,
-                        Objects.requireNonNull(customUserAgent.text).toString(),
-                        R.drawable.custom, false
-                    )
-                    currentCustomUA = Objects.requireNonNull(customUserAgent.text).toString()
+                    val dataBundle = VWebView.UserAgentBundle()
+                    dataBundle.userAgentString = customUserAgent.text.toString()
+                    dataBundle.iconView = view
+                    dataBundle.enableDesktop = deskMode.isChecked
+                    webview.setUserAgent(VWebView.UserAgentMode.CUSTOM, dataBundle)
+
+                    currentUserAgentState = VWebView.UserAgentMode.CUSTOM
+                    currentCustomUserAgent = customUserAgent.text.toString()
                     currentCustomUAWideView = deskMode.isChecked
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
-            if (currentCustomUA != null) customUserAgent.setText(currentCustomUA)
+            if (currentCustomUserAgent != null) customUserAgent.setText(currentCustomUserAgent)
         }
     }
 
