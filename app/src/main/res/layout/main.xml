@@ -82,7 +82,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/barrier"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/search" />
+                    app:srcCompat="@drawable/search"
+                    app:tint="?attr/colorOnSurface" />
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/urlEditText"
