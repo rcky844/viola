@@ -387,7 +387,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
             R.drawable.app_shortcut -> {
-                if (webview.title.isNullOrBlank() || webview.url.isNullOrBlank()) return
+                if (webview.title.isNullOrBlank() || webview.url.isBlank()) return
                 ShortcutManagerCompat.requestPinShortcut(
                     this, ShortcutInfoCompat.Builder(this, webview.title!!)
                         .setShortLabel(webview.title!!)
@@ -424,7 +424,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.favorites_add -> {
                 val url = webview.url
-                if (url.isNullOrBlank()) return
+                if (url.isBlank()) return
 
                 val icon = favicon!!.drawable
                 val title = webview.title
