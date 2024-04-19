@@ -110,24 +110,28 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
-        /* zoom related stuff - From SCMPNews project */webSettings.setSupportZoom(true)
+        // Zoom controls
+        webSettings.setSupportZoom(true)
         webSettings.builtInZoomControls = true
+        webSettings.displayZoomControls = false
 
         // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
         // Chrome does this in the current Chrome Dev, but not Chrome release).
         webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
-        webSettings.displayZoomControls = false
+
+        // Disable file access
+        // Disabled as it no longer functions since Android 11
         webSettings.allowFileAccess = false
         webSettings.allowContentAccess = false
         webSettings.allowFileAccessFromFileURLs = false
         webSettings.allowUniversalAccessFromFileURLs = false
 
+        // Enable some HTML5 related settings
+        webSettings.databaseEnabled = false // Disabled as no-op since Android 15
+        webSettings.domStorageEnabled = true
+
         // Ad Server Hosts
         adServersHandler = AdServersHandler(mContext, settingsPreference)
-
-        /* HTML5 API flags */
-        webSettings.databaseEnabled = false
-        webSettings.domStorageEnabled = true
 
         this.webViewClient = VWebViewClient(mContext, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(mContext, this)
@@ -159,7 +163,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 if (darkMode) WebSettingsCompat.FORCE_DARK_ON else WebSettingsCompat.FORCE_DARK_OFF
             )
 
-        // Settings check
+        // Javascript
         webSettings.javaScriptEnabled =
             settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled)
         webSettings.javaScriptCanOpenWindowsAutomatically =
