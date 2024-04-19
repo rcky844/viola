@@ -154,6 +154,7 @@
     <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
     <string name="pref_send_sec_gpc_title">Global Privacy Control</string>
     <string name="pref_send_sec_gpc_summary">Enable to consent to the selling or sharing of your personal information on websites you visit with third parties.</string>
+    <string name="homepage_webpage_home">Webpage Home</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

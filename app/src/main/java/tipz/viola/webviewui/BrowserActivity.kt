@@ -102,6 +102,7 @@ class BrowserActivity : VWebViewActivity() {
     private var toolsBarExtendableBackground: ConstraintLayout? = null
     private var toolsBarExtendableCloseHitBox: LinearLayoutCompat? = null
     private var sslLock: AppCompatImageView? = null
+    private var homeButton: LinearLayoutCompat? = null
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
     private var isSslError: Boolean = false
@@ -126,6 +127,7 @@ class BrowserActivity : VWebViewActivity() {
         startPageLayout = findViewById(R.id.layout_startpage)
         iconHashClient = (applicationContext as Application).iconHashClient
         sslLock = findViewById(R.id.ssl_lock)
+        homeButton = findViewById(R.id.home_button)
 
         // Setup toolbar
         toolBar = findViewById(R.id.toolBar)
@@ -234,6 +236,18 @@ class BrowserActivity : VWebViewActivity() {
         upRightFab?.setOnClickListener {
             if (progressBar.progress > 0) webview.stopLoading()
             if (progressBar.progress == 0) webview.reload()
+        }
+
+        // Setup home button
+        homeButton?.findViewById<AppCompatImageView>(R.id.imageView)?.setImageResource(R.drawable.home)
+        homeButton?.findViewById<AppCompatTextView>(R.id.textView)?.text = resources.getString(R.string.homepage_webpage_home)
+        homeButton?.setOnClickListener {
+            webview.loadUrl(
+                SearchEngineEntries.getHomePageUrl(
+                    settingsPreference,
+                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)
+                )
+            )
         }
 
         // Finally, setup WebView

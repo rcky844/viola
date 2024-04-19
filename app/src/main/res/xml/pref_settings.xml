@@ -17,17 +17,16 @@
             android:key="search_engine"
             android:summary=""
             android:title="@string/search_engine" />
+        <androidx.preference.Preference
+            android:key="homepage"
+            android:summary=""
+            android:title="@string/homepage" />
         <tipz.viola.settings.MaterialSwitchPreference
             android:key="dont_use_start_page"
             android:summary="@string/pref_dont_use_start_page_summary"
             android:title="@string/pref_dont_use_start_page_title"
             app:preferenceTag="useWebHomePage"
             app:needReload="false" />
-        <androidx.preference.Preference
-            android:dependency="dont_use_start_page"
-            android:key="homepage"
-            android:summary=""
-            android:title="@string/homepage" />
         <androidx.preference.Preference
             android:key="search_suggestions"
             android:summary=""
