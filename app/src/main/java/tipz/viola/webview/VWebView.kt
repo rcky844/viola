@@ -47,6 +47,7 @@ import tipz.viola.R
 import tipz.viola.broha.api.HistoryApi
 import tipz.viola.broha.api.HistoryUtils
 import tipz.viola.broha.database.Broha
+import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
@@ -365,5 +366,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         var iconView: AppCompatImageView? = null
         var enableDesktop = false // Defaults to true with UserAgentMode.DESKTOP
         var noReload = false
+    }
+
+    fun loadHomepage(useStartPage : Boolean) {
+        if (useStartPage) {
+            loadUrl(SearchEngineEntries.getHomePageUrl(
+                    settingsPreference, settingsPreference.getInt(SettingsKeys.defaultHomePageId)))
+        } else {
+            loadUrl(InternalUrls.startUrl)
+        }
+
     }
 }

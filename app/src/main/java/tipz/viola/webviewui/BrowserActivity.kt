@@ -75,12 +75,10 @@ import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavUtils
 import tipz.viola.broha.database.IconHashUtils
-import tipz.viola.search.SearchEngineEntries
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import java.io.IOException
@@ -242,12 +240,7 @@ class BrowserActivity : VWebViewActivity() {
         homeButton?.findViewById<AppCompatImageView>(R.id.imageView)?.setImageResource(R.drawable.home)
         homeButton?.findViewById<AppCompatTextView>(R.id.textView)?.text = resources.getString(R.string.homepage_webpage_home)
         homeButton?.setOnClickListener {
-            webview.loadUrl(
-                SearchEngineEntries.getHomePageUrl(
-                    settingsPreference,
-                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)
-                )
-            )
+            webview.loadHomepage(false)
         }
 
         // Finally, setup WebView
@@ -260,15 +253,8 @@ class BrowserActivity : VWebViewActivity() {
         val dataUri = intent.data
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
-        } else if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
-            webview.loadUrl(
-                SearchEngineEntries.getHomePageUrl(
-                    settingsPreference,
-                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)
-                )
-            )
         } else {
-            webview.loadUrl(InternalUrls.startUrl)
+            webview.loadHomepage(settingsPreference.getIntBool(SettingsKeys.useWebHomePage))
         }
     }
 
@@ -343,17 +329,9 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
             R.drawable.refresh -> webview.reload()
             R.drawable.home -> {
-                if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
-                    webview.loadUrl(
-                        SearchEngineEntries.getHomePageUrl(
-                            settingsPreference,
-                            settingsPreference.getInt(SettingsKeys.defaultHomePageId)
-                        )
-                    )
-                } else {
-                    urlEditText!!.setText(CommonUtils.EMPTY_STRING)
-                    webview.loadUrl(InternalUrls.startUrl)
-                }
+                val reqVal : Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
+                webview.loadHomepage(reqVal)
+                if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
             }
 
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
