@@ -242,6 +242,7 @@ class BrowserActivity : VWebViewActivity() {
         homeButton?.setOnClickListener {
             webview.loadHomepage(false)
         }
+        homeButton?.visibility = View.GONE // FIXME: Unhide
 
         // Finally, setup WebView
         webViewInit()
