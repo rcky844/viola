@@ -55,6 +55,7 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -278,75 +279,46 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun doSettingsCheck() {
         super.doSettingsCheck()
-        val reverseAddressBar: Int = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
+        val reverseAddressBar = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
         if (reverseAddressBar != viewMode) {
-            val constraintLayout = findViewById<ConstraintLayout>(R.id.mainBackground)
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(constraintLayout)
-            constraintSet.clear(R.id.appbar, ConstraintSet.TOP)
-            constraintSet.clear(R.id.appbar, ConstraintSet.BOTTOM)
-            constraintSet.clear(R.id.webviewContainer, ConstraintSet.TOP)
-            constraintSet.clear(R.id.toolsContainer, ConstraintSet.BOTTOM)
-            if (reverseAddressBar == 1) {
-                constraintSet.connect(
-                    R.id.appbar,
-                    ConstraintSet.TOP,
-                    R.id.toolsContainer,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.appbar,
-                    ConstraintSet.BOTTOM,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.webviewContainer,
-                    ConstraintSet.TOP,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.TOP,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.toolsContainer,
-                    ConstraintSet.BOTTOM,
-                    R.id.appbar,
-                    ConstraintSet.TOP,
-                    0
-                )
-            } else {
-                constraintSet.connect(
-                    R.id.appbar,
-                    ConstraintSet.BOTTOM,
-                    R.id.webviewContainer,
-                    ConstraintSet.TOP,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.appbar,
-                    ConstraintSet.TOP,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.TOP,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.webviewContainer,
-                    ConstraintSet.TOP,
-                    R.id.appbar,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.toolsContainer,
-                    ConstraintSet.BOTTOM,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
+            appbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = when (reverseAddressBar) {
+                    1 -> R.id.toolsContainer
+                    else -> ConstraintSet.UNSET
+                }
+                bottomToBottom = when (reverseAddressBar) {
+                    1 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
+                bottomToTop = when (reverseAddressBar) {
+                    0 -> R.id.webviewContainer
+                    else -> ConstraintSet.UNSET
+                }
+                topToTop = when (reverseAddressBar) {
+                    0 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
             }
-            constraintSet.applyTo(constraintLayout)
+            webviewContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToTop = when (reverseAddressBar) {
+                    1 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
+                topToBottom = when (reverseAddressBar) {
+                    0 -> R.id.appbar
+                    else -> ConstraintSet.UNSET
+                }
+            }
+            toolsContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomToTop = when (reverseAddressBar) {
+                    1 -> R.id.appbar
+                    else -> ConstraintSet.UNSET
+                }
+                bottomToBottom = when (reverseAddressBar) {
+                    0 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
+            }
             viewMode = reverseAddressBar
         }
     }

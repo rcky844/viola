@@ -48,8 +48,9 @@ open class VWebViewActivity : BaseActivity() {
     lateinit var progressBar: LinearProgressIndicator
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     var startPageLayout: View? = null
-    private lateinit var appbar: AppBarLayout
-    private lateinit var webviewContainer: RelativeLayout
+    internal lateinit var appbar: AppBarLayout
+    internal lateinit var webviewContainer: RelativeLayout
+    internal lateinit var toolsContainer: RelativeLayout
     private var swipeRefreshLayoutEnabled = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +65,7 @@ open class VWebViewActivity : BaseActivity() {
     override fun onStart() {
         appbar = findViewById(R.id.appbar)
         webviewContainer = findViewById(R.id.webviewContainer)
+        toolsContainer = findViewById(R.id.toolsContainer)
 
         // Init VioWebView
         webview.doSettingsCheck()
