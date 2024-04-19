@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/toolsContainer"
+                    android:id="@+id/close"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
                     android:background="?attr/selectableItemBackground"
@@ -76,7 +76,7 @@
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/share"
-                    app:layout_constraintStart_toEndOf="@id/toolsContainer"
+                    app:layout_constraintStart_toEndOf="@id/close"
                     app:layout_constraintTop_toBottomOf="@id/title" />
 
                 <androidx.constraintlayout.widget.Barrier
