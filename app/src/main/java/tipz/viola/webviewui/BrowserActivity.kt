@@ -484,6 +484,10 @@ class BrowserActivity : VWebViewActivity() {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
             if (currentCustomUserAgent != null) customUserAgent.setText(currentCustomUserAgent)
+        } else if (item == R.drawable.home) {
+            val reqVal : Boolean = settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
+            webview.loadHomepage(reqVal)
+            if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
         }
     }
 
