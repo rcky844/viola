@@ -370,10 +370,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadHomepage(useStartPage : Boolean) {
         if (useStartPage) {
-            loadUrl(SearchEngineEntries.getHomePageUrl(
-                    settingsPreference, settingsPreference.getInt(SettingsKeys.defaultHomePageId)))
-        } else {
             loadUrl(InternalUrls.startUrl)
+        } else {
+            loadUrl(
+                SearchEngineEntries.getHomePageUrl(
+                settingsPreference, settingsPreference.getInt(SettingsKeys.defaultHomePageId)))
         }
 
     }

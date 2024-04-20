@@ -250,7 +250,7 @@ class BrowserActivity : VWebViewActivity() {
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
         } else {
-            webview.loadHomepage(settingsPreference.getIntBool(SettingsKeys.useWebHomePage))
+            webview.loadHomepage(!settingsPreference.getIntBool(SettingsKeys.useWebHomePage))
         }
     }
 
