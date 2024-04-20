@@ -33,7 +33,7 @@ class CustomTabsActivity : VWebViewActivity() {
         setContentView(R.layout.custom_tab)
 
         /* Back button */
-        val actionBarBack = findViewById<AppCompatImageView>(R.id.toolsContainer)
+        val actionBarBack : AppCompatImageView = findViewById(R.id.close)
         actionBarBack.setOnClickListener { finish() }
 
         /* Title and Host */
@@ -42,12 +42,12 @@ class CustomTabsActivity : VWebViewActivity() {
 
         /* Share */
         val share = findViewById<AppCompatImageView>(R.id.share)
-        share.setOnClickListener { CommonUtils.shareUrl(this, webview.url!!) }
+        share.setOnClickListener { CommonUtils.shareUrl(this, webview.url) }
 
         /* Open in Browser */
         val open_browser = findViewById<AppCompatImageView>(R.id.open_browser)
         open_browser.setOnClickListener {
-            val url = webview.url ?: return@setOnClickListener
+            val url = webview.url
             val intent = Intent(this, BrowserActivity::class.java)
             intent.data = Uri.parse(UrlUtils.cve_2017_13274(url))
             startActivity(intent)

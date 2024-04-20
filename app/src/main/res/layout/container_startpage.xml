@@ -50,4 +50,19 @@
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/buttonContainer"
+        android:layout_width="0dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="36dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline">
+
+        <include android:id="@+id/home_button"
+            layout="@layout/recycler_toolsbar_expandable_icon_item" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

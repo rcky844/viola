@@ -28,7 +28,7 @@ object SearchEngineEntries {
                     .setSuggestion("http://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q={query}&hl={language}"),
             EngineObject().setHomePage("https://www.baidu.com")
                     .setSearch("https://www.baidu.com/s?wd={query}")
-                    .setSuggestion("http://suggestion.baidu.com/su?ie=UTF-8&wd={query}&action=opensearch"),
+                    .setSuggestion("https://suggestion.baidu.com/su?ie=UTF-8&wd={query}&action=opensearch"),
             EngineObject().setHomePage("https://www.duckduckgo.com")
                     .setSearch("https://www.duckduckgo.com/?q={query}")
                     .setSuggestion("https://duckduckgo.com/ac/?q={query}&type=list"),

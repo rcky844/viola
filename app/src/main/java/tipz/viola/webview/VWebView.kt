@@ -47,6 +47,7 @@ import tipz.viola.R
 import tipz.viola.broha.api.HistoryApi
 import tipz.viola.broha.api.HistoryUtils
 import tipz.viola.broha.database.Broha
+import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.DownloadUtils
@@ -61,23 +62,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var mVioWebViewActivity: VWebViewActivity? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
-    private var currentUrl: String? = null
     private var currentBroha: Broha? = null
     private var updateHistory = true
     private var historyCommitted = false
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
-    private var adServersHandler: AdServersHandler
+    internal var adServersHandler: AdServersHandler
 
     private val mRequestHeaders = HashMap<String, String>()
-    private fun userAgentFull(mode: Int): String {
-        val mobile = if (mode == 0) "Mobile" else CommonUtils.EMPTY_STRING
-        return "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
-            WebViewCompat.getCurrentWebViewPackage(
-                mContext
-            )?.versionName
-        } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
-    }
 
     private val titleHandler = Handler { message ->
         val webLongPress = HitTestAlertDialog(mContext)
@@ -93,7 +85,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     init {
         /* User agent init code */
-        setPrebuiltUAMode(null, 0, true)
+        setUserAgent(UserAgentMode.MOBILE, UserAgentBundle())
 
         /* Start the download manager service */
         setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
@@ -109,7 +101,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
             DownloadUtils.dmDownloadFile(
                 mContext, url!!, contentDisposition,
-                mimeType, currentUrl
+                mimeType, getUrl()
             )
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
             mVioWebViewActivity!!.onPageLoadProgressChanged(0)
@@ -118,24 +110,28 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
-        /* zoom related stuff - From SCMPNews project */webSettings.setSupportZoom(true)
+        // Zoom controls
+        webSettings.setSupportZoom(true)
         webSettings.builtInZoomControls = true
+        webSettings.displayZoomControls = false
 
         // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
         // Chrome does this in the current Chrome Dev, but not Chrome release).
         webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
-        webSettings.displayZoomControls = false
+
+        // Disable file access
+        // Disabled as it no longer functions since Android 11
         webSettings.allowFileAccess = false
         webSettings.allowContentAccess = false
         webSettings.allowFileAccessFromFileURLs = false
         webSettings.allowUniversalAccessFromFileURLs = false
 
+        // Enable some HTML5 related settings
+        webSettings.databaseEnabled = false // Disabled as no-op since Android 15
+        webSettings.domStorageEnabled = true
+
         // Ad Server Hosts
         adServersHandler = AdServersHandler(mContext, settingsPreference)
-
-        /* HTML5 API flags */
-        webSettings.databaseEnabled = false
-        webSettings.domStorageEnabled = true
 
         this.webViewClient = VWebViewClient(mContext, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(mContext, this)
@@ -167,7 +163,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 if (darkMode) WebSettingsCompat.FORCE_DARK_ON else WebSettingsCompat.FORCE_DARK_OFF
             )
 
-        // Settings check
+        // Javascript
         webSettings.javaScriptEnabled =
             settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled)
         webSettings.javaScriptCanOpenWindowsAutomatically =
@@ -211,7 +207,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun loadUrl(url: String) {
-        if (url.isEmpty()) return
+        if (url.isBlank()) return
         if (url == InternalUrls.aboutBlankUrl) {
             super.loadUrl(url)
             return
@@ -220,16 +216,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Check for internal URLs
         if (url == InternalUrls.licenseUrl) {
             super.loadUrl(InternalUrls.realLicenseUrl)
-            return
-        }
-
-        if (url == InternalUrls.reloadUrl) {
-            webViewReload()
-            return
-        }
-
-        if (url == InternalUrls.updateAdServersHostsUrl) {
-            adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress
             return
         }
 
@@ -256,8 +242,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         super.loadUrl(checkedUrl, mRequestHeaders)
     }
 
-    override fun getUrl(): String? {
-        return currentUrl
+    override fun reload() {
+        loadUrl(getUrl())
+    }
+
+    override fun getUrl(): String {
+        val superUrl = super.getUrl()
+        return if (superUrl.isNullOrBlank()) InternalUrls.aboutBlankUrl else superUrl
     }
 
     override fun goBack() {
@@ -272,10 +263,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
         if (url == InternalUrls.aboutBlankUrl) return
-        if (url != null) currentUrl = url
+        val currentUrl = getUrl()
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
+                if (currentUrl.startsWith("view-source:")) return
                 mVioWebViewActivity!!.onFaviconProgressUpdated(true)
                 mVioWebViewActivity!!.onPageLoadProgressChanged(-1)
             }
@@ -287,8 +279,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_HISTORY -> {
-                if (updateHistory && currentUrl != null) {
-                    currentBroha = Broha(title, currentUrl!!)
+                if (updateHistory) {
+                    currentBroha = Broha(title, currentUrl)
                     historyCommitted = false
                 }
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) CookieSyncManager.getInstance()
@@ -329,36 +321,69 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         mVioWebViewActivity!!.onPageLoadProgressChanged(progress)
     }
 
-    fun setUA(
-        view: AppCompatImageView?,
-        enableDesktop: Boolean,
-        ua: String?,
-        image: Int?,
-        noReload: Boolean
-    ) {
-        webSettings.userAgentString = ua
-        webSettings.loadWithOverviewMode = enableDesktop
-        webSettings.useWideViewPort = enableDesktop
-        super.setScrollBarStyle(if (enableDesktop) SCROLLBARS_OUTSIDE_OVERLAY else SCROLLBARS_INSIDE_OVERLAY)
-        if (view != null) {
-            view.setImageResource(image!!)
-            view.tag = image
+    fun setUserAgent(agentMode: UserAgentMode, dataBundle: UserAgentBundle) {
+        if (agentMode == UserAgentMode.CUSTOM && dataBundle.userAgentString.isBlank()) return
+
+        val targetResId = {
+            when (agentMode) {
+                UserAgentMode.MOBILE -> R.drawable.smartphone
+                UserAgentMode.DESKTOP -> R.drawable.desktop
+                UserAgentMode.CUSTOM -> R.drawable.custom
+            }
         }
-        if (!noReload) webViewReload()
+        val mobile = if (agentMode == UserAgentMode.MOBILE) "Mobile" else CommonUtils.EMPTY_STRING
+        val userAgentHolder = when (agentMode) {
+            UserAgentMode.MOBILE, UserAgentMode.DESKTOP -> {
+                "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
+                    WebViewCompat.getCurrentWebViewPackage(
+                        mContext
+                    )?.versionName
+                } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA}"
+            }
+            UserAgentMode.CUSTOM -> {
+                dataBundle.userAgentString
+            }
+        }
+
+        if (agentMode == UserAgentMode.DESKTOP) dataBundle.enableDesktop = true
+
+        webSettings.userAgentString = userAgentHolder
+        if (dataBundle.iconView != null) {
+            dataBundle.iconView!!.setImageResource(targetResId())
+            dataBundle.iconView!!.tag = targetResId()
+        }
+        webSettings.loadWithOverviewMode = dataBundle.enableDesktop
+        webSettings.useWideViewPort = dataBundle.enableDesktop
+        super.setScrollBarStyle(if (dataBundle.enableDesktop) SCROLLBARS_OUTSIDE_OVERLAY else SCROLLBARS_INSIDE_OVERLAY)
+
+        if (!dataBundle.noReload) reload()
     }
 
-    fun setPrebuiltUAMode(view: AppCompatImageView?, mode: Int, noReload: Boolean) {
-        setUA(
-            view,
-            mode == 1,
-            userAgentFull(mode),
-            if (mode == 0) R.drawable.smartphone else R.drawable.desktop,
-            noReload
-        )
+    enum class UserAgentMode {
+        MOBILE, DESKTOP, CUSTOM
     }
 
-    fun webViewReload() {
-        if (currentUrl.isNullOrBlank() || currentUrl == InternalUrls.aboutBlankUrl) return
-        loadUrl(currentUrl!!)
+    class UserAgentBundle {
+        var userAgentString = CommonUtils.EMPTY_STRING
+        var iconView: AppCompatImageView? = null
+        var enableDesktop = false // Defaults to true with UserAgentMode.DESKTOP
+        var noReload = false
+    }
+
+    fun loadHomepage(useStartPage : Boolean) {
+        if (useStartPage) {
+            loadUrl(InternalUrls.startUrl)
+        } else {
+            loadUrl(
+                SearchEngineEntries.getHomePageUrl(
+                settingsPreference, settingsPreference.getInt(SettingsKeys.defaultHomePageId)))
+        }
+
+    }
+
+    fun loadViewSourcePage(url: String?) {
+        val currentUrl = if (url.isNullOrBlank()) getUrl() else url
+        if (currentUrl == InternalUrls.aboutBlankUrl) return
+        loadUrl("view-source:$currentUrl")
     }
 }

@@ -48,8 +48,9 @@ open class VWebViewActivity : BaseActivity() {
     lateinit var progressBar: LinearProgressIndicator
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     var startPageLayout: View? = null
-    private lateinit var appbar: AppBarLayout
-    private lateinit var webviewContainer: RelativeLayout
+    internal lateinit var appbar: AppBarLayout
+    internal lateinit var webviewContainer: RelativeLayout
+    internal lateinit var toolsContainer: RelativeLayout
     private var swipeRefreshLayoutEnabled = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,14 +63,18 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     override fun onStart() {
-        appbar = findViewById(R.id.appbar)
-        webviewContainer = findViewById(R.id.webviewContainer)
+        try {
+            appbar = findViewById(R.id.appbar)
+            webviewContainer = findViewById(R.id.webviewContainer)
+            toolsContainer = findViewById(R.id.toolsContainer)
+        } catch (_: NullPointerException) {
+        }
 
         // Init VioWebView
         webview.doSettingsCheck()
 
         // Setup swipe refresh layout
-        swipeRefreshLayout.setOnRefreshListener { webview.webViewReload() }
+        swipeRefreshLayout.setOnRefreshListener { webview.reload() }
 
         // Setup start page
         startPageLayout?.findViewById<View>(R.id.startPageEditText)
@@ -101,10 +106,18 @@ open class VWebViewActivity : BaseActivity() {
     val mGetNeedLoad =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             doSettingsCheck()
-            if (result.data != null) result.data!!.getStringExtra(SettingsKeys.needLoadUrl)
-                ?.let { webview.loadUrl(it) } // FROM: SettingsActivity
+            if (result.data == null) return@registerForActivityResult
+
+            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadUrl(it) } // FROM: SettingsActivity
+
+            if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
+                webview.reload()
+
+            if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0)
+                webview.adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress
         }
 
+    @Suppress("DEPRECATION")
     override fun doSettingsCheck() {
         super.doSettingsCheck()
 

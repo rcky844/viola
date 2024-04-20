@@ -80,10 +80,8 @@ class SettingsActivity : BaseActivity() {
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         onBackPressedDispatcher.addCallback(this) {
-            if (SettingsPrefHandler.needReload) {
-                needLoad.putExtra(SettingsKeys.needLoadUrl, InternalUrls.reloadUrl)
-                setResult(0, needLoad)
-            }
+            needLoad.putExtra(SettingsKeys.needReload, SettingsPrefHandler.needReload)
+            setResult(0, needLoad)
             finish()
         }
     }
@@ -285,7 +283,10 @@ class SettingsActivity : BaseActivity() {
                 }
             adBlockerDownload.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    needLoad(InternalUrls.updateAdServersHostsUrl)
+                    val intent = Intent()
+                    intent.putExtra(SettingsKeys.updateAdServers, 1)
+                    settingsActivity.setResult(0, intent)
+                    settingsActivity.finish()
                     true
                 }
             clear_cache.materialDialogPreferenceListener =
@@ -490,7 +491,7 @@ class SettingsActivity : BaseActivity() {
                     dialog_text.text = resources.getString(
                         R.string.version_info_message,
                         resources.getString(R.string.app_name),
-                        BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA,
+                        BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_HUMAN_EXTRA,
                         BuildConfig.VERSION_CODENAME,
                         BuildConfig.VERSION_BUILD_DATE,
                         BuildConfig.VERSION_BUILD_YEAR

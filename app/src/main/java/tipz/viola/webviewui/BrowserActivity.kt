@@ -27,8 +27,6 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.Settings
-import android.util.JsonReader
-import android.util.JsonToken
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -37,7 +35,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.webkit.ValueCallback
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
@@ -55,6 +52,7 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -74,26 +72,22 @@ import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavUtils
 import tipz.viola.broha.database.IconHashUtils
-import tipz.viola.search.SearchEngineEntries
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.InternalUrls
+import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
-import java.io.IOException
-import java.io.StringReader
 import java.lang.ref.WeakReference
 import java.text.DateFormat
-import java.util.Objects
 
 
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
     private var urlEditText: MaterialAutoCompleteTextView? = null
     private var upRightFab: AppCompatImageView? = null
-    private var currentPrebuiltUAState = false
-    private var currentCustomUA: String? = null
+    private var currentUserAgentState = VWebView.UserAgentMode.MOBILE
+    private var currentCustomUserAgent: String? = null
     private var currentCustomUAWideView = false
     private var iconHashClient: IconHashUtils? = null
     private var toolBar: RecyclerView? = null
@@ -101,6 +95,7 @@ class BrowserActivity : VWebViewActivity() {
     private var toolsBarExtendableBackground: ConstraintLayout? = null
     private var toolsBarExtendableCloseHitBox: LinearLayoutCompat? = null
     private var sslLock: AppCompatImageView? = null
+    private var homeButton: LinearLayoutCompat? = null
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
     private var isSslError: Boolean = false
@@ -125,6 +120,7 @@ class BrowserActivity : VWebViewActivity() {
         startPageLayout = findViewById(R.id.layout_startpage)
         iconHashClient = (applicationContext as Application).iconHashClient
         sslLock = findViewById(R.id.ssl_lock)
+        homeButton = findViewById(R.id.home_button)
 
         // Setup toolbar
         toolBar = findViewById(R.id.toolBar)
@@ -232,8 +228,18 @@ class BrowserActivity : VWebViewActivity() {
         // Setup the up most fab (currently for reload)
         upRightFab?.setOnClickListener {
             if (progressBar.progress > 0) webview.stopLoading()
-            if (progressBar.progress == 0) webview.webViewReload()
+            if (progressBar.progress == 0) webview.reload()
         }
+
+        // Setup home button
+        homeButton?.findViewById<AppCompatImageView>(R.id.imageView)
+            ?.setImageResource(R.drawable.home)
+        homeButton?.findViewById<AppCompatTextView>(R.id.textView)?.text =
+            resources.getString(R.string.homepage_webpage_home)
+        homeButton?.setOnClickListener {
+            webview.loadHomepage(false)
+        }
+        homeButton?.visibility = View.GONE // FIXME: Unhide
 
         // Finally, setup WebView
         webViewInit()
@@ -245,15 +251,8 @@ class BrowserActivity : VWebViewActivity() {
         val dataUri = intent.data
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
-        } else if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
-            webview.loadUrl(
-                SearchEngineEntries.getHomePageUrl(
-                    settingsPreference,
-                    settingsPreference.getInt(SettingsKeys.defaultHomePageId)
-                )
-            )
         } else {
-            webview.loadUrl(InternalUrls.startUrl)
+            webview.loadHomepage(!settingsPreference.getIntBool(SettingsKeys.useWebHomePage))
         }
     }
 
@@ -278,75 +277,46 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun doSettingsCheck() {
         super.doSettingsCheck()
-        val reverseAddressBar: Int = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
+        val reverseAddressBar = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
         if (reverseAddressBar != viewMode) {
-            val constraintLayout = findViewById<ConstraintLayout>(R.id.mainBackground)
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(constraintLayout)
-            constraintSet.clear(R.id.appbar, ConstraintSet.TOP)
-            constraintSet.clear(R.id.appbar, ConstraintSet.BOTTOM)
-            constraintSet.clear(R.id.webviewContainer, ConstraintSet.TOP)
-            constraintSet.clear(R.id.toolsContainer, ConstraintSet.BOTTOM)
-            if (reverseAddressBar == 1) {
-                constraintSet.connect(
-                    R.id.appbar,
-                    ConstraintSet.TOP,
-                    R.id.toolsContainer,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.appbar,
-                    ConstraintSet.BOTTOM,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.webviewContainer,
-                    ConstraintSet.TOP,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.TOP,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.toolsContainer,
-                    ConstraintSet.BOTTOM,
-                    R.id.appbar,
-                    ConstraintSet.TOP,
-                    0
-                )
-            } else {
-                constraintSet.connect(
-                    R.id.appbar,
-                    ConstraintSet.BOTTOM,
-                    R.id.webviewContainer,
-                    ConstraintSet.TOP,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.appbar,
-                    ConstraintSet.TOP,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.TOP,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.webviewContainer,
-                    ConstraintSet.TOP,
-                    R.id.appbar,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
-                constraintSet.connect(
-                    R.id.toolsContainer,
-                    ConstraintSet.BOTTOM,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.BOTTOM,
-                    0
-                )
+            appbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = when (reverseAddressBar) {
+                    1 -> R.id.toolsContainer
+                    else -> ConstraintSet.UNSET
+                }
+                bottomToBottom = when (reverseAddressBar) {
+                    1 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
+                bottomToTop = when (reverseAddressBar) {
+                    0 -> R.id.webviewContainer
+                    else -> ConstraintSet.UNSET
+                }
+                topToTop = when (reverseAddressBar) {
+                    0 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
             }
-            constraintSet.applyTo(constraintLayout)
+            webviewContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToTop = when (reverseAddressBar) {
+                    1 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
+                topToBottom = when (reverseAddressBar) {
+                    0 -> R.id.appbar
+                    else -> ConstraintSet.UNSET
+                }
+            }
+            toolsContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomToTop = when (reverseAddressBar) {
+                    1 -> R.id.appbar
+                    else -> ConstraintSet.UNSET
+                }
+                bottomToBottom = when (reverseAddressBar) {
+                    0 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
+            }
             viewMode = reverseAddressBar
         }
     }
@@ -355,31 +325,31 @@ class BrowserActivity : VWebViewActivity() {
         when (item) {
             R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
-            R.drawable.refresh -> webview.webViewReload()
+            R.drawable.refresh -> webview.reload()
             R.drawable.home -> {
-                if (settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
-                    webview.loadUrl(
-                        SearchEngineEntries.getHomePageUrl(
-                            settingsPreference,
-                            settingsPreference.getInt(SettingsKeys.defaultHomePageId)
-                        )
-                    )
-                } else {
-                    urlEditText!!.setText(CommonUtils.EMPTY_STRING)
-                    webview.loadUrl(InternalUrls.startUrl)
-                }
+                val reqVal: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
+                webview.loadHomepage(reqVal)
+                if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
             }
 
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
-                currentPrebuiltUAState = !currentPrebuiltUAState
-                webview.setPrebuiltUAMode(
-                    view, if (currentPrebuiltUAState) 1 else 0, false
-                )
+                val userAgentMode = {
+                    when (currentUserAgentState) {
+                        VWebView.UserAgentMode.MOBILE -> VWebView.UserAgentMode.DESKTOP
+                        VWebView.UserAgentMode.DESKTOP -> VWebView.UserAgentMode.MOBILE
+                        VWebView.UserAgentMode.CUSTOM -> VWebView.UserAgentMode.MOBILE
+                    }
+                }
+
+                val dataBundle = VWebView.UserAgentBundle()
+                dataBundle.iconView = view
+                webview.setUserAgent(userAgentMode(), dataBundle)
+                currentUserAgentState = userAgentMode()
             }
 
             R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
             R.drawable.app_shortcut -> {
-                if (webview.title.isNullOrBlank() || webview.url.isNullOrBlank()) return
+                if (webview.title.isNullOrBlank() || webview.url.isBlank()) return
                 ShortcutManagerCompat.requestPinShortcut(
                     this, ShortcutInfoCompat.Builder(this, webview.title!!)
                         .setShortLabel(webview.title!!)
@@ -416,7 +386,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.favorites_add -> {
                 val url = webview.url
-                if (url.isNullOrBlank()) return
+                if (url.isBlank()) return
 
                 val icon = favicon!!.drawable
                 val title = webview.title
@@ -435,37 +405,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.close -> finish()
             R.drawable.view_stream -> expandToolBar()
-            R.drawable.code -> {
-                webview.evaluateJavascript(
-                    "document.documentElement.outerHTML",
-                    ValueCallback { value: String? ->
-                        val reader = JsonReader(StringReader(value))
-                        reader.isLenient = true
-                        try {
-                            if (reader.peek() == JsonToken.STRING) {
-                                val domStr = reader.nextString()
-                                reader.close()
-                                if (domStr == null) return@ValueCallback
-                                MaterialAlertDialogBuilder(this@BrowserActivity)
-                                    .setTitle(resources.getString(R.string.toolbar_expandable_view_page_source))
-                                    .setMessage(domStr)
-                                    .setPositiveButton(
-                                        resources.getString(android.R.string.ok),
-                                        null
-                                    )
-                                    .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
-                                        CommonUtils.copyClipboard(
-                                            this@BrowserActivity,
-                                            domStr
-                                        )
-                                    }
-                                    .create().show()
-                            }
-                        } catch (ignored: IOException) {
-                        }
-                    })
-            }
-
+            R.drawable.code -> webview.loadViewSourcePage(null)
             R.drawable.new_tab -> {
                 val i = Intent(this, BrowserActivity::class.java)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
@@ -488,28 +428,38 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     fun itemLongSelected(view: AppCompatImageView?, item: Int) {
-        if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
-            val layoutInflater = LayoutInflater.from(this)
-            @SuppressLint("InflateParams") val root =
-                layoutInflater.inflate(R.layout.dialog_ua_edit, null)
-            val customUserAgent = root.findViewById<AppCompatEditText>(R.id.edittext)
-            val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
-            deskMode.isChecked = currentCustomUAWideView
-            val dialog = MaterialAlertDialogBuilder(this)
-            dialog.setTitle(resources.getString(R.string.customUA))
-                .setView(root)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    if (customUserAgent.length() != 0) webview.setUA(
-                        view, deskMode.isChecked,
-                        Objects.requireNonNull(customUserAgent.text).toString(),
-                        R.drawable.custom, false
-                    )
-                    currentCustomUA = Objects.requireNonNull(customUserAgent.text).toString()
-                    currentCustomUAWideView = deskMode.isChecked
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
-            if (currentCustomUA != null) customUserAgent.setText(currentCustomUA)
+        when (item) {
+            R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
+                val layoutInflater = LayoutInflater.from(this)
+                @SuppressLint("InflateParams") val root =
+                    layoutInflater.inflate(R.layout.dialog_ua_edit, null)
+                val customUserAgent = root.findViewById<AppCompatEditText>(R.id.edittext)
+                val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
+                deskMode.isChecked = currentCustomUAWideView
+                val dialog = MaterialAlertDialogBuilder(this)
+                dialog.setTitle(resources.getString(R.string.customUA))
+                    .setView(root)
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                        val dataBundle = VWebView.UserAgentBundle()
+                        dataBundle.userAgentString = customUserAgent.text.toString()
+                        dataBundle.iconView = view
+                        dataBundle.enableDesktop = deskMode.isChecked
+                        webview.setUserAgent(VWebView.UserAgentMode.CUSTOM, dataBundle)
+
+                        currentUserAgentState = VWebView.UserAgentMode.CUSTOM
+                        currentCustomUserAgent = customUserAgent.text.toString()
+                        currentCustomUAWideView = deskMode.isChecked
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show()
+                if (currentCustomUserAgent != null) customUserAgent.setText(currentCustomUserAgent)
+            }
+
+            R.drawable.home -> {
+                val reqVal: Boolean = settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
+                webview.loadHomepage(reqVal)
+                if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
+            }
         }
     }
 

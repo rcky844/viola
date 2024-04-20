@@ -120,6 +120,7 @@ open class VWebViewClient(
         return false
     }
 
+    @Suppress("DEPRECATION") // Kept as it is easier to handle
     @Deprecated("Deprecated in Java")
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         if (adServersHandler.adServers.isNullOrEmpty()) {
