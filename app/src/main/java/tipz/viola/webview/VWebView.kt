@@ -377,4 +377,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
     }
+
+    fun loadViewSourcePage(url: String?) {
+        val currentUrl = if (url.isNullOrBlank()) getUrl() else url
+        if (currentUrl.isBlank()) return // getUrl() returns empty string when on start page
+        loadUrl("view-source:$currentUrl")
+    }
 }

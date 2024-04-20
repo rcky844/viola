@@ -27,8 +27,6 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.Settings
-import android.util.JsonReader
-import android.util.JsonToken
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -37,7 +35,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.webkit.ValueCallback
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
@@ -81,8 +78,6 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
-import java.io.IOException
-import java.io.StringReader
 import java.lang.ref.WeakReference
 import java.text.DateFormat
 
@@ -408,37 +403,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.close -> finish()
             R.drawable.view_stream -> expandToolBar()
-            R.drawable.code -> {
-                webview.evaluateJavascript(
-                    "document.documentElement.outerHTML",
-                    ValueCallback { value: String? ->
-                        val reader = JsonReader(StringReader(value))
-                        reader.isLenient = true
-                        try {
-                            if (reader.peek() == JsonToken.STRING) {
-                                val domStr = reader.nextString()
-                                reader.close()
-                                if (domStr == null) return@ValueCallback
-                                MaterialAlertDialogBuilder(this@BrowserActivity)
-                                    .setTitle(resources.getString(R.string.toolbar_expandable_view_page_source))
-                                    .setMessage(domStr)
-                                    .setPositiveButton(
-                                        resources.getString(android.R.string.ok),
-                                        null
-                                    )
-                                    .setNegativeButton(resources.getString(android.R.string.copy)) { _: DialogInterface?, _: Int ->
-                                        CommonUtils.copyClipboard(
-                                            this@BrowserActivity,
-                                            domStr
-                                        )
-                                    }
-                                    .create().show()
-                            }
-                        } catch (ignored: IOException) {
-                        }
-                    })
-            }
-
+            R.drawable.code -> webview.loadViewSourcePage(null)
             R.drawable.new_tab -> {
                 val i = Intent(this, BrowserActivity::class.java)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
