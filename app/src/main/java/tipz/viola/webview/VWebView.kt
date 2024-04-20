@@ -267,6 +267,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
+                if (currentUrl.startsWith("view-source:")) return
                 mVioWebViewActivity!!.onFaviconProgressUpdated(true)
                 mVioWebViewActivity!!.onPageLoadProgressChanged(-1)
             }
