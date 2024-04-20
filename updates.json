@@ -14,6 +14,15 @@
       "url": "https://gitlab.com/TipzTeam/viola/uploads/04ea0688e6ded1c20fbfe3dc817f94df/app-release.apk"
     }
   },
+  "prerelease": {
+    "channel_name": "Pre-release",
+    "latest_update": {
+      "name": "6.1.2 Pre-release",
+      "code": 21,
+      "timestamp": 1713598520,
+      "url": "https://gitlab.com/TipzTeam/viola/uploads/896bc3b9bbc9ce991a73b14bf4c373ed/app-release.apk"
+    }
+  },
   "beta": {
     "channel_name": "Beta",
     "latest_update": {
