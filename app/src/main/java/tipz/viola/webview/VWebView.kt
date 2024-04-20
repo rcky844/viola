@@ -62,7 +62,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var mVioWebViewActivity: VWebViewActivity? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
-    private var currentUrl: String = CommonUtils.EMPTY_STRING
     private var currentBroha: Broha? = null
     private var updateHistory = true
     private var historyCommitted = false
@@ -102,7 +101,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
             DownloadUtils.dmDownloadFile(
                 mContext, url!!, contentDisposition,
-                mimeType, currentUrl
+                mimeType, getUrl()
             )
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
             mVioWebViewActivity!!.onPageLoadProgressChanged(0)
@@ -244,11 +243,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun reload() {
-        loadUrl(currentUrl)
+        loadUrl(getUrl())
     }
 
     override fun getUrl(): String {
-        return currentUrl
+        val superUrl = super.getUrl()
+        return if (superUrl.isNullOrBlank()) InternalUrls.aboutBlankUrl else superUrl
     }
 
     override fun goBack() {
@@ -263,7 +263,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
         if (url == InternalUrls.aboutBlankUrl) return
-        if (url != null) currentUrl = url
+        val currentUrl = getUrl()
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
