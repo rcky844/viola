@@ -114,6 +114,7 @@ open class VWebViewActivity : BaseActivity() {
                 webview.adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress
         }
 
+    @Suppress("DEPRECATION")
     override fun doSettingsCheck() {
         super.doSettingsCheck()
 

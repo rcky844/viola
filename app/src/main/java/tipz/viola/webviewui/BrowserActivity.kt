@@ -232,8 +232,10 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup home button
-        homeButton?.findViewById<AppCompatImageView>(R.id.imageView)?.setImageResource(R.drawable.home)
-        homeButton?.findViewById<AppCompatTextView>(R.id.textView)?.text = resources.getString(R.string.homepage_webpage_home)
+        homeButton?.findViewById<AppCompatImageView>(R.id.imageView)
+            ?.setImageResource(R.drawable.home)
+        homeButton?.findViewById<AppCompatTextView>(R.id.textView)?.text =
+            resources.getString(R.string.homepage_webpage_home)
         homeButton?.setOnClickListener {
             webview.loadHomepage(false)
         }
@@ -325,7 +327,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
             R.drawable.refresh -> webview.reload()
             R.drawable.home -> {
-                val reqVal : Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
+                val reqVal: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
                 webview.loadHomepage(reqVal)
                 if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
             }
@@ -426,34 +428,38 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     fun itemLongSelected(view: AppCompatImageView?, item: Int) {
-        if (item == R.drawable.smartphone || item == R.drawable.desktop || item == R.drawable.custom) {
-            val layoutInflater = LayoutInflater.from(this)
-            @SuppressLint("InflateParams") val root =
-                layoutInflater.inflate(R.layout.dialog_ua_edit, null)
-            val customUserAgent = root.findViewById<AppCompatEditText>(R.id.edittext)
-            val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
-            deskMode.isChecked = currentCustomUAWideView
-            val dialog = MaterialAlertDialogBuilder(this)
-            dialog.setTitle(resources.getString(R.string.customUA))
-                .setView(root)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    val dataBundle = VWebView.UserAgentBundle()
-                    dataBundle.userAgentString = customUserAgent.text.toString()
-                    dataBundle.iconView = view
-                    dataBundle.enableDesktop = deskMode.isChecked
-                    webview.setUserAgent(VWebView.UserAgentMode.CUSTOM, dataBundle)
+        when (item) {
+            R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
+                val layoutInflater = LayoutInflater.from(this)
+                @SuppressLint("InflateParams") val root =
+                    layoutInflater.inflate(R.layout.dialog_ua_edit, null)
+                val customUserAgent = root.findViewById<AppCompatEditText>(R.id.edittext)
+                val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
+                deskMode.isChecked = currentCustomUAWideView
+                val dialog = MaterialAlertDialogBuilder(this)
+                dialog.setTitle(resources.getString(R.string.customUA))
+                    .setView(root)
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                        val dataBundle = VWebView.UserAgentBundle()
+                        dataBundle.userAgentString = customUserAgent.text.toString()
+                        dataBundle.iconView = view
+                        dataBundle.enableDesktop = deskMode.isChecked
+                        webview.setUserAgent(VWebView.UserAgentMode.CUSTOM, dataBundle)
 
-                    currentUserAgentState = VWebView.UserAgentMode.CUSTOM
-                    currentCustomUserAgent = customUserAgent.text.toString()
-                    currentCustomUAWideView = deskMode.isChecked
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
-            if (currentCustomUserAgent != null) customUserAgent.setText(currentCustomUserAgent)
-        } else if (item == R.drawable.home) {
-            val reqVal : Boolean = settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
-            webview.loadHomepage(reqVal)
-            if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
+                        currentUserAgentState = VWebView.UserAgentMode.CUSTOM
+                        currentCustomUserAgent = customUserAgent.text.toString()
+                        currentCustomUAWideView = deskMode.isChecked
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show()
+                if (currentCustomUserAgent != null) customUserAgent.setText(currentCustomUserAgent)
+            }
+
+            R.drawable.home -> {
+                val reqVal: Boolean = settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
+                webview.loadHomepage(reqVal)
+                if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
+            }
         }
     }
 

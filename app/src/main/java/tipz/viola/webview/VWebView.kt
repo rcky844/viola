@@ -332,16 +332,17 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
         }
         val mobile = if (agentMode == UserAgentMode.MOBILE) "Mobile" else CommonUtils.EMPTY_STRING
-        val userAgentHolder = if (agentMode == UserAgentMode.MOBILE || agentMode == UserAgentMode.DESKTOP) {
-            "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
+        val userAgentHolder = when (agentMode) {
+            UserAgentMode.MOBILE, UserAgentMode.DESKTOP -> {
+                "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
                     WebViewCompat.getCurrentWebViewPackage(
                         mContext
                     )?.versionName
                 } $mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA}"
-        } else if (agentMode == UserAgentMode.CUSTOM) {
-            dataBundle.userAgentString
-        } else {
-            CommonUtils.EMPTY_STRING
+            }
+            UserAgentMode.CUSTOM -> {
+                dataBundle.userAgentString
+            }
         }
 
         if (agentMode == UserAgentMode.DESKTOP) dataBundle.enableDesktop = true
