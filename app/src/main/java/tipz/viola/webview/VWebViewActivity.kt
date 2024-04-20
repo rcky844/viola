@@ -63,9 +63,12 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     override fun onStart() {
-        appbar = findViewById(R.id.appbar)
-        webviewContainer = findViewById(R.id.webviewContainer)
-        toolsContainer = findViewById(R.id.toolsContainer)
+        try {
+            appbar = findViewById(R.id.appbar)
+            webviewContainer = findViewById(R.id.webviewContainer)
+            toolsContainer = findViewById(R.id.toolsContainer)
+        } catch (_: NullPointerException) {
+        }
 
         // Init VioWebView
         webview.doSettingsCheck()

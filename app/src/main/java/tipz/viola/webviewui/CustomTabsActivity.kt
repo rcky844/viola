@@ -33,7 +33,7 @@ class CustomTabsActivity : VWebViewActivity() {
         setContentView(R.layout.custom_tab)
 
         /* Back button */
-        val actionBarBack : AppCompatImageView = toolsContainer.findViewById(R.id.close)
+        val actionBarBack : AppCompatImageView = findViewById(R.id.close)
         actionBarBack.setOnClickListener { finish() }
 
         /* Title and Host */
