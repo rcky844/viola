@@ -546,7 +546,7 @@ class SettingsActivity : BaseActivity() {
                 )
             }
             version.summary =
-                resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_EXTRA
+                resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_HUMAN_EXTRA
             needReload = false
         }
 
