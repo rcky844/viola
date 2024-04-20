@@ -60,7 +60,7 @@
                     android:paddingRight="4dp"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@id/share"
-                    app:layout_constraintStart_toEndOf="@id/toolsContainer"
+                    app:layout_constraintStart_toEndOf="@id/close"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/host" />
 
