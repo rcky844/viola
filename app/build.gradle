@@ -22,11 +22,11 @@ android {
         compileSdk 34
         minSdkVersion 19
         targetSdkVersion 34
-        versionCode 21
+        versionCode 22
         versionName "6.1.2"
 
-        buildConfigField "String", "VERSION_NAME_EXTRA", "\"_pre\""
-        buildConfigField "String", "VERSION_NAME_HUMAN_EXTRA", "\" Pre-release\""
+        buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
+        buildConfigField "String", "VERSION_NAME_HUMAN_EXTRA", "\"\""
         buildConfigField "String", "VERSION_CODENAME", "\"Crusader\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
