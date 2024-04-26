@@ -304,7 +304,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 mVioWebViewActivity!!.onTitleUpdated(
                     if (this.visibility == View.GONE) resources.getString(
                         R.string.start_page
-                    ) else title
+                    ) else title?.trim()
                 )
             }
 
