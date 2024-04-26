@@ -30,6 +30,8 @@ open class VWebViewClient(
 ) : WebViewClientCompat() {
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
+    private val unsecureURLSet = ArrayList<String>()
+    private val unsecureURLErrorSet = ArrayList<SslError>()
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
@@ -61,23 +63,7 @@ open class VWebViewClient(
         view.stopLoading()
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-        if (UrlUtils.isUriLaunchable(url)) return false
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)))
-            mContext.startActivity(intent)
-        } catch (ignored: ActivityNotFoundException) {
-            CommonUtils.showMessage(
-                mContext,
-                mContext.resources.getString(R.string.toast_no_app_to_handle)
-            )
-        }
-        return true
-    }
-
-    @SuppressLint("WebViewClientOnReceivedSslError")
-    override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+    fun getSslDialog(error: SslError) : MaterialAlertDialogBuilder {
         val dialog = MaterialAlertDialogBuilder(mContext)
         var contentSummary = mContext.resources.getString(R.string.ssl_certificate_unknown)
         when (error.primaryError) {
@@ -106,10 +92,45 @@ open class VWebViewClient(
                     contentSummary
                 )
             )
+        return dialog
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+        if (unsecureURLSet.contains(url)) {
+            getSslDialog(unsecureURLErrorSet[unsecureURLSet.indexOf(url)])
+                .setPositiveButton(mContext.resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+                    run {
+                        view.loadUrl(url)
+                        mVWebView.onSslErrorProceed()
+                    }
+                }
+                .setNegativeButton(mContext.resources.getString(android.R.string.cancel), null)
+                .create().show()
+            return true
+        }
+        if (UrlUtils.isUriLaunchable(url)) return false
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)))
+            mContext.startActivity(intent)
+        } catch (ignored: ActivityNotFoundException) {
+            CommonUtils.showMessage(
+                mContext,
+                mContext.resources.getString(R.string.toast_no_app_to_handle)
+            )
+        }
+        return true
+    }
+
+    @SuppressLint("WebViewClientOnReceivedSslError")
+    override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+        unsecureURLErrorSet.add(error)
+        getSslDialog(error)
             .setPositiveButton(mContext.resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
                 run {
                     handler.proceed()
                     mVWebView.onSslErrorProceed()
+                    unsecureURLSet.add(error.url)
                 }
             }
             .setNegativeButton(mContext.resources.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> handler.cancel() }

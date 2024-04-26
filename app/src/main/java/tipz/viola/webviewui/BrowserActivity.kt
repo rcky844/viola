@@ -98,7 +98,6 @@ class BrowserActivity : VWebViewActivity() {
     private var homeButton: LinearLayoutCompat? = null
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
-    private var isSslError: Boolean = false
     private var sslErrorHost: String = ""
 
     enum class SslState {
@@ -503,31 +502,18 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText!!.clearFocus()
     }
 
-    // FIXME: CLeanup needed
     override fun onSslCertificateUpdated() {
-        if (isSslError && sslState == SslState.NONE) {
-            if (sslErrorHost == Uri.parse(webview.url).host) {
-                sslState = SslState.ERROR
-                isSslError = true
-            } else {
-                // We hit a case of the user leaving the original webpage.
-                isSslError = false
-            }
-        }
-
         if (startPageLayout?.visibility == View.VISIBLE) {
             sslState = SslState.SEARCH
             sslLock?.setImageResource(R.drawable.search)
             sslLock?.isClickable = false
             return
         }
-
         if (webview.certificate == null) {
             sslState = SslState.NONE
             sslLock?.setImageResource(R.drawable.warning)
-            sslLock?.isClickable = false // TODO: Handle failed states in dialog
+            sslLock?.isClickable = false // Certificate cannot be null for the dialog
         } else if (sslState == SslState.ERROR) { // State error is set before SECURE
-            isSslError = true
             sslErrorHost = Uri.parse(webview.url).host!!
             sslState = SslState.NONE
         } else {
@@ -540,7 +526,7 @@ class BrowserActivity : VWebViewActivity() {
     override fun onSslErrorProceed() {
         sslState = SslState.ERROR
         sslLock?.setImageResource(R.drawable.warning)
-        sslLock?.isClickable = false // TODO: Handle failed states in dialog
+        sslLock?.isClickable = true
     }
 
     override fun onStartPageEditTextPressed() {
