@@ -145,7 +145,11 @@ object DownloadUtils {
                 return@withContext null
             }
             val url = URL(urlString)
-            return@withContext url.readBytes()
+            return@withContext try {
+                url.readBytes()
+            } catch (_: Exception) {
+                byteArrayOf() // Return empty byte array to not crash on Exception
+            }
         }!!
 
     fun isOnline(context: Context): Boolean {
