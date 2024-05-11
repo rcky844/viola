@@ -502,7 +502,7 @@ class SettingsActivity : BaseActivity() {
                         dialog.dismiss()
                     }
                     license_btn.setOnClickListener {
-                        needLoad(InternalUrls.violaLicenseSuffix)
+                        needLoad(InternalUrls.violaLicenseUrl)
                         dialog.dismiss()
                     }
                     dialog.show()

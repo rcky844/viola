@@ -20,8 +20,8 @@ import tipz.viola.BuildConfig
 object InternalUrls {
     // "viola://" URI scheme
     const val violaPrefix = "viola://"
-    const val violaLicenseSuffix = violaPrefix + "license"
-    const val violaStartSuffix = violaPrefix + "start"
+    const val violaLicenseUrl = violaPrefix + "license"
+    const val violaStartUrl = violaPrefix + "start"
 
     // Project URLs
     const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"

@@ -214,14 +214,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Check for internal URLs
-        if (url == InternalUrls.violaLicenseSuffix) {
+        if (url == InternalUrls.violaLicenseUrl) {
             super.loadUrl(InternalUrls.licenseUrl)
             return
         }
 
         // Update to start page layout
         val startPageLayout = mVioWebViewActivity?.startPageLayout
-        if (url == InternalUrls.violaStartSuffix) {
+        if (url == InternalUrls.violaStartUrl) {
             this.loadUrl(InternalUrls.aboutBlankUrl)
             this.visibility = GONE
             mVioWebViewActivity?.swipeRefreshLayout?.visibility = GONE
@@ -372,7 +372,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadHomepage(useStartPage : Boolean) {
         if (useStartPage) {
-            loadUrl(InternalUrls.violaStartSuffix)
+            loadUrl(InternalUrls.violaStartUrl)
         } else {
             loadUrl(
                 SearchEngineEntries.getHomePageUrl(
