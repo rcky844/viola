@@ -377,7 +377,7 @@ class SettingsActivity : BaseActivity() {
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         val jObject =
-                            JSONObject(String(DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")))
+                            JSONObject(String(DownloadUtils.startFileDownload(InternalUrls.updateJSONUrl)))
 
                         CoroutineScope(Dispatchers.Main).launch {
                             val updateChannelName =

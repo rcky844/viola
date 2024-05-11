@@ -27,6 +27,7 @@ object InternalUrls {
     const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
     const val changelogUrl = sourceUrl + "-/releases/" + BuildConfig.VERSION_NAME
     const val feedbackUrl = "$sourceUrl-/issues"
+    const val updateJSONUrl = "$sourceUrl-/raw/update_files/updates.json"
 
     // Internal assets
     const val licenseUrl = "file:///android_asset/LICENSE.txt"
