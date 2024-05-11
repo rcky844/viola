@@ -214,14 +214,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Check for internal URLs
-        if (url == InternalUrls.licenseUrl) {
-            super.loadUrl(InternalUrls.realLicenseUrl)
+        if (url == InternalUrls.violaLicenseSuffix) {
+            super.loadUrl(InternalUrls.licenseUrl)
             return
         }
 
         // Update to start page layout
         val startPageLayout = mVioWebViewActivity?.startPageLayout
-        if (url == InternalUrls.startUrl) {
+        if (url == InternalUrls.violaStartSuffix) {
             this.loadUrl(InternalUrls.aboutBlankUrl)
             this.visibility = GONE
             mVioWebViewActivity?.swipeRefreshLayout?.visibility = GONE
@@ -267,7 +267,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
-                if (currentUrl.startsWith("view-source:")) return
+                if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return
                 mVioWebViewActivity!!.onFaviconProgressUpdated(true)
                 mVioWebViewActivity!!.onPageLoadProgressChanged(-1)
             }
@@ -372,7 +372,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadHomepage(useStartPage : Boolean) {
         if (useStartPage) {
-            loadUrl(InternalUrls.startUrl)
+            loadUrl(InternalUrls.violaStartSuffix)
         } else {
             loadUrl(
                 SearchEngineEntries.getHomePageUrl(
@@ -384,7 +384,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     fun loadViewSourcePage(url: String?) {
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
         if (currentUrl == InternalUrls.aboutBlankUrl) return
-        if (currentUrl.startsWith("view-source:")) return // TODO: Allow changing behaviour
-        loadUrl("view-source:$currentUrl")
+        if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return // TODO: Allow changing behaviour
+        loadUrl("${InternalUrls.viewSourcePrefix}$currentUrl")
     }
 }

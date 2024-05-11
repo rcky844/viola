@@ -498,11 +498,11 @@ class SettingsActivity : BaseActivity() {
                     )
                     changelog_btn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
                     changelog_btn.setOnClickListener {
-                        needLoad(InternalUrls.realChangelogUrl)
+                        needLoad(InternalUrls.changelogUrl)
                         dialog.dismiss()
                     }
                     license_btn.setOnClickListener {
-                        needLoad(InternalUrls.licenseUrl)
+                        needLoad(InternalUrls.violaLicenseSuffix)
                         dialog.dismiss()
                     }
                     dialog.show()
