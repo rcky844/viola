@@ -68,7 +68,7 @@ class LauncherActivity : AppCompatActivity() {
             if (type != null) {
                 if ("text/plain" == type) {
                     val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
-                    uri = Uri.parse(UrlUtils.cve_2017_13274(sharedText ?: CommonUtils.EMPTY_STRING))
+                    uri = Uri.parse(UrlUtils.patchUrlForCVEMitigation(sharedText ?: CommonUtils.EMPTY_STRING))
                 }
             }
         } else if (Intent.ACTION_VIEW == action) { /* From default browser */

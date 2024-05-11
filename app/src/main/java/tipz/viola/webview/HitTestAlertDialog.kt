@@ -145,7 +145,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
 
                 context.resources.getString(R.string.open_in_new_tab) -> {
                     val intent = Intent(context, BrowserActivity::class.java)
-                    intent.data = Uri.parse(UrlUtils.cve_2017_13274(url))
+                    intent.data = Uri.parse(UrlUtils.patchUrlForCVEMitigation(url))
                     context.startActivity(intent)
                 }
 

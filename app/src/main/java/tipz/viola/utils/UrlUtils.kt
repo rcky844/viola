@@ -50,8 +50,7 @@ object UrlUtils {
      * @param url supplied url to check.
      * @return fixed up url
      */
-    @JvmStatic
-    fun cve_2017_13274(url: String): String {
+    fun patchUrlForCVEMitigation(url: String): String {
         return if (url.contains("\\") && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) url.replace(
             "\\",
             "/"
@@ -73,7 +72,7 @@ object UrlUtils {
      */
     fun toSearchOrValidUrl(context: Context, input: String): String {
         val settingsPreference = (context.applicationContext as Application).settingsPreference!!
-        val trimmedInput = cve_2017_13274(input.trim { it <= ' ' })
+        val trimmedInput = patchUrlForCVEMitigation(input.trim { it <= ' ' })
         var uri = Uri.parse(trimmedInput)
         if (uri.isRelative) {
             uri =

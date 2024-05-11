@@ -111,7 +111,7 @@ open class VWebViewClient(
         }
         if (UrlUtils.isUriLaunchable(url)) return false
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.cve_2017_13274(url)))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
             mContext.startActivity(intent)
         } catch (ignored: ActivityNotFoundException) {
             CommonUtils.showMessage(

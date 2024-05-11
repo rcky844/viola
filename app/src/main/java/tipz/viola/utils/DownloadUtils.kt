@@ -59,7 +59,7 @@ object DownloadUtils {
 
         if (url.startsWith("http://") || url.startsWith("https://")) {
             val request = DownloadManager.Request(
-                Uri.parse(UrlUtils.cve_2017_13274(url))
+                Uri.parse(UrlUtils.patchUrlForCVEMitigation(url))
             )
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
