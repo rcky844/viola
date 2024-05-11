@@ -235,6 +235,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             startPageLayout?.visibility = GONE
         }
 
+        // If the URL has "viola://" prefix but hasn't been handled till here,
+        // wire it up with the "chrome://" suffix.
+        if (url.startsWith(InternalUrls.violaPrefix)) {
+            super.loadUrl(url.replace(InternalUrls.violaPrefix, InternalUrls.chromePrefix))
+            return
+        }
+
         val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
         onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
 

@@ -35,4 +35,5 @@ object InternalUrls {
     // Browser handling
     const val aboutBlankUrl = "about:blank"
     const val viewSourcePrefix = "view-source:"
+    const val chromePrefix = "chrome://"
 }
