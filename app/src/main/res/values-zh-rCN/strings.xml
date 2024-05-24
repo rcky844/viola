@@ -29,7 +29,7 @@
     <string name="settings">设置</string>
     <string name="search_engine">搜索引擎</string>
     <string name="homepage">主页</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\n编译于%4$s\n版权所有 © 2020-%5$s Tipz Team\n\n本产品已获得 Apache 许可</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\n编译于%4$s\n\nViola是一款基于Browservio的产品。\n请重新安装所需频道的 APK 文件以更改更新频道。\n\n版权所有 © 2020-%5$s Tipz Team\n本产品已获得 Apache 许可</string>
     <string name="pref_check_for_updates_title">检查更新</string>
     <string name="pref_check_for_updates_summary">检查是否有新更新，如果有可用则允许您下载。</string>
     <string name="version_latest_toast">您当前使用的是最新版本的Viola</string>
@@ -137,6 +137,7 @@
     <string name="toolbar_expandable_favorites_add">添加到收藏夹</string>
     <string name="toolbar_expandable_app_shortcut">创建快捷方式</string>
     <string name="toolbar_expandable_settings">设置</string>
+    <string name="toolbar_expandable_print">打印</string>
     <string name="toolbar_expandable_close">关闭应用</string>
     <string name="pref_start_page_wallpaper_title">选择起始页壁纸</string>
     <string name="pref_start_page_wallpaper_summary">当前：%s（点击重置，刷新更新）</string>
@@ -146,6 +147,13 @@
     <string name="copy_src_url">复制图片链接</string>
     <string name="software_updates">软件更新</string>
     <string name="pref_update_channel_title">选择更新频道</string>
+    <string name="pref_adBlockerDownload_title">下载广告拦截器主机文件</string>
+    <string name="pref_adBlockerSource_title">广告拦截器主机源</string>
+    <string name="pref_send_save_data_title">流量节省</string>
+    <string name="pref_send_save_data_summary">向支持的网站发送流量节省请求。</string>
+    <string name="pref_send_sec_gpc_title">全局隐私控制</string>
+    <string name="pref_send_sec_gpc_summary">允许在您访问的网站上与第三方出售或共享您的个人信息。</string>
+    <string name="homepage_webpage_home">网页首页</string>
 
     <string-array name="errMsg">
         <item>错误!</item>

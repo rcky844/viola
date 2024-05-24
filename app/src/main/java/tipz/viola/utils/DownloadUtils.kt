@@ -59,7 +59,7 @@ object DownloadUtils {
 
         if (url.startsWith("http://") || url.startsWith("https://")) {
             val request = DownloadManager.Request(
-                Uri.parse(UrlUtils.cve_2017_13274(url))
+                Uri.parse(UrlUtils.patchUrlForCVEMitigation(url))
             )
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
@@ -134,9 +134,23 @@ object DownloadUtils {
 
     suspend fun startFileDownload(urlString: String?) =
         withContext(Dispatchers.IO) {
+            if (urlString!!.startsWith("data:")) {
+                val dataInfo = urlString.substring(urlString.indexOf(":") + 1, urlString.indexOf(","))
+                val dataString = urlString.substring(urlString.indexOf(",") + 1)
+                return@withContext if (dataInfo.contains(";base64")) Base64.decode(
+                    dataString,
+                    Base64.DEFAULT
+                ) else dataString.toByteArray()
+            } else if (urlString.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
+                return@withContext null
+            }
             val url = URL(urlString)
-            return@withContext url.readBytes()
-        }
+            return@withContext try {
+                url.readBytes()
+            } catch (_: Exception) {
+                byteArrayOf() // Return empty byte array to not crash on Exception
+            }
+        }!!
 
     fun isOnline(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

@@ -18,13 +18,22 @@ package tipz.viola.utils
 import tipz.viola.BuildConfig
 
 object InternalUrls {
+    // "viola://" URI scheme
+    const val violaPrefix = "viola://"
+    const val violaLicenseUrl = violaPrefix + "license"
+    const val violaStartUrl = violaPrefix + "start"
 
+    // Project URLs
     const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
-    const val realChangelogUrl = sourceUrl + "-/releases/" + BuildConfig.VERSION_NAME
+    const val changelogUrl = sourceUrl + "-/releases/" + BuildConfig.VERSION_NAME
     const val feedbackUrl = "$sourceUrl-/issues"
-    const val realLicenseUrl = "file:///android_asset/LICENSE.txt"
-    const val prefix = "viola://"
-    const val licenseUrl = prefix + "license"
-    const val startUrl = prefix + "start"
+    const val updateJSONUrl = "$sourceUrl-/raw/update_files/updates.json"
+
+    // Internal assets
+    const val licenseUrl = "file:///android_asset/LICENSE.txt"
+
+    // Browser handling
     const val aboutBlankUrl = "about:blank"
+    const val viewSourcePrefix = "view-source:"
+    const val chromePrefix = "chrome://"
 }

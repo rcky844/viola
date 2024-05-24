@@ -49,26 +49,20 @@ class LauncherActivity : AppCompatActivity() {
             .errorActivity(null)
             .apply()
 
-        /*
-         * Getting information from intents, either from
-         * sharing menu or default browser launch.
-         */
+        // Getting information from intents, either from
+        // sharing menu or default browser launch.
         val intent = intent
         val action = intent.action
         val type = intent.type
         val scheme = intent.scheme
-        val openIntent = Intent(
-            this,
-            if (intent.hasCategory("android.intent.category.LAUNCHER")
-                || (applicationContext as Application).settingsPreference!!.getInt(SettingsKeys.useCustomTabs) == 0)
-                BrowserActivity::class.java else CustomTabsActivity::class.java
-        )
+
+        // Parse supplied url
         var uri: Uri? = null
         if (Intent.ACTION_SEND == action || NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) { /* NFC sharing */
             if (type != null) {
                 if ("text/plain" == type) {
                     val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
-                    uri = Uri.parse(UrlUtils.cve_2017_13274(sharedText ?: CommonUtils.EMPTY_STRING))
+                    uri = if (sharedText.isNullOrBlank()) Uri.EMPTY else Uri.parse(UrlUtils.patchUrlForCVEMitigation(sharedText))
                 }
             }
         } else if (Intent.ACTION_VIEW == action) { /* From default browser */
@@ -78,8 +72,24 @@ class LauncherActivity : AppCompatActivity() {
                 }
             }
         }
-        openIntent.data = uri
-        startActivity(openIntent)
+
+        val launchIntent = Intent(
+            this,
+            // Decide whether to use Custom Tabs
+            // ===
+            // Conditions:
+            // - Enabled in Settings
+            // - Launcher category
+            // - Url is not empty
+            if (intent.hasCategory("android.intent.category.LAUNCHER") || Uri.EMPTY.equals(uri)
+                || (applicationContext as Application).settingsPreference!!.getInt(SettingsKeys.useCustomTabs) == 0)
+                BrowserActivity::class.java else CustomTabsActivity::class.java
+        )
+        launchIntent.data = uri
+        launchIntent.putExtra(EXTRA_LAUNCH_AS_WEBAPP, getIntent().getBooleanExtra(EXTRA_LAUNCH_AS_WEBAPP, false))
+        startActivity(launchIntent)
+
+        // Finally, kill this activity
         finish()
     }
 
@@ -90,5 +100,9 @@ class LauncherActivity : AppCompatActivity() {
         } catch (e: Exception) {
             false
         }
+    }
+
+    companion object {
+        const val EXTRA_LAUNCH_AS_WEBAPP = "launchAsWebApp"
     }
 }

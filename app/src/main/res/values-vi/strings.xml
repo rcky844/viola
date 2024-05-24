@@ -29,7 +29,7 @@
     <string name="settings">Cài đặt</string>
     <string name="search_engine">"Công cụ tìm kiếm"</string>
     <string name="homepage">"Trang chủ"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nBiên soạn trên %4$s\nBản quyền © 2020-%5$s Tipz Team\n\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nBiên soạn trên %4$s\n\nViola là một sản phẩm dựa trên Browservio.\nĐể thay đổi kênh cập nhật, vui lòng cài đặt lại tệp APK của kênh mong muốn.\n\nBản quyền © 2020-%5$s Tipz Team\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
     <string name="pref_check_for_updates_title">Tìm bản cập nhật mới</string>
     <string name="pref_check_for_updates_summary">Kiểm tra bản cập nhật mới và cho phép bạn tải xuống nếu có.</string>
     <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Viola."</string>
@@ -137,6 +137,7 @@
     <string name="toolbar_expandable_favorites_add">Thêm vào mục yêu thích</string>
     <string name="toolbar_expandable_app_shortcut">Tạo lối tắt</string>
     <string name="toolbar_expandable_settings">Cài đặt</string>
+    <string name="toolbar_expandable_print">ấn loát</string>
     <string name="toolbar_expandable_close">Đóng ứng dụng</string>
     <string name="pref_start_page_wallpaper_title">Chọn hình nền cho trang bắt đầu</string>
     <string name="pref_start_page_wallpaper_summary">Hiện tại: %s (Nhấp để đặt lại, làm mới để cập nhật)</string>
@@ -146,6 +147,13 @@
     <string name="copy_src_url">Sao chép liên kết hình ảnh</string>
     <string name="software_updates">Cập nhật phần mềm</string>
     <string name="pref_update_channel_title">Chọn kênh cập nhật</string>
+    <string name="pref_adBlockerDownload_title">Tải xuống tệp máy chủ chặn quảng cáo</string>
+    <string name="pref_adBlockerSource_title">Nguồn máy chủ chặn quảng cáo</string>
+    <string name="pref_send_save_data_title">Tiết kiệm dữ liệu</string>
+    <string name="pref_send_save_data_summary">Gửi yêu cầu tiết kiệm dữ liệu tới các trang web được hỗ trợ </string>
+    <string name="pref_send_sec_gpc_title">Kiểm soát quyền riêng tư toàn cầu</string>
+    <string name="pref_send_sec_gpc_summary">Cho phép bán hoặc chia sẻ thông tin cá nhân của bạn với bên thứ ba trên các trang web bạn truy cập </string>
+    <string name="homepage_webpage_home">Trang chủ</string>
 
     <string-array name="errMsg">
         <item>Lỗi!</item>

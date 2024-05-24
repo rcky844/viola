@@ -377,7 +377,7 @@ class SettingsActivity : BaseActivity() {
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         val jObject =
-                            JSONObject(String(DownloadUtils.startFileDownload("https://gitlab.com/TipzTeam/viola/-/raw/update_files/updates.json")))
+                            JSONObject(String(DownloadUtils.startFileDownload(InternalUrls.updateJSONUrl)))
 
                         CoroutineScope(Dispatchers.Main).launch {
                             val updateChannelName =
@@ -498,11 +498,11 @@ class SettingsActivity : BaseActivity() {
                     )
                     changelog_btn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
                     changelog_btn.setOnClickListener {
-                        needLoad(InternalUrls.realChangelogUrl)
+                        needLoad(InternalUrls.changelogUrl)
                         dialog.dismiss()
                     }
                     license_btn.setOnClickListener {
-                        needLoad(InternalUrls.licenseUrl)
+                        needLoad(InternalUrls.violaLicenseUrl)
                         dialog.dismiss()
                     }
                     dialog.show()

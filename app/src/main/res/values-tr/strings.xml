@@ -29,7 +29,7 @@
     <string name="settings">Ayarlar</string>
     <string name="search_engine">"Arama motoru"</string>
     <string name="homepage">"Ana sayfa"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nTarihinde derlendi %4$s\nTelif hakkı © 2020-%5$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nTarihinde derlendi %4$s\n\nViola Browservio bazlı bir üründür.\nGüncelleme kanallarını değiştirmek için lütfen istediğiniz kanalın APK dosyasını yeniden yükleyin.\n\nTelif hakkı © 2020-%5$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
     <string name="pref_check_for_updates_title">Güncellemeleri denetle</string>
     <string name="pref_check_for_updates_summary">Yeni güncellemeyi kontrol edin ve varsa indirmenize izin verin.</string>
     <string name="version_latest_toast">"Viola'nun en güncel sürümünü kullanmaktasınız."</string>
@@ -137,6 +137,7 @@
     <string name="toolbar_expandable_favorites_add">Favorilere ekle</string>
     <string name="toolbar_expandable_app_shortcut">Kısayol oluştur</string>
     <string name="toolbar_expandable_settings">Ayarlar</string>
+    <string name="toolbar_expandable_print">Yazdır</string>
     <string name="toolbar_expandable_close">Uygulamayı kapat</string>
     <string name="pref_start_page_wallpaper_title">Başlangıç sayfası için bir duvar kağıdı seçin</string>
     <string name="pref_start_page_wallpaper_summary">Güncel: %s (Sıfırlamak için tıklayın, güncellemek için yenileyin)</string>
@@ -146,6 +147,13 @@
     <string name="copy_src_url">Resim bağlantısını kopyala</string>
     <string name="software_updates">Yazılım güncellemeleri</string>
     <string name="pref_update_channel_title">Güncelleme kanalını seçin</string>
+    <string name="pref_adBlockerDownload_title">Reklam engelleyici ana makine dosyasını indirin</string>
+    <string name="pref_adBlockerSource_title">Reklam Engelleyici Ana Bilgisayar Kaynağı</string>
+    <string name="pref_send_save_data_title">Veri kaydetme</string>
+    <string name="pref_send_save_data_summary">Desteklenen web sitelerine veri kaydetme isteği gönderir </string>.
+    <string name="pref_send_sec_gpc_title">Genel Gizlilik Denetimi</string>
+    <string name="pref_send_sec_gpc_summary">Kişisel bilgilerinizin ziyaret ettiğiniz web sitelerinde satılmasına veya üçüncü taraflarla paylaşılmasına izin verin </string>.
+    <string name="homepage_webpage_home">Anasayfa</string>
 
     <string-array name="errMsg">
         <item>Hata!</item>

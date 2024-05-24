@@ -17,7 +17,7 @@ package tipz.viola.search
 
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.utils.UrlUtils.cve_2017_13274
+import tipz.viola.utils.UrlUtils.patchUrlForCVEMitigation
 
 object SearchEngineEntries {
     private const val queryPlaceholder = "{query}"
@@ -73,7 +73,7 @@ object SearchEngineEntries {
     fun getHomePageUrl(pref: SettingsSharedPreference?, position: Int): String {
         var url: String? = engines[position].homePage
         if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultHomePage)
-        return cve_2017_13274(url!!)
+        return patchUrlForCVEMitigation(url!!)
     }
 
     fun getSearchUrl(
@@ -86,7 +86,7 @@ object SearchEngineEntries {
         if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultSearch)
         if (query != null) url =
                 url!!.replace(queryPlaceholder, query).replace(languagePlaceholder, language!!)
-        return cve_2017_13274(url!!)
+        return patchUrlForCVEMitigation(url!!)
     }
 
     @JvmStatic
@@ -101,6 +101,6 @@ object SearchEngineEntries {
         if (query != null && language != null) url = url!!.replace(queryPlaceholder, query).replace(
                 languagePlaceholder, language
         )
-        return cve_2017_13274(url!!)
+        return patchUrlForCVEMitigation(url!!)
     }
 }
