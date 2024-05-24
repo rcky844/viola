@@ -20,10 +20,10 @@
   "beta": {
     "channel_name": "Beta",
     "latest_update": {
-      "name": "6.0.0006.02",
-      "code": 12,
-      "timestamp": 1701641091,
-      "url": "https://gitlab.com/TipzTeam/viola/uploads/75b5be80da30cb88908d6a8dcfea0503/app-beta.apk"
+      "name": "6.2 Beta (Cumulative May 2024)",
+      "code": 31,
+      "timestamp": 1716531842,
+      "url": "https://gitlab.com/TipzTeam/viola/uploads/94a425f6f4ba2dab99f315d04b054aad/app-release.apk"
     }
   },
   "alpha": {
