@@ -68,6 +68,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
+import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavUtils
@@ -320,6 +321,26 @@ class BrowserActivity : VWebViewActivity() {
         }
     }
 
+    fun createShortcut(webApp: Boolean) {
+        if (webview.title.isNullOrBlank() || webview.url.isBlank()) return
+        ShortcutManagerCompat.requestPinShortcut(
+            this, ShortcutInfoCompat.Builder(this, webview.title!!)
+                .setShortLabel(webview.title!!)
+                .setIcon(
+                    IconCompat.createWithBitmap(
+                        CommonUtils.drawableToBitmap(favicon!!.drawable)
+                    )
+                )
+                .setIntent(
+                    Intent(this, LauncherActivity::class.java)
+                        .setData(Uri.parse(webview.url))
+                        .setAction(Intent.ACTION_VIEW)
+                        .putExtra(LauncherActivity.EXTRA_LAUNCH_AS_WEBAPP, true)
+                )
+                .build(), null
+        )
+    }
+
     fun itemSelected(view: AppCompatImageView?, item: Int) {
         when (item) {
             R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
@@ -347,24 +368,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
-            R.drawable.app_shortcut -> {
-                if (webview.title.isNullOrBlank() || webview.url.isBlank()) return
-                ShortcutManagerCompat.requestPinShortcut(
-                    this, ShortcutInfoCompat.Builder(this, webview.title!!)
-                        .setShortLabel(webview.title!!)
-                        .setIcon(
-                            IconCompat.createWithBitmap(
-                                CommonUtils.drawableToBitmap(favicon!!.drawable)
-                            )
-                        )
-                        .setIntent(
-                            Intent(this, BrowserActivity::class.java)
-                                .setData(Uri.parse(webview.url))
-                                .setAction(Intent.ACTION_VIEW)
-                        )
-                        .build(), null
-                )
-            }
+            R.drawable.app_shortcut -> createShortcut(false)
 
             R.drawable.settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
@@ -459,6 +463,8 @@ class BrowserActivity : VWebViewActivity() {
                 webview.loadHomepage(reqVal)
                 if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
             }
+
+            R.drawable.app_shortcut -> createShortcut(false)
         }
     }
 

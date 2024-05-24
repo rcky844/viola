@@ -86,6 +86,7 @@ class LauncherActivity : AppCompatActivity() {
                 BrowserActivity::class.java else CustomTabsActivity::class.java
         )
         launchIntent.data = uri
+        launchIntent.putExtra(EXTRA_LAUNCH_AS_WEBAPP, getIntent().getBooleanExtra(EXTRA_LAUNCH_AS_WEBAPP, false))
         startActivity(launchIntent)
 
         // Finally, kill this activity
@@ -99,5 +100,9 @@ class LauncherActivity : AppCompatActivity() {
         } catch (e: Exception) {
             false
         }
+    }
+
+    companion object {
+        const val EXTRA_LAUNCH_AS_WEBAPP = "launchAsWebApp"
     }
 }

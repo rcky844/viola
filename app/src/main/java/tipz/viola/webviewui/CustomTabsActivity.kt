@@ -18,8 +18,10 @@ package tipz.viola.webviewui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
@@ -31,6 +33,7 @@ class CustomTabsActivity : VWebViewActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.custom_tab)
+        appbar = findViewById(R.id.appbar)
 
         /* Back button */
         val actionBarBack : AppCompatImageView = findViewById(R.id.close)
@@ -59,6 +62,10 @@ class CustomTabsActivity : VWebViewActivity() {
 
         /* Swipe Refresh Layout */
         swipeRefreshLayout = findViewById(R.id.layout_webview)
+
+        // Setup Web App Mode
+        if (getIntent().getBooleanExtra(LauncherActivity.EXTRA_LAUNCH_AS_WEBAPP, false))
+            appbar.visibility = View.GONE
 
         /* WebView */
         webview = swipeRefreshLayout.findViewById(R.id.webview)
