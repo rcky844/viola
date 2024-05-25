@@ -69,6 +69,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
+import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavUtils
@@ -358,16 +359,16 @@ class BrowserActivity : VWebViewActivity() {
                 val dialog = MaterialAlertDialogBuilder(this)
                 dialog.setTitle(resources.getString(R.string.toolbar_expandable_app_shortcut))
 
+                // TODO: Export as proper list
                 val arrayAdapter = ArrayAdapter<String>(this, R.layout.recycler_list_item_1)
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_browser))
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_custom_tabs))
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_webapp))
                 dialog.setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
-                    val launchIntent = Intent(this,
-                        if (which == 0) BrowserActivity::class.java else CustomTabsActivity::class.java)
+                    val launchIntent = Intent(this, LauncherActivity::class.java)
                         .setData(Uri.parse(webview.url))
                         .setAction(Intent.ACTION_VIEW)
-                    if (which == 2) launchIntent.putExtra(CustomTabsActivity.EXTRA_LAUNCH_AS_WEBAPP, true)
+                        .putExtra(LauncherActivity.EXTRA_SHORTCUT_TYPE, which)
 
                     ShortcutManagerCompat.requestPinShortcut(
                         this, ShortcutInfoCompat.Builder(this, webview.title!!)

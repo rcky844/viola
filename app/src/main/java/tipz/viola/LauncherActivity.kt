@@ -73,19 +73,27 @@ class LauncherActivity : AppCompatActivity() {
             }
         }
 
+        val shortcutType = intent.getIntExtra(EXTRA_SHORTCUT_TYPE, -1)
         val launchIntent = Intent(
             this,
+            if (shortcutType != -1)
+                when (shortcutType) {
+                    0 -> BrowserActivity::class.java
+                    1,2 -> CustomTabsActivity::class.java
+                    else -> LauncherActivity::class.java // FIXME: Better option?
+                }
             // Decide whether to use Custom Tabs
             // ===
             // Conditions:
             // - Enabled in Settings
             // - Launcher category
             // - Url is not empty
-            if (intent.hasCategory("android.intent.category.LAUNCHER") || Uri.EMPTY.equals(uri)
+            else if (intent.hasCategory("android.intent.category.LAUNCHER") || Uri.EMPTY.equals(uri)
                 || (applicationContext as Application).settingsPreference!!.getInt(SettingsKeys.useCustomTabs) == 0)
                 BrowserActivity::class.java else CustomTabsActivity::class.java
         )
         launchIntent.data = uri
+        if (shortcutType == 2) launchIntent.putExtra(CustomTabsActivity.EXTRA_LAUNCH_AS_WEBAPP, true)
         startActivity(launchIntent)
 
         // Finally, kill this activity
@@ -99,5 +107,9 @@ class LauncherActivity : AppCompatActivity() {
         } catch (e: Exception) {
             false
         }
+    }
+
+    companion object {
+        const val EXTRA_SHORTCUT_TYPE = "shortcutType"
     }
 }
