@@ -349,7 +349,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
-            R.drawable.app_shortcut -> {
+            R.drawable.app_shortcut -> { // FIXME: Shortcuts pointing to the same URL does not behave as expected
                 // Bail out for certain URLs
                 // FIXME: Block certain internal URLs
                 if (webview.title.isNullOrBlank() || webview.url.isBlank()) return true
