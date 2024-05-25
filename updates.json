@@ -8,10 +8,10 @@
   "release": {
     "channel_name": "Release",
     "latest_update": {
-      "name": "6.1.2",
-      "code": 22,
-      "timestamp": 1714127100,
-      "url": "https://gitlab.com/TipzTeam/viola/uploads/fff05c7cba5be9119fedf8f60f45d514/app-release.apk"
+      "name": "6.1.3",
+      "code": 23,
+      "timestamp": 1716639646,
+      "url": "https://gitlab.com/TipzTeam/viola/uploads/25caeb97e686f66665d847545612972c/app-release.apk"
     }
   },
   "prerelease": {
