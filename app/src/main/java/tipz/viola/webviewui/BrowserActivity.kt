@@ -37,6 +37,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.widget.AppCompatCheckBox
@@ -68,7 +69,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
-import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavUtils
@@ -321,27 +321,8 @@ class BrowserActivity : VWebViewActivity() {
         }
     }
 
-    fun createShortcut(webApp: Boolean) {
-        if (webview.title.isNullOrBlank() || webview.url.isBlank()) return
-        ShortcutManagerCompat.requestPinShortcut(
-            this, ShortcutInfoCompat.Builder(this, webview.title!!)
-                .setShortLabel(webview.title!!)
-                .setIcon(
-                    IconCompat.createWithBitmap(
-                        CommonUtils.drawableToBitmap(favicon!!.drawable)
-                    )
-                )
-                .setIntent(
-                    Intent(this, LauncherActivity::class.java)
-                        .setData(Uri.parse(webview.url))
-                        .setAction(Intent.ACTION_VIEW)
-                        .putExtra(LauncherActivity.EXTRA_LAUNCH_AS_WEBAPP, true)
-                )
-                .build(), null
-        )
-    }
-
-    fun itemSelected(view: AppCompatImageView?, item: Int) {
+    // This function returns true to close ToolBar, and vice versa.
+    fun itemSelected(view: AppCompatImageView?, item: Int): Boolean {
         when (item) {
             R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
@@ -368,7 +349,41 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
-            R.drawable.app_shortcut -> createShortcut(false)
+            R.drawable.app_shortcut -> {
+                // Bail out for certain URLs
+                // FIXME: Block certain internal URLs
+                if (webview.title.isNullOrBlank() || webview.url.isBlank()) return true
+
+                // Show dialog for selecting modes
+                val dialog = MaterialAlertDialogBuilder(this)
+                dialog.setTitle(resources.getString(R.string.toolbar_expandable_app_shortcut))
+
+                val arrayAdapter = ArrayAdapter<String>(this, R.layout.recycler_list_item_1)
+                arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_browser))
+                arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_custom_tabs))
+                arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_webapp))
+                dialog.setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
+                    val launchIntent = Intent(this,
+                        if (which == 0) BrowserActivity::class.java else CustomTabsActivity::class.java)
+                        .setData(Uri.parse(webview.url))
+                        .setAction(Intent.ACTION_VIEW)
+                    if (which == 2) launchIntent.putExtra(CustomTabsActivity.EXTRA_LAUNCH_AS_WEBAPP, true)
+
+                    ShortcutManagerCompat.requestPinShortcut(
+                        this, ShortcutInfoCompat.Builder(this, webview.title!!)
+                            .setShortLabel(webview.title!!)
+                            .setIcon(
+                                IconCompat.createWithBitmap(
+                                    CommonUtils.drawableToBitmap(favicon!!.drawable)
+                                )
+                            )
+                            .setIntent(launchIntent)
+                            .build(), null
+                    )
+                }
+                dialog.create().show()
+                return false
+            }
 
             R.drawable.settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
@@ -389,7 +404,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.favorites_add -> {
                 val url = webview.url
-                if (url.isBlank()) return
+                if (url.isBlank()) return true
 
                 val icon = favicon!!.drawable
                 val title = webview.title
@@ -428,6 +443,7 @@ class BrowserActivity : VWebViewActivity() {
                 printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
             }
         }
+        return true // Close ToolBar if not interrupted
     }
 
     fun itemLongSelected(view: AppCompatImageView?, item: Int) {
@@ -463,8 +479,6 @@ class BrowserActivity : VWebViewActivity() {
                 webview.loadHomepage(reqVal)
                 if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
             }
-
-            R.drawable.app_shortcut -> createShortcut(false)
         }
     }
 
@@ -619,9 +633,9 @@ class BrowserActivity : VWebViewActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.mItemBox.setOnClickListener {
-                mBrowserActivity.get()!!
+                val closeToolBar = mBrowserActivity.get()!!
                     .itemSelected(holder.mImageView, mItemsList.get()!![position])
-                mBrowserActivity.get()!!.expandToolBar()
+                if (closeToolBar) mBrowserActivity.get()!!.expandToolBar()
             }
             holder.mItemBox.setOnLongClickListener {
                 mBrowserActivity.get()!!
