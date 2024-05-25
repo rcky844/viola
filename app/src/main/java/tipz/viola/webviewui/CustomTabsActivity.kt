@@ -21,7 +21,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
@@ -64,7 +63,7 @@ class CustomTabsActivity : VWebViewActivity() {
         swipeRefreshLayout = findViewById(R.id.layout_webview)
 
         // Setup Web App Mode
-        if (getIntent().getBooleanExtra(LauncherActivity.EXTRA_LAUNCH_AS_WEBAPP, false))
+        if (getIntent().getBooleanExtra(EXTRA_LAUNCH_AS_WEBAPP, false))
             appbar.visibility = View.GONE
 
         /* WebView */
@@ -82,5 +81,9 @@ class CustomTabsActivity : VWebViewActivity() {
     override fun onTitleUpdated(title: String?) {
         super.onTitleUpdated(title)
         this.title!!.text = title
+    }
+
+    companion object {
+        const val EXTRA_LAUNCH_AS_WEBAPP = "launchAsWebApp"
     }
 }
