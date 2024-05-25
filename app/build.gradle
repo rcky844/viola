@@ -80,13 +80,13 @@ android {
 dependencies {
     def room_version = "2.6.1"
 
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.12.0-rc01'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation "androidx.multidex:multidex:2.0.1"
-    implementation 'androidx.webkit:webkit:1.10.0'
+    implementation 'androidx.webkit:webkit:1.11.0'
     implementation('androidx.preference:preference-ktx:1.2.1') {
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
@@ -96,6 +96,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
-    annotationProcessor 'androidx.annotation:annotation:1.7.1'
+    annotationProcessor 'androidx.annotation:annotation:1.8.0'
     annotationProcessor "androidx.room:room-compiler:$room_version"
 }
