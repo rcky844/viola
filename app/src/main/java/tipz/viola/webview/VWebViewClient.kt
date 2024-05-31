@@ -63,7 +63,7 @@ open class VWebViewClient(
         view.stopLoading()
     }
 
-    fun getSslDialog(error: SslError) : MaterialAlertDialogBuilder {
+    private fun getSslDialog(error: SslError) : MaterialAlertDialogBuilder {
         val dialog = MaterialAlertDialogBuilder(mContext)
         var contentSummary = mContext.resources.getString(R.string.ssl_certificate_unknown)
         when (error.primaryError) {

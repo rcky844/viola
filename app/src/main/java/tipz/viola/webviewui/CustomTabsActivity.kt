@@ -63,7 +63,7 @@ class CustomTabsActivity : VWebViewActivity() {
         swipeRefreshLayout = findViewById(R.id.layout_webview)
 
         // Setup Web App Mode
-        if (getIntent().getBooleanExtra(EXTRA_LAUNCH_AS_WEBAPP, false))
+        if (intent.getBooleanExtra(EXTRA_LAUNCH_AS_WEBAPP, false))
             appbar.visibility = View.GONE
 
         /* WebView */
