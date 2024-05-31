@@ -74,7 +74,7 @@ class ListInterfaceActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        toolbar.setNavigationOnClickListener { finish() }
         val fab = findViewById<FloatingActionButton>(R.id._fab)
         fab.setOnClickListener {
             MaterialAlertDialogBuilder(this)
