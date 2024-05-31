@@ -45,6 +45,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -62,7 +64,6 @@ import tipz.viola.utils.ApkInstaller.installApplication
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.DownloadUtils
-import tipz.viola.utils.DownloadUtils.dmDownloadFile
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
@@ -120,6 +121,7 @@ class SettingsActivity : BaseActivity() {
         private val updateDownloadPathBase =
             Environment.getExternalStorageDirectory().absolutePath + "/" + Environment.DIRECTORY_DOWNLOADS + "/"
         private var updateDownloadPath: String? = null
+        private val updateConfigLiveData = MutableLiveData<JSONObject>()
         private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
@@ -376,81 +378,86 @@ class SettingsActivity : BaseActivity() {
                         )
                     }
                     CoroutineScope(Dispatchers.IO).launch {
-                        val jObject =
-                            JSONObject(String(DownloadUtils.startFileDownload(InternalUrls.updateJSONUrl)))
-
-                        CoroutineScope(Dispatchers.Main).launch {
-                            val updateChannelName =
-                                settingsPreference.getString(SettingsKeys.updateChannelName)
-                                    ?: BuildConfig.BUILD_TYPE
-                            if (!jObject.has(updateChannelName)) {
-                                showMessage(
-                                    settingsActivity,
-                                    resources.getString(R.string.update_down_failed_toast)
-                                )
-                                return@launch
-                            }
-                            val jChannelObject = jObject.getJSONObject(updateChannelName)
-                            if (!jChannelObject.has("latest_update")) {
-                                showMessage(
-                                    settingsActivity,
-                                    resources.getString(R.string.version_latest_toast)
-                                )
-                                return@launch
-                            }
-
-                            val jChannelUpdateObject = jChannelObject.getJSONObject("latest_update")
-                            if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
-                                showMessage(
-                                    settingsActivity,
-                                    resources.getString(R.string.version_latest_toast)
-                                )
-                                return@launch
-                            }
-
-                            MaterialAlertDialogBuilder(
-                                settingsActivity
+                        updateConfigLiveData.postValue(JSONObject(
+                                String(DownloadUtils.startFileDownload(InternalUrls.updateJSONUrl))
                             )
-                                .setTitle(resources.getString(R.string.new_update_detect_title))
-                                .setMessage(
-                                    resources.getString(
-                                        R.string.new_update_detect_message,
-                                        jChannelUpdateObject.getString("name"),
-                                        jChannelUpdateObject.getInt("code").toString()
-                                    )
-                                )
-                                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                    val filename =
-                                        updateDownloadPathBase + DocumentFile.fromSingleUri(
-                                            settingsActivity,
-                                            Uri.parse(jChannelUpdateObject.getString("url"))
-                                        )?.name
-                                    this@SettingsPrefHandler.updateDownloadPath =
-                                        updateDownloadPathBase + filename
-                                    val apkFile = File(updateDownloadPath!!)
-
-                                    if (!apkFile.exists() || apkFile.delete()) downloadID =
-                                        dmDownloadFile(
-                                            settingsActivity,
-                                            jChannelUpdateObject.getString("url"),
-                                            null,
-                                            "application/vnd.android.package-archive",
-                                            resources.getString(R.string.download_title),
-                                            filename,
-                                            null
-                                        )
-                                    else
-                                        showMessage(
-                                            settingsActivity,
-                                            resources.getString(R.string.update_down_failed_toast)
-                                        )
-                                }
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .create().show()
-                        }
+                        )
                     }
                     true
                 }
+
+            // Updates JSON Object observer
+            updateConfigLiveData.observe(this, Observer {
+                val jObject = it ?: return@Observer
+                val updateChannelName =
+                    settingsPreference.getString(SettingsKeys.updateChannelName)
+                        ?: BuildConfig.BUILD_TYPE
+                if (!jObject.has(updateChannelName)) {
+                    showMessage(
+                        settingsActivity,
+                        resources.getString(R.string.update_down_failed_toast)
+                    )
+                    return@Observer
+                }
+                val jChannelObject = jObject.getJSONObject(updateChannelName)
+                if (!jChannelObject.has("latest_update")) {
+                    showMessage(
+                        settingsActivity,
+                        resources.getString(R.string.version_latest_toast)
+                    )
+                    return@Observer
+                }
+
+                val jChannelUpdateObject = jChannelObject.getJSONObject("latest_update")
+                if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
+                    showMessage(
+                        settingsActivity,
+                        resources.getString(R.string.version_latest_toast)
+                    )
+                    return@Observer
+                }
+
+                MaterialAlertDialogBuilder(
+                    settingsActivity
+                )
+                    .setTitle(resources.getString(R.string.new_update_detect_title))
+                    .setMessage(
+                        resources.getString(
+                            R.string.new_update_detect_message,
+                            jChannelUpdateObject.getString("name"),
+                            jChannelUpdateObject.getInt("code").toString()
+                        )
+                    )
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                        val filename =
+                            updateDownloadPathBase + DocumentFile.fromSingleUri(
+                                settingsActivity,
+                                Uri.parse(jChannelUpdateObject.getString("url"))
+                            )?.name
+                        this@SettingsPrefHandler.updateDownloadPath =
+                            updateDownloadPathBase + filename
+                        val apkFile = File(updateDownloadPath!!)
+
+                        if (!apkFile.exists() || apkFile.delete()) downloadID =
+                            DownloadUtils.dmDownloadFile(
+                                settingsActivity,
+                                jChannelUpdateObject.getString("url"),
+                                null,
+                                "application/vnd.android.package-archive",
+                                resources.getString(R.string.download_title),
+                                filename,
+                                null
+                            )
+                        else
+                            showMessage(
+                                settingsActivity,
+                                resources.getString(R.string.update_down_failed_toast)
+                            )
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show()
+
+            })
 
             // TODO: Load update channels from online JSON
             update_channel.onPreferenceClickListener =
