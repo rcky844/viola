@@ -34,7 +34,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         return mListPickerObject
     }
 
-    fun setupDialogForShowing(): Boolean {
+    fun setupDialogForShowing() {
         // Set checked item to current settings
         val checkedItem =
             intArrayOf(mSettingsPreference.getInt(mListPickerObject.idPreference))
@@ -85,7 +85,6 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
             }
         }
         setNegativeButton(android.R.string.cancel, null)
-        return true
     }
 
     class ListPickerObject {

@@ -36,7 +36,7 @@ open class VChromeWebClient(private val mContext: Context, private val mVWebView
     private var mCustomViewCallback: CustomViewCallback? = null
 
     private var mUploadMessage: ValueCallback<Array<Uri>>? = null
-    val mFileChooser =
+    private val mFileChooser =
         (mContext as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (null == mUploadMessage || uri == null) return@registerForActivityResult
             mUploadMessage!!.onReceiveValue(arrayOf(uri))
