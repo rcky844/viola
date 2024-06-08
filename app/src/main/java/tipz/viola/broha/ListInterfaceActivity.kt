@@ -176,9 +176,9 @@ class ListInterfaceActivity : BaseActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 if (data.iconHash != null) {
                     icon = iconHashClient!!.read(data.iconHash)!!
-                    holder.icon.setImageBitmap(icon)
+                    CoroutineScope(Dispatchers.Main).launch { holder.icon.setImageBitmap(icon) }
                 } else {
-                    holder.icon.setImageResource(R.drawable.default_favicon)
+                    CoroutineScope(Dispatchers.Main).launch { holder.icon.setImageResource(R.drawable.default_favicon) }
                 }
             }
             holder.title.text = title ?: url
