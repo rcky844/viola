@@ -3,5 +3,6 @@
     <declare-styleable name="MaterialSwitchPreference">
         <attr name="preferenceTag" format="string" />
         <attr name="needReload" format="boolean" />
+        <attr name="requiredApi" format="integer" />
     </declare-styleable>
 </resources>

@@ -16,6 +16,7 @@
 package tipz.viola.settings
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.SwitchPreferenceCompat
@@ -28,12 +29,14 @@ class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
         (getContext().applicationContext as Application).settingsPreference!!
     private val mPreferenceTag: String?
     private val mNeedReload: Boolean
+    private val mRequiredApi: Int
 
     init {
         // Get attrs
         val a = getContext().obtainStyledAttributes(attrs, R.styleable.MaterialSwitchPreference)
         mPreferenceTag = a.getString(R.styleable.MaterialSwitchPreference_preferenceTag)
         mNeedReload = a.getBoolean(R.styleable.MaterialSwitchPreference_needReload, false)
+        mRequiredApi = a.getInteger(R.styleable.MaterialSwitchPreference_requiredApi, 1)
         a.recycle()
 
         // Handle checkbox
@@ -43,6 +46,7 @@ class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
             SettingsActivity.SettingsPrefHandler.needReload = mNeedReload
             true
         }
+        if (mRequiredApi > Build.VERSION.SDK_INT) this.isEnabled = false
 
         // Use material switch
         widgetLayoutResource = R.layout.preference_material_switch
