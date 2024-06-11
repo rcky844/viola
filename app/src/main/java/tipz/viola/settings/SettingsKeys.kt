@@ -27,6 +27,7 @@ object SettingsKeys {
 
     const val adServerId = "adServerId" /* STRING */
     const val adServerUrl = "adServerUrl" /* STRING */
+    const val checkAppLink = "checkAppLink" /* INTEGER */
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
     const val defaultHomePage = "defaultHomePage" /* STRING */ /* FIXME: Rename to customHomePage */
     const val defaultHomePageId = "defaultHomePageId" /* INTEGER */

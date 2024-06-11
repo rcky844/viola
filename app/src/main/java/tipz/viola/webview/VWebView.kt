@@ -19,9 +19,16 @@ package tipz.viola.webview
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.Intent.FLAG_ACTIVITY_REQUIRE_DEFAULT
+import android.content.Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
@@ -38,6 +45,7 @@ import androidx.core.content.ContextCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -54,6 +62,7 @@ import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BaseActivity
+
 
 @SuppressLint("SetJavaScriptEnabled")
 class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
@@ -219,34 +228,67 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             return
         }
 
-        // Update to start page layout
-        val startPageLayout = mVioWebViewActivity?.startPageLayout
-        if (url == InternalUrls.violaStartUrl) {
-            this.loadUrl(InternalUrls.aboutBlankUrl)
-            this.visibility = GONE
-            mVioWebViewActivity?.swipeRefreshLayout?.visibility = GONE
-            startPageLayout?.visibility = VISIBLE
-            mVioWebViewActivity?.onSslCertificateUpdated()
-            return
-        }
-        if (this.visibility == GONE) {
-            this.visibility = VISIBLE
-            mVioWebViewActivity?.swipeRefreshLayout?.visibility = VISIBLE
-            startPageLayout?.visibility = GONE
-        }
+        // Handle App Links
+        if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
+            && UrlUtils.isUriLaunchable(url)) {
+            var handled = false
+            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            webIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+            webIntent.setFlags(
+                FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REQUIRE_NON_BROWSER or
+                        FLAG_ACTIVITY_REQUIRE_DEFAULT
+            )
+            val packageManager = mVioWebViewActivity?.packageManager;
+            if (packageManager?.let { webIntent.resolveActivity(it) } != null) {
+                val dialog = MaterialAlertDialogBuilder(mVioWebViewActivity!!)
+                dialog.setTitle(resources.getString(R.string.dialog_open_external_title))
+                    .setMessage(resources.getString(R.string.dialog_open_external_message))
+                    .setPositiveButton(resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+                        try {
+                            mVioWebViewActivity?.startActivity(webIntent)
+                            handled = true
+                        } catch (e: ActivityNotFoundException) {
+                            // Do not load actual url on failure
+                        }
+                    }
+                    .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
+                        // Load actual url if user cancelled the request
+                        val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
+                        super.loadUrl(checkedUrl, mRequestHeaders)
+                    }
+                    .create().show()
+            }
+            if (handled) return // Exit loadUrl() if handled
+        } else {
+            // Update to start page layout
+            val startPageLayout = mVioWebViewActivity?.startPageLayout
+            if (url == InternalUrls.violaStartUrl) {
+                this.loadUrl(InternalUrls.aboutBlankUrl)
+                this.visibility = GONE
+                mVioWebViewActivity?.swipeRefreshLayout?.visibility = GONE
+                startPageLayout?.visibility = VISIBLE
+                mVioWebViewActivity?.onSslCertificateUpdated()
+                return
+            }
+            if (this.visibility == GONE) {
+                this.visibility = VISIBLE
+                mVioWebViewActivity?.swipeRefreshLayout?.visibility = VISIBLE
+                startPageLayout?.visibility = GONE
+            }
 
-        // If the URL has "viola://" prefix but hasn't been handled till here,
-        // wire it up with the "chrome://" suffix.
-        if (url.startsWith(InternalUrls.violaPrefix)) {
-            super.loadUrl(url.replace(InternalUrls.violaPrefix, InternalUrls.chromePrefix))
-            return
+            // If the URL has "viola://" prefix but hasn't been handled till here,
+            // wire it up with the "chrome://" suffix.
+            if (url.startsWith(InternalUrls.violaPrefix)) {
+                super.loadUrl(url.replace(InternalUrls.violaPrefix, InternalUrls.chromePrefix))
+                return
+            }
+
+            // By this point, it is probably a webpage.
+            val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
+            onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
+
+            super.loadUrl(checkedUrl, mRequestHeaders)
         }
-
-        val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
-        onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
-
-        // Load URL
-        super.loadUrl(checkedUrl, mRequestHeaders)
     }
 
     override fun reload() {
