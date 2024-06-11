@@ -158,6 +158,10 @@
     <string name="toolbar_expandable_shortcuts_menu_browser">Browser Access</string>
     <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Custom Tabs</string>
     <string name="toolbar_expandable_shortcuts_menu_webapp">Web App</string>
+    <string name="pref_check_app_link_title">Check for launchable App Link</string>
+    <string name="pref_check_app_link_summary">Ask whether an App Link should be opened externally before loading.</string>
+    <string name="dialog_open_external_title">Launchable App Link detected</string>
+    <string name="dialog_open_external_message">Would you like to open this link in an external app?</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
