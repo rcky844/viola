@@ -16,7 +16,6 @@
 package tipz.viola.broha.api
 
 import android.content.Context
-import tipz.viola.utils.CommonUtils
 
 object HistoryUtils {
     suspend fun clear(context: Context?) {
@@ -29,10 +28,5 @@ object HistoryUtils {
 
     suspend fun isEmptyCheck(context: Context?): Boolean {
         return HistoryApi.historyBroha(context!!)?.isEmpty()?.isEmpty() == true
-    }
-
-    suspend fun lastUrl(context: Context?): String {
-        val lastUrl = HistoryApi.historyBroha(context!!)?.lastUrl()
-        return lastUrl?.url ?: CommonUtils.EMPTY_STRING
     }
 }

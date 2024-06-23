@@ -53,7 +53,6 @@ import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.broha.api.HistoryApi
-import tipz.viola.broha.api.HistoryUtils
 import tipz.viola.broha.database.Broha
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
@@ -71,9 +70,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var mVioWebViewActivity: VWebViewActivity? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
-    private var currentBroha: Broha? = null
-    private var updateHistory = true
-    private var historyCommitted = false
+    private var currentBroha = Broha()
+    private var historyState = UpdateHistoryState.STATE_DISABLED
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
     internal var adServersHandler: AdServersHandler
@@ -90,6 +88,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     enum class PageLoadState {
         PAGE_STARTED, PAGE_FINISHED, UPDATE_HISTORY, UPDATE_FAVICON, UPDATE_TITLE, UNKNOWN
+    }
+
+    enum class UpdateHistoryState {
+        STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK
     }
 
     init {
@@ -208,7 +210,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun setUpdateHistory(value: Boolean) {
-        updateHistory = value
+        historyState = if (value) UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+            else UpdateHistoryState.STATE_DISABLED
     }
 
     fun onSslErrorProceed() {
@@ -287,11 +290,17 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
             onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
 
+            // Prevent creating duplicate entries
+            if (currentBroha.url == checkedUrl && historyState != UpdateHistoryState.STATE_DISABLED)
+                historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED
+
             super.loadUrl(checkedUrl, mRequestHeaders)
         }
     }
 
     override fun reload() {
+        if (currentBroha.url == getUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
+            historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
         loadUrl(getUrl())
     }
 
@@ -328,9 +337,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_HISTORY -> {
-                if (updateHistory) {
+                if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK) {
                     currentBroha = Broha(title, currentUrl)
-                    historyCommitted = false
+                    historyState = UpdateHistoryState.STATE_URL_UPDATED
                 }
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) CookieSyncManager.getInstance()
                     .sync() else CookieManager.getInstance().flush()
@@ -338,15 +347,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_FAVICON -> {
-                if (!historyCommitted && updateHistory) {
+                if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        currentBroha!!.iconHash = iconHashClient.save(favicon!!)
-                        if (HistoryUtils.lastUrl(mContext) != currentUrl) {
-                            HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha!!)
-                        }
+                        currentBroha.iconHash = iconHashClient.save(favicon!!)
+                        HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha)
                     }
-                    historyCommitted = true
+                    historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
                 }
+                if (historyState == UpdateHistoryState.STATE_DISABLED_DUPLICATED)
+                    historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
             }
 
             PageLoadState.UPDATE_TITLE -> {

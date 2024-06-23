@@ -28,9 +28,6 @@ interface BrohaDao {
     @Query("SELECT * FROM broha LIMIT 1")
     suspend fun isEmpty(): List<Broha>
 
-    @Query("SELECT * FROM broha ORDER BY id DESC LIMIT 1")
-    suspend fun lastUrl(): Broha
-
     @Query("SELECT * FROM broha WHERE id LIKE :id LIMIT 1")
     suspend fun findById(id: Int): Broha
 
