@@ -22,11 +22,11 @@ android {
         compileSdk 34
         minSdkVersion 19
         targetSdkVersion 34
-        versionCode 31
+        versionCode 34
         versionName "6.2"
 
-        buildConfigField "String", "VERSION_NAME_EXTRA", "\"_beta_cml2405\""
-        buildConfigField "String", "VERSION_NAME_HUMAN_EXTRA", "\" Beta (Cumulative May 2024)\""
+        buildConfigField "String", "VERSION_NAME_EXTRA", "\"_beta_cml2406\""
+        buildConfigField "String", "VERSION_NAME_HUMAN_EXTRA", "\" Beta (Cumulative June 2024)\""
         buildConfigField "String", "VERSION_CODENAME", "\"Jumpas\""
         buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
