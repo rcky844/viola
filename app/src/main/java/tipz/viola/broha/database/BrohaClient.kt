@@ -34,7 +34,6 @@ open class BrohaClient(context: Context?, dbName: String?) {
 
     suspend fun getAllValues(): List<Broha> = dao!!.getAllValues()
     suspend fun isEmpty(): Boolean = dao!!.isEmpty().isEmpty()
-    suspend fun findById(id: Int): Broha = dao!!.findById(id)
     suspend fun insertAll(vararg broha: Broha) = dao!!.insertAll(*broha)
     suspend fun updateBroha(vararg broha: Broha) = dao!!.updateBroha(*broha)
     suspend fun deleteById(id: Int) = dao!!.deleteById(id)
@@ -48,9 +47,6 @@ interface BrohaDao {
 
     @Query("SELECT * FROM broha LIMIT 1")
     suspend fun isEmpty(): List<Broha>
-
-    @Query("SELECT * FROM broha WHERE id LIKE :id LIMIT 1")
-    suspend fun findById(id: Int): Broha
 
     @Insert
     suspend fun insertAll(vararg broha: Broha)
