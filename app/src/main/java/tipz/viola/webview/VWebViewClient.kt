@@ -19,6 +19,7 @@ import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
+import tipz.viola.webview.VWebView.PageLoadState
 import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
 import java.net.URL
@@ -35,17 +36,17 @@ open class VWebViewClient(
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
-        mVWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_STARTED, url, favicon)
+        mVWebView.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url, favicon)
     }
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
-        mVWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED, url, null)
+        mVWebView.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url, null)
     }
 
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
-        mVWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_HISTORY, url, null)
+        mVWebView.onPageInformationUpdated(PageLoadState.UPDATE_HISTORY, url, null)
     }
 
     @Deprecated("Deprecated in Java")
@@ -63,7 +64,7 @@ open class VWebViewClient(
         view.stopLoading()
     }
 
-    private fun getSslDialog(error: SslError) : MaterialAlertDialogBuilder {
+    private fun getSslDialog(error: SslError): MaterialAlertDialogBuilder {
         val dialog = MaterialAlertDialogBuilder(mContext)
         var contentSummary = mContext.resources.getString(R.string.ssl_certificate_unknown)
         when (error.primaryError) {
@@ -111,7 +112,8 @@ open class VWebViewClient(
         }
         if (UrlUtils.isUriLaunchable(url)) return false
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
             mContext.startActivity(intent)
         } catch (ignored: ActivityNotFoundException) {
             CommonUtils.showMessage(
