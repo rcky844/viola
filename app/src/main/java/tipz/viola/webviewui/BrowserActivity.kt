@@ -244,10 +244,8 @@ class BrowserActivity : VWebViewActivity() {
             webview.loadHomepage(false)
         }
         homeButton?.visibility = View.GONE // FIXME: Unhide
-    }
 
-    public override fun onStart() {
-        super.onStart()
+        // Finally, load homepage
         val dataUri = intent.data
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
