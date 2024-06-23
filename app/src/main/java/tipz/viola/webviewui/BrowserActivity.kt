@@ -251,7 +251,6 @@ class BrowserActivity : VWebViewActivity() {
 
     /* Init VioWebView */
     private fun webViewInit() {
-        webview.notifyViewSetup()
         val dataUri = intent.data
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())

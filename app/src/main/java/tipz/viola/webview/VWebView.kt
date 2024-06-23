@@ -159,6 +159,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     @Suppress("deprecation")
     fun doSettingsCheck() {
+        // View setup was itself a call, now we expect it is done by onStart()
+        mVioWebViewActivity = mContext as VWebViewActivity
+
         // Dark mode
         val darkMode = BaseActivity.getDarkMode(mContext)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(
@@ -205,10 +208,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED)
             historyClient = HistoryClient(mVioWebViewActivity!!)
-    }
-
-    fun notifyViewSetup() {
-        mVioWebViewActivity = mContext as VWebViewActivity
     }
 
     fun setUpdateHistory(value: Boolean) {
