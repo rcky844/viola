@@ -264,8 +264,7 @@ class ListInterfaceActivity : BaseActivity() {
                             .create().show()
                     } else if (item.title.toString() == listInterfaceActivity.resources.getString(
                             R.string.add_to_fav
-                        )
-                    ) {
+                        )) {
                         CoroutineScope(Dispatchers.IO).launch {
                             mBrohaListInterfaceActivity.get()!!.favClient
                                 .insertAll(Broha(data.iconHash, title, url!!))
