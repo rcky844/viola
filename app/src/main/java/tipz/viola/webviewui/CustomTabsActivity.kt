@@ -69,6 +69,10 @@ class CustomTabsActivity : VWebViewActivity() {
         /* WebView */
         webview = swipeRefreshLayout.findViewById(R.id.webview)
         webview.setUpdateHistory(false)
+    }
+
+    public override fun onStart() {
+        super.onStart()
         val dataUri = intent.data
         if (dataUri != null) webview.loadUrl(dataUri.toString())
     }
