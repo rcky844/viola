@@ -48,14 +48,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-        beta {
-            initWith(debug)
-            applicationIdSuffix ".beta"
-            multiDexEnabled true
-            shrinkResources true
-            buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        }
-
         debug {
             applicationIdSuffix ".debug"
             multiDexEnabled true
