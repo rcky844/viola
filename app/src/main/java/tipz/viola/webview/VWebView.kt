@@ -348,7 +348,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
                         currentBroha.iconHash = iconHashClient.save(favicon!!)
-                        historyClient.insertAll(currentBroha)
+                        historyClient.insert(currentBroha)
                     }
                     historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
                 }

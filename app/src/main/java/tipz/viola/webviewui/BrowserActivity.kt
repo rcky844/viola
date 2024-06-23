@@ -409,7 +409,7 @@ class BrowserActivity : VWebViewActivity() {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
-                    favClient.insertAll(Broha(iconHash, title, url))
+                    favClient.insert(Broha(iconHash, title, url))
                 }
                 CommonUtils.showMessage(
                     this,

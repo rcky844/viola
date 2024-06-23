@@ -101,8 +101,8 @@ class ListInterfaceActivity : BaseActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             listData =
-                if (activityMode == mode_history) historyClient.getAllValues() as MutableList<Broha>?
-                else favClient.getAllValues() as MutableList<Broha>?
+                if (activityMode == mode_history) historyClient.getAll() as MutableList<Broha>?
+                else favClient.getAll() as MutableList<Broha>?
         }
 
 
@@ -250,9 +250,9 @@ class ListInterfaceActivity : BaseActivity() {
                                     data.url = Objects.requireNonNull(urlEditText.text).toString()
                                     data.setTimestamp()
                                     CoroutineScope(Dispatchers.IO).launch {
-                                        mBrohaListInterfaceActivity.get()!!.favClient.updateBroha(data)
+                                        mBrohaListInterfaceActivity.get()!!.favClient.update(data)
                                         listData =
-                                            mBrohaListInterfaceActivity.get()!!.favClient.getAllValues() as MutableList<Broha>? // FIXME: Update list dynamically to save system resources
+                                            mBrohaListInterfaceActivity.get()!!.favClient.getAll() as MutableList<Broha>? // FIXME: Update list dynamically to save system resources
                                         CoroutineScope(Dispatchers.Main).launch {
                                             notifyItemRangeRemoved(position, 1)
                                         }
@@ -267,7 +267,7 @@ class ListInterfaceActivity : BaseActivity() {
                         )) {
                         CoroutineScope(Dispatchers.IO).launch {
                             mBrohaListInterfaceActivity.get()!!.favClient
-                                .insertAll(Broha(data.iconHash, title, url!!))
+                                .insert(Broha(data.iconHash, title, url!!))
                         }
                         showMessage(
                             listInterfaceActivity,
