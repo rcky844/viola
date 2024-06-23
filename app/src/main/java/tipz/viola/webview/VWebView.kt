@@ -69,7 +69,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     mContext, attrs
 ) {
     private var activity: VWebViewActivity = mContext as VWebViewActivity
-    private var historyClient: HistoryClient? = null
+    private lateinit var historyClient: HistoryClient
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
     private var currentBroha = Broha()
@@ -93,7 +93,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     init {
-
         /* User agent init code */
         setUserAgent(UserAgentMode.MOBILE, UserAgentBundle())
 
@@ -349,7 +348,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
                         currentBroha.iconHash = iconHashClient.save(favicon!!)
-                        historyClient!!.insertAll(currentBroha)
+                        historyClient.insertAll(currentBroha)
                     }
                     historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
                 }
