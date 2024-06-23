@@ -87,22 +87,22 @@ import java.text.DateFormat
 
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
-    private var urlEditText: MaterialAutoCompleteTextView? = null
-    private var upRightFab: AppCompatImageView? = null
+    private lateinit var urlEditText: MaterialAutoCompleteTextView
+    private lateinit var upRightFab: AppCompatImageView
     private var currentUserAgentState = VWebView.UserAgentMode.MOBILE
     private var currentCustomUserAgent: String? = null
     private var currentCustomUAWideView = false
-    private var favClient: FavClient? = null
-    private var iconHashClient: IconHashUtils? = null
-    private var toolBar: RecyclerView? = null
-    private var toolsBarExtendableRecycler: RecyclerView? = null
-    private var toolsBarExtendableBackground: ConstraintLayout? = null
-    private var toolsBarExtendableCloseHitBox: LinearLayoutCompat? = null
-    private var sslLock: AppCompatImageView? = null
-    private var homeButton: LinearLayoutCompat? = null
+    private lateinit var favClient: FavClient
+    private lateinit var iconHashClient: IconHashUtils
+    private lateinit var toolBar: RecyclerView
+    private lateinit var toolsBarExtendableRecycler: RecyclerView
+    private lateinit var toolsBarExtendableBackground: ConstraintLayout
+    private lateinit var toolsBarExtendableCloseHitBox: LinearLayoutCompat
+    private lateinit var sslLock: AppCompatImageView
+    private lateinit var homeButton: LinearLayoutCompat
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
-    private var sslErrorHost: String = ""
+    private var sslErrorHost: String = CommonUtils.EMPTY_STRING
 
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
@@ -128,8 +128,8 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup toolbar
         toolBar = findViewById(R.id.toolBar)
-        toolBar?.adapter = ItemsAdapter(this, toolsBarItemList)
-        (toolBar?.layoutManager as FlexboxLayoutManager).apply {
+        toolBar.adapter = ItemsAdapter(this, toolsBarItemList)
+        (toolBar.layoutManager as FlexboxLayoutManager).apply {
             justifyContent = JustifyContent.SPACE_AROUND
             alignItems = AlignItems.CENTER
             flexDirection = FlexDirection.ROW
@@ -138,9 +138,9 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup toolbar expandable
         toolsBarExtendableRecycler = findViewById(R.id.toolsBarExtendableRecycler)
-        toolsBarExtendableRecycler?.adapter =
+        toolsBarExtendableRecycler.adapter =
             ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
-        (toolsBarExtendableRecycler?.layoutManager as FlexboxLayoutManager).apply {
+        (toolsBarExtendableRecycler.layoutManager as FlexboxLayoutManager).apply {
             justifyContent = JustifyContent.SPACE_AROUND
             alignItems = AlignItems.CENTER
             flexDirection = FlexDirection.ROW
@@ -148,11 +148,11 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         toolsBarExtendableBackground = this.findViewById(R.id.toolsBarExtendableBackground)
-        toolsBarExtendableBackground!!.post {
-            toolsBarExtendableBackground!!.visibility = View.GONE
+        toolsBarExtendableBackground.post {
+            toolsBarExtendableBackground.visibility = View.GONE
         }
         toolsBarExtendableCloseHitBox = this.findViewById(R.id.toolsBarExtendableCloseHitBox)
-        toolsBarExtendableCloseHitBox?.setOnClickListener {
+        toolsBarExtendableCloseHitBox.setOnClickListener {
             expandToolBar()
         }
 
@@ -174,7 +174,7 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup SSL Lock
-        sslLock?.setOnClickListener {
+        sslLock.setOnClickListener {
             val cert = webview.certificate
             val issuedTo = cert!!.issuedTo
             val issuedBy = cert.issuedBy
@@ -195,34 +195,34 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup Url EditText box
-        urlEditText?.setOnEditorActionListener(
+        urlEditText.setOnEditorActionListener(
             OnEditorActionListener { _: TextView?, actionId: Int, _: KeyEvent? ->
                 if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
-                    webview.loadUrl(urlEditText?.text.toString())
-                    urlEditText?.clearFocus()
+                    webview.loadUrl(urlEditText.text.toString())
+                    urlEditText.clearFocus()
                     closeKeyboard()
                     return@OnEditorActionListener true
                 }
                 false
             })
-        urlEditText?.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
+        urlEditText.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
-                if (urlEditText?.text.toString() != webview.url) urlEditText?.setText(webview.url)
-                urlEditText?.setSelection(0)
-                urlEditText?.dropDownHeight = 0
+                if (urlEditText.text.toString() != webview.url) urlEditText.setText(webview.url)
+                urlEditText.setSelection(0)
+                urlEditText.dropDownHeight = 0
             } else {
-                urlEditText?.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+                urlEditText.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
             }
         }
-        urlEditText?.setOnClickListener {
-            if (toolsBarExtendableBackground?.visibility == View.VISIBLE) expandToolBar()
+        urlEditText.setOnClickListener {
+            if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
         }
-        urlEditText?.onItemClickListener =
+        urlEditText.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
                 webview.loadUrl((view.findViewById<View>(android.R.id.text1) as AppCompatTextView).text.toString())
                 closeKeyboard()
             }
-        urlEditText?.setAdapter(
+        urlEditText.setAdapter(
             SuggestionAdapter(
                 this@BrowserActivity,
                 R.layout.recycler_list_item_1
@@ -230,20 +230,20 @@ class BrowserActivity : VWebViewActivity() {
         )
 
         // Setup the up most fab (currently for reload)
-        upRightFab?.setOnClickListener {
+        upRightFab.setOnClickListener {
             if (progressBar.progress > 0) webview.stopLoading()
             if (progressBar.progress == 0) webview.reload()
         }
 
         // Setup home button
-        homeButton?.findViewById<AppCompatImageView>(R.id.imageView)
+        homeButton.findViewById<AppCompatImageView>(R.id.imageView)
             ?.setImageResource(R.drawable.home)
-        homeButton?.findViewById<AppCompatTextView>(R.id.textView)?.text =
+        homeButton.findViewById<AppCompatTextView>(R.id.textView)?.text =
             resources.getString(R.string.homepage_webpage_home)
-        homeButton?.setOnClickListener {
+        homeButton.setOnClickListener {
             webview.loadHomepage(false)
         }
-        homeButton?.visibility = View.GONE // FIXME: Unhide
+        homeButton.visibility = View.GONE // FIXME: Unhide
 
         // Finally, load homepage
         val dataUri = intent.data
@@ -264,7 +264,7 @@ class BrowserActivity : VWebViewActivity() {
         super.onConfigurationChanged(newConfig)
 
         val params =
-            toolsBarExtendableBackground?.layoutParams as ConstraintLayout.LayoutParams
+            toolsBarExtendableBackground.layoutParams as ConstraintLayout.LayoutParams
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             params.height = resources.getDimension(R.dimen.toolbar_extendable_height).toInt()
@@ -328,7 +328,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.home -> {
                 val reqVal: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
                 webview.loadHomepage(reqVal)
-                if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
+                if (reqVal) urlEditText.setText(CommonUtils.EMPTY_STRING)
             }
 
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
@@ -408,8 +408,8 @@ class BrowserActivity : VWebViewActivity() {
                 val title = webview.title
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    val iconHash = if (icon is BitmapDrawable) iconHashClient!!.save(icon.bitmap) else null
-                    favClient!!.insertAll(Broha(iconHash, title, url))
+                    val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
+                    favClient.insertAll(Broha(iconHash, title, url))
                 }
                 CommonUtils.showMessage(
                     this,
@@ -473,13 +473,13 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.home -> {
                 val reqVal: Boolean = settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
                 webview.loadHomepage(reqVal)
-                if (reqVal) urlEditText!!.setText(CommonUtils.EMPTY_STRING)
+                if (reqVal) urlEditText.setText(CommonUtils.EMPTY_STRING)
             }
         }
     }
 
     fun expandToolBar() {
-        val viewVisible: Boolean = toolsBarExtendableBackground!!.visibility == View.VISIBLE
+        val viewVisible: Boolean = toolsBarExtendableBackground.visibility == View.VISIBLE
         val transition: Transition = Slide(Gravity.BOTTOM)
         transition.duration =
             (resources.getInteger(R.integer.anim_expandable_speed) * Settings.Global.getFloat(
@@ -488,65 +488,65 @@ class BrowserActivity : VWebViewActivity() {
                 1.0f
             )).toLong()
         transition.addTarget(R.id.toolsBarExtendableBackground)
-        TransitionManager.beginDelayedTransition(toolsBarExtendableBackground!!, transition)
-        toolsBarExtendableBackground!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
-        toolsBarExtendableCloseHitBox!!.visibility = if (viewVisible) View.GONE else View.VISIBLE
+        TransitionManager.beginDelayedTransition(toolsBarExtendableBackground, transition)
+        toolsBarExtendableBackground.visibility = if (viewVisible) View.GONE else View.VISIBLE
+        toolsBarExtendableCloseHitBox.visibility = if (viewVisible) View.GONE else View.VISIBLE
     }
 
     override fun onPageLoadProgressChanged(progress: Int) {
         super.onPageLoadProgressChanged(progress)
-        if (progress == -1) upRightFab?.setImageResource(R.drawable.stop)
-        if (progress == 0) upRightFab?.setImageResource(R.drawable.refresh)
+        if (progress == -1) upRightFab.setImageResource(R.drawable.stop)
+        if (progress == 0) upRightFab.setImageResource(R.drawable.refresh)
     }
 
     private fun closeKeyboard() {
-        WindowCompat.getInsetsController(window, urlEditText!!).hide(WindowInsetsCompat.Type.ime())
+        WindowCompat.getInsetsController(window, urlEditText).hide(WindowInsetsCompat.Type.ime())
     }
 
 
     override fun onUrlUpdated(url: String?) {
-        if (!urlEditText!!.isFocused) urlEditText!!.setText(url)
+        if (!urlEditText.isFocused) urlEditText.setText(url)
     }
 
     override fun onUrlUpdated(url: String?, position: Int) {
-        urlEditText!!.setText(url)
-        urlEditText!!.setSelection(position)
+        urlEditText.setText(url)
+        urlEditText.setSelection(position)
     }
 
     override fun onDropDownDismissed() {
-        urlEditText!!.dismissDropDown()
-        urlEditText!!.clearFocus()
+        urlEditText.dismissDropDown()
+        urlEditText.clearFocus()
     }
 
     override fun onSslCertificateUpdated() {
         if (startPageLayout?.visibility == View.VISIBLE) {
             sslState = SslState.SEARCH
-            sslLock?.setImageResource(R.drawable.search)
-            sslLock?.isClickable = false
+            sslLock.setImageResource(R.drawable.search)
+            sslLock.isClickable = false
             return
         }
         if (webview.certificate == null) {
             sslState = SslState.NONE
-            sslLock?.setImageResource(R.drawable.warning)
-            sslLock?.isClickable = false // Certificate cannot be null for the dialog
+            sslLock.setImageResource(R.drawable.warning)
+            sslLock.isClickable = false // Certificate cannot be null for the dialog
         } else if (sslState == SslState.ERROR) { // State error is set before SECURE
             sslErrorHost = Uri.parse(webview.url).host!!
             sslState = SslState.NONE
         } else {
             sslState = SslState.SECURE
-            sslLock?.setImageResource(R.drawable.lock)
-            sslLock?.isClickable = true
+            sslLock.setImageResource(R.drawable.lock)
+            sslLock.isClickable = true
         }
     }
 
     override fun onSslErrorProceed() {
         sslState = SslState.ERROR
-        sslLock?.setImageResource(R.drawable.warning)
-        sslLock?.isClickable = true
+        sslLock.setImageResource(R.drawable.warning)
+        sslLock.isClickable = true
     }
 
     override fun onStartPageEditTextPressed() {
-        urlEditText!!.requestFocus()
+        urlEditText.requestFocus()
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(urlEditText, InputMethodManager.SHOW_FORCED)
     }

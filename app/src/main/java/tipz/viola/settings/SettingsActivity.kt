@@ -136,7 +136,7 @@ class SettingsActivity : BaseActivity() {
             val activity = WeakReference(act)
             settingsActivity = activity.get()!!
             settingsPreference =
-                (settingsActivity.applicationContext as Application).settingsPreference!!
+                (settingsActivity.applicationContext as Application).settingsPreference
             pickMedia =
                 registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                     if (uri != null) {

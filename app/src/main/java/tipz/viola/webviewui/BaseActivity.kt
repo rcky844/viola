@@ -56,19 +56,19 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     companion object {
-        var settingsPreference: SettingsSharedPreference? = null
-        var windowInsetsController: WindowInsetsControllerCompat? = null
+        lateinit var settingsPreference: SettingsSharedPreference
+        lateinit var windowInsetsController: WindowInsetsControllerCompat
 
         fun darkModeCheck(context: Context) {
             // Dark mode
-            if (settingsPreference!!.getInt(SettingsKeys.themeId) == 0) AppCompatDelegate.setDefaultNightMode(
+            if (settingsPreference.getInt(SettingsKeys.themeId) == 0) AppCompatDelegate.setDefaultNightMode(
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             else AppCompatDelegate.setDefaultNightMode(
-                if (settingsPreference!!.getInt(SettingsKeys.themeId) == 2) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+                if (settingsPreference.getInt(SettingsKeys.themeId) == 2) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
 
-            windowInsetsController!!.isAppearanceLightStatusBars = !getDarkMode(context)
-            windowInsetsController!!.isAppearanceLightNavigationBars = !getDarkMode(context)
+            windowInsetsController.isAppearanceLightStatusBars = !getDarkMode(context)
+            windowInsetsController.isAppearanceLightNavigationBars = !getDarkMode(context)
         }
 
         fun getDarkMode(context: Context): Boolean {
