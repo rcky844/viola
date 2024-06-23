@@ -19,6 +19,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import tipz.viola.utils.CommonUtils
 
 @Entity
 class Broha {
@@ -69,6 +70,14 @@ class Broha {
         iconHash = null
         title = null
         this.url = url
+        timestamp = System.currentTimeMillis() / 1000L
+    }
+
+    @Ignore
+    constructor() {
+        iconHash = null
+        title = null
+        this.url = CommonUtils.EMPTY_STRING
         timestamp = System.currentTimeMillis() / 1000L
     }
 

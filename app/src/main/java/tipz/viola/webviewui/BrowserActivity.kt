@@ -72,7 +72,8 @@ import tipz.viola.Application
 import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
-import tipz.viola.broha.api.FavUtils
+import tipz.viola.broha.api.FavClient
+import tipz.viola.broha.database.Broha
 import tipz.viola.broha.database.IconHashUtils
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
@@ -91,6 +92,7 @@ class BrowserActivity : VWebViewActivity() {
     private var currentUserAgentState = VWebView.UserAgentMode.MOBILE
     private var currentCustomUserAgent: String? = null
     private var currentCustomUAWideView = false
+    private var favClient: FavClient? = null
     private var iconHashClient: IconHashUtils? = null
     private var toolBar: RecyclerView? = null
     private var toolsBarExtendableRecycler: RecyclerView? = null
@@ -119,6 +121,7 @@ class BrowserActivity : VWebViewActivity() {
         webview = swipeRefreshLayout.findViewById(R.id.webview)
         favicon = findViewById(R.id.favicon)
         startPageLayout = findViewById(R.id.layout_startpage)
+        favClient = FavClient(this)
         iconHashClient = (applicationContext as Application).iconHashClient
         sslLock = findViewById(R.id.ssl_lock)
         homeButton = findViewById(R.id.home_button)
@@ -248,7 +251,6 @@ class BrowserActivity : VWebViewActivity() {
 
     /* Init VioWebView */
     private fun webViewInit() {
-        webview.notifyViewSetup()
         val dataUri = intent.data
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
@@ -411,10 +413,8 @@ class BrowserActivity : VWebViewActivity() {
                 val title = webview.title
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    FavUtils.appendData(
-                        this@BrowserActivity, iconHashClient, title, url,
-                        if (icon is BitmapDrawable) icon.bitmap else null
-                    )
+                    val iconHash = if (icon is BitmapDrawable) iconHashClient!!.save(icon.bitmap) else null
+                    favClient!!.insertAll(Broha(iconHash, title, url))
                 }
                 CommonUtils.showMessage(
                     this,

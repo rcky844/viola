@@ -40,10 +40,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.R
-import tipz.viola.broha.api.FavApi
-import tipz.viola.broha.api.FavUtils
-import tipz.viola.broha.api.HistoryApi
-import tipz.viola.broha.api.HistoryUtils
+import tipz.viola.broha.api.FavClient
+import tipz.viola.broha.api.HistoryClient
 import tipz.viola.broha.database.Broha
 import tipz.viola.broha.database.IconHashUtils
 import tipz.viola.utils.CommonUtils
@@ -56,9 +54,13 @@ import java.util.Calendar
 import java.util.Objects
 
 class ListInterfaceActivity : BaseActivity() {
+    var favClient: FavClient? = null
+    var historyClient: HistoryClient? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
+        favClient = FavClient(this)
+        historyClient = HistoryClient(this)
         if (activityMode != mode_history && activityMode != mode_favorites) finish()
         setContentView(R.layout.recycler_broha_list_activity)
         isEmptyCheck()
@@ -82,8 +84,8 @@ class ListInterfaceActivity : BaseActivity() {
                 .setMessage(resources.getString(if (activityMode == mode_history) R.string.del_hist_message else R.string.delete_fav_message))
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     CoroutineScope(Dispatchers.IO).launch {
-                        if (activityMode == mode_history) HistoryUtils.clear(this@ListInterfaceActivity)
-                        else if (activityMode == mode_favorites) FavUtils.clear(this@ListInterfaceActivity)
+                        if (activityMode == mode_history) historyClient!!.deleteAll()
+                        else if (activityMode == mode_favorites) favClient!!.deleteAll()
                     }
                     showMessage(this, resources.getString(R.string.wiped_success))
                     finish()
@@ -99,8 +101,8 @@ class ListInterfaceActivity : BaseActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             listData =
-                if (activityMode == mode_history) HistoryApi.historyBroha(this@ListInterfaceActivity)?.getAllValues() as MutableList<Broha>?
-                else FavApi.favBroha(this@ListInterfaceActivity)?.getAllValues() as MutableList<Broha>?
+                if (activityMode == mode_history) historyClient!!.getAllValues() as MutableList<Broha>?
+                else favClient!!.getAllValues() as MutableList<Broha>?
         }
 
 
@@ -116,8 +118,8 @@ class ListInterfaceActivity : BaseActivity() {
     fun isEmptyCheck() {
         CoroutineScope(Dispatchers.IO).launch {
             val isEmpty =
-                if (activityMode == mode_history) HistoryUtils.isEmptyCheck(this@ListInterfaceActivity)
-                else FavUtils.isEmptyCheck(this@ListInterfaceActivity)
+                if (activityMode == mode_history) historyClient!!.isEmpty()
+                else favClient!!.isEmpty()
             if (isEmpty) {
                 CoroutineScope(Dispatchers.Main).launch {
                     showMessage(
@@ -211,13 +213,10 @@ class ListInterfaceActivity : BaseActivity() {
                 popup1.setOnMenuItemClickListener { item: MenuItem ->
                     if (item.title.toString() == listInterfaceActivity.resources.getString(R.string.delete)) {
                         CoroutineScope(Dispatchers.IO).launch {
-                            if (activityMode == mode_history) HistoryUtils.deleteById(
-                                listInterfaceActivity,
-                                data.id
-                            ) else if (activityMode == mode_favorites) FavUtils.deleteById(
-                                listInterfaceActivity,
-                                data.id
-                            )
+                            if (activityMode == mode_history)
+                                mBrohaListInterfaceActivity.get()!!.historyClient!!.deleteById(data.id)
+                            else if (activityMode == mode_favorites)
+                                mBrohaListInterfaceActivity.get()!!.favClient!!.deleteById(data.id)
                         }
                         listData!!.removeAt(position)
                         notifyItemRemoved(position)
@@ -251,9 +250,9 @@ class ListInterfaceActivity : BaseActivity() {
                                     data.url = Objects.requireNonNull(urlEditText.text).toString()
                                     data.setTimestamp()
                                     CoroutineScope(Dispatchers.IO).launch {
-                                        FavApi.favBroha(listInterfaceActivity)?.updateBroha(data)
+                                        mBrohaListInterfaceActivity.get()!!.favClient!!.updateBroha(data)
                                         listData =
-                                                FavApi.favBroha(listInterfaceActivity)?.getAllValues() as MutableList<Broha>? // FIXME: Update list dynamically to save system resources
+                                            mBrohaListInterfaceActivity.get()!!.favClient!!.getAllValues() as MutableList<Broha>? // FIXME: Update list dynamically to save system resources
                                         CoroutineScope(Dispatchers.Main).launch {
                                             notifyItemRangeRemoved(position, 1)
                                         }
@@ -268,13 +267,8 @@ class ListInterfaceActivity : BaseActivity() {
                         )
                     ) {
                         CoroutineScope(Dispatchers.IO).launch {
-                            FavUtils.appendData(
-                                listInterfaceActivity,
-                                iconHashClient,
-                                title,
-                                url,
-                                icon
-                            )
+                            mBrohaListInterfaceActivity.get()!!.favClient!!
+                                .insertAll(Broha(data.iconHash, title, url!!))
                         }
                         showMessage(
                             listInterfaceActivity,

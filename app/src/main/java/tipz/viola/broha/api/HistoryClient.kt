@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2024 Tipz Team
+ * Copyright (c) 2022-2024 Tipz Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,20 +17,22 @@ package tipz.viola.broha.api
 
 import android.content.Context
 import tipz.viola.Application
-import tipz.viola.broha.database.BrohaDao
+import tipz.viola.broha.database.BrohaClient
 import tipz.viola.settings.SettingsKeys
 
-object HistoryApi {
-    private const val LATEST_API = 0
-
-    fun historyBroha(context: Context): BrohaDao? {
-        return (context.applicationContext as Application).historyBroha
+class HistoryClient(context: Context) : BrohaClient(context, "history") {
+    enum class UpdateHistoryState {
+        STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK
     }
 
-    fun doApiInitCheck(context: Context) {
+    init {
         val settingsPreference = (context.applicationContext as Application).settingsPreference!!
         val historyApiVer = settingsPreference.getInt(SettingsKeys.historyApi)
         if (historyApiVer > LATEST_API || historyApiVer <= -1) throw RuntimeException()
         settingsPreference.setInt(SettingsKeys.historyApi, LATEST_API)
+    }
+
+    companion object {
+        private const val LATEST_API = 0
     }
 }

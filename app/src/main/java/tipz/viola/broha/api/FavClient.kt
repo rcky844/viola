@@ -16,23 +16,19 @@
 package tipz.viola.broha.api
 
 import android.content.Context
-import tipz.viola.utils.CommonUtils
+import tipz.viola.Application
+import tipz.viola.broha.database.BrohaClient
+import tipz.viola.settings.SettingsKeys
 
-object HistoryUtils {
-    suspend fun clear(context: Context?) {
-        HistoryApi.historyBroha(context!!)?.deleteAll()
+class FavClient(context: Context) : BrohaClient(context, "bookmarks") {
+    init {
+        val settingsPreference = (context.applicationContext as Application).settingsPreference!!
+        val favApiVer = settingsPreference.getInt(SettingsKeys.favApi)
+        if (favApiVer > LATEST_API || favApiVer <= -1) throw RuntimeException()
+        settingsPreference.setInt(SettingsKeys.favApi, LATEST_API)
     }
 
-    suspend fun deleteById(context: Context?, id: Int) {
-        HistoryApi.historyBroha(context!!)?.deleteById(id)
-    }
-
-    suspend fun isEmptyCheck(context: Context?): Boolean {
-        return HistoryApi.historyBroha(context!!)?.isEmpty()?.isEmpty() == true
-    }
-
-    suspend fun lastUrl(context: Context?): String {
-        val lastUrl = HistoryApi.historyBroha(context!!)?.lastUrl()
-        return lastUrl?.url ?: CommonUtils.EMPTY_STRING
+    companion object {
+        private const val LATEST_API = 0
     }
 }

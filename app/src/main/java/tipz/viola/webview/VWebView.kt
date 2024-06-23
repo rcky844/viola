@@ -52,8 +52,8 @@ import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
-import tipz.viola.broha.api.HistoryApi
-import tipz.viola.broha.api.HistoryUtils
+import tipz.viola.broha.api.HistoryClient
+import tipz.viola.broha.api.HistoryClient.UpdateHistoryState
 import tipz.viola.broha.database.Broha
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
@@ -69,11 +69,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     mContext, attrs
 ) {
     private var mVioWebViewActivity: VWebViewActivity? = null
+    private var historyClient: HistoryClient? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
-    private var currentBroha: Broha? = null
-    private var updateHistory = true
-    private var historyCommitted = false
+    private var currentBroha = Broha()
+    private var historyState = UpdateHistoryState.STATE_DISABLED
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
     internal var adServersHandler: AdServersHandler
@@ -159,6 +159,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     @Suppress("deprecation")
     fun doSettingsCheck() {
+        // View setup was itself a call, now we expect it is done by onStart()
+        mVioWebViewActivity = mContext as VWebViewActivity
+
         // Dark mode
         val darkMode = BaseActivity.getDarkMode(mContext)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(
@@ -201,14 +204,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Ad Servers Hosts
         if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock))
             adServersHandler.importAdServers()
-    }
 
-    fun notifyViewSetup() {
-        mVioWebViewActivity = mContext as VWebViewActivity
+        // Setup history client
+        if (historyState != UpdateHistoryState.STATE_DISABLED)
+            historyClient = HistoryClient(mVioWebViewActivity!!)
     }
 
     fun setUpdateHistory(value: Boolean) {
-        updateHistory = value
+        historyState = if (value) UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+            else UpdateHistoryState.STATE_DISABLED
     }
 
     fun onSslErrorProceed() {
@@ -287,11 +291,17 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
             onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
 
+            // Prevent creating duplicate entries
+            if (currentBroha.url == checkedUrl && historyState != UpdateHistoryState.STATE_DISABLED)
+                historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED
+
             super.loadUrl(checkedUrl, mRequestHeaders)
         }
     }
 
     override fun reload() {
+        if (currentBroha.url == getUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
+            historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
         loadUrl(getUrl())
     }
 
@@ -328,9 +338,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_HISTORY -> {
-                if (updateHistory) {
+                if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK) {
                     currentBroha = Broha(title, currentUrl)
-                    historyCommitted = false
+                    historyState = UpdateHistoryState.STATE_URL_UPDATED
                 }
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) CookieSyncManager.getInstance()
                     .sync() else CookieManager.getInstance().flush()
@@ -338,15 +348,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_FAVICON -> {
-                if (!historyCommitted && updateHistory) {
+                if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        currentBroha!!.iconHash = iconHashClient.save(favicon!!)
-                        if (HistoryUtils.lastUrl(mContext) != currentUrl) {
-                            HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha!!)
-                        }
+                        currentBroha.iconHash = iconHashClient.save(favicon!!)
+                        historyClient!!.insertAll(currentBroha)
                     }
-                    historyCommitted = true
+                    historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
                 }
+                if (historyState == UpdateHistoryState.STATE_DISABLED_DUPLICATED)
+                    historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
             }
 
             PageLoadState.UPDATE_TITLE -> {
