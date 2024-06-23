@@ -16,9 +16,13 @@
 package tipz.viola.broha.database
 
 import android.content.Context
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
 import androidx.room.Room.databaseBuilder
+import androidx.room.Update
 
-class BrohaClient(context: Context?, dbName: String?) {
+open class BrohaClient(context: Context?, dbName: String?) {
     private val appDatabase: BrohaDatabase
 
     init {
@@ -27,4 +31,36 @@ class BrohaClient(context: Context?, dbName: String?) {
 
     val dao: BrohaDao?
         get() = appDatabase.brohaDao()
+
+    suspend fun getAllValues(): List<Broha> = dao!!.getAllValues()
+    suspend fun isEmpty(): Boolean = dao!!.isEmpty().isEmpty()
+    suspend fun findById(id: Int): Broha = dao!!.findById(id)
+    suspend fun insertAll(vararg broha: Broha) = dao!!.insertAll(*broha)
+    suspend fun updateBroha(vararg broha: Broha) = dao!!.updateBroha(*broha)
+    suspend fun deleteById(id: Int) = dao!!.deleteById(id)
+    suspend fun deleteAll() = dao!!.deleteAll()
+}
+
+@Dao
+interface BrohaDao {
+    @Query("SELECT * FROM broha")
+    suspend fun getAllValues(): List<Broha>
+
+    @Query("SELECT * FROM broha LIMIT 1")
+    suspend fun isEmpty(): List<Broha>
+
+    @Query("SELECT * FROM broha WHERE id LIKE :id LIMIT 1")
+    suspend fun findById(id: Int): Broha
+
+    @Insert
+    suspend fun insertAll(vararg broha: Broha)
+
+    @Update
+    suspend fun updateBroha(vararg broha: Broha)
+
+    @Query("DELETE FROM broha WHERE id = :id")
+    suspend fun deleteById(id: Int)
+
+    @Query("DELETE FROM broha")
+    suspend fun deleteAll()
 }

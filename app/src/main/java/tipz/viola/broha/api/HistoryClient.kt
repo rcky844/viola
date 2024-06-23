@@ -17,21 +17,22 @@ package tipz.viola.broha.api
 
 import android.content.Context
 import tipz.viola.Application
-import tipz.viola.broha.database.BrohaDao
+import tipz.viola.broha.database.BrohaClient
 import tipz.viola.settings.SettingsKeys
 
-object FavApi {
-    private const val LATEST_API = 0
-
-    @JvmStatic
-    fun favBroha(context: Context): BrohaDao? {
-        return (context.applicationContext as Application).favBroha
+class HistoryClient(context: Context) : BrohaClient(context, "history") {
+    enum class UpdateHistoryState {
+        STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK
     }
 
-    fun doApiInitCheck(context: Context) {
+    init {
         val settingsPreference = (context.applicationContext as Application).settingsPreference!!
-        val favApiVer = settingsPreference.getInt(SettingsKeys.favApi)
-        if (favApiVer > LATEST_API || favApiVer <= -1) throw RuntimeException()
-        settingsPreference.setInt(SettingsKeys.favApi, LATEST_API)
+        val historyApiVer = settingsPreference.getInt(SettingsKeys.historyApi)
+        if (historyApiVer > LATEST_API || historyApiVer <= -1) throw RuntimeException()
+        settingsPreference.setInt(SettingsKeys.historyApi, LATEST_API)
+    }
+
+    companion object {
+        private const val LATEST_API = 0
     }
 }

@@ -17,25 +17,15 @@ package tipz.viola
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors
-import tipz.viola.broha.api.FavApi
-import tipz.viola.broha.api.HistoryApi
-import tipz.viola.broha.database.BrohaClient
-import tipz.viola.broha.database.BrohaDao
 import tipz.viola.broha.database.IconHashUtils
 import tipz.viola.settings.SettingsSharedPreference
 
 class Application : Application() {
     var settingsPreference: SettingsSharedPreference? = null
-    var historyBroha: BrohaDao? = null
-    var favBroha: BrohaDao? = null
     var iconHashClient: IconHashUtils? = null
     override fun onCreate() {
         super.onCreate()
         settingsPreference = SettingsSharedPreference(this)
-        HistoryApi.doApiInitCheck(this)
-        FavApi.doApiInitCheck(this)
-        historyBroha = BrohaClient(this, "history").dao
-        favBroha = BrohaClient(this, "bookmarks").dao
         iconHashClient = IconHashUtils(this)
 
         // Observe dynamic colors changes

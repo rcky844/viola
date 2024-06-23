@@ -52,7 +52,8 @@ import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
-import tipz.viola.broha.api.HistoryApi
+import tipz.viola.broha.api.HistoryClient
+import tipz.viola.broha.api.HistoryClient.UpdateHistoryState
 import tipz.viola.broha.database.Broha
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
@@ -68,6 +69,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     mContext, attrs
 ) {
     private var mVioWebViewActivity: VWebViewActivity? = null
+    private var historyClient: HistoryClient? = null
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
     private val webSettings = this.settings
     private var currentBroha = Broha()
@@ -88,10 +90,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     enum class PageLoadState {
         PAGE_STARTED, PAGE_FINISHED, UPDATE_HISTORY, UPDATE_FAVICON, UPDATE_TITLE, UNKNOWN
-    }
-
-    enum class UpdateHistoryState {
-        STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK
     }
 
     init {
@@ -203,6 +201,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Ad Servers Hosts
         if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock))
             adServersHandler.importAdServers()
+
+        // Setup history client
+        if (historyState != UpdateHistoryState.STATE_DISABLED)
+            historyClient = HistoryClient(mVioWebViewActivity!!)
     }
 
     fun notifyViewSetup() {
@@ -350,7 +352,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
                         currentBroha.iconHash = iconHashClient.save(favicon!!)
-                        HistoryApi.historyBroha(mContext)!!.insertAll(currentBroha)
+                        historyClient!!.insertAll(currentBroha)
                     }
                     historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
                 }
