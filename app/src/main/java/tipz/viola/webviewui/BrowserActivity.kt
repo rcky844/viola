@@ -79,6 +79,7 @@ import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
+import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import java.lang.ref.WeakReference
@@ -402,7 +403,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.favorites_add -> {
                 val url = webview.url
-                if (url.isBlank()) return true
+                if (url.isBlank() || url == InternalUrls.aboutBlankUrl) return false
 
                 val icon = favicon!!.drawable
                 val title = webview.title
