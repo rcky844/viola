@@ -52,6 +52,7 @@ android {
             initWith(debug)
             applicationIdSuffix ".beta"
             multiDexEnabled true
+            shrinkResources true
             buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
         }
 
