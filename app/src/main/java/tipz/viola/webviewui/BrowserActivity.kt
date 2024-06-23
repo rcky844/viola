@@ -244,13 +244,10 @@ class BrowserActivity : VWebViewActivity() {
             webview.loadHomepage(false)
         }
         homeButton?.visibility = View.GONE // FIXME: Unhide
-
-        // Finally, setup WebView
-        webViewInit()
     }
 
-    /* Init VioWebView */
-    private fun webViewInit() {
+    public override fun onStart() {
+        super.onStart()
         val dataUri = intent.data
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
