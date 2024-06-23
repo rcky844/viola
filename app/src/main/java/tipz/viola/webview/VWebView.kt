@@ -68,17 +68,17 @@ import tipz.viola.webviewui.BaseActivity
 class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     mContext, attrs
 ) {
-    private var mVioWebViewActivity: VWebViewActivity? = null
-    private var historyClient: HistoryClient? = null
-    private val iconHashClient = (mContext.applicationContext as Application).iconHashClient!!
+    private var activity: VWebViewActivity = mContext as VWebViewActivity
+    private lateinit var historyClient: HistoryClient
+    private val iconHashClient = (mContext.applicationContext as Application).iconHashClient
     private val webSettings = this.settings
     private var currentBroha = Broha()
-    private var historyState = UpdateHistoryState.STATE_DISABLED
+    private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     private val settingsPreference =
-        (mContext.applicationContext as Application).settingsPreference!!
+        (mContext.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersHandler
 
-    private val mRequestHeaders = HashMap<String, String>()
+    private val requestHeaders = HashMap<String, String>()
 
     private val titleHandler = Handler { message ->
         val webLongPress = HitTestAlertDialog(mContext)
@@ -99,12 +99,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         /* Start the download manager service */
         setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
             if (ContextCompat.checkSelfPermission(
-                    mVioWebViewActivity!!,
+                    activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_DENIED
             )
                 ActivityCompat.requestPermissions(
-                    mVioWebViewActivity!!,
+                    activity,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0
                 )
 
@@ -113,9 +113,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 mimeType, getUrl()
             )
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
-            mVioWebViewActivity!!.onPageLoadProgressChanged(0)
+            activity.onPageLoadProgressChanged(0)
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
-                mVioWebViewActivity!!.finish()
+                activity.finish()
         }
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
@@ -159,9 +159,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     @Suppress("deprecation")
     fun doSettingsCheck() {
-        // View setup was itself a call, now we expect it is done by onStart()
-        mVioWebViewActivity = mContext as VWebViewActivity
-
         // Dark mode
         val darkMode = BaseActivity.getDarkMode(mContext)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(
@@ -193,13 +190,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             )
 
         // Do Not Track request
-        mRequestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
+        requestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
 
         // Global Privacy Control
-        mRequestHeaders["Sec-GPC"] = settingsPreference.getInt(SettingsKeys.sendSecGPC).toString()
+        requestHeaders["Sec-GPC"] = settingsPreference.getInt(SettingsKeys.sendSecGPC).toString()
 
         // Data Saver
-        mRequestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
+        requestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
 
         // Ad Servers Hosts
         if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock))
@@ -207,7 +204,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED)
-            historyClient = HistoryClient(mVioWebViewActivity!!)
+            historyClient = HistoryClient(activity)
     }
 
     fun setUpdateHistory(value: Boolean) {
@@ -216,7 +213,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onSslErrorProceed() {
-        mVioWebViewActivity?.onSslErrorProceed()
+        activity.onSslErrorProceed()
     }
 
     override fun loadUrl(url: String) {
@@ -242,14 +239,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REQUIRE_NON_BROWSER or
                         FLAG_ACTIVITY_REQUIRE_DEFAULT
             )
-            val packageManager = mVioWebViewActivity?.packageManager;
+            val packageManager = activity.packageManager;
             if (packageManager?.let { webIntent.resolveActivity(it) } != null) {
-                val dialog = MaterialAlertDialogBuilder(mVioWebViewActivity!!)
+                val dialog = MaterialAlertDialogBuilder(activity)
                 dialog.setTitle(resources.getString(R.string.dialog_open_external_title))
                     .setMessage(resources.getString(R.string.dialog_open_external_message))
                     .setPositiveButton(resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
                         try {
-                            mVioWebViewActivity?.startActivity(webIntent)
+                            activity.startActivity(webIntent)
                             handled = true
                         } catch (e: ActivityNotFoundException) {
                             // Do not load actual url on failure
@@ -258,25 +255,25 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                         // Load actual url if user cancelled the request
                         val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
-                        super.loadUrl(checkedUrl, mRequestHeaders)
+                        super.loadUrl(checkedUrl, requestHeaders)
                     }
                     .create().show()
             }
             if (handled) return // Exit loadUrl() if handled
         } else {
             // Update to start page layout
-            val startPageLayout = mVioWebViewActivity?.startPageLayout
+            val startPageLayout = activity.startPageLayout
             if (url == InternalUrls.violaStartUrl) {
                 this.loadUrl(InternalUrls.aboutBlankUrl)
                 this.visibility = GONE
-                mVioWebViewActivity?.swipeRefreshLayout?.visibility = GONE
+                activity.swipeRefreshLayout.visibility = GONE
                 startPageLayout?.visibility = VISIBLE
-                mVioWebViewActivity?.onSslCertificateUpdated()
+                activity.onSslCertificateUpdated()
                 return
             }
             if (this.visibility == GONE) {
                 this.visibility = VISIBLE
-                mVioWebViewActivity?.swipeRefreshLayout?.visibility = VISIBLE
+                activity.swipeRefreshLayout.visibility = VISIBLE
                 startPageLayout?.visibility = GONE
             }
 
@@ -295,7 +292,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             if (currentBroha.url == checkedUrl && historyState != UpdateHistoryState.STATE_DISABLED)
                 historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED
 
-            super.loadUrl(checkedUrl, mRequestHeaders)
+            super.loadUrl(checkedUrl, requestHeaders)
         }
     }
 
@@ -311,12 +308,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun goBack() {
-        mVioWebViewActivity!!.onDropDownDismissed()
+        activity.onDropDownDismissed()
         super.goBack()
     }
 
     override fun goForward() {
-        mVioWebViewActivity!!.onDropDownDismissed()
+        activity.onDropDownDismissed()
         super.goForward()
     }
 
@@ -327,14 +324,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         when (state) {
             PageLoadState.PAGE_STARTED -> {
                 if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return
-                mVioWebViewActivity!!.onFaviconProgressUpdated(true)
-                mVioWebViewActivity!!.onPageLoadProgressChanged(-1)
+                activity.onFaviconProgressUpdated(true)
+                activity.onPageLoadProgressChanged(-1)
             }
 
             PageLoadState.PAGE_FINISHED -> {
-                mVioWebViewActivity!!.onFaviconProgressUpdated(false)
-                mVioWebViewActivity!!.onPageLoadProgressChanged(0)
-                mVioWebViewActivity!!.onSslCertificateUpdated()
+                activity.onFaviconProgressUpdated(false)
+                activity.onPageLoadProgressChanged(0)
+                activity.onSslCertificateUpdated()
             }
 
             PageLoadState.UPDATE_HISTORY -> {
@@ -344,14 +341,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 }
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) CookieSyncManager.getInstance()
                     .sync() else CookieManager.getInstance().flush()
-                mVioWebViewActivity!!.onSwipeRefreshLayoutRefreshingUpdated(false)
+                activity.onSwipeRefreshLayoutRefreshingUpdated(false)
             }
 
             PageLoadState.UPDATE_FAVICON -> {
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
                         currentBroha.iconHash = iconHashClient.save(favicon!!)
-                        historyClient!!.insertAll(currentBroha)
+                        historyClient.insert(currentBroha)
                     }
                     historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
                 }
@@ -360,7 +357,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_TITLE -> {
-                mVioWebViewActivity!!.onTitleUpdated(
+                activity.onTitleUpdated(
                     if (this.visibility == View.GONE) resources.getString(
                         R.string.start_page
                     ) else title?.trim()
@@ -371,13 +368,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
         }
 
-        if (url != null) mVioWebViewActivity!!.onUrlUpdated(url)
-        mVioWebViewActivity!!.onFaviconUpdated(favicon, false)
-        mVioWebViewActivity!!.onDropDownDismissed()
+        if (url != null) activity.onUrlUpdated(url)
+        activity.onFaviconUpdated(favicon, false)
+        activity.onDropDownDismissed()
     }
 
     fun onPageLoadProgressChanged(progress: Int) {
-        mVioWebViewActivity!!.onPageLoadProgressChanged(progress)
+        activity.onPageLoadProgressChanged(progress)
     }
 
     fun setUserAgent(agentMode: UserAgentMode, dataBundle: UserAgentBundle) {

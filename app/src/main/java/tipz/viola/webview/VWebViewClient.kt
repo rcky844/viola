@@ -19,6 +19,7 @@ import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
+import tipz.viola.webview.VWebView.PageLoadState
 import java.io.ByteArrayInputStream
 import java.net.MalformedURLException
 import java.net.URL
@@ -35,17 +36,17 @@ open class VWebViewClient(
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
-        mVWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_STARTED, url, favicon)
+        mVWebView.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url, favicon)
     }
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
-        mVWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED, url, null)
+        mVWebView.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url, null)
     }
 
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
-        mVWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_HISTORY, url, null)
+        mVWebView.onPageInformationUpdated(PageLoadState.UPDATE_HISTORY, url, null)
     }
 
     @Deprecated("Deprecated in Java")
@@ -63,7 +64,7 @@ open class VWebViewClient(
         view.stopLoading()
     }
 
-    private fun getSslDialog(error: SslError) : MaterialAlertDialogBuilder {
+    private fun getSslDialog(error: SslError): MaterialAlertDialogBuilder {
         val dialog = MaterialAlertDialogBuilder(mContext)
         var contentSummary = mContext.resources.getString(R.string.ssl_certificate_unknown)
         when (error.primaryError) {
@@ -111,7 +112,8 @@ open class VWebViewClient(
         }
         if (UrlUtils.isUriLaunchable(url)) return false
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
             mContext.startActivity(intent)
         } catch (ignored: ActivityNotFoundException) {
             CommonUtils.showMessage(
@@ -165,6 +167,6 @@ open class VWebViewClient(
 
     companion object {
         private const val template =
-            "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"96\" viewBox=\"0 -960 960 960\" width=\"96\" fill=\"currentColor\">\n<path d=\"M480.134-120q-74.673 0-140.41-28.339-65.737-28.34-114.365-76.922-48.627-48.582-76.993-114.257Q120-405.194 120-479.866q0-74.673 28.339-140.41 28.34-65.737 76.922-114.365 48.582-48.627 114.257-76.993Q405.194-840 479.866-840q74.673 0 140.41 28.339 65.737 28.34 114.365 76.922 48.627 48.582 76.993 114.257Q840-554.806 840-480.134q0 74.673-28.339 140.41-28.34 65.737-76.922 114.365-48.582 48.627-114.257 76.993Q554.806-120 480.134-120ZM440-162v-78q-33 0-56.5-23.5T360-320v-40L168-552q-3 18-5.5 36t-2.5 36q0 121 79.5 212T440-162Zm276-102q20-22 36-47.5t26.5-53q10.5-27.5 16-56.5t5.5-59q0-98.58-54.115-180.059Q691.769-741.538 600-777.538V-760q0 33-23.5 56.5T520-680h-80v80q0 17-11.5 28.5T400-560h-80v80h240q17 0 28.5 11.5T600-440v120h40q26 0 47 15.5t29 40.5Z\"/>\n</svg>\n</div>\n<div>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 24px; margin-top: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"font-family:sans-serif; font-size: 16px; margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-family:sans-serif; font-weight: bold; font-size: 16px; margin-bottom: 8px;\">$3</p>\n<ul style=\"font-family:sans-serif; font-size: 16px; margin-top: 0px; margin-bottom: 0px;\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"font-family:sans-serif; font-size: 12px; margin-bottom: 8px; color: #808080;\">$6</p>\n</div>\n</div>\n</body>\n</html>"
+            "<html>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<style>\np { font-family:sans-serif; font-size: 16px; }\nli { font-family:sans-serif; font-size: 16px; }\n</style>\n<head>\n<title>$0</title>\n</head>\n<body>\n<div style=\"padding-left: 8vw; padding-top: 12vh;\">\n<div>\n<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"96\" viewBox=\"0 -960 960 960\" width=\"96\">\n<path d=\"M480.134-120q-74.673 0-140.41-28.339-65.737-28.34-114.365-76.922-48.627-48.582-76.993-114.257Q120-405.194 120-479.866q0-74.673 28.339-140.41 28.34-65.737 76.922-114.365 48.582-48.627 114.257-76.993Q405.194-840 479.866-840q74.673 0 140.41 28.339 65.737 28.34 114.365 76.922 48.627 48.582 76.993 114.257Q840-554.806 840-480.134q0 74.673-28.339 140.41-28.34 65.737-76.922 114.365-48.582 48.627-114.257 76.993Q554.806-120 480.134-120ZM440-162v-78q-33 0-56.5-23.5T360-320v-40L168-552q-3 18-5.5 36t-2.5 36q0 121 79.5 212T440-162Zm276-102q20-22 36-47.5t26.5-53q10.5-27.5 16-56.5t5.5-59q0-98.58-54.115-180.059Q691.769-741.538 600-777.538V-760q0 33-23.5 56.5T520-680h-80v80q0 17-11.5 28.5T400-560h-80v80h240q17 0 28.5 11.5T600-440v120h40q26 0 47 15.5t29 40.5Z\"></path>\n</svg>\n</div>\n<div>\n<p style=\"font-weight: bold; font-size: 24px; margin-bottom: 8px;\">$1</p>\n<p style=\"margin-top: 8px; margin-bottom: 24px;\">$2</p>\n<p style=\"font-weight: bold;\">$3</p>\n<ul style=\"\">\n<li>$4</li>\n<li>$5</li>\n</ul>\n<p style=\"color: #808080;\">$6</p>\n</div>\n</div>\n</body>\n</html>"
     }
 }

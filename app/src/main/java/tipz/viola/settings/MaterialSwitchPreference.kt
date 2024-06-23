@@ -26,7 +26,7 @@ import tipz.viola.R
 class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
     SwitchPreferenceCompat(context, attrs) {
     private val settingsPreference: SettingsSharedPreference =
-        (getContext().applicationContext as Application).settingsPreference!!
+        (getContext().applicationContext as Application).settingsPreference
     private val mPreferenceTag: String?
     private val mNeedReload: Boolean
     private val mRequiredApi: Int

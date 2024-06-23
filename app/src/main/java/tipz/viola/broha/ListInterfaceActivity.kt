@@ -54,8 +54,8 @@ import java.util.Calendar
 import java.util.Objects
 
 class ListInterfaceActivity : BaseActivity() {
-    var favClient: FavClient? = null
-    var historyClient: HistoryClient? = null
+    lateinit var favClient: FavClient
+    lateinit var historyClient: HistoryClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
@@ -84,8 +84,8 @@ class ListInterfaceActivity : BaseActivity() {
                 .setMessage(resources.getString(if (activityMode == mode_history) R.string.del_hist_message else R.string.delete_fav_message))
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     CoroutineScope(Dispatchers.IO).launch {
-                        if (activityMode == mode_history) historyClient!!.deleteAll()
-                        else if (activityMode == mode_favorites) favClient!!.deleteAll()
+                        if (activityMode == mode_history) historyClient.deleteAll()
+                        else if (activityMode == mode_favorites) favClient.deleteAll()
                     }
                     showMessage(this, resources.getString(R.string.wiped_success))
                     finish()
@@ -101,8 +101,8 @@ class ListInterfaceActivity : BaseActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             listData =
-                if (activityMode == mode_history) historyClient!!.getAllValues() as MutableList<Broha>?
-                else favClient!!.getAllValues() as MutableList<Broha>?
+                if (activityMode == mode_history) historyClient.getAll() as MutableList<Broha>?
+                else favClient.getAll() as MutableList<Broha>?
         }
 
 
@@ -118,8 +118,8 @@ class ListInterfaceActivity : BaseActivity() {
     fun isEmptyCheck() {
         CoroutineScope(Dispatchers.IO).launch {
             val isEmpty =
-                if (activityMode == mode_history) historyClient!!.isEmpty()
-                else favClient!!.isEmpty()
+                if (activityMode == mode_history) historyClient.isEmpty()
+                else favClient.isEmpty()
             if (isEmpty) {
                 CoroutineScope(Dispatchers.Main).launch {
                     showMessage(
@@ -214,9 +214,9 @@ class ListInterfaceActivity : BaseActivity() {
                     if (item.title.toString() == listInterfaceActivity.resources.getString(R.string.delete)) {
                         CoroutineScope(Dispatchers.IO).launch {
                             if (activityMode == mode_history)
-                                mBrohaListInterfaceActivity.get()!!.historyClient!!.deleteById(data.id)
+                                mBrohaListInterfaceActivity.get()!!.historyClient.deleteById(data.id)
                             else if (activityMode == mode_favorites)
-                                mBrohaListInterfaceActivity.get()!!.favClient!!.deleteById(data.id)
+                                mBrohaListInterfaceActivity.get()!!.favClient.deleteById(data.id)
                         }
                         listData!!.removeAt(position)
                         notifyItemRemoved(position)
@@ -250,9 +250,9 @@ class ListInterfaceActivity : BaseActivity() {
                                     data.url = Objects.requireNonNull(urlEditText.text).toString()
                                     data.setTimestamp()
                                     CoroutineScope(Dispatchers.IO).launch {
-                                        mBrohaListInterfaceActivity.get()!!.favClient!!.updateBroha(data)
+                                        mBrohaListInterfaceActivity.get()!!.favClient.update(data)
                                         listData =
-                                            mBrohaListInterfaceActivity.get()!!.favClient!!.getAllValues() as MutableList<Broha>? // FIXME: Update list dynamically to save system resources
+                                            mBrohaListInterfaceActivity.get()!!.favClient.getAll() as MutableList<Broha>? // FIXME: Update list dynamically to save system resources
                                         CoroutineScope(Dispatchers.Main).launch {
                                             notifyItemRangeRemoved(position, 1)
                                         }
@@ -264,11 +264,10 @@ class ListInterfaceActivity : BaseActivity() {
                             .create().show()
                     } else if (item.title.toString() == listInterfaceActivity.resources.getString(
                             R.string.add_to_fav
-                        )
-                    ) {
+                        )) {
                         CoroutineScope(Dispatchers.IO).launch {
-                            mBrohaListInterfaceActivity.get()!!.favClient!!
-                                .insertAll(Broha(data.iconHash, title, url!!))
+                            mBrohaListInterfaceActivity.get()!!.favClient
+                                .insert(Broha(data.iconHash, title, url!!))
                         }
                         showMessage(
                             listInterfaceActivity,

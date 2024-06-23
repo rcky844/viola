@@ -89,7 +89,7 @@ class LauncherActivity : AppCompatActivity() {
             // - Launcher category
             // - Url is not empty
             else if (intent.hasCategory("android.intent.category.LAUNCHER") || Uri.EMPTY.equals(uri)
-                || (applicationContext as Application).settingsPreference!!.getInt(SettingsKeys.useCustomTabs) == 0)
+                || (applicationContext as Application).settingsPreference.getInt(SettingsKeys.useCustomTabs) == 0)
                 BrowserActivity::class.java else CustomTabsActivity::class.java
         )
         launchIntent.data = uri

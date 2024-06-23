@@ -27,8 +27,8 @@ import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebViewActivity
 
 class CustomTabsActivity : VWebViewActivity() {
-    private var title: AppCompatTextView? = null
-    private var host: AppCompatTextView? = null
+    private lateinit var title: AppCompatTextView
+    private lateinit var host: AppCompatTextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.custom_tab)
@@ -69,21 +69,20 @@ class CustomTabsActivity : VWebViewActivity() {
         /* WebView */
         webview = swipeRefreshLayout.findViewById(R.id.webview)
         webview.setUpdateHistory(false)
-    }
 
-    public override fun onStart() {
+        // Finally, load webpge
         super.onStart()
         val dataUri = intent.data
         if (dataUri != null) webview.loadUrl(dataUri.toString())
     }
 
     override fun onUrlUpdated(url: String?) {
-        host!!.text = Uri.parse(UrlUtils.patchUrlForCVEMitigation(url!!)).host
+        host.text = Uri.parse(UrlUtils.patchUrlForCVEMitigation(url!!)).host
     }
 
     override fun onTitleUpdated(title: String?) {
         super.onTitleUpdated(title)
-        this.title!!.text = title
+        this.title.text = title
     }
 
     companion object {

@@ -21,8 +21,8 @@ import tipz.viola.broha.database.IconHashUtils
 import tipz.viola.settings.SettingsSharedPreference
 
 class Application : Application() {
-    var settingsPreference: SettingsSharedPreference? = null
-    var iconHashClient: IconHashUtils? = null
+    lateinit var settingsPreference: SettingsSharedPreference
+    lateinit var iconHashClient: IconHashUtils
     override fun onCreate() {
         super.onCreate()
         settingsPreference = SettingsSharedPreference(this)

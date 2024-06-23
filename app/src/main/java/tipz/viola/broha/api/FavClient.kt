@@ -22,7 +22,7 @@ import tipz.viola.settings.SettingsKeys
 
 class FavClient(context: Context) : BrohaClient(context, "bookmarks") {
     init {
-        val settingsPreference = (context.applicationContext as Application).settingsPreference!!
+        val settingsPreference = (context.applicationContext as Application).settingsPreference
         val favApiVer = settingsPreference.getInt(SettingsKeys.favApi)
         if (favApiVer > LATEST_API || favApiVer <= -1) throw RuntimeException()
         settingsPreference.setInt(SettingsKeys.favApi, LATEST_API)
