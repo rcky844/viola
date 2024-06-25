@@ -437,10 +437,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     }
 
-    fun loadViewSourcePage(url: String?) {
+    fun loadViewSourcePage(url: String?): Boolean {
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
-        if (currentUrl == InternalUrls.aboutBlankUrl) return
-        if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return // TODO: Allow changing behaviour
+        if (currentUrl == InternalUrls.aboutBlankUrl) return false
+        if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
         loadUrl("${InternalUrls.viewSourcePrefix}$currentUrl")
+        return true
     }
 }
