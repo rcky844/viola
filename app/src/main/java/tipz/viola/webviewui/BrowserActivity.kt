@@ -420,7 +420,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.close -> finish()
             R.drawable.view_stream -> expandToolBar()
-            R.drawable.code -> webview.loadViewSourcePage(null)
+            R.drawable.code -> return webview.loadViewSourcePage(null)
             R.drawable.new_tab -> {
                 val i = Intent(this, BrowserActivity::class.java)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
