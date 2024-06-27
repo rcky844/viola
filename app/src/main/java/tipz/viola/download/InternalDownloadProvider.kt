@@ -41,11 +41,8 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
 
                 byteArrayToFile(context, writableBytes, filename)
             }
-            DownloadCapabilities.PROTOCOL_BLOB -> {
-                mimeType?.let { (context as VWebViewActivity).webview
+            DownloadCapabilities.PROTOCOL_BLOB -> mimeType?.let { (context as VWebViewActivity).webview
                     .loadUrl(VJavaScriptInterface.getBase64StringFromBlobUrl(uriString, it)) }
-                CommonUtils.showMessage(context, context.resources.getString(R.string.ver3_blob_no_support))
-            }
             else -> return@apply // TODO: Implement all
         }
     }
