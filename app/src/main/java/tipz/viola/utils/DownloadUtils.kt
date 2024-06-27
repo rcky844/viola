@@ -130,7 +130,6 @@ object DownloadUtils {
             } else if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
                 mimeType?.let { (context as VWebViewActivity).webview
                     .loadUrl(VJavaScriptInterface.getBase64StringFromBlobUrl(url, it)) }
-                showMessage(context, context.resources.getString(R.string.ver3_blob_no_support))
             }
         }
         return -1
