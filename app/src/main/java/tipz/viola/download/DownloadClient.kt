@@ -32,8 +32,8 @@ class DownloadClient(context: Context) {
                     }
                     retProvider // Return
                 }
-                DownloadMode.ANDROID_DOWNLOAD_PROVIDER.value -> AndroidDownloadProvider(context) /* 1 */
-                DownloadMode.INTERNAL_DOWNLOAD_PROVIDER.value -> InternalDownloadProvider(context) /* 2 */
+                DownloadMode.ANDROID_DOWNLOAD_PROVIDER.value -> AndroidDownloadProvider(context) /* 0 */
+                DownloadMode.INTERNAL_DOWNLOAD_PROVIDER.value -> InternalDownloadProvider(context) /* 1 */
                 else -> null
             } ?: return@forEach
             Log.i(LOG_TAG, "id=${it.taskId}: DownloadProvider found, provider=${provider.javaClass.name}")
