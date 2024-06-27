@@ -34,7 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.DownloadUtils
+import tipz.viola.download.DownloadUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BrowserActivity
 

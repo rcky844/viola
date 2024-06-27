@@ -63,7 +63,7 @@ import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialog
 import tipz.viola.utils.ApkInstaller.installApplication
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
-import tipz.viola.utils.DownloadUtils
+import tipz.viola.download.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webviewui.BaseActivity
 import java.io.File

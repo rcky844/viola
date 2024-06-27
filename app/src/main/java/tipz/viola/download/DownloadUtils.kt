@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tipz.viola.utils
+package tipz.viola.download
 
 import android.app.DownloadManager
 import android.content.Context
@@ -30,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils.showMessage
+import tipz.viola.utils.UrlUtils
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

@@ -58,7 +58,7 @@ import tipz.viola.broha.database.Broha
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.DownloadUtils
+import tipz.viola.download.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BaseActivity
