@@ -35,6 +35,7 @@ class SettingsSharedPreference(context: Context) {
             this.setInt(SettingsKeys.closeAppAfterDownload, 1)
             this.setInt(SettingsKeys.defaultHomePageId, 7)
             this.setInt(SettingsKeys.defaultSearchId, 7)
+            this.setInt(SettingsKeys.downloadMgrMode, 0)
             this.setInt(SettingsKeys.defaultSuggestionsId, 7)
             this.setInt(SettingsKeys.isJavaScriptEnabled, 1)
             this.setInt(SettingsKeys.enableAdBlock, 0)

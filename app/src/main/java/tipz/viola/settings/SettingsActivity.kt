@@ -57,13 +57,14 @@ import org.json.JSONObject
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
+import tipz.viola.download.DownloadObject
+import tipz.viola.download.DownloadUtils
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.utils.ApkInstaller.installApplication
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
-import tipz.viola.download.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
@@ -439,15 +440,11 @@ class SettingsActivity : BaseActivity() {
                         val apkFile = File(updateDownloadPath!!)
 
                         if (!apkFile.exists() || apkFile.delete()) downloadID =
-                            DownloadUtils.dmDownloadFile(
-                                settingsActivity,
-                                jChannelUpdateObject.getString("url"),
-                                null,
-                                "application/vnd.android.package-archive",
-                                resources.getString(R.string.download_title),
-                                filename,
-                                null
-                            )
+                            DownloadUtils.dmDownloadFile(settingsActivity, DownloadObject().apply {
+                                // TODO: reimplement resources.getString(R.string.download_title), filename
+                                url = jChannelUpdateObject.getString("url")
+                                mimeType = "application/vnd.android.package-archive"
+                            })
                         else
                             showMessage(
                                 settingsActivity,

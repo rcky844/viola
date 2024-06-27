@@ -55,10 +55,11 @@ import tipz.viola.R
 import tipz.viola.broha.api.HistoryClient
 import tipz.viola.broha.api.HistoryClient.UpdateHistoryState
 import tipz.viola.broha.database.Broha
+import tipz.viola.download.DownloadObject
+import tipz.viola.download.DownloadUtils
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.download.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BaseActivity
@@ -97,7 +98,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         setUserAgent(UserAgentMode.MOBILE, UserAgentBundle())
 
         /* Start the download manager service */
-        setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
+        setDownloadListener { vUrl: String?, _: String?, vContentDisposition: String?, vMimeType: String?, _: Long ->
             if (ContextCompat.checkSelfPermission(
                     activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -108,10 +109,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0
                 )
 
-            DownloadUtils.dmDownloadFile(
-                mContext, url!!, contentDisposition,
-                mimeType, getUrl()
-            )
+            DownloadUtils.dmDownloadFile(context, DownloadObject().apply {
+                url = vUrl!!
+                contentDisposition = vContentDisposition
+                mimeType = vMimeType
+                requestUrl = getUrl()
+            })
+
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
             activity.onPageLoadProgressChanged(0)
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
