@@ -30,6 +30,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils.showMessage
+import tipz.viola.webview.VJavaScriptInterface
+import tipz.viola.webview.VWebViewActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -126,6 +128,8 @@ object DownloadUtils {
                 } catch (ignored: IOException) {
                 }
             } else if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
+                mimeType?.let { (context as VWebViewActivity).webview
+                    .loadUrl(VJavaScriptInterface.getBase64StringFromBlobUrl(url, it)) }
                 showMessage(context, context.resources.getString(R.string.ver3_blob_no_support))
             }
         }
