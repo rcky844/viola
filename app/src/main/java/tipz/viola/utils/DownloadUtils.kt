@@ -17,7 +17,6 @@ package tipz.viola.utils
 
 import android.app.DownloadManager
 import android.content.Context
-import android.media.MediaScannerConnection
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -32,10 +31,6 @@ import tipz.viola.R
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.webview.VJavaScriptInterface
 import tipz.viola.webview.VWebViewActivity
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
 import java.net.URL
 
 object DownloadUtils {
@@ -93,40 +88,20 @@ object DownloadUtils {
             }
         } else {
             if (url.startsWith("data:")) {
-                val path =
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 val dataInfo = url.substring(url.indexOf(":") + 1, url.indexOf(","))
                 val filename = (System.currentTimeMillis().toString() + "."
                         + MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                    dataInfo.substring(
-                        0,
-                        if (dataInfo.contains(";")) dataInfo.indexOf(";") else dataInfo.length
-                    )
+                    dataInfo.substring(0,
+                        if (dataInfo.contains(";")) dataInfo.indexOf(";")
+                        else dataInfo.length)
                 ))
-                val file = File(path, filename)
-                try {
-                    if (!path.exists()) path.mkdirs()
-                    if (!file.exists()) file.createNewFile()
-                    val dataString = url.substring(url.indexOf(",") + 1)
-                    val writableBytes = if (dataInfo.contains(";base64")) Base64.decode(
-                        dataString,
-                        Base64.DEFAULT
-                    ) else dataString.toByteArray()
-                    val os: OutputStream = FileOutputStream(file)
-                    os.write(writableBytes)
-                    os.close()
 
-                    // Tell the media scanner about the new file so that it is immediately available to the user.
-                    MediaScannerConnection.scanFile(context, arrayOf(file.toString()), null, null)
-                    showMessage(
-                        context,
-                        context.resources.getString(
-                            R.string.notification_download_successful,
-                            filename
-                        )
-                    )
-                } catch (ignored: IOException) {
-                }
+                val dataString = UrlUtils.getRawDataFromDataUri(url)
+                val writableBytes =
+                    if (dataInfo.contains(";base64")) UrlUtils.base64StringToByteArray(dataString)
+                    else dataString.toByteArray()
+
+                UrlUtils.byteArrayToFile(context, writableBytes, filename)
             } else if (url.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
                 mimeType?.let { (context as VWebViewActivity).webview
                     .loadUrl(VJavaScriptInterface.getBase64StringFromBlobUrl(url, it)) }
