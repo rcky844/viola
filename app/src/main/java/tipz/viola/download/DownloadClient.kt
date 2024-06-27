@@ -13,7 +13,7 @@ class DownloadClient(context: Context) {
     private var settingsPreference = (context.applicationContext as Application).settingsPreference
     private var clientMode = settingsPreference.getInt(SettingsKeys.downloadMgrMode)
 
-    private var downloadQueue: MutableLiveData<MutableList<DownloadObject>> = MutableLiveData(mutableListOf())
+    var downloadQueue: MutableLiveData<MutableList<DownloadObject>> = MutableLiveData(mutableListOf())
     private var currentTaskId = 0
 
     private val downloadObserver = Observer<MutableList<DownloadObject>> {

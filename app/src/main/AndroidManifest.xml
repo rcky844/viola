@@ -114,6 +114,9 @@
         <activity
             android:name=".broha.ListInterfaceActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
+        <activity
+            android:name=".download.DownloadActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
 
         <uses-library
             android:name="org.apache.http.legacy"
