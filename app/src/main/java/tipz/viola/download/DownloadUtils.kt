@@ -25,14 +25,6 @@ import kotlinx.coroutines.withContext
 import java.net.URL
 
 object DownloadUtils {
-    /* TODO: Rewrite into our own download manager */
-    fun dmDownloadFile(context: Context, downloadObject: DownloadObject): Long {
-        downloadObject.apply {
-            DownloadClient(context).addToQueue(downloadObject)
-            return -1
-        }
-    }
-
     suspend fun startFileDownload(urlString: String?) =
         withContext(Dispatchers.IO) {
             if (urlString!!.startsWith("data:")) {
