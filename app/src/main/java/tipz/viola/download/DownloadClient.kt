@@ -25,21 +25,18 @@ class DownloadClient(context: Context) {
         downloadQueue.forEach {
             // Match download manager
             val provider : DownloadProvider = when (it.downloadMode) {
-                DownloadMode.AUTO_DOWNLOAD_PROVIDER.value -> InternalDownloadProvider(context) // FIXME /* 0 */
+                DownloadMode.AUTO_DOWNLOAD_PROVIDER.value -> { // TODO: Move auto detection to UI
+                    var retProvider: DownloadProvider? = null
+                    DownloadProvider.getPreferredDownloadProvider(context).forEach { itProvider ->
+                        if (isProviderCapable(it, itProvider.capabilities)) retProvider = itProvider
+                    }
+                    retProvider // Return
+                }
                 DownloadMode.ANDROID_DOWNLOAD_PROVIDER.value -> AndroidDownloadProvider(context) /* 1 */
                 DownloadMode.INTERNAL_DOWNLOAD_PROVIDER.value -> InternalDownloadProvider(context) /* 2 */
                 else -> null
             } ?: return@forEach
             Log.i(LOG_TAG, "id=${it.taskId}: DownloadProvider found, provider=${provider.javaClass.name}")
-
-            // Check capabilities
-            Log.i(LOG_TAG, "id=${it.taskId}: URI protocol: ${it.getUriProtocol()}")
-            var isProviderCapable = false
-            provider.capabilities.forEach { cap ->
-                if (it.compareUriProtocol(cap.value)) isProviderCapable = true
-            }
-            if (!isProviderCapable) return@forEach
-            Log.i(LOG_TAG, "id=${it.taskId}: URI protocol matched")
 
             // Start download
             provider.startDownload(it)
@@ -48,6 +45,18 @@ class DownloadClient(context: Context) {
 
     init {
         downloadQueue.observeForever(downloadObserver)
+    }
+
+    /* Private methods */
+    private fun isProviderCapable(
+        downloadObject: DownloadObject,
+        capabilities: List<DownloadCapabilities>
+    ) : Boolean {
+        var isProviderCapable = false
+        capabilities.forEach {
+            if (downloadObject.compareUriProtocol(it.value)) isProviderCapable = true
+        }
+        return isProviderCapable
     }
 
     /* Public methods */
