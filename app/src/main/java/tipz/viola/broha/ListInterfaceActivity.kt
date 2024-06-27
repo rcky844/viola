@@ -62,7 +62,7 @@ class ListInterfaceActivity : BaseActivity() {
         favClient = FavClient(this)
         historyClient = HistoryClient(this)
         if (activityMode != mode_history && activityMode != mode_favorites) finish()
-        setContentView(R.layout.recycler_broha_list_activity)
+        setContentView(R.layout.recycler_data_list_activity)
         isEmptyCheck()
         initialize()
         title = resources.getString(if (activityMode == mode_history) R.string.hist else R.string.fav)
@@ -163,7 +163,7 @@ class ListInterfaceActivity : BaseActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_broha_list_item, parent, false)
+                .inflate(R.layout.recycler_data_list_item, parent, false)
             return ViewHolder(view)
         }
 
