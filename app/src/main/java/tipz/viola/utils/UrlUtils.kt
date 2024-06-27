@@ -368,7 +368,7 @@ object UrlUtils {
      * Compare the filename extension with the mime type and change it if necessary.
      */
     fun changeExtension(filename: String, mimeType: String?): String {
-        var extension: String? = null
+        var extension = createExtension(mimeType)
         val dotIndex = filename.lastIndexOf(".")
         if (mimeType != null) {
             val mimeTypeMap = MimeTypeMap.getSingleton()
@@ -384,11 +384,7 @@ object UrlUtils {
                 }
             }
         }
-        return if (extension != null) {
-            filename.substring(0, dotIndex) + extension
-        } else {
-            filename
-        }
+        return filename.substring(0, dotIndex) + extension
     }
 
     /**
