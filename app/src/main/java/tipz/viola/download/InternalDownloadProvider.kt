@@ -23,32 +23,38 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         DownloadCapabilities.PROTOCOL_DATA,
         DownloadCapabilities.PROTOCOL_BLOB)
 
-    override fun startDownload(downloadObject: DownloadObject) = downloadObject.apply {
-        when (DownloadCapabilities.fromString(downloadObject.getUriProtocol())) {
-            DownloadCapabilities.PROTOCOL_DATA -> {
-                val dataInfo = uriString.substring(uriString.indexOf(":") + 1, uriString.indexOf(","))
-                val filename = (System.currentTimeMillis().toString() + "."
-                        + MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                    dataInfo.substring(0,
-                        if (dataInfo.contains(";")) dataInfo.indexOf(";")
-                        else dataInfo.length)
-                ))
+    override fun startDownload(downloadObject: DownloadObject) {
+        super.startDownload(downloadObject)
+        downloadObject.apply {
+            when (DownloadCapabilities.fromString(downloadObject.getUriProtocol())) {
+                DownloadCapabilities.PROTOCOL_DATA -> {
+                    val dataInfo =
+                        uriString.substring(uriString.indexOf(":") + 1, uriString.indexOf(","))
+                    val filename = (System.currentTimeMillis().toString() + "."
+                            + MimeTypeMap.getSingleton().getExtensionFromMimeType(
+                        dataInfo.substring(
+                            0,
+                            if (dataInfo.contains(";")) dataInfo.indexOf(";")
+                            else dataInfo.length
+                        )
+                    ))
 
-                val dataString = getRawDataFromDataUri(uriString)
-                val writableBytes =
-                    if (dataInfo.contains(";base64")) base64StringToByteArray(dataString)
-                    else dataString.toByteArray()
+                    val dataString = getRawDataFromDataUri(uriString)
+                    val writableBytes =
+                        if (dataInfo.contains(";base64")) base64StringToByteArray(dataString)
+                        else dataString.toByteArray()
 
-                byteArrayToFile(context, writableBytes, filename)
+                    byteArrayToFile(context, writableBytes, filename)
+                }
+
+                DownloadCapabilities.PROTOCOL_BLOB -> mimeType?.let {
+                    (context as VWebViewActivity).webview
+                        .loadUrl(VJavaScriptInterface.getBase64StringFromBlobUrl(uriString, it))
+                }
+
+                else -> return@apply // TODO: Implement all
             }
-            DownloadCapabilities.PROTOCOL_BLOB -> mimeType?.let { (context as VWebViewActivity).webview
-                    .loadUrl(VJavaScriptInterface.getBase64StringFromBlobUrl(uriString, it)) }
-            else -> return@apply // TODO: Implement all
         }
-    }
-
-    override fun stopDownload() {
-        TODO("Not yet implemented")
     }
 
     companion object {
