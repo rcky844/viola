@@ -110,7 +110,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 )
 
             DownloadUtils.dmDownloadFile(context, DownloadObject().apply {
-                url = vUrl!!
+                uriString = vUrl!!
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType
                 requestUrl = getUrl()

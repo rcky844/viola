@@ -8,12 +8,13 @@ class DownloadObject {
     internal var downloadMode = 0
 
     /* Download task specifics */
-    var url = CommonUtils.EMPTY_STRING
+    var uriString = CommonUtils.EMPTY_STRING
     var filename: String? = null
     var contentDisposition: String? = null
     var mimeType: String? = null
     var requestUrl: String? = null
 
-    /* Download task specifics: Started */
-
+    /* Helper functions / features */
+    internal fun getUriProtocol() = uriString.substringBefore(':')
+    internal fun compareUriProtocol(value: String) : Boolean = getUriProtocol() == value
 }

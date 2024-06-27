@@ -133,7 +133,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
 
                 context.resources.getString(R.string.download_image) -> {
                     DownloadUtils.dmDownloadFile(context, DownloadObject().apply {
-                        url = src ?: url
+                        uriString = src ?: url
                     })
                 }
 

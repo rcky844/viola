@@ -442,7 +442,7 @@ class SettingsActivity : BaseActivity() {
                         if (!apkFile.exists() || apkFile.delete()) downloadID =
                             DownloadUtils.dmDownloadFile(settingsActivity, DownloadObject().apply {
                                 // TODO: reimplement resources.getString(R.string.download_title), filename
-                                url = jChannelUpdateObject.getString("url")
+                                uriString = jChannelUpdateObject.getString("url")
                                 mimeType = "application/vnd.android.package-archive"
                             })
                         else
