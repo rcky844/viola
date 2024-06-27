@@ -33,8 +33,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
+import tipz.viola.download.DownloadObject
+import tipz.viola.download.DownloadUtils
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BrowserActivity
 
@@ -131,11 +132,9 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 )
 
                 context.resources.getString(R.string.download_image) -> {
-                    val fileDownload = src ?: url
-                    DownloadUtils.dmDownloadFile(
-                        context, fileDownload,
-                        null, null, fileDownload
-                    )
+                    vWebView.downloadClient.addToQueue(DownloadObject().apply {
+                        uriString = src ?: url
+                    })
                 }
 
                 context.resources.getString(R.string.search_image) -> {

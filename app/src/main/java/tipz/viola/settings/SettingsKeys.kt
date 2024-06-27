@@ -35,6 +35,7 @@ object SettingsKeys {
     const val defaultSearchId = "defaultSearchId" /* INTEGER */
     const val defaultSuggestions = "defaultSuggestions" /* STRING */ /* FIXME: Rename to customSuggestions */
     const val defaultSuggestionsId = "defaultSuggestionsId" /* INTEGER */
+    const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
     const val enableAdBlock = "enableAdBlock" /* INTEGER */
     const val enableGoogleSafeBrowse = "enableGoogleSafeBrowse" /* INTEGER */
     const val enableSwipeRefresh = "enableSwipeRefresh" /* INTEGER */

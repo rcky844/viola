@@ -55,10 +55,11 @@ import tipz.viola.R
 import tipz.viola.broha.api.HistoryClient
 import tipz.viola.broha.api.HistoryClient.UpdateHistoryState
 import tipz.viola.broha.database.Broha
+import tipz.viola.download.DownloadClient
+import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.DownloadUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BaseActivity
@@ -70,6 +71,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 ) {
     private var activity: VWebViewActivity = mContext as VWebViewActivity
     private lateinit var historyClient: HistoryClient
+    var downloadClient: DownloadClient
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient
     private val webSettings = this.settings
     private var currentBroha = Broha()
@@ -97,7 +99,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         setUserAgent(UserAgentMode.MOBILE, UserAgentBundle())
 
         /* Start the download manager service */
-        setDownloadListener { url: String?, _: String?, contentDisposition: String?, mimeType: String?, _: Long ->
+        downloadClient = DownloadClient(activity)
+        setDownloadListener { vUrl: String?, _: String?, vContentDisposition: String?, vMimeType: String?, _: Long ->
             if (ContextCompat.checkSelfPermission(
                     activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -108,15 +111,20 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0
                 )
 
-            DownloadUtils.dmDownloadFile(
-                mContext, url!!, contentDisposition,
-                mimeType, getUrl()
-            )
+            downloadClient.addToQueue(DownloadObject().apply {
+                uriString = vUrl!!
+                contentDisposition = vContentDisposition
+                mimeType = vMimeType
+                requestUrl = getUrl()
+            })
+
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
             activity.onPageLoadProgressChanged(0)
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
         }
+        addJavascriptInterface(VJavaScriptInterface(context), VJavaScriptInterface.INTERFACE_NAME)
+
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
         // Zoom controls
@@ -155,6 +163,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             val message = titleHandler.obtainMessage()
             this.requestFocusNodeHref(message)
         }
+    }
+
+    override fun destroy() {
+        downloadClient.destroy()
+        super.destroy()
     }
 
     @Suppress("deprecation")

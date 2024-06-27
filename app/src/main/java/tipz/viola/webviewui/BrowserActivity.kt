@@ -75,6 +75,7 @@ import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha
 import tipz.viola.broha.database.IconHashUtils
+import tipz.viola.download.DownloadActivity
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
@@ -439,6 +440,11 @@ class BrowserActivity : VWebViewActivity() {
                 val printManager = getSystemService(PRINT_SERVICE) as PrintManager
                 printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
             }
+
+            R.drawable.download -> {
+                val intent = Intent(this@BrowserActivity, DownloadActivity::class.java)
+                mGetNeedLoad.launch(intent)
+            }
         }
         return true // Close ToolBar if not interrupted
     }
@@ -663,6 +669,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.settings,
             R.drawable.history,
             R.drawable.favorites,
+            R.drawable.download,
             R.drawable.close
         )
 
@@ -680,6 +687,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.history,
             R.drawable.smartphone,
             R.drawable.favorites_add,
+            R.drawable.download,
             R.drawable.app_shortcut,
             R.drawable.settings,
             R.drawable.code,
@@ -693,6 +701,7 @@ class BrowserActivity : VWebViewActivity() {
             R.string.toolbar_expandable_history,
             R.string.toolbar_expandable_viewport,
             R.string.toolbar_expandable_favorites_add,
+            R.string.toolbar_expandable_downloads,
             R.string.toolbar_expandable_app_shortcut,
             R.string.toolbar_expandable_settings,
             R.string.toolbar_expandable_view_page_source,

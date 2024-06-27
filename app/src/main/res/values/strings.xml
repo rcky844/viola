@@ -102,7 +102,6 @@
     <string name="favMenuTitle">Title</string>
     <string name="favMenuLink">Link</string>
     <string name="downloadFailed">Download failed!</string>
-    <string name="ver3_blob_no_support">blob files are currently not supported for downloading.</string>
     <string name="search_image">Search for similar images</string>
     <string name="desk_mode_text">Enable wide viewport mode</string>
     <string name="notification_download_successful">%s downloaded successfully.</string>
@@ -162,6 +161,7 @@
     <string name="pref_check_app_link_summary">Ask whether an App Link should be opened externally before loading.</string>
     <string name="dialog_open_external_title">Launchable App Link detected</string>
     <string name="dialog_open_external_message">Would you like to open this link in an external app?</string>
+    <string name="toolbar_expandable_downloads">Downloads</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
