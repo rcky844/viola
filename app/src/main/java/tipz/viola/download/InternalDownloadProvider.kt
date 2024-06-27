@@ -47,6 +47,10 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         }
     }
 
+    override fun stopDownload() {
+        TODO("Not yet implemented")
+    }
+
     companion object {
         private val LOG_TAG = "IntDownloadProvider"
 

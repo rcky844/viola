@@ -7,6 +7,8 @@ interface DownloadProvider {
     val capabilities: List<DownloadCapabilities>
 
     fun startDownload(downloadObject: DownloadObject) : DownloadObject
+    fun stopDownload()
+
     companion object {
         fun getPreferredDownloadProvider(context: Context) = listOf(
             InternalDownloadProvider(context),

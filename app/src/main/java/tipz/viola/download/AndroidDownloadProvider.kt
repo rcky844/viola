@@ -1,7 +1,11 @@
 package tipz.viola.download
 
+import android.annotation.SuppressLint
 import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -11,10 +15,19 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 
 class AndroidDownloadProvider(override val context: Context) : DownloadProvider {
+    private var downloadID: Long = 0
+    private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+            if (downloadID == id) stopDownload()
+        }
+    }
+
     override val capabilities = listOf(
         DownloadCapabilities.PROTOCOL_HTTP,
         DownloadCapabilities.PROTOCOL_HTTPS)
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun startDownload(downloadObject: DownloadObject) = downloadObject.apply {
         val request = DownloadManager.Request(
             Uri.parse(UrlUtils.patchUrlForCVEMitigation(uriString))
@@ -44,9 +57,28 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
         )
         val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         try {
-            dm.enqueue(request)
+            downloadID = dm.enqueue(request)
         } catch (e: RuntimeException) {
             CommonUtils.showMessage(context, context.resources.getString(R.string.downloadFailed))
+            return@apply
         }
+
+        // Setup download complete receiver
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.registerReceiver(
+                onDownloadComplete,
+                IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
+                Context.RECEIVER_EXPORTED
+            )
+        } else {
+            context.registerReceiver(
+                onDownloadComplete,
+                IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+            )
+        }
+    }
+
+    override fun stopDownload() {
+
     }
 }
