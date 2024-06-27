@@ -8,10 +8,8 @@ import android.os.Environment
 import android.webkit.MimeTypeMap
 import tipz.viola.utils.UrlUtils
 
-class AndroidDownloadManager(context: Context) {
-    var mContext = context
-
-    fun startDownload(downloadObject: DownloadObject) = downloadObject.apply {
+class AndroidDownloadManager(override val context: Context) : DownloadProvider {
+    override fun startDownload(downloadObject: DownloadObject) = downloadObject.apply {
         val request = DownloadManager.Request(
             Uri.parse(UrlUtils.patchUrlForCVEMitigation(url))
         )
@@ -39,7 +37,7 @@ class AndroidDownloadManager(context: Context) {
                 MimeTypeMap.getFileExtensionFromUrl(url)
             )
         )
-        val dm = mContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         try {
             dm.enqueue(request)
         } catch (e: RuntimeException) {
