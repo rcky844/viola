@@ -24,7 +24,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.CookieManager
@@ -116,9 +115,6 @@ class SettingsActivity : BaseActivity() {
     class SettingsPrefHandler(act: AppCompatActivity) : PreferenceFragmentCompat() {
         private lateinit var settingsActivity: AppCompatActivity
         private val settingsPreference: SettingsSharedPreference
-        private val updateDownloadPathBase =
-            "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/"
-        private var updateDownloadPath: String? = null
         private val updateConfigLiveData = MutableLiveData<JSONObject>()
         private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
@@ -408,9 +404,8 @@ class SettingsActivity : BaseActivity() {
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         val filename = jChannelUpdateObject.getString("url")
                             .substringAfterLast('/')
-                        this@SettingsPrefHandler.updateDownloadPath =
-                            updateDownloadPathBase + filename
-                        val apkFile = File(updateDownloadPath!!)
+                        val updateDownloadPath = DownloadClient.defaultDownloadPath + filename
+                        val apkFile = File(updateDownloadPath)
 
                         if (!apkFile.exists() || apkFile.delete()) {
                             DownloadClient(settingsActivity).addToQueue(DownloadObject().apply {

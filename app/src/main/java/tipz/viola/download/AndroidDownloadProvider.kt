@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.util.Log
 import android.webkit.MimeTypeMap
 import tipz.viola.R
@@ -54,7 +53,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                 if (filename == null)
                     filename = UrlUtils.guessFileName(uriString, contentDisposition, mimeType)
                 Log.i(LOG_TAG, "startDownload(): filename=${filename}")
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+                request.setDestinationUri(Uri.parse("file://$downloadPath$filename"))
             } catch (e: IllegalStateException) {
                 CommonUtils.showMessage(context, context.resources.getString(R.string.downloadFailed))
             }

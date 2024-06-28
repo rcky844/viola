@@ -1,6 +1,7 @@
 package tipz.viola.download
 
 import android.content.Context
+import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -42,6 +43,7 @@ class DownloadClient(context: Context) {
 
             // Start download
             it.vWebView = vWebView
+            if (it.downloadPath == null) it.downloadPath = defaultDownloadPath
             provider.startDownload(it)
         }
     }
@@ -80,5 +82,10 @@ class DownloadClient(context: Context) {
 
     fun destroy() {
         downloadQueue.removeObserver(downloadObserver)
+    }
+
+    companion object {
+        val defaultDownloadPath =
+            "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/"
     }
 }
