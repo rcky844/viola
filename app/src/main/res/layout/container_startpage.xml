@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@id/guideline">
 
         <include android:id="@+id/home_button"
-            layout="@layout/recycler_toolsbar_expandable_icon_item" />
+            layout="@layout/template_icon_description_item" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

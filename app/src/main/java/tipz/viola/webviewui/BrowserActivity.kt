@@ -227,7 +227,7 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setAdapter(
             SuggestionAdapter(
                 this@BrowserActivity,
-                R.layout.recycler_list_item_1
+                R.layout.template_item_text_single
             )
         )
 
@@ -359,7 +359,7 @@ class BrowserActivity : VWebViewActivity() {
                 dialog.setTitle(resources.getString(R.string.toolbar_expandable_app_shortcut))
 
                 // TODO: Export as proper list
-                val arrayAdapter = ArrayAdapter<String>(this, R.layout.recycler_list_item_1)
+                val arrayAdapter = ArrayAdapter<String>(this, R.layout.template_item_text_single)
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_browser))
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_custom_tabs))
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_webapp))
@@ -578,7 +578,7 @@ class BrowserActivity : VWebViewActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_icon_item, parent, false)
+                .inflate(R.layout.template_icon_item, parent, false)
             return ViewHolder(view)
         }
 
@@ -630,7 +630,7 @@ class BrowserActivity : VWebViewActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_toolsbar_expandable_icon_item, parent, false)
+                .inflate(R.layout.template_icon_description_item, parent, false)
             return ViewHolder(view)
         }
 

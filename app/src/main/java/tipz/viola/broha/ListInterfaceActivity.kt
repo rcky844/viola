@@ -163,7 +163,7 @@ class ListInterfaceActivity : BaseActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_data_list_item, parent, false)
+                .inflate(R.layout.template_icon_title_descriptor_time, parent, false)
             return ViewHolder(view)
         }
 
