@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import tipz.viola.Application
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.webview.VWebView
 
 class DownloadClient(context: Context) {
     private val LOG_TAG = "DownloadClient"
@@ -13,6 +14,7 @@ class DownloadClient(context: Context) {
     private var settingsPreference = (context.applicationContext as Application).settingsPreference
     private var clientMode = settingsPreference.getInt(SettingsKeys.downloadMgrMode)
 
+    private var vWebView: VWebView? = null
     var downloadQueue: MutableLiveData<MutableList<DownloadObject>> = MutableLiveData(mutableListOf())
     private var currentTaskId = 0
 
@@ -39,6 +41,7 @@ class DownloadClient(context: Context) {
             Log.i(LOG_TAG, "id=${it.taskId}: DownloadProvider found, provider=${provider.javaClass.name}")
 
             // Start download
+            it.vWebView = vWebView
             provider.startDownload(it)
         }
     }
@@ -69,6 +72,10 @@ class DownloadClient(context: Context) {
             listData.add(it)
             downloadQueue.postValue(listData)
         }
+    }
+
+    fun vWebViewModuleInit(webView: VWebView) {
+        vWebView = webView
     }
 
     fun destroy() {

@@ -1,11 +1,13 @@
 package tipz.viola.download
 
 import tipz.viola.utils.CommonUtils
+import tipz.viola.webview.VWebView
 
 class DownloadObject {
     /* DownloadClient specifics */
     internal var taskId = 0
     internal var downloadMode = 0
+    internal var vWebView: VWebView? = null
 
     /* Download task specifics */
     var uriString = CommonUtils.EMPTY_STRING

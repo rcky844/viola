@@ -9,7 +9,6 @@ import android.webkit.MimeTypeMap
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.VJavaScriptInterface
-import tipz.viola.webview.VWebViewActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -49,8 +48,11 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
                 }
 
                 DownloadCapabilities.PROTOCOL_BLOB -> mimeType?.let {
-                    (context as VWebViewActivity).webview
-                        .loadUrl(VJavaScriptInterface.getBase64StringFromBlobUrl(uriString, it))
+                    if (vWebView != null)
+                        vWebView!!.evaluateJavascript(
+                            VJavaScriptInterface.getBase64StringFromBlobUrl(uriString, it),
+                            null
+                        )
                 }
 
                 else -> return@apply // TODO: Implement all

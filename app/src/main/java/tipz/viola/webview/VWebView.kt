@@ -71,7 +71,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 ) {
     private var activity: VWebViewActivity = mContext as VWebViewActivity
     private lateinit var historyClient: HistoryClient
-    var downloadClient: DownloadClient
+    val downloadClient: DownloadClient = (mContext.applicationContext as Application).downloadClient
     private val iconHashClient = (mContext.applicationContext as Application).iconHashClient
     private val webSettings = this.settings
     private var currentBroha = Broha()
@@ -96,10 +96,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     init {
         /* User agent init code */
+        downloadClient.vWebViewModuleInit(this)
         setUserAgent(UserAgentMode.MOBILE, UserAgentBundle())
 
         /* Start the download manager service */
-        downloadClient = DownloadClient(activity)
         setDownloadListener { vUrl: String?, _: String?, vContentDisposition: String?, vMimeType: String?, _: Long ->
             if (ContextCompat.checkSelfPermission(
                     activity,
