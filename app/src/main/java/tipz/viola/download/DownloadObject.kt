@@ -13,6 +13,7 @@ class DownloadObject {
     var contentDisposition: String? = null
     var mimeType: String? = null
     var requestUrl: String? = null
+    var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
     /* Helper functions / features */
     internal fun getUriProtocol() = uriString.substringBefore(':')

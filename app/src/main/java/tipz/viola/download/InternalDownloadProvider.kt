@@ -22,6 +22,7 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         // DownloadCapabilities.SCHEMA_HTTPS,
         DownloadCapabilities.PROTOCOL_DATA,
         DownloadCapabilities.PROTOCOL_BLOB)
+    override var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
     override fun startDownload(downloadObject: DownloadObject) {
         super.startDownload(downloadObject)

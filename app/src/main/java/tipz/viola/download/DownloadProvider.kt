@@ -1,22 +1,24 @@
 package tipz.viola.download
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 
 interface DownloadProvider {
     val context: Context
     val capabilities: List<DownloadCapabilities>
+    var statusListener: DownloadStatusListener?
 
     fun startDownload(downloadObject: DownloadObject) {
-        status.postValue(DownloadStatus.STARTED)
+        if (downloadObject.statusListener != null) {
+            statusListener = downloadObject.statusListener!!
+            statusListener!!.post(DownloadStatus.STARTED)
+        }
     }
     fun stopDownload() {
-        status.postValue(DownloadStatus.STOPPED)
+        if (statusListener != null)
+            statusListener!!.post(DownloadStatus.STOPPED)
     }
 
     companion object {
-        val status: MutableLiveData<DownloadStatus> = MutableLiveData<DownloadStatus>()
-
         fun getPreferredDownloadProvider(context: Context) = listOf(
             InternalDownloadProvider(context),
             AndroidDownloadProvider(context)
@@ -24,6 +26,10 @@ interface DownloadProvider {
 
         enum class DownloadStatus {
             STARTED, STOPPED
+        }
+
+        fun interface DownloadStatusListener {
+            fun post(status: DownloadStatus)
         }
     }
 }

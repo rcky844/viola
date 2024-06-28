@@ -9,6 +9,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.util.Log
 import android.webkit.MimeTypeMap
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils
@@ -26,6 +27,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
     override val capabilities = listOf(
         DownloadCapabilities.PROTOCOL_HTTP,
         DownloadCapabilities.PROTOCOL_HTTPS)
+    override var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun startDownload(downloadObject: DownloadObject) {
@@ -34,6 +36,8 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
             val request = DownloadManager.Request(
                 Uri.parse(UrlUtils.patchUrlForCVEMitigation(uriString))
             )
+
+            Log.i(LOG_TAG, "startDownload(): uriString=${uriString}")
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
@@ -46,8 +50,9 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
             request.setNotificationVisibility(
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
-            val filename = UrlUtils.guessFileName(uriString, contentDisposition, mimeType)
             try {
+                val filename = filename ?: UrlUtils.guessFileName(uriString, contentDisposition, mimeType)
+                Log.i(LOG_TAG, "startDownload(): filename=${filename}")
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
             } catch (e: IllegalStateException) {
                 CommonUtils.showMessage(context, context.resources.getString(R.string.downloadFailed))
@@ -79,5 +84,9 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                 )
             }
         }
+    }
+
+    companion object {
+        private val LOG_TAG = "AndroidDownloadProvider"
     }
 }
