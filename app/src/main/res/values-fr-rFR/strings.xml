@@ -29,7 +29,7 @@
     <string name="settings">Réglages</string>
     <string name="search_engine">"Moteur de recherche"</string>
     <string name="homepage">"Page d’accueil"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nCompilé sur %4$s\n\nViola est un produit basé sur Browservio.\nPour modifier les chaînes de mise à jour, veuillez réinstaller le fichier APK de la chaîne souhaitée.\n\nDroit d'auteur © 2020-%5$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nCompilé sur %4$s\n\nViola est un produit basé sur Browservio.\n\nDroit d'auteur © 2020-%5$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
     <string name="pref_check_for_updates_title">Vérifier les mises à jour</string>
     <string name="pref_check_for_updates_summary">Recherchez une nouvelle mise à jour et autorisez-la à la télécharger si elle est disponible.</string>
     <string name="version_latest_toast">"Vous disposez actuellement de la dernière version de Viola."</string>
@@ -153,6 +153,13 @@
     <string name="pref_send_sec_gpc_title">Contrôle global de la confidentialité</string>
     <string name="pref_send_sec_gpc_summary">Autorisez la vente ou le partage de vos informations personnelles avec des tiers sur les sites Web que vous visitez </string>.
     <string name="homepage_webpage_home">Page d\'accueil</string>
+    <string name="toolbar_expandable_shortcuts_menu_browser">Accès au navigateur</string>
+    <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Onglets personnalisés</string>
+    <string name="toolbar_expandable_shortcuts_menu_webapp">Application Web</string>
+    <string name="pref_check_app_link_title">Rechercher un lien d\'application pouvant être lancé</string>
+    <string name="pref_check_app_link_summary">Demandez si un App Link doit être ouvert en externe avant le chargement.</string>
+    <string name="dialog_open_external_title">Lien d\'application lançable détecté</string>
+    <string name="dialog_open_external_message">Souhaitez-vous ouvrir ce lien dans une application externe?</string>
 
     <string-array name="errMsg">
         <item>Erreur!</item>

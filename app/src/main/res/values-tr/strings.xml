@@ -29,7 +29,7 @@
     <string name="settings">Ayarlar</string>
     <string name="search_engine">"Arama motoru"</string>
     <string name="homepage">"Ana sayfa"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nTarihinde derlendi %4$s\n\nViola Browservio bazlı bir üründür.\nGüncelleme kanallarını değiştirmek için lütfen istediğiniz kanalın APK dosyasını yeniden yükleyin.\n\nTelif hakkı © 2020-%5$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nTarihinde derlendi %4$s\n\nViola Browservio bazlı bir üründür.\n\nTelif hakkı © 2020-%5$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
     <string name="pref_check_for_updates_title">Güncellemeleri denetle</string>
     <string name="pref_check_for_updates_summary">Yeni güncellemeyi kontrol edin ve varsa indirmenize izin verin.</string>
     <string name="version_latest_toast">"Viola'nun en güncel sürümünü kullanmaktasınız."</string>
@@ -153,6 +153,13 @@
     <string name="pref_send_sec_gpc_title">Genel Gizlilik Denetimi</string>
     <string name="pref_send_sec_gpc_summary">Kişisel bilgilerinizin ziyaret ettiğiniz web sitelerinde satılmasına veya üçüncü taraflarla paylaşılmasına izin verin </string>.
     <string name="homepage_webpage_home">Anasayfa</string>
+    <string name="toolbar_expandable_shortcuts_menu_browser">Tarayıcı Erişimi</string>
+    <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Özel Sekmeler</string>
+    <string name="toolbar_expandable_shortcuts_menu_webapp">internet uygulaması</string>
+    <string name="pref_check_app_link_title">Başlatılabilir Uygulama Bağlantısını kontrol edin</string>
+    <string name="pref_check_app_link_summary">Yüklemeden önce bir Uygulama Bağlantısının harici olarak açılması gerekip gerekmediğini sorun.</string>
+    <string name="dialog_open_external_title">Başlatılabilir Uygulama Bağlantısı algılandı</string>
+    <string name="dialog_open_external_message">Bu bağlantıyı harici bir uygulamada açmak ister misiniz?</string>
 
     <string-array name="errMsg">
         <item>Hata!</item>

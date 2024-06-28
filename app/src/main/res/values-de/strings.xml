@@ -29,7 +29,7 @@
     <string name="settings">Einstellungen</string>
     <string name="search_engine">"Suchmaschine"</string>
     <string name="homepage">"Startseite"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nErstellt am %4$s\n\nViola ist ein Produkt, das auf Browservio basiert.\nUm die Update-Kanäle zu ändern, installieren Sie bitte die APK-Datei des gewünschten Kanals neu.\n\nCopyright © 2020-%5$s Tipz Team\n\nDieses Produkt ist lizenziert unter der Apache License.</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\nErstellt am %4$s\n\nViola ist ein Produkt, das auf Browservio basiert.\n\nCopyright © 2020-%5$s Tipz Team\n\nDieses Produkt ist lizenziert unter der Apache License.</string>
     <string name="pref_check_for_updates_title">Auf Aktualisierungen prüfen</string>
     <string name="pref_check_for_updates_summary">Suchen Sie nach einem neuen Update und ermöglichen Sie Ihnen den Download, falls eines verfügbar ist.</string>
     <string name="version_latest_toast">"Sie verwenden aktuell die neueste Version von Viola."</string>
@@ -152,7 +152,14 @@
     <string name="pref_send_save_data_summary">Sendet eine Datenspeicherungsanfrage an unterstützte Websites </string>
     <string name="pref_send_sec_gpc_title">Globale Datenschutzkontrolle</string>
     <string name="pref_send_sec_gpc_summary">Erlauben Sie den Verkauf oder die Weitergabe Ihrer persönlichen Daten an Dritte auf den von Ihnen besuchten Websites</string>
-    <string name="homepage_webpage_home">Homepage</string>
+    <string name="homepage_webpage_home">Startseite</string>
+    <string name="toolbar_expandable_shortcuts_menu_browser">Browserzugriff</string>
+    <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Benutzerdefinierte Registerkarten</string>
+    <string name="toolbar_expandable_shortcuts_menu_webapp">Web-App</string>
+    <string name="pref_check_app_link_title">Suchen Sie nach einem startbaren App-Link</string>
+    <string name="pref_check_app_link_summary">Abfrage ob ein App-Link vor dem Laden extern geöffnet werden soll.</string>
+    <string name="dialog_open_external_title">Link zur startbaren App erkannt</string>
+    <string name="dialog_open_external_message">Möchten Sie diesen Link in einer externen App öffnen?</string>
 
     <string-array name="errMsg">
         <item>Fehler!</item>
