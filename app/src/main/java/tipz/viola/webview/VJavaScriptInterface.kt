@@ -13,8 +13,9 @@ class VJavaScriptInterface(private val context: Context) {
     fun getBase64FromBlobData(uriString: String, mimeType: String) {
         Log.i(LOG_TAG, "getBase64FromBlobData(): mimeType=${mimeType}")
         InternalDownloadProvider.apply {
-            byteArrayToFile(context, base64StringToByteArray(getRawDataFromDataUri(uriString)),
-                DownloadUtils.changeExtension("${System.currentTimeMillis()}.bin", mimeType))
+            byteArrayToFile(context,
+                DownloadUtils.base64StringToByteArray(DownloadUtils.getRawDataFromDataUri(uriString)),
+                "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}")
         }
     }
 

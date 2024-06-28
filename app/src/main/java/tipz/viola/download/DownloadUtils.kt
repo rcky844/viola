@@ -22,35 +22,12 @@ import android.net.Uri
 import android.os.Build
 import android.util.Base64
 import android.webkit.MimeTypeMap
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.UnsupportedEncodingException
-import java.net.URL
 import java.util.Locale
 import java.util.regex.Pattern
 
 object DownloadUtils {
-    suspend fun startFileDownload(urlString: String?) =
-        withContext(Dispatchers.IO) {
-            if (urlString!!.startsWith("data:")) {
-                val dataInfo = urlString.substring(urlString.indexOf(":") + 1, urlString.indexOf(","))
-                val dataString = urlString.substring(urlString.indexOf(",") + 1)
-                return@withContext if (dataInfo.contains(";base64")) Base64.decode(
-                    dataString,
-                    Base64.DEFAULT
-                ) else dataString.toByteArray()
-            } else if (urlString.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
-                return@withContext null
-            }
-            val url = URL(urlString)
-            return@withContext try {
-                url.readBytes()
-            } catch (_: Exception) {
-                byteArrayOf() // Return empty byte array to not crash on Exception
-            }
-        }!!
-
     fun isOnline(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -67,6 +44,36 @@ object DownloadUtils {
             val netInfo = cm.activeNetworkInfo
             return netInfo != null && netInfo.isConnectedOrConnecting
         }
+    }
+
+    fun dataStringToExtension(dataString: String) : String? {
+        val dataInfo =
+            dataString.substring(dataString.indexOf(":") + 1, dataString.indexOf(","))
+
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(
+            dataInfo.substring(
+                0,
+                if (dataInfo.contains(";")) dataInfo.indexOf(";")
+                else dataInfo.length
+            ))
+    }
+
+    fun dataStringToByteArray(dataString: String) : ByteArray {
+        val dataInfo =
+            dataString.substring(dataString.indexOf(":") + 1, dataString.indexOf(","))
+
+
+        val rawData = getRawDataFromDataUri(dataString)
+        return if (dataInfo.contains(";base64"))
+            base64StringToByteArray(rawData)
+            else dataString.toByteArray()
+    }
+
+    fun getRawDataFromDataUri(dataString: String) : String =
+        dataString.substring(dataString.indexOf(",") + 1)
+
+    fun base64StringToByteArray(dataString: String) : ByteArray {
+        return Base64.decode(dataString, Base64.DEFAULT)
     }
 
     /**

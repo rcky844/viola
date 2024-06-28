@@ -34,7 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
 import tipz.viola.download.DownloadObject
-import tipz.viola.download.DownloadUtils
+import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BrowserActivity
@@ -85,7 +85,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             if (src.isNullOrBlank()) icon.visibility = View.GONE
             else {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val data = DownloadUtils.startFileDownload(src)
+                    val data = MiniDownloadHelper.startDownload(src)!!
                     val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
                     if (bitmap != null)
                         CoroutineScope(Dispatchers.Main).launch {
