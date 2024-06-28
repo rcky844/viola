@@ -32,6 +32,11 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
     override fun startDownload(downloadObject: DownloadObject) {
         super.startDownload(downloadObject)
         downloadObject.apply {
+            if (checkIsOnline && !DownloadUtils.isOnline(context)) {
+                statusListener!!.post(DownloadProvider.Companion.DownloadStatus.NO_INTERNET)
+                return
+            }
+
             val request = DownloadManager.Request(
                 Uri.parse(UrlUtils.patchUrlForCVEMitigation(uriString))
             )

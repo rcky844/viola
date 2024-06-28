@@ -16,6 +16,9 @@ class DownloadObject {
     var contentDisposition: String? = null
     var mimeType: String? = null
     var requestUrl: String? = null
+
+    /* DownloadProvider specifics */
+    var checkIsOnline = true
     var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
     /* Helper functions / features */
