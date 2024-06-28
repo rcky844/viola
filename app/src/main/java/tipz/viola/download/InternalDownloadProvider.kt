@@ -14,9 +14,11 @@ import java.io.OutputStream
 
 class InternalDownloadProvider(override val context: Context) : DownloadProvider {
     override val capabilities = listOf(
-        // TODO: Enable for http/https downloads
-        // DownloadCapabilities.SCHEMA_HTTP,
-        // DownloadCapabilities.SCHEMA_HTTPS,
+        // TODO: Enable for http/https/file/ftp downloads
+        // DownloadCapabilities.PROTOCOL_HTTP,
+        // DownloadCapabilities.PROTOCOL_HTTPS,
+        // DownloadCapabilities.PROTOCOL_FILE.
+        // DownloadCapabilities.PROTOCOL_FTP.
         DownloadCapabilities.PROTOCOL_DATA,
         DownloadCapabilities.PROTOCOL_BLOB)
     override var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
