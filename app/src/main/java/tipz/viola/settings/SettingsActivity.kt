@@ -19,12 +19,8 @@ package tipz.viola.settings
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
-import android.app.DownloadManager
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -59,11 +55,12 @@ import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
+import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
-import tipz.viola.utils.ApkInstaller.installApplication
+import tipz.viola.utils.ApkInstaller
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.InternalUrls
@@ -119,17 +116,10 @@ class SettingsActivity : BaseActivity() {
     class SettingsPrefHandler(act: AppCompatActivity) : PreferenceFragmentCompat() {
         private lateinit var settingsActivity: AppCompatActivity
         private val settingsPreference: SettingsSharedPreference
-        private var downloadID: Long = 0
         private val updateDownloadPathBase =
-            Environment.getExternalStorageDirectory().absolutePath + "/" + Environment.DIRECTORY_DOWNLOADS + "/"
+            "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/"
         private var updateDownloadPath: String? = null
         private val updateConfigLiveData = MutableLiveData<JSONObject>()
-        private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
-                installApplication(settingsActivity, updateDownloadPath)
-            }
-        }
         private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
         init {
@@ -157,23 +147,10 @@ class SettingsActivity : BaseActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.pref_settings, rootKey)
             initializeLogic()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                settingsActivity.registerReceiver(
-                    onDownloadComplete,
-                    IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
-                    RECEIVER_EXPORTED
-                )
-            } else {
-                settingsActivity.registerReceiver(
-                    onDownloadComplete,
-                    IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-                )
-            }
         }
 
         override fun onDestroyView() {
             super.onDestroyView()
-            settingsActivity.unregisterReceiver(onDownloadComplete)
         }
 
         private fun needLoad(Url: String) {
@@ -429,23 +406,29 @@ class SettingsActivity : BaseActivity() {
                         )
                     )
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        val filename =
-                            updateDownloadPathBase + DocumentFile.fromSingleUri(
-                                settingsActivity,
-                                Uri.parse(jChannelUpdateObject.getString("url"))
-                            )?.name
+                        val filename = jChannelUpdateObject.getString("url")
+                            .substringAfterLast('/')
                         this@SettingsPrefHandler.updateDownloadPath =
                             updateDownloadPathBase + filename
                         val apkFile = File(updateDownloadPath!!)
 
-                        if (!apkFile.exists() || apkFile.delete())
+                        if (!apkFile.exists() || apkFile.delete()) {
                             DownloadClient(settingsActivity).addToQueue(DownloadObject().apply {
                                 // TODO: reimplement resources.getString(R.string.download_title)
                                 // TODO: Move to mini-download client
                                 uriString = jChannelUpdateObject.getString("url")
                                 mimeType = "application/vnd.android.package-archive"
                                 this.filename = filename
+                                statusListener =
+                                    DownloadProvider.Companion.DownloadStatusListener { status ->
+                                        if (status == DownloadProvider.Companion.DownloadStatus.STOPPED)
+                                            ApkInstaller.installApplication(
+                                                settingsActivity,
+                                                updateDownloadPath
+                                            )
+                                    }
                             })
+                        }
                         else
                             showMessage(
                                 settingsActivity,
