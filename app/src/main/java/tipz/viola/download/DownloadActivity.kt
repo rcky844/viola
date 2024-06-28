@@ -3,6 +3,7 @@ package tipz.viola.download
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +21,7 @@ import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.webviewui.BaseActivity
+import java.io.File
 import java.lang.ref.WeakReference
 
 class DownloadActivity : BaseActivity() {
@@ -89,6 +92,30 @@ class DownloadActivity : BaseActivity() {
 
             holder.title.text = data.filename
             holder.url.text = data.uriString
+
+            holder.back.setOnClickListener {
+                data.apply {
+                    val file = File("$downloadPath$filename")
+                    if (!file.exists()) {
+                        Log.i(LOG_TAG, "onClickListener(): File does not exist, taskId=$taskId")
+                        return@apply
+                    }
+
+                    val openUri = FileProvider.getUriForFile(
+                        mDownloadActivity.get()!!,
+                        mDownloadActivity.get()!!.applicationContext.packageName
+                            + ".provider",
+                        file
+                    )
+                    Log.i(LOG_TAG, "onClickListener(): taskId=$taskId, openUri=$openUri")
+
+                    val intent = Intent()
+                        .setAction(Intent.ACTION_VIEW)
+                        .setData(openUri)
+                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    mDownloadActivity.get()!!.startActivity(intent)
+                }
+            }
         }
 
         override fun getItemCount(): Int {
@@ -98,6 +125,7 @@ class DownloadActivity : BaseActivity() {
     }
 
     companion object {
+        private var LOG_TAG = "DownloadActivity"
         private var listData: MutableList<DownloadObject>? = null
     }
 }
