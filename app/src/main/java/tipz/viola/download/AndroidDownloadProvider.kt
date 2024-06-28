@@ -51,7 +51,8 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
             try {
-                val filename = filename ?: UrlUtils.guessFileName(uriString, contentDisposition, mimeType)
+                if (filename == null)
+                    filename = UrlUtils.guessFileName(uriString, contentDisposition, mimeType)
                 Log.i(LOG_TAG, "startDownload(): filename=${filename}")
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
             } catch (e: IllegalStateException) {

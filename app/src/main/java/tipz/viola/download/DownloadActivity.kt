@@ -87,7 +87,8 @@ class DownloadActivity : BaseActivity() {
             val downloadActivity = mDownloadActivity.get()
             val data = listData!![position]
 
-            holder.title.text = data.uriString
+            holder.title.text = data.filename
+            holder.url.text = data.uriString
         }
 
         override fun getItemCount(): Int {

@@ -30,7 +30,7 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
                 DownloadCapabilities.PROTOCOL_DATA -> {
                     val dataInfo =
                         uriString.substring(uriString.indexOf(":") + 1, uriString.indexOf(","))
-                    val filename = (System.currentTimeMillis().toString() + "."
+                    filename = (System.currentTimeMillis().toString() + "."
                             + MimeTypeMap.getSingleton().getExtensionFromMimeType(
                         dataInfo.substring(
                             0,
@@ -44,7 +44,7 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
                         if (dataInfo.contains(";base64")) base64StringToByteArray(dataString)
                         else dataString.toByteArray()
 
-                    byteArrayToFile(context, writableBytes, filename)
+                    byteArrayToFile(context, writableBytes, filename!!)
                 }
 
                 DownloadCapabilities.PROTOCOL_BLOB -> mimeType?.let {
