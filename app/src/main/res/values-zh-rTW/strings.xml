@@ -29,9 +29,9 @@
     <string name="settings">設定</string>
     <string name="search_engine">搜尋引擎</string>
     <string name="homepage">首頁</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\n編譯於%4$s\n\nViola是一款基於Browservio的產品。\n請重新安裝所需頻道的 APK 檔案以變更更新頻道。\n\n版權所有 © 2020-%5$s Tipz Team\n本產品已獲得 Apache 證書</string>
+    <string name="version_info_message">"%1$s %2$s (%3$s)\n編譯於%4$s\n\nViola是一款基於Browservio的產品\n\n版權所有 © 2020-%5$s Tipz Team\n本產品已獲得 Apache 證書</string>
     <string name="pref_check_for_updates_title">檢查更新</string>
-    <string name="pref_check_for_updates_summary">檢查是否有新更新，如果有可用則允許您下載。</string>
+    <string name="pref_check_for_updates_summary">檢查是否有新更新，如果有可用則允許您下載</string>
     <string name="version_latest_toast">您目前使用的是最新版本的Viola</string>
     <string name="network_unavailable_toast">網路不可用</string>
     <string name="new_update_detect_title">"檢測到新的版本"</string>
@@ -60,7 +60,7 @@
     <string name="add_to_fav">儲存到書籤</string>
     <string name="del_hist_message">"您將要刪除全部歷史記錄, 您確定要這樣做嗎?"</string>
     <string name="license_btn">證書</string>
-    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">錯誤發生對於給您帶來的不便，我們表示歉意。</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">錯誤發生對於給您帶來的不便，我們表示歉意</string>
     <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">重開應用程式</string>
     <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">關閉應用程式</string>
     <string name="customactivityoncrash_error_activity_error_details" tools:keep="@string/customactivityoncrash_error_activity_error_details">錯誤詳細</string>
@@ -72,7 +72,7 @@
     <string name="visual">視覺效果</string>
     <string name="data_privacy">資料和隱私</string>
     <string name="reset_btn_desp">清除全部瀏覽器資料</string>
-    <string name="reset_dialog">這將會清除全部瀏覽器資料。\n</string>
+    <string name="reset_dialog">這將會清除全部瀏覽器資料\n</string>
     <string name="to_continue">您確定要繼續嗎？</string>
     <string name="search_suggestions_title">搜尋建議</string>
     <string name="get_changelog">閱讀變更日誌</string>
@@ -83,20 +83,20 @@
     <string name="copy_url">複製鏈接</string>
     <string name="download_image">下載圖片</string>
     <string name="open_in_new_tab">在新分頁中開啟</string>
-    <string name="no_webview">WebView是必要的，但並未安裝。</string>
+    <string name="no_webview">WebView是必要的，但並未安裝</string>
     <string name="share_url">分享鏈接</string>
     <string name="pref_theme">主題</string>
     <string name="ssl_info">SSL憑證資訊</string>
     <string name="ssl_info_dialog_content">頒發給\n\t通用名 (CN): %1$s\n\t機構 (O): %2$s\n\t機構單位 (OU): %3$s\n\n頒發者\n\t通用名 (CN): %4$s\n\t機構 (O): %5$s\n\t機構單位 (OU): %6$s\n\n有效期\n\t頒發日期: %7$s\n\t到期日期: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL憑證錯誤</string>
     <string name="ssl_certificate_error_dialog_content">%s你想繼續嗎?</string>
-    <string name="ssl_certificate_date_invalid">憑證日期無效。</string>
-    <string name="ssl_certificate_invalid">發生了普通的SSL錯誤。</string>
-    <string name="ssl_certificate_expired">憑證已過期。</string>
-    <string name="ssl_certificate_idmismatch">憑證主機名不匹配。</string>
-    <string name="ssl_certificate_notyetvalid">憑證尚未生效。</string>
-    <string name="ssl_certificate_untrusted">憑證頒發機構不受信任。</string>
-    <string name="ssl_certificate_unknown">發生未知SSL錯誤。</string>
+    <string name="ssl_certificate_date_invalid">憑證日期無效</string>
+    <string name="ssl_certificate_invalid">發生了普通的SSL錯誤</string>
+    <string name="ssl_certificate_expired">憑證已過期</string>
+    <string name="ssl_certificate_idmismatch">憑證主機名不匹配</string>
+    <string name="ssl_certificate_notyetvalid">憑證尚未生效</string>
+    <string name="ssl_certificate_untrusted">憑證頒發機構不受信任</string>
+    <string name="ssl_certificate_unknown">發生未知SSL錯誤</string>
     <string name="favMenuEdit">編輯</string>
     <string name="favMenuTitle">標題</string>
     <string name="favMenuLink">鏈接</string>
@@ -126,9 +126,9 @@
     <string name="dialog_page_unresponsive_message">您可以等待它回應或終止此分頁頁</string>
     <string name="dialog_page_unresponsive_wait">等待</string>
     <string name="dialog_page_unresponsive_terminate">終止</string>
-    <string name="toast_no_app_to_handle">沒有應用程式可以處理此操作。</string>
+    <string name="toast_no_app_to_handle">沒有應用程式可以處理此操作</string>
     <string name="pref_dont_use_start_page_title">使用基於網路的主頁</string>
-    <string name="pref_dont_use_start_page_summary">開啟一個網頁而不是起始頁作為首頁。</string>
+    <string name="pref_dont_use_start_page_summary">開啟一個網頁而不是起始頁作為首頁</string>
     <string name="toolbar_expandable_new_tab">新標籤</string>
     <string name="toolbar_expandable_favorites">收藏夾</string>
     <string name="toolbar_expandable_history">歷史記錄</string>
@@ -149,10 +149,18 @@
     <string name="pref_adBlockerDownload_title">下載廣告攔截器主機檔案</string>
     <string name="pref_adBlockerSource_title">廣告攔截器主機來源</string>
     <string name="pref_send_save_data_title">流量節省</string>
-    <string name="pref_send_save_data_summary">向支援的網站發送流量節省請求。 </string>
+    <string name="pref_send_save_data_summary">向支援的網站發送流量節省請求</string>
     <string name="pref_send_sec_gpc_title">全域隱私控制</string>
-    <string name="pref_send_sec_gpc_summary">允許在您造訪的網站上與第三方出售或分享您的個人資訊。 </string>
+    <string name="pref_send_sec_gpc_summary">允許在您造訪的網站上與第三方出售或分享您的個人資訊</string>
     <string name="homepage_webpage_home">網頁首頁</string>
+    <string name="toolbar_expandable_shortcuts_menu_browser">瀏覽器訪問</string>
+    <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Custom Tabs</string>
+    <string name="toolbar_expandable_shortcuts_menu_webapp">Web App</string>
+    <string name="pref_check_app_link_title">檢查可啟動的應用程式鏈接</string>
+    <string name="pref_check_app_link_summary">在載入前詢問是否需要在外部開啟 App Link</string>
+    <string name="dialog_open_external_title">檢測到可啟動的 App Link</string>
+    <string name="dialog_open_external_message">您想在外部應用程式中開啟此 App Link 嗎？</string>
+    <string name="toolbar_expandable_downloads">下載</string>
 
     <string-array name="errMsg">
         <item>錯誤!</item>
