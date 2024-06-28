@@ -31,7 +31,7 @@ class CustomTabsActivity : VWebViewActivity() {
     private lateinit var host: AppCompatTextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.custom_tab)
+        setContentView(R.layout.activity_custom_tab)
         appbar = findViewById(R.id.appbar)
 
         /* Back button */

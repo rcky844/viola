@@ -112,7 +112,7 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
+        setContentView(R.layout.activity_main)
 
         // Initialize variables
         upRightFab = findViewById(R.id.upRightFab)
