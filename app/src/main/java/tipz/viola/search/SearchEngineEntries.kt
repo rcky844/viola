@@ -23,56 +23,84 @@ object SearchEngineEntries {
     private const val queryPlaceholder = "{query}"
     private const val languagePlaceholder = "{language}"
     private val engines = arrayOf(
-            EngineObject().setHomePage("https://www.google.com")
-                    .setSearch("https://www.google.com/search?q={query}")
-                    .setSuggestion("http://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q={query}&hl={language}"),
-            EngineObject().setHomePage("https://www.baidu.com")
-                    .setSearch("https://www.baidu.com/s?wd={query}")
-                    .setSuggestion("https://suggestion.baidu.com/su?ie=UTF-8&wd={query}&action=opensearch"),
-            EngineObject().setHomePage("https://www.duckduckgo.com")
-                    .setSearch("https://www.duckduckgo.com/?q={query}")
-                    .setSuggestion("https://duckduckgo.com/ac/?q={query}&type=list"),
-            EngineObject().setHomePage("https://www.bing.com")
-                    .setSearch("https://www.bing.com/search?q={query}")
-                    .setSuggestion("https://api.bing.com/osjson.aspx?query={query}&language={language}"),
-            EngineObject().setHomePage("https://search.yahoo.com")
-                    .setSearch("https://search.yahoo.com/search?p={query}")
-                    .setSuggestion("https://sugg.search.yahoo.net/sg/?output=fxjson&command={query}"),
-            EngineObject().setHomePage("https://www.ecosia.org")
-                    .setSearch("https://www.ecosia.org/search?q={query}")
-                    .setSuggestion("https://ac.ecosia.org/autocomplete?q={query}&type=list"),
-            EngineObject().setHomePage("https://yandex.com")
-                    .setSearch("https://yandex.com/search/?text={query}")
-                    .setSuggestion("https://yandex.com/suggest/suggest-ya.cgi?v=4&part={query}"),
-            EngineObject().setHomePage("https://search.brave.com")
-                    .setSearch("https://search.brave.com/search?q={query}")
-                    .setSuggestion("https://search.brave.com/api/suggest?q={query}"),
-            EngineObject().setHomePage("https://www.startpage.com/")
-                    .setSearch("https://startpage.com/do/search?query={query}")
-                    .setSuggestion("https://www.startpage.com/suggestions?q={query}"),
-            EngineObject().setHomePage("https://whoogle.io/")
-                    .setSearch("https://whoogle.io/search?q={query}")
-                    .setSuggestion("https://whoogle.io/autocomplete?q={query}"),
-            EngineObject().setHomePage("https://swisscows.com/")
-                    .setSearch("https://swisscows.com/web?query={query}")
-                    .setSuggestion("https://api.swisscows.com/suggest?query={query}"),
-            EngineObject().setHomePage("https://www.qwant.com/")
-                    .setSearch("https://www.qwant.com/?q={query}")
-                    .setSuggestion("https://api.qwant.com/v3/suggest?q={query}"),
-            EngineObject().setHomePage("https://www.sogou.com/")
-                    .setSearch("https://www.sogou.com/web?query={query}")
-                    .setSuggestion("https://sor.html5.qq.com/api/getsug?key={query}"),
-            EngineObject().setHomePage("https://www.so.com/")
-                    .setSearch("https://www.so.com/s?q={query}")
-                    .setSuggestion("https://sug.so.360.cn/suggest?word={query}"),
-            EngineObject() /* The object for custom URL */
+        EngineObject().apply {
+            homePage = "https://www.google.com"
+            search = "$homePage/search?q=$queryPlaceholder"
+            suggestion = "http://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q=$queryPlaceholder&hl=$languagePlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://www.baidu.com"
+            search = "$homePage/s?wd=$queryPlaceholder"
+            suggestion = "https://suggestion.baidu.com/su?ie=UTF-8&wd=$queryPlaceholder&action=opensearch"
+        },
+        EngineObject().apply {
+            homePage = "https://www.duckduckgo.com"
+            search = "$homePage/?q=$queryPlaceholder"
+            suggestion = "$homePage/ac/?q=$queryPlaceholder&type=list"
+        },
+        EngineObject().apply {
+            homePage = "https://www.bing.com"
+            search = "$homePage/search?q=$queryPlaceholder"
+            suggestion = "https://api.bing.com/osjson.aspx?query=$queryPlaceholder&language=$languagePlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://search.yahoo.com"
+            search = "$homePage/search?p=$queryPlaceholder"
+            suggestion = "https://sugg.search.yahoo.net/sg/?output=fxjson&command=$queryPlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://www.ecosia.org"
+            search = "$homePage/search?q=$queryPlaceholder"
+            suggestion = "https://ac.ecosia.org/autocomplete?q=$queryPlaceholder&type=list"
+        },
+        EngineObject().apply {
+            homePage = "https://yandex.com"
+            search = "$homePage/search/?text=$queryPlaceholder"
+            suggestion = "$homePage/suggest/suggest-ya.cgi?v=4&part=$queryPlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://search.brave.com"
+            search = "$homePage/search?q=$queryPlaceholder"
+            suggestion = "$homePage/api/suggest?q=$queryPlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://www.startpage.com"
+            search = "$homePage/do/search?query=$queryPlaceholder"
+            suggestion = "$homePage/suggestions?q=$queryPlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://whoogle.io"
+            search = "$homePage/search?q=$queryPlaceholder"
+            suggestion = "$homePage/autocomplete?q=$queryPlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://swisscows.com"
+            search = "$homePage/web?query=$queryPlaceholder"
+            suggestion = "https://api.swisscows.com/suggest?query=$queryPlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://www.qwant.com"
+            search = "$homePage/?q=$queryPlaceholder"
+            suggestion = "https://api.qwant.com/v3/suggest?q=$queryPlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://www.sogou.com"
+            search = "$homePage/web?query=$queryPlaceholder"
+            suggestion = "https://sor.html5.qq.com/api/getsug?key=$queryPlaceholder"
+        },
+        EngineObject().apply {
+            homePage = "https://www.so.com"
+            search = "$homePage/s?q=$queryPlaceholder"
+            suggestion = "https://sug.so.360.cn/suggest?word=$queryPlaceholder"
+        },
+        EngineObject() /* The object for custom URL */
     )
 
     val customIndex = engines.size - 1
 
     fun getHomePageUrl(pref: SettingsSharedPreference?, position: Int): String {
         var url: String? = engines[position].homePage
-        if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultHomePage)
+        if (url.isNullOrEmpty()) url = pref!!.getString(SettingsKeys.defaultHomePage)
         return patchUrlForCVEMitigation(url!!)
     }
 
@@ -83,7 +111,7 @@ object SearchEngineEntries {
             language: String?
     ): String {
         var url: String? = engines[position].search
-        if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultSearch)
+        if (url.isNullOrEmpty()) url = pref!!.getString(SettingsKeys.defaultSearch)
         if (query != null) url =
                 url!!.replace(queryPlaceholder, query).replace(languagePlaceholder, language!!)
         return patchUrlForCVEMitigation(url!!)
@@ -97,7 +125,7 @@ object SearchEngineEntries {
             language: String?
     ): String {
         var url: String? = engines[position].suggestion
-        if (url!!.isEmpty()) url = pref!!.getString(SettingsKeys.defaultSuggestions)
+        if (url.isNullOrEmpty()) url = pref!!.getString(SettingsKeys.defaultSuggestions)
         if (query != null && language != null) url = url!!.replace(queryPlaceholder, query).replace(
                 languagePlaceholder, language
         )
