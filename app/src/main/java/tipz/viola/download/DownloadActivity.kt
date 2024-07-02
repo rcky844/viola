@@ -32,7 +32,7 @@ class DownloadActivity : BaseActivity() {
         downloadClient = (applicationContext as Application).downloadClient
 
         ListInterfaceActivity.activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
-        setContentView(R.layout.recycler_data_list_activity)
+        setContentView(R.layout.activity_recycler_data_list)
         title = resources.getString(R.string.toolbar_expandable_downloads)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -81,7 +81,7 @@ class DownloadActivity : BaseActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_data_list_item, parent, false)
+                .inflate(R.layout.template_icon_title_descriptor_time, parent, false)
             return ViewHolder(view)
         }
 

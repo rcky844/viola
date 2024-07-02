@@ -24,7 +24,7 @@ import java.io.FileOutputStream
 import java.nio.ByteBuffer
 
 @Suppress("DEPRECATION")
-class IconHashUtils(context: Context) {
+class IconHashClient(context: Context) {
     private val fileDir: String
 
     init {
@@ -42,7 +42,8 @@ class IconHashUtils(context: Context) {
             try {
                 val out = FileOutputStream(path)
                 icon.compress(
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSY else Bitmap.CompressFormat.WEBP, 75, out
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSY
+                    else Bitmap.CompressFormat.WEBP, 75, out
                 )
                 out.flush()
                 out.close()

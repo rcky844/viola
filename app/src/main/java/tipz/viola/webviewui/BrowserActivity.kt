@@ -68,13 +68,12 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tipz.viola.Application
 import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha
-import tipz.viola.broha.database.IconHashUtils
+import tipz.viola.broha.database.IconHashClient
 import tipz.viola.download.DownloadActivity
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
@@ -95,7 +94,7 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUserAgent: String? = null
     private var currentCustomUAWideView = false
     private lateinit var favClient: FavClient
-    private lateinit var iconHashClient: IconHashUtils
+    private lateinit var iconHashClient: IconHashClient
     private lateinit var toolBar: RecyclerView
     private lateinit var toolsBarExtendableRecycler: RecyclerView
     private lateinit var toolsBarExtendableBackground: ConstraintLayout
@@ -112,7 +111,7 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
+        setContentView(R.layout.activity_main)
 
         // Initialize variables
         upRightFab = findViewById(R.id.upRightFab)
@@ -124,7 +123,7 @@ class BrowserActivity : VWebViewActivity() {
         favicon = findViewById(R.id.favicon)
         startPageLayout = findViewById(R.id.layout_startpage)
         favClient = FavClient(this)
-        iconHashClient = (applicationContext as Application).iconHashClient
+        iconHashClient = IconHashClient(this)
         sslLock = findViewById(R.id.ssl_lock)
         homeButton = findViewById(R.id.home_button)
 
@@ -227,7 +226,7 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setAdapter(
             SuggestionAdapter(
                 this@BrowserActivity,
-                R.layout.recycler_list_item_1
+                R.layout.template_item_text_single
             )
         )
 
@@ -359,7 +358,7 @@ class BrowserActivity : VWebViewActivity() {
                 dialog.setTitle(resources.getString(R.string.toolbar_expandable_app_shortcut))
 
                 // TODO: Export as proper list
-                val arrayAdapter = ArrayAdapter<String>(this, R.layout.recycler_list_item_1)
+                val arrayAdapter = ArrayAdapter<String>(this, R.layout.template_item_text_single)
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_browser))
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_custom_tabs))
                 arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_webapp))
@@ -578,7 +577,7 @@ class BrowserActivity : VWebViewActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_icon_item, parent, false)
+                .inflate(R.layout.template_icon_item, parent, false)
             return ViewHolder(view)
         }
 
@@ -630,7 +629,7 @@ class BrowserActivity : VWebViewActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_toolsbar_expandable_icon_item, parent, false)
+                .inflate(R.layout.template_icon_description_item, parent, false)
             return ViewHolder(view)
         }
 

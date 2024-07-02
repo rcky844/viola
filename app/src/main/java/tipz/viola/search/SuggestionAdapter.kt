@@ -59,7 +59,7 @@ class SuggestionAdapter(private val mContext: Context, resource: Int) : ArrayAda
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var mConvertView = convertView
         if (mConvertView == null) mConvertView =
-            mInflater.inflate(R.layout.list_item_suggestions, parent, false)
+            mInflater.inflate(R.layout.template_text_suggestions, parent, false)
         val title = mConvertView!!.findViewById<AppCompatTextView>(android.R.id.text1)
         val copy_to_search_bar_button = mConvertView.findViewById<AppCompatImageView>(R.id.copy_to_search_bar_button)
         val suggestion = mItems[position]

@@ -71,7 +71,7 @@ class SettingsActivity : BaseActivity() {
     private val needLoad = Intent()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_settings)
+        setContentView(R.layout.activity_settings)
         val toolbar = findViewById<Toolbar>(R.id._toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

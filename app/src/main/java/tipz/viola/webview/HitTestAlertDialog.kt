@@ -76,7 +76,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         } else {
             val layoutInflater = LayoutInflater.from(context)
             @SuppressLint("InflateParams") val root =
-                layoutInflater.inflate(R.layout.hit_test_dialog_title, null)
+                layoutInflater.inflate(R.layout.dialog_hit_test_title, null)
 
             root.findViewById<AppCompatTextView>(R.id.title).text = title.trim()
             root.findViewById<AppCompatTextView>(R.id.url).text = url
@@ -97,7 +97,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             this.setCustomTitle(root)
         }
 
-        arrayAdapter = ArrayAdapter<String>(context, R.layout.recycler_list_item_1)
+        arrayAdapter = ArrayAdapter<String>(context, R.layout.template_item_text_single)
         for (item in hitTestDialogItems) {
             if (item == R.string.copy_text_url && title.isNullOrBlank()) continue
 

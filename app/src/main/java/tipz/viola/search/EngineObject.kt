@@ -15,25 +15,8 @@
  */
 package tipz.viola.search
 
-import tipz.viola.utils.CommonUtils
-
 class EngineObject {
-    var homePage = CommonUtils.EMPTY_STRING
-    var search = CommonUtils.EMPTY_STRING
-    var suggestion = CommonUtils.EMPTY_STRING
-
-    fun setHomePage(homePage: String): EngineObject {
-        this.homePage = homePage
-        return this
-    }
-
-    fun setSearch(search: String): EngineObject {
-        this.search = search
-        return this
-    }
-
-    fun setSuggestion(suggestion: String): EngineObject {
-        this.suggestion = suggestion
-        return this
-    }
+    var homePage: String? = null
+    var search: String? = null
+    var suggestion: String? = null
 }
