@@ -247,12 +247,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             && UrlUtils.isUriLaunchable(url)) {
             var handled = false
             val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            webIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+            webIntent.addCategory(Intent.CATEGORY_BROWSABLE)
             webIntent.setFlags(
                 FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REQUIRE_NON_BROWSER or
                         FLAG_ACTIVITY_REQUIRE_DEFAULT
             )
-            val packageManager = activity.packageManager;
+            val packageManager = activity.packageManager
             if (packageManager?.let { webIntent.resolveActivity(it) } != null) {
                 val dialog = MaterialAlertDialogBuilder(activity)
                 dialog.setTitle(resources.getString(R.string.dialog_open_external_title))
