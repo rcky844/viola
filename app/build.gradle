@@ -41,6 +41,9 @@ android {
         resConfigs 'de-rDE', 'en-rGB', 'fr-rFR', 'tr', 'vi', 'zh-rCN', 'zh-rTW'
 
     }
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
         release {
             minifyEnabled true
