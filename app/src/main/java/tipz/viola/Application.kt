@@ -16,6 +16,8 @@
 package tipz.viola
 
 import android.app.Application
+import android.content.Context
+import androidx.multidex.MultiDex
 import com.google.android.material.color.DynamicColors
 import tipz.viola.download.DownloadClient
 import tipz.viola.settings.SettingsSharedPreference
@@ -31,5 +33,10 @@ class Application : Application() {
 
         // Observe dynamic colors changes
         DynamicColors.applyToActivitiesIfAvailable(this)
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(base)
     }
 }
