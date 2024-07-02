@@ -58,60 +58,73 @@ import java.util.Objects
 class ListInterfaceActivity : BaseActivity() {
     lateinit var favClient: FavClient
     lateinit var historyClient: HistoryClient
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
-        favClient = FavClient(this)
-        historyClient = HistoryClient(this)
-        if (activityMode != mode_history && activityMode != mode_favorites) finish()
-        setContentView(R.layout.activity_recycler_data_list)
-        initialize()
-        title = resources.getString(if (activityMode == mode_history) R.string.hist else R.string.fav)
-    }
+    lateinit var itemsAdapter: ItemsAdapter
 
-    /**
-     * Initialize function
-     */
-    private fun initialize() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setHomeButtonEnabled(true)
-        toolbar.setNavigationOnClickListener { finish() }
-        val fab = findViewById<FloatingActionButton>(R.id._fab)
-        fab.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
-                .setTitle(resources.getString(R.string.delete_all_entries))
-                .setMessage(resources.getString(if (activityMode == mode_history) R.string.del_hist_message else R.string.delete_fav_message))
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    CoroutineScope(Dispatchers.IO).launch {
-                        if (activityMode == mode_history) historyClient.deleteAll()
-                        else if (activityMode == mode_favorites) favClient.deleteAll()
-                    }
-                    showMessage(this, resources.getString(R.string.wiped_success))
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val brohaList = findViewById<RecyclerView>(R.id.recyclerView)
-
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateListData() {
         CoroutineScope(Dispatchers.IO).launch {
             listData =
                 if (activityMode == mode_history) historyClient.getAll() as MutableList<Broha>?
                 else favClient.getAll() as MutableList<Broha>?
         }
 
+        CoroutineScope(Dispatchers.Main).launch {
+            // FIXME: Update list dynamically to save system resources
+            itemsAdapter.notifyDataSetChanged()
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        /* Setup some lateinit constants */
+        activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
+        favClient = FavClient(this)
+        historyClient = HistoryClient(this)
+
+        /* Setup UI */
+        setContentView(R.layout.activity_recycler_data_list)
+        title = resources.getString(if (activityMode == mode_history) R.string.hist else R.string.fav)
+
+        // Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        toolbar.setNavigationOnClickListener { finish() }
+
+        // Clear all button
+        val fab = findViewById<FloatingActionButton>(R.id._fab)
+        fab.setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(resources.getString(R.string.delete_all_entries))
+                .setMessage(resources.getString(
+                    if (activityMode == mode_history) R.string.del_hist_message
+                    else R.string.delete_fav_message)
+                )
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (activityMode == mode_history) historyClient.deleteAll()
+                        else if (activityMode == mode_favorites) favClient.deleteAll()
+                        updateListData()
+                    }
+                    showMessage(this, resources.getString(R.string.wiped_success))
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show()
+        }
+
+        // RecyclerView
+        val brohaList = findViewById<RecyclerView>(R.id.recyclerView)
         val layoutManager = brohaList.layoutManager as LinearLayoutManager
         layoutManager.reverseLayout = activityMode == mode_history
         layoutManager.stackFromEnd = activityMode == mode_history
-        brohaList.adapter = ItemsAdapter(
+        updateListData()
+        itemsAdapter = ItemsAdapter(
             this@ListInterfaceActivity,
             (applicationContext as Application).iconHashClient
         )
+        brohaList.adapter = itemsAdapter
     }
 
     class ItemsAdapter(
@@ -204,10 +217,10 @@ class ListInterfaceActivity : BaseActivity() {
                     listInterfaceActivity.finish()
                 }
                 holder.back.setOnLongClickListener { view: View? ->
-                    val popup1 = PopupMenu(
+                    val popup = PopupMenu(
                         listInterfaceActivity, view!!
                     )
-                    val menu1 = popup1.menu
+                    val menu1 = popup.menu
                     if (activityMode == mode_history) {
                         menu1.add(listInterfaceActivity.resources.getString(R.string.delete))
                         menu1.add(listInterfaceActivity.resources.getString(R.string.copy_url))
@@ -217,7 +230,7 @@ class ListInterfaceActivity : BaseActivity() {
                         menu1.add(listInterfaceActivity.resources.getString(R.string.copy_url))
                         menu1.add(listInterfaceActivity.resources.getString(R.string.delete))
                     }
-                    popup1.setOnMenuItemClickListener { item: MenuItem ->
+                    popup.setOnMenuItemClickListener { item: MenuItem ->
                         if (item.title.toString() == listInterfaceActivity.resources.getString(R.string.delete)) {
                             CoroutineScope(Dispatchers.IO).launch {
                                 if (activityMode == mode_history)
@@ -229,14 +242,10 @@ class ListInterfaceActivity : BaseActivity() {
                             notifyItemRemoved(position)
                             notifyItemRangeRemoved(position, itemCount - position)
                         } else if (item.title.toString() == listInterfaceActivity.resources.getString(
-                                R.string.copy_url
-                            )
-                        ) {
+                                R.string.copy_url)) {
                             copyClipboard(listInterfaceActivity, url)
                         } else if (item.title.toString() == listInterfaceActivity.resources.getString(
-                                R.string.favMenuEdit
-                            )
-                        ) {
+                                R.string.favMenuEdit)) {
                             val layoutInflater = LayoutInflater.from(listInterfaceActivity)
                             @SuppressLint("InflateParams") val root =
                                 layoutInflater.inflate(R.layout.dialog_fav_edit, null)
@@ -249,8 +258,7 @@ class ListInterfaceActivity : BaseActivity() {
                                 .setView(root)
                                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                     if (Objects.requireNonNull(titleEditText.text).toString() != title
-                                        || Objects.requireNonNull(urlEditText.text).toString() != url
-                                    ) {
+                                        || Objects.requireNonNull(urlEditText.text).toString() != url) {
                                         data.title =
                                             Objects.requireNonNull(titleEditText.text).toString()
                                         data.url = Objects.requireNonNull(urlEditText.text).toString()
@@ -269,8 +277,7 @@ class ListInterfaceActivity : BaseActivity() {
                                 .setIcon(holder.icon.drawable)
                                 .create().show()
                         } else if (item.title.toString() == listInterfaceActivity.resources.getString(
-                                R.string.add_to_fav
-                            )) {
+                                R.string.add_to_fav)) {
                             CoroutineScope(Dispatchers.IO).launch {
                                 clientActivity.favClient.insert(Broha(data.iconHash, title, url!!))
                             }
@@ -283,15 +290,16 @@ class ListInterfaceActivity : BaseActivity() {
                         }
                         true
                     }
-                    popup1.show()
+                    popup.show()
                     true
                 }
             }
         }
 
         override fun getItemCount(): Int {
-            if (listData == null || listData!!.size == 0) return 1
-            else return listData!!.size
+            // Return 1 so that empty message is shown
+            return if (listData == null || listData!!.size == 0) 1
+            else listData!!.size
         }
     }
 
