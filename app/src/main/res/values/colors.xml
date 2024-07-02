@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default value for unavailable attrs -->
+    <color name="legacy_colorSurface">#FEF7FF</color>
+    <color name="legacy_colorSurfaceVariant">#E7E0EC</color>
+    <color name="legacy_colorSurfaceContainer">#F3EDF7</color>
+</resources>
