@@ -93,6 +93,7 @@ class LauncherActivity : AppCompatActivity() {
                 BrowserActivity::class.java else CustomTabsActivity::class.java
         )
         launchIntent.data = uri
+        launchIntent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
         if (shortcutType == 2) launchIntent.putExtra(CustomTabsActivity.EXTRA_LAUNCH_AS_WEBAPP, true)
         startActivity(launchIntent)
 
