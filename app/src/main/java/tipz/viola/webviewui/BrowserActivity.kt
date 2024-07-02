@@ -74,7 +74,7 @@ import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha
-import tipz.viola.broha.database.IconHashUtils
+import tipz.viola.broha.database.IconHashClient
 import tipz.viola.download.DownloadActivity
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
@@ -95,7 +95,7 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUserAgent: String? = null
     private var currentCustomUAWideView = false
     private lateinit var favClient: FavClient
-    private lateinit var iconHashClient: IconHashUtils
+    private lateinit var iconHashClient: IconHashClient
     private lateinit var toolBar: RecyclerView
     private lateinit var toolsBarExtendableRecycler: RecyclerView
     private lateinit var toolsBarExtendableBackground: ConstraintLayout

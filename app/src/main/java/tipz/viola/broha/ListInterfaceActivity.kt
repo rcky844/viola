@@ -43,7 +43,7 @@ import tipz.viola.R
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.api.HistoryClient
 import tipz.viola.broha.database.Broha
-import tipz.viola.broha.database.IconHashUtils
+import tipz.viola.broha.database.IconHashClient
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.copyClipboard
 import tipz.viola.utils.CommonUtils.showMessage
@@ -135,10 +135,10 @@ class ListInterfaceActivity : BaseActivity() {
 
     class ItemsAdapter(
         brohaListInterfaceActivity: ListInterfaceActivity,
-        iconHashClient: IconHashUtils?
+        iconHashClient: IconHashClient?
     ) : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
         private val mBrohaListInterfaceActivity: WeakReference<ListInterfaceActivity>
-        private val mIconHashClient: WeakReference<IconHashUtils?>
+        private val mIconHashClient: WeakReference<IconHashClient?>
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val back: ConstraintLayout
