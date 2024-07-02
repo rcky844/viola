@@ -8,10 +8,10 @@
   "release": {
     "channel_name": "Release",
     "latest_update": {
-      "name": "6.2",
-      "code": 37,
-      "timestamp": 1719537736,
-      "url": "https://gitlab.com/-/project/22143649/uploads/c404707faf0c8b158fec2edc2465f4c5/app-release.apk"
+      "name": "6.2.1",
+      "code": 38,
+      "timestamp": 1719900541,
+      "url": "https://gitlab.com/-/project/22143649/uploads/32238a734baa0aad94405328429af5cb/app-release.apk"
     }
   },
   "prerelease": {
