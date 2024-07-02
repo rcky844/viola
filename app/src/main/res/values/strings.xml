@@ -162,6 +162,7 @@
     <string name="dialog_open_external_title">Launchable App Link detected</string>
     <string name="dialog_open_external_message">Would you like to open this link in an external app?</string>
     <string name="toolbar_expandable_downloads">Downloads</string>
+    <string name="no_downloads">No downloads</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

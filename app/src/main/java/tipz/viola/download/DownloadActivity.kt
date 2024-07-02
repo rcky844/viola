@@ -56,10 +56,10 @@ class DownloadActivity : BaseActivity() {
     }
 
     class ItemsAdapter(downloadActivity: DownloadActivity)
-        : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+        : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val mDownloadActivity: WeakReference<DownloadActivity>
 
-        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val back: ConstraintLayout
             val icon: AppCompatImageView
             val title: AppCompatTextView
@@ -75,52 +75,72 @@ class DownloadActivity : BaseActivity() {
             }
         }
 
+        class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val text: AppCompatTextView
+
+            init {
+                text = view.findViewById(R.id.text)
+            }
+        }
+
         init {
             mDownloadActivity = WeakReference(downloadActivity)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.template_icon_title_descriptor_time, parent, false)
-            return ViewHolder(view)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val layoutView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+            return if (viewType == R.layout.template_empty) EmptyViewHolder(layoutView)
+            else ListViewHolder(layoutView)
+        }
+
+        override fun getItemViewType(position: Int): Int {
+            Log.i(LOG_TAG, "getItemViewType(): isEmpty=${listData!!.size == 0}")
+            return if (listData!!.size == 0) R.layout.template_empty
+            else R.layout.template_icon_title_descriptor_time
         }
 
         @SuppressLint("SimpleDateFormat")
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val downloadActivity = mDownloadActivity.get()
-            val data = listData!![position]
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val downloadActivity = mDownloadActivity.get()!!
 
-            holder.title.text = data.filename
-            holder.url.text = data.uriString
+            if (holder is EmptyViewHolder) {
+                holder.text.text = downloadActivity.resources.getString(R.string.no_downloads)
+            } else if (holder is ListViewHolder) {
+                val data = listData!![position]
 
-            holder.back.setOnClickListener {
-                data.apply {
-                    val file = File("$downloadPath$filename")
-                    if (!file.exists()) {
-                        Log.w(LOG_TAG, "onClickListener(): File does not exist, taskId=$taskId")
-                        return@apply
+                holder.title.text = data.filename
+                holder.url.text = data.uriString
+
+                holder.back.setOnClickListener {
+                    data.apply {
+                        val file = File("$downloadPath$filename")
+                        if (!file.exists()) {
+                            Log.w(LOG_TAG, "onClickListener(): File does not exist, taskId=$taskId")
+                            return@apply
+                        }
+
+                        val openUri = FileProvider.getUriForFile(
+                            mDownloadActivity.get()!!,
+                            mDownloadActivity.get()!!.applicationContext.packageName
+                                    + ".provider",
+                            file
+                        )
+                        Log.i(LOG_TAG, "onClickListener(): taskId=$taskId, openUri=$openUri")
+
+                        val intent = Intent()
+                            .setAction(Intent.ACTION_VIEW)
+                            .setData(openUri)
+                            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        mDownloadActivity.get()!!.startActivity(intent)
                     }
-
-                    val openUri = FileProvider.getUriForFile(
-                        mDownloadActivity.get()!!,
-                        mDownloadActivity.get()!!.applicationContext.packageName
-                            + ".provider",
-                        file
-                    )
-                    Log.i(LOG_TAG, "onClickListener(): taskId=$taskId, openUri=$openUri")
-
-                    val intent = Intent()
-                        .setAction(Intent.ACTION_VIEW)
-                        .setData(openUri)
-                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    mDownloadActivity.get()!!.startActivity(intent)
                 }
             }
         }
 
         override fun getItemCount(): Int {
-            if (listData == null) return 0
-            return listData!!.size
+            // Return 1 so that empty message is shown
+            return if (listData == null || listData!!.size == 0) 1
+            else listData!!.size
         }
     }
 
