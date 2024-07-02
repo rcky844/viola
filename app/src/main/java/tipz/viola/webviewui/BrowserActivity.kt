@@ -68,7 +68,6 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tipz.viola.Application
 import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
@@ -124,7 +123,7 @@ class BrowserActivity : VWebViewActivity() {
         favicon = findViewById(R.id.favicon)
         startPageLayout = findViewById(R.id.layout_startpage)
         favClient = FavClient(this)
-        iconHashClient = (applicationContext as Application).iconHashClient
+        iconHashClient = IconHashUtils(this)
         sslLock = findViewById(R.id.ssl_lock)
         homeButton = findViewById(R.id.home_button)
 

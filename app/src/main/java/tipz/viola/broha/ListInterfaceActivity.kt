@@ -39,7 +39,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.api.HistoryClient
@@ -125,8 +124,7 @@ class ListInterfaceActivity : BaseActivity() {
         layoutManager.stackFromEnd = activityMode == mode_history
         updateListData()
         itemsAdapter = ItemsAdapter(
-            this@ListInterfaceActivity,
-            (applicationContext as Application).iconHashClient
+            this@ListInterfaceActivity, IconHashUtils(this)
         )
         brohaList.adapter = itemsAdapter
     }

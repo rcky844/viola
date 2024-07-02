@@ -17,20 +17,17 @@ package tipz.viola
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors
-import tipz.viola.broha.database.IconHashUtils
 import tipz.viola.download.DownloadClient
 import tipz.viola.settings.SettingsSharedPreference
 
 class Application : Application() {
     lateinit var settingsPreference: SettingsSharedPreference
     lateinit var downloadClient: DownloadClient
-    lateinit var iconHashClient: IconHashUtils
 
     override fun onCreate() {
         super.onCreate()
         settingsPreference = SettingsSharedPreference(this)
         downloadClient = DownloadClient(this)
-        iconHashClient = IconHashUtils(this)
 
         // Observe dynamic colors changes
         DynamicColors.applyToActivitiesIfAvailable(this)
