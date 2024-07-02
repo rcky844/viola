@@ -55,6 +55,7 @@ import tipz.viola.R
 import tipz.viola.broha.api.HistoryClient
 import tipz.viola.broha.api.HistoryClient.UpdateHistoryState
 import tipz.viola.broha.database.Broha
+import tipz.viola.broha.database.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
@@ -72,7 +73,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var activity: VWebViewActivity = mContext as VWebViewActivity
     private lateinit var historyClient: HistoryClient
     val downloadClient: DownloadClient = (mContext.applicationContext as Application).downloadClient
-    private val iconHashClient = (mContext.applicationContext as Application).iconHashClient
+    private val iconHashClient = IconHashClient(mContext)
     private val webSettings = this.settings
     private var currentBroha = Broha()
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
