@@ -59,15 +59,18 @@ class ListInterfaceActivity : BaseActivity() {
     lateinit var favClient: FavClient
     lateinit var historyClient: HistoryClient
     lateinit var itemsAdapter: ItemsAdapter
+    lateinit var fab: FloatingActionButton
 
-    @SuppressLint("NotifyDataSetChanged")
     fun updateListData() {
         CoroutineScope(Dispatchers.IO).launch {
             listData =
                 if (activityMode == mode_history) historyClient.getAll() as MutableList<Broha>?
                 else favClient.getAll() as MutableList<Broha>?
         }
+    }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun notifyItemsAdapter() {
         CoroutineScope(Dispatchers.Main).launch {
             // FIXME: Update list dynamically to save system resources
             itemsAdapter.notifyDataSetChanged()
@@ -94,7 +97,7 @@ class ListInterfaceActivity : BaseActivity() {
         toolbar.setNavigationOnClickListener { finish() }
 
         // Clear all button
-        val fab = findViewById<FloatingActionButton>(R.id._fab)
+        fab = findViewById(R.id._fab)
         fab.setOnClickListener {
             MaterialAlertDialogBuilder(this)
                 .setTitle(resources.getString(R.string.delete_all_entries))
@@ -107,6 +110,7 @@ class ListInterfaceActivity : BaseActivity() {
                         if (activityMode == mode_history) historyClient.deleteAll()
                         else if (activityMode == mode_favorites) favClient.deleteAll()
                         updateListData()
+                        notifyItemsAdapter()
                     }
                     showMessage(this, resources.getString(R.string.wiped_success))
                 }
@@ -269,6 +273,7 @@ class ListInterfaceActivity : BaseActivity() {
                                             listData = clientActivity.favClient.getAll() as MutableList<Broha>?
                                             CoroutineScope(Dispatchers.Main).launch {
                                                 notifyItemRangeRemoved(position, 1)
+                                                listInterfaceActivity.notifyItemsAdapter()
                                             }
                                         }
                                     }
@@ -297,8 +302,12 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
+            val isEmpty = listData == null || listData!!.size == 0
+            mBrohaListInterfaceActivity.get()!!.fab.visibility =
+                if (isEmpty) View.GONE else View.VISIBLE
+
             // Return 1 so that empty message is shown
-            return if (listData == null || listData!!.size == 0) 1
+            return if (isEmpty) 1
             else listData!!.size
         }
     }
