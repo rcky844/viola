@@ -474,9 +474,9 @@ class SettingsActivity : BaseActivity() {
                     dialog_text.text = resources.getString(
                         R.string.version_info_message,
                         resources.getString(R.string.app_name),
-                        BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_HUMAN_EXTRA,
+                        BuildConfig.VERSION_NAME,
                         BuildConfig.VERSION_CODENAME,
-                        BuildConfig.VERSION_BUILD_DATE,
+                        BuildConfig.VERSION_BUILD_DATE_FULL,
                         BuildConfig.VERSION_BUILD_YEAR
                     )
                     changelog_btn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
@@ -529,7 +529,7 @@ class SettingsActivity : BaseActivity() {
                 )
             }
             version.summary =
-                resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_HUMAN_EXTRA
+                resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME
             needReload = false
         }
 
