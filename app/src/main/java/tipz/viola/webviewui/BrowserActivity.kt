@@ -68,6 +68,7 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tipz.build.info.BuildInfo
 import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
@@ -245,6 +246,11 @@ class BrowserActivity : VWebViewActivity() {
             webview.loadHomepage(false)
         }
         homeButton.visibility = View.GONE // FIXME: Unhide
+
+        // Setup build tag
+        val buildTag = findViewById<AppCompatTextView>(R.id.buildTag)
+        buildTag.text = BuildInfo().getProductBuildTag()
+        buildTag.visibility = View.VISIBLE // FIXME: Somewhere to set this
 
         // Finally, load homepage
         val dataUri = intent.data
