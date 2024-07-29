@@ -3,9 +3,7 @@ package tipz.viola.download
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Environment
-import android.util.Base64
 import android.util.Log
-import android.webkit.MimeTypeMap
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.VJavaScriptInterface
@@ -16,9 +14,11 @@ import java.io.OutputStream
 
 class InternalDownloadProvider(override val context: Context) : DownloadProvider {
     override val capabilities = listOf(
-        // TODO: Enable for http/https downloads
-        // DownloadCapabilities.SCHEMA_HTTP,
-        // DownloadCapabilities.SCHEMA_HTTPS,
+        // TODO: Enable for http/https/file/ftp downloads
+        // DownloadCapabilities.PROTOCOL_HTTP,
+        // DownloadCapabilities.PROTOCOL_HTTPS,
+        // DownloadCapabilities.PROTOCOL_FILE.
+        // DownloadCapabilities.PROTOCOL_FTP.
         DownloadCapabilities.PROTOCOL_DATA,
         DownloadCapabilities.PROTOCOL_BLOB)
     override var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
@@ -28,23 +28,11 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         downloadObject.apply {
             when (DownloadCapabilities.fromString(downloadObject.getUriProtocol())) {
                 DownloadCapabilities.PROTOCOL_DATA -> {
-                    val dataInfo =
-                        uriString.substring(uriString.indexOf(":") + 1, uriString.indexOf(","))
                     filename = (System.currentTimeMillis().toString() + "."
-                            + MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                        dataInfo.substring(
-                            0,
-                            if (dataInfo.contains(";")) dataInfo.indexOf(";")
-                            else dataInfo.length
-                        )
-                    ))
+                            + DownloadUtils.dataStringToExtension(uriString))
 
-                    val dataString = getRawDataFromDataUri(uriString)
-                    val writableBytes =
-                        if (dataInfo.contains(";base64")) base64StringToByteArray(dataString)
-                        else dataString.toByteArray()
-
-                    byteArrayToFile(context, writableBytes, filename!!)
+                    byteArrayToFile(context,
+                        DownloadUtils.dataStringToByteArray(uriString), filename!!)
                 }
 
                 DownloadCapabilities.PROTOCOL_BLOB -> mimeType?.let {
@@ -62,13 +50,6 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
 
     companion object {
         private val LOG_TAG = "IntDownloadProvider"
-
-        fun getRawDataFromDataUri(dataString: String) : String =
-            dataString.substring(dataString.indexOf(",") + 1)
-
-        fun base64StringToByteArray(dataString: String) : ByteArray {
-            return Base64.decode(dataString, Base64.DEFAULT)
-        }
 
         fun byteArrayToFile(context: Context, barr: ByteArray, filename: String) {
             Log.i(LOG_TAG, "byteArrayToFile(): filename=${filename}")

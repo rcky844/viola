@@ -25,7 +25,7 @@ interface DownloadProvider {
         )
 
         enum class DownloadStatus {
-            STARTED, STOPPED
+            STARTED, STOPPED, NO_INTERNET
         }
 
         fun interface DownloadStatusListener {

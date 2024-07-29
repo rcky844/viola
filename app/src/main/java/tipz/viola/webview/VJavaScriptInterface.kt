@@ -3,8 +3,8 @@ package tipz.viola.webview
 import android.content.Context
 import android.util.Log
 import android.webkit.JavascriptInterface
+import tipz.viola.download.DownloadUtils
 import tipz.viola.download.InternalDownloadProvider
-import tipz.viola.utils.UrlUtils
 import java.io.IOException
 
 class VJavaScriptInterface(private val context: Context) {
@@ -13,8 +13,9 @@ class VJavaScriptInterface(private val context: Context) {
     fun getBase64FromBlobData(uriString: String, mimeType: String) {
         Log.i(LOG_TAG, "getBase64FromBlobData(): mimeType=${mimeType}")
         InternalDownloadProvider.apply {
-            byteArrayToFile(context, base64StringToByteArray(getRawDataFromDataUri(uriString)),
-                UrlUtils.changeExtension("${System.currentTimeMillis()}.bin", mimeType))
+            byteArrayToFile(context,
+                DownloadUtils.base64StringToByteArray(DownloadUtils.getRawDataFromDataUri(uriString)),
+                "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}")
         }
     }
 

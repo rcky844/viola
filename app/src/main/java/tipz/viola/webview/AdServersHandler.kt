@@ -19,9 +19,9 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.download.DownloadUtils
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -64,9 +64,11 @@ open class AdServersHandler(context: Context, settingsPreference: SettingsShared
 
     fun downloadAdServers() {
         CoroutineScope(Dispatchers.IO).launch {
-            var hostsUrl = adServersList[mSettingsPreference.getInt(SettingsKeys.adServerId)]
-            if (hostsUrl == null) hostsUrl = mSettingsPreference.getString(SettingsKeys.adServerUrl)
-            val scanner = Scanner(String(DownloadUtils.startFileDownload(hostsUrl)))
+            val scanner = Scanner(String(
+                MiniDownloadHelper.startDownload(
+                    (adServersList[mSettingsPreference.getInt(SettingsKeys.adServerId)]
+                    ?: mSettingsPreference.getString(SettingsKeys.adServerUrl)).toString())!!
+            ))
             val builder = StringBuilder()
             while (scanner.hasNextLine()) {
                 val line = scanner.nextLine()
