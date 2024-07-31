@@ -93,6 +93,11 @@ object SearchEngineEntries {
             search = "$homePage/s?q=$queryPlaceholder"
             suggestion = "https://sug.so.360.cn/suggest?word=$queryPlaceholder"
         },
+        EngineObject().apply {
+            homePage = "http://frogfind.com"
+            search = "$homePage/?q=$queryPlaceholder"
+            suggestion = null
+        },
         EngineObject() /* The object for custom URL */
     )
 
