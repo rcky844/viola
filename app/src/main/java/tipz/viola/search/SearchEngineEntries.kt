@@ -26,7 +26,7 @@ object SearchEngineEntries {
         EngineObject().apply {
             homePage = "https://www.google.com"
             search = "$homePage/search?q=$queryPlaceholder"
-            suggestion = "http://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q=$queryPlaceholder&hl=$languagePlaceholder"
+            suggestion = "https://suggestqueries.google.com/complete/search?client=android&oe=utf8&ie=utf8&q=$queryPlaceholder&hl=$languagePlaceholder"
         },
         EngineObject().apply {
             homePage = "https://www.baidu.com"
