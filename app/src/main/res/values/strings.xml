@@ -165,7 +165,7 @@
     <string name="no_downloads">No downloads</string>
     <string name="toolbar_expandable_fullscreen">Enter full screen</string>
     <string name="pref_website">Website</string>
-    <string name="pref_website_summary">Checkout the Viola Browser website.</string>
+    <string name="pref_website_summary">Check out the Viola Browser website.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
