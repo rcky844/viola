@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import tipz.viola.Application
 import tipz.viola.settings.migrations.ExoticMigrations
+import tipz.viola.settings.migrations.InitialMigrations
 import tipz.viola.utils.CommonUtils
 
 class SettingsSharedPreference(context: Context) {
@@ -32,30 +33,8 @@ class SettingsSharedPreference(context: Context) {
     }
 
     private fun settingsInit() {
-        if (this.getInt(SettingsKeys.protocolVersion) == 0) {
-            // Search
-            this.setString(SettingsKeys.homePageName, "brave")
-            this.setString(SettingsKeys.searchName, "brave")
-            this.setString(SettingsKeys.suggestionsName, "brave")
-
-            // Miscellaneous
-            this.setInt(SettingsKeys.adServerId, 0)
-            this.setInt(SettingsKeys.closeAppAfterDownload, 1)
-            this.setInt(SettingsKeys.downloadMgrMode, 0)
-            this.setInt(SettingsKeys.isJavaScriptEnabled, 1)
-            this.setInt(SettingsKeys.enableAdBlock, 0)
-            this.setInt(SettingsKeys.enableGoogleSafeBrowse, 0)
-            this.setInt(SettingsKeys.enableSwipeRefresh, 1)
-            this.setInt(SettingsKeys.enforceHttps, 1)
-            this.setInt(SettingsKeys.reverseAddressBar, 0)
-            this.setInt(SettingsKeys.sendDNT, 0)
-            this.setInt(SettingsKeys.sendSaveData, 0)
-            this.setInt(SettingsKeys.sendSecGPC, 0)
-            this.setInt(SettingsKeys.showFavicon, 1)
-            this.setInt(SettingsKeys.themeId, 0)
-            this.setInt(SettingsKeys.useCustomTabs, 1)
-            this.setInt(SettingsKeys.updateRecentsIcon, 1)
-        }
+        // Initial settings migration module
+        InitialMigrations(this)
 
         // Sets CURRENT_PROTOCOL_VERSION, currently 2
         // Must be non-zero, as zero is defined as uninitialized
