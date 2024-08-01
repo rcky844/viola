@@ -268,7 +268,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     }
                     .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                         // Load actual url if user cancelled the request
-                        val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
+                        val checkedUrl = UrlUtils.toSearchOrValidUrl(settingsPreference, url)
                         super.loadUrl(checkedUrl, requestHeaders)
                     }
                     .create().show()
@@ -299,7 +299,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             // By this point, it is probably a webpage.
-            val checkedUrl = UrlUtils.toSearchOrValidUrl(mContext, url)
+            val checkedUrl = UrlUtils.toSearchOrValidUrl(settingsPreference, url)
             onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
 
             // Prevent creating duplicate entries
