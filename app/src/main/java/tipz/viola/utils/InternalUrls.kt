@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2023 Tipz Team
+ * Copyright (C) 2022-2024 Tipz Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,11 @@ object InternalUrls {
 
     // Project URLs
     const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
-    val changelogUrl = "https://rcky844.github.io/viola/changelogs/build" +
+    const val websiteUrl = "https://rcky844.github.io/viola/"
+    val changelogUrl = "${websiteUrl}changelogs/build" +
                 (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION) + ".html"
     const val feedbackUrl = "$sourceUrl-/issues"
-    const val updateJSONUrl = "https://rcky844.github.io/viola/updates.json"
+    const val updateJSONUrl = "${websiteUrl}updates.json"
 
     // Internal assets
     const val licenseUrl = "file:///android_asset/LICENSE.txt"

@@ -186,6 +186,7 @@ class SettingsActivity : BaseActivity() {
             val check_for_updates = findPreference<Preference>("check_for_updates")!!
             val update_channel = findPreference<Preference>("update_channel")!!
             val version = findPreference<Preference>("version")!!
+            val website = findPreference<Preference>("website")!!
             val feedback = findPreference<Preference>("feedback")!!
             val source_code = findPreference<Preference>("source_code")!!
 
@@ -475,6 +476,11 @@ class SettingsActivity : BaseActivity() {
                     val buildInfoDialog = BuildInfoDialog(settingsActivity, dialogVersionDetails)
                     buildInfoDialog.setupDialogForShowing()
                     buildInfoDialog.create().show()
+                    true
+                }
+            website.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    needLoad(InternalUrls.websiteUrl)
                     true
                 }
             Preference.OnPreferenceClickListener {

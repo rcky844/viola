@@ -180,6 +180,10 @@
             android:summary=""
             android:title="@string/version" />
         <androidx.preference.Preference
+            android:key="website"
+            android:summary="@string/pref_website_summary"
+            android:title="@string/pref_website" />
+        <androidx.preference.Preference
             android:key="feedback"
             android:summary="@string/feedback_desp"
             android:title="@string/feedback" />
