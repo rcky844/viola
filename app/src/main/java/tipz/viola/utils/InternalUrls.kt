@@ -28,7 +28,7 @@ object InternalUrls {
     val changelogUrl = "https://rcky844.github.io/viola/changelogs/build" +
                 (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION) + ".html"
     const val feedbackUrl = "$sourceUrl-/issues"
-    const val updateJSONUrl = "$sourceUrl-/raw/update_files/updates.json"
+    const val updateJSONUrl = "https://rcky844.github.io/viola/updates.json"
 
     // Internal assets
     const val licenseUrl = "file:///android_asset/LICENSE.txt"

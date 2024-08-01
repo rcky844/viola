@@ -369,9 +369,9 @@ class SettingsActivity : BaseActivity() {
             // Updates JSON Object observer
             updateConfigLiveData.observe(this, Observer {
                 val jObject = it ?: return@Observer
-                val updateChannelName =
-                    settingsPreference.getString(SettingsKeys.updateChannelName)
-                        ?: BuildConfig.BUILD_TYPE
+                var updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
+                if (updateChannelName.isBlank()) updateChannelName = BuildConfig.BUILD_TYPE
+
                 if (!jObject.has(updateChannelName)) {
                     showMessage(
                         settingsActivity,
@@ -380,7 +380,7 @@ class SettingsActivity : BaseActivity() {
                     return@Observer
                 }
                 val jChannelObject = jObject.getJSONObject(updateChannelName)
-                if (!jChannelObject.has("latest_update")) {
+                if (!jChannelObject.has("channel_data")) {
                     showMessage(
                         settingsActivity,
                         resources.getString(R.string.version_latest_toast)
@@ -388,7 +388,7 @@ class SettingsActivity : BaseActivity() {
                     return@Observer
                 }
 
-                val jChannelUpdateObject = jChannelObject.getJSONObject("latest_update")
+                val jChannelUpdateObject = jChannelObject.getJSONObject("channel_data")
                 if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
                     showMessage(
                         settingsActivity,
@@ -409,7 +409,7 @@ class SettingsActivity : BaseActivity() {
                         )
                     )
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        val filename = jChannelUpdateObject.getString("url")
+                        val filename = jChannelUpdateObject.getString("download_url")
                             .substringAfterLast('/')
                         val updateDownloadPath = DownloadClient.defaultDownloadPath + filename
                         val apkFile = File(updateDownloadPath)
@@ -418,7 +418,7 @@ class SettingsActivity : BaseActivity() {
                             DownloadClient(settingsActivity).addToQueue(DownloadObject().apply {
                                 // TODO: reimplement resources.getString(R.string.download_title)
                                 // TODO: Move to mini-download client
-                                uriString = jChannelUpdateObject.getString("url")
+                                uriString = jChannelUpdateObject.getString("download_url")
                                 mimeType = "application/vnd.android.package-archive"
                                 this.filename = filename
                                 statusListener =
