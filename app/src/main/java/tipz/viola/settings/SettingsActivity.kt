@@ -25,7 +25,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
@@ -34,9 +33,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.DialogFragment
@@ -49,6 +46,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import tipz.build.info.BuildInfoDialog
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
@@ -117,6 +115,12 @@ class SettingsActivity : BaseActivity() {
         private val settingsPreference: SettingsSharedPreference
         private val updateConfigLiveData = MutableLiveData<JSONObject>()
         private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+
+        private val dialogVersionDetails = BuildInfoDialog.BuildInfoDialogDetails.also {
+            it.loader = this::needLoad
+            it.changelogUrl = InternalUrls.changelogUrl
+            it.licenseUrl = InternalUrls.violaLicenseUrl
+        }
 
         init {
             val activity = WeakReference(act)
@@ -465,30 +469,9 @@ class SettingsActivity : BaseActivity() {
                 Preference.OnPreferenceClickListener {
                     @SuppressLint("InflateParams") val dialogView =
                         this.layoutInflater.inflate(R.layout.about_dialog, null)
-                    val dialog = MaterialAlertDialogBuilder(settingsActivity).setView(dialogView)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create()
-                    val dialog_text = dialogView.findViewById<AppCompatTextView>(R.id.dialog_text)
-                    val changelog_btn = dialogView.findViewById<AppCompatButton>(R.id.changelog_btn)
-                    val license_btn = dialogView.findViewById<AppCompatButton>(R.id.license_btn)
-                    dialog_text.text = resources.getString(
-                        R.string.version_info_message,
-                        resources.getString(R.string.app_name),
-                        BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_HUMAN_EXTRA,
-                        BuildConfig.VERSION_CODENAME,
-                        BuildConfig.VERSION_BUILD_DATE,
-                        BuildConfig.VERSION_BUILD_YEAR
-                    )
-                    changelog_btn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
-                    changelog_btn.setOnClickListener {
-                        needLoad(InternalUrls.changelogUrl)
-                        dialog.dismiss()
-                    }
-                    license_btn.setOnClickListener {
-                        needLoad(InternalUrls.violaLicenseUrl)
-                        dialog.dismiss()
-                    }
-                    dialog.show()
+                    val buildInfoDialog = BuildInfoDialog(settingsActivity, dialogVersionDetails)
+                    buildInfoDialog.setupDialogForShowing()
+                    buildInfoDialog.create().show()
                     true
                 }
             Preference.OnPreferenceClickListener {
@@ -529,7 +512,7 @@ class SettingsActivity : BaseActivity() {
                 )
             }
             version.summary =
-                resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME + BuildConfig.VERSION_NAME_HUMAN_EXTRA
+                resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME
             needReload = false
         }
 

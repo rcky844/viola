@@ -4,10 +4,19 @@ plugins {
     id 'com.google.devtools.ksp'
 }
 
-def getGitHash = { ->
+def getGitRevision = { ->
     def stdout = new ByteArrayOutputStream()
     exec {
         commandLine 'git', 'describe', '--match=NeVeRmAtCh', '--always', '--dirty'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+def getGitBranch = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
         standardOutput = stdout
     }
     return stdout.toString().trim()
@@ -23,12 +32,21 @@ android {
         minSdkVersion 19
         targetSdkVersion 34
         versionCode 1
-        versionName "7.0-MASTER"
+        versionName "7.0"
 
-        buildConfigField "String", "VERSION_NAME_EXTRA", "\"\""
-        buildConfigField "String", "VERSION_NAME_HUMAN_EXTRA", "\"\""
+        /* Extra build info */
+        buildConfigField "String", "PRODUCT_LICENSE_DOCUMENT", "\"Apache License, Version 2.0\""
         buildConfigField "String", "VERSION_CODENAME", "\"Exotic\""
-        buildConfigField "String", "VERSION_BUILD_DATE", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
+        buildConfigField "String", "VERSION_COPYRIGHT_YEAR", "\"2020-2024\""
+        buildConfigField "String", "VERSION_BUILD_ID", "\"${versionCode}\""
+        buildConfigField "String", "VERSION_BUILD_REVISION", "\"0\""
+        buildConfigField "String", "VERSION_BUILD_GIT_REVISION", "\"${getGitRevision()}\""
+        buildConfigField "String", "VERSION_BUILD_BRANCH", "\"${getGitBranch()}\""
+        buildConfigField "String", "VERSION_BUILD_DATE_MINIMAL", "\"" + new Date().format("yyMMdd") + "\""
+        buildConfigField "String", "VERSION_BUILD_TIME_MINIMAL", "\"" + new Date().format("HHmm") + "\""
+
+        /* Legacy functions */
+        buildConfigField "String", "VERSION_BUILD_DATE_FULL", "\"" + new Date().format("E MMM dd HH:mm:ss z yyyy") + "\""
         buildConfigField "String", "VERSION_BUILD_YEAR", "\"" + new Date().format("yyyy") + "\""
 
         vectorDrawables.useSupportLibrary = true
@@ -45,16 +63,35 @@ android {
         buildConfig = true
     }
     buildTypes {
+        // Generic release
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
+        // Stable release
+        release_stable {
+            initWith buildTypes.release
+        }
+
+        // Beta release
+        release_beta {
+            applicationIdSuffix ".beta"
+            initWith buildTypes.release
+        }
+
+        // Debug release
+        release_debug {
+            applicationIdSuffix ".debug"
+            initWith buildTypes.release
+        }
+
+        // Debug internal
         debug {
             applicationIdSuffix ".debug"
             multiDexEnabled true
-            buildConfigField "String", "VERSION_NAME_EXTRA", "\" ${getGitHash()}\""
+            buildConfigField "String", "VERSION_BUILD_ID", "null"
         }
     }
     compileOptions {
@@ -71,6 +108,17 @@ android {
     }
 
     sourceSets {
+        // Beta release
+        release_beta {
+            res.srcDir "beta/res"
+        }
+
+        // Debug release
+        release_debug {
+            res.srcDir "debug/res"
+        }
+
+        // Debug internal
         debug {
             res.srcDir "debug/res"
         }
