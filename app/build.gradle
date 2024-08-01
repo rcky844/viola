@@ -75,15 +75,9 @@ android {
             initWith buildTypes.release
         }
 
-        // Beta release
-        release_beta {
-            applicationIdSuffix ".beta"
-            initWith buildTypes.release
-        }
-
-        // Debug release
-        release_debug {
-            applicationIdSuffix ".debug"
+        // Next release
+        release_next {
+            applicationIdSuffix ".next"
             initWith buildTypes.release
         }
 
@@ -108,14 +102,9 @@ android {
     }
 
     sourceSets {
-        // Beta release
-        release_beta {
-            res.srcDir "beta/res"
-        }
-
-        // Debug release
-        release_debug {
-            res.srcDir "debug/res"
+        // Next release
+        release_next {
+            res.srcDir "next/res"
         }
 
         // Debug internal
