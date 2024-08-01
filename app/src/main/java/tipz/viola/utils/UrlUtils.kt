@@ -79,9 +79,9 @@ object UrlUtils {
                 Uri.parse((if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://" else "http://") + trimmedInput)
             if (!uri.toString().matches(httpUrlRegex.toRegex())) {
                 return SearchEngineEntries.getSearchUrl(
-                    settingsPreference,
                     settingsPreference.getString(SettingsKeys.searchName),
-                    input, language
+                    input,
+                    language
                 )
             }
         }

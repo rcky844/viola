@@ -444,9 +444,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (useStartPage) {
             loadUrl(InternalUrls.violaStartUrl)
         } else {
-            loadUrl(
-                SearchEngineEntries.getHomePageUrl(
-                settingsPreference, settingsPreference.getString(SettingsKeys.searchName)))
+            loadUrl(SearchEngineEntries.getDefaultHomeUrl(settingsPreference))
         }
 
     }
