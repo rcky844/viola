@@ -31,10 +31,16 @@ class BuildInfoDialog(context: Context, private val dialogDetails: BuildInfoDial
         // Setup dialog text
         buildInfo.productName = resources.getString(R.string.app_name)
 
+        var buildId = buildInfo.productBuildId
+        if (buildId == null) {
+            Log.d(LOG_TAG, "Build ID is missing, showing Git revision as build ID instead")
+            buildId = buildInfo.productBuildGitRevision
+        }
+
         val text_version = resources.getString(
             R.string.buildinfo_dialog_version,
             buildInfo.productName, buildInfo.productVersionCodename,
-            buildInfo.productVersion, buildInfo.productBuildId
+            buildInfo.productVersion, buildId
         )
         val text_copyright = resources.getString(
             R.string.buildinfo_dialog_copyright,
