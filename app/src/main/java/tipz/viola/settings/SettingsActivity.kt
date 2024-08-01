@@ -191,9 +191,9 @@ class SettingsActivity : BaseActivity() {
                     val listPickerObject = listPickerAlertDialog.getListPickerObject()
                     listPickerObject.preference = search_engine
                     listPickerObject.nameList = searchHomePageList
-                    listPickerObject.namePreference = SettingsKeys.homePageName
+                    listPickerObject.namePreference = SettingsKeys.searchName
                     listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
-                    listPickerObject.stringPreference = SettingsKeys.homePageCustomUrl
+                    listPickerObject.stringPreference = SettingsKeys.searchCustomUrl
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.search_engine)
                     listPickerObject.dialogCustomMessage =
