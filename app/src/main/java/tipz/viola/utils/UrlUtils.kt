@@ -15,10 +15,8 @@
  */
 package tipz.viola.utils
 
-import android.net.Uri
 import android.os.Build
 import android.util.Log
-import android.webkit.MimeTypeMap
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
@@ -34,7 +32,7 @@ object UrlUtils {
         "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
         "http", "https", "ftp", "file"
     )
-    private const val protocolRegex = "^(?:[a-z+]+:)?//"
+    private const val protocolRegex = "^(?:[a-z+]+:)?//.*"
     private const val httpUrlRegex =
         "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
 
@@ -76,12 +74,14 @@ object UrlUtils {
             finalUrl = (if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://"
                 else "http://") + input
             Log.d(LOG_TAG, "toSearchOrValidUrl(): at is relative, finalUrl=$finalUrl")
-        }
-        if (!finalUrl.matches(httpUrlRegex.toRegex())) {
-            finalUrl = SearchEngineEntries.getSearchUrl(
-                settingsPreference.getString(SettingsKeys.searchName),
-                processedInput, language)
-            Log.d(LOG_TAG, "toSearchOrValidUrl(): at httpUrlRegex, finalUrl=$finalUrl")
+        } else {
+            if (!finalUrl.matches(httpUrlRegex.toRegex())) {
+                finalUrl = SearchEngineEntries.getSearchUrl(
+                    settingsPreference.getString(SettingsKeys.searchName),
+                    processedInput, language
+                )
+                Log.d(LOG_TAG, "toSearchOrValidUrl(): at httpUrlRegex, finalUrl=$finalUrl")
+            }
         }
         return finalUrl
     }
