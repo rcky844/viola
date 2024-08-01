@@ -33,15 +33,13 @@ class SettingsSharedPreference(context: Context) {
     }
 
     private fun settingsInit() {
-        // Initial settings migration module
+        // Migration modules
         InitialMigrations(this)
+        ExoticMigrations(this)
 
         // Sets CURRENT_PROTOCOL_VERSION, currently 2
         // Must be non-zero, as zero is defined as uninitialized
         this.setInt(SettingsKeys.protocolVersion, 2)
-
-        // Migrations modules
-        ExoticMigrations(this)
     }
 
     fun getInt(prefName: String): Int {
