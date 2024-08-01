@@ -18,11 +18,13 @@ package tipz.viola.settings
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
+import tipz.viola.search.SearchEngineEntries
 import tipz.viola.utils.CommonUtils
 
 class ListPickerAlertDialog(context: Context, settingsPreference: SettingsSharedPreference) :
@@ -35,17 +37,22 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
     }
 
     fun setupDialogForShowing() {
+        val useNamePreference = mListPickerObject.namePreference != CommonUtils.EMPTY_STRING
+
         // Set checked item to current settings
-        val checkedItem =
-            intArrayOf(mSettingsPreference.getInt(mListPickerObject.idPreference))
+        var checkedItem = if (useNamePreference) {
+            mListPickerObject.nameToIdFunction(
+                mSettingsPreference.getString(mListPickerObject.namePreference))
+        } else {
+            mSettingsPreference.getInt(mListPickerObject.idPreference)
+        }
 
         setTitle(mListPickerObject.dialogTitle)
         setSingleChoiceItems(
-            mListPickerObject.nameList,
-            mSettingsPreference.getInt(mListPickerObject.idPreference)
-        ) { _: DialogInterface?, which: Int -> checkedItem[0] = which }
+            mListPickerObject.nameList, checkedItem
+        ) { _: DialogInterface?, which: Int -> checkedItem = which }
         setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-            if (checkedItem[0] == mListPickerObject.customIndex) {
+            if (checkedItem == mListPickerObject.customIndex) {
                 val layoutInflater = LayoutInflater.from(context)
                 @SuppressLint("InflateParams") val root =
                     layoutInflater.inflate(R.layout.dialog_edittext, null)
@@ -61,27 +68,43 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                                 mListPickerObject.stringPreference,
                                 customInput.text.toString()
                             )
-                            mSettingsPreference.setInt(
-                                mListPickerObject.idPreference,
-                                checkedItem[0]
-                            )
+                            if (useNamePreference) {
+                                mSettingsPreference.setString(
+                                    mListPickerObject.namePreference,
+                                    SearchEngineEntries.getNameByIndex(checkedItem)
+                                )
+                            } else {
+                                mSettingsPreference.setInt(
+                                    mListPickerObject.idPreference,
+                                    checkedItem
+                                )
+                            }
+
                             mListPickerObject.preference?.summary =
-                                mListPickerObject.nameList!![checkedItem[0]]
+                                mListPickerObject.nameList!![checkedItem]
                         }
                     }
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show()
             }
-            if (checkedItem[0] != mListPickerObject.customIndex) {
+            if (checkedItem != mListPickerObject.customIndex) {
                 mSettingsPreference.setString(
                     mListPickerObject.stringPreference,
                     CommonUtils.EMPTY_STRING
                 )
-                mSettingsPreference.setInt(
-                    mListPickerObject.idPreference,
-                    checkedItem[0]
-                )
-                mListPickerObject.preference?.summary = mListPickerObject.nameList!![checkedItem[0]]
+                if (useNamePreference) {
+                    mSettingsPreference.setString(
+                        mListPickerObject.namePreference,
+                        SearchEngineEntries.getNameByIndex(checkedItem)
+                    )
+                } else {
+                    mSettingsPreference.setInt(
+                        mListPickerObject.idPreference,
+                        checkedItem
+                    )
+                }
+
+                mListPickerObject.preference?.summary = mListPickerObject.nameList!![checkedItem]
             }
         }
         setNegativeButton(android.R.string.cancel, null)
@@ -91,9 +114,21 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         var preference: Preference? = null // Preference for this dialog
         var nameList: Array<String>? = null // Array list consisting of names of options
         var idPreference = CommonUtils.EMPTY_STRING // Preference key for storing IDs
+        var namePreference = CommonUtils.EMPTY_STRING // Preference key for storing names
+        var nameToIdFunction : (name: String) -> Int = this::stubNameToIdFunction
         var stringPreference = CommonUtils.EMPTY_STRING // Preference key for storing strings
         var dialogTitle = CommonUtils.EMPTY_STRING // Dialog title
         var dialogCustomMessage = CommonUtils.EMPTY_STRING // Message for custom dialog
         var customIndex = 0 // Custom item index
+
+        fun stubNameToIdFunction(name: String) : Int {
+            Log.w(LOG_TAG, "stubNameToIdFunction(): " +
+                    "$name using namePreference without any means to convert to index!")
+            return 0
+        }
+    }
+
+    companion object {
+        private var LOG_TAG = "ListPickerActivity"
     }
 }

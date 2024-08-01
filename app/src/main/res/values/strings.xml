@@ -186,6 +186,7 @@
         <item>Qwant</item>
         <item>Sogou</item>
         <item>360 Search</item>
+        <item>FrogFind!</item>
         <item>Custom</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">

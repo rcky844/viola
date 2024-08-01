@@ -186,6 +186,7 @@
         <item>Qwant</item>
         <item>搜狗</item>
         <item>360搜索</item>
+        <item>FrogFind!</item>
         <item>自訂</item>
     </string-array>
     <string-array name="themes">
