@@ -25,6 +25,10 @@ import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.TypedValue
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import tipz.viola.R
 import java.util.Locale
 
@@ -94,5 +98,20 @@ object CommonUtils {
             measuredDp.toFloat(),
             r.displayMetrics
         )
+    }
+
+    fun setImmersiveMode(context: Context, enable: Boolean) {
+        val windowInsetsController = WindowCompat.getInsetsController(
+            (context as AppCompatActivity).window,
+            context.window.decorView
+        )
+        WindowCompat.setDecorFitsSystemWindows(context.window, !enable)
+        if (enable) {
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+            windowInsetsController.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        } else {
+            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+        }
     }
 }

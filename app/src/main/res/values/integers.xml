@@ -12,4 +12,6 @@
 -->
 <resources>
     <integer name="anim_expandable_speed">300</integer>
+    <integer name="anim_fullscreen_fab_fade_out_delay">10000</integer>
+    <integer name="anim_fullscreen_fab_fade_out_speed">10000</integer>
 </resources>
