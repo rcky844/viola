@@ -54,6 +54,7 @@ import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
+import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
@@ -358,10 +359,9 @@ class SettingsActivity : BaseActivity() {
                         )
                     }
                     CoroutineScope(Dispatchers.IO).launch {
-                        updateConfigLiveData.postValue(JSONObject(
-                                String(DownloadUtils.startFileDownload(InternalUrls.updateJSONUrl))
-                            )
-                        )
+                        updateConfigLiveData.postValue(JSONObject(String(
+                            MiniDownloadHelper.startDownload(InternalUrls.updateJSONUrl)!!)
+                        ))
                     }
                     true
                 }
