@@ -63,12 +63,31 @@ android {
         buildConfig = true
     }
     buildTypes {
+        // Generic release
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
+        // Stable release
+        release_stable {
+            initWith buildTypes.release
+        }
+
+        // Beta release
+        release_beta {
+            applicationIdSuffix ".beta"
+            initWith buildTypes.release
+        }
+
+        // Debug release
+        release_debug {
+            applicationIdSuffix ".debug"
+            initWith buildTypes.release
+        }
+
+        // Debug internal
         debug {
             applicationIdSuffix ".debug"
             multiDexEnabled true
@@ -89,6 +108,17 @@ android {
     }
 
     sourceSets {
+        // Beta release
+        release_beta {
+            res.srcDir "beta/res"
+        }
+
+        // Debug release
+        release_debug {
+            res.srcDir "debug/res"
+        }
+
+        // Debug internal
         debug {
             res.srcDir "debug/res"
         }
