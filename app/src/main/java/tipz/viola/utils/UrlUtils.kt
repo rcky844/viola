@@ -80,7 +80,7 @@ object UrlUtils {
             if (!uri.toString().matches(httpUrlRegex.toRegex())) {
                 return SearchEngineEntries.getSearchUrl(
                     settingsPreference,
-                    settingsPreference.getInt(SettingsKeys.defaultSearchId),
+                    settingsPreference.getString(SettingsKeys.searchName),
                     input, language
                 )
             }

@@ -191,8 +191,9 @@ class SettingsActivity : BaseActivity() {
                     val listPickerObject = listPickerAlertDialog.getListPickerObject()
                     listPickerObject.preference = search_engine
                     listPickerObject.nameList = searchHomePageList
-                    listPickerObject.idPreference = SettingsKeys.defaultSearchId
-                    listPickerObject.stringPreference = SettingsKeys.defaultSearch
+                    listPickerObject.namePreference = SettingsKeys.homePageName
+                    listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
+                    listPickerObject.stringPreference = SettingsKeys.homePageCustomUrl
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.search_engine)
                     listPickerObject.dialogCustomMessage =
@@ -210,8 +211,9 @@ class SettingsActivity : BaseActivity() {
                     val listPickerObject = listPickerAlertDialog.getListPickerObject()
                     listPickerObject.preference = homepage
                     listPickerObject.nameList = searchHomePageList
-                    listPickerObject.idPreference = SettingsKeys.defaultHomePageId
-                    listPickerObject.stringPreference = SettingsKeys.defaultHomePage
+                    listPickerObject.namePreference = SettingsKeys.homePageName
+                    listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
+                    listPickerObject.stringPreference = SettingsKeys.homePageCustomUrl
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.homepage)
                     listPickerObject.customIndex = SearchEngineEntries.customIndex
@@ -227,8 +229,9 @@ class SettingsActivity : BaseActivity() {
                     val listPickerObject = listPickerAlertDialog.getListPickerObject()
                     listPickerObject.preference = search_suggestions
                     listPickerObject.nameList = searchHomePageList
-                    listPickerObject.idPreference = SettingsKeys.defaultSuggestionsId
-                    listPickerObject.stringPreference = SettingsKeys.defaultSuggestions
+                    listPickerObject.namePreference = SettingsKeys.suggestionsName
+                    listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
+                    listPickerObject.stringPreference = SettingsKeys.suggestionsCustomUrl
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.search_suggestions_title)
                     listPickerObject.dialogCustomMessage =
@@ -501,11 +504,14 @@ class SettingsActivity : BaseActivity() {
                     true
                 }
             search_engine.summary =
-                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSearchId)]
+                searchHomePageList[SearchEngineEntries.getIndexByName(
+                    settingsPreference.getString(SettingsKeys.searchName))]
             homepage.summary =
-                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultHomePageId)]
+                searchHomePageList[SearchEngineEntries.getIndexByName(
+                    settingsPreference.getString(SettingsKeys.homePageName))]
             search_suggestions.summary =
-                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)]
+                searchHomePageList[SearchEngineEntries.getIndexByName(
+                    settingsPreference.getString(SettingsKeys.suggestionsName))]
             adBlockerSource.summary =
                 adBlockerHostsEntries[settingsPreference.getInt(SettingsKeys.adServerId)]
             theme.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]

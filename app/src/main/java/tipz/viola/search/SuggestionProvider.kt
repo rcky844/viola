@@ -50,7 +50,7 @@ open class SuggestionProvider(private val mContext: Context) {
         language: String
     ): String {
         val settingsPreference = (mContext.applicationContext as Application).settingsPreference!!
-        return getSuggestionsUrl(settingsPreference, settingsPreference.getInt(SettingsKeys.defaultSuggestionsId), query, language)
+        return getSuggestionsUrl(settingsPreference, settingsPreference.getString(SettingsKeys.suggestionsName), query, language)
     }
 
     /**

@@ -446,7 +446,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         } else {
             loadUrl(
                 SearchEngineEntries.getHomePageUrl(
-                settingsPreference, settingsPreference.getInt(SettingsKeys.defaultHomePageId)))
+                settingsPreference, settingsPreference.getString(SettingsKeys.searchName)))
         }
 
     }
