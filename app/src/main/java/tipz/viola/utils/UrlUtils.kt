@@ -15,15 +15,16 @@
  */
 package tipz.viola.utils
 
-import android.content.Context
-import android.net.Uri
 import android.os.Build
-import tipz.viola.Application
+import android.util.Log
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils.language
 
 object UrlUtils {
+    private const val LOG_TAG = "UrlUtils"
+
     /**
      * An array used for intent filtering
      */
@@ -31,6 +32,7 @@ object UrlUtils {
         "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
         "http", "https", "ftp", "file"
     )
+    private const val protocolRegex = "^(?:[a-z+]+:)?//.*"
     private const val httpUrlRegex =
         "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
 
@@ -65,21 +67,22 @@ object UrlUtils {
      * @param input the input to check.
      * @return result
      */
-    fun toSearchOrValidUrl(context: Context, input: String): String {
-        val settingsPreference = (context.applicationContext as Application).settingsPreference!!
-        val trimmedInput = patchUrlForCVEMitigation(input.trim { it <= ' ' })
-        var uri = Uri.parse(trimmedInput)
-        if (uri.isRelative) {
-            uri =
-                Uri.parse((if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://" else "http://") + trimmedInput)
-            if (!uri.toString().matches(httpUrlRegex.toRegex())) {
-                return SearchEngineEntries.getSearchUrl(
-                    settingsPreference,
-                    settingsPreference.getInt(SettingsKeys.defaultSearchId),
-                    input, language
+    fun toSearchOrValidUrl(settingsPreference: SettingsSharedPreference, input: String): String {
+        val processedInput = patchUrlForCVEMitigation(input.trim())
+        var finalUrl = processedInput
+        if (!processedInput.matches(protocolRegex.toRegex())) { // is relative
+            finalUrl = (if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://"
+                else "http://") + input
+            Log.d(LOG_TAG, "toSearchOrValidUrl(): at is relative, finalUrl=$finalUrl")
+        } else {
+            if (!finalUrl.matches(httpUrlRegex.toRegex())) {
+                finalUrl = SearchEngineEntries.getSearchUrl(
+                    settingsPreference.getString(SettingsKeys.searchName),
+                    processedInput, language
                 )
+                Log.d(LOG_TAG, "toSearchOrValidUrl(): at httpUrlRegex, finalUrl=$finalUrl")
             }
         }
-        return uri.toString()
+        return finalUrl
     }
 }

@@ -163,6 +163,9 @@
     <string name="dialog_open_external_message">Would you like to open this link in an external app?</string>
     <string name="toolbar_expandable_downloads">Downloads</string>
     <string name="no_downloads">No downloads</string>
+    <string name="toolbar_expandable_fullscreen">Enter full screen</string>
+    <string name="pref_website">Website</string>
+    <string name="pref_website_summary">Checkout the Viola Browser website.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
@@ -187,6 +190,7 @@
         <item>Qwant</item>
         <item>Sogou</item>
         <item>360 Search</item>
+        <item>FrogFind!</item>
         <item>Custom</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">

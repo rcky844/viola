@@ -25,7 +25,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
@@ -34,9 +33,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.DialogFragment
@@ -49,6 +46,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import tipz.build.info.BuildInfoDialog
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
@@ -119,6 +117,12 @@ class SettingsActivity : BaseActivity() {
         private val updateConfigLiveData = MutableLiveData<JSONObject>()
         private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
+        private val dialogVersionDetails = BuildInfoDialog.BuildInfoDialogDetails.also {
+            it.loader = this::needLoad
+            it.changelogUrl = InternalUrls.changelogUrl
+            it.licenseUrl = InternalUrls.violaLicenseUrl
+        }
+
         init {
             val activity = WeakReference(act)
             settingsActivity = activity.get()!!
@@ -182,6 +186,7 @@ class SettingsActivity : BaseActivity() {
             val check_for_updates = findPreference<Preference>("check_for_updates")!!
             val update_channel = findPreference<Preference>("update_channel")!!
             val version = findPreference<Preference>("version")!!
+            val website = findPreference<Preference>("website")!!
             val feedback = findPreference<Preference>("feedback")!!
             val source_code = findPreference<Preference>("source_code")!!
 
@@ -192,8 +197,9 @@ class SettingsActivity : BaseActivity() {
                     val listPickerObject = listPickerAlertDialog.getListPickerObject()
                     listPickerObject.preference = search_engine
                     listPickerObject.nameList = searchHomePageList
-                    listPickerObject.idPreference = SettingsKeys.defaultSearchId
-                    listPickerObject.stringPreference = SettingsKeys.defaultSearch
+                    listPickerObject.namePreference = SettingsKeys.searchName
+                    listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
+                    listPickerObject.stringPreference = SettingsKeys.searchCustomUrl
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.search_engine)
                     listPickerObject.dialogCustomMessage =
@@ -211,8 +217,9 @@ class SettingsActivity : BaseActivity() {
                     val listPickerObject = listPickerAlertDialog.getListPickerObject()
                     listPickerObject.preference = homepage
                     listPickerObject.nameList = searchHomePageList
-                    listPickerObject.idPreference = SettingsKeys.defaultHomePageId
-                    listPickerObject.stringPreference = SettingsKeys.defaultHomePage
+                    listPickerObject.namePreference = SettingsKeys.homePageName
+                    listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
+                    listPickerObject.stringPreference = SettingsKeys.homePageCustomUrl
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.homepage)
                     listPickerObject.customIndex = SearchEngineEntries.customIndex
@@ -228,8 +235,9 @@ class SettingsActivity : BaseActivity() {
                     val listPickerObject = listPickerAlertDialog.getListPickerObject()
                     listPickerObject.preference = search_suggestions
                     listPickerObject.nameList = searchHomePageList
-                    listPickerObject.idPreference = SettingsKeys.defaultSuggestionsId
-                    listPickerObject.stringPreference = SettingsKeys.defaultSuggestions
+                    listPickerObject.namePreference = SettingsKeys.suggestionsName
+                    listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
+                    listPickerObject.stringPreference = SettingsKeys.suggestionsCustomUrl
                     listPickerObject.dialogTitle =
                         resources.getString(R.string.search_suggestions_title)
                     listPickerObject.dialogCustomMessage =
@@ -362,9 +370,9 @@ class SettingsActivity : BaseActivity() {
             // Updates JSON Object observer
             updateConfigLiveData.observe(this, Observer {
                 val jObject = it ?: return@Observer
-                val updateChannelName =
-                    settingsPreference.getString(SettingsKeys.updateChannelName)
-                        ?: BuildConfig.BUILD_TYPE
+                var updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
+                if (updateChannelName.isBlank()) updateChannelName = BuildConfig.BUILD_TYPE
+
                 if (!jObject.has(updateChannelName)) {
                     showMessage(
                         settingsActivity,
@@ -373,7 +381,7 @@ class SettingsActivity : BaseActivity() {
                     return@Observer
                 }
                 val jChannelObject = jObject.getJSONObject(updateChannelName)
-                if (!jChannelObject.has("latest_update")) {
+                if (!jChannelObject.has("channel_data")) {
                     showMessage(
                         settingsActivity,
                         resources.getString(R.string.version_latest_toast)
@@ -381,7 +389,7 @@ class SettingsActivity : BaseActivity() {
                     return@Observer
                 }
 
-                val jChannelUpdateObject = jChannelObject.getJSONObject("latest_update")
+                val jChannelUpdateObject = jChannelObject.getJSONObject("channel_data")
                 if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
                     showMessage(
                         settingsActivity,
@@ -402,7 +410,7 @@ class SettingsActivity : BaseActivity() {
                         )
                     )
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        val filename = jChannelUpdateObject.getString("url")
+                        val filename = jChannelUpdateObject.getString("download_url")
                             .substringAfterLast('/')
                         val updateDownloadPath = DownloadClient.defaultDownloadPath + filename
                         val apkFile = File(updateDownloadPath)
@@ -411,7 +419,7 @@ class SettingsActivity : BaseActivity() {
                             DownloadClient(settingsActivity).addToQueue(DownloadObject().apply {
                                 // TODO: reimplement resources.getString(R.string.download_title)
                                 // TODO: Move to mini-download client
-                                uriString = jChannelUpdateObject.getString("url")
+                                uriString = jChannelUpdateObject.getString("download_url")
                                 mimeType = "application/vnd.android.package-archive"
                                 this.filename = filename
                                 statusListener =
@@ -465,30 +473,14 @@ class SettingsActivity : BaseActivity() {
                 Preference.OnPreferenceClickListener {
                     @SuppressLint("InflateParams") val dialogView =
                         this.layoutInflater.inflate(R.layout.about_dialog, null)
-                    val dialog = MaterialAlertDialogBuilder(settingsActivity).setView(dialogView)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .create()
-                    val dialog_text = dialogView.findViewById<AppCompatTextView>(R.id.dialog_text)
-                    val changelog_btn = dialogView.findViewById<AppCompatButton>(R.id.changelog_btn)
-                    val license_btn = dialogView.findViewById<AppCompatButton>(R.id.license_btn)
-                    dialog_text.text = resources.getString(
-                        R.string.version_info_message,
-                        resources.getString(R.string.app_name),
-                        BuildConfig.VERSION_NAME,
-                        BuildConfig.VERSION_CODENAME,
-                        BuildConfig.VERSION_BUILD_DATE_FULL,
-                        BuildConfig.VERSION_BUILD_YEAR
-                    )
-                    changelog_btn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
-                    changelog_btn.setOnClickListener {
-                        needLoad(InternalUrls.changelogUrl)
-                        dialog.dismiss()
-                    }
-                    license_btn.setOnClickListener {
-                        needLoad(InternalUrls.violaLicenseUrl)
-                        dialog.dismiss()
-                    }
-                    dialog.show()
+                    val buildInfoDialog = BuildInfoDialog(settingsActivity, dialogVersionDetails)
+                    buildInfoDialog.setupDialogForShowing()
+                    buildInfoDialog.create().show()
+                    true
+                }
+            website.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener {
+                    needLoad(InternalUrls.websiteUrl)
                     true
                 }
             Preference.OnPreferenceClickListener {
@@ -501,11 +493,14 @@ class SettingsActivity : BaseActivity() {
                     true
                 }
             search_engine.summary =
-                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSearchId)]
+                searchHomePageList[SearchEngineEntries.getIndexByName(
+                    settingsPreference.getString(SettingsKeys.searchName))]
             homepage.summary =
-                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultHomePageId)]
+                searchHomePageList[SearchEngineEntries.getIndexByName(
+                    settingsPreference.getString(SettingsKeys.homePageName))]
             search_suggestions.summary =
-                searchHomePageList[settingsPreference.getInt(SettingsKeys.defaultSuggestionsId)]
+                searchHomePageList[SearchEngineEntries.getIndexByName(
+                    settingsPreference.getString(SettingsKeys.suggestionsName))]
             adBlockerSource.summary =
                 adBlockerHostsEntries[settingsPreference.getInt(SettingsKeys.adServerId)]
             theme.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]

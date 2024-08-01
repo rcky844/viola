@@ -23,6 +23,12 @@ import tipz.viola.BuildConfig
 open class BuildInfo {
     private val LOG_TAG = "BuildInfo"
 
+    /* PRODUCT_NAME
+     *
+     */
+    @Size(min=1)
+    var productName: String? = null
+
     /* PRODUCT_VERSION
      *
      * Used to describes the current version of the product.
@@ -81,6 +87,18 @@ open class BuildInfo {
      */
     @Size(4)
     var productBuildTime: String? = BuildConfig.VERSION_BUILD_TIME_MINIMAL
+
+    /* PRODUCT_COPYRIGHT_YEAR
+     *
+     */
+    @Size(min=4)
+    var productCopyrightYear: String? = BuildConfig.VERSION_COPYRIGHT_YEAR
+
+    /* PRODUCT_LICENSE_DOCUMENT
+     *
+     */
+    @Size(min=1)
+    var productLicenseDocument: String? = BuildConfig.PRODUCT_LICENSE_DOCUMENT
 
     /* PRODUCT_BANNER
      *

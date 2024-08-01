@@ -83,6 +83,7 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
+import tipz.viola.webviewui.components.FullscreenFloatingActionButton
 import java.lang.ref.WeakReference
 import java.text.DateFormat
 
@@ -102,9 +103,11 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var toolsBarExtendableCloseHitBox: LinearLayoutCompat
     private lateinit var sslLock: AppCompatImageView
     private lateinit var homeButton: LinearLayoutCompat
+    private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
     private var sslErrorHost: String = CommonUtils.EMPTY_STRING
+    private var setFabHiddenViews = false
 
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
@@ -127,6 +130,7 @@ class BrowserActivity : VWebViewActivity() {
         iconHashClient = IconHashClient(this)
         sslLock = findViewById(R.id.ssl_lock)
         homeButton = findViewById(R.id.home_button)
+        fullscreenFab = findViewById(R.id.fullscreen_fab)
 
         // Setup toolbar
         toolBar = findViewById(R.id.toolBar)
@@ -450,6 +454,15 @@ class BrowserActivity : VWebViewActivity() {
                 val intent = Intent(this@BrowserActivity, DownloadActivity::class.java)
                 mGetNeedLoad.launch(intent)
             }
+
+            R.drawable.fullscreen -> {
+                if (!setFabHiddenViews) {
+                    fullscreenFab.hiddenViews = mutableListOf(appbar, toolsContainer)
+                    fullscreenFab.activity = this
+                    setFabHiddenViews = true
+                }
+                fullscreenFab.show()
+            }
         }
         return true // Close ToolBar if not interrupted
     }
@@ -693,6 +706,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.smartphone,
             R.drawable.favorites_add,
             R.drawable.download,
+            R.drawable.fullscreen,
             R.drawable.app_shortcut,
             R.drawable.settings,
             R.drawable.code,
@@ -707,6 +721,7 @@ class BrowserActivity : VWebViewActivity() {
             R.string.toolbar_expandable_viewport,
             R.string.toolbar_expandable_favorites_add,
             R.string.toolbar_expandable_downloads,
+            R.string.toolbar_expandable_fullscreen,
             R.string.toolbar_expandable_app_shortcut,
             R.string.toolbar_expandable_settings,
             R.string.toolbar_expandable_view_page_source,

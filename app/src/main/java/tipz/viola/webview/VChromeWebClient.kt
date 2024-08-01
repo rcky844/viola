@@ -23,11 +23,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
+import tipz.viola.utils.CommonUtils
 import java.util.Objects
 
 open class VChromeWebClient(private val mContext: Context, private val mVWebView: VWebView) :
@@ -43,21 +41,6 @@ open class VChromeWebClient(private val mContext: Context, private val mVWebView
             mUploadMessage = null
         }
 
-    private fun setImmersiveMode(enable: Boolean) {
-        val windowInsetsController = WindowCompat.getInsetsController(
-            (mContext as AppCompatActivity).window,
-            mContext.window.decorView
-        )
-        WindowCompat.setDecorFitsSystemWindows(mContext.window, !enable)
-        if (enable) {
-            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-            windowInsetsController.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        } else {
-            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
-        }
-    }
-
     override fun onShowCustomView(paramView: View, viewCallback: CustomViewCallback) {
         if (mCustomView != null) {
             onHideCustomView()
@@ -67,7 +50,7 @@ open class VChromeWebClient(private val mContext: Context, private val mVWebView
         (mContext as AppCompatActivity).requestedOrientation =
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         mCustomViewCallback = viewCallback
-        setImmersiveMode(true)
+        CommonUtils.setImmersiveMode(mContext, true)
         (mContext.window.decorView as FrameLayout).addView(
             mCustomView,
             FrameLayout.LayoutParams(-1, -1)
@@ -79,7 +62,7 @@ open class VChromeWebClient(private val mContext: Context, private val mVWebView
         (mContext as AppCompatActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         ((mContext as Activity).window.decorView as FrameLayout).removeView(mCustomView)
         mCustomView = null
-        setImmersiveMode(false)
+        CommonUtils.setImmersiveMode(mContext, false)
         mContext.requestedOrientation = mContext.resources.configuration.orientation
         mCustomViewCallback!!.onCustomViewHidden()
         mCustomViewCallback = null

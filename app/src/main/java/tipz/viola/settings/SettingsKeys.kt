@@ -25,16 +25,20 @@ object SettingsKeys {
      */
     const val configDataStore = "config" /* Pref file name */ /* TODO: Migrate to something newer? */
 
+    /* Search */
+    /* TODO: Remove custom settings when support creating custom EngineObjects */
+    const val homePageName = "homePageName" /* STRING */
+    const val homePageCustomUrl = "homePageCustomUrl" /* STRING */
+    const val searchName = "searchName" /* STRING */
+    const val searchCustomUrl = "searchCustomUrl" /* STRING */
+    const val suggestionsName = "suggestionsName" /* STRING */
+    const val suggestionsCustomUrl = "suggestionsCustomUrl" /* STRING */
+
+    /* Miscellaneous */
     const val adServerId = "adServerId" /* STRING */
     const val adServerUrl = "adServerUrl" /* STRING */
     const val checkAppLink = "checkAppLink" /* INTEGER */
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
-    const val defaultHomePage = "defaultHomePage" /* STRING */ /* FIXME: Rename to customHomePage */
-    const val defaultHomePageId = "defaultHomePageId" /* INTEGER */
-    const val defaultSearch = "defaultSearch" /* STRING */ /* FIXME: Rename to customSearch */
-    const val defaultSearchId = "defaultSearchId" /* INTEGER */
-    const val defaultSuggestions = "defaultSuggestions" /* STRING */ /* FIXME: Rename to customSuggestions */
-    const val defaultSuggestionsId = "defaultSuggestionsId" /* INTEGER */
     const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
     const val enableAdBlock = "enableAdBlock" /* INTEGER */
     const val enableGoogleSafeBrowse = "enableGoogleSafeBrowse" /* INTEGER */
@@ -55,6 +59,14 @@ object SettingsKeys {
     const val useWebHomePage = "useWebHomePage" /* INTEGER */
     const val updateChannelName = "updateChannelName" /* STRING */
     const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
+
+    /* Removed in 7.0.x */
+    const val defaultHomePage = "defaultHomePage" /* STRING */
+    const val defaultHomePageId = "defaultHomePageId" /* INTEGER */
+    const val defaultSearch = "defaultSearch" /* STRING */
+    const val defaultSearchId = "defaultSearchId" /* INTEGER */
+    const val defaultSuggestions = "defaultSuggestions" /* STRING */
+    const val defaultSuggestionsId = "defaultSuggestionsId" /* INTEGER */
 
     /*
      * Intent keys used in SettingsActivity communication
