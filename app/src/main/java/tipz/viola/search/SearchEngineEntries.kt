@@ -130,7 +130,9 @@ object SearchEngineEntries {
     }
 
     fun getHomePageUrl(name: String): String {
-        return patchUrlForCVEMitigation(findObjWithName(name)!!.homePage!!)
+        val url: String? = findObjWithName(name)!!.homePage
+        if (url.isNullOrBlank()) return CommonUtils.EMPTY_STRING
+        return patchUrlForCVEMitigation(url)
     }
 
     fun getDefaultHomeUrl(pref: SettingsSharedPreference?): String {
@@ -141,12 +143,9 @@ object SearchEngineEntries {
         return getHomePageUrl(name)
     }
 
-    fun getSearchUrl(
-        name: String,
-        query: String?,
-        language: String?
-    ): String {
-        var url: String = findObjWithName(name)!!.search!!
+    fun getSearchUrl(name: String, query: String?, language: String?): String {
+        var url: String? = findObjWithName(name)!!.search
+        if (url.isNullOrBlank()) return CommonUtils.EMPTY_STRING
         if (query != null)
             url = url.replace(queryPlaceholder, query).replace(languagePlaceholder, language!!)
         return patchUrlForCVEMitigation(url)
@@ -161,12 +160,9 @@ object SearchEngineEntries {
         return getSearchUrl(name, query, language)
     }
 
-    fun getSuggestionsUrl(
-        name: String,
-        query: String?,
-        language: String?
-    ): String {
-        var url: String = findObjWithName(name)!!.suggestion!!
+    fun getSuggestionsUrl(name: String, query: String?, language: String?): String {
+        var url: String? = findObjWithName(name)!!.suggestion
+        if (url.isNullOrBlank()) return CommonUtils.EMPTY_STRING
         if (query != null && language != null)
             url = url.replace(queryPlaceholder, query).replace(
                 languagePlaceholder, language)
