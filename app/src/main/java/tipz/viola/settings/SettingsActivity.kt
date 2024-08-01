@@ -400,7 +400,7 @@ class SettingsActivity : BaseActivity() {
                     return@Observer
                 }
                 val jChannelObject = jObject.getJSONObject(updateChannelName)
-                if (!jChannelObject.has("latest_update")) {
+                if (!jChannelObject.has("channel_data")) {
                     showMessage(
                         settingsActivity,
                         resources.getString(R.string.version_latest_toast)
@@ -408,7 +408,7 @@ class SettingsActivity : BaseActivity() {
                     return@Observer
                 }
 
-                val jChannelUpdateObject = jChannelObject.getJSONObject("latest_update")
+                val jChannelUpdateObject = jChannelObject.getJSONObject("channel_data")
                 if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
                     showMessage(
                         settingsActivity,
@@ -429,11 +429,8 @@ class SettingsActivity : BaseActivity() {
                         )
                     )
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        val filename =
-                            updateDownloadPathBase + DocumentFile.fromSingleUri(
-                                settingsActivity,
-                                Uri.parse(jChannelUpdateObject.getString("url"))
-                            )?.name
+                        val filename = jChannelUpdateObject.getString("download_url")
+                            .substringAfterLast('/')
                         this@SettingsPrefHandler.updateDownloadPath =
                             updateDownloadPathBase + filename
                         val apkFile = File(updateDownloadPath!!)
@@ -441,7 +438,7 @@ class SettingsActivity : BaseActivity() {
                         if (!apkFile.exists() || apkFile.delete()) downloadID =
                             DownloadUtils.dmDownloadFile(
                                 settingsActivity,
-                                jChannelUpdateObject.getString("url"),
+                                jChannelUpdateObject.getString("download_url"),
                                 null,
                                 "application/vnd.android.package-archive",
                                 resources.getString(R.string.download_title),
