@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
 <resources>
     <dimen name="toolbar_extendable_height">210dp</dimen> <!-- @dimen/toolbar_extendable_holder_size * 2 + 10dp -->
     <dimen name="toolbar_extendable_max_width">310dp</dimen> <!-- @dimen/toolbar_extendable_holder_size * 3 + 10dp -->
