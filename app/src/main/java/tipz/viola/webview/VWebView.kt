@@ -77,7 +77,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference
-    internal var adServersHandler: AdServersHandler
+    internal var adServersHandler: AdServersClient
 
     private val requestHeaders = HashMap<String, String>()
 
@@ -143,7 +143,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         webSettings.domStorageEnabled = true
 
         // Ad Server Hosts
-        adServersHandler = AdServersHandler(mContext, settingsPreference)
+        adServersHandler = AdServersClient(mContext, settingsPreference)
 
         this.webViewClient = VWebViewClient(mContext, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(mContext, this)

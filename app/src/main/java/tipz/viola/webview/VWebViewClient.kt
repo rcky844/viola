@@ -27,7 +27,7 @@ import java.net.URL
 open class VWebViewClient(
     private val mContext: Context,
     private val mVWebView: VWebView,
-    private val adServersHandler: AdServersHandler
+    private val adServersHandler: AdServersClient
 ) : WebViewClientCompat() {
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference!!
