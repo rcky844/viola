@@ -323,7 +323,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
-        val currentUrl = getUrl()
+        val currentUrl = this.url
+        val newUrl = if (!url.isNullOrBlank()) filterUrl(url) else currentUrl
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
@@ -339,6 +340,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_HISTORY -> {
+                if (currentUrl.isBlank()) return
                 if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK) {
                     currentBroha = Broha(title, currentUrl)
                     historyState = UpdateHistoryState.STATE_URL_UPDATED
@@ -349,6 +351,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_FAVICON -> {
+                if (currentUrl.isBlank()) return
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
                         currentBroha.iconHash = iconHashClient.save(favicon!!)
@@ -361,6 +364,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_TITLE -> {
+                if (currentUrl.isBlank()) return
                 activity.onTitleUpdated(
                     if (this.visibility == View.GONE) resources.getString(
                         R.string.start_page
@@ -372,7 +376,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
         }
 
-        activity.onUrlUpdated(if (url != null) filterUrl(url) else this.url)
+        activity.onUrlUpdated(newUrl)
         activity.onFaviconUpdated(favicon, false)
         activity.onDropDownDismissed()
     }
