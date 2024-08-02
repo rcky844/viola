@@ -165,13 +165,6 @@
             layout="@layout/layout_webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-        <include
-            android:id="@+id/layout_startpage"
-            layout="@layout/container_startpage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
     </RelativeLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat

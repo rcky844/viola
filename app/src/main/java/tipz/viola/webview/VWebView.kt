@@ -113,7 +113,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
         }
-        addJavascriptInterface(VJavaScriptInterface(context), VJavaScriptInterface.INTERFACE_NAME)
+        addJavascriptInterface(VJavaScriptInterface(activity), VJavaScriptInterface.INTERFACE_NAME)
 
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
@@ -235,6 +235,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             super.loadUrl(InternalUrls.licenseUrl)
             return
         }
+        if (url == InternalUrls.violaStartUrl) {
+            super.loadUrl(InternalUrls.localNtpUrl)
+            activity.onSslCertificateUpdated()
+            return
+        }
 
         // Handle App Links
         if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
@@ -268,22 +273,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
             if (handled) return // Exit loadUrl() if handled
         } else {
-            // Update to start page layout
-            val startPageLayout = activity.startPageLayout
-            if (url == InternalUrls.violaStartUrl) {
-                this.loadUrl(InternalUrls.aboutBlankUrl)
-                this.visibility = GONE
-                activity.swipeRefreshLayout.visibility = GONE
-                startPageLayout?.visibility = VISIBLE
-                activity.onSslCertificateUpdated()
-                return
-            }
-            if (this.visibility == GONE) {
-                this.visibility = VISIBLE
-                activity.swipeRefreshLayout.visibility = VISIBLE
-                startPageLayout?.visibility = GONE
-            }
-
             // If the URL has "viola://" prefix but hasn't been handled till here,
             // wire it up with the "chrome://" suffix.
             if (url.startsWith(InternalUrls.violaPrefix)) {

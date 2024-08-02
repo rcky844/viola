@@ -21,6 +21,7 @@ object InternalUrls {
 
     // Internal assets
     const val licenseUrl = "file:///android_asset/LICENSE.txt"
+    const val localNtpUrl = "file:///android_asset/local-ntp/index.html"
 
     // Browser handling
     const val aboutBlankUrl = "about:blank"

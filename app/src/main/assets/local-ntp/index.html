@@ -1,0 +1,38 @@
+<!-- html stuffs -->
+<title>New tab</title>
+
+<!-- scripts -->
+<script>
+document.addEventListener('DOMContentLoaded', async (event) => {
+    // Handle search
+    var inputbox = document.getElementById('search-input');
+    inputbox.addEventListener('click', function() {
+        ViolaBrowser.focusInputBox();
+    });
+    inputbox.addEventListener('focus', function() {
+        ViolaBrowser.focusInputBox();
+    });
+    inputbox.addEventListener('input', (event) => {
+        inputbox.value = ""
+        ViolaBrowser.focusInputBox();
+    });
+
+    // Handle buildtag
+    var buildtag = document.getElementById('buildtag');
+    buildtag.innerHTML = ViolaBrowser.getProductBuildTag();
+});
+</script>
+
+<!-- styles -->
+<link rel="stylesheet" href="styles.css">
+
+<!-- content -->
+<body>
+<div class="logo-container">
+<h2><img style="vertical-align: middle;" src="logo.png"> Viola Browser</h2>
+</div>
+
+<input id="search-input" type="text" placeholder="Search or type web address&hellip;">
+
+<p id="buildtag"></p>
+</body>
