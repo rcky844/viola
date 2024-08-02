@@ -11,7 +11,6 @@
      limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">Viola</string>
     <string name="customUA">"Custom User Agent"</string>
     <string name="reset_complete">"Reset completed successfully."</string>
     <string name="pref_clear_cache">"Clear cache"</string>
