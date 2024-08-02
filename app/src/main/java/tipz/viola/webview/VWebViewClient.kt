@@ -12,6 +12,7 @@ import android.webkit.RenderProcessGoneDetail
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import androidx.annotation.StringRes
 import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.Application
@@ -66,31 +67,21 @@ open class VWebViewClient(
 
     private fun getSslDialog(error: SslError): MaterialAlertDialogBuilder {
         val dialog = MaterialAlertDialogBuilder(mContext)
-        var contentSummary = mContext.resources.getString(R.string.ssl_certificate_unknown)
-        when (error.primaryError) {
-            SslError.SSL_DATE_INVALID -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_date_invalid)
-
-            SslError.SSL_INVALID -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_invalid)
-
-            SslError.SSL_EXPIRED -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_expired)
-
-            SslError.SSL_IDMISMATCH -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_idmismatch)
-
-            SslError.SSL_NOTYETVALID -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_notyetvalid)
-
-            SslError.SSL_UNTRUSTED -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_untrusted)
+        @StringRes var stringResId = when (error.primaryError) {
+            SslError.SSL_DATE_INVALID -> R.string.ssl_certificate_date_invalid
+            SslError.SSL_INVALID -> R.string.ssl_certificate_invalid
+            SslError.SSL_EXPIRED -> R.string.ssl_certificate_expired
+            SslError.SSL_IDMISMATCH -> R.string.ssl_certificate_idmismatch
+            SslError.SSL_NOTYETVALID -> R.string.ssl_certificate_notyetvalid
+            SslError.SSL_UNTRUSTED -> R.string.ssl_certificate_untrusted
+            else -> R.string.ssl_certificate_unknown
         }
-        dialog.setTitle(mContext.resources.getString(R.string.ssl_certificate_error_dialog_title))
+
+        dialog.setTitle(R.string.ssl_certificate_error_dialog_title)
             .setMessage(
                 mContext.resources.getString(
                     R.string.ssl_certificate_error_dialog_content,
-                    contentSummary
+                    mContext.resources.getString(stringResId)
                 )
             )
         return dialog
