@@ -2,7 +2,6 @@ body {
     font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: center;
     width: 30em;
-    background: black;
 
     position: fixed;
     top: 50%;
@@ -11,7 +10,7 @@ body {
     margin-left: -15em;
 }
 
-input[type=text], button {
+input[type=text] {
     background-color: #66666666;
     border-radius: 28px;
     border: none;
@@ -27,12 +26,6 @@ input[type=text] {
 
 input[type=text]:focus {
     outline: none;
-}
-
-button {
-    display: inline-block;
-    cursor: pointer;
-    padding: 16px;
 }
 
 p.buildtag {
