@@ -1,0 +1,35 @@
+body {
+    font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align: center;
+    margin-top: 20em;
+    background-color: black;
+}
+
+input[type=text], button {
+    background-color: #66666666;
+    border-radius: 28px;
+    border: none;
+    margin: 32px 8px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+}
+
+input[type=text] {
+    width: 80%;
+    font-size: 18px;
+    padding: 16px 32px;
+}
+
+input[type=text]:focus {
+    outline: none;
+}
+
+button {
+    display: inline-block;
+    cursor: pointer;
+    padding: 16px;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+}
