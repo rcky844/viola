@@ -25,8 +25,8 @@ object CommonUtils {
     const val EMPTY_STRING = ""
     private const val DEFAULT_LANGUAGE = "en-US"
 
-    fun shareUrl(context: Context, url: String?) {
-        if (url.isNullOrBlank()) return
+    fun shareUrl(context: Context, url: String?): Boolean {
+        if (url.isNullOrBlank()) return false
 
         val i = Intent(Intent.ACTION_SEND)
         i.type = "text/plain"
@@ -37,6 +37,7 @@ object CommonUtils {
                 context.resources.getString(R.string.share_url_dialog_title)
             )
         )
+        return true
     }
 
     /**
