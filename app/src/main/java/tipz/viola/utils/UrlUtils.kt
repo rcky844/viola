@@ -62,14 +62,13 @@ object UrlUtils {
             finalUrl = (if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://"
                 else "http://") + input
             Log.d(LOG_TAG, "toSearchOrValidUrl(): at is relative, finalUrl=$finalUrl")
-        } else {
-            if (!finalUrl.matches(httpUrlRegex.toRegex())) {
-                finalUrl = SearchEngineEntries.getSearchUrl(
-                    settingsPreference.getString(SettingsKeys.searchName),
-                    processedInput, language
-                )
-                Log.d(LOG_TAG, "toSearchOrValidUrl(): at httpUrlRegex, finalUrl=$finalUrl")
-            }
+        }
+        if (!finalUrl.matches(httpUrlRegex.toRegex())) {
+            finalUrl = SearchEngineEntries.getSearchUrl(
+                settingsPreference.getString(SettingsKeys.searchName),
+                processedInput, language
+            )
+            Log.d(LOG_TAG, "toSearchOrValidUrl(): at httpUrlRegex, finalUrl=$finalUrl")
         }
         return finalUrl
     }
