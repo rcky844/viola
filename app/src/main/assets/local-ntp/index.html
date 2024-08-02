@@ -4,9 +4,22 @@
 <!-- scripts -->
 <script>
 document.addEventListener('DOMContentLoaded', async (event) => {
+    // Handle search
+    var inputbox = document.getElementById('search-input');
+    inputbox.addEventListener('click', function() {
+        ViolaBrowser.focusInputBox();
+    });
+    inputbox.addEventListener('focus', function() {
+        ViolaBrowser.focusInputBox();
+    });
+    inputbox.addEventListener('input', (event) => {
+        inputbox.value = ""
+        ViolaBrowser.focusInputBox();
+    });
+
     // Handle buildtag
     var buildtag = document.getElementById('buildtag');
-    buildtag.innerHTML = ViolaBrowser.getProductBuildTag()
+    buildtag.innerHTML = ViolaBrowser.getProductBuildTag();
 });
 </script>
 

@@ -3,25 +3,32 @@
 
 package tipz.viola.webview
 
-import android.content.Context
 import android.util.Log
 import android.webkit.JavascriptInterface
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tipz.build.info.BuildInfo
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.InternalDownloadProvider
 import tipz.viola.utils.CommonUtils
 import java.io.IOException
 
-class VJavaScriptInterface(private val context: Context) {
+class VJavaScriptInterface(private val activity: VWebViewActivity) {
     @JavascriptInterface
     @Throws(IOException::class)
     fun getBase64FromBlobData(uriString: String, mimeType: String) {
         Log.i(LOG_TAG, "getBase64FromBlobData(): mimeType=${mimeType}")
         InternalDownloadProvider.apply {
-            byteArrayToFile(context,
+            byteArrayToFile(activity,
                 DownloadUtils.base64StringToByteArray(DownloadUtils.getRawDataFromDataUri(uriString)),
                 "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}")
         }
+    }
+
+    @JavascriptInterface
+    fun focusInputBox() = CoroutineScope(Dispatchers.Main).launch {
+        activity.onStartPageEditTextPressed()
     }
 
     @JavascriptInterface

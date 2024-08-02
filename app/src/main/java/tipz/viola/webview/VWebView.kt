@@ -113,7 +113,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
         }
-        addJavascriptInterface(VJavaScriptInterface(context), VJavaScriptInterface.INTERFACE_NAME)
+        addJavascriptInterface(VJavaScriptInterface(activity), VJavaScriptInterface.INTERFACE_NAME)
 
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
