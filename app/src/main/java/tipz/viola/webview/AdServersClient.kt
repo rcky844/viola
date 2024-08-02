@@ -18,7 +18,7 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.util.Scanner
 
-open class AdServersHandler(context: Context, settingsPreference: SettingsSharedPreference) {
+open class AdServersClient(context: Context, settingsPreference: SettingsSharedPreference) {
     private var mContext: Context
     private var mSettingsPreference: SettingsSharedPreference
     var adServers: String? = null
