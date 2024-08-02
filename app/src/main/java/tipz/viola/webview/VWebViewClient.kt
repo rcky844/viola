@@ -15,6 +15,7 @@ import android.webkit.RenderProcessGoneDetail
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import androidx.annotation.StringRes
 import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.Application
@@ -24,13 +25,12 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView.PageLoadState
 import java.io.ByteArrayInputStream
-import java.net.MalformedURLException
 import java.net.URL
 
 open class VWebViewClient(
     private val mContext: Context,
     private val mVWebView: VWebView,
-    private val adServersHandler: AdServersHandler
+    private val adServersHandler: AdServersClient
 ) : WebViewClientCompat() {
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference
@@ -69,31 +69,21 @@ open class VWebViewClient(
 
     private fun getSslDialog(error: SslError): MaterialAlertDialogBuilder {
         val dialog = MaterialAlertDialogBuilder(mContext)
-        var contentSummary = mContext.resources.getString(R.string.ssl_certificate_unknown)
-        when (error.primaryError) {
-            SslError.SSL_DATE_INVALID -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_date_invalid)
-
-            SslError.SSL_INVALID -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_invalid)
-
-            SslError.SSL_EXPIRED -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_expired)
-
-            SslError.SSL_IDMISMATCH -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_idmismatch)
-
-            SslError.SSL_NOTYETVALID -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_notyetvalid)
-
-            SslError.SSL_UNTRUSTED -> contentSummary =
-                mContext.resources.getString(R.string.ssl_certificate_untrusted)
+        @StringRes var stringResId = when (error.primaryError) {
+            SslError.SSL_DATE_INVALID -> R.string.ssl_certificate_date_invalid
+            SslError.SSL_INVALID -> R.string.ssl_certificate_invalid
+            SslError.SSL_EXPIRED -> R.string.ssl_certificate_expired
+            SslError.SSL_IDMISMATCH -> R.string.ssl_certificate_idmismatch
+            SslError.SSL_NOTYETVALID -> R.string.ssl_certificate_notyetvalid
+            SslError.SSL_UNTRUSTED -> R.string.ssl_certificate_untrusted
+            else -> R.string.ssl_certificate_unknown
         }
-        dialog.setTitle(mContext.resources.getString(R.string.ssl_certificate_error_dialog_title))
+
+        dialog.setTitle(R.string.ssl_certificate_error_dialog_title)
             .setMessage(
                 mContext.resources.getString(
                     R.string.ssl_certificate_error_dialog_content,
-                    contentSummary
+                    mContext.resources.getString(stringResId)
                 )
             )
         return dialog
@@ -103,26 +93,23 @@ open class VWebViewClient(
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         if (unsecureURLSet.contains(url)) {
             getSslDialog(unsecureURLErrorSet[unsecureURLSet.indexOf(url)])
-                .setPositiveButton(mContext.resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     run {
                         view.loadUrl(url)
                         mVWebView.onSslErrorProceed()
                     }
                 }
-                .setNegativeButton(mContext.resources.getString(android.R.string.cancel), null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
             return true
         }
         if (UrlUtils.isUriLaunchable(url)) return false
         try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
+            val intent = Intent(Intent.ACTION_VIEW,
+                Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
             mContext.startActivity(intent)
         } catch (ignored: ActivityNotFoundException) {
-            CommonUtils.showMessage(
-                mContext,
-                mContext.resources.getString(R.string.toast_no_app_to_handle)
-            )
+            CommonUtils.showMessage(mContext, R.string.toast_no_app_to_handle)
         }
         return true
     }
@@ -131,14 +118,16 @@ open class VWebViewClient(
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
         unsecureURLErrorSet.add(error)
         getSslDialog(error)
-            .setPositiveButton(mContext.resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 run {
                     handler.proceed()
                     mVWebView.onSslErrorProceed()
                     unsecureURLSet.add(error.url)
                 }
             }
-            .setNegativeButton(mContext.resources.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> handler.cancel() }
+            .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
+                handler.cancel()
+            }
             .create().show()
     }
 
@@ -149,22 +138,18 @@ open class VWebViewClient(
     @Suppress("DEPRECATION") // Kept as it is easier to handle
     @Deprecated("Deprecated in Java")
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-        if (adServersHandler.adServers.isNullOrEmpty()) {
-            // TODO: Add dialog to warn users of this issue
-            return super.shouldInterceptRequest(view, url)
-        }
-        try {
-            if (adServersHandler.adServers!!.contains(" " + URL(url).host) && settingsPreference.getInt(
-                    SettingsKeys.enableAdBlock
-                ) == 1
-            )
+        if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock)) {
+            if (adServersHandler.adServers.isNullOrEmpty()) {
+                // TODO: Add dialog to warn users of this issue
+                return super.shouldInterceptRequest(view, url)
+            }
+            if (adServersHandler.adServers!!.contains(" ${URL(url).host}"))
                 return WebResourceResponse(
                     "text/plain", "utf-8",
                     ByteArrayInputStream(CommonUtils.EMPTY_STRING.toByteArray())
                 )
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
         }
+
         return super.shouldInterceptRequest(view, url)
     }
 

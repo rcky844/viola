@@ -92,7 +92,7 @@ open class VWebViewActivity : BaseActivity() {
             doSettingsCheck()
             if (result.data == null) return@registerForActivityResult
 
-            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadUrl(it) } // FROM: SettingsActivity
+            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadRealUrl(it) } // FROM: SettingsActivity
 
             if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
                 webview.reload()
@@ -197,8 +197,8 @@ open class VWebViewActivity : BaseActivity() {
 
     private fun updateSwipeRefreshLayoutEnabled(isEnabled: Boolean) {
         swipeRefreshLayoutEnabled = isEnabled
-        if (settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh)) swipeRefreshLayout.isEnabled =
-            swipeRefreshLayoutEnabled
+        if (settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh))
+            swipeRefreshLayout.isEnabled = swipeRefreshLayoutEnabled
     }
 
     private fun getTrueCSSValue(rawValue: String): String {

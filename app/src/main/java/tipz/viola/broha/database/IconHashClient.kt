@@ -13,11 +13,7 @@ import java.nio.ByteBuffer
 
 @Suppress("DEPRECATION")
 class IconHashClient(context: Context) {
-    private val fileDir: String
-
-    init {
-        fileDir = context.filesDir.path + "/favicon"
-    }
+    private val fileDir: String = context.filesDir.path + "/favicon"
 
     fun save(icon: Bitmap): Int? {
         val buffer = ByteBuffer.allocate(icon.byteCount)

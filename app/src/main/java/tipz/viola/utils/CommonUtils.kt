@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.TypedValue
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,8 +25,8 @@ object CommonUtils {
     const val EMPTY_STRING = ""
     private const val DEFAULT_LANGUAGE = "en-US"
 
-    fun shareUrl(context: Context, url: String?) {
-        if (url.isNullOrBlank()) return
+    fun shareUrl(context: Context, url: String?): Boolean {
+        if (url.isNullOrBlank()) return false
 
         val i = Intent(Intent.ACTION_SEND)
         i.type = "text/plain"
@@ -36,6 +37,7 @@ object CommonUtils {
                 context.resources.getString(R.string.share_url_dialog_title)
             )
         )
+        return true
     }
 
     /**
@@ -47,6 +49,10 @@ object CommonUtils {
         Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
     }
 
+    fun showMessage(context: Context?, @StringRes resId: Int) {
+        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show()
+    }
+
     /**
      * Copy to Clipboard
      *
@@ -56,7 +62,7 @@ object CommonUtils {
         (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
             ClipData.newPlainText("clipboard", s)
         )
-        showMessage(context, context.resources.getString(R.string.copied_clipboard))
+        showMessage(context, R.string.copied_clipboard)
     }
 
     val language: String

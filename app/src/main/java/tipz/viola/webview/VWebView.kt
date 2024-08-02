@@ -50,8 +50,9 @@ import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
+import tipz.viola.webview.pages.ExportedUrls
+import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webviewui.BaseActivity
 
 
@@ -68,7 +69,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     private val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference
-    internal var adServersHandler: AdServersHandler
+    internal var adServersHandler: AdServersClient
 
     private val requestHeaders = HashMap<String, String>()
 
@@ -87,7 +88,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     init {
         /* User agent init code */
         downloadClient.vWebViewModuleInit(this)
-        setUserAgent(UserAgentMode.MOBILE, UserAgentBundle())
+        setUserAgent(UserAgentMode.MOBILE, UserAgentBundle().apply {
+            noReload = true
+        })
 
         /* Start the download manager service */
         setDownloadListener { vUrl: String?, _: String?, vContentDisposition: String?, vMimeType: String?, _: Long ->
@@ -105,7 +108,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 uriString = vUrl!!
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType
-                requestUrl = getUrl()
+                requestUrl = getRealUrl()
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
@@ -138,7 +141,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         webSettings.domStorageEnabled = true
 
         // Ad Server Hosts
-        adServersHandler = AdServersHandler(mContext, settingsPreference)
+        adServersHandler = AdServersClient(mContext, settingsPreference)
 
         this.webViewClient = VWebViewClient(mContext, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(mContext, this)
@@ -183,7 +186,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         // HTTPS enforce setting
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) webSettings.mixedContentMode =
-            if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) WebSettings.MIXED_CONTENT_NEVER_ALLOW else WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) WebSettings.MIXED_CONTENT_NEVER_ALLOW
+            else WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
         // Google's "Safe" Browsing
         if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
@@ -225,19 +229,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     override fun loadUrl(url: String) {
         if (url.isBlank()) return
-        if (url == InternalUrls.aboutBlankUrl) {
-            super.loadUrl(url)
-            return
-        }
 
-        // Check for internal URLs
-        if (url == InternalUrls.violaLicenseUrl) {
-            super.loadUrl(InternalUrls.licenseUrl)
-            return
-        }
-        if (url == InternalUrls.violaStartUrl) {
-            super.loadUrl(InternalUrls.localNtpUrl)
-            activity.onSslCertificateUpdated()
+        // Check for privileged URLs
+        val privilegedActualUrl = PrivilegedPages.getActualUrl(url)
+        if (privilegedActualUrl != null) {
+            loadRealUrl(privilegedActualUrl)
             return
         }
 
@@ -254,9 +250,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             val packageManager = activity.packageManager
             if (packageManager?.let { webIntent.resolveActivity(it) } != null) {
                 val dialog = MaterialAlertDialogBuilder(activity)
-                dialog.setTitle(resources.getString(R.string.dialog_open_external_title))
-                    .setMessage(resources.getString(R.string.dialog_open_external_message))
-                    .setPositiveButton(resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+                dialog.setTitle(R.string.dialog_open_external_title)
+                    .setMessage(R.string.dialog_open_external_message)
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         try {
                             activity.startActivity(webIntent)
                             handled = true
@@ -275,8 +271,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         } else {
             // If the URL has "viola://" prefix but hasn't been handled till here,
             // wire it up with the "chrome://" suffix.
-            if (url.startsWith(InternalUrls.violaPrefix)) {
-                super.loadUrl(url.replace(InternalUrls.violaPrefix, InternalUrls.chromePrefix))
+            if (url.startsWith(ExportedUrls.violaPrefix)) {
+                super.loadUrl(url.replace(ExportedUrls.violaPrefix, ExportedUrls.chromePrefix))
                 return
             }
 
@@ -292,16 +288,29 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
     }
 
+    // This should only be accessed by us!
+    fun loadRealUrl(url: String) {
+        super.loadUrl(url)
+    }
+
     override fun reload() {
-        if (currentBroha.url == getUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
+        if (currentBroha.url == getRealUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
-        loadUrl(getUrl())
+        loadRealUrl(getRealUrl())
     }
 
     override fun getUrl(): String {
         val superUrl = super.getUrl()
-        return if (superUrl.isNullOrBlank()) InternalUrls.aboutBlankUrl else superUrl
+        return if (superUrl.isNullOrBlank()) ExportedUrls.aboutBlankUrl
+        else filterUrl(superUrl)
     }
+
+    fun filterUrl(url: String): String {
+        return if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
+        else PrivilegedPages.getDisplayUrl(url) ?: url
+    }
+
+    fun getRealUrl(): String = super.getUrl() ?: ExportedUrls.aboutBlankUrl
 
     override fun goBack() {
         activity.onDropDownDismissed()
@@ -314,12 +323,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
-        if (url == InternalUrls.aboutBlankUrl) return
-        val currentUrl = getUrl()
+        val currentUrl = this.url
+        val newUrl = if (!url.isNullOrBlank()) filterUrl(url) else currentUrl
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
-                if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return
+                if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return
                 activity.onFaviconProgressUpdated(true)
                 activity.onPageLoadProgressChanged(-1)
             }
@@ -331,6 +340,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_HISTORY -> {
+                if (currentUrl.isBlank()) return
                 if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK) {
                     currentBroha = Broha(title, currentUrl)
                     historyState = UpdateHistoryState.STATE_URL_UPDATED
@@ -341,6 +351,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_FAVICON -> {
+                if (currentUrl.isBlank()) return
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
                         currentBroha.iconHash = iconHashClient.save(favicon!!)
@@ -353,6 +364,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_TITLE -> {
+                if (currentUrl.isBlank()) return
                 activity.onTitleUpdated(
                     if (this.visibility == View.GONE) resources.getString(
                         R.string.start_page
@@ -364,7 +376,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
         }
 
-        if (url != null) activity.onUrlUpdated(url)
+        activity.onUrlUpdated(newUrl)
         activity.onFaviconUpdated(favicon, false)
         activity.onDropDownDismissed()
     }
@@ -423,7 +435,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadHomepage(useStartPage : Boolean) {
         if (useStartPage) {
-            loadUrl(InternalUrls.violaStartUrl)
+            loadRealUrl(ExportedUrls.actualStartUrl)
         } else {
             loadUrl(SearchEngineEntries.getDefaultHomeUrl(settingsPreference))
         }
@@ -432,9 +444,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadViewSourcePage(url: String?): Boolean {
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
-        if (currentUrl == InternalUrls.aboutBlankUrl) return false
-        if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
-        loadUrl("${InternalUrls.viewSourcePrefix}$currentUrl")
+        if (PrivilegedPages.isPrivilegedPage(url)) return false
+        if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
+        loadUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
         return true
     }
 }

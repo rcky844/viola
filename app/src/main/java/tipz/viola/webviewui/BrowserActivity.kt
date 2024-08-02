@@ -25,7 +25,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.widget.AppCompatCheckBox
@@ -67,10 +66,12 @@ import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
+import tipz.viola.webview.pages.ExportedUrls
+import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webviewui.components.FullscreenFloatingActionButton
+import tipz.viola.widget.StringResAdapter
 import java.lang.ref.WeakReference
 import java.text.DateFormat
 
@@ -150,9 +151,10 @@ class BrowserActivity : VWebViewActivity() {
         favicon?.setOnClickListener {
             val popupMenu = PopupMenu(this, favicon!!)
             val menu = popupMenu.menu
-            menu.add(if (webview.visibility == View.GONE) resources.getString(R.string.start_page) else webview.title).isEnabled =
-                false
-            menu.add(resources.getString(R.string.copy_title))
+            if (webview.visibility == View.GONE) menu.add(R.string.start_page).isEnabled = false
+            else menu.add(webview.title).isEnabled = false
+
+            menu.add(R.string.copy_title)
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
                 if (item.title.toString() == resources.getString(R.string.copy_title)) {
                     CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
@@ -180,7 +182,7 @@ class BrowserActivity : VWebViewActivity() {
                         DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
                     )
                 )
-                .setPositiveButton(resources.getString(android.R.string.ok), null)
+                .setPositiveButton(android.R.string.ok, null)
                 .create().show()
         }
 
@@ -329,18 +331,17 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
             R.drawable.app_shortcut -> { // FIXME: Shortcuts pointing to the same URL does not behave as expected
                 // Bail out for certain URLs
-                // FIXME: Block certain internal URLs
-                if (webview.title.isNullOrBlank() || webview.url.isBlank()) return true
+                if (webview.title.isNullOrBlank() || webview.url.isBlank()) return false
 
                 // Show dialog for selecting modes
                 val dialog = MaterialAlertDialogBuilder(this)
-                dialog.setTitle(resources.getString(R.string.toolbar_expandable_app_shortcut))
+                dialog.setTitle(R.string.toolbar_expandable_app_shortcut)
 
                 // TODO: Export as proper list
-                val arrayAdapter = ArrayAdapter<String>(this, R.layout.template_item_text_single)
-                arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_browser))
-                arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_custom_tabs))
-                arrayAdapter.add(resources.getString(R.string.toolbar_expandable_shortcuts_menu_webapp))
+                val arrayAdapter = StringResAdapter(this)
+                arrayAdapter.add(R.string.toolbar_expandable_shortcuts_menu_browser)
+                arrayAdapter.add(R.string.toolbar_expandable_shortcuts_menu_custom_tabs)
+                arrayAdapter.add(R.string.toolbar_expandable_shortcuts_menu_webapp)
                 dialog.setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
                     val launchIntent = Intent(this, LauncherActivity::class.java)
                         .setData(Uri.parse(webview.url))
@@ -360,7 +361,6 @@ class BrowserActivity : VWebViewActivity() {
                     )
                 }
                 dialog.create().show()
-                return false
             }
 
             R.drawable.settings -> {
@@ -382,7 +382,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.favorites_add -> {
                 val url = webview.url
-                if (url.isBlank() || url == InternalUrls.aboutBlankUrl) return false
+                if (url.isBlank() || PrivilegedPages.isPrivilegedPage(url)) return false
 
                 val icon = favicon!!.drawable
                 val title = webview.title
@@ -391,10 +391,7 @@ class BrowserActivity : VWebViewActivity() {
                     val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
                     favClient.insert(Broha(iconHash, title, url))
                 }
-                CommonUtils.showMessage(
-                    this,
-                    resources.getString(R.string.save_successful)
-                )
+                CommonUtils.showMessage(this, R.string.save_successful)
             }
 
             R.drawable.close -> finish()
@@ -408,6 +405,9 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.print -> {
+                // Bail out for certain URLs
+                if (webview.url.isBlank()) return false
+
                 val jobName = getString(R.string.app_name) + " Document"
                 val printAdapter: PrintDocumentAdapter =
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -446,7 +446,7 @@ class BrowserActivity : VWebViewActivity() {
                 val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
                 deskMode.isChecked = currentCustomUAWideView
                 val dialog = MaterialAlertDialogBuilder(this)
-                dialog.setTitle(resources.getString(R.string.customUA))
+                dialog.setTitle(R.string.customUA)
                     .setView(root)
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         val dataBundle = VWebView.UserAgentBundle()
@@ -499,12 +499,6 @@ class BrowserActivity : VWebViewActivity() {
 
 
     override fun onUrlUpdated(url: String?) {
-        // TODO: Hack this somewhere else
-        if (url == InternalUrls.localNtpUrl) {
-            urlEditText.setText(CommonUtils.EMPTY_STRING)
-            return
-        }
-
         if (!urlEditText.isFocused) urlEditText.setText(url)
     }
 
@@ -519,12 +513,15 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     override fun onSslCertificateUpdated() {
-        if (webview.url == InternalUrls.localNtpUrl) {
+        // Startpage
+        if (webview.getRealUrl() == ExportedUrls.actualStartUrl) {
             sslState = SslState.SEARCH
             sslLock.setImageResource(R.drawable.search)
             sslLock.isClickable = false
             return
         }
+
+        // All the other pages
         if (webview.certificate == null) {
             sslState = SslState.NONE
             sslLock.setImageResource(R.drawable.warning)
@@ -553,20 +550,11 @@ class BrowserActivity : VWebViewActivity() {
 
     class ItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>) :
         RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
-        private val mBrowserActivity: WeakReference<BrowserActivity>
-        private val mItemsList: WeakReference<List<Int>>
+        private val mBrowserActivity: WeakReference<BrowserActivity> = WeakReference(mainActivity)
+        private val mItemsList: WeakReference<List<Int>> = WeakReference(itemsList)
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val mImageView: AppCompatImageView
-
-            init {
-                mImageView = view.findViewById(R.id.imageView)
-            }
-        }
-
-        init {
-            mBrowserActivity = WeakReference(mainActivity)
-            mItemsList = WeakReference(itemsList)
+            val mImageView: AppCompatImageView = view.findViewById(R.id.imageView)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -599,26 +587,14 @@ class BrowserActivity : VWebViewActivity() {
         descriptionList: List<Int>
     ) :
         RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
-        private val mBrowserActivity: WeakReference<BrowserActivity>
-        private val mItemsList: WeakReference<List<Int>>
-        private val mDescriptionList: WeakReference<List<Int>>
+        private val mBrowserActivity: WeakReference<BrowserActivity> = WeakReference(mainActivity)
+        private val mItemsList: WeakReference<List<Int>> = WeakReference(itemsList)
+        private val mDescriptionList: WeakReference<List<Int>> = WeakReference(descriptionList)
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val mItemBox: LinearLayoutCompat
-            val mImageView: AppCompatImageView
-            val mTextView: AppCompatTextView
-
-            init {
-                mItemBox = view as LinearLayoutCompat
-                mImageView = view.findViewById(R.id.imageView)
-                mTextView = view.findViewById(R.id.textView)
-            }
-        }
-
-        init {
-            mBrowserActivity = WeakReference(mainActivity)
-            mItemsList = WeakReference(itemsList)
-            mDescriptionList = WeakReference(descriptionList)
+            val mItemBox: LinearLayoutCompat = view as LinearLayoutCompat
+            val mImageView: AppCompatImageView = view.findViewById(R.id.imageView)
+            val mTextView: AppCompatTextView = view.findViewById(R.id.textView)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

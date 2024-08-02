@@ -63,7 +63,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                 Log.i(LOG_TAG, "startDownload(): filename=${filename}")
                 request.setDestinationUri(Uri.parse("file://$downloadPath$filename"))
             } catch (e: IllegalStateException) {
-                CommonUtils.showMessage(context, context.resources.getString(R.string.downloadFailed))
+                CommonUtils.showMessage(context, R.string.downloadFailed)
             }
             request.setMimeType(
                 MimeTypeMap.getSingleton().getMimeTypeFromExtension(
@@ -74,7 +74,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
             try {
                 downloadID = dm.enqueue(request)
             } catch (e: RuntimeException) {
-                CommonUtils.showMessage(context, context.resources.getString(R.string.downloadFailed))
+                CommonUtils.showMessage(context, R.string.downloadFailed)
                 return@apply
             }
 

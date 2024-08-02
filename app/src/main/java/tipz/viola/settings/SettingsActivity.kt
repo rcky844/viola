@@ -49,7 +49,7 @@ import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialog
 import tipz.viola.utils.ApkInstaller
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
-import tipz.viola.utils.InternalUrls
+import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
@@ -100,15 +100,15 @@ class SettingsActivity : BaseActivity() {
     }
 
     class SettingsPrefHandler(act: AppCompatActivity) : PreferenceFragmentCompat() {
-        private lateinit var settingsActivity: AppCompatActivity
+        private var settingsActivity: AppCompatActivity
         private val settingsPreference: SettingsSharedPreference
         private val updateConfigLiveData = MutableLiveData<JSONObject>()
         private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
         private val dialogVersionDetails = BuildInfoDialog.BuildInfoDialogDetails.also {
             it.loader = this::needLoad
-            it.changelogUrl = InternalUrls.changelogUrl
-            it.licenseUrl = InternalUrls.violaLicenseUrl
+            it.changelogUrl = ExportedUrls.changelogUrl
+            it.licenseUrl = ExportedUrls.actualLicenseUrl
         }
 
         init {
@@ -118,17 +118,10 @@ class SettingsActivity : BaseActivity() {
                 (settingsActivity.applicationContext as Application).settingsPreference
             pickMedia =
                 registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                    if (uri != null) {
-                        val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        settingsActivity.contentResolver.takePersistableUriPermission(
-                            uri,
-                            flag
-                        )
-                        settingsPreference.setString(
-                            SettingsKeys.startPageWallpaper,
-                            uri.toString()
-                        )
-                    }
+                    if (uri == null) return@registerForActivityResult
+                    val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    settingsActivity.contentResolver.takePersistableUriPermission(uri, flag)
+                    settingsPreference.setString(SettingsKeys.startPageWallpaper, uri.toString())
                 }
         }
 
@@ -142,9 +135,9 @@ class SettingsActivity : BaseActivity() {
             super.onDestroyView()
         }
 
-        private fun needLoad(Url: String) {
+        private fun needLoad(url: String) {
             val needLoad = Intent()
-            needLoad.putExtra(SettingsKeys.needLoadUrl, Url)
+            needLoad.putExtra(SettingsKeys.needLoadUrl, url)
             settingsActivity.setResult(0, needLoad)
             settingsActivity.finish()
         }
@@ -188,10 +181,9 @@ class SettingsActivity : BaseActivity() {
                     listPickerObject.namePreference = SettingsKeys.searchName
                     listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
                     listPickerObject.stringPreference = SettingsKeys.searchCustomUrl
-                    listPickerObject.dialogTitle =
-                        resources.getString(R.string.search_engine)
-                    listPickerObject.dialogCustomMessage =
-                        settingsActivity.resources.getString(R.string.custom_search_guide)
+                    listPickerObject.dialogTitleResId = R.string.search_engine
+                    listPickerObject.dialogCustomMessageResId = R.string.custom_search_guide
+                    listPickerObject.customIndexEnabled = true
                     listPickerObject.customIndex = SearchEngineEntries.customIndex
 
                     listPickerAlertDialog.setupDialogForShowing()
@@ -208,8 +200,8 @@ class SettingsActivity : BaseActivity() {
                     listPickerObject.namePreference = SettingsKeys.homePageName
                     listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
                     listPickerObject.stringPreference = SettingsKeys.homePageCustomUrl
-                    listPickerObject.dialogTitle =
-                        resources.getString(R.string.homepage)
+                    listPickerObject.dialogTitleResId = R.string.homepage
+                    listPickerObject.customIndexEnabled = true
                     listPickerObject.customIndex = SearchEngineEntries.customIndex
 
                     listPickerAlertDialog.setupDialogForShowing()
@@ -226,10 +218,9 @@ class SettingsActivity : BaseActivity() {
                     listPickerObject.namePreference = SettingsKeys.suggestionsName
                     listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
                     listPickerObject.stringPreference = SettingsKeys.suggestionsCustomUrl
-                    listPickerObject.dialogTitle =
-                        resources.getString(R.string.search_suggestions_title)
-                    listPickerObject.dialogCustomMessage =
-                        settingsActivity.resources.getString(R.string.custom_search_guide)
+                    listPickerObject.dialogTitleResId = R.string.search_suggestions_title
+                    listPickerObject.dialogCustomMessageResId = R.string.custom_search_guide
+                    listPickerObject.customIndexEnabled = true
                     listPickerObject.customIndex = SearchEngineEntries.customIndex
 
                     listPickerAlertDialog.setupDialogForShowing()
@@ -245,8 +236,8 @@ class SettingsActivity : BaseActivity() {
                     listPickerObject.nameList = adBlockerHostsEntries
                     listPickerObject.idPreference = SettingsKeys.adServerId
                     listPickerObject.stringPreference = SettingsKeys.adServerUrl
-                    listPickerObject.dialogTitle =
-                        resources.getString(R.string.pref_adBlockerSource_title)
+                    listPickerObject.dialogTitleResId = R.string.pref_adBlockerSource_title
+                    listPickerObject.customIndexEnabled = true
                     listPickerObject.customIndex = SearchEngineEntries.customIndex
 
                     listPickerAlertDialog.setupDialogForShowing()
@@ -266,7 +257,7 @@ class SettingsActivity : BaseActivity() {
                     override fun onDialogClosed(positiveResult: Boolean) {
                         if (!positiveResult) return
                         WebStorage.getInstance().deleteAllData()
-                        showMessage(settingsActivity, resources.getString(R.string.cleared_toast))
+                        showMessage(settingsActivity, R.string.cleared_toast)
                     }
                 }
             clear_cookies.materialDialogPreferenceListener =
@@ -285,44 +276,38 @@ class SettingsActivity : BaseActivity() {
                             cookieSyncMgr.stopSync()
                             cookieSyncMgr.sync()
                         }
-                        showMessage(settingsActivity, resources.getString(R.string.cleared_toast))
+                        showMessage(settingsActivity, R.string.cleared_toast)
                     }
                 }
             reset_to_default.materialDialogPreferenceListener =
                 object : MaterialDialogPreferenceListener {
                     override fun onDialogClosed(positiveResult: Boolean) {
                         if (!positiveResult) return
-                        showMessage(settingsActivity, resources.getString(R.string.reset_complete))
-                        (settingsActivity.getSystemService(ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
+                        showMessage(settingsActivity, R.string.reset_complete)
+                        (settingsActivity.getSystemService(ACTIVITY_SERVICE) as ActivityManager)
+                            .clearApplicationUserData()
                     }
                 }
             theme.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    val checkedItem =
-                        intArrayOf(settingsPreference.getInt(SettingsKeys.themeId))
-                    MaterialAlertDialogBuilder(settingsActivity).setTitle(resources.getString(R.string.pref_theme))
-                        .setSingleChoiceItems(
-                            themeList,
-                            settingsPreference.getInt(SettingsKeys.themeId)
-                        )
-                        { _: DialogInterface?, which: Int -> checkedItem[0] = which }
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                            settingsPreference.setInt(
-                                SettingsKeys.themeId,
-                                checkedItem[0]
-                            )
-                            theme.summary = themeList[checkedItem[0]]
-                            darkModeCheck(settingsActivity)
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show()
+                    val listPickerAlertDialog =
+                        ListPickerAlertDialog(settingsActivity, settingsPreference)
+                    val listPickerObject = listPickerAlertDialog.getListPickerObject()
+                    listPickerObject.preference = theme
+                    listPickerObject.nameList = themeList
+                    listPickerObject.idPreference = SettingsKeys.themeId
+                    listPickerObject.dialogTitleResId = R.string.pref_theme
+                    listPickerObject.dialogPositivePressed = {
+                        darkModeCheck(settingsActivity)
+                    }
+
+                    listPickerAlertDialog.setupDialogForShowing()
+                    listPickerAlertDialog.create().show()
                     true
                 }
             start_page_wallpaper.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    if (settingsPreference.getString(SettingsKeys.startPageWallpaper)
-                            .isNullOrEmpty()
-                    ) {
+                    if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
                         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     } else {
                         start_page_wallpaper.setSummary(
@@ -342,14 +327,11 @@ class SettingsActivity : BaseActivity() {
             check_for_updates.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
                     if (!DownloadUtils.isOnline(settingsActivity)) {
-                        showMessage(
-                            settingsActivity,
-                            resources.getString(R.string.network_unavailable_toast)
-                        )
+                        showMessage(settingsActivity, R.string.network_unavailable_toast)
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         updateConfigLiveData.postValue(JSONObject(String(
-                            MiniDownloadHelper.startDownload(InternalUrls.updateJSONUrl)!!)
+                            MiniDownloadHelper.startDownload(ExportedUrls.updateJSONUrl)!!)
                         ))
                     }
                     true
@@ -362,34 +344,25 @@ class SettingsActivity : BaseActivity() {
                 if (updateChannelName.isBlank()) updateChannelName = BuildConfig.BUILD_TYPE
 
                 if (!jObject.has(updateChannelName)) {
-                    showMessage(
-                        settingsActivity,
-                        resources.getString(R.string.update_down_failed_toast)
-                    )
+                    showMessage(settingsActivity, R.string.update_down_failed_toast)
                     return@Observer
                 }
                 val jChannelObject = jObject.getJSONObject(updateChannelName)
                 if (!jChannelObject.has("channel_data")) {
-                    showMessage(
-                        settingsActivity,
-                        resources.getString(R.string.version_latest_toast)
-                    )
+                    showMessage(settingsActivity, R.string.version_latest_toast)
                     return@Observer
                 }
 
                 val jChannelUpdateObject = jChannelObject.getJSONObject("channel_data")
                 if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
-                    showMessage(
-                        settingsActivity,
-                        resources.getString(R.string.version_latest_toast)
-                    )
+                    showMessage(settingsActivity, R.string.version_latest_toast)
                     return@Observer
                 }
 
                 MaterialAlertDialogBuilder(
                     settingsActivity
                 )
-                    .setTitle(resources.getString(R.string.new_update_detect_title))
+                    .setTitle(R.string.new_update_detect_title)
                     .setMessage(
                         resources.getString(
                             R.string.new_update_detect_message,
@@ -419,12 +392,9 @@ class SettingsActivity : BaseActivity() {
                                             )
                                     }
                             })
+                        } else {
+                            showMessage(settingsActivity, R.string.update_down_failed_toast)
                         }
-                        else
-                            showMessage(
-                                settingsActivity,
-                                resources.getString(R.string.update_down_failed_toast)
-                            )
                     }
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show()
@@ -439,9 +409,8 @@ class SettingsActivity : BaseActivity() {
                         layoutInflater.inflate(R.layout.dialog_edittext, null)
                     val updateChannel =
                         root.findViewById<AppCompatEditText>(R.id.edittext)
-                    MaterialAlertDialogBuilder(settingsActivity).setTitle(
-                        resources.getString(R.string.pref_update_channel_title)
-                    )
+                    MaterialAlertDialogBuilder(settingsActivity)
+                        .setTitle(R.string.pref_update_channel_title)
                         .setView(root)
                         .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                             if (updateChannel.text.toString().isNotEmpty()) {
@@ -459,8 +428,6 @@ class SettingsActivity : BaseActivity() {
 
             version.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    @SuppressLint("InflateParams") val dialogView =
-                        this.layoutInflater.inflate(R.layout.about_dialog, null)
                     val buildInfoDialog = BuildInfoDialog(settingsActivity, dialogVersionDetails)
                     buildInfoDialog.setupDialogForShowing()
                     buildInfoDialog.create().show()
@@ -468,16 +435,16 @@ class SettingsActivity : BaseActivity() {
                 }
             website.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    needLoad(InternalUrls.websiteUrl)
+                    needLoad(ExportedUrls.websiteUrl)
                     true
                 }
             Preference.OnPreferenceClickListener {
-                needLoad(InternalUrls.feedbackUrl)
+                needLoad(ExportedUrls.feedbackUrl)
                 true
             }.also { feedback.onPreferenceClickListener = it }
             source_code.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    needLoad(InternalUrls.sourceUrl)
+                    needLoad(ExportedUrls.sourceUrl)
                     true
                 }
             search_engine.summary =
@@ -493,7 +460,7 @@ class SettingsActivity : BaseActivity() {
                 adBlockerHostsEntries[settingsPreference.getInt(SettingsKeys.adServerId)]
             theme.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
             update_channel.summary = settingsPreference.getString(SettingsKeys.updateChannelName)
-            if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
+            if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
                 start_page_wallpaper.setSummary(
                     resources.getString(
                         R.string.pref_start_page_wallpaper_summary,
