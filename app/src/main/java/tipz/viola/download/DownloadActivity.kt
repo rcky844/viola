@@ -95,6 +95,7 @@ class DownloadActivity : BaseActivity() {
             } else if (holder is ListViewHolder) {
                 val data = listData!![position]
 
+                holder.icon.setImageResource(FileFormat.getFileDrawableResId(data))
                 holder.title.text = data.filename
                 holder.url.text = data.uriString
 
