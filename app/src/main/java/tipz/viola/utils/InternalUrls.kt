@@ -26,7 +26,7 @@ object InternalUrls {
     // Project URLs
     const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
     val changelogUrl = "https://rcky844.github.io/viola/changelogs/build" +
-                (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION) + ".html"
+            BuildConfig.VERSION_CODE + ".html"
     const val feedbackUrl = "$sourceUrl-/issues"
     const val updateJSONUrl = "https://rcky844.github.io/viola/updates.json"
 
