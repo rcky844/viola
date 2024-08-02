@@ -1,18 +1,6 @@
-/*
- * Copyright (c) 2022-2024 Tipz Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) 2022-2024 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
 package tipz.viola.webview
 
 import android.app.ActivityManager.TaskDescription
@@ -55,7 +43,7 @@ open class VWebViewActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settingsPreference = (applicationContext as Application).settingsPreference!!
+        settingsPreference = (applicationContext as Application).settingsPreference
 
         onBackPressedDispatcher.addCallback(this) {
             if (webview.canGoBack()) webview.goBack() else finish()
@@ -134,7 +122,7 @@ open class VWebViewActivity : BaseActivity() {
         }
 
         // Start Page Wallpaper
-        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isNullOrEmpty()) {
+        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
             startPageLayout?.setBackgroundResource(0)
         } else {
             try {

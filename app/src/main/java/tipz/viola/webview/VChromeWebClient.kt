@@ -1,3 +1,6 @@
+// Copyright (c) 2020-2024 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
 package tipz.viola.webview
 
 import android.Manifest
