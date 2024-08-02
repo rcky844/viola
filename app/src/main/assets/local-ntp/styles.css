@@ -10,7 +10,7 @@ body {
     margin-left: -15em;
 }
 
-input[type=text], button {
+input[type=text] {
     background-color: #66666666;
     border-radius: 28px;
     border: none;
