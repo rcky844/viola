@@ -1,41 +1,37 @@
 {
-  "channels": [
-    "release",
-    "beta",
-    "alpha",
-    "debug"
-  ],
   "release": {
-    "channel_name": "Release",
     "latest_update": {
-      "name": "6.2.1",
-      "code": 38,
-      "timestamp": 1719900541,
-      "url": "https://gitlab.com/-/project/22143649/uploads/32238a734baa0aad94405328429af5cb/app-release.apk"
+      "name": "6.3",
+      "code": 39,
+      "url": "https://gitlab.com/-/project/22143649/uploads/5a5a5bc5b2a190072f87193a70334c01/app-release.apk"
     }
   },
   "prerelease": {
-    "channel_name": "Pre-release"
+    "latest_update": {
+      "name": "6.3",
+      "code": 39,
+      "url": "https://gitlab.com/-/project/22143649/uploads/5a5a5bc5b2a190072f87193a70334c01/app-release.apk"
+    }
   },
   "beta": {
-    "channel_name": "Beta",
     "latest_update": {
-      "name": "6.2 Beta (Cumulative May 2024)",
-      "code": 34,
-      "timestamp": 1716531842,
-      "url": "https://gitlab.com/TipzTeam/viola/uploads/27f6f2e0762fe0a01313c6fc6ac8258f/app-release.apk"
+      "name": "6.3",
+      "code": 39,
+      "url": "https://gitlab.com/-/project/22143649/uploads/5a5a5bc5b2a190072f87193a70334c01/app-release.apk"
     }
   },
   "alpha": {
-    "channel_name": "Alpha"
+    "latest_update": {
+      "name": "6.3",
+      "code": 39,
+      "url": "https://gitlab.com/-/project/22143649/uploads/5a5a5bc5b2a190072f87193a70334c01/app-release.apk"
+    }
   },
   "debug": {
-    "channel_name": "Debug",
     "latest_update": {
-      "name": "6.0.0006.00",
-      "code": 10,
-      "timestamp": 1701083356,
-      "url": "https://gitlab.com/TipzTeam/viola/uploads/a601e7de72aa0772414830e8fd8a6d8d/app-debug.apk"
+      "name": "6.3",
+      "code": 39,
+      "url": "https://gitlab.com/-/project/22143649/uploads/5a5a5bc5b2a190072f87193a70334c01/app-release.apk"
     }
   }
 }
