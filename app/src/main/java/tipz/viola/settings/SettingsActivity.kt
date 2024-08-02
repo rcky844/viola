@@ -49,7 +49,7 @@ import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialog
 import tipz.viola.utils.ApkInstaller
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
-import tipz.viola.utils.InternalUrls
+import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
@@ -107,8 +107,8 @@ class SettingsActivity : BaseActivity() {
 
         private val dialogVersionDetails = BuildInfoDialog.BuildInfoDialogDetails.also {
             it.loader = this::needLoad
-            it.changelogUrl = InternalUrls.changelogUrl
-            it.licenseUrl = InternalUrls.violaLicenseUrl
+            it.changelogUrl = ExportedUrls.changelogUrl
+            it.licenseUrl = ExportedUrls.actualLicenseUrl
         }
 
         init {
@@ -331,7 +331,7 @@ class SettingsActivity : BaseActivity() {
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         updateConfigLiveData.postValue(JSONObject(String(
-                            MiniDownloadHelper.startDownload(InternalUrls.updateJSONUrl)!!)
+                            MiniDownloadHelper.startDownload(ExportedUrls.updateJSONUrl)!!)
                         ))
                     }
                     true
@@ -435,16 +435,16 @@ class SettingsActivity : BaseActivity() {
                 }
             website.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    needLoad(InternalUrls.websiteUrl)
+                    needLoad(ExportedUrls.websiteUrl)
                     true
                 }
             Preference.OnPreferenceClickListener {
-                needLoad(InternalUrls.feedbackUrl)
+                needLoad(ExportedUrls.feedbackUrl)
                 true
             }.also { feedback.onPreferenceClickListener = it }
             source_code.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
-                    needLoad(InternalUrls.sourceUrl)
+                    needLoad(ExportedUrls.sourceUrl)
                     true
                 }
             search_engine.summary =

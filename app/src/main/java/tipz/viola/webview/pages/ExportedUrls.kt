@@ -1,15 +1,14 @@
 // Copyright (c) 2022-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.utils
+package tipz.viola.webview.pages
 
 import tipz.viola.BuildConfig
 
-object InternalUrls {
-    // "viola://" URI scheme
-    const val violaPrefix = "viola://"
-    const val violaLicenseUrl = violaPrefix + "license"
-    const val violaStartUrl = violaPrefix + "start"
+object ExportedUrls {
+    // Internal assets URLs
+    const val actualStartUrl = "file:///android_asset/local-ntp/index.html"
+    const val actualLicenseUrl = "file:///android_asset/LICENSE.txt"
 
     // Project URLs
     const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
@@ -19,12 +18,9 @@ object InternalUrls {
     const val feedbackUrl = "$sourceUrl-/issues"
     const val updateJSONUrl = "${websiteUrl}updates.json"
 
-    // Internal assets
-    const val licenseUrl = "file:///android_asset/LICENSE.txt"
-    const val localNtpUrl = "file:///android_asset/local-ntp/index.html"
-
     // Browser handling
     const val aboutBlankUrl = "about:blank"
     const val viewSourcePrefix = "view-source:"
+    const val violaPrefix = "viola://"
     const val chromePrefix = "chrome://"
 }

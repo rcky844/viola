@@ -50,8 +50,9 @@ import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.InternalUrls
 import tipz.viola.utils.UrlUtils
+import tipz.viola.webview.pages.ExportedUrls
+import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webviewui.BaseActivity
 
 
@@ -87,7 +88,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     init {
         /* User agent init code */
         downloadClient.vWebViewModuleInit(this)
-        setUserAgent(UserAgentMode.MOBILE, UserAgentBundle())
+        setUserAgent(UserAgentMode.MOBILE, UserAgentBundle().apply {
+            noReload = true
+        })
 
         /* Start the download manager service */
         setDownloadListener { vUrl: String?, _: String?, vContentDisposition: String?, vMimeType: String?, _: Long ->
@@ -226,19 +229,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     override fun loadUrl(url: String) {
         if (url.isBlank()) return
-        if (url == InternalUrls.aboutBlankUrl) {
-            super.loadUrl(url)
-            return
-        }
 
-        // Check for internal URLs
-        if (url == InternalUrls.violaLicenseUrl) {
-            super.loadUrl(InternalUrls.licenseUrl)
-            return
-        }
-        if (url == InternalUrls.violaStartUrl) {
-            super.loadUrl(InternalUrls.localNtpUrl)
-            activity.onSslCertificateUpdated()
+        // Check for privileged URLs
+        val privilegedActualUrl = PrivilegedPages.getActualUrl(url)
+        if (privilegedActualUrl != null) {
+            loadRealUrl(privilegedActualUrl)
             return
         }
 
@@ -276,8 +271,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         } else {
             // If the URL has "viola://" prefix but hasn't been handled till here,
             // wire it up with the "chrome://" suffix.
-            if (url.startsWith(InternalUrls.violaPrefix)) {
-                super.loadUrl(url.replace(InternalUrls.violaPrefix, InternalUrls.chromePrefix))
+            if (url.startsWith(ExportedUrls.violaPrefix)) {
+                super.loadUrl(url.replace(ExportedUrls.violaPrefix, ExportedUrls.chromePrefix))
                 return
             }
 
@@ -293,6 +288,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
     }
 
+    // This should only be accessed by us!
+    fun loadRealUrl(url: String) {
+        super.loadUrl(url)
+    }
+
     override fun reload() {
         if (currentBroha.url == getUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
@@ -301,7 +301,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     override fun getUrl(): String {
         val superUrl = super.getUrl()
-        return if (superUrl.isNullOrBlank()) InternalUrls.aboutBlankUrl else superUrl
+        return if (superUrl.isNullOrBlank()) ExportedUrls.aboutBlankUrl
+        else if (PrivilegedPages.shouldShowEmptyUrl(superUrl)) CommonUtils.EMPTY_STRING
+        else if (PrivilegedPages.isPrivilegedPage(superUrl))
+            PrivilegedPages.getDisplayUrl(superUrl) ?: CommonUtils.EMPTY_STRING
+        else superUrl
     }
 
     override fun goBack() {
@@ -315,12 +319,12 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
-        if (url == InternalUrls.aboutBlankUrl) return
+        if (PrivilegedPages.isPrivilegedPage(url)) return
         val currentUrl = getUrl()
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
-                if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return
+                if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return
                 activity.onFaviconProgressUpdated(true)
                 activity.onPageLoadProgressChanged(-1)
             }
@@ -424,7 +428,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadHomepage(useStartPage : Boolean) {
         if (useStartPage) {
-            loadUrl(InternalUrls.violaStartUrl)
+            loadRealUrl(ExportedUrls.actualStartUrl)
         } else {
             loadUrl(SearchEngineEntries.getDefaultHomeUrl(settingsPreference))
         }
@@ -433,9 +437,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadViewSourcePage(url: String?): Boolean {
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
-        if (currentUrl == InternalUrls.aboutBlankUrl) return false
-        if (currentUrl.startsWith(InternalUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
-        loadUrl("${InternalUrls.viewSourcePrefix}$currentUrl")
+        if (PrivilegedPages.isPrivilegedPage(url)) return false
+        if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
+        loadUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
         return true
     }
 }

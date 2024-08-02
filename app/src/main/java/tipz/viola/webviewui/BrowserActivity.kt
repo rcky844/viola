@@ -66,9 +66,10 @@ import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.InternalUrls
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
+import tipz.viola.webview.pages.ExportedUrls
+import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webviewui.components.FullscreenFloatingActionButton
 import tipz.viola.widget.StringResAdapter
 import java.lang.ref.WeakReference
@@ -383,7 +384,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.favorites_add -> {
                 val url = webview.url
-                if (url.isBlank() || url == InternalUrls.aboutBlankUrl) return false
+                if (url.isBlank() || PrivilegedPages.isPrivilegedPage(url)) return false
 
                 val icon = favicon!!.drawable
                 val title = webview.title
@@ -497,12 +498,6 @@ class BrowserActivity : VWebViewActivity() {
 
 
     override fun onUrlUpdated(url: String?) {
-        // TODO: Hack this somewhere else
-        if (url == InternalUrls.localNtpUrl) {
-            urlEditText.setText(CommonUtils.EMPTY_STRING)
-            return
-        }
-
         if (!urlEditText.isFocused) urlEditText.setText(url)
     }
 
@@ -517,7 +512,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     override fun onSslCertificateUpdated() {
-        if (webview.url == InternalUrls.localNtpUrl) {
+        if (webview.url == ExportedUrls.actualStartUrl) { // TODO: Consider hooking this up
             sslState = SslState.SEARCH
             sslLock.setImageResource(R.drawable.search)
             sslLock.isClickable = false
