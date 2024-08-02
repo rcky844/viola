@@ -512,12 +512,15 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     override fun onSslCertificateUpdated() {
-        if (webview.url == ExportedUrls.actualStartUrl) { // TODO: Consider hooking this up
+        // Startpage
+        if (webview.getRealUrl() == ExportedUrls.actualStartUrl) {
             sslState = SslState.SEARCH
             sslLock.setImageResource(R.drawable.search)
             sslLock.isClickable = false
             return
         }
+
+        // All the other pages
         if (webview.certificate == null) {
             sslState = SslState.NONE
             sslLock.setImageResource(R.drawable.warning)

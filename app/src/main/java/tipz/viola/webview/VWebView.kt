@@ -108,7 +108,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 uriString = vUrl!!
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType
-                requestUrl = getUrl()
+                requestUrl = getRealUrl()
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
@@ -294,19 +294,25 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun reload() {
-        if (currentBroha.url == getUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
+        if (currentBroha.url == getRealUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
-        loadUrl(getUrl())
+        loadRealUrl(getRealUrl())
     }
 
     override fun getUrl(): String {
         val superUrl = super.getUrl()
         return if (superUrl.isNullOrBlank()) ExportedUrls.aboutBlankUrl
-        else if (PrivilegedPages.shouldShowEmptyUrl(superUrl)) CommonUtils.EMPTY_STRING
-        else if (PrivilegedPages.isPrivilegedPage(superUrl))
-            PrivilegedPages.getDisplayUrl(superUrl) ?: CommonUtils.EMPTY_STRING
-        else superUrl
+        else filterUrl(superUrl)
     }
+
+    fun filterUrl(url: String): String {
+        return if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
+        else if (PrivilegedPages.isPrivilegedPage(url))
+            PrivilegedPages.getDisplayUrl(url) ?: CommonUtils.EMPTY_STRING
+        else url
+    }
+
+    fun getRealUrl(): String = super.getUrl() ?: ExportedUrls.aboutBlankUrl
 
     override fun goBack() {
         activity.onDropDownDismissed()
@@ -319,7 +325,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
-        if (PrivilegedPages.isPrivilegedPage(url)) return
         val currentUrl = getUrl()
 
         when (state) {
@@ -369,7 +374,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
         }
 
-        if (url != null) activity.onUrlUpdated(url)
+        activity.onUrlUpdated(if (url != null) filterUrl(url) else this.url)
         activity.onFaviconUpdated(favicon, false)
         activity.onDropDownDismissed()
     }
