@@ -55,7 +55,7 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
         fadeOut()
     }
 
-    fun fadeOut() {
+    private fun fadeOut() {
         val animate = this.animate()
         animate.alpha(0f)
         animate.duration = (resources.getInteger(R.integer.anim_fullscreen_fab_fade_out_speed) * Settings.Global.getFloat(

@@ -201,8 +201,8 @@ open class VWebViewActivity : BaseActivity() {
 
     private fun updateSwipeRefreshLayoutEnabled(isEnabled: Boolean) {
         swipeRefreshLayoutEnabled = isEnabled
-        if (settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh)) swipeRefreshLayout.isEnabled =
-            swipeRefreshLayoutEnabled
+        if (settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh))
+            swipeRefreshLayout.isEnabled = swipeRefreshLayoutEnabled
     }
 
     private fun getTrueCSSValue(rawValue: String): String {

@@ -36,7 +36,7 @@ class DownloadActivity : BaseActivity() {
 
         ListInterfaceActivity.activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
         setContentView(R.layout.activity_recycler_data_list)
-        title = resources.getString(R.string.toolbar_expandable_downloads)
+        setTitle(R.string.toolbar_expandable_downloads)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -53,41 +53,25 @@ class DownloadActivity : BaseActivity() {
             listData = downloadClient.downloadQueue.value
         }
 
-
         val layoutManager = downloadList.layoutManager as LinearLayoutManager
         downloadList.adapter = ItemsAdapter(this)
     }
 
     class ItemsAdapter(downloadActivity: DownloadActivity)
         : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        private val mDownloadActivity: WeakReference<DownloadActivity>
+        private val mDownloadActivity: WeakReference<DownloadActivity> =
+            WeakReference(downloadActivity)
 
         class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val back: ConstraintLayout
-            val icon: AppCompatImageView
-            val title: AppCompatTextView
-            val url: AppCompatTextView
-            val time: AppCompatTextView
-
-            init {
-                back = view.findViewById(R.id.bg)
-                icon = view.findViewById(R.id.icon)
-                title = view.findViewById(R.id.title)
-                url = view.findViewById(R.id.url)
-                time = view.findViewById(R.id.time)
-            }
+            val back: ConstraintLayout = view.findViewById(R.id.bg)
+            val icon: AppCompatImageView = view.findViewById(R.id.icon)
+            val title: AppCompatTextView = view.findViewById(R.id.title)
+            val url: AppCompatTextView = view.findViewById(R.id.url)
+            val time: AppCompatTextView = view.findViewById(R.id.time)
         }
 
         class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val text: AppCompatTextView
-
-            init {
-                text = view.findViewById(R.id.text)
-            }
-        }
-
-        init {
-            mDownloadActivity = WeakReference(downloadActivity)
+            val text: AppCompatTextView = view.findViewById(R.id.text)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -107,7 +91,7 @@ class DownloadActivity : BaseActivity() {
             val downloadActivity = mDownloadActivity.get()!!
 
             if (holder is EmptyViewHolder) {
-                holder.text.text = downloadActivity.resources.getString(R.string.no_downloads)
+                holder.text.setText(R.string.no_downloads)
             } else if (holder is ListViewHolder) {
                 val data = listData!![position]
 

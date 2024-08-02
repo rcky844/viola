@@ -25,77 +25,76 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
     }
 
     fun setupDialogForShowing() {
-        val useNamePreference = mListPickerObject.namePreference != CommonUtils.EMPTY_STRING
+        mListPickerObject.apply {
+            val useNamePreference = namePreference != CommonUtils.EMPTY_STRING
 
-        // Set checked item to current settings
-        var checkedItem = if (useNamePreference) {
-            mListPickerObject.nameToIdFunction(
-                mSettingsPreference.getString(mListPickerObject.namePreference))
-        } else {
-            mSettingsPreference.getInt(mListPickerObject.idPreference)
-        }
+            // Set checked item to current settings
+            var checkedItem = getCheckedItem(mSettingsPreference)
 
-        setTitle(mListPickerObject.dialogTitle)
-        setSingleChoiceItems(
-            mListPickerObject.nameList, checkedItem
-        ) { _: DialogInterface?, which: Int -> checkedItem = which }
-        setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-            if (checkedItem == mListPickerObject.customIndex) {
-                val layoutInflater = LayoutInflater.from(context)
-                @SuppressLint("InflateParams") val root =
-                    layoutInflater.inflate(R.layout.dialog_edittext, null)
-                val customInput =
-                    root.findViewById<AppCompatEditText>(R.id.edittext)
-                MaterialAlertDialogBuilder(context) // TODO: Improve implementation?
-                    .setTitle(mListPickerObject.dialogTitle)
-                    .setMessage(mListPickerObject.dialogCustomMessage)
-                    .setView(root)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        if (customInput.text.toString().isNotEmpty()) {
-                            mSettingsPreference.setString(
-                                mListPickerObject.stringPreference,
-                                customInput.text.toString()
-                            )
-                            if (useNamePreference) {
-                                mSettingsPreference.setString(
-                                    mListPickerObject.namePreference,
-                                    SearchEngineEntries.getNameByIndex(checkedItem)
-                                )
-                            } else {
-                                mSettingsPreference.setInt(
-                                    mListPickerObject.idPreference,
-                                    checkedItem
-                                )
-                            }
+            if (dialogTitleResId != 0) setTitle(dialogTitleResId)
+            else setTitle(dialogTitle)
+            setSingleChoiceItems(nameList, checkedItem) { _: DialogInterface?, which: Int -> checkedItem = which }
+            setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                if (customIndexEnabled && checkedItem == customIndex) createCustomDialog(checkedItem)
+                else {
+                    if (!stringPreference.isNullOrBlank())
+                        mSettingsPreference.setString(stringPreference!!, CommonUtils.EMPTY_STRING)
 
-                            mListPickerObject.preference?.summary =
-                                mListPickerObject.nameList!![checkedItem]
-                        }
+                    if (useNamePreference) {
+                        mSettingsPreference.setString(namePreference,
+                            SearchEngineEntries.getNameByIndex(checkedItem))
+                    } else {
+                        mSettingsPreference.setInt(idPreference, checkedItem)
                     }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .create().show()
-            }
-            if (checkedItem != mListPickerObject.customIndex) {
-                mSettingsPreference.setString(
-                    mListPickerObject.stringPreference,
-                    CommonUtils.EMPTY_STRING
-                )
-                if (useNamePreference) {
-                    mSettingsPreference.setString(
-                        mListPickerObject.namePreference,
-                        SearchEngineEntries.getNameByIndex(checkedItem)
-                    )
-                } else {
-                    mSettingsPreference.setInt(
-                        mListPickerObject.idPreference,
-                        checkedItem
-                    )
-                }
 
-                mListPickerObject.preference?.summary = mListPickerObject.nameList!![checkedItem]
+                    preference?.summary = nameList!![checkedItem]
+                }
+                dialogPositivePressed()
             }
+            setNegativeButton(android.R.string.cancel, null)
         }
-        setNegativeButton(android.R.string.cancel, null)
+    }
+
+    private fun createCustomDialog(checkedItem: Int) {
+        val layoutInflater = LayoutInflater.from(context)
+        @SuppressLint("InflateParams") val root =
+            layoutInflater.inflate(R.layout.dialog_edittext, null)
+        val customInput =
+            root.findViewById<AppCompatEditText>(R.id.edittext)
+
+        // TODO: Improve implementation?
+        val dialog = MaterialAlertDialogBuilder(context)
+        mListPickerObject.apply {
+            if (dialogTitleResId != 0)
+                dialog.setTitle(dialogTitleResId)
+            else dialog.setTitle(dialogTitle)
+
+            if (dialogCustomMessageResId != 0)
+                dialog.setMessage(dialogCustomMessage)
+            else dialog.setMessage(dialogCustomMessageResId)
+
+            dialog.setView(root)
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    if (customInput.text.toString().isNotEmpty()) {
+                        if (!stringPreference.isNullOrBlank())
+                            mSettingsPreference.setString(stringPreference!!,
+                                customInput.text.toString())
+                        if (getUseNamePreference()) {
+                            mSettingsPreference.setString(
+                                namePreference,
+                                SearchEngineEntries.getNameByIndex(checkedItem)
+                            )
+                        } else {
+                            mSettingsPreference.setInt(idPreference, checkedItem)
+                        }
+
+                        preference?.summary = nameList!![checkedItem]
+                    }
+                    dialogPositivePressed()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show()
+        }
     }
 
     class ListPickerObject {
@@ -103,17 +102,30 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         var nameList: Array<String>? = null // Array list consisting of names of options
         var idPreference = CommonUtils.EMPTY_STRING // Preference key for storing IDs
         var namePreference = CommonUtils.EMPTY_STRING // Preference key for storing names
-        var nameToIdFunction : (name: String) -> Int = this::stubNameToIdFunction
-        var stringPreference = CommonUtils.EMPTY_STRING // Preference key for storing strings
-        var dialogTitle = CommonUtils.EMPTY_STRING // Dialog title
-        var dialogCustomMessage = CommonUtils.EMPTY_STRING // Message for custom dialog
+        var nameToIdFunction: (name: String) -> Int = this::stubNameToIdFunction
+        var stringPreference: String? = null // Preference key for storing strings
+        var dialogTitle: String? = null // Dialog title
+        var dialogTitleResId = 0 // Dialog title resource ID
+        var dialogCustomMessage: String? = null // Message for custom dialog
+        var dialogCustomMessageResId = 0 // Resource ID of message for custom dialog
+        var dialogPositivePressed: () -> Unit = this::stubDialogPositivePressed // Ran when a positive button is pressed
+        var customIndexEnabled = false // Uses custom item index
         var customIndex = 0 // Custom item index
+
+        fun getUseNamePreference() = namePreference != CommonUtils.EMPTY_STRING
+        fun getCheckedItem(pref: SettingsSharedPreference) = if (getUseNamePreference()) {
+            nameToIdFunction(pref.getString(namePreference))
+        } else {
+            pref.getInt(idPreference)
+        }
 
         fun stubNameToIdFunction(name: String) : Int {
             Log.w(LOG_TAG, "stubNameToIdFunction(): " +
                     "$name using namePreference without any means to convert to index!")
             return 0
         }
+
+        fun stubDialogPositivePressed() { }
     }
 
     companion object {

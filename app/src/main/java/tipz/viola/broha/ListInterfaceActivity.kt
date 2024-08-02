@@ -11,9 +11,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -41,7 +43,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Objects
 
-
 class ListInterfaceActivity : BaseActivity() {
     lateinit var favClient: FavClient
     lateinit var historyClient: HistoryClient
@@ -56,6 +57,20 @@ class ListInterfaceActivity : BaseActivity() {
         }
     }
 
+    enum class PopupMenuMap(val itemId: Int, @StringRes val resId: Int) {
+        DELETE(1, R.string.delete),
+        EDIT(2, R.string.favMenuEdit),
+        COPY_URL(3, R.string.copy_url),
+        ADD_TO_FAVORITES(4, R.string.add_to_fav);
+
+        /* Helper functions */
+        companion object {
+            fun addMenu(menu: Menu, item: PopupMenuMap) {
+                menu.add(0, item.itemId, 0, item.resId)
+            }
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun notifyItemsAdapter() {
         CoroutineScope(Dispatchers.Main).launch {
@@ -67,14 +82,14 @@ class ListInterfaceActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /* Setup some lateinit constants */
+        // Setup some lateinit constants
         activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
         favClient = FavClient(this)
         historyClient = HistoryClient(this)
 
-        /* Setup UI */
+        // Setup UI
         setContentView(R.layout.activity_recycler_data_list)
-        title = resources.getString(if (activityMode == mode_history) R.string.hist else R.string.fav)
+        setTitle(if (activityMode == mode_history) R.string.hist else R.string.fav)
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -87,10 +102,10 @@ class ListInterfaceActivity : BaseActivity() {
         fab = findViewById(R.id._fab)
         fab.setOnClickListener {
             MaterialAlertDialogBuilder(this)
-                .setTitle(resources.getString(R.string.delete_all_entries))
-                .setMessage(resources.getString(
+                .setTitle(R.string.delete_all_entries)
+                .setMessage(
                     if (activityMode == mode_history) R.string.del_hist_message
-                    else R.string.delete_fav_message)
+                    else R.string.delete_fav_message
                 )
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     CoroutineScope(Dispatchers.IO).launch {
@@ -99,7 +114,7 @@ class ListInterfaceActivity : BaseActivity() {
                         updateListData()
                         notifyItemsAdapter()
                     }
-                    showMessage(this, resources.getString(R.string.wiped_success))
+                    showMessage(this, R.string.wiped_success)
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
@@ -123,36 +138,20 @@ class ListInterfaceActivity : BaseActivity() {
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val LOG_TAG = "ListInterfaceAdapter"
 
-        private val mBrohaListInterfaceActivity: WeakReference<ListInterfaceActivity>
-        private val mIconHashClient: WeakReference<IconHashClient?>
+        private val mBrohaListInterfaceActivity: WeakReference<ListInterfaceActivity> =
+            WeakReference(brohaListInterfaceActivity)
+        private val mIconHashClient: WeakReference<IconHashClient?> = WeakReference(iconHashClient)
 
         class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val back: ConstraintLayout
-            val icon: AppCompatImageView
-            val title: AppCompatTextView
-            val url: AppCompatTextView
-            val time: AppCompatTextView
-
-            init {
-                back = view.findViewById(R.id.bg)
-                icon = view.findViewById(R.id.icon)
-                title = view.findViewById(R.id.title)
-                url = view.findViewById(R.id.url)
-                time = view.findViewById(R.id.time)
-            }
+            val back: ConstraintLayout = view.findViewById(R.id.bg)
+            val icon: AppCompatImageView = view.findViewById(R.id.icon)
+            val title: AppCompatTextView = view.findViewById(R.id.title)
+            val url: AppCompatTextView = view.findViewById(R.id.url)
+            val time: AppCompatTextView = view.findViewById(R.id.time)
         }
 
         class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val text: AppCompatTextView
-
-            init {
-                text = view.findViewById(R.id.text)
-            }
-        }
-
-        init {
-            mBrohaListInterfaceActivity = WeakReference(brohaListInterfaceActivity)
-            mIconHashClient = WeakReference(iconHashClient)
+            val text: AppCompatTextView = view.findViewById(R.id.text)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -172,7 +171,7 @@ class ListInterfaceActivity : BaseActivity() {
             val listInterfaceActivity = mBrohaListInterfaceActivity.get()!!
 
             if (holder is EmptyViewHolder) {
-                holder.text.text = listInterfaceActivity.resources.getString(
+                holder.text.setText(
                     if (activityMode == mode_history) R.string.hist_empty
                     else R.string.fav_list_empty
                 )
@@ -184,13 +183,13 @@ class ListInterfaceActivity : BaseActivity() {
                 val url = data.url
                 lateinit var icon: Bitmap
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (data.iconHash != null) {
+                if (data.iconHash != null) {
+                    CoroutineScope(Dispatchers.IO).launch {
                         icon = iconHashClient!!.read(data.iconHash)!!
                         CoroutineScope(Dispatchers.Main).launch { holder.icon.setImageBitmap(icon) }
-                    } else {
-                        CoroutineScope(Dispatchers.Main).launch { holder.icon.setImageResource(R.drawable.default_favicon) }
                     }
+                } else {
+                    holder.icon.setImageResource(R.drawable.default_favicon)
                 }
 
                 holder.title.text = title ?: url
@@ -210,74 +209,72 @@ class ListInterfaceActivity : BaseActivity() {
                     val popup = PopupMenu(
                         listInterfaceActivity, view!!
                     )
-                    val menu1 = popup.menu
+                    val menu = popup.menu
                     if (activityMode == mode_history) {
-                        menu1.add(listInterfaceActivity.resources.getString(R.string.delete))
-                        menu1.add(listInterfaceActivity.resources.getString(R.string.copy_url))
-                        menu1.add(listInterfaceActivity.resources.getString(R.string.add_to_fav))
+                        PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
+                        PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
+                        PopupMenuMap.addMenu(menu, PopupMenuMap.ADD_TO_FAVORITES)
                     } else if (activityMode == mode_favorites) {
-                        menu1.add(listInterfaceActivity.resources.getString(R.string.favMenuEdit))
-                        menu1.add(listInterfaceActivity.resources.getString(R.string.copy_url))
-                        menu1.add(listInterfaceActivity.resources.getString(R.string.delete))
+                        PopupMenuMap.addMenu(menu, PopupMenuMap.EDIT)
+                        PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
+                        PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
                     }
                     popup.setOnMenuItemClickListener { item: MenuItem ->
-                        if (item.title.toString() == listInterfaceActivity.resources.getString(R.string.delete)) {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                if (activityMode == mode_history)
-                                    clientActivity.historyClient.deleteById(data.id)
-                                else if (activityMode == mode_favorites)
-                                    clientActivity.favClient.deleteById(data.id)
+                        when (item.itemId) {
+                            PopupMenuMap.DELETE.itemId -> {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    if (activityMode == mode_history)
+                                        clientActivity.historyClient.deleteById(data.id)
+                                    else if (activityMode == mode_favorites)
+                                        clientActivity.favClient.deleteById(data.id)
+                                }
+                                listData!!.removeAt(position)
+                                notifyItemRemoved(position)
+                                notifyItemRangeRemoved(position, itemCount - position)
                             }
-                            listData!!.removeAt(position)
-                            notifyItemRemoved(position)
-                            notifyItemRangeRemoved(position, itemCount - position)
-                        } else if (item.title.toString() == listInterfaceActivity.resources.getString(
-                                R.string.copy_url)) {
-                            copyClipboard(listInterfaceActivity, url)
-                        } else if (item.title.toString() == listInterfaceActivity.resources.getString(
-                                R.string.favMenuEdit)) {
-                            val layoutInflater = LayoutInflater.from(listInterfaceActivity)
-                            @SuppressLint("InflateParams") val root =
-                                layoutInflater.inflate(R.layout.dialog_fav_edit, null)
-                            val titleEditText = root.findViewById<AppCompatEditText>(R.id.titleEditText)
-                            val urlEditText = root.findViewById<AppCompatEditText>(R.id.favUrlEditText)
-                            titleEditText.setText(title)
-                            urlEditText.setText(url)
-                            MaterialAlertDialogBuilder(listInterfaceActivity)
-                                .setTitle(listInterfaceActivity.resources.getString(R.string.favMenuEdit))
-                                .setView(root)
-                                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                    if (Objects.requireNonNull(titleEditText.text).toString() != title
-                                        || Objects.requireNonNull(urlEditText.text).toString() != url) {
-                                        data.title =
-                                            Objects.requireNonNull(titleEditText.text).toString()
-                                        data.url = Objects.requireNonNull(urlEditText.text).toString()
-                                        data.setTimestamp()
-                                        CoroutineScope(Dispatchers.IO).launch {
-                                            clientActivity.favClient.update(data)
-                                            // FIXME: Update list dynamically to save system resources
-                                            listData = clientActivity.favClient.getAll() as MutableList<Broha>?
-                                            CoroutineScope(Dispatchers.Main).launch {
-                                                notifyItemRangeRemoved(position, 1)
-                                                listInterfaceActivity.notifyItemsAdapter()
+                            PopupMenuMap.EDIT.itemId -> {
+                                val layoutInflater = LayoutInflater.from(listInterfaceActivity)
+                                @SuppressLint("InflateParams") val root =
+                                    layoutInflater.inflate(R.layout.dialog_fav_edit, null)
+                                val titleEditText = root.findViewById<AppCompatEditText>(R.id.titleEditText)
+                                val urlEditText = root.findViewById<AppCompatEditText>(R.id.favUrlEditText)
+                                titleEditText.setText(title)
+                                urlEditText.setText(url)
+                                MaterialAlertDialogBuilder(listInterfaceActivity)
+                                    .setTitle(R.string.favMenuEdit)
+                                    .setView(root)
+                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                                        if (Objects.requireNonNull(titleEditText.text).toString() != title
+                                            || Objects.requireNonNull(urlEditText.text).toString() != url) {
+                                            data.title =
+                                                Objects.requireNonNull(titleEditText.text).toString()
+                                            data.url = Objects.requireNonNull(urlEditText.text).toString()
+                                            data.setTimestamp()
+                                            CoroutineScope(Dispatchers.IO).launch {
+                                                clientActivity.favClient.update(data)
+                                                // FIXME: Update list dynamically to save system resources
+                                                listData = clientActivity.favClient.getAll() as MutableList<Broha>?
+                                                CoroutineScope(Dispatchers.Main).launch {
+                                                    notifyItemRangeRemoved(position, 1)
+                                                    listInterfaceActivity.notifyItemsAdapter()
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .setIcon(holder.icon.drawable)
-                                .create().show()
-                        } else if (item.title.toString() == listInterfaceActivity.resources.getString(
-                                R.string.add_to_fav)) {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                clientActivity.favClient.insert(Broha(data.iconHash, title, url!!))
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .setIcon(holder.icon.drawable)
+                                    .create().show()
                             }
-                            showMessage(
-                                listInterfaceActivity,
-                                listInterfaceActivity.resources.getString(R.string.save_successful)
-                            )
-                        } else {
-                            return@setOnMenuItemClickListener false
+                            PopupMenuMap.COPY_URL.itemId -> {
+                                copyClipboard(listInterfaceActivity, url)
+                            }
+                            PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    clientActivity.favClient.insert(
+                                        Broha(data.iconHash, title, url!!))
+                                }
+                                showMessage(listInterfaceActivity, R.string.save_successful)
+                            }
                         }
                         true
                     }

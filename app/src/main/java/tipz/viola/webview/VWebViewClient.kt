@@ -93,26 +93,23 @@ open class VWebViewClient(
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         if (unsecureURLSet.contains(url)) {
             getSslDialog(unsecureURLErrorSet[unsecureURLSet.indexOf(url)])
-                .setPositiveButton(mContext.resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     run {
                         view.loadUrl(url)
                         mVWebView.onSslErrorProceed()
                     }
                 }
-                .setNegativeButton(mContext.resources.getString(android.R.string.cancel), null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
             return true
         }
         if (UrlUtils.isUriLaunchable(url)) return false
         try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
+            val intent = Intent(Intent.ACTION_VIEW,
+                Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
             mContext.startActivity(intent)
         } catch (ignored: ActivityNotFoundException) {
-            CommonUtils.showMessage(
-                mContext,
-                mContext.resources.getString(R.string.toast_no_app_to_handle)
-            )
+            CommonUtils.showMessage(mContext, R.string.toast_no_app_to_handle)
         }
         return true
     }
@@ -121,14 +118,16 @@ open class VWebViewClient(
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
         unsecureURLErrorSet.add(error)
         getSslDialog(error)
-            .setPositiveButton(mContext.resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 run {
                     handler.proceed()
                     mVWebView.onSslErrorProceed()
                     unsecureURLSet.add(error.url)
                 }
             }
-            .setNegativeButton(mContext.resources.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> handler.cancel() }
+            .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
+                handler.cancel()
+            }
             .create().show()
     }
 

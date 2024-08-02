@@ -183,7 +183,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         // HTTPS enforce setting
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) webSettings.mixedContentMode =
-            if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) WebSettings.MIXED_CONTENT_NEVER_ALLOW else WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) WebSettings.MIXED_CONTENT_NEVER_ALLOW
+            else WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
         // Google's "Safe" Browsing
         if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
@@ -249,9 +250,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             val packageManager = activity.packageManager
             if (packageManager?.let { webIntent.resolveActivity(it) } != null) {
                 val dialog = MaterialAlertDialogBuilder(activity)
-                dialog.setTitle(resources.getString(R.string.dialog_open_external_title))
-                    .setMessage(resources.getString(R.string.dialog_open_external_message))
-                    .setPositiveButton(resources.getString(android.R.string.ok)) { _: DialogInterface?, _: Int ->
+                dialog.setTitle(R.string.dialog_open_external_title)
+                    .setMessage(R.string.dialog_open_external_message)
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         try {
                             activity.startActivity(webIntent)
                             handled = true

@@ -22,7 +22,7 @@ class LauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.setBackgroundDrawableResource(android.R.color.transparent)
         if (!webViewEnabled()) {
-            CommonUtils.showMessage(this, resources.getString(R.string.no_webview))
+            CommonUtils.showMessage(this, R.string.no_webview)
             exitProcess(0)
         }
         CaocConfig.Builder.create()

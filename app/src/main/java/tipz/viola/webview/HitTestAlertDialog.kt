@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebView
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -26,25 +25,10 @@ import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BrowserActivity
+import tipz.viola.widget.StringResAdapter
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
-    private var arrayAdapter: ArrayAdapter<String>? = null
-
-    private val imageId = -1
-
-    private val hitTestDialogItems = listOf(
-        R.string.open_in_new_tab,
-        R.string.copy_url,
-        R.string.copy_text_url,
-        imageId,
-        R.string.share_url
-    )
-
-    private val hitTestDialogImageItems = listOf(
-        R.string.download_image,
-        R.string.copy_src_url,
-        R.string.search_image
-    )
+    private var arrayAdapter = StringResAdapter(context)
 
     open fun setupDialogForShowing(vWebView: VWebView, bundle: Bundle): Boolean {
         val hr = vWebView.hitTestResult
@@ -85,61 +69,40 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             this.setCustomTitle(root)
         }
 
-        arrayAdapter = ArrayAdapter<String>(context, R.layout.template_item_text_single)
-        for (item in hitTestDialogItems) {
-            if (item == R.string.copy_text_url && title.isNullOrBlank()) continue
-
-            // Insert Image items
-            if (item == imageId) {
-                if (!src.isNullOrBlank()) {
-                    for (imageItem in hitTestDialogImageItems) {
-                        arrayAdapter?.add(context.resources.getString(imageItem))
-                    }
-                }
-                continue
-            }
-
-            arrayAdapter?.add(context.resources.getString(item))
-        }
+        // Add items to array adapter
+        arrayAdapter.addAll(R.string.open_in_new_tab, R.string.copy_url)
+        if (title.isNullOrBlank()) arrayAdapter.add(R.string.copy_text_url)
+        if (!src.isNullOrBlank()) arrayAdapter.addAll(
+            R.string.download_image,
+            R.string.copy_src_url,
+            R.string.search_image
+        )
+        arrayAdapter.add(R.string.share_url)
 
         setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
-            when (arrayAdapter!!.getItem(which)) {
-                context.resources.getString(R.string.copy_url) -> CommonUtils.copyClipboard(
-                    context,
-                    url
-                )
+            when (arrayAdapter.getItemResId(which)) {
+                R.string.copy_url -> CommonUtils.copyClipboard(context, url)
+                R.string.copy_text_url -> CommonUtils.copyClipboard(context, title)
+                R.string.copy_src_url -> CommonUtils.copyClipboard(context, src)
 
-                context.resources.getString(R.string.copy_text_url) -> CommonUtils.copyClipboard(
-                    context,
-                    title
-                )
-
-                context.resources.getString(R.string.copy_src_url) -> CommonUtils.copyClipboard(
-                    context,
-                    src
-                )
-
-                context.resources.getString(R.string.download_image) -> {
+                R.string.download_image -> {
                     vWebView.downloadClient.addToQueue(DownloadObject().apply {
                         uriString = src ?: url
                     })
                 }
 
-                context.resources.getString(R.string.search_image) -> {
+                R.string.search_image -> {
                     val fileSearch = src ?: url
                     vWebView.loadUrl("http://images.google.com/searchbyimage?image_url=$fileSearch")
                 }
 
-                context.resources.getString(R.string.open_in_new_tab) -> {
+                R.string.open_in_new_tab -> {
                     val intent = Intent(context, BrowserActivity::class.java)
                     intent.data = Uri.parse(UrlUtils.patchUrlForCVEMitigation(url))
                     context.startActivity(intent)
                 }
 
-                context.resources.getString(R.string.share_url) -> CommonUtils.shareUrl(
-                    context,
-                    url
-                )
+                R.string.share_url -> CommonUtils.shareUrl(context, url)
             }
         }
         return true
