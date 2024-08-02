@@ -1,7 +1,14 @@
 body {
     font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: center;
-    margin-top: 20em;
+    width: 30em;
+    background: black;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -15em;
 }
 
 input[type=text], button {
@@ -26,4 +33,9 @@ button {
     display: inline-block;
     cursor: pointer;
     padding: 16px;
+}
+
+p.buildtag {
+    position: absolute;
+    bottom: 0;
 }
