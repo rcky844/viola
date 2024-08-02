@@ -63,27 +63,27 @@ android {
         buildConfig = true
     }
     buildTypes {
-        // Generic release
+        // Stable release
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
 
-        // Stable release
-        release_stable {
-            initWith buildTypes.release
+            resValue "string", "app_name", "Viola"
         }
 
         // Next release
-        release_next {
+        next {
             initWith buildTypes.release
+            resValue "string", "app_name", "Viola Next"
         }
 
         // Debug internal
         debug {
             applicationIdSuffix ".debug"
             multiDexEnabled true
+
+            resValue "string", "app_name", "Viola Debug"
             buildConfigField "String", "VERSION_BUILD_ID", "null"
         }
     }
@@ -98,18 +98,6 @@ android {
 
     kotlinOptions {
         jvmTarget = '17'
-    }
-
-    sourceSets {
-        // Next release
-        release_next {
-            res.srcDir "next/res"
-        }
-
-        // Debug internal
-        debug {
-            res.srcDir "debug/res"
-        }
     }
 }
 

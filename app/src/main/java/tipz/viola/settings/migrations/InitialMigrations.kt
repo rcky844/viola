@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
 package tipz.viola.settings.migrations
 
 import tipz.viola.settings.SettingsKeys

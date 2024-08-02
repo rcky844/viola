@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
 package tipz.viola.download
 
 import tipz.viola.utils.CommonUtils

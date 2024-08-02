@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
 package tipz.viola.download
 
 enum class DownloadMode(val value: Int) {

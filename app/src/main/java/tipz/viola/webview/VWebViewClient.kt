@@ -1,3 +1,6 @@
+// Copyright (c) 2020-2024 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
 package tipz.viola.webview
 
 import android.annotation.SuppressLint
@@ -30,7 +33,7 @@ open class VWebViewClient(
     private val adServersHandler: AdServersHandler
 ) : WebViewClientCompat() {
     private val settingsPreference =
-        (mContext.applicationContext as Application).settingsPreference!!
+        (mContext.applicationContext as Application).settingsPreference
     private val unsecureURLSet = ArrayList<String>()
     private val unsecureURLErrorSet = ArrayList<SslError>()
 
