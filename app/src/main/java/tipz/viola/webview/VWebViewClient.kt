@@ -24,7 +24,6 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView.PageLoadState
 import java.io.ByteArrayInputStream
-import java.net.MalformedURLException
 import java.net.URL
 
 open class VWebViewClient(
@@ -149,22 +148,18 @@ open class VWebViewClient(
     @Suppress("DEPRECATION") // Kept as it is easier to handle
     @Deprecated("Deprecated in Java")
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-        if (adServersHandler.adServers.isNullOrEmpty()) {
-            // TODO: Add dialog to warn users of this issue
-            return super.shouldInterceptRequest(view, url)
-        }
-        try {
-            if (adServersHandler.adServers!!.contains(" " + URL(url).host) && settingsPreference.getInt(
-                    SettingsKeys.enableAdBlock
-                ) == 1
-            )
+        if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock)) {
+            if (adServersHandler.adServers.isNullOrEmpty()) {
+                // TODO: Add dialog to warn users of this issue
+                return super.shouldInterceptRequest(view, url)
+            }
+            if (adServersHandler.adServers!!.contains(" ${URL(url).host}"))
                 return WebResourceResponse(
                     "text/plain", "utf-8",
                     ByteArrayInputStream(CommonUtils.EMPTY_STRING.toByteArray())
                 )
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
         }
+
         return super.shouldInterceptRequest(view, url)
     }
 
