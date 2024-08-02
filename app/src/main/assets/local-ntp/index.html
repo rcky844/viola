@@ -1,6 +1,15 @@
 <!-- html stuffs -->
 <title>New tab</title>
 
+<!-- scripts -->
+<script>
+document.addEventListener('DOMContentLoaded', async (event) => {
+    // Handle buildtag
+    var buildtag = document.getElementById('buildtag');
+    buildtag.innerHTML = ViolaBrowser.getProductBuildTag()
+});
+</script>
+
 <!-- styles -->
 <link rel="stylesheet" href="styles.css">
 
@@ -11,4 +20,6 @@
 </div>
 
 <input id="search-input" type="text" placeholder="Search or type web address…">
+
+<p id="buildtag"></p>
 </body>

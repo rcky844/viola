@@ -225,13 +225,6 @@ class BrowserActivity : VWebViewActivity() {
             if (progressBar.progress == 0) webview.reload()
         }
 
-        // Setup build tag
-        /* TODO: Re-enable this
-        val buildTag = findViewById<AppCompatTextView>(R.id.buildTag)
-        buildTag.text = BuildInfo().getProductBuildTag()
-        buildTag.visibility = View.VISIBLE // FIXME: Somewhere to set this
-         */
-
         // Finally, load homepage
         val dataUri = intent.data
         if (dataUri != null) {

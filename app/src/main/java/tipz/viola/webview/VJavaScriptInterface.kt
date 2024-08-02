@@ -6,8 +6,10 @@ package tipz.viola.webview
 import android.content.Context
 import android.util.Log
 import android.webkit.JavascriptInterface
+import tipz.build.info.BuildInfo
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.InternalDownloadProvider
+import tipz.viola.utils.CommonUtils
 import java.io.IOException
 
 class VJavaScriptInterface(private val context: Context) {
@@ -21,6 +23,9 @@ class VJavaScriptInterface(private val context: Context) {
                 "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}")
         }
     }
+
+    @JavascriptInterface
+    fun getProductBuildTag(): String = BuildInfo().getProductBuildTag() ?: CommonUtils.EMPTY_STRING
 
     companion object {
         val LOG_TAG = "VJavaScriptInterface"
