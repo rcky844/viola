@@ -36,6 +36,7 @@ open class AdServersClient(context: Context, settingsPreference: SettingsSharedP
     var adServers: String? = null
 
     private val adServersFilePath = "ad_servers_hosts.txt"
+    private val localHostUrls = arrayOf("0.0.0.0", "127.0.0.1", "localhost")
 
     init {
         mContext = context
@@ -70,8 +71,8 @@ open class AdServersClient(context: Context, settingsPreference: SettingsSharedP
             val builder = StringBuilder()
             while (scanner.hasNextLine()) {
                 val line = scanner.nextLine()
-                if (line.startsWith("127.0.0.1") || line.startsWith("0.0.0.0")) builder.append(line)
-                    .append(System.lineSeparator())
+                if (localHostUrls.any { line.startsWith(it) })
+                    builder.append(line).append(System.lineSeparator())
             }
             adServers = builder.toString()
 
