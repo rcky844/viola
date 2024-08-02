@@ -2,7 +2,6 @@ body {
     font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: center;
     margin-top: 20em;
-    background-color: black;
 }
 
 input[type=text], button {
