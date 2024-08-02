@@ -27,8 +27,3 @@ button {
     cursor: pointer;
     padding: 16px;
 }
-
-.input-container {
-    display: flex;
-    justify-content: center;
-}
