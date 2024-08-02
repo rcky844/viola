@@ -19,6 +19,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
+import android.provider.Settings
 import android.util.AttributeSet
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
@@ -190,6 +191,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 webSettings,
                 settingsPreference.getIntBool(SettingsKeys.enableGoogleSafeBrowse)
             )
+
+        // WebView Debugging
+            setWebContentsDebuggingEnabled(Settings.Secure.getInt(activity.contentResolver,
+                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1)
 
         // Do Not Track request
         requestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
