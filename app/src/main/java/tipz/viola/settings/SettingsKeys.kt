@@ -57,7 +57,7 @@ object SettingsKeys {
     const val defaultSuggestionsId = "defaultSuggestionsId" /* INTEGER */
 
     /*
-     * Intent keys used in SettingsActivity communication
+     * Intent keys used in inter-activity communication
      *
      * Includes all possibly used keys. Comment next to the definition
      * indicates data type.

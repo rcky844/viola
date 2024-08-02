@@ -34,6 +34,7 @@ import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.api.HistoryClient
 import tipz.viola.broha.database.Broha
 import tipz.viola.broha.database.IconHashClient
+import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.copyClipboard
 import tipz.viola.utils.CommonUtils.showMessage
@@ -201,7 +202,7 @@ class ListInterfaceActivity : BaseActivity() {
                 }
                 holder.back.setOnClickListener {
                     val needLoad = Intent()
-                    needLoad.putExtra("needLoadUrl", url)
+                    needLoad.putExtra(SettingsKeys.needLoadUrl, url)
                     listInterfaceActivity.setResult(0, needLoad)
                     listInterfaceActivity.finish()
                 }
