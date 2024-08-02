@@ -64,10 +64,6 @@ open class VWebViewActivity : BaseActivity() {
         // Setup swipe refresh layout
         swipeRefreshLayout.setOnRefreshListener { webview.reload() }
 
-        // Setup start page
-        startPageLayout?.findViewById<View>(R.id.startPageEditText)
-            ?.setOnClickListener { onStartPageEditTextPressed() }
-
         // Setup favicon
         faviconProgressBar?.setOnClickListener { favicon?.performClick() }
         super.onStart()

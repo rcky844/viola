@@ -55,7 +55,6 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tipz.build.info.BuildInfo
 import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.broha.ListInterfaceActivity
@@ -90,7 +89,6 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var toolsBarExtendableBackground: ConstraintLayout
     private lateinit var toolsBarExtendableCloseHitBox: LinearLayoutCompat
     private lateinit var sslLock: AppCompatImageView
-    private lateinit var homeButton: LinearLayoutCompat
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
@@ -113,11 +111,9 @@ class BrowserActivity : VWebViewActivity() {
         swipeRefreshLayout = findViewById(R.id.layout_webview)
         webview = swipeRefreshLayout.findViewById(R.id.webview)
         favicon = findViewById(R.id.favicon)
-        startPageLayout = findViewById(R.id.layout_startpage)
         favClient = FavClient(this)
         iconHashClient = IconHashClient(this)
         sslLock = findViewById(R.id.ssl_lock)
-        homeButton = findViewById(R.id.home_button)
         fullscreenFab = findViewById(R.id.fullscreen_fab)
 
         // Setup toolbar
@@ -229,21 +225,6 @@ class BrowserActivity : VWebViewActivity() {
             if (progressBar.progress > 0) webview.stopLoading()
             if (progressBar.progress == 0) webview.reload()
         }
-
-        // Setup home button
-        homeButton.findViewById<AppCompatImageView>(R.id.imageView)
-            ?.setImageResource(R.drawable.home)
-        homeButton.findViewById<AppCompatTextView>(R.id.textView)?.text =
-            resources.getString(R.string.homepage_webpage_home)
-        homeButton.setOnClickListener {
-            webview.loadHomepage(false)
-        }
-        homeButton.visibility = View.GONE // FIXME: Unhide
-
-        // Setup build tag
-        val buildTag = findViewById<AppCompatTextView>(R.id.buildTag)
-        buildTag.text = BuildInfo().getProductBuildTag()
-        buildTag.visibility = View.VISIBLE // FIXME: Somewhere to set this
 
         // Finally, load homepage
         val dataUri = intent.data
@@ -516,6 +497,12 @@ class BrowserActivity : VWebViewActivity() {
 
 
     override fun onUrlUpdated(url: String?) {
+        // TODO: Hack this somewhere else
+        if (url == InternalUrls.localNtpUrl) {
+            urlEditText.setText(CommonUtils.EMPTY_STRING)
+            return
+        }
+
         if (!urlEditText.isFocused) urlEditText.setText(url)
     }
 
@@ -530,7 +517,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     override fun onSslCertificateUpdated() {
-        if (startPageLayout?.visibility == View.VISIBLE) {
+        if (webview.url == InternalUrls.localNtpUrl) {
             sslState = SslState.SEARCH
             sslLock.setImageResource(R.drawable.search)
             sslLock.isClickable = false
