@@ -28,12 +28,6 @@ input[type=text]:focus {
     outline: none;
 }
 
-button {
-    display: inline-block;
-    cursor: pointer;
-    padding: 16px;
-}
-
 p.buildtag {
     position: absolute;
     bottom: 0;
