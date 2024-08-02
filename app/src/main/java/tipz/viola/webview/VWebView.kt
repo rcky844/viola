@@ -307,9 +307,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun filterUrl(url: String): String {
         return if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
-        else if (PrivilegedPages.isPrivilegedPage(url))
-            PrivilegedPages.getDisplayUrl(url) ?: CommonUtils.EMPTY_STRING
-        else url
+        else PrivilegedPages.getDisplayUrl(url) ?: url
     }
 
     fun getRealUrl(): String = super.getUrl() ?: ExportedUrls.aboutBlankUrl
