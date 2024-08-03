@@ -355,28 +355,34 @@ class SettingsActivity : BaseActivity() {
             // Updates JSON Object observer
             updateConfigLiveData.observe(this, Observer {
                 val jObject = it ?: return@Observer
+
+                // Get update channel name
                 var updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
                 if (updateChannelName.isBlank()) updateChannelName = BuildConfig.BUILD_TYPE
-
                 if (!jObject.has(updateChannelName)) {
                     showMessage(settingsActivity, R.string.update_down_failed_toast)
                     return@Observer
                 }
+
+                // Process the selected update channel data
                 val jChannelObject = jObject.getJSONObject(updateChannelName)
-                if (!jChannelObject.has("channel_data")) {
+                val jChannelDataString =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) "channel_data_modern"
+                    else "channel_data_legacy"
+
+                if (!jChannelObject.has(jChannelDataString)) {
                     showMessage(settingsActivity, R.string.version_latest_toast)
                     return@Observer
                 }
 
-                val jChannelUpdateObject = jChannelObject.getJSONObject("channel_data")
+                // Process the update channel object
+                val jChannelUpdateObject = jChannelObject.getJSONObject(jChannelDataString)
                 if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
                     showMessage(settingsActivity, R.string.version_latest_toast)
                     return@Observer
                 }
 
-                MaterialAlertDialogBuilder(
-                    settingsActivity
-                )
+                MaterialAlertDialogBuilder(settingsActivity)
                     .setTitle(R.string.new_update_detect_title)
                     .setMessage(
                         resources.getString(
