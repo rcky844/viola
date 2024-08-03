@@ -11,9 +11,6 @@
         <!-- SUW: AlertDialog -->
         <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
         <item name="dialogCornerRadius">28dp</item>
-
-        <!-- View style -->
-        <item name="linearProgressIndicatorStyle">@style/Widget.App.LinearProgressIndicator</item>
     </style>
 
     <!-- Collapsing toolbar style -->
