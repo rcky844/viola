@@ -29,7 +29,7 @@ android {
     defaultConfig {
         applicationId "tipz.viola"
         compileSdk 34
-        minSdkVersion 21
+        minSdkVersion 14
         targetSdkVersion 34
         versionCode 55
         versionName "7.0"
@@ -59,6 +59,7 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
     buildTypes {
         // Stable release
@@ -130,6 +131,7 @@ dependencies {
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
     }
+    implementation 'com.bluelinelabs:conductor:3.2.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
     implementation "androidx.room:room-runtime:$room_version"

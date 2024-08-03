@@ -51,7 +51,7 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     override fun onStart() {
-        try {
+        try { // FIXME: Replace this
             appbar = findViewById(R.id.appbar)
             webviewContainer = findViewById(R.id.webviewContainer)
             toolsContainer = findViewById(R.id.toolsContainer)
@@ -92,7 +92,8 @@ open class VWebViewActivity : BaseActivity() {
             doSettingsCheck()
             if (result.data == null) return@registerForActivityResult
 
-            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadRealUrl(it) } // FROM: SettingsActivity
+            // FROM: SettingsActivity
+            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadUrl(it) }
 
             if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
                 webview.reload()

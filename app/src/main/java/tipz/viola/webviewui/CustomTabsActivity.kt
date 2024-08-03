@@ -9,33 +9,37 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import tipz.viola.R
+import tipz.viola.databinding.ActivityCustomTabBinding
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebViewActivity
 
 class CustomTabsActivity : VWebViewActivity() {
+    private lateinit var binding: ActivityCustomTabBinding
     private lateinit var title: AppCompatTextView
     private lateinit var host: AppCompatTextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_custom_tab)
-        appbar = findViewById(R.id.appbar)
+        binding = ActivityCustomTabBinding.inflate(layoutInflater)
+
+        /* Appbar */
+        appbar = binding.appbar
 
         /* Back button */
-        val actionBarBack : AppCompatImageView = findViewById(R.id.close)
+        val actionBarBack : AppCompatImageView = binding.close
         actionBarBack.setOnClickListener { finish() }
 
         /* Title and Host */
-        title = findViewById(R.id.title)
-        host = findViewById(R.id.host)
+        title = binding.title
+        host = binding.host
 
         /* Share */
-        val share = findViewById<AppCompatImageView>(R.id.share)
+        val share = binding.share
         share.setOnClickListener { CommonUtils.shareUrl(this, webview.url) }
 
         /* Open in Browser */
-        val openBrowser = findViewById<AppCompatImageView>(R.id.open_browser)
+        val openBrowser = binding.openBrowser
         openBrowser.setOnClickListener {
             val url = webview.url
             val intent = Intent(this, BrowserActivity::class.java)
@@ -45,17 +49,17 @@ class CustomTabsActivity : VWebViewActivity() {
         }
 
         /* Progress Bar */
-        progressBar = findViewById(R.id.webviewProgressBar)
+        progressBar = binding.webviewProgressBar
 
         /* Swipe Refresh Layout */
-        swipeRefreshLayout = findViewById(R.id.layout_webview)
+        swipeRefreshLayout = binding.layoutWebview.swipe
 
         // Setup Web App Mode
         if (intent.getBooleanExtra(EXTRA_LAUNCH_AS_WEBAPP, false))
             appbar.visibility = View.GONE
 
         /* WebView */
-        webview = swipeRefreshLayout.findViewById(R.id.webview)
+        webview = binding.layoutWebview.webview
         webview.setUpdateHistory(false)
 
         // Finally, load webpge
