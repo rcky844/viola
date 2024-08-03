@@ -127,14 +127,17 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
         // Chrome does this in the current Chrome Dev, but not Chrome release).
-        webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
 
         // Disable file access
         // Disabled as it no longer functions since Android 11
         webSettings.allowFileAccess = false
         webSettings.allowContentAccess = false
-        webSettings.allowFileAccessFromFileURLs = false
-        webSettings.allowUniversalAccessFromFileURLs = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            webSettings.allowFileAccessFromFileURLs = false
+            webSettings.allowUniversalAccessFromFileURLs = false
+        }
 
         // Enable some HTML5 related settings
         webSettings.databaseEnabled = false // Disabled as no-op since Android 15
@@ -197,8 +200,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             )
 
         // WebView Debugging
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setWebContentsDebuggingEnabled(Settings.Secure.getInt(activity.contentResolver,
                 Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1)
+        }
 
         // Do Not Track request
         requestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
@@ -345,8 +350,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     currentBroha = Broha(title, currentUrl)
                     historyState = UpdateHistoryState.STATE_URL_UPDATED
                 }
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) CookieSyncManager.getInstance()
-                    .sync() else CookieManager.getInstance().flush()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    CookieManager.getInstance().flush()
+                else CookieSyncManager.getInstance().sync()
                 activity.onSwipeRefreshLayoutRefreshingUpdated(false)
             }
 

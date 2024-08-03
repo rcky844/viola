@@ -115,8 +115,7 @@
             android:indeterminate="false"
             android:progress="22"
             app:indicatorColor="?attr/colorAccent"
-            app:trackColor="@android:color/transparent"
-            app:trackStopIndicatorSize="0dp" />
+            app:trackColor="@android:color/transparent" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -227,6 +227,14 @@ class BrowserActivity : VWebViewActivity() {
             if (progressBar.progress == 0) webview.reload()
         }
 
+        // For legacy compatibility
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
+            progressBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            sslLock.bringToFront()
+            toolsBarExtendableCloseHitBox.bringToFront()
+        }
+
         // Finally, load homepage
         val dataUri = intent.data
         if (dataUri != null) {
@@ -405,6 +413,8 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.print -> {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return false
+
                 // Bail out for certain URLs
                 if (webview.url.isBlank()) return false
 
@@ -475,12 +485,11 @@ class BrowserActivity : VWebViewActivity() {
     fun expandToolBar() {
         val viewVisible: Boolean = toolsBarExtendableBackground.visibility == View.VISIBLE
         val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration =
-            (resources.getInteger(R.integer.anim_expandable_speed) * Settings.Global.getFloat(
-                contentResolver,
-                Settings.Global.ANIMATOR_DURATION_SCALE,
-                1.0f
-            )).toLong()
+        transition.duration = resources.getInteger(R.integer.anim_expandable_speed) *
+                (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    Settings.Global.getFloat(contentResolver,
+                        Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)
+                else 1.0f).toLong()
         transition.addTarget(R.id.toolsBarExtendableBackground)
         TransitionManager.beginDelayedTransition(toolsBarExtendableBackground, transition)
         toolsBarExtendableBackground.visibility = if (viewVisible) View.GONE else View.VISIBLE

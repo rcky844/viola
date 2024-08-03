@@ -184,6 +184,7 @@ open class VWebViewActivity : BaseActivity() {
 
     @CallSuper
     open fun onSwipeRefreshLayoutRefreshingUpdated(isRefreshing: Boolean) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
         swipeRefreshLayout.isRefreshing = isRefreshing
         webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')") { value1: String ->
             updateSwipeRefreshLayoutEnabled(getTrueCSSValue(value1) != "hidden")
