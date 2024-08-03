@@ -8,4 +8,9 @@
         <attr name="needReload" format="boolean" />
         <attr name="requiredApi" format="integer" />
     </declare-styleable>
+
+    <!-- This allows compilation with newer code -->
+    <declare-styleable name="BaseProgressIndicator">
+        <attr name="trackStopIndicatorSize" format="dimension" />
+    </declare-styleable>
 </resources>
