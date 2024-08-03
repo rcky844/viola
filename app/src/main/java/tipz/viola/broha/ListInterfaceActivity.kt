@@ -78,14 +78,6 @@ class ListInterfaceActivity : BaseActivity() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun notifyItemsAdapter() {
-        CoroutineScope(Dispatchers.Main).launch {
-            // FIXME: Update list dynamically to save system resources
-            itemsAdapter.notifyDataSetChanged()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecyclerDataListBinding.inflate(layoutInflater)
@@ -120,9 +112,10 @@ class ListInterfaceActivity : BaseActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         if (activityMode == mode_history) historyClient.deleteAll()
                         else if (activityMode == mode_favorites) favClient.deleteAll()
-                        updateListData()
-                        notifyItemsAdapter()
                     }
+                    val size = listData!!.size
+                    listData!!.clear()
+                    itemsAdapter.notifyItemRangeRemoved(0, size)
                     showMessage(this, R.string.wiped_success)
                 }
                 .setNegativeButton(android.R.string.cancel, null)
@@ -195,12 +188,15 @@ class ListInterfaceActivity : BaseActivity() {
                 val data = listData!![position]
                 val title = data.title
                 val url = data.url
-                lateinit var icon: Bitmap
+                var icon: Bitmap?
 
                 if (data.iconHash != null) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        icon = iconHashClient!!.read(data.iconHash)!!
-                        CoroutineScope(Dispatchers.Main).launch { holder.icon.setImageBitmap(icon) }
+                        icon = iconHashClient!!.read(data.iconHash)
+                        if (icon != null)
+                            CoroutineScope(Dispatchers.Main).launch {
+                                holder.icon.setImageBitmap(icon)
+                            }
                     }
                 } else {
                     holder.icon.setImageResource(R.drawable.default_favicon)
@@ -271,7 +267,6 @@ class ListInterfaceActivity : BaseActivity() {
                                                 listData = clientActivity.favClient.getAll() as MutableList<Broha>?
                                                 CoroutineScope(Dispatchers.Main).launch {
                                                     notifyItemRangeRemoved(position, 1)
-                                                    listInterfaceActivity.notifyItemsAdapter()
                                                 }
                                             }
                                         }
