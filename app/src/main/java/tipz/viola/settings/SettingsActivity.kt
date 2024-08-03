@@ -389,6 +389,8 @@ class SettingsActivity : BaseActivity() {
             // Updates JSON Object observer
             updateConfigLiveData.observe(this, Observer {
                 val jObject = it ?: return@Observer
+
+                // Get update channel name
                 val updateChannelName =
                     settingsPreference.getString(SettingsKeys.updateChannelName)
                         ?: BuildConfig.BUILD_TYPE
@@ -399,8 +401,14 @@ class SettingsActivity : BaseActivity() {
                     )
                     return@Observer
                 }
+
+                // Process the selected update channel data
                 val jChannelObject = jObject.getJSONObject(updateChannelName)
-                if (!jChannelObject.has("channel_data")) {
+                val jChannelDataString =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) "channel_data_modern"
+                    else "channel_data_legacy"
+
+                if (!jChannelObject.has(jChannelDataString)) {
                     showMessage(
                         settingsActivity,
                         resources.getString(R.string.version_latest_toast)
@@ -408,7 +416,8 @@ class SettingsActivity : BaseActivity() {
                     return@Observer
                 }
 
-                val jChannelUpdateObject = jChannelObject.getJSONObject("channel_data")
+                // Process the update channel object
+                val jChannelUpdateObject = jChannelObject.getJSONObject(jChannelDataString)
                 if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
                     showMessage(
                         settingsActivity,
@@ -417,9 +426,7 @@ class SettingsActivity : BaseActivity() {
                     return@Observer
                 }
 
-                MaterialAlertDialogBuilder(
-                    settingsActivity
-                )
+                MaterialAlertDialogBuilder(settingsActivity)
                     .setTitle(resources.getString(R.string.new_update_detect_title))
                     .setMessage(
                         resources.getString(
