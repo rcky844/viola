@@ -242,6 +242,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             return
         }
 
+        // Check for view source
+        if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
+
         // Handle App Links
         if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
             && UrlUtils.isUriLaunchable(url)) {
@@ -311,7 +314,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun filterUrl(url: String): String {
-        return if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
+        return if (url.startsWith(ExportedUrls.viewSourcePrefix)) url
+        else if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
         else PrivilegedPages.getDisplayUrl(url) ?: url
     }
 
@@ -459,7 +463,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
         if (PrivilegedPages.isPrivilegedPage(url)) return false
         if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
-        loadUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
+        loadRealUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
         return true
     }
 }
