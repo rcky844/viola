@@ -27,8 +27,15 @@ object BussUtils {
         view.onPageLoadProgressChanged(20)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val data = MiniDownloadHelper.startDownload("${apiUrl}/domain/${split}")!!
-            if (data.isEmpty()) return@launch
+            val apiUrl = "${apiUrl}/domain/${split}"
+            val data = MiniDownloadHelper.startDownload(apiUrl)!!
+            if (data.isEmpty()) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    view.onPageInformationUpdated(
+                        PageLoadState.PAGE_ERROR, url, null)
+                }
+                return@launch
+            }
             val ip: String = JSONObject(String(data)).getString("ip")
 
             val realUrl = if (ip.contains(githubPrefix))
@@ -37,7 +44,14 @@ object BussUtils {
             else ip
             CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(40) }
 
-            val htmlData = MiniDownloadHelper.startDownload(realUrl)
+            val htmlData = MiniDownloadHelper.startDownload(realUrl)!!
+            if (htmlData.isEmpty()) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    view.onPageInformationUpdated(
+                        PageLoadState.PAGE_ERROR, url, null)
+                }
+                return@launch
+            }
             CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(60) }
 
             val parsedHtml = BussHtmlUtils.parseHtml(realUrl, htmlData)
