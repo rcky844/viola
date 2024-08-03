@@ -306,7 +306,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     override fun reload() {
         if (currentBroha.url == getRealUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
-        loadRealUrl(getRealUrl())
+        loadUrl(getRealUrl())
     }
 
     override fun getUrl(): String {

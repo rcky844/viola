@@ -128,22 +128,19 @@ class ListInterfaceActivity : BaseActivity() {
         layoutManager.reverseLayout = activityMode == mode_history
         layoutManager.stackFromEnd = activityMode == mode_history
         updateListData()
-        itemsAdapter = ItemsAdapter(
-            this@ListInterfaceActivity, IconHashClient(this)
-        )
+        itemsAdapter = ItemsAdapter(this@ListInterfaceActivity)
         brohaList.adapter = itemsAdapter
     }
 
     class ItemsAdapter(
-        brohaListInterfaceActivity: ListInterfaceActivity,
-        iconHashClient: IconHashClient?
+        brohaListInterfaceActivity: ListInterfaceActivity
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val LOG_TAG = "ListInterfaceAdapter"
 
         private lateinit var binding: ViewBinding
         private val mBrohaListInterfaceActivity: WeakReference<ListInterfaceActivity> =
             WeakReference(brohaListInterfaceActivity)
-        private val mIconHashClient: WeakReference<IconHashClient?> = WeakReference(iconHashClient)
+        private val mIconHashClient: IconHashClient = IconHashClient(brohaListInterfaceActivity)
 
         class ListViewHolder(binding: TemplateIconTitleDescriptorTimeBinding)
             : RecyclerView.ViewHolder(binding.root) {
@@ -184,7 +181,7 @@ class ListInterfaceActivity : BaseActivity() {
                 )
             } else if (holder is ListViewHolder) {
                 val clientActivity = mBrohaListInterfaceActivity.get()!!
-                val iconHashClient = mIconHashClient.get()
+                val iconHashClient = mIconHashClient
                 val data = listData!![position]
                 val title = data.title
                 val url = data.url
@@ -192,7 +189,7 @@ class ListInterfaceActivity : BaseActivity() {
 
                 if (data.iconHash != null) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        icon = iconHashClient!!.read(data.iconHash)
+                        icon = iconHashClient.read(data.iconHash)
                         if (icon != null)
                             CoroutineScope(Dispatchers.Main).launch {
                                 holder.icon.setImageBitmap(icon)

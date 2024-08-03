@@ -41,7 +41,11 @@ class IconHashClient(context: Context) {
     fun read(hash: Int?): Bitmap? {
         if (hash == null) return null
         val imgFile = File(fileDir, "$hash.webp")
-        if (imgFile.exists()) return BitmapFactory.decodeFile(imgFile.absolutePath)
+        try {
+            if (imgFile.exists()) return BitmapFactory.decodeFile(imgFile.absolutePath)
+        } catch (_: Exception) {
+            return null
+        }
         return null
     }
 }
