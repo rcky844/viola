@@ -162,6 +162,7 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun getItemViewType(position: Int): Int {
+            if (listData == null) return 0
             Log.i(LOG_TAG, "getItemViewType(): isEmpty=${listData!!.size == 0}")
             return if (listData!!.size == 0) R.layout.template_empty
             else R.layout.template_icon_title_descriptor_time
