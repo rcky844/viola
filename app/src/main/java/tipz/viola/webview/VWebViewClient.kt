@@ -18,6 +18,9 @@ import android.webkit.WebView
 import androidx.annotation.StringRes
 import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
@@ -63,8 +66,12 @@ open class VWebViewClient(
         )
         errorContent = errorContent.replace("$6", description)
 
-        mVWebView.evaluateJavascript(
-            """document.documentElement.innerHTML = `$errorContent`""")
+        // TODO: Figure out issue with failingUrl & historyUrl
+        // Although it is not stored in history, it could actually be an issue long term
+        CoroutineScope(Dispatchers.Main).launch {
+            mVWebView.loadDataWithBaseURL(failingUrl, errorContent,
+                "text/html", "UTF-8", failingUrl)
+        }
         view.stopLoading()
     }
 
