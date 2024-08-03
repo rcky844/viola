@@ -4,50 +4,47 @@
 package tipz.viola.utils
 
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
+import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.webview.VWebView
 
-class BussUtils {
-    companion object {
-        const val LOG_TAG = "BussUtils"
+object BussUtils {
+    const val LOG_TAG = "BussUtils"
 
-        private val bussPrefix = "buss://"
-        private val apiUrl = "https://api.buss.lol"
-        private val previewGithub = "https://html-preview.github.io/?url="
+    private val bussPrefix = "buss://"
+    private val apiUrl = "https://api.buss.lol"
+    private val previewGithub = "https://html-preview.github.io/?url="
 
-        fun splitDomain(str: String?): String {
-            if (str.isNullOrEmpty()) return CommonUtils.EMPTY_STRING
+    fun splitDomain(str: String?): String {
+        if (str.isNullOrEmpty()) return CommonUtils.EMPTY_STRING
 
-            val split = str.replace("\\.".toRegex(), "#")
-                .split("#".toRegex(), limit = 2).toTypedArray()
-            if (split.size == 1) {
-                return split[0]
+        val split = str.replace("\\.".toRegex(), "#")
+            .split("#".toRegex(), limit = 2).toTypedArray()
+        if (split.size == 1) {
+            return split[0]
+        }
+        val str2 = split[split.size - 2] + "/" + split[split.size - 1]
+        Log.d(LOG_TAG, "splitDomain(): str2=$str2")
+        return str2
+    }
+
+    fun sendAndRequestResponse(view: VWebView, url: String): Boolean {
+        if (!url.startsWith(bussPrefix)) return false
+        val split = splitDomain(url.replace(bussPrefix, CommonUtils.EMPTY_STRING))
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = MiniDownloadHelper.startDownload("${apiUrl}/domain/${split}")!!
+            val string: String = JSONObject(String(data)).getString("ip")
+            CoroutineScope(Dispatchers.Main).launch {
+                view.loadUrl(
+                    if (string.contains("github.com"))
+                        "${previewGithub}${string}/main/index.html" else string
+                )
             }
-            val str2 = split[split.size - 2] + "/" + split[split.size - 1]
-            Log.d(LOG_TAG, "splitDomain(): str2=$str2")
-            return str2
         }
-
-        fun sendAndRequestResponse(view: VWebView, url: String): Boolean {
-            if (!url.startsWith(bussPrefix)) return false
-            val split = splitDomain(url.replace(bussPrefix, CommonUtils.EMPTY_STRING))
-
-            val requestQueue = Volley.newRequestQueue(view.context)
-            val stringRequest = StringRequest(
-                Request.Method.GET, "${apiUrl}/domain/${split}",
-                { response ->
-                    val string: String = JSONObject(response).getString("ip")
-                        view.loadUrl(if (string.contains("github.com"))
-                        "${previewGithub}${string}/main/index.html" else string)
-                },
-                { error ->
-                    Log.e(LOG_TAG, "Request failed, error=$error")
-                })
-            requestQueue.add(stringRequest)
-            return true
-        }
+        return true
     }
 }

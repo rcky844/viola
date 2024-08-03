@@ -3,6 +3,8 @@
 
 package tipz.viola.download
 
+import android.util.Log
+import tipz.viola.utils.BussUtils.LOG_TAG
 import java.net.URL
 
 class MiniDownloadHelper {
@@ -20,6 +22,7 @@ class MiniDownloadHelper {
             return try {
                 url.readBytes()
             } catch (_: Exception) {
+                Log.e(LOG_TAG, "Request failed, url=${url}")
                 byteArrayOf() // Return empty byte array to not crash on Exception
             }
         }
