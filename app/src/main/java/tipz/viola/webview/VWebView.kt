@@ -327,6 +327,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         super.goForward()
     }
 
+    fun evaluateJavascript(script: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            super.evaluateJavascript(script, null)
+        else
+            super.loadUrl("javascript:function(){${script}}()");
+    }
+
     fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
         val currentUrl = this.url
         val newUrl = if (!url.isNullOrBlank()) filterUrl(url) else currentUrl
