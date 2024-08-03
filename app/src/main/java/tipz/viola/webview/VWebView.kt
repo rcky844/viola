@@ -49,6 +49,7 @@ import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.utils.BussUtils
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.pages.ExportedUrls
@@ -234,6 +235,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     override fun loadUrl(url: String) {
         if (url.isBlank()) return
+        if (BussUtils.sendAndRequestResponse(this, url)) return
 
         // Check for privileged URLs
         val privilegedActualUrl = PrivilegedPages.getActualUrl(url)
