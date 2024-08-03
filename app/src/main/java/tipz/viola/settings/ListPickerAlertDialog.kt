@@ -3,29 +3,23 @@
 
 package tipz.viola.settings
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import tipz.viola.R
+import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.utils.CommonUtils
 
-class ListPickerAlertDialog(context: Context, settingsPreference: SettingsSharedPreference) :
+class ListPickerAlertDialog(context: Context, settingsPreference: SettingsSharedPreference,
+                            private val listPickerObject: ListPickerObject) :
     MaterialAlertDialogBuilder(context) {
-    private var mListPickerObject: ListPickerObject = ListPickerObject()
     private var mSettingsPreference: SettingsSharedPreference = settingsPreference
 
-    fun getListPickerObject(): ListPickerObject {
-        return mListPickerObject
-    }
-
-    fun setupDialogForShowing() {
-        mListPickerObject.apply {
+    init {
+        listPickerObject.apply {
             val useNamePreference = namePreference != CommonUtils.EMPTY_STRING
 
             // Set checked item to current settings
@@ -56,15 +50,14 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
     }
 
     private fun createCustomDialog(checkedItem: Int) {
-        val layoutInflater = LayoutInflater.from(context)
-        @SuppressLint("InflateParams") val root =
-            layoutInflater.inflate(R.layout.dialog_edittext, null)
-        val customInput =
-            root.findViewById<AppCompatEditText>(R.id.edittext)
+        val binding: DialogEdittextBinding =
+            DialogEdittextBinding.inflate(LayoutInflater.from(context))
+        val view = binding.root
+        val customInput = binding.edittext
 
         // TODO: Improve implementation?
         val dialog = MaterialAlertDialogBuilder(context)
-        mListPickerObject.apply {
+        listPickerObject.apply {
             if (dialogTitleResId != 0)
                 dialog.setTitle(dialogTitleResId)
             else dialog.setTitle(dialogTitle)
@@ -73,7 +66,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                 dialog.setMessage(dialogCustomMessage)
             else dialog.setMessage(dialogCustomMessageResId)
 
-            dialog.setView(root)
+            dialog.setView(view)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     if (customInput.text.toString().isNotEmpty()) {
                         if (!stringPreference.isNullOrBlank())
@@ -108,7 +101,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         var dialogTitleResId = 0 // Dialog title resource ID
         var dialogCustomMessage: String? = null // Message for custom dialog
         var dialogCustomMessageResId = 0 // Resource ID of message for custom dialog
-        var dialogPositivePressed: () -> Unit = this::stubDialogPositivePressed // Ran when a positive button is pressed
+        var dialogPositivePressed: () -> Unit = { } // Ran when a positive button is pressed
         var customIndexEnabled = false // Uses custom item index
         var customIndex = 0 // Custom item index
 
@@ -124,8 +117,6 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                     "$name using namePreference without any means to convert to index!")
             return 0
         }
-
-        fun stubDialogPositivePressed() { }
     }
 
     companion object {

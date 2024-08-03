@@ -12,31 +12,36 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.databinding.ActivityRecyclerDataListBinding
+import tipz.viola.databinding.TemplateEmptyBinding
+import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
 
 class DownloadActivity : BaseActivity() {
+    private lateinit var binding: ActivityRecyclerDataListBinding
     private lateinit var downloadClient: DownloadClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityRecyclerDataListBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
         downloadClient = (applicationContext as Application).downloadClient
 
-        setContentView(R.layout.activity_recycler_data_list)
         setTitle(R.string.toolbar_expandable_downloads)
-
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
@@ -45,13 +50,12 @@ class DownloadActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        val downloadList = findViewById<RecyclerView>(R.id.recyclerView)
+        val downloadList = binding.recyclerView
 
         CoroutineScope(Dispatchers.IO).launch {
             listData = downloadClient.downloadQueue.value
         }
 
-        val layoutManager = downloadList.layoutManager as LinearLayoutManager
         downloadList.adapter = ItemsAdapter(this)
     }
 
@@ -61,27 +65,31 @@ class DownloadActivity : BaseActivity() {
             WeakReference(downloadActivity)
 
         class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val back: ConstraintLayout = view.findViewById(R.id.bg)
-            val icon: AppCompatImageView = view.findViewById(R.id.icon)
-            val title: AppCompatTextView = view.findViewById(R.id.title)
-            val url: AppCompatTextView = view.findViewById(R.id.url)
-            val time: AppCompatTextView = view.findViewById(R.id.time)
+            private val binding = Companion.binding as TemplateIconTitleDescriptorTimeBinding
+            val back: ConstraintLayout = binding.bg
+            val icon: AppCompatImageView = binding.icon
+            val title: AppCompatTextView = binding.title
+            val url: AppCompatTextView = binding.url
+            val time: AppCompatTextView = binding.time
         }
 
         class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val text: AppCompatTextView = view.findViewById(R.id.text)
+            private val binding = Companion.binding as TemplateEmptyBinding
+            val text: AppCompatTextView = binding.text
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val layoutView = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-            return if (viewType == R.layout.template_empty) EmptyViewHolder(layoutView)
-            else ListViewHolder(layoutView)
-        }
+            val isEmpty = listData!!.size == 0
+            binding = if (isEmpty) {
+                TemplateEmptyBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false)
+            } else {
+                TemplateIconTitleDescriptorTimeBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false)
+            }
 
-        override fun getItemViewType(position: Int): Int {
-            Log.i(LOG_TAG, "getItemViewType(): isEmpty=${listData!!.size == 0}")
-            return if (listData!!.size == 0) R.layout.template_empty
-            else R.layout.template_icon_title_descriptor_time
+            return if (isEmpty) EmptyViewHolder(binding.root)
+            else ListViewHolder(binding.root)
         }
 
         @SuppressLint("SimpleDateFormat")
@@ -133,5 +141,6 @@ class DownloadActivity : BaseActivity() {
     companion object {
         private var LOG_TAG = "DownloadActivity"
         private var listData: MutableList<DownloadObject>? = null
+        private lateinit var binding: ViewBinding
     }
 }

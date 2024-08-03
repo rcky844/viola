@@ -3,7 +3,6 @@
 
 package tipz.viola.webview
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -13,13 +12,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
+import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.download.DownloadObject
 import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.utils.CommonUtils
@@ -30,15 +28,16 @@ import tipz.viola.widget.StringResAdapter
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
     private var arrayAdapter = StringResAdapter(context)
 
-    open fun setupDialogForShowing(vWebView: VWebView, bundle: Bundle): Boolean {
-        val hr = vWebView.hitTestResult
+    open fun setupDialogForShowing(view: VWebView, bundle: Bundle): Boolean {
+        val hr = view.hitTestResult
         val type = hr.type
         var url = bundle.getString("url") ?: return false
         val title = bundle.getString("title")
         val src = bundle.getString("src")
 
         // Perform checks on the type of content we are dealing with
-        if (type == WebView.HitTestResult.UNKNOWN_TYPE || type == WebView.HitTestResult.EDIT_TEXT_TYPE) return false
+        if (type == WebView.HitTestResult.UNKNOWN_TYPE
+            || type == WebView.HitTestResult.EDIT_TEXT_TYPE) return false
 
         // Truncate url string to make things load faster
         url = if (url.length > 75) url.substring(0, 74) + "…" else url
@@ -46,14 +45,14 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         if (title.isNullOrBlank()) {
             setTitle(url)
         } else {
-            val layoutInflater = LayoutInflater.from(context)
-            @SuppressLint("InflateParams") val root =
-                layoutInflater.inflate(R.layout.dialog_hit_test_title, null)
+            val binding: DialogHitTestTitleBinding =
+                DialogHitTestTitleBinding.inflate(LayoutInflater.from(context))
+            val mView = binding.root
 
-            root.findViewById<AppCompatTextView>(R.id.title).text = title.trim()
-            root.findViewById<AppCompatTextView>(R.id.url).text = url
+            binding.title.text = title.trim()
+            binding.url.text = url
 
-            val icon = root.findViewById<AppCompatImageView>(R.id.icon)
+            val icon = binding.icon
             if (src.isNullOrBlank()) icon.visibility = View.GONE
             else {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -66,7 +65,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 }
             }
 
-            this.setCustomTitle(root)
+            this.setCustomTitle(mView)
         }
 
         // Add items to array adapter
@@ -86,14 +85,14 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 R.string.copy_src_url -> CommonUtils.copyClipboard(context, src)
 
                 R.string.download_image -> {
-                    vWebView.downloadClient.addToQueue(DownloadObject().apply {
+                    view.downloadClient.addToQueue(DownloadObject().apply {
                         uriString = src ?: url
                     })
                 }
 
                 R.string.search_image -> {
                     val fileSearch = src ?: url
-                    vWebView.loadUrl("http://images.google.com/searchbyimage?image_url=$fileSearch")
+                    view.loadUrl("http://images.google.com/searchbyimage?image_url=$fileSearch")
                 }
 
                 R.string.open_in_new_tab -> {

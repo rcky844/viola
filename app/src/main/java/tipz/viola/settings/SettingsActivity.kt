@@ -1,24 +1,27 @@
 // Copyright (c) 2022-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-@file:Suppress("DEPRECATION")
-
 package tipz.viola.settings
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.addCallback
-import androidx.appcompat.widget.Toolbar
 import tipz.viola.R
+import tipz.viola.databinding.ActivitySettingsBinding
 import tipz.viola.webviewui.BaseActivity
 
-
 class SettingsActivity : BaseActivity() {
+    private lateinit var binding: ActivitySettingsBinding
     private val needLoad = Intent()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        val toolbar = findViewById<Toolbar>(R.id._toolbar)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        // Setup toolbar
+        val toolbar = binding.materialToolbar
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)

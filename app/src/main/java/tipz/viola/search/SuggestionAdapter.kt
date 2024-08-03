@@ -12,19 +12,17 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.BaseAdapter
 import android.widget.Filter
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import tipz.viola.R
+import android.widget.Filterable
+import tipz.viola.databinding.TemplateTextSuggestionsBinding
 import tipz.viola.webview.VWebViewActivity
 import java.util.Locale
 
-class SuggestionAdapter(private val mContext: Context, resource: Int) : ArrayAdapter<String>(
-    mContext, resource
-) {
+class SuggestionAdapter(private val mContext: Context)
+    : BaseAdapter(), Filterable {
+    lateinit var binding: TemplateTextSuggestionsBinding
     private val mItems = ArrayList<String>()
-    private val mInflater: LayoutInflater = LayoutInflater.from(mContext)
     private val mFilter: ItemFilter
     private var mQueryText: String? = null
 
@@ -46,11 +44,16 @@ class SuggestionAdapter(private val mContext: Context, resource: Int) : ArrayAda
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var mConvertView = convertView
-        if (mConvertView == null) mConvertView =
-            mInflater.inflate(R.layout.template_text_suggestions, parent, false)
-        val title = mConvertView!!.findViewById<AppCompatTextView>(android.R.id.text1)
-        val copy_to_search_bar_button = mConvertView.findViewById<AppCompatImageView>(R.id.copy_to_search_bar_button)
+        if (mConvertView == null) {
+            binding = TemplateTextSuggestionsBinding.inflate(
+                LayoutInflater.from(mContext), parent, false)
+            mConvertView = binding.root
+        }
+
+        val title = binding.text1
+        val copyToSearchBarButton = binding.copyToSearchBarButton
         val suggestion = mItems[position]
+
         if (mQueryText != null) {
             val spannable = SpannableStringBuilder(suggestion)
             val lcSuggestion = suggestion.lowercase(Locale.getDefault())
@@ -61,18 +64,15 @@ class SuggestionAdapter(private val mContext: Context, resource: Int) : ArrayAda
                     queryTextPos, queryTextPos + mQueryText!!.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                queryTextPos =
-                    lcSuggestion.indexOf(mQueryText!!, queryTextPos + mQueryText!!.length)
+                queryTextPos = lcSuggestion.indexOf(mQueryText!!,
+                    queryTextPos + mQueryText!!.length)
             }
             title.text = spannable
         } else {
             title.text = suggestion
         }
-        copy_to_search_bar_button.setOnClickListener {
-            (mContext as VWebViewActivity).onUrlUpdated(
-                suggestion,
-                suggestion.length
-            )
+        copyToSearchBarButton.setOnClickListener {
+            (mContext as VWebViewActivity).onUrlUpdated(suggestion, suggestion.length)
         }
         return mConvertView
     }

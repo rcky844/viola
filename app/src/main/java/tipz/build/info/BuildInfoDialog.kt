@@ -8,28 +8,27 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.BuildConfig
 import tipz.viola.R
+import tipz.viola.databinding.AboutDialogBinding
 
+@SuppressLint("SetTextI18n")
 class BuildInfoDialog(context: Context, private val dialogDetails: BuildInfoDialogDetails) :
     MaterialAlertDialogBuilder(context) {
-    val buildInfo = BuildInfo()
+    private var binding: AboutDialogBinding =
+        AboutDialogBinding.inflate(LayoutInflater.from(context))
+    private val buildInfo = BuildInfo()
     val resources = context.resources!!
 
-    @SuppressLint("SetTextI18n")
-    fun setupDialogForShowing() {
-        // Setup layouts
-        val layoutInflater = LayoutInflater.from(context)
-        @SuppressLint("InflateParams") val dialogView =
-            layoutInflater.inflate(R.layout.about_dialog, null)
-        setView(dialogView)
+    init {
+        val view = binding.root
+        setView(view)
 
-        val dialog_text = dialogView.findViewById<AppCompatTextView>(R.id.dialog_text)
-        val changelog_btn = dialogView.findViewById<AppCompatButton>(R.id.changelog_btn)
-        val license_btn = dialogView.findViewById<AppCompatButton>(R.id.license_btn)
+        // Setup dialogs
+        val dialogText = binding.dialogText
+        val changelogBtn = binding.changelogBtn
+        val licenseBtn = binding.licenseBtn
 
         // Setup dialog text
         buildInfo.productName = resources.getString(R.string.app_name)
@@ -40,35 +39,35 @@ class BuildInfoDialog(context: Context, private val dialogDetails: BuildInfoDial
             buildId = buildInfo.productBuildGitRevision
         }
 
-        val text_version = resources.getString(
+        val textVersion = resources.getString(
             R.string.buildinfo_dialog_version,
             buildInfo.productName, buildInfo.productVersionCodename,
             buildInfo.productVersion, buildId
         )
-        val text_copyright = resources.getString(
+        val textCopyright = resources.getString(
             R.string.buildinfo_dialog_copyright,
             buildInfo.productCopyrightYear
         )
-        val text_license = resources.getString(
+        val textLicense = resources.getString(
             R.string.buildinfo_dialog_license,
             buildInfo.productLicenseDocument
         )
 
         // We can do this because they are sections
-        dialog_text.text = text_version + text_copyright + text_license
+        dialogText.text = textVersion + textCopyright + textLicense
 
         // Setup dialog buttons
-        changelog_btn.visibility =
+        changelogBtn.visibility =
             if (BuildConfig.DEBUG || dialogDetails.changelogUrl.isNullOrBlank()) View.GONE
             else View.VISIBLE
-        changelog_btn.setOnClickListener {
+        changelogBtn.setOnClickListener {
             dialogDetails.loader(dialogDetails.changelogUrl!!)
         }
 
-        license_btn.visibility =
+        licenseBtn.visibility =
             if (dialogDetails.licenseUrl.isNullOrBlank()) View.GONE
             else View.VISIBLE
-        license_btn.setOnClickListener {
+        licenseBtn.setOnClickListener {
             dialogDetails.loader(dialogDetails.licenseUrl!!)
         }
 

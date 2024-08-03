@@ -1,6 +1,8 @@
 // Copyright (c) 2022-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
+@file:Suppress("DEPRECATION")
+
 package tipz.viola.settings
 
 import android.annotation.SuppressLint
@@ -10,7 +12,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
@@ -20,7 +21,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatActivity.ACTIVITY_SERVICE
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
@@ -36,6 +36,7 @@ import tipz.build.info.BuildInfoDialog
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
+import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.download.DownloadProvider
@@ -117,75 +118,71 @@ class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() 
 
         search_engine.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val listPickerAlertDialog =
-                    ListPickerAlertDialog(settingsActivity, settingsPreference)
-                val listPickerObject = listPickerAlertDialog.getListPickerObject()
-                listPickerObject.preference = search_engine
-                listPickerObject.nameList = searchHomePageList
-                listPickerObject.namePreference = SettingsKeys.searchName
-                listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
-                listPickerObject.stringPreference = SettingsKeys.searchCustomUrl
-                listPickerObject.dialogTitleResId = R.string.search_engine
-                listPickerObject.dialogCustomMessageResId = R.string.custom_search_guide
-                listPickerObject.customIndexEnabled = true
-                listPickerObject.customIndex = SearchEngineEntries.customIndex
+                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
+                    preference = search_engine
+                    nameList = searchHomePageList
+                    namePreference = SettingsKeys.searchName
+                    nameToIdFunction = SearchEngineEntries::getIndexByName
+                    stringPreference = SettingsKeys.searchCustomUrl
+                    dialogTitleResId = R.string.search_engine
+                    dialogCustomMessageResId = R.string.custom_search_guide
+                    customIndexEnabled = true
+                    customIndex = SearchEngineEntries.customIndex
+                }
 
-                listPickerAlertDialog.setupDialogForShowing()
-                listPickerAlertDialog.create().show()
+                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
+                    .create().show()
                 true
             }
         homepage.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val listPickerAlertDialog =
-                    ListPickerAlertDialog(settingsActivity, settingsPreference)
-                val listPickerObject = listPickerAlertDialog.getListPickerObject()
-                listPickerObject.preference = homepage
-                listPickerObject.nameList = searchHomePageList
-                listPickerObject.namePreference = SettingsKeys.homePageName
-                listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
-                listPickerObject.stringPreference = SettingsKeys.homePageCustomUrl
-                listPickerObject.dialogTitleResId = R.string.homepage
-                listPickerObject.customIndexEnabled = true
-                listPickerObject.customIndex = SearchEngineEntries.customIndex
+                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
+                    preference = homepage
+                    nameList = searchHomePageList
+                    namePreference = SettingsKeys.homePageName
+                    nameToIdFunction = SearchEngineEntries::getIndexByName
+                    stringPreference = SettingsKeys.homePageCustomUrl
+                    dialogTitleResId = R.string.homepage
+                    customIndexEnabled = true
+                    customIndex = SearchEngineEntries.customIndex
+                }
 
-                listPickerAlertDialog.setupDialogForShowing()
-                listPickerAlertDialog.create().show()
+                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
+                    .create().show()
                 true
             }
         search_suggestions.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val listPickerAlertDialog =
-                    ListPickerAlertDialog(settingsActivity, settingsPreference)
-                val listPickerObject = listPickerAlertDialog.getListPickerObject()
-                listPickerObject.preference = search_suggestions
-                listPickerObject.nameList = searchHomePageList
-                listPickerObject.namePreference = SettingsKeys.suggestionsName
-                listPickerObject.nameToIdFunction = SearchEngineEntries::getIndexByName
-                listPickerObject.stringPreference = SettingsKeys.suggestionsCustomUrl
-                listPickerObject.dialogTitleResId = R.string.search_suggestions_title
-                listPickerObject.dialogCustomMessageResId = R.string.custom_search_guide
-                listPickerObject.customIndexEnabled = true
-                listPickerObject.customIndex = SearchEngineEntries.customIndex
+                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
+                    preference = search_suggestions
+                    nameList = searchHomePageList
+                    namePreference = SettingsKeys.suggestionsName
+                    nameToIdFunction = SearchEngineEntries::getIndexByName
+                    stringPreference = SettingsKeys.suggestionsCustomUrl
+                    dialogTitleResId = R.string.search_suggestions_title
+                    dialogCustomMessageResId = R.string.custom_search_guide
+                    customIndexEnabled = true
+                    customIndex = SearchEngineEntries.customIndex
+                }
 
-                listPickerAlertDialog.setupDialogForShowing()
-                listPickerAlertDialog.create().show()
+                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
+                    .create().show()
                 true
             }
         adBlockerSource.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val listPickerAlertDialog =
-                    ListPickerAlertDialog(settingsActivity, settingsPreference)
-                val listPickerObject = listPickerAlertDialog.getListPickerObject()
-                listPickerObject.preference = adBlockerSource
-                listPickerObject.nameList = adBlockerHostsEntries
-                listPickerObject.idPreference = SettingsKeys.adServerId
-                listPickerObject.stringPreference = SettingsKeys.adServerUrl
-                listPickerObject.dialogTitleResId = R.string.pref_adBlockerSource_title
-                listPickerObject.customIndexEnabled = true
-                listPickerObject.customIndex = SearchEngineEntries.customIndex
+                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
+                    preference = adBlockerSource
+                    nameList = adBlockerHostsEntries
+                    idPreference = SettingsKeys.adServerId
+                    stringPreference = SettingsKeys.adServerUrl
+                    dialogTitleResId = R.string.pref_adBlockerSource_title
+                    customIndexEnabled = true
+                    customIndex = SearchEngineEntries.customIndex
+                }
 
-                listPickerAlertDialog.setupDialogForShowing()
-                listPickerAlertDialog.create().show()
+                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
+                    .create().show()
                 true
             }
         adBlockerDownload.onPreferenceClickListener =
@@ -244,19 +241,18 @@ class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() 
             }
         theme.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val listPickerAlertDialog =
-                    ListPickerAlertDialog(settingsActivity, settingsPreference)
-                val listPickerObject = listPickerAlertDialog.getListPickerObject()
-                listPickerObject.preference = theme
-                listPickerObject.nameList = themeList
-                listPickerObject.idPreference = SettingsKeys.themeId
-                listPickerObject.dialogTitleResId = R.string.pref_theme
-                listPickerObject.dialogPositivePressed = {
-                    darkModeCheck(settingsActivity)
+                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
+                    preference = theme
+                    nameList = themeList
+                    idPreference = SettingsKeys.themeId
+                    dialogTitleResId = R.string.pref_theme
+                    dialogPositivePressed = {
+                        darkModeCheck(settingsActivity)
+                    }
                 }
 
-                listPickerAlertDialog.setupDialogForShowing()
-                listPickerAlertDialog.create().show()
+                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
+                    .create().show()
                 true
             }
         start_page_wallpaper.onPreferenceClickListener =
@@ -365,14 +361,13 @@ class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() 
         // TODO: Load update channels from online JSON
         update_channel.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val layoutInflater = LayoutInflater.from(settingsActivity)
-                @SuppressLint("InflateParams") val root =
-                    layoutInflater.inflate(R.layout.dialog_edittext, null)
-                val updateChannel =
-                    root.findViewById<AppCompatEditText>(R.id.edittext)
+                val binding: DialogEdittextBinding = DialogEdittextBinding.inflate(layoutInflater)
+                val view = binding.root
+
+                val updateChannel = binding.edittext
                 MaterialAlertDialogBuilder(settingsActivity)
                     .setTitle(R.string.pref_update_channel_title)
-                    .setView(root)
+                    .setView(view)
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         if (updateChannel.text.toString().isNotEmpty()) {
                             settingsPreference.setString(
@@ -389,9 +384,7 @@ class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() 
 
         version.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                val buildInfoDialog = BuildInfoDialog(settingsActivity, dialogVersionDetails)
-                buildInfoDialog.setupDialogForShowing()
-                buildInfoDialog.create().show()
+                BuildInfoDialog(settingsActivity, dialogVersionDetails).create().show()
                 true
             }
         website.onPreferenceClickListener =

@@ -4,7 +4,6 @@
 package tipz.viola.webview
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
@@ -24,15 +23,15 @@ import android.webkit.WebView
 import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
+import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.utils.CommonUtils
 import java.util.Objects
 
-open class VChromeWebClient(private val mContext: Context, private val mVWebView: VWebView) :
-    WebChromeClient() {
+open class VChromeWebClient(private val mContext: Context,
+                            private val mVWebView: VWebView) : WebChromeClient() {
     private var mCustomView: View? = null
     private var mCustomViewCallback: CustomViewCallback? = null
 
@@ -130,23 +129,24 @@ open class VChromeWebClient(private val mContext: Context, private val mVWebView
         result: JsResult,
         titleResId: Int
     ) {
-        val layoutInflater = LayoutInflater.from(mContext)
-        @SuppressLint("InflateParams") val root =
-            layoutInflater.inflate(R.layout.dialog_edittext, null)
-        val jsMessage = root.findViewById<AppCompatEditText>(R.id.edittext)
+        val binding: DialogEdittextBinding =
+            DialogEdittextBinding.inflate(LayoutInflater.from(mContext))
+        val view = binding.root
+
+        val jsMessage = binding.edittext
         val dialog = MaterialAlertDialogBuilder(mContext)
         dialog.setTitle(mContext.resources.getString(titleResId, url))
             .setMessage(message)
             .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                if (defaultValue == null) result.confirm() else (result as JsPromptResult).confirm(
-                    Objects.requireNonNull(jsMessage.text).toString()
-                )
+                if (defaultValue == null) result.confirm()
+                else (result as JsPromptResult).confirm(
+                    Objects.requireNonNull(jsMessage.text).toString())
             }
             .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                 result.cancel()
                 mVWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED, null, null)
             }
-        if (defaultValue != null) dialog.setView(root)
+        if (defaultValue != null) dialog.setView(view)
         dialog.create().show()
     }
 

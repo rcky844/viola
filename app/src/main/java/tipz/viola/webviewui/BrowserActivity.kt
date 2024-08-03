@@ -3,7 +3,6 @@
 
 package tipz.viola.webviewui
 
-import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
@@ -27,8 +26,6 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
-import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -61,6 +58,10 @@ import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha
 import tipz.viola.broha.database.IconHashClient
+import tipz.viola.databinding.ActivityMainBinding
+import tipz.viola.databinding.DialogUaEditBinding
+import tipz.viola.databinding.TemplateIconDescriptionItemBinding
+import tipz.viola.databinding.TemplateIconItemBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsActivity
@@ -70,14 +71,16 @@ import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
+import tipz.viola.webviewui.BrowserActivity.ItemsAdapter.ViewHolder
 import tipz.viola.webviewui.components.FullscreenFloatingActionButton
 import tipz.viola.widget.StringResAdapter
 import java.lang.ref.WeakReference
 import java.text.DateFormat
 
-
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     private lateinit var urlEditText: MaterialAutoCompleteTextView
     private lateinit var upRightFab: AppCompatImageView
     private var currentUserAgentState = VWebView.UserAgentMode.MOBILE
@@ -102,23 +105,27 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         // Initialize variables
-        upRightFab = findViewById(R.id.upRightFab)
-        urlEditText = findViewById(R.id.urlEditText)
-        progressBar = findViewById(R.id.webviewProgressBar)
-        faviconProgressBar = findViewById(R.id.faviconProgressBar)
-        swipeRefreshLayout = findViewById(R.id.layout_webview)
-        webview = swipeRefreshLayout.findViewById(R.id.webview)
-        favicon = findViewById(R.id.favicon)
+        upRightFab = binding.upRightFab
+        urlEditText = binding.urlEditText
+        progressBar = binding.webviewProgressBar
+        faviconProgressBar = binding.faviconProgressBar
+        swipeRefreshLayout = binding.layoutWebview.swipe
+        webview = binding.layoutWebview.webview
+        favicon = binding.favicon
+        sslLock = binding.sslLock
+        fullscreenFab = binding.fullscreenFab
+
+        // Broha Clients
         favClient = FavClient(this)
         iconHashClient = IconHashClient(this)
-        sslLock = findViewById(R.id.ssl_lock)
-        fullscreenFab = findViewById(R.id.fullscreen_fab)
 
         // Setup toolbar
-        toolBar = findViewById(R.id.toolBar)
+        toolBar = binding.toolBar
         toolBar.adapter = ItemsAdapter(this, toolsBarItemList)
         (toolBar.layoutManager as FlexboxLayoutManager).apply {
             justifyContent = JustifyContent.SPACE_AROUND
@@ -128,7 +135,7 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup toolbar expandable
-        toolsBarExtendableRecycler = findViewById(R.id.toolsBarExtendableRecycler)
+        toolsBarExtendableRecycler = binding.toolsBarExtendableRecycler
         toolsBarExtendableRecycler.adapter =
             ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
         (toolsBarExtendableRecycler.layoutManager as FlexboxLayoutManager).apply {
@@ -138,11 +145,11 @@ class BrowserActivity : VWebViewActivity() {
             flexWrap = FlexWrap.WRAP
         }
 
-        toolsBarExtendableBackground = this.findViewById(R.id.toolsBarExtendableBackground)
+        toolsBarExtendableBackground = binding.toolsBarExtendableBackground
         toolsBarExtendableBackground.post {
             toolsBarExtendableBackground.visibility = View.GONE
         }
-        toolsBarExtendableCloseHitBox = this.findViewById(R.id.toolsBarExtendableCloseHitBox)
+        toolsBarExtendableCloseHitBox = binding.toolsBarExtendableCloseHitBox
         toolsBarExtendableCloseHitBox.setOnClickListener {
             expandToolBar()
         }
@@ -210,16 +217,12 @@ class BrowserActivity : VWebViewActivity() {
             if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
         }
         urlEditText.onItemClickListener =
-            OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
-                webview.loadUrl((view.findViewById<View>(android.R.id.text1) as AppCompatTextView).text.toString())
+            OnItemClickListener { _: AdapterView<*>?, mView: View, _: Int, _: Long ->
+                webview.loadUrl((mView.findViewById<View>(android.R.id.text1) as AppCompatTextView)
+                    .text.toString())
                 closeKeyboard()
             }
-        urlEditText.setAdapter(
-            SuggestionAdapter(
-                this@BrowserActivity,
-                R.layout.template_item_text_single
-            )
-        )
+        urlEditText.setAdapter(SuggestionAdapter(this@BrowserActivity))
 
         // Setup the up most fab (currently for reload)
         upRightFab.setOnClickListener {
@@ -450,15 +453,15 @@ class BrowserActivity : VWebViewActivity() {
     fun itemLongSelected(view: AppCompatImageView?, item: Int) {
         when (item) {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
-                val layoutInflater = LayoutInflater.from(this)
-                @SuppressLint("InflateParams") val root =
-                    layoutInflater.inflate(R.layout.dialog_ua_edit, null)
-                val customUserAgent = root.findViewById<AppCompatEditText>(R.id.edittext)
-                val deskMode = root.findViewById<AppCompatCheckBox>(R.id.deskMode)
+                val binding: DialogUaEditBinding = DialogUaEditBinding.inflate(layoutInflater)
+                val mView = binding.root
+
+                val customUserAgent = binding.edittext
+                val deskMode = binding.deskMode
                 deskMode.isChecked = currentCustomUAWideView
                 val dialog = MaterialAlertDialogBuilder(this)
                 dialog.setTitle(R.string.customUA)
-                    .setView(root)
+                    .setView(mView)
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         val dataBundle = VWebView.UserAgentBundle()
                         dataBundle.userAgentString = customUserAgent.text.toString()
@@ -560,17 +563,18 @@ class BrowserActivity : VWebViewActivity() {
 
     class ItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>) :
         RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+        private lateinit var binding: TemplateIconItemBinding
         private val mBrowserActivity: WeakReference<BrowserActivity> = WeakReference(mainActivity)
         private val mItemsList: WeakReference<List<Int>> = WeakReference(itemsList)
 
-        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val mImageView: AppCompatImageView = view.findViewById(R.id.imageView)
+        class ViewHolder(binding: TemplateIconItemBinding) : RecyclerView.ViewHolder(binding.root) {
+            val mImageView: AppCompatImageView = binding.imageView
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.template_icon_item, parent, false)
-            return ViewHolder(view)
+            binding = TemplateIconItemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -597,20 +601,22 @@ class BrowserActivity : VWebViewActivity() {
         descriptionList: List<Int>
     ) :
         RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
+        private lateinit var binding: TemplateIconDescriptionItemBinding
         private val mBrowserActivity: WeakReference<BrowserActivity> = WeakReference(mainActivity)
         private val mItemsList: WeakReference<List<Int>> = WeakReference(itemsList)
         private val mDescriptionList: WeakReference<List<Int>> = WeakReference(descriptionList)
 
-        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val mItemBox: LinearLayoutCompat = view as LinearLayoutCompat
-            val mImageView: AppCompatImageView = view.findViewById(R.id.imageView)
-            val mTextView: AppCompatTextView = view.findViewById(R.id.textView)
+        class ViewHolder(binding: TemplateIconDescriptionItemBinding)
+            : RecyclerView.ViewHolder(binding.root) {
+            val mItemBox: LinearLayoutCompat = binding.root
+            val mImageView: AppCompatImageView = binding.imageView
+            val mTextView: AppCompatTextView = binding.textView
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.template_icon_description_item, parent, false)
-            return ViewHolder(view)
+            binding = TemplateIconDescriptionItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
