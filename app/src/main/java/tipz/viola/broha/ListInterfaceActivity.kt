@@ -34,6 +34,7 @@ import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.api.HistoryClient
 import tipz.viola.broha.database.Broha
 import tipz.viola.broha.database.IconHashClient
+import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.copyClipboard
 import tipz.viola.utils.CommonUtils.showMessage
@@ -161,6 +162,7 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun getItemViewType(position: Int): Int {
+            if (listData == null) return 0
             Log.i(LOG_TAG, "getItemViewType(): isEmpty=${listData!!.size == 0}")
             return if (listData!!.size == 0) R.layout.template_empty
             else R.layout.template_icon_title_descriptor_time
@@ -201,7 +203,7 @@ class ListInterfaceActivity : BaseActivity() {
                 }
                 holder.back.setOnClickListener {
                     val needLoad = Intent()
-                    needLoad.putExtra("needLoadUrl", url)
+                    needLoad.putExtra(SettingsKeys.needLoadUrl, url)
                     listInterfaceActivity.setResult(0, needLoad)
                     listInterfaceActivity.finish()
                 }

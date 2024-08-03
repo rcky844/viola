@@ -63,7 +63,8 @@ open class VWebViewClient(
         )
         errorContent = errorContent.replace("$6", description)
 
-        view.evaluateJavascript("""document.documentElement.innerHTML = `$errorContent`""", null)
+        mVWebView.evaluateJavascript(
+            """document.documentElement.innerHTML = `$errorContent`""")
         view.stopLoading()
     }
 

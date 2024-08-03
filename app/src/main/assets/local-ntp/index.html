@@ -6,6 +6,7 @@
 document.addEventListener('DOMContentLoaded', async (event) => {
     // Handle search
     var inputbox = document.getElementById('search-input');
+    inputbox.style.visibility = "visible"
     inputbox.addEventListener('click', function() {
         ViolaBrowser.focusInputBox();
     });

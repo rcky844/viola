@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2024 Tipz Team
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2020-2024 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -68,9 +67,10 @@
                     android:layout_width="@dimen/actionbar_widget_height"
                     android:layout_height="@dimen/actionbar_widget_height"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:background="?attr/selectableItemBackground"
-                    android:elevation="2dp"
                     android:padding="12dp"
+                    android:translationZ="2dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/barrier"
                     app:layout_constraintTop_toTopOf="parent"
@@ -92,7 +92,9 @@
                     android:importantForAutofill="no"
                     android:inputType="textUri"
                     android:paddingStart="52dp"
+                    android:paddingLeft="52dp"
                     android:paddingEnd="16dp"
+                    android:paddingRight="16dp"
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textSize="16sp"
@@ -124,8 +126,7 @@
             android:indeterminate="false"
             android:progress="22"
             app:indicatorColor="?attr/colorAccent"
-            app:trackColor="@android:color/transparent"
-            app:trackStopIndicatorSize="0dp" />
+            app:trackColor="@android:color/transparent" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -171,7 +172,7 @@
         android:id="@+id/toolsBarExtendableCloseHitBox"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:elevation="4dp"
+        android:translationZ="4dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"
@@ -184,7 +185,7 @@
         android:layout_height="@dimen/toolbar_extendable_height"
         android:layout_margin="8dp"
         android:background="@drawable/toolbar_expandable_background"
-        android:elevation="6dp"
+        android:translationZ="6dp"
         android:foregroundGravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"

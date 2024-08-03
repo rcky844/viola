@@ -22,7 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.R
-import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
@@ -34,7 +33,6 @@ class DownloadActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         downloadClient = (applicationContext as Application).downloadClient
 
-        ListInterfaceActivity.activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
         setContentView(R.layout.activity_recycler_data_list)
         setTitle(R.string.toolbar_expandable_downloads)
 

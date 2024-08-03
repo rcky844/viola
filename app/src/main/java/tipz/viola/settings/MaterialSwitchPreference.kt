@@ -14,14 +14,14 @@ import tipz.viola.R
 class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
     SwitchPreferenceCompat(context, attrs) {
     private val settingsPreference: SettingsSharedPreference =
-        (getContext().applicationContext as Application).settingsPreference
+        (context.applicationContext as Application).settingsPreference
     private val mPreferenceTag: String?
     private val mNeedReload: Boolean
     private val mRequiredApi: Int
 
     init {
         // Get attrs
-        val a = getContext().obtainStyledAttributes(attrs, R.styleable.MaterialSwitchPreference)
+        val a = context.obtainStyledAttributes(attrs, R.styleable.MaterialSwitchPreference)
         mPreferenceTag = a.getString(R.styleable.MaterialSwitchPreference_preferenceTag)
         mNeedReload = a.getBoolean(R.styleable.MaterialSwitchPreference_needReload, false)
         mRequiredApi = a.getInteger(R.styleable.MaterialSwitchPreference_requiredApi, 1)

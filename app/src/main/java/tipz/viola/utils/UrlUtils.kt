@@ -20,9 +20,9 @@ object UrlUtils {
         "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
         "http", "https", "ftp", "file"
     )
-    private const val protocolRegex = "^(?:[a-z+]+:)?//.*"
+    private const val protocolRegex = "^(?:[a-z+]+:)?//"
     private const val httpUrlRegex =
-        "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
+        "${protocolRegex}(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
 
     /**
      * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
@@ -58,7 +58,7 @@ object UrlUtils {
     fun toSearchOrValidUrl(settingsPreference: SettingsSharedPreference, input: String): String {
         val processedInput = patchUrlForCVEMitigation(input.trim())
         var finalUrl = processedInput
-        if (!processedInput.matches(protocolRegex.toRegex())) { // is relative
+        if (!processedInput.matches("${protocolRegex}.*".toRegex())) { // is relative
             finalUrl = (if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://"
                 else "http://") + input
             Log.d(LOG_TAG, "toSearchOrValidUrl(): at is relative, finalUrl=$finalUrl")

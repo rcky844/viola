@@ -12,6 +12,7 @@ import tipz.build.info.BuildInfo
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.InternalDownloadProvider
 import tipz.viola.utils.CommonUtils
+import tipz.viola.webview.pages.ExportedUrls
 import java.io.IOException
 
 class VJavaScriptInterface(private val activity: VWebViewActivity) {
@@ -20,14 +21,19 @@ class VJavaScriptInterface(private val activity: VWebViewActivity) {
     fun getBase64FromBlobData(uriString: String, mimeType: String) {
         Log.i(LOG_TAG, "getBase64FromBlobData(): mimeType=${mimeType}")
         InternalDownloadProvider.apply {
-            byteArrayToFile(activity,
+            byteArrayToFile(
+                activity,
                 DownloadUtils.base64StringToByteArray(DownloadUtils.getRawDataFromDataUri(uriString)),
-                "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}")
+                "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}"
+            )
         }
     }
 
     @JavascriptInterface
     fun focusInputBox() = CoroutineScope(Dispatchers.Main).launch {
+        // TODO: Make this possible to enable
+        if (activity.webview.getRealUrl() != ExportedUrls.actualStartUrl) return@launch
+
         activity.onStartPageEditTextPressed()
     }
 

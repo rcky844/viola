@@ -20,6 +20,7 @@ import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.Toolbar
@@ -52,7 +53,9 @@ import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webviewui.BaseActivity
 import java.io.File
+import java.io.IOException
 import java.lang.ref.WeakReference
+
 
 class SettingsActivity : BaseActivity() {
     private val needLoad = Intent()
@@ -116,6 +119,8 @@ class SettingsActivity : BaseActivity() {
             settingsActivity = activity.get()!!
             settingsPreference =
                 (settingsActivity.applicationContext as Application).settingsPreference
+
+            @RequiresApi(Build.VERSION_CODES.KITKAT)
             pickMedia =
                 registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                     if (uri == null) return@registerForActivityResult
@@ -284,8 +289,18 @@ class SettingsActivity : BaseActivity() {
                     override fun onDialogClosed(positiveResult: Boolean) {
                         if (!positiveResult) return
                         showMessage(settingsActivity, R.string.reset_complete)
-                        (settingsActivity.getSystemService(ACTIVITY_SERVICE) as ActivityManager)
-                            .clearApplicationUserData()
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            (settingsActivity.getSystemService(ACTIVITY_SERVICE)
+                                    as ActivityManager).clearApplicationUserData()
+                        } else {
+                            val packageName = settingsActivity.packageName
+                            val runtime = Runtime.getRuntime()
+                            try {
+                                runtime.exec("pm clear $packageName")
+                            } catch (e: IOException) {
+                                e.printStackTrace()
+                            }
+                        }
                     }
                 }
             theme.onPreferenceClickListener =

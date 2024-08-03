@@ -49,6 +49,7 @@ import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.utils.BussUtils
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.pages.ExportedUrls
@@ -127,14 +128,17 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
         // Also increase text size to fill the viewport (this mirrors the behaviour of Firefox,
         // Chrome does this in the current Chrome Dev, but not Chrome release).
-        webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
 
         // Disable file access
         // Disabled as it no longer functions since Android 11
         webSettings.allowFileAccess = false
         webSettings.allowContentAccess = false
-        webSettings.allowFileAccessFromFileURLs = false
-        webSettings.allowUniversalAccessFromFileURLs = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            webSettings.allowFileAccessFromFileURLs = false
+            webSettings.allowUniversalAccessFromFileURLs = false
+        }
 
         // Enable some HTML5 related settings
         webSettings.databaseEnabled = false // Disabled as no-op since Android 15
@@ -197,8 +201,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             )
 
         // WebView Debugging
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setWebContentsDebuggingEnabled(Settings.Secure.getInt(activity.contentResolver,
                 Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1)
+        }
 
         // Do Not Track request
         requestHeaders["DNT"] = settingsPreference.getInt(SettingsKeys.sendDNT).toString()
@@ -229,6 +235,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     override fun loadUrl(url: String) {
         if (url.isBlank()) return
+        if (BussUtils.sendAndRequestResponse(this, url)) return
 
         // Check for privileged URLs
         val privilegedActualUrl = PrivilegedPages.getActualUrl(url)
@@ -236,6 +243,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             loadRealUrl(privilegedActualUrl)
             return
         }
+
+        // Check for view source
+        if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
 
         // Handle App Links
         if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
@@ -306,7 +316,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun filterUrl(url: String): String {
-        return if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
+        return if (url.startsWith(ExportedUrls.viewSourcePrefix)) url
+        else if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
         else PrivilegedPages.getDisplayUrl(url) ?: url
     }
 
@@ -320,6 +331,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     override fun goForward() {
         activity.onDropDownDismissed()
         super.goForward()
+    }
+
+    fun evaluateJavascript(script: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            super.evaluateJavascript(script, null)
+        else
+            super.loadUrl("javascript:function(){${script}}()");
     }
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?) {
@@ -345,8 +363,9 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     currentBroha = Broha(title, currentUrl)
                     historyState = UpdateHistoryState.STATE_URL_UPDATED
                 }
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) CookieSyncManager.getInstance()
-                    .sync() else CookieManager.getInstance().flush()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    CookieManager.getInstance().flush()
+                else CookieSyncManager.getInstance().sync()
                 activity.onSwipeRefreshLayoutRefreshingUpdated(false)
             }
 
@@ -446,7 +465,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
         if (PrivilegedPages.isPrivilegedPage(url)) return false
         if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
-        loadUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
+        loadRealUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
         return true
     }
 }
