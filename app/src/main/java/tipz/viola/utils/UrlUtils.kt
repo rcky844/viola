@@ -20,8 +20,8 @@ object UrlUtils {
         "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
         "http", "https", "ftp", "file"
     )
-    private const val protocolRegex = "^(?:[a-z+]+:)?//"
-    private const val httpUrlRegex =
+    const val protocolRegex = "^(?:[a-z+]+:)?//"
+    const val httpUrlRegex =
         "${protocolRegex}(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
 
     /**

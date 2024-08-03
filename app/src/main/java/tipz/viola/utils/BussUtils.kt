@@ -16,33 +16,29 @@ object BussUtils {
 
     private val bussPrefix = "buss://"
     private val apiUrl = "https://api.buss.lol"
-    private val previewGithub = "https://html-preview.github.io/?url="
-
-    fun splitDomain(str: String?): String {
-        if (str.isNullOrEmpty()) return CommonUtils.EMPTY_STRING
-
-        val split = str.replace("\\.".toRegex(), "#")
-            .split("#".toRegex(), limit = 2).toTypedArray()
-        if (split.size == 1) {
-            return split[0]
-        }
-        val str2 = split[split.size - 2] + "/" + split[split.size - 1]
-        Log.d(LOG_TAG, "splitDomain(): str2=$str2")
-        return str2
-    }
+    private val githubPrefix = "http(s)?://github.com/".toRegex()
 
     fun sendAndRequestResponse(view: VWebView, url: String): Boolean {
         if (!url.startsWith(bussPrefix)) return false
-        val split = splitDomain(url.replace(bussPrefix, CommonUtils.EMPTY_STRING))
+        val split = url.replace(bussPrefix, "")
+            .replace('.', '/')
 
         CoroutineScope(Dispatchers.IO).launch {
             val data = MiniDownloadHelper.startDownload("${apiUrl}/domain/${split}")!!
-            val string: String = JSONObject(String(data)).getString("ip")
+            if (data.isEmpty()) return@launch
+            val ip: String = JSONObject(String(data)).getString("ip")
+
+            val realUrl = if (ip.contains(githubPrefix))
+                "https://raw.githubusercontent.com/" +
+                        "${ip.replace(githubPrefix, "")}/main/index.html"
+            else ip
+            val htmlData = MiniDownloadHelper.startDownload(realUrl)
+
+            val parsedHtml = BussHtmlUtils.parseHtml(realUrl, htmlData)
+            Log.d(LOG_TAG, parsedHtml)
             CoroutineScope(Dispatchers.Main).launch {
-                view.loadUrl(
-                    if (string.contains("github.com"))
-                        "${previewGithub}${string}/main/index.html" else string
-                )
+                view.loadDataWithBaseURL(realUrl, parsedHtml,
+                    "text/html", "UTF-8", url)
             }
         }
         return true
