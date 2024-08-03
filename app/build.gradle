@@ -125,7 +125,6 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    implementation 'com.android.volley:volley:1.2.1'
     implementation "androidx.multidex:multidex:2.0.1"
     implementation('androidx.preference:preference-ktx:1.2.1') {
         exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'

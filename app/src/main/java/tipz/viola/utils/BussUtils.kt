@@ -4,10 +4,11 @@
 package tipz.viola.utils
 
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
+import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.webview.VWebView
 
 object BussUtils {
@@ -34,20 +35,16 @@ object BussUtils {
         if (!url.startsWith(bussPrefix)) return false
         val split = splitDomain(url.replace(bussPrefix, CommonUtils.EMPTY_STRING))
 
-        val requestQueue = Volley.newRequestQueue(view.context)
-        val stringRequest = StringRequest(
-            Request.Method.GET, "${apiUrl}/domain/${split}",
-            { response ->
-                val string: String = JSONObject(response).getString("ip")
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = MiniDownloadHelper.startDownload("${apiUrl}/domain/${split}")!!
+            val string: String = JSONObject(String(data)).getString("ip")
+            CoroutineScope(Dispatchers.Main).launch {
                 view.loadUrl(
                     if (string.contains("github.com"))
                         "${previewGithub}${string}/main/index.html" else string
                 )
-            },
-            { error ->
-                Log.e(LOG_TAG, "Request failed, error=$error")
-            })
-        requestQueue.add(stringRequest)
+            }
+        }
         return true
     }
 }
