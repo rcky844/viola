@@ -233,6 +233,7 @@ class BrowserActivity : VWebViewActivity() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             sslLock.bringToFront()
             toolsBarExtendableCloseHitBox.bringToFront()
+            toolsBarExtendableBackground.bringToFront()
         }
 
         // Finally, load homepage
