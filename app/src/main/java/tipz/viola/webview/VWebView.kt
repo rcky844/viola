@@ -355,6 +355,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 activity.onFaviconProgressUpdated(false)
                 activity.onPageLoadProgressChanged(0)
                 activity.onSslCertificateUpdated()
+                activity.onSwipeRefreshLayoutRefreshingUpdated(false)
             }
 
             PageLoadState.UPDATE_HISTORY -> {
@@ -380,6 +381,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 }
                 if (historyState == UpdateHistoryState.STATE_DISABLED_DUPLICATED)
                     historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+                activity.onSwipeRefreshLayoutRefreshingUpdated(false)
             }
 
             PageLoadState.UPDATE_TITLE -> {
@@ -389,6 +391,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                         R.string.start_page
                     ) else title?.trim()
                 )
+                activity.onSwipeRefreshLayoutRefreshingUpdated(false)
             }
 
             PageLoadState.UNKNOWN -> {
