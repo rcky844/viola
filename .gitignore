@@ -5,8 +5,10 @@
 /buildSrc/build/
 /.idea/
 /app/build/
-/app/*/output-metadata.json
-/app/*/app-*.apk
 /app/.gradle/
 /.idea/caches
 /.idea/libraries
+
+output-metadata.json
+*.apk
+*.dm
