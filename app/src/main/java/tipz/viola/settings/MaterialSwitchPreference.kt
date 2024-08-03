@@ -31,7 +31,7 @@ class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
         isChecked = settingsPreference.getIntBool(mPreferenceTag!!)
         onPreferenceClickListener = OnPreferenceClickListener {
             settingsPreference.setIntBool(mPreferenceTag, isChecked)
-            SettingsActivity.SettingsPrefHandler.needReload = mNeedReload
+            SettingsMainFragment.needReload = mNeedReload
             true
         }
         if (mRequiredApi > Build.VERSION.SDK_INT) this.isEnabled = false
