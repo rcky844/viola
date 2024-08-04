@@ -3,6 +3,8 @@ package tipz.viola.utils
 import android.util.Log
 import tipz.viola.download.MiniDownloadHelper
 import java.util.Scanner
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 object BussHtmlUtils {
     const val LOG_TAG = "BussHtmlUtils"
@@ -14,25 +16,16 @@ object BussHtmlUtils {
         "<link.*href=\".*.(${formats})\".*>".toRegex()
 
     private fun appendProperty(line: String, associate: String?,
-                               property: String, isBefore: Boolean): String {
-        associate!! // TODO: Handle null variants
-        val startIndex = line.indexOf("${associate}=\"")
-        val firstBracketIndex = startIndex + associate.length + 2
-        val lastBracketIndex = line.indexOf('"', firstBracketIndex + 1)
-
-        val replaceIndex = if (isBefore) startIndex else lastBracketIndex
-        val replacementString = if (isBefore) "${property.trim()} " else " ${property.trim()}"
-        return line.replaceRange(replaceIndex, replaceIndex,replacementString)
-    }
+                               property: String, isBefore: Boolean): String =
+        line.replace("(.*?)($associate=\".+?\")(.*?)".toRegex(),
+            if (isBefore) "\$1 $property \$2\$3" else "\$1\$2 $property \$3")
 
     private fun getProperty(line: String, property: String): String {
-        val startIndex = line.indexOf("${property}=\"")
-        if (startIndex == -1) return ""
-
-        val firstBracketIndex = startIndex + property.length + 2
-        val lastBracketIndex = line.indexOf('"', firstBracketIndex + 1)
-
-        return line.substring(firstBracketIndex, lastBracketIndex)
+        val pattern: Pattern = Pattern.compile(
+            "(?-s).*?(?s)$property=\"(.+?)\"(?-s).*?(?s)", Pattern.DOTALL)
+        val matcher: Matcher = pattern.matcher(line)
+        if (matcher.matches()) return matcher.group(1) ?: ""
+        return "" // Default
     }
 
     suspend fun parseHtml(realUrl: String, data: ByteArray?): String {
@@ -97,7 +90,7 @@ object BussHtmlUtils {
                 // Process CSS
                 if (line.matches(getLinkRegex("css"))) {
                     var cssUrl = getProperty(line, "href")
-                    if (!cssUrl.isBlank()) {
+                    if (cssUrl.isNotBlank()) {
                         if (!cssUrl.matches(UrlUtils.httpUrlRegex.toRegex()))
                             cssUrl = realUrl.substringBeforeLast('/') + "/" + cssUrl
 
