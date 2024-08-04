@@ -68,7 +68,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private val webSettings = this.settings
     private var currentBroha = Broha()
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
-    private val settingsPreference =
+    val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
 
