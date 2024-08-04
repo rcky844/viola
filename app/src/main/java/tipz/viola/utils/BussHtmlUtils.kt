@@ -27,6 +27,8 @@ object BussHtmlUtils {
 
     private fun getProperty(line: String, property: String): String {
         val startIndex = line.indexOf("${property}=\"")
+        if (startIndex == -1) return ""
+
         val firstBracketIndex = startIndex + property.length + 2
         val lastBracketIndex = line.indexOf('"', firstBracketIndex + 1)
 
@@ -95,12 +97,14 @@ object BussHtmlUtils {
                 // Process CSS
                 if (line.matches(getLinkRegex("css"))) {
                     var cssUrl = getProperty(line, "href")
-                    if (!cssUrl.matches(UrlUtils.httpUrlRegex.toRegex()))
-                        cssUrl = realUrl.substringBeforeLast('/') + "/" + cssUrl
+                    if (!cssUrl.isBlank()) {
+                        if (!cssUrl.matches(UrlUtils.httpUrlRegex.toRegex()))
+                            cssUrl = realUrl.substringBeforeLast('/') + "/" + cssUrl
 
-                    val cssData = MiniDownloadHelper.startDownload(cssUrl)!!
-                    builder.append("<style>${String(cssData)}</style>").append(System.lineSeparator())
-                    continue
+                        val cssData = MiniDownloadHelper.startDownload(cssUrl)!!
+                        builder.append("<style>${String(cssData)}</style>").append(System.lineSeparator())
+                        continue
+                    }
                 }
 
                 // For "rel"
