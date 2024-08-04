@@ -62,9 +62,10 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                 dialog.setTitle(dialogTitleResId)
             else dialog.setTitle(dialogTitle)
 
-            if (dialogCustomMessageResId != 0)
-                dialog.setMessage(dialogCustomMessage)
-            else dialog.setMessage(dialogCustomMessageResId)
+            if (dialogCustomMessageResId == 0) {
+                if (!dialogCustomMessage.isNullOrBlank())
+                    dialog.setMessage(dialogCustomMessage)
+            } else dialog.setMessage(dialogCustomMessageResId)
 
             dialog.setView(view)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
