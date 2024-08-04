@@ -46,30 +46,29 @@ object UrlUtils {
         return uri.matches(httpUrlRegex.toRegex()) || uri.startsWith("data:")
     }
 
-    /**
-     * URL Checker
-     *
-     *
-     * Checks if URL is valid, if not, make it a search term.
-     *
-     * @param input the input to check.
-     * @return result
-     */
-    fun toSearchOrValidUrl(settingsPreference: SettingsSharedPreference, input: String): String {
+    fun toSearchOrValidUrl(pref: SettingsSharedPreference, input: String): String {
         val processedInput = patchUrlForCVEMitigation(input.trim())
-        var finalUrl = processedInput
-        if (!processedInput.matches("${protocolRegex}.*".toRegex())) { // is relative
-            finalUrl = (if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) "https://"
-                else "http://") + input
-            Log.d(LOG_TAG, "toSearchOrValidUrl(): at is relative, finalUrl=$finalUrl")
-        }
-        if (!finalUrl.matches(httpUrlRegex.toRegex())) {
+        var finalUrl = toValidHttpUrl(pref, processedInput)
+
+        if (finalUrl.isBlank()) {
             finalUrl = SearchEngineEntries.getSearchUrl(
-                settingsPreference.getString(SettingsKeys.searchName),
+                pref.getString(SettingsKeys.searchName),
                 processedInput, language
             )
             Log.d(LOG_TAG, "toSearchOrValidUrl(): at httpUrlRegex, finalUrl=$finalUrl")
         }
         return finalUrl
+    }
+
+    fun toValidHttpUrl(pref: SettingsSharedPreference, input: String): String {
+        val processedInput = patchUrlForCVEMitigation(input.trim())
+        var finalUrl = processedInput
+        if (!processedInput.matches("${protocolRegex}.*".toRegex())) { // is relative
+            finalUrl = (if (pref.getIntBool(SettingsKeys.enforceHttps)) "https://"
+            else "http://") + input
+            Log.d(LOG_TAG, "toValidHttpUrl(): at is relative, finalUrl=$finalUrl")
+        }
+        if (finalUrl.matches(httpUrlRegex.toRegex())) return finalUrl
+        else return "" // This means the checks failed
     }
 }

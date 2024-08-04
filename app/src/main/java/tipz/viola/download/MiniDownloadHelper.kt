@@ -4,7 +4,7 @@
 package tipz.viola.download
 
 import android.util.Log
-import tipz.viola.utils.BussUtils.LOG_TAG
+import tipz.viola.webview.buss.BussUtils.LOG_TAG
 import java.net.URL
 
 class MiniDownloadHelper {

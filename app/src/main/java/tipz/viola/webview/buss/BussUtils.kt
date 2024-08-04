@@ -1,7 +1,7 @@
 // Copyright (c) 2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.utils
+package tipz.viola.webview.buss
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import tipz.viola.download.MiniDownloadHelper
+import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebView.PageLoadState
 
@@ -27,7 +28,7 @@ object BussUtils {
         view.onPageLoadProgressChanged(20)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val apiUrl = "${apiUrl}/domain/${split}"
+            val apiUrl = "$apiUrl/domain/${split}"
             val data = MiniDownloadHelper.startDownload(apiUrl)!!
             if (data.isEmpty()) {
                 CoroutineScope(Dispatchers.Main).launch {
@@ -41,7 +42,7 @@ object BussUtils {
             val realUrl = if (ip.contains(githubPrefix))
                 "https://raw.githubusercontent.com/" +
                         "${ip.replace(githubPrefix, "")}/main/index.html"
-            else ip
+            else UrlUtils.toValidHttpUrl(view.settingsPreference, ip)
             CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(40) }
 
             val htmlData = MiniDownloadHelper.startDownload(realUrl)!!
