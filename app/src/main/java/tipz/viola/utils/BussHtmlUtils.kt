@@ -7,6 +7,9 @@ import java.util.Scanner
 object BussHtmlUtils {
     const val LOG_TAG = "BussHtmlUtils"
 
+    // These are some defaults found in "napture/src/b9/css.rs" of the same variable name
+    const val DEFAULT_CSS = "body { gap: 10; background-color: transparent; direction: column; align-items: fill; } h1 { font-size: 24pt; } h2 { font-size: 22pt; } h3 { font-size: 20pt; } h4 { font-size: 18pt; } h5 { font-size: 16pt; } h6 { font-size: 14pt; } a { border: none; color: #67B7D1; text-decoration: underline; } input { padding: 5px; border-color: #616161; border-width: 1px; border-style: solid; border-radius: 12px; } textarea { padding: 5px; border-color: #616161; border-width: 1px; border-style: solid; border-radius: 12px; width: 400px; height: 100px; }"
+
     private fun getLinkRegex(formats: String): Regex =
         "<link.*href=\".*.(${formats})\".*>".toRegex()
 
@@ -39,7 +42,14 @@ object BussHtmlUtils {
         val scanner = Scanner(inData)
         val builder = StringBuilder()
         var inHtmlTag = false
+
+        // For <head>
+        var defaultCssAdded = false
+
+        // For any
         var inScriptTag = false
+
+        // Updatable
         var currentHtmlTag = ""
 
         while (scanner.hasNextLine()) {
@@ -68,7 +78,19 @@ object BussHtmlUtils {
                 Log.d(LOG_TAG, "currentHtmlTag=${currentHtmlTag}")
             }
 
-            // Process a tag
+            // Process some outer tags
+            if (currentHtmlTag == "head") {
+                builder.append(line).append(System.lineSeparator())
+                if (!defaultCssAdded) {
+                    builder.append("<style>${DEFAULT_CSS}</style>").append(System.lineSeparator())
+                    defaultCssAdded = true
+                }
+                continue
+            } else if (currentHtmlTag == "/head") {
+                builder.append(line).append(System.lineSeparator())
+                continue
+            }
+
             if (currentHtmlTag == "link") {
                 // Process CSS
                 if (line.matches(getLinkRegex("css"))) {
@@ -87,7 +109,7 @@ object BussHtmlUtils {
                     else if (line.matches(getLinkRegex("ico|gif|png|svg|jpg|jpeg"))) "icon"
                     else null
                 if (rel != null) line = appendProperty(line, "href",
-                        "rel=\"${rel}\"", true)
+                    "rel=\"${rel}\"", true)
 
                 builder.append(line).append(System.lineSeparator())
                 continue
