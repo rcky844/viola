@@ -49,8 +49,10 @@ object BussHtmlUtils {
             if (line.endsWith("/>")) endBracketStartIndex - 1
 
             // TODO: Figure out the format of this (b/1)
-            val cleanedLine = line.replaceFirst("<", "")
-                .replaceRange(endBracketStartIndex, line.length - 1, CommonUtils.EMPTY_STRING)
+            var cleanedLine = line.replaceFirst("<", "")
+            if (cleanedLine.contains('>'))
+                cleanedLine = cleanedLine.replaceRange(endBracketStartIndex,
+                    line.length - 1, CommonUtils.EMPTY_STRING)
 
             // Detect start of tag, assume an element is always multi-lined
             if (line.startsWith('<')) {
