@@ -39,6 +39,7 @@ object BussHtmlUtils {
         val scanner = Scanner(inData)
         val builder = StringBuilder()
         var inHtmlTag = false
+        var inScriptTag = false
         var currentHtmlTag = ""
 
         while (scanner.hasNextLine()) {
@@ -49,10 +50,13 @@ object BussHtmlUtils {
             if (line.endsWith("/>")) endBracketStartIndex - 1
 
             // TODO: Figure out the format of this (b/1)
-            var cleanedLine = line.replaceFirst("<", "")
+            var cleanedLine = line
+            if (cleanedLine.contains('<'))
+                cleanedLine = line.replaceFirst("<", "")
             if (cleanedLine.contains('>'))
                 cleanedLine = cleanedLine.replaceRange(endBracketStartIndex,
                     line.length - 1, CommonUtils.EMPTY_STRING)
+            Log.d(LOG_TAG, "cleanedLine=${cleanedLine}")
 
             // Detect start of tag, assume an element is always multi-lined
             if (line.startsWith('<')) {
@@ -91,6 +95,12 @@ object BussHtmlUtils {
 
             // FIXME: Re-enable for Lua scripts
             if (currentHtmlTag == "script") {
+                inScriptTag = true
+                continue
+            } else if (currentHtmlTag == "/script") { // Embedded scripts end tag
+                inScriptTag = false
+                continue
+            } else if (inScriptTag && cleanedLine == line) { // Embedded scripts content
                 continue
             }
 
