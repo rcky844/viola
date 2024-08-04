@@ -118,15 +118,25 @@ object BussHtmlUtils {
                 continue
             }
 
-            // FIXME: Re-enable for Lua scripts
             if (currentHtmlTag == "script") {
                 inScriptTag = true
-                continue
+                var scriptUrl = getProperty(line, "src")
+                if (scriptUrl.isNotBlank()) {
+                    if (!scriptUrl.matches(UrlUtils.httpUrlRegex.toRegex()))
+                        scriptUrl = realUrl.substringBeforeLast('/') + "/" + scriptUrl
+
+                    val scriptData = MiniDownloadHelper.startDownload(scriptUrl)!!
+                    val finalData = if (scriptUrl.endsWith(".lua"))
+                        BussLuaUtils.parseLua(scriptData)
+                    else String(scriptData)
+
+                    builder.append("<script>${finalData}</script>").append(System.lineSeparator())
+                    continue
+                }
             } else if (currentHtmlTag == "/script") { // Embedded scripts end tag
                 inScriptTag = false
-                continue
             } else if (inScriptTag && cleanedLine == line) { // Embedded scripts content
-                continue
+                continue // TODO: parse embedded scripts
             }
 
             // Detect end of tag
