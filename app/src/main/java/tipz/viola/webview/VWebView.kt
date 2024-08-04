@@ -49,7 +49,7 @@ import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.utils.BussUtils
+import tipz.viola.webview.buss.BussUtils
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.pages.ExportedUrls

@@ -1,7 +1,9 @@
-package tipz.viola.utils
+package tipz.viola.webview.buss
 
 import android.util.Log
 import tipz.viola.download.MiniDownloadHelper
+import tipz.viola.utils.CommonUtils
+import tipz.viola.utils.UrlUtils
 import java.util.Scanner
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -60,7 +62,8 @@ object BussHtmlUtils {
                 cleanedLine = line.replaceFirst("<", "")
             if (cleanedLine.contains('>'))
                 cleanedLine = cleanedLine.replaceRange(endBracketStartIndex,
-                    line.length - 1, CommonUtils.EMPTY_STRING)
+                    line.length - 1, CommonUtils.EMPTY_STRING
+                )
             Log.d(LOG_TAG, "cleanedLine=${cleanedLine}")
 
             // Detect start of tag, assume an element is always multi-lined
@@ -77,7 +80,7 @@ object BussHtmlUtils {
             if (currentHtmlTag == "head") {
                 builder.append(line).append(System.lineSeparator())
                 if (!defaultCssAdded) {
-                    builder.append("<style>${DEFAULT_CSS}</style>").append(System.lineSeparator())
+                    builder.append("<style>$DEFAULT_CSS</style>").append(System.lineSeparator())
                     defaultCssAdded = true
                 }
                 continue
