@@ -157,7 +157,7 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val isEmpty = listData!!.size == 0
+            val isEmpty = listData == null || listData!!.size == 0
             binding = if (isEmpty) {
                 TemplateEmptyBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false)
