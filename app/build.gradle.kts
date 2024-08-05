@@ -82,14 +82,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            resValue("string", "app_name", "Viola")
         }
 
         // Next release
         create("next") {
             initWith(getByName("release"))
-            resValue("string", "app_name", "Viola Next")
         }
 
         // Debug internal
@@ -97,7 +94,6 @@ android {
             applicationIdSuffix = ".debug"
             multiDexEnabled = true
 
-            resValue("string", "app_name", "Viola Debug")
             buildConfigField("String", "VERSION_BUILD_ID", "null")
         }
     }
@@ -117,6 +113,18 @@ android {
         }
     }
     flavorDimensions.add("apilevel")
+
+    sourceSets {
+        // Next release
+        named("next") {
+            res.srcDir("src/next/res")
+        }
+
+        // Debug internal
+        named("debug") {
+            res.srcDir("src/debug/res")
+        }
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
