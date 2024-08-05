@@ -43,7 +43,6 @@ import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webviewui.BaseActivity.Companion.darkModeCheck
 import java.io.IOException
 
-
 class SettingsMainFragment : PreferenceFragmentCompat() {
     private lateinit var settingsActivity: SettingsActivity
     private lateinit var settingsPreference: SettingsSharedPreference
@@ -73,20 +72,6 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
     @SuppressLint("UnspecifiedRegisterReceiverFlag") // For older SDKs
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_main, rootKey)
-        initializeLogic()
-    }
-
-    private fun needLoad(url: String) {
-        val needLoad = Intent()
-        needLoad.putExtra(SettingsKeys.needLoadUrl, url)
-        settingsActivity.setResult(0, needLoad)
-        settingsActivity.finish()
-    }
-
-    /**
-     * Initialize Logic
-     */
-    private fun initializeLogic() {
         /* Lists */
         val searchHomePageList =
             settingsActivity.resources.getStringArray(R.array.search_entries)
@@ -353,7 +338,13 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         }
         version.summary =
             resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME
-        needReload = false
+    }
+
+    private fun needLoad(url: String) {
+        val needLoad = Intent()
+        needLoad.putExtra(SettingsKeys.needLoadUrl, url)
+        settingsActivity.setResult(0, needLoad)
+        settingsActivity.finish()
     }
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
