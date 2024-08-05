@@ -95,7 +95,7 @@ open class VWebViewActivity : BaseActivity() {
             // FROM: SettingsActivity
             result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadUrl(it) }
 
-            if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
+            if (result.data!!.getBooleanExtra(SettingsKeys.needReload, false))
                 webview.reload()
 
             if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0)
