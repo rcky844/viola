@@ -219,10 +219,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Data Saver
         requestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
 
-        // Ad Servers Hosts
-        if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock))
-            adServersHandler.importAdServers()
-
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED)
             historyClient = HistoryClient(activity)

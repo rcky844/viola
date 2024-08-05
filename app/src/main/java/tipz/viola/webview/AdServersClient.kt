@@ -4,59 +4,62 @@
 package tipz.viola.webview
 
 import android.content.Context
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import java.io.BufferedReader
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Scanner
 
-open class AdServersClient(context: Context, settingsPreference: SettingsSharedPreference) {
-    private var mContext: Context
-    private var mSettingsPreference: SettingsSharedPreference
+open class AdServersClient(context: Context, private val pref: SettingsSharedPreference) {
     var adServers: String? = null
 
-    private val adServersFilePath = "ad_servers_hosts.txt"
+    private val LOG_TAG = "AdServersClient"
+
     private val localHostUrls = arrayOf("0.0.0.0", "127.0.0.1", "localhost")
+    private val adServersFile = File(context.filesDir.path + "ad_servers_hosts.txt")
+
+    private val adServersList = arrayOf(
+        "https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt",
+        "https://cdn.jsdelivr.net/gh/jerryn70/GoodbyeAds@master/Hosts/GoodbyeAds.txt",
+        "http://sbc.io/hosts/hosts",
+        "https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt",
+        null
+    )
 
     init {
-        mContext = context
-        mSettingsPreference = settingsPreference
+        // Create the file
+        if (!adServersFile.exists())
+            adServersFile.createNewFile()
+
+        // Import servers
+        if (pref.getIntBool(SettingsKeys.enableAdBlock))
+            importAdServers()
     }
 
     fun importAdServers() {
-        try {
-            val inputStream: InputStream = mContext.openFileInput(adServersFilePath)
-            val inputStreamReader = InputStreamReader(inputStream)
-            val bufferedReader = BufferedReader(inputStreamReader)
-            var receiveString: String?
-            val stringBuilder = java.lang.StringBuilder()
-            while (bufferedReader.readLine().also { receiveString = it } != null) {
-                stringBuilder.append("\n").append(receiveString)
-            }
-            inputStream.close()
-            adServers = stringBuilder.toString()
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-            downloadAdServers()
-        } catch (e: IOException) {
-            e.printStackTrace()
+        Log.d(LOG_TAG, "Starting ad servers import")
+        val reader = adServersFile.bufferedReader()
+        var receiveString: String?
+        val stringBuilder = java.lang.StringBuilder()
+        while (reader.readLine().also { receiveString = it } != null) {
+            stringBuilder.append("\n").append(receiveString)
         }
+        adServers = stringBuilder.toString()
+        Log.d(LOG_TAG, "Finished ad servers import")
     }
 
-    fun downloadAdServers() {
+    fun downloadAdServers() =
         CoroutineScope(Dispatchers.IO).launch {
+            Log.d(LOG_TAG, "Starting ad servers download")
             val scanner = Scanner(String(
                 MiniDownloadHelper.startDownload(
-                    (adServersList[mSettingsPreference.getInt(SettingsKeys.adServerId)]
-                    ?: mSettingsPreference.getString(SettingsKeys.adServerUrl)).toString())!!
+                    (adServersList[pref.getInt(SettingsKeys.adServerId)]
+                    ?: pref.getString(SettingsKeys.adServerUrl)).toString())!!
             ))
             val builder = StringBuilder()
             while (scanner.hasNextLine()) {
@@ -66,32 +69,9 @@ open class AdServersClient(context: Context, settingsPreference: SettingsSharedP
             }
             adServers = builder.toString()
 
-            try {
-                val outputStreamWriter =
-                    OutputStreamWriter(
-                        mContext.openFileOutput(
-                            adServersFilePath,
-                            Context.MODE_PRIVATE
-                        )
-                    )
-                outputStreamWriter.write(adServers)
-                outputStreamWriter.close()
-            } catch (_: IOException) {
-            }
+            val fos = FileOutputStream(adServersFile)
+            fos.write(adServers!!.toByteArray())
+            fos.close()
+            Log.d(LOG_TAG, "Finished ad servers download")
         }
-    }
-
-    companion object {
-        fun getCustomIndex(): Int {
-            return adServersList.size - 1
-        }
-
-        val adServersList = arrayOf(
-            "https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt",
-            "https://cdn.jsdelivr.net/gh/jerryn70/GoodbyeAds@master/Hosts/GoodbyeAds.txt",
-            "http://sbc.io/hosts/hosts",
-            "https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt",
-            null
-        )
-    }
 }
