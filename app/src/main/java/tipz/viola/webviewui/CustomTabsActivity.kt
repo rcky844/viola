@@ -22,6 +22,8 @@ class CustomTabsActivity : VWebViewActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCustomTabBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         /* Appbar */
         appbar = binding.appbar
