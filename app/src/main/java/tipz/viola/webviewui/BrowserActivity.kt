@@ -110,6 +110,9 @@ class BrowserActivity : VWebViewActivity() {
         setContentView(view)
 
         // Initialize variables
+        appbar = binding.appbar
+        webviewContainer = binding.webviewContainer
+        toolsContainer = binding.toolsContainer
         upRightFab = binding.upRightFab
         urlEditText = binding.urlEditText
         progressBar = binding.webviewProgressBar

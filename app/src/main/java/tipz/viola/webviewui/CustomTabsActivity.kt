@@ -27,6 +27,7 @@ class CustomTabsActivity : VWebViewActivity() {
 
         /* Appbar */
         appbar = binding.appbar
+        webviewContainer = binding.webviewContainer
 
         /* Back button */
         val actionBarBack : AppCompatImageView = binding.close
