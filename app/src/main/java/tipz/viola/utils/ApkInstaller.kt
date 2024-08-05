@@ -14,12 +14,10 @@ import java.io.File
 
 object ApkInstaller {
     @JvmStatic
-    fun installApplication(context: Context, filePath: String?) {
+    fun installApplication(context: Context, file: File) {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.setDataAndType(
-            uriFromFile(context, File(filePath!!)),
-            "application/vnd.android.package-archive"
-        )
+        intent.setDataAndType(uriFromFile(context, file),
+            "application/vnd.android.package-archive")
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         try {

@@ -37,9 +37,6 @@ import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.databinding.DialogEdittextBinding
-import tipz.viola.download.DownloadClient
-import tipz.viola.download.DownloadObject
-import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.search.SearchEngineEntries
@@ -53,7 +50,9 @@ import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webviewui.BaseActivity.Companion.darkModeCheck
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+
 
 class SettingsMainFragment : PreferenceFragmentCompat() {
     private lateinit var settingsActivity: SettingsActivity
@@ -338,26 +337,22 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     val filename = jChannelUpdateObject.getString("download_url")
                         .substringAfterLast('/')
-                    val updateDownloadPath = DownloadClient.defaultDownloadPath + filename
-                    val apkFile = File(updateDownloadPath)
+                    val dirFile = File(settingsActivity.filesDir.path + "/updates")
+                    val file = File(dirFile, filename)
 
-                    if (!apkFile.exists() || apkFile.delete()) {
-                        DownloadClient(settingsActivity).addToQueue(DownloadObject().apply {
-                            // TODO: reimplement resources.getString(R.string.download_title)
-                            // TODO: Move to mini-download client
-                            uriString = jChannelUpdateObject.getString("download_url")
-                            mimeType = "application/vnd.android.package-archive"
-                            this.filename = filename
-                            statusListener =
-                                DownloadProvider.Companion.DownloadStatusListener { status ->
-                                    if (status == DownloadProvider.Companion.DownloadStatus.STOPPED)
-                                        ApkInstaller.installApplication(
-                                            settingsActivity,
-                                            updateDownloadPath
-                                        )
-                                }
-                        })
-                    } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val data = MiniDownloadHelper.startDownload(
+                            jChannelUpdateObject.getString("download_url"))
+                        if (dirFile.exists() || dirFile.mkdirs()) {
+                            if (!file.exists() || file.delete()) {
+                                file.createNewFile()
+                                val fos = FileOutputStream(file)
+                                fos.write(data)
+                                fos.close()
+                                ApkInstaller.installApplication(settingsActivity, file)
+                                return@launch
+                            }
+                        }
                         showMessage(settingsActivity, R.string.update_down_failed_toast)
                     }
                 }
