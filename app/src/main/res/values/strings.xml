@@ -158,6 +158,7 @@
     <string name="pref_website">Website</string>
     <string name="pref_website_summary">Check out the Viola Browser website.</string>
     <string name="new_update_detect_details">"Release date: %s"</string>
+    <string name="toast_ad_servers_finished">"Finished downloading ad servers!"</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

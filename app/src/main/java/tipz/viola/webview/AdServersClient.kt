@@ -53,13 +53,13 @@ open class AdServersClient(context: Context, private val pref: SettingsSharedPre
         Log.d(LOG_TAG, "Finished ad servers import")
     }
 
-    fun downloadAdServers() =
+    fun downloadAdServers(callback: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             Log.d(LOG_TAG, "Starting ad servers download")
             val scanner = Scanner(String(
                 MiniDownloadHelper.startDownload(
                     (adServersList[pref.getInt(SettingsKeys.adServerId)]
-                    ?: pref.getString(SettingsKeys.adServerUrl)).toString())!!
+                        ?: pref.getString(SettingsKeys.adServerUrl)).toString())!!
             ))
             val builder = StringBuilder()
             while (scanner.hasNextLine()) {
@@ -74,4 +74,6 @@ open class AdServersClient(context: Context, private val pref: SettingsSharedPre
             fos.close()
             Log.d(LOG_TAG, "Finished ad servers download")
         }
+        callback()
+    }
 }

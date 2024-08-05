@@ -28,6 +28,7 @@ import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
 import tipz.viola.webviewui.BaseActivity
 
+
 open class VWebViewActivity : BaseActivity() {
     lateinit var settingsPreference: SettingsSharedPreference
     lateinit var webview: VWebView
@@ -98,8 +99,11 @@ open class VWebViewActivity : BaseActivity() {
             if (result.data!!.getBooleanExtra(SettingsKeys.needReload, false))
                 webview.reload()
 
-            if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0)
-                webview.adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress
+            if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0) {
+                webview.adServersHandler.downloadAdServers {
+                    CommonUtils.showMessage(this, R.string.toast_ad_servers_finished)
+                }
+            }
         }
 
     @Suppress("DEPRECATION")
