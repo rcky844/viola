@@ -64,14 +64,13 @@ import tipz.viola.databinding.TemplateIconDescriptionItemBinding
 import tipz.viola.databinding.TemplateIconItemBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.search.SuggestionAdapter
-import tipz.viola.settings.SettingsActivity
+import tipz.viola.settings.activity.SettingsActivity
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
-import tipz.viola.webviewui.BrowserActivity.ItemsAdapter.ViewHolder
 import tipz.viola.webviewui.components.FullscreenFloatingActionButton
 import tipz.viola.widget.StringResAdapter
 import java.lang.ref.WeakReference

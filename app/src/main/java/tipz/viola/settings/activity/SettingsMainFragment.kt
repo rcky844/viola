@@ -3,10 +3,11 @@
 
 @file:Suppress("DEPRECATION")
 
-package tipz.viola.settings
+package tipz.viola.settings.activity
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -19,7 +20,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatActivity.ACTIVITY_SERVICE
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.DialogFragment
@@ -43,8 +43,10 @@ import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.search.SearchEngineEntries
-import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
-import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
+import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
+import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
+import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.utils.ApkInstaller
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
@@ -53,10 +55,9 @@ import tipz.viola.webviewui.BaseActivity.Companion.darkModeCheck
 import java.io.File
 import java.io.IOException
 
-class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() {
-    private var settingsActivity: AppCompatActivity = act
-    private val settingsPreference: SettingsSharedPreference =
-        (settingsActivity.applicationContext as Application).settingsPreference
+class SettingsMainFragment : PreferenceFragmentCompat() {
+    private lateinit var settingsActivity: SettingsActivity
+    private lateinit var settingsPreference: SettingsSharedPreference
     private val updateConfigLiveData = MutableLiveData<JSONObject>()
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -72,6 +73,13 @@ class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() 
         it.loader = this::needLoad
         it.changelogUrl = ExportedUrls.changelogUrl
         it.licenseUrl = ExportedUrls.actualLicenseUrl
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.settingsActivity = context as SettingsActivity
+        this.settingsPreference =
+            (settingsActivity.applicationContext as Application).settingsPreference
     }
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag") // For older SDKs

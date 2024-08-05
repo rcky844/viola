@@ -1,12 +1,12 @@
 // Copyright (c) 2023-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings
+package tipz.viola.settings.activity
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.DialogPreference
-import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
+import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 
 class MaterialDialogPreference : DialogPreference {
     var materialDialogPreferenceListener: MaterialDialogPreferenceListener? = null

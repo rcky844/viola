@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022-2023 Tipz Team
+<!-- Copyright (c) 2022-2024 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,7 @@
             android:key="homepage"
             android:summary=""
             android:title="@string/homepage" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="dont_use_start_page"
             android:summary="@string/pref_dont_use_start_page_summary"
             android:title="@string/pref_dont_use_start_page_title"
@@ -26,7 +26,7 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/data_privacy">
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="adBlocker"
             android:summary="@string/pref_adBlocker_desp"
             android:title="@string/pref_adBlocker"
@@ -41,43 +41,43 @@
             android:dependency="adBlocker"
             android:key="adBlockerDownload"
             android:title="@string/pref_adBlockerDownload_title" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_desp"
             android:title="@string/pref_do_not_track"
             app:preferenceTag="sendDNT"
             app:needReload="true" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="send_sec_gpc"
             android:summary="@string/pref_send_sec_gpc_summary"
             android:title="@string/pref_send_sec_gpc_title"
             app:preferenceTag="sendSecGPC"
             app:needReload="true" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
             android:title="@string/pref_enforce_https_title"
             app:preferenceTag="enforceHttps"
             app:needReload="false" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="google_safe_browsing"
             android:summary="@string/pref_google_safe_browsing_summary"
             android:title="@string/pref_google_safe_browsing_title"
             app:preferenceTag="enableGoogleSafeBrowse"
             app:needReload="false" />
-        <tipz.viola.settings.MaterialDialogPreference
+        <tipz.viola.settings.activity.MaterialDialogPreference
             android:key="clear_cache"
             android:title="@string/pref_clear_cache"
             android:dialogTitle="@string/pref_clear_cache"
             android:dialogMessage="@string/to_continue"
             android:positiveButtonText="@string/clear" />
-        <tipz.viola.settings.MaterialDialogPreference
+        <tipz.viola.settings.activity.MaterialDialogPreference
             android:key="clear_cookies"
             android:title="@string/pref_clear_cookies"
             android:dialogTitle="@string/pref_clear_cookies"
             android:dialogMessage="@string/to_continue"
             android:positiveButtonText="@string/clear" />
-        <tipz.viola.settings.MaterialDialogPreference
+        <tipz.viola.settings.activity.MaterialDialogPreference
             android:key="reset_to_default"
             android:summary="@string/reset_btn_desp"
             android:title="@string/reset_btn"
@@ -91,30 +91,30 @@
             android:key="theme"
             android:summary=""
             android:title="@string/pref_theme" />
-        <tipz.viola.settings.MaterialPreference
+        <tipz.viola.settings.activity.MaterialPreference
             android:key="start_page_wallpaper"
             android:summary=""
             android:title="@string/pref_start_page_wallpaper_title"
             app:requiredApi="19" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="show_favicon"
             android:summary="@string/show_favicon_desp"
             android:title="@string/show_favicon"
             app:preferenceTag="showFavicon"
             app:needReload="false" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="reverse_address_bar"
             android:summary="@string/pref_reverse_address_bar_summary"
             android:title="@string/pref_reverse_address_bar_title"
             app:preferenceTag="reverseAddressBar"
             app:needReload="false" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="enable_swipe_refresh"
             android:summary="@string/pref_enable_swipe_refresh_summary"
             android:title="@string/pref_enable_swipe_refresh_title"
             app:preferenceTag="enableSwipeRefresh"
             app:needReload="false" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="update_recents_icon"
             android:summary="@string/pref_update_recents_icon_summary"
             android:title="@string/pref_update_recents_icon_title"
@@ -123,32 +123,32 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/advanced">
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="javascript"
             android:summary="@string/javascript_desp"
             android:title="@string/javascript"
             app:preferenceTag="isJavaScriptEnabled"
             app:needReload="true" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="use_custom_tabs"
             android:summary="@string/pref_use_custom_tabs_summary"
             android:title="@string/pref_use_custom_tabs_title"
             app:preferenceTag="useCustomTabs"
             app:needReload="false" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="check_app_link"
             android:summary="@string/pref_check_app_link_summary"
             android:title="@string/pref_check_app_link_title"
             app:preferenceTag="checkAppLink"
             app:needReload="false"
             app:requiredApi="30" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="send_save_data"
             android:summary="@string/pref_send_save_data_summary"
             android:title="@string/pref_send_save_data_title"
             app:preferenceTag="sendSaveData"
             app:needReload="true" />
-        <tipz.viola.settings.MaterialSwitchPreference
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="close_app_after_download"
             android:summary="@string/pref_close_app_after_download_summary"
             android:title="@string/pref_close_app_after_download_title"
