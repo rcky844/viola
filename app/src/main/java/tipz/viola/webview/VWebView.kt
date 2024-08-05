@@ -495,7 +495,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadViewSourcePage(url: String?): Boolean {
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
-        if (PrivilegedPages.isPrivilegedPage(url)) return false
+        if (PrivilegedPages.isPrivilegedPage(getRealUrl())) return false
         if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
         loadRealUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
         return true
