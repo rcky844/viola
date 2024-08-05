@@ -109,7 +109,7 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:documentLaunchMode="always" />
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".settings.activity.SettingsActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
         <activity
             android:name=".broha.ListInterfaceActivity"

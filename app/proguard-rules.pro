@@ -1,7 +1,5 @@
--keepclassmembers class tipz.viola.* {
-    <fields>;
-    <init>();
-    <methods>;
+-keepclassmembernames class tipz.** {
+    *;
 }
 -assumenosideeffects class android.util.Log {
     public static int d(...);

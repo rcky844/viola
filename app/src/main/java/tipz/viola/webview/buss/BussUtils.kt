@@ -32,8 +32,10 @@ object BussUtils {
             val data = MiniDownloadHelper.startDownload(apiUrl)!!
             if (data.isEmpty()) {
                 CoroutineScope(Dispatchers.Main).launch {
+                    // No data returned means it probably isn't registered
                     view.onPageInformationUpdated(
-                        PageLoadState.PAGE_ERROR, url, null)
+                        PageLoadState.PAGE_ERROR, url, null,
+                        "net::ERR_NAME_NOT_RESOLVED")
                 }
                 return@launch
             }
@@ -42,14 +44,17 @@ object BussUtils {
             val realUrl = if (ip.contains(githubPrefix))
                 "https://raw.githubusercontent.com/" +
                         "${ip.replace(githubPrefix, "")}/main/index.html"
-            else UrlUtils.toValidHttpUrl(view.settingsPreference, ip)
+            else UrlUtils.validateUrlOrConvertToSearch(view.settingsPreference, ip, 1)
             CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(40) }
 
             val htmlData = MiniDownloadHelper.startDownload(realUrl)!!
             if (htmlData.isEmpty()) {
                 CoroutineScope(Dispatchers.Main).launch {
+                    // For those that can't download data, use a more generic one, since
+                    // MiniDownloadHelper can't give us error codes yet
                     view.onPageInformationUpdated(
-                        PageLoadState.PAGE_ERROR, url, null)
+                        PageLoadState.PAGE_ERROR, url, null,
+                        "net::ERR_CONNECTION_FAILED")
                 }
                 return@launch
             }

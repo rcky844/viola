@@ -219,10 +219,6 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Data Saver
         requestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
 
-        // Ad Servers Hosts
-        if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock))
-            adServersHandler.importAdServers()
-
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED)
             historyClient = HistoryClient(activity)
@@ -276,7 +272,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     }
                     .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                         // Load actual url if user cancelled the request
-                        val checkedUrl = UrlUtils.toSearchOrValidUrl(settingsPreference, url)
+                        // Url already passed uriRegex, just check for CVEs.
+                        val checkedUrl = UrlUtils.patchUrlForCVEMitigation(url)
                         super.loadUrl(checkedUrl, requestHeaders)
                     }
                     .create().show()
@@ -290,8 +287,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 return
             }
 
-            // By this point, it is probably a webpage.
-            val checkedUrl = UrlUtils.toSearchOrValidUrl(settingsPreference, url)
+            // By this point, it is probably a webpage or a search query.
+            val checkedUrl = UrlUtils.validateUrlOrConvertToSearch(settingsPreference, url)
             onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
 
             // Prevent creating duplicate entries
@@ -494,7 +491,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadViewSourcePage(url: String?): Boolean {
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
-        if (PrivilegedPages.isPrivilegedPage(url)) return false
+        if (PrivilegedPages.isPrivilegedPage(getRealUrl())) return false
         if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
         loadRealUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
         return true

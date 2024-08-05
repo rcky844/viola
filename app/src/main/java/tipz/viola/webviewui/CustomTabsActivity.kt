@@ -22,9 +22,12 @@ class CustomTabsActivity : VWebViewActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCustomTabBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         /* Appbar */
         appbar = binding.appbar
+        webviewContainer = binding.webviewContainer
 
         /* Back button */
         val actionBarBack : AppCompatImageView = binding.close

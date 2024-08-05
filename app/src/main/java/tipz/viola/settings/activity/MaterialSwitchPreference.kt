@@ -1,7 +1,7 @@
 // Copyright (c) 2023-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings
+package tipz.viola.settings.activity
 
 import android.content.Context
 import android.os.Build
@@ -10,6 +10,7 @@ import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.SwitchPreferenceCompat
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.settings.SettingsSharedPreference
 
 class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
     SwitchPreferenceCompat(context, attrs) {

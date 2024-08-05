@@ -1,7 +1,7 @@
 // Copyright (c) 2023-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings
+package tipz.viola.settings.activity
 
 import android.content.Context
 import android.content.DialogInterface
@@ -11,10 +11,12 @@ import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.search.SearchEngineEntries
+import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
 
 class ListPickerAlertDialog(context: Context, settingsPreference: SettingsSharedPreference,
-                            private val listPickerObject: ListPickerObject) :
+                            private val listPickerObject: ListPickerObject
+) :
     MaterialAlertDialogBuilder(context) {
     private var mSettingsPreference: SettingsSharedPreference = settingsPreference
 
@@ -114,7 +116,8 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         }
 
         fun stubNameToIdFunction(name: String) : Int {
-            Log.w(LOG_TAG, "stubNameToIdFunction(): " +
+            Log.w(
+                LOG_TAG, "stubNameToIdFunction(): " +
                     "$name using namePreference without any means to convert to index!")
             return 0
         }

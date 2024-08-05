@@ -64,14 +64,14 @@ import tipz.viola.databinding.TemplateIconDescriptionItemBinding
 import tipz.viola.databinding.TemplateIconItemBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.search.SuggestionAdapter
-import tipz.viola.settings.SettingsActivity
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.activity.SettingsActivity
 import tipz.viola.utils.CommonUtils
+import tipz.viola.utils.UpdateService
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
-import tipz.viola.webviewui.BrowserActivity.ItemsAdapter.ViewHolder
 import tipz.viola.webviewui.components.FullscreenFloatingActionButton
 import tipz.viola.widget.StringResAdapter
 import java.lang.ref.WeakReference
@@ -110,6 +110,9 @@ class BrowserActivity : VWebViewActivity() {
         setContentView(view)
 
         // Initialize variables
+        appbar = binding.appbar
+        webviewContainer = binding.webviewContainer
+        toolsContainer = binding.toolsContainer
         upRightFab = binding.upRightFab
         urlEditText = binding.urlEditText
         progressBar = binding.webviewProgressBar
@@ -123,6 +126,9 @@ class BrowserActivity : VWebViewActivity() {
         // Broha Clients
         favClient = FavClient(this)
         iconHashClient = IconHashClient(this)
+
+        // Start update service
+        UpdateService(this, true)
 
         // Setup toolbar
         toolBar = binding.toolBar

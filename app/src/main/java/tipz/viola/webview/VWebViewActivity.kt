@@ -28,6 +28,7 @@ import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
 import tipz.viola.webviewui.BaseActivity
 
+
 open class VWebViewActivity : BaseActivity() {
     lateinit var settingsPreference: SettingsSharedPreference
     lateinit var webview: VWebView
@@ -51,13 +52,6 @@ open class VWebViewActivity : BaseActivity() {
     }
 
     override fun onStart() {
-        try { // FIXME: Replace this
-            appbar = findViewById(R.id.appbar)
-            webviewContainer = findViewById(R.id.webviewContainer)
-            toolsContainer = findViewById(R.id.toolsContainer)
-        } catch (_: NullPointerException) {
-        }
-
         // Init VioWebView
         webview.doSettingsCheck()
 
@@ -95,11 +89,14 @@ open class VWebViewActivity : BaseActivity() {
             // FROM: SettingsActivity
             result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { webview.loadUrl(it) }
 
-            if (result.data!!.getIntExtra(SettingsKeys.needReload, 0) != 0)
+            if (result.data!!.getBooleanExtra(SettingsKeys.needReload, false))
                 webview.reload()
 
-            if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0)
-                webview.adServersHandler.downloadAdServers() // TODO: Add dialogs to show progress
+            if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0) {
+                webview.adServersHandler.downloadAdServers {
+                    CommonUtils.showMessage(this, R.string.toast_ad_servers_finished)
+                }
+            }
         }
 
     @Suppress("DEPRECATION")

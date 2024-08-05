@@ -13,16 +13,16 @@ import tipz.viola.utils.CommonUtils.language
 object UrlUtils {
     private const val LOG_TAG = "UrlUtils"
 
-    /**
-     * An array used for intent filtering
-     */
+    /* Some regex and hardcoded strings */
     val TypeSchemeMatch = arrayOf(
         "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
         "http", "https", "ftp", "file"
     )
-    const val protocolRegex = "^(?:[a-z+]+:)?//"
-    const val httpUrlRegex =
-        "${protocolRegex}(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
+    val uriRegex =
+        ("^(?:[a-z+]+:)?//" +
+                "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?")
+            .toRegex()
+    val uriRegexOutlier = listOf("viola://", "chrome://")
 
     /**
      * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
@@ -43,32 +43,45 @@ object UrlUtils {
     }
 
     fun isUriLaunchable(uri: String): Boolean {
-        return uri.matches(httpUrlRegex.toRegex()) || uri.startsWith("data:")
+        return uri.matches(uriRegex) || uri.startsWith("data:")
     }
 
-    fun toSearchOrValidUrl(pref: SettingsSharedPreference, input: String): String {
-        val processedInput = patchUrlForCVEMitigation(input.trim())
-        var finalUrl = toValidHttpUrl(pref, processedInput)
+    fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String) =
+        validateUrlOrConvertToSearch(pref, input, 2)
 
-        if (finalUrl.isBlank()) {
-            finalUrl = SearchEngineEntries.getSearchUrl(
-                pref.getString(SettingsKeys.searchName),
-                processedInput, language
-            )
-            Log.d(LOG_TAG, "toSearchOrValidUrl(): at httpUrlRegex, finalUrl=$finalUrl")
-        }
-        return finalUrl
-    }
+    fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String,
+                                     maxRuns: Int): String {
+        // Disable the check for some outliers
+        if (uriRegexOutlier.any { input.startsWith(input) }) return input
 
-    fun toValidHttpUrl(pref: SettingsSharedPreference, input: String): String {
-        val processedInput = patchUrlForCVEMitigation(input.trim())
-        var finalUrl = processedInput
-        if (!processedInput.matches("${protocolRegex}.*".toRegex())) { // is relative
-            finalUrl = (if (pref.getIntBool(SettingsKeys.enforceHttps)) "https://"
-            else "http://") + input
-            Log.d(LOG_TAG, "toValidHttpUrl(): at is relative, finalUrl=$finalUrl")
+        // Start processing
+        var checkedUrl = input
+        var run = 1
+        while (!checkedUrl.matches(uriRegex)) {
+            Log.d(LOG_TAG, "toValidHttpUrl(): Uri regex does not match," +
+                    "run=$run, input=$input")
+            when (run) {
+                1 -> {
+                    // Attempt to fix the url by adding in http prefixes
+                    checkedUrl = (if (pref.getIntBool(SettingsKeys.enforceHttps))
+                        "https://" else "http://") + input
+                }
+                2 -> {
+                    // If run 0 failed, make it a search url
+                    checkedUrl = SearchEngineEntries.getSearchUrl(
+                        pref.getString(SettingsKeys.searchName),
+                        input, language
+                    )
+                }
+                else -> {
+                    Log.d(LOG_TAG, "toValidHttpUrl(): Unable to convert into valid url!")
+                    checkedUrl = "" // Provide empty string on error
+                    break
+                }
+            }
+            if (run == maxRuns) break
+            run++
         }
-        if (finalUrl.matches(httpUrlRegex.toRegex())) return finalUrl
-        else return "" // This means the checks failed
+        return patchUrlForCVEMitigation(checkedUrl.trim())
     }
 }

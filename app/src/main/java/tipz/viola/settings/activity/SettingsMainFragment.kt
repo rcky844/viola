@@ -3,10 +3,11 @@
 
 @file:Suppress("DEPRECATION")
 
-package tipz.viola.settings
+package tipz.viola.settings.activity
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -19,45 +20,32 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatActivity.ACTIVITY_SERVICE
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.json.JSONObject
 import tipz.build.info.BuildInfoDialog
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.databinding.DialogEdittextBinding
-import tipz.viola.download.DownloadClient
-import tipz.viola.download.DownloadObject
-import tipz.viola.download.DownloadProvider
-import tipz.viola.download.DownloadUtils
-import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.search.SearchEngineEntries
-import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
-import tipz.viola.settings.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
-import tipz.viola.utils.ApkInstaller
+import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
+import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
+import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
+import tipz.viola.utils.UpdateService
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webviewui.BaseActivity.Companion.darkModeCheck
-import java.io.File
 import java.io.IOException
 
-class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() {
-    private var settingsActivity: AppCompatActivity = act
-    private val settingsPreference: SettingsSharedPreference =
-        (settingsActivity.applicationContext as Application).settingsPreference
-    private val updateConfigLiveData = MutableLiveData<JSONObject>()
+class SettingsMainFragment : PreferenceFragmentCompat() {
+    private lateinit var settingsActivity: SettingsActivity
+    private lateinit var settingsPreference: SettingsSharedPreference
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest> =
@@ -74,23 +62,16 @@ class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() 
         it.licenseUrl = ExportedUrls.actualLicenseUrl
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.settingsActivity = context as SettingsActivity
+        this.settingsPreference =
+            (settingsActivity.applicationContext as Application).settingsPreference
+    }
+
     @SuppressLint("UnspecifiedRegisterReceiverFlag") // For older SDKs
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_main, rootKey)
-        initializeLogic()
-    }
-
-    private fun needLoad(url: String) {
-        val needLoad = Intent()
-        needLoad.putExtra(SettingsKeys.needLoadUrl, url)
-        settingsActivity.setResult(0, needLoad)
-        settingsActivity.finish()
-    }
-
-    /**
-     * Initialize Logic
-     */
-    private fun initializeLogic() {
         /* Lists */
         val searchHomePageList =
             settingsActivity.resources.getStringArray(R.array.search_entries)
@@ -277,86 +258,9 @@ class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() 
 
         check_for_updates.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                if (!DownloadUtils.isOnline(settingsActivity)) {
-                    showMessage(settingsActivity, R.string.network_unavailable_toast)
-                }
-                CoroutineScope(Dispatchers.IO).launch {
-                    updateConfigLiveData.postValue(JSONObject(String(
-                        MiniDownloadHelper.startDownload(ExportedUrls.updateJSONUrl)!!))
-                    )
-                }
+                UpdateService(settingsActivity, false).checkUpdates()
                 true
             }
-
-        // Updates JSON Object observer
-        updateConfigLiveData.observe(this, Observer {
-            val jObject = it ?: return@Observer
-
-            // Get update channel name
-            var updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
-            if (updateChannelName.isBlank()) updateChannelName = BuildConfig.BUILD_TYPE
-            if (!jObject.has(updateChannelName)) {
-                showMessage(settingsActivity, R.string.update_down_failed_toast)
-                return@Observer
-            }
-
-            // Process the selected update channel data
-            val jChannelObject = jObject.getJSONObject(updateChannelName)
-            val jChannelDataString =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) "channel_data_modern"
-                else "channel_data_legacy"
-
-            if (!jChannelObject.has(jChannelDataString)) {
-                showMessage(settingsActivity, R.string.version_latest_toast)
-                return@Observer
-            }
-
-            // Process the update channel object
-            val jChannelUpdateObject = jChannelObject.getJSONObject(jChannelDataString)
-            if (jChannelUpdateObject.getInt("code") <= BuildConfig.VERSION_CODE) {
-                showMessage(settingsActivity, R.string.version_latest_toast)
-                return@Observer
-            }
-
-            MaterialAlertDialogBuilder(settingsActivity)
-                .setTitle(R.string.new_update_detect_title)
-                .setMessage(
-                    resources.getString(
-                        R.string.new_update_detect_message,
-                        jChannelUpdateObject.getString("name"),
-                        jChannelUpdateObject.getInt("code").toString()
-                    )
-                )
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    val filename = jChannelUpdateObject.getString("download_url")
-                        .substringAfterLast('/')
-                    val updateDownloadPath = DownloadClient.defaultDownloadPath + filename
-                    val apkFile = File(updateDownloadPath)
-
-                    if (!apkFile.exists() || apkFile.delete()) {
-                        DownloadClient(settingsActivity).addToQueue(DownloadObject().apply {
-                            // TODO: reimplement resources.getString(R.string.download_title)
-                            // TODO: Move to mini-download client
-                            uriString = jChannelUpdateObject.getString("download_url")
-                            mimeType = "application/vnd.android.package-archive"
-                            this.filename = filename
-                            statusListener =
-                                DownloadProvider.Companion.DownloadStatusListener { status ->
-                                    if (status == DownloadProvider.Companion.DownloadStatus.STOPPED)
-                                        ApkInstaller.installApplication(
-                                            settingsActivity,
-                                            updateDownloadPath
-                                        )
-                                }
-                        })
-                    } else {
-                        showMessage(settingsActivity, R.string.update_down_failed_toast)
-                    }
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
-
-        })
 
         // TODO: Load update channels from online JSON
         update_channel.onPreferenceClickListener =
@@ -434,7 +338,13 @@ class SettingsMainFragment(act: AppCompatActivity) : PreferenceFragmentCompat() 
         }
         version.summary =
             resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME
-        needReload = false
+    }
+
+    private fun needLoad(url: String) {
+        val needLoad = Intent()
+        needLoad.putExtra(SettingsKeys.needLoadUrl, url)
+        settingsActivity.setResult(0, needLoad)
+        settingsActivity.finish()
     }
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
