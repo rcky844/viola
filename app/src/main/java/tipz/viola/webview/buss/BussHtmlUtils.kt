@@ -97,7 +97,7 @@ object BussHtmlUtils {
                 if (line.matches(getLinkRegex("css"))) {
                     var cssUrl = getProperty(line, "href")
                     if (cssUrl.isNotBlank()) {
-                        if (!cssUrl.matches(UrlUtils.httpUrlRegex.toRegex()))
+                        if (!cssUrl.matches(UrlUtils.uriRegex))
                             cssUrl = realUrl.substringBeforeLast('/') + "/" + cssUrl
 
                         val cssData = MiniDownloadHelper.startDownload(cssUrl)!!

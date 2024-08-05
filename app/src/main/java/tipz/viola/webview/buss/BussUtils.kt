@@ -42,7 +42,7 @@ object BussUtils {
             val realUrl = if (ip.contains(githubPrefix))
                 "https://raw.githubusercontent.com/" +
                         "${ip.replace(githubPrefix, "")}/main/index.html"
-            else UrlUtils.toValidHttpUrl(view.settingsPreference, ip)
+            else UrlUtils.validateUrlOrConvertToSearch(view.settingsPreference, ip, 1)
             CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(40) }
 
             val htmlData = MiniDownloadHelper.startDownload(realUrl)!!
