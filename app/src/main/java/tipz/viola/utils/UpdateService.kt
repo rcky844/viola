@@ -111,7 +111,9 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                         R.string.new_update_detect_message,
                         jChannelUpdateObject.getString("name"),
                         jChannelUpdateObject.getInt("code").toString()
-                    )
+                    ) + "\n" + context.resources.getString(
+                                R.string.new_update_detect_details,
+                                jChannelUpdateObject.getString("date"))
                 )
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     val filename = jChannelUpdateObject.getString("download_url")
