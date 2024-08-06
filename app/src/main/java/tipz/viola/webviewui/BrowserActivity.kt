@@ -193,7 +193,7 @@ class BrowserActivity : VWebViewActivity() {
             binding.url.text = Uri.parse(webview.url).host
 
             val icon = binding.icon
-            val favicon = webview.favicon
+            val favicon = webview.currentFavicon
             if (favicon == null) icon.setImageResource(R.drawable.default_favicon)
             else icon.setImageBitmap(favicon)
 

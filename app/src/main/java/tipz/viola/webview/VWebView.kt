@@ -67,6 +67,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private val iconHashClient = IconHashClient(mContext)
     private val webSettings = this.settings
     private var currentBroha = Broha()
+    var currentFavicon: Bitmap? = null
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference
@@ -428,8 +429,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
         }
 
-        activity.onUrlUpdated(newUrl)
+        // Update favicon
+        currentFavicon = favicon
         activity.onFaviconUpdated(favicon, false)
+
+        activity.onUrlUpdated(newUrl)
         activity.onDropDownDismissed()
     }
 
