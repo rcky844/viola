@@ -198,11 +198,10 @@ class BrowserActivity : VWebViewActivity() {
             else icon.setImageBitmap(favicon)
 
             // SSL information
-            var message = resources.getString(R.string.ssl_info_dialog_content_nocert)
-            if (cert != null) {
+            val message = if (cert != null) {
                 val issuedTo = cert.issuedTo
                 val issuedBy = cert.issuedBy
-                message = resources.getString(
+                resources.getString(
                     R.string.ssl_info_dialog_content,
                     issuedTo.cName, issuedTo.oName, issuedTo.uName,
                     issuedBy.cName, issuedBy.oName, issuedBy.uName,
@@ -210,6 +209,10 @@ class BrowserActivity : VWebViewActivity() {
                         .format(cert.validNotBeforeDate),
                     DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
                 )
+            } else if (sslState == SslState.SEARCH) {
+                resources.getString(R.string.address_bar_hint)
+            } else {
+                resources.getString(R.string.ssl_info_dialog_content_nocert)
             }
 
             dialog.setCustomTitle(mView)
