@@ -147,6 +147,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Enable some HTML5 related settings
         webSettings.databaseEnabled = false // Disabled as no-op since Android 15
         webSettings.domStorageEnabled = true
+        webSettings.setAppCacheMaxSize
 
         // Ad Server Hosts
         adServersHandler = AdServersClient(mContext, settingsPreference)
@@ -447,8 +448,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             UserAgentMode.MOBILE, UserAgentMode.DESKTOP -> {
                 "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
                     WebViewCompat.getCurrentWebViewPackage(mContext)?.versionName}" +
-                        "$mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}" + "." +
-                                (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION)
+                        "$mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}"
             }
             UserAgentMode.CUSTOM -> {
                 dataBundle.userAgentString
