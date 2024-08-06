@@ -91,6 +91,11 @@
             android:key="theme"
             android:summary=""
             android:title="@string/pref_theme" />
+        <tipz.viola.settings.activity.MaterialSwitchPreference
+            android:key="use_force_dark"
+            android:summary="@string/pref_use_force_dark_summary"
+            android:title="@string/pref_use_force_dark_title"
+            app:preferenceTag="useForceDark" />
         <tipz.viola.settings.activity.MaterialPreference
             android:key="start_page_wallpaper"
             android:summary=""

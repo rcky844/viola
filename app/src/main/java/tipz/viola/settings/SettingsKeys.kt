@@ -44,6 +44,7 @@ object SettingsKeys {
     const val startPageWallpaper = "startPageWallpaper" /* STRING */
     const val themeId = "themeId" /* INTEGER */
     const val useCustomTabs = "useCustomTabs" /* INTEGER */
+    const val useForceDark = "useForceDark" /* INTEGER */
     const val useWebHomePage = "useWebHomePage" /* INTEGER */
     const val updateChannelName = "updateChannelName" /* STRING */
     const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
