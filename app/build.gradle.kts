@@ -39,7 +39,7 @@ android {
         applicationId = "tipz.viola"
         minSdk = 14
         targetSdk = 34
-        versionCode = 58
+        versionCode = 59
         versionName = "7.0"
 
         /* Extra build info */
