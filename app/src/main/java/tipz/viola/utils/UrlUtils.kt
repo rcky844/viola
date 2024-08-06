@@ -22,7 +22,7 @@ object UrlUtils {
         ("^(?:[a-z+]+:)?//" +
                 "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?")
             .toRegex()
-    val uriRegexOutlier = listOf("viola://", "chrome://")
+    val nonStandardUri = listOf("viola", "chrome", "file", "javascript")
 
     /**
      * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
@@ -51,14 +51,14 @@ object UrlUtils {
 
     fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String,
                                      maxRuns: Int): String {
-        // Disable the check for some outliers
-        if (uriRegexOutlier.any { input.startsWith(input) }) return input
+        // Check for any non-standard schemes
+        if (nonStandardUri.any{ input.matches("$it:(//)?.*".toRegex()) }) return input
 
         // Start processing
         var checkedUrl = input
         var run = 1
         while (!checkedUrl.matches(uriRegex)) {
-            Log.d(LOG_TAG, "toValidHttpUrl(): Uri regex does not match," +
+            Log.d(LOG_TAG, "toValidHttpUrl(): Uri regex does not match, " +
                     "run=$run, input=$input")
             when (run) {
                 1 -> {

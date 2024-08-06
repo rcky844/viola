@@ -55,7 +55,7 @@ import tipz.viola.webview.buss.BussUtils
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webviewui.BaseActivity
-
+import java.util.regex.Pattern
 
 @SuppressLint("SetJavaScriptEnabled")
 class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
@@ -67,6 +67,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private val iconHashClient = IconHashClient(mContext)
     private val webSettings = this.settings
     private var currentBroha = Broha()
+    var currentFavicon: Bitmap? = null
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     val settingsPreference =
         (mContext.applicationContext as Application).settingsPreference
@@ -175,16 +176,20 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     fun doSettingsCheck() {
         // Dark mode
         val darkMode = BaseActivity.getDarkMode(mContext)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && WebViewFeature.isFeatureSupported(
-                WebViewFeature.ALGORITHMIC_DARKENING
-            )
-        )
-            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode)
-        else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
-            WebSettingsCompat.setForceDark(
-                webSettings,
-                if (darkMode) WebSettingsCompat.FORCE_DARK_ON else WebSettingsCompat.FORCE_DARK_OFF
-            )
+        val forceDark = settingsPreference.getIntBool(SettingsKeys.useForceDark)
+        if (forceDark) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+                && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
+                WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode)
+            else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
+                WebSettingsCompat.setForceDark(webSettings,
+                    if (darkMode) WebSettingsCompat.FORCE_DARK_ON
+                    else WebSettingsCompat.FORCE_DARK_OFF
+                )
+        } else {
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
+                WebSettingsCompat.setForceDark(webSettings, WebSettingsCompat.FORCE_DARK_OFF)
+        }
 
         // Javascript
         webSettings.javaScriptEnabled =
@@ -238,6 +243,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (BussUtils.sendAndRequestResponse(this, url)) return
 
         // Check for privileged URLs
+        if (PrivilegedPages.isPrivilegedPage(url)) super.loadUrl(url)
         val privilegedActualUrl = PrivilegedPages.getActualUrl(url)
         if (privilegedActualUrl != null) {
             loadRealUrl(privilegedActualUrl)
@@ -423,8 +429,11 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
             }
         }
 
-        activity.onUrlUpdated(newUrl)
+        // Update favicon
+        currentFavicon = favicon
         activity.onFaviconUpdated(favicon, false)
+
+        activity.onUrlUpdated(newUrl)
         activity.onDropDownDismissed()
     }
 
@@ -435,6 +444,33 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     fun setUserAgent(agentMode: UserAgentMode, dataBundle: UserAgentBundle) {
         if (agentMode == UserAgentMode.CUSTOM && dataBundle.userAgentString.isBlank()) return
 
+        // Set user agent string
+        val userAgentBuilder = StringBuilder()
+        if (agentMode == UserAgentMode.CUSTOM) {
+            userAgentBuilder.append(dataBundle.userAgentString)
+        } else {
+            val pattern = Pattern.compile("\\(.*?\\)\\s|.*?/.*?(\\s|\$)")
+            val matcher = pattern.matcher(settings.userAgentString)
+            while (matcher.find()) {
+                var group = matcher.group()
+                when (agentMode) {
+                    UserAgentMode.MOBILE -> { }
+                    UserAgentMode.DESKTOP -> {
+                        if (group.startsWith("Mobile Safari"))
+                            group = group.replace("Mobile ", "")
+                        if (group.matches("\\((.*)?;\\s?wv((;\\s.*)?)\\)\\s".toRegex()))
+                            group = group.replace(
+                                "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex(), "(\$1\$2)")
+                    }
+                    else -> { }
+                }
+                userAgentBuilder.append(group)
+            }
+            userAgentBuilder.append(" Viola/${BuildConfig.VERSION_NAME}")
+        }
+        webSettings.userAgentString = userAgentBuilder.toString()
+
+        // Handle view related things
         val targetResId = {
             when (agentMode) {
                 UserAgentMode.MOBILE -> R.drawable.smartphone
@@ -442,29 +478,16 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 UserAgentMode.CUSTOM -> R.drawable.custom
             }
         }
-        val mobile = if (agentMode == UserAgentMode.MOBILE) "Mobile" else CommonUtils.EMPTY_STRING
-        val userAgentHolder = when (agentMode) {
-            UserAgentMode.MOBILE, UserAgentMode.DESKTOP -> {
-                "Mozilla/5.0 (Linux) AppleWebKit/537.36 KHTML, like Gecko) Chrome/${
-                    WebViewCompat.getCurrentWebViewPackage(mContext)?.versionName}" +
-                        "$mobile Safari/537.36 Viola/${BuildConfig.VERSION_NAME}" + "." +
-                                (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION)
-            }
-            UserAgentMode.CUSTOM -> {
-                dataBundle.userAgentString
-            }
-        }
-
         if (agentMode == UserAgentMode.DESKTOP) dataBundle.enableDesktop = true
 
-        webSettings.userAgentString = userAgentHolder
         if (dataBundle.iconView != null) {
             dataBundle.iconView!!.setImageResource(targetResId())
             dataBundle.iconView!!.tag = targetResId()
         }
         webSettings.loadWithOverviewMode = dataBundle.enableDesktop
         webSettings.useWideViewPort = dataBundle.enableDesktop
-        super.setScrollBarStyle(if (dataBundle.enableDesktop) SCROLLBARS_OUTSIDE_OVERLAY else SCROLLBARS_INSIDE_OVERLAY)
+        super.setScrollBarStyle(if (dataBundle.enableDesktop)
+            SCROLLBARS_OUTSIDE_OVERLAY else SCROLLBARS_INSIDE_OVERLAY)
 
         if (!dataBundle.noReload) reload()
     }

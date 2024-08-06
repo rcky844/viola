@@ -87,6 +87,7 @@
                     android:layout_marginEnd="4dp"
                     android:background="@drawable/url_edit_bg"
                     android:completionThreshold="1"
+                    android:dropDownWidth="match_parent"
                     android:fadingEdge="vertical"
                     android:hint="@string/address_bar_hint"
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"

@@ -59,6 +59,7 @@ import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha
 import tipz.viola.broha.database.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
+import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogUaEditBinding
 import tipz.viola.databinding.TemplateIconDescriptionItemBinding
 import tipz.viola.databinding.TemplateIconItemBinding
@@ -181,21 +182,45 @@ class BrowserActivity : VWebViewActivity() {
         // Setup SSL Lock
         sslLock.setOnClickListener {
             val cert = webview.certificate
-            val issuedTo = cert!!.issuedTo
-            val issuedBy = cert.issuedBy
             val dialog = MaterialAlertDialogBuilder(this@BrowserActivity)
-            dialog.setTitle(Uri.parse(webview.url).host)
-                .setMessage(
-                    resources.getString(
-                        R.string.ssl_info_dialog_content,
-                        issuedTo.cName, issuedTo.oName, issuedTo.uName,
-                        issuedBy.cName, issuedBy.oName, issuedBy.uName,
-                        DateFormat.getDateTimeInstance()
-                            .format(cert.validNotBeforeDate),
-                        DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
-                    )
+            val binding: DialogHitTestTitleBinding =
+                DialogHitTestTitleBinding.inflate(LayoutInflater.from(this@BrowserActivity))
+
+            // Custom Title
+            val mView = binding.root
+
+            binding.title.text = webview.title
+            binding.url.text = Uri.parse(webview.url).host
+
+            val icon = binding.icon
+            val favicon = webview.currentFavicon
+            if (favicon == null) icon.setImageResource(R.drawable.default_favicon)
+            else icon.setImageBitmap(favicon)
+
+            // SSL information
+            val message = if (cert != null) {
+                val issuedTo = cert.issuedTo
+                val issuedBy = cert.issuedBy
+                resources.getString(
+                    R.string.ssl_info_dialog_content,
+                    issuedTo.cName, issuedTo.oName, issuedTo.uName,
+                    issuedBy.cName, issuedBy.oName, issuedBy.uName,
+                    DateFormat.getDateTimeInstance()
+                        .format(cert.validNotBeforeDate),
+                    DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
                 )
+            } else if (sslState == SslState.SEARCH) {
+                resources.getString(R.string.address_bar_hint)
+            } else {
+                resources.getString(R.string.ssl_info_dialog_content_nocert)
+            }
+
+            dialog.setCustomTitle(mView)
+                .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
+                .setNeutralButton(R.string.copy_title) { _: DialogInterface?, _: Int ->
+                    CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
+                }
                 .create().show()
         }
 
@@ -536,7 +561,6 @@ class BrowserActivity : VWebViewActivity() {
         if (webview.getRealUrl() == ExportedUrls.actualStartUrl) {
             sslState = SslState.SEARCH
             sslLock.setImageResource(R.drawable.search)
-            sslLock.isClickable = false
             return
         }
 
@@ -544,14 +568,12 @@ class BrowserActivity : VWebViewActivity() {
         if (webview.certificate == null) {
             sslState = SslState.NONE
             sslLock.setImageResource(R.drawable.warning)
-            sslLock.isClickable = false // Certificate cannot be null for the dialog
         } else if (sslState == SslState.ERROR) { // State error is set before SECURE
             sslErrorHost = Uri.parse(webview.url).host!!
             sslState = SslState.NONE
         } else {
             sslState = SslState.SECURE
             sslLock.setImageResource(R.drawable.lock)
-            sslLock.isClickable = true
         }
     }
 

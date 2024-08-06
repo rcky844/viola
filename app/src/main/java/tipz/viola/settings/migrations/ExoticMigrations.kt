@@ -45,11 +45,17 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
             pref.getString(SettingsKeys.defaultSuggestions))
     }
 
+    private fun migrateDefaultBoolean() {
+        pref.setInt(SettingsKeys.showFavicon, 0)
+        pref.setInt(SettingsKeys.useForceDark, 1)
+    }
+
     init {
         // Apply migrations only to the previous protocol version
         if (pref.getInt(SettingsKeys.protocolVersion) == 1) {
             // Migrations
             migrateSearchIndex()
+            migrateDefaultBoolean()
 
             // Remove deleted keys
             deletedKeys.forEach { pref.remove(it) }
