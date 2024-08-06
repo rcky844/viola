@@ -238,6 +238,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (BussUtils.sendAndRequestResponse(this, url)) return
 
         // Check for privileged URLs
+        if (PrivilegedPages.isPrivilegedPage(url)) super.loadUrl(url)
         val privilegedActualUrl = PrivilegedPages.getActualUrl(url)
         if (privilegedActualUrl != null) {
             loadRealUrl(privilegedActualUrl)
