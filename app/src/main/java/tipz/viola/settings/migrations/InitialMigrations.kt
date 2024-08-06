@@ -29,7 +29,7 @@ class InitialMigrations(pref: SettingsSharedPreference) {
             pref.setInt(SettingsKeys.sendDNT, 0)
             pref.setInt(SettingsKeys.sendSaveData, 0)
             pref.setInt(SettingsKeys.sendSecGPC, 0)
-            pref.setInt(SettingsKeys.showFavicon, 1)
+            pref.setInt(SettingsKeys.showFavicon, 0)
             pref.setInt(SettingsKeys.themeId, 0)
             pref.setInt(SettingsKeys.useCustomTabs, 1)
             pref.setInt(SettingsKeys.updateRecentsIcon, 1)
