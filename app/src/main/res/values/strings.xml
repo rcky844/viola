@@ -160,6 +160,7 @@
     <string name="pref_website_summary">Check out the Viola Browser website.</string>
     <string name="new_update_detect_details">"Release date: %s"</string>
     <string name="toast_ad_servers_finished">"Finished downloading ad servers!"</string>
+    <string name="ssl_info_dialog_content_nocert">"This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards)."</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
