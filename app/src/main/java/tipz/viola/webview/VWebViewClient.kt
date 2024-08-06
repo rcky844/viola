@@ -25,7 +25,6 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView.PageLoadState
 import java.io.ByteArrayInputStream
-import java.net.URL
 
 open class VWebViewClient(
     private val mContext: Context,
@@ -136,7 +135,7 @@ open class VWebViewClient(
                 // TODO: Add dialog to warn users of this issue
                 return super.shouldInterceptRequest(view, url)
             }
-            if (adServersHandler.adServers!!.contains(" ${URL(url).host}"))
+            if (adServersHandler.adServers!!.contains(" ${Uri.parse(url).host}"))
                 return WebResourceResponse(
                     "text/plain", "utf-8",
                     ByteArrayInputStream(CommonUtils.EMPTY_STRING.toByteArray())
