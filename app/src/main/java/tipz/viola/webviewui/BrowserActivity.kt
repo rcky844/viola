@@ -492,9 +492,12 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
                 val binding: DialogUaEditBinding = DialogUaEditBinding.inflate(layoutInflater)
                 val mView = binding.root
-
+                val message = binding.message
                 val customUserAgent = binding.edittext
                 val deskMode = binding.deskMode
+
+                message.text = resources.getString(R.string.current_user_agent,
+                    webview.webSettings.userAgentString)
                 deskMode.isChecked = currentCustomUAWideView
                 val dialog = MaterialAlertDialogBuilder(this)
                 dialog.setTitle(R.string.customUA)

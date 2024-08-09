@@ -163,6 +163,7 @@
     <string name="ssl_info_dialog_content_nocert">"This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards)."</string>
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
+    <string name="current_user_agent">Current user agent:\n%s</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

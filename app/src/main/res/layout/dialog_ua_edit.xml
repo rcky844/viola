@@ -11,6 +11,11 @@
     android:paddingEnd="20dp"
     android:paddingBottom="12dp">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edittext"
         android:layout_width="match_parent"
