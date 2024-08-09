@@ -520,6 +520,8 @@ class BrowserActivity : VWebViewActivity() {
                 webview.loadHomepage(reqVal)
                 if (reqVal) urlEditText.setText(CommonUtils.EMPTY_STRING)
             }
+
+            R.drawable.share -> CommonUtils.copyClipboard(this, webview.url)
         }
     }
 
