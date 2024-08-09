@@ -256,7 +256,7 @@ class BrowserActivity : VWebViewActivity() {
                     .text.toString())
                 closeKeyboard()
             }
-        urlEditText.setAdapter(SuggestionAdapter(this@BrowserActivity))
+        urlEditText.setAdapter(SuggestionAdapter(this))
 
         // Setup the up most fab (currently for reload)
         upRightFab.setOnClickListener {

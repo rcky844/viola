@@ -21,8 +21,7 @@ import java.util.Locale
 
 class SuggestionAdapter(private val mContext: Context)
     : BaseAdapter(), Filterable {
-    lateinit var binding: TemplateTextSuggestionsBinding
-    private val items = ArrayList<String>()
+    private var items = listOf<String>()
     private val filter = ItemFilter()
     private var queryText: String? = null
 
@@ -33,11 +32,15 @@ class SuggestionAdapter(private val mContext: Context)
     override fun getItemId(position: Int) = 0L
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val binding: TemplateTextSuggestionsBinding
         var itemView = convertView
-        if (itemView == null) {
+
+        if (convertView == null) {
             binding = TemplateTextSuggestionsBinding.inflate(
                 LayoutInflater.from(mContext), parent, false)
             itemView = binding.root
+        } else {
+            binding = TemplateTextSuggestionsBinding.bind(itemView!!)
         }
 
         val title = binding.text1
@@ -77,14 +80,17 @@ class SuggestionAdapter(private val mContext: Context)
 
     private inner class ItemFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val results = FilterResults()
-            if (constraint.isNullOrEmpty()) return results
-            val provider: SuggestionProvider = provider
-            val query = constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
-            val items = provider.fetchResults(query)
-            results.count = items.size
-            results.values = items
-            return results
+            val filterResults = FilterResults()
+            constraint?.takeUnless { it.isBlank() }?.let {
+                val provider: SuggestionProvider = provider
+                val query = constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
+                val results = provider.fetchResults(query)
+                filterResults.count = items.size
+                filterResults.values = items
+                queryText = query
+                items = results
+            }
+            return filterResults
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
