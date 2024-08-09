@@ -18,9 +18,6 @@ import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
 open class SuggestionProvider(private val mContext: Context) {
-    private val encoding: String = defaultEncoding
-    private val mLanguage: String = language
-
     /**
      * Create a URL for the given query in the given language.
      *
@@ -73,7 +70,7 @@ open class SuggestionProvider(private val mContext: Context) {
         }
 
         // There could be no suggestions for this query, return an empty list.
-        val content = downloadSuggestionsForQuery(query, mLanguage)
+        val content = downloadSuggestionsForQuery(query, language)
             ?.replaceFirst(")]}'", "")
             ?: return filter
         try {
@@ -105,9 +102,9 @@ open class SuggestionProvider(private val mContext: Context) {
                 "Cache-Control",
                 "max-age=$INTERVAL_DAY, max-stale=$INTERVAL_DAY"
             )
-            urlConnection.addRequestProperty("Accept-Charset", defaultEncoding)
+            urlConnection.addRequestProperty("Accept-Charset", encoding)
             try {
-                val charset = urlConnection.getCharset(defaultEncoding)
+                val charset = urlConnection.getCharset(encoding)
                 urlConnection.inputStream.bufferedReader(charset).use {
                     return it.readText()
                 }
@@ -125,9 +122,8 @@ open class SuggestionProvider(private val mContext: Context) {
         private const val LOG_TAG = "SuggestionProvider"
         private val INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1)
 
-        private const val defaultEncoding = "UTF-8"
-        private val language: String
-            get() = CommonUtils.language
+        private const val encoding = "UTF-8"
+        private val language = CommonUtils.language
 
         fun interface ResultCallback {
             fun addResult(suggestion: String?): Boolean
