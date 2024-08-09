@@ -57,7 +57,7 @@ android {
             "\"${SimpleDateFormat("yyMMdd").format(Date())}\"")
         buildConfigField("String", "VERSION_BUILD_TIME_MINIMAL",
             "\"${SimpleDateFormat("HHmm").format(Date())}\"")
-        buildConfigField("String", "VERSION_BUILD_STRING_FULL",
+        buildConfigField("String", "VERSION_BUILD_DATE_TIME",
             "\"${SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").format(Date())}\"")
 
         ksp {

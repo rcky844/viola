@@ -67,6 +67,7 @@ class BuildInfoDialog(context: Context, private val dialogDetails: BuildInfoDial
         }
         logo.setOnLongClickListener {
             CommonUtils.showMessage(context, "Work in progress!")
+            CommonUtils.showMessage(context, "Compiled: ${BuildConfig.VERSION_BUILD_DATE_TIME}")
             true
         }
 
