@@ -76,6 +76,7 @@ import tipz.viola.widget.StringResAdapter
 import java.lang.ref.WeakReference
 import java.text.DateFormat
 
+
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -90,7 +91,6 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var toolBar: RecyclerView
     private lateinit var toolsBarExtendableRecycler: RecyclerView
     private lateinit var toolsBarExtendableBackground: ConstraintLayout
-    private lateinit var layoutHitBox: LinearLayoutCompat
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
@@ -160,10 +160,10 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Layout HitBox
-        layoutHitBox = binding.layoutHitBox
-        layoutHitBox.setOnClickListener {
+        webview.setOnTouchListener { _, _ ->
             if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
-            if (imm.isAcceptingText) closeKeyboard()
+            if (urlEditText.hasFocus() && imm.isAcceptingText) closeKeyboard()
+            false
         }
 
         // Setup favicon
@@ -272,7 +272,6 @@ class BrowserActivity : VWebViewActivity() {
             progressBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             sslLock.bringToFront()
-            layoutHitBox.bringToFront()
             toolsBarExtendableBackground.bringToFront()
         }
 
