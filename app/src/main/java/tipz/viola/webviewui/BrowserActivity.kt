@@ -247,6 +247,9 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setOnClickListener {
             if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
         }
+        urlEditText.setOnLongClickListener {
+            sslLock.performClick()
+        }
         urlEditText.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, mView: View, _: Int, _: Long ->
                 webview.loadUrl((mView.findViewById<View>(android.R.id.text1) as AppCompatTextView)
