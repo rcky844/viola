@@ -4,7 +4,6 @@
 package tipz.build.info
 
 import android.util.Log
-import androidx.annotation.IdRes
 import androidx.annotation.Size
 import tipz.viola.BuildConfig
 
@@ -87,13 +86,6 @@ open class BuildInfo {
      */
     @Size(min=1)
     var productLicenseDocument: String? = BuildConfig.PRODUCT_LICENSE_DOCUMENT
-
-    /* PRODUCT_BANNER
-     *
-     * The resource ID for the banner of the product to display in dialog.
-     */
-    @IdRes
-    var productBanner: Int? = null
 
     fun getProductBuildTag() : String? {
         val buildTagBuffer = StringBuffer()
