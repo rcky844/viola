@@ -457,14 +457,20 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 when (agentMode) {
                     UserAgentMode.MOBILE -> { }
                     UserAgentMode.DESKTOP -> {
+                        // Remove references to Mobile Safari
                         if (group.startsWith("Mobile Safari"))
                             group = group.replace("Mobile ", "")
-                        if (group.matches("\\((.*)?;\\s?wv((;\\s.*)?)\\)\\s".toRegex()))
-                            group = group.replace(
-                                "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex(), "(\$1\$2)")
                     }
                     else -> { }
                 }
+
+                // Don't declare ourselves as a WebView, this breaks many sites
+                // as they may thing we can only provide a simple WebView.
+                if (group.matches("\\((.*)?;\\s?wv((;\\s.*)?)\\)\\s".toRegex()))
+                    group = group.replace(
+                        "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex(), "(\$1\$2)")
+
+                // Add to builder
                 userAgentBuilder.append(group)
             }
             userAgentBuilder.append(" Viola/${BuildConfig.VERSION_NAME}")
