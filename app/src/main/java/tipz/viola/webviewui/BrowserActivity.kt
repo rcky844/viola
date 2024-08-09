@@ -99,6 +99,7 @@ class BrowserActivity : VWebViewActivity() {
     private var sslState: SslState = SslState.NONE
     private var sslErrorHost: String = CommonUtils.EMPTY_STRING
     private var setFabHiddenViews = false
+    private lateinit var imm: InputMethodManager
 
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
@@ -127,6 +128,9 @@ class BrowserActivity : VWebViewActivity() {
         // Broha Clients
         favClient = FavClient(this)
         iconHashClient = IconHashClient(this)
+
+        // Miscellaneous
+        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         // Start update service
         UpdateService(this, true)
@@ -229,7 +233,6 @@ class BrowserActivity : VWebViewActivity() {
             OnEditorActionListener { _: TextView?, actionId: Int, _: KeyEvent? ->
                 if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                     webview.loadUrl(urlEditText.text.toString())
-                    urlEditText.clearFocus()
                     closeKeyboard()
                     return@OnEditorActionListener true
                 }
@@ -238,7 +241,6 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
                 if (urlEditText.text.toString() != webview.url) urlEditText.setText(webview.url)
-                urlEditText.setSelection(0)
                 urlEditText.dropDownHeight = 0
             } else {
                 urlEditText.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -539,8 +541,9 @@ class BrowserActivity : VWebViewActivity() {
 
     private fun closeKeyboard() {
         WindowCompat.getInsetsController(window, urlEditText).hide(WindowInsetsCompat.Type.ime())
+        urlEditText.clearFocus()
+        webview.requestFocus()
     }
-
 
     override fun onUrlUpdated(url: String?) {
         if (!urlEditText.isFocused) urlEditText.setText(url)
@@ -553,7 +556,6 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onDropDownDismissed() {
         urlEditText.dismissDropDown()
-        urlEditText.clearFocus()
     }
 
     override fun onSslCertificateUpdated() {
@@ -585,7 +587,6 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onStartPageEditTextPressed() {
         urlEditText.requestFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(urlEditText, InputMethodManager.SHOW_FORCED)
     }
 

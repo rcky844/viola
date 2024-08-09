@@ -89,6 +89,8 @@
                     android:completionThreshold="1"
                     android:dropDownWidth="match_parent"
                     android:fadingEdge="vertical"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:hint="@string/address_bar_hint"
                     android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
                     android:importantForAutofill="no"
