@@ -65,7 +65,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     private lateinit var historyClient: HistoryClient
     val downloadClient: DownloadClient = (mContext.applicationContext as Application).downloadClient
     private val iconHashClient = IconHashClient(mContext)
-    private val webSettings = this.settings
+    val webSettings = this.settings
     private var currentBroha = Broha()
     var currentFavicon: Bitmap? = null
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
@@ -239,7 +239,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun loadUrl(url: String) {
-        if (url.isBlank()) return
+        if (url.isBlank()) super.loadUrl(ExportedUrls.aboutBlankUrl)
         if (BussUtils.sendAndRequestResponse(this, url)) return
 
         // Check for privileged URLs
@@ -307,6 +307,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     // This should only be accessed by us!
     fun loadRealUrl(url: String) {
+        if (url.isBlank()) super.loadUrl(ExportedUrls.aboutBlankUrl)
         super.loadUrl(url)
     }
 
@@ -456,14 +457,20 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 when (agentMode) {
                     UserAgentMode.MOBILE -> { }
                     UserAgentMode.DESKTOP -> {
+                        // Remove references to Mobile Safari
                         if (group.startsWith("Mobile Safari"))
                             group = group.replace("Mobile ", "")
-                        if (group.matches("\\((.*)?;\\s?wv((;\\s.*)?)\\)\\s".toRegex()))
-                            group = group.replace(
-                                "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex(), "(\$1\$2)")
                     }
                     else -> { }
                 }
+
+                // Don't declare ourselves as a WebView, this breaks many sites
+                // as they may thing we can only provide a simple WebView.
+                if (group.matches("\\((.*)?;\\s?wv((;\\s.*)?)\\)\\s".toRegex()))
+                    group = group.replace(
+                        "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex(), "(\$1\$2)")
+
+                // Add to builder
                 userAgentBuilder.append(group)
             }
             userAgentBuilder.append(" Viola/${BuildConfig.VERSION_NAME}")

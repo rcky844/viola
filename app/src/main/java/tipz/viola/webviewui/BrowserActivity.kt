@@ -35,8 +35,6 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
@@ -78,6 +76,7 @@ import tipz.viola.widget.StringResAdapter
 import java.lang.ref.WeakReference
 import java.text.DateFormat
 
+
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -92,13 +91,13 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var toolBar: RecyclerView
     private lateinit var toolsBarExtendableRecycler: RecyclerView
     private lateinit var toolsBarExtendableBackground: ConstraintLayout
-    private lateinit var toolsBarExtendableCloseHitBox: LinearLayoutCompat
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
     private var sslErrorHost: String = CommonUtils.EMPTY_STRING
     private var setFabHiddenViews = false
+    private lateinit var imm: InputMethodManager
 
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
@@ -128,6 +127,9 @@ class BrowserActivity : VWebViewActivity() {
         favClient = FavClient(this)
         iconHashClient = IconHashClient(this)
 
+        // Miscellaneous
+        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+
         // Start update service
         UpdateService(this, true)
 
@@ -156,9 +158,12 @@ class BrowserActivity : VWebViewActivity() {
         toolsBarExtendableBackground.post {
             toolsBarExtendableBackground.visibility = View.GONE
         }
-        toolsBarExtendableCloseHitBox = binding.toolsBarExtendableCloseHitBox
-        toolsBarExtendableCloseHitBox.setOnClickListener {
-            expandToolBar()
+
+        // Layout HitBox
+        webview.setOnTouchListener { _, _ ->
+            if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
+            if (urlEditText.hasFocus() && imm.isAcceptingText) closeKeyboard()
+            false
         }
 
         // Setup favicon
@@ -229,7 +234,6 @@ class BrowserActivity : VWebViewActivity() {
             OnEditorActionListener { _: TextView?, actionId: Int, _: KeyEvent? ->
                 if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
                     webview.loadUrl(urlEditText.text.toString())
-                    urlEditText.clearFocus()
                     closeKeyboard()
                     return@OnEditorActionListener true
                 }
@@ -238,7 +242,6 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
                 if (urlEditText.text.toString() != webview.url) urlEditText.setText(webview.url)
-                urlEditText.setSelection(0)
                 urlEditText.dropDownHeight = 0
             } else {
                 urlEditText.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -247,13 +250,16 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setOnClickListener {
             if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
         }
+        urlEditText.setOnLongClickListener {
+            sslLock.performClick()
+        }
         urlEditText.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, mView: View, _: Int, _: Long ->
                 webview.loadUrl((mView.findViewById<View>(android.R.id.text1) as AppCompatTextView)
                     .text.toString())
                 closeKeyboard()
             }
-        urlEditText.setAdapter(SuggestionAdapter(this@BrowserActivity))
+        urlEditText.setAdapter(SuggestionAdapter(this))
 
         // Setup the up most fab (currently for reload)
         upRightFab.setOnClickListener {
@@ -266,7 +272,6 @@ class BrowserActivity : VWebViewActivity() {
             progressBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             sslLock.bringToFront()
-            toolsBarExtendableCloseHitBox.bringToFront()
             toolsBarExtendableBackground.bringToFront()
         }
 
@@ -486,9 +491,12 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
                 val binding: DialogUaEditBinding = DialogUaEditBinding.inflate(layoutInflater)
                 val mView = binding.root
-
+                val message = binding.message
                 val customUserAgent = binding.edittext
                 val deskMode = binding.deskMode
+
+                message.text = resources.getString(R.string.current_user_agent,
+                    webview.webSettings.userAgentString)
                 deskMode.isChecked = currentCustomUAWideView
                 val dialog = MaterialAlertDialogBuilder(this)
                 dialog.setTitle(R.string.customUA)
@@ -514,6 +522,8 @@ class BrowserActivity : VWebViewActivity() {
                 webview.loadHomepage(reqVal)
                 if (reqVal) urlEditText.setText(CommonUtils.EMPTY_STRING)
             }
+
+            R.drawable.share -> CommonUtils.copyClipboard(this, webview.url)
         }
     }
 
@@ -528,7 +538,6 @@ class BrowserActivity : VWebViewActivity() {
         transition.addTarget(R.id.toolsBarExtendableBackground)
         TransitionManager.beginDelayedTransition(toolsBarExtendableBackground, transition)
         toolsBarExtendableBackground.visibility = if (viewVisible) View.GONE else View.VISIBLE
-        toolsBarExtendableCloseHitBox.visibility = if (viewVisible) View.GONE else View.VISIBLE
     }
 
     override fun onPageLoadProgressChanged(progress: Int) {
@@ -538,9 +547,10 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     private fun closeKeyboard() {
-        WindowCompat.getInsetsController(window, urlEditText).hide(WindowInsetsCompat.Type.ime())
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        urlEditText.clearFocus()
+        webview.requestFocus()
     }
-
 
     override fun onUrlUpdated(url: String?) {
         if (!urlEditText.isFocused) urlEditText.setText(url)
@@ -553,7 +563,6 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onDropDownDismissed() {
         urlEditText.dismissDropDown()
-        urlEditText.clearFocus()
     }
 
     override fun onSslCertificateUpdated() {
@@ -585,7 +594,6 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onStartPageEditTextPressed() {
         urlEditText.requestFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(urlEditText, InputMethodManager.SHOW_FORCED)
     }
 

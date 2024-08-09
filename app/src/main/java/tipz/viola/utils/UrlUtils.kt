@@ -22,7 +22,7 @@ object UrlUtils {
         ("^(?:[a-z+]+:)?//" +
                 "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?")
             .toRegex()
-    val nonStandardUri = listOf("viola", "chrome", "file", "javascript")
+    val nonStandardUri = listOf("viola", "chrome", "file", "javascript", "about")
 
     /**
      * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has

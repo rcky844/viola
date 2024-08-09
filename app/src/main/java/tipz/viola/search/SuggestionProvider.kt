@@ -5,13 +5,12 @@
 package tipz.viola.search
 
 import android.content.Context
+import android.util.Log
 import org.json.JSONArray
 import tipz.viola.Application
+import tipz.viola.ext.getCharset
 import tipz.viola.utils.CommonUtils
-import java.io.BufferedInputStream
-import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStreamReader
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -19,7 +18,7 @@ import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
 open class SuggestionProvider(private val mContext: Context) {
-    private val mEncoding: String = encoding
+    private val encoding: String = defaultEncoding
     private val mLanguage: String = language
 
     /**
@@ -67,19 +66,23 @@ open class SuggestionProvider(private val mContext: Context) {
     fun fetchResults(rawQuery: String): List<String> {
         val filter: MutableList<String> = ArrayList(5)
         val query: String = try {
-            URLEncoder.encode(rawQuery, mEncoding)
+            URLEncoder.encode(rawQuery, encoding)
         } catch (e: UnsupportedEncodingException) {
+            Log.e(LOG_TAG, "Unable to encode the URL", e)
             return filter
         }
+
+        // There could be no suggestions for this query, return an empty list.
         val content = downloadSuggestionsForQuery(query, mLanguage)
-            ?: // There are no suggestions for this query, return an empty list.
-            return filter
+            ?.replaceFirst(")]}'", "")
+            ?: return filter
         try {
             parseResults(content) {
                 filter.add(it!!)
                 filter.size < 5
             }
-        } catch (ignored: Exception) {
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "Unable to parse results", e)
         }
         return filter
     }
@@ -102,15 +105,14 @@ open class SuggestionProvider(private val mContext: Context) {
                 "Cache-Control",
                 "max-age=$INTERVAL_DAY, max-stale=$INTERVAL_DAY"
             )
-            urlConnection.addRequestProperty("Accept-Charset", mEncoding)
+            urlConnection.addRequestProperty("Accept-Charset", defaultEncoding)
             try {
-                BufferedInputStream(urlConnection.inputStream).use { `in` ->
-                    val reader = BufferedReader(InputStreamReader(`in`, getEncoding(urlConnection)))
-                    val result = StringBuilder()
-                    var line: String?
-                    while (reader.readLine().also { line = it } != null) result.append(line)
-                    return result.toString()
+                val charset = urlConnection.getCharset(defaultEncoding)
+                urlConnection.inputStream.bufferedReader(charset).use {
+                    return it.readText()
                 }
+            } catch (e: IOException) {
+                Log.d(LOG_TAG, "Problem getting search suggestions", e)
             } finally {
                 urlConnection.disconnect()
             }
@@ -119,22 +121,11 @@ open class SuggestionProvider(private val mContext: Context) {
         return null
     }
 
-    private fun getEncoding(connection: HttpURLConnection): String {
-        val contentEncoding = connection.contentEncoding
-        if (contentEncoding != null) return contentEncoding
-        val contentType = connection.contentType
-        for (value in contentType.split(";".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
-            value.trim { it <= ' ' }
-            if (value.lowercase().startsWith("charset=")) return value.substring(8)
-        }
-        return mEncoding
-    }
-
     companion object {
+        private const val LOG_TAG = "SuggestionProvider"
         private val INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1)
 
-        // TODO: Allow changing encoding
-        private const val encoding = "UTF-8"
+        private const val defaultEncoding = "UTF-8"
         private val language: String
             get() = CommonUtils.language
 

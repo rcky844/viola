@@ -32,6 +32,7 @@ class InitialMigrations(pref: SettingsSharedPreference) {
             pref.setInt(SettingsKeys.showFavicon, 0)
             pref.setInt(SettingsKeys.themeId, 0)
             pref.setInt(SettingsKeys.useCustomTabs, 1)
+            pref.setInt(SettingsKeys.useForceDark, 1)
             pref.setInt(SettingsKeys.updateRecentsIcon, 1)
         }
     }

@@ -21,51 +21,44 @@ import java.util.Locale
 
 class SuggestionAdapter(private val mContext: Context)
     : BaseAdapter(), Filterable {
-    lateinit var binding: TemplateTextSuggestionsBinding
-    private val mItems = ArrayList<String>()
-    private val mFilter: ItemFilter
-    private var mQueryText: String? = null
+    private var items = listOf<String>()
+    private val filter = ItemFilter()
+    private var queryText: String? = null
 
-    init {
-        mFilter = ItemFilter()
-    }
+    override fun getCount() = items.size
 
-    override fun getCount(): Int {
-        return mItems.size
-    }
+    override fun getItem(position: Int) = items[position]
 
-    override fun getItem(position: Int): String {
-        return mItems[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
+    override fun getItemId(position: Int) = 0L
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var mConvertView = convertView
-        if (mConvertView == null) {
+        val binding: TemplateTextSuggestionsBinding
+        var itemView = convertView
+
+        if (convertView == null) {
             binding = TemplateTextSuggestionsBinding.inflate(
                 LayoutInflater.from(mContext), parent, false)
-            mConvertView = binding.root
+            itemView = binding.root
+        } else {
+            binding = TemplateTextSuggestionsBinding.bind(itemView!!)
         }
 
         val title = binding.text1
         val copyToSearchBarButton = binding.copyToSearchBarButton
-        val suggestion = mItems[position]
+        val suggestion = items[position]
 
-        if (mQueryText != null) {
+        if (queryText != null) {
             val spannable = SpannableStringBuilder(suggestion)
             val lcSuggestion = suggestion.lowercase(Locale.getDefault())
-            var queryTextPos = lcSuggestion.indexOf(mQueryText!!)
+            var queryTextPos = lcSuggestion.indexOf(queryText!!)
             while (queryTextPos >= 0) {
                 spannable.setSpan(
                     StyleSpan(Typeface.BOLD),
-                    queryTextPos, queryTextPos + mQueryText!!.length,
+                    queryTextPos, queryTextPos + queryText!!.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                queryTextPos = lcSuggestion.indexOf(mQueryText!!,
-                    queryTextPos + mQueryText!!.length)
+                queryTextPos = lcSuggestion.indexOf(queryText!!,
+                    queryTextPos + queryText!!.length)
             }
             title.text = spannable
         } else {
@@ -74,32 +67,33 @@ class SuggestionAdapter(private val mContext: Context)
         copyToSearchBarButton.setOnClickListener {
             (mContext as VWebViewActivity).onUrlUpdated(suggestion, suggestion.length)
         }
-        return mConvertView
+        itemView.setOnLongClickListener {
+            (mContext as VWebViewActivity).onUrlUpdated(suggestion, suggestion.length)
+            true
+        }
+        return itemView
     }
 
     override fun getFilter(): Filter {
-        return mFilter
+        return filter
     }
 
     private inner class ItemFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val results = FilterResults()
-            if (constraint.isNullOrEmpty()) return results
-            val provider: SuggestionProvider = provider
-            val query = constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
-            val items = provider.fetchResults(query)
-            results.count = items.size
-            results.values = items
-            return results
+            val filterResults = FilterResults()
+            constraint?.takeUnless { it.isBlank() }?.let {
+                val provider: SuggestionProvider = provider
+                val query = constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
+                val results = provider.fetchResults(query)
+                filterResults.count = items.size
+                filterResults.values = items
+                queryText = query
+                items = results
+            }
+            return filterResults
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
-            mItems.clear()
-            if (results.values != null) {
-                mItems.addAll((results.values as List<String>))
-                mQueryText = constraint?.toString()?.lowercase(Locale.getDefault())
-                    ?.trim { it <= ' ' }
-            }
             notifyDataSetChanged()
         }
     }
