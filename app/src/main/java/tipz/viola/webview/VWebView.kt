@@ -239,7 +239,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun loadUrl(url: String) {
-        if (url.isBlank()) return
+        if (url.isBlank()) super.loadUrl(ExportedUrls.aboutBlankUrl)
         if (BussUtils.sendAndRequestResponse(this, url)) return
 
         // Check for privileged URLs
@@ -307,6 +307,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     // This should only be accessed by us!
     fun loadRealUrl(url: String) {
+        if (url.isBlank()) super.loadUrl(ExportedUrls.aboutBlankUrl)
         super.loadUrl(url)
     }
 
