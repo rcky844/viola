@@ -174,11 +174,10 @@
     </RelativeLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/toolsBarExtendableCloseHitBox"
+        android:id="@+id/layoutHitBox"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:translationZ="4dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

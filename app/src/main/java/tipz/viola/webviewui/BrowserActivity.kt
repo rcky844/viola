@@ -90,7 +90,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var toolBar: RecyclerView
     private lateinit var toolsBarExtendableRecycler: RecyclerView
     private lateinit var toolsBarExtendableBackground: ConstraintLayout
-    private lateinit var toolsBarExtendableCloseHitBox: LinearLayoutCompat
+    private lateinit var layoutHitBox: LinearLayoutCompat
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
@@ -158,9 +158,12 @@ class BrowserActivity : VWebViewActivity() {
         toolsBarExtendableBackground.post {
             toolsBarExtendableBackground.visibility = View.GONE
         }
-        toolsBarExtendableCloseHitBox = binding.toolsBarExtendableCloseHitBox
-        toolsBarExtendableCloseHitBox.setOnClickListener {
-            expandToolBar()
+
+        // Layout HitBox
+        layoutHitBox = binding.layoutHitBox
+        layoutHitBox.setOnClickListener {
+            if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
+            if (imm.isAcceptingText) closeKeyboard()
         }
 
         // Setup favicon
@@ -269,7 +272,7 @@ class BrowserActivity : VWebViewActivity() {
             progressBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             sslLock.bringToFront()
-            toolsBarExtendableCloseHitBox.bringToFront()
+            layoutHitBox.bringToFront()
             toolsBarExtendableBackground.bringToFront()
         }
 
@@ -531,7 +534,6 @@ class BrowserActivity : VWebViewActivity() {
         transition.addTarget(R.id.toolsBarExtendableBackground)
         TransitionManager.beginDelayedTransition(toolsBarExtendableBackground, transition)
         toolsBarExtendableBackground.visibility = if (viewVisible) View.GONE else View.VISIBLE
-        toolsBarExtendableCloseHitBox.visibility = if (viewVisible) View.GONE else View.VISIBLE
     }
 
     override fun onPageLoadProgressChanged(progress: Int) {
