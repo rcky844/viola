@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.databinding.AboutDialogBinding
+import tipz.viola.utils.CommonUtils
 
 @SuppressLint("SetTextI18n")
 class BuildInfoDialog(context: Context, private val dialogDetails: BuildInfoDialogDetails) :
@@ -29,6 +30,7 @@ class BuildInfoDialog(context: Context, private val dialogDetails: BuildInfoDial
         val dialogText = binding.dialogText
         val changelogBtn = binding.changelogBtn
         val licenseBtn = binding.licenseBtn
+        val logo = binding.logo
 
         // Setup dialog text
         buildInfo.productName = resources.getString(R.string.app_name)
@@ -62,6 +64,10 @@ class BuildInfoDialog(context: Context, private val dialogDetails: BuildInfoDial
             else View.VISIBLE
         changelogBtn.setOnClickListener {
             dialogDetails.loader(dialogDetails.changelogUrl!!)
+        }
+        logo.setOnLongClickListener {
+            CommonUtils.showMessage(context, "Work in progress!")
+            true
         }
 
         licenseBtn.visibility =
