@@ -3,10 +3,10 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="240dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="240dp"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -16,11 +16,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/logo"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_marginEnd="4dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@mipmap/ic_launcher_foreground"/>
+            android:scaleType="center"
+            app:srcCompat="@mipmap/ic_launcher_foreground" />
 
         <!-- TODO: Light variant of the background -->
         <androidx.appcompat.widget.AppCompatTextView
@@ -28,10 +28,10 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginStart="4dp"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:text="@string/app_name"
             android:autoSizeTextType="uniform"
+            android:text="@string/app_name"
+            android:textColor="@color/suwOff_text_color"
+            android:textSize="24sp"
             android:typeface="sans"
             tools:targetApi="o" />
 
