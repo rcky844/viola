@@ -35,8 +35,6 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
@@ -540,7 +538,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     private fun closeKeyboard() {
-        WindowCompat.getInsetsController(window, urlEditText).hide(WindowInsetsCompat.Type.ime())
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         urlEditText.clearFocus()
         webview.requestFocus()
     }
