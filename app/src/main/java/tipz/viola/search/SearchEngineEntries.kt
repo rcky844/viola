@@ -6,7 +6,6 @@ package tipz.viola.search
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.UrlUtils.patchUrlForCVEMitigation
 
 object SearchEngineEntries {
     private const val queryPlaceholder = "{query}"
@@ -117,52 +116,35 @@ object SearchEngineEntries {
         it.name == name
     }
 
-    fun getHomePageUrl(name: String): String {
+    fun getPreferredHomePageUrl(pref: SettingsSharedPreference): String {
+        val name = pref.getString(SettingsKeys.homePageName)
+        if (name.isEmpty()) return pref.getString(SettingsKeys.homePageCustomUrl)
+
         val url: String? = findObjWithName(name)!!.homePage
-        if (url.isNullOrBlank()) return CommonUtils.EMPTY_STRING
-        return patchUrlForCVEMitigation(url)
+        if (url.isNullOrBlank()) return ""
+        return url
     }
 
-    fun getDefaultHomeUrl(pref: SettingsSharedPreference?): String {
-        val name = pref!!.getString(SettingsKeys.homePageName)
-        if (name == CommonUtils.EMPTY_STRING) {
-            return pref.getString(SettingsKeys.homePageCustomUrl)
-        }
-        return getHomePageUrl(name)
+    fun getPreferredSearchUrl(pref: SettingsSharedPreference, query: String): String {
+        if (query.isEmpty()) return ""
+
+        val name = pref.getString(SettingsKeys.searchName)
+        if (name.isEmpty()) return pref.getString(SettingsKeys.searchCustomUrl)
+
+        val url: String? = findObjWithName(name)!!.search
+        if (url.isNullOrBlank()) return ""
+        return url.replace(queryPlaceholder, query)
+            .replace(languagePlaceholder, CommonUtils.language)
     }
 
-    fun getSearchUrl(name: String, query: String?, language: String?): String {
-        var url: String? = findObjWithName(name)!!.search
-        if (url.isNullOrBlank()) return CommonUtils.EMPTY_STRING
-        if (query != null)
-            url = url.replace(queryPlaceholder, query).replace(languagePlaceholder, language!!)
-        return patchUrlForCVEMitigation(url)
-    }
+    fun getPreferredSuggestionsUrl(pref: SettingsSharedPreference, query: String): String {
+        if (query.isEmpty()) return ""
+        val name = pref.getString(SettingsKeys.suggestionsName)
+        if (name.isEmpty()) return pref.getString(SettingsKeys.suggestionsCustomUrl)
 
-    fun getDefaultSearchUrl(pref: SettingsSharedPreference?,
-                            query: String?, language: String?): String {
-        val name = pref!!.getString(SettingsKeys.searchName)
-        if (name == CommonUtils.EMPTY_STRING) {
-            return pref.getString(SettingsKeys.searchCustomUrl)
-        }
-        return getSearchUrl(name, query, language)
-    }
-
-    fun getSuggestionsUrl(name: String, query: String?, language: String?): String {
-        var url: String? = findObjWithName(name)!!.suggestion
-        if (url.isNullOrBlank()) return CommonUtils.EMPTY_STRING
-        if (query != null && language != null)
-            url = url.replace(queryPlaceholder, query).replace(
-                languagePlaceholder, language)
-        return patchUrlForCVEMitigation(url)
-    }
-
-    fun getDefaultSuggestionsUrl(pref: SettingsSharedPreference?,
-                            query: String?, language: String?): String {
-        val name = pref!!.getString(SettingsKeys.suggestionsName)
-        if (name == CommonUtils.EMPTY_STRING) {
-            return pref.getString(SettingsKeys.suggestionsCustomUrl)
-        }
-        return getSuggestionsUrl(name, query, language)
+        val url: String? = findObjWithName(name)!!.suggestion
+        if (url.isNullOrBlank()) return ""
+        return url.replace(queryPlaceholder, query)
+            .replace(languagePlaceholder, CommonUtils.language)
     }
 }
