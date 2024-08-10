@@ -41,10 +41,16 @@ class BuildInfoDialog(context: Context, private val dialogDetails: BuildInfoDial
             buildId = buildInfo.productBuildGitRevision
         }
 
+        var productBuildExtra = buildInfo.productBuildExtra
+        productBuildExtra =
+            if (productBuildExtra!!.isEmpty()) ""
+            else " - $productBuildExtra"
+
         val textVersion = resources.getString(
             R.string.buildinfo_dialog_version,
             buildInfo.productName, buildInfo.productVersionCodename,
-            buildInfo.productVersion, buildId
+            buildInfo.productVersion, buildId,
+            productBuildExtra
         )
         val textCopyright = resources.getString(
             R.string.buildinfo_dialog_copyright,

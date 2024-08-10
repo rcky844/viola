@@ -47,6 +47,7 @@ android {
             "\"Apache License, Version 2.0\"")
         buildConfigField("String", "VERSION_CODENAME", "\"Exotic\"")
         buildConfigField("String", "VERSION_COPYRIGHT_YEAR", "\"2020-2024\"")
+        buildConfigField("String", "VERSION_BUILD_EXTRA", "\"\"")
         buildConfigField("String", "VERSION_BUILD_ID", "\"${versionCode}\"")
         buildConfigField("String", "VERSION_BUILD_REVISION", "\"0\"")
         buildConfigField("String", "VERSION_BUILD_GIT_REVISION",
