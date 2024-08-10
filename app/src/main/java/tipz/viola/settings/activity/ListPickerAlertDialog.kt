@@ -70,7 +70,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
 
             dialog.setView(view)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    if (customInput.text.toString().isNotEmpty()) {
+                    if (customInput.text?.trim().toString().isNotEmpty()) {
                         if (!stringPreference.isNullOrBlank())
                             mSettingsPreference.setString(stringPreference!!,
                                 customInput.text.toString())
