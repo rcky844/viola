@@ -514,7 +514,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (useStartPage) {
             loadRealUrl(ExportedUrls.actualStartUrl)
         } else {
-            loadUrl(SearchEngineEntries.getDefaultHomeUrl(settingsPreference))
+            loadUrl(SearchEngineEntries.getPreferredHomePageUrl(settingsPreference))
         }
 
     }

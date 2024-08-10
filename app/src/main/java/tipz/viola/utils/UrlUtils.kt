@@ -8,7 +8,6 @@ import android.util.Log
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.utils.CommonUtils.language
 
 object UrlUtils {
     private const val LOG_TAG = "UrlUtils"
@@ -68,10 +67,7 @@ object UrlUtils {
                 }
                 2 -> {
                     // If run 0 failed, make it a search url
-                    checkedUrl = SearchEngineEntries.getSearchUrl(
-                        pref.getString(SettingsKeys.searchName),
-                        input, language
-                    )
+                    checkedUrl = SearchEngineEntries.getPreferredSearchUrl(pref, input)
                 }
                 else -> {
                     Log.d(LOG_TAG, "toValidHttpUrl(): Unable to convert into valid url!")
