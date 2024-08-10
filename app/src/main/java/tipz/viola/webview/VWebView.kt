@@ -277,8 +277,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     }
                     .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                         // Load actual url if user cancelled the request
-                        // Url already passed uriRegex, just check for CVEs.
-                        val checkedUrl = UrlUtils.patchUrlForCVEMitigation(url)
+                        val checkedUrl = url
                         super.loadUrl(checkedUrl, requestHeaders)
                     }
                     .create().show()
