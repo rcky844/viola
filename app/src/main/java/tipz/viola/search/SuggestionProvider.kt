@@ -9,7 +9,6 @@ import android.util.Log
 import org.json.JSONArray
 import tipz.viola.Application
 import tipz.viola.ext.getCharset
-import tipz.viola.utils.CommonUtils
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
@@ -18,22 +17,17 @@ import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
 open class SuggestionProvider(private val mContext: Context) {
-    private val encoding: String = defaultEncoding
-    private val mLanguage: String = language
-
     /**
      * Create a URL for the given query in the given language.
      *
      * @param query    the query that was made.
-     * @param language the locale of the user.
      * @return should return a URL that can be fetched using a GET.
      */
     private fun createQueryUrl(
-        query: String,
-        language: String
+        query: String
     ): String {
         val settingsPreference = (mContext.applicationContext as Application).settingsPreference
-        return SearchEngineEntries.getDefaultSuggestionsUrl(settingsPreference, query, language)
+        return SearchEngineEntries.getPreferredSuggestionsUrl(settingsPreference, query)
     }
 
     /**
@@ -73,7 +67,7 @@ open class SuggestionProvider(private val mContext: Context) {
         }
 
         // There could be no suggestions for this query, return an empty list.
-        val content = downloadSuggestionsForQuery(query, mLanguage)
+        val content = downloadSuggestionsForQuery(query)
             ?.replaceFirst(")]}'", "")
             ?: return filter
         try {
@@ -95,19 +89,18 @@ open class SuggestionProvider(private val mContext: Context) {
      * @return the cache file containing the suggestions
      */
     private fun downloadSuggestionsForQuery(
-        query: String,
-        language: String
+        query: String
     ): String? {
         try {
-            val url = URL(createQueryUrl(query, language))
+            val url = URL(createQueryUrl(query))
             val urlConnection = url.openConnection() as HttpURLConnection
             urlConnection.addRequestProperty(
                 "Cache-Control",
                 "max-age=$INTERVAL_DAY, max-stale=$INTERVAL_DAY"
             )
-            urlConnection.addRequestProperty("Accept-Charset", defaultEncoding)
+            urlConnection.addRequestProperty("Accept-Charset", encoding)
             try {
-                val charset = urlConnection.getCharset(defaultEncoding)
+                val charset = urlConnection.getCharset(encoding)
                 urlConnection.inputStream.bufferedReader(charset).use {
                     return it.readText()
                 }
@@ -125,9 +118,7 @@ open class SuggestionProvider(private val mContext: Context) {
         private const val LOG_TAG = "SuggestionProvider"
         private val INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1)
 
-        private const val defaultEncoding = "UTF-8"
-        private val language: String
-            get() = CommonUtils.language
+        private const val encoding = "UTF-8"
 
         fun interface ResultCallback {
             fun addResult(suggestion: String?): Boolean

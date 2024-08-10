@@ -3,7 +3,6 @@
 
 package tipz.viola.download
 
-import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.VWebView
 
 class DownloadObject {
@@ -13,7 +12,7 @@ class DownloadObject {
     internal var vWebView: VWebView? = null
 
     /* Download task specifics */
-    var uriString = CommonUtils.EMPTY_STRING
+    var uriString = ""
     var filename: String? = null
     var downloadPath: String? = null
     var contentDisposition: String? = null

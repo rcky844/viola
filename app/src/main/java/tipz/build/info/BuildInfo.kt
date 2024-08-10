@@ -31,6 +31,13 @@ open class BuildInfo {
     @Size(min=1)
     var productVersionCodename: String? = BuildConfig.VERSION_CODENAME
 
+    /* PRODUCT_BUILD_EXTRA
+     *
+     * Describes the visible extra name given to the build
+     */
+    @Size(min=1)
+    var productBuildExtra: String? = BuildConfig.VERSION_BUILD_EXTRA
+
     /* PRODUCT_BUILD_ID
      *
      * Describes the order in which builds were compiled.

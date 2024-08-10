@@ -97,8 +97,7 @@ open class VWebViewClient(
         }
         if (UrlUtils.isUriLaunchable(url)) return false
         try {
-            val intent = Intent(Intent.ACTION_VIEW,
-                Uri.parse(UrlUtils.patchUrlForCVEMitigation(url)))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             mContext.startActivity(intent)
         } catch (ignored: ActivityNotFoundException) {
             CommonUtils.showMessage(mContext, R.string.toast_no_app_to_handle)
@@ -138,7 +137,7 @@ open class VWebViewClient(
             if (adServersHandler.adServers!!.contains(" ${Uri.parse(url).host}"))
                 return WebResourceResponse(
                     "text/plain", "utf-8",
-                    ByteArrayInputStream(CommonUtils.EMPTY_STRING.toByteArray())
+                    ByteArrayInputStream("".toByteArray())
                 )
         }
 

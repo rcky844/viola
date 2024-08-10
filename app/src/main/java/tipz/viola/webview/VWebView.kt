@@ -49,7 +49,6 @@ import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.buss.BussUtils
 import tipz.viola.webview.pages.ExportedUrls
@@ -231,32 +230,16 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun setUpdateHistory(value: Boolean) {
         historyState = if (value) UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
-            else UpdateHistoryState.STATE_DISABLED
+        else UpdateHistoryState.STATE_DISABLED
     }
 
     fun onSslErrorProceed() {
         activity.onSslErrorProceed()
     }
 
-    override fun loadUrl(url: String) {
-        if (url.isBlank()) super.loadUrl(ExportedUrls.aboutBlankUrl)
-        if (BussUtils.sendAndRequestResponse(this, url)) return
-
-        // Check for privileged URLs
-        if (PrivilegedPages.isPrivilegedPage(url)) super.loadUrl(url)
-        val privilegedActualUrl = PrivilegedPages.getActualUrl(url)
-        if (privilegedActualUrl != null) {
-            loadRealUrl(privilegedActualUrl)
-            return
-        }
-
-        // Check for view source
-        if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
-
-        // Handle App Links
+    fun loadAppLinkUrl(url: String): Boolean {
         if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
             && UrlUtils.isUriLaunchable(url)) {
-            var handled = false
             val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             webIntent.addCategory(Intent.CATEGORY_BROWSABLE)
             webIntent.setFlags(
@@ -271,38 +254,56 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         try {
                             activity.startActivity(webIntent)
-                            handled = true
                         } catch (e: ActivityNotFoundException) {
                             // Do not load actual url on failure
                         }
                     }
                     .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
-                        // Load actual url if user cancelled the request
-                        // Url already passed uriRegex, just check for CVEs.
-                        val checkedUrl = UrlUtils.patchUrlForCVEMitigation(url)
-                        super.loadUrl(checkedUrl, requestHeaders)
+                        // Load actual url if user cancelled the request.
+                        super.loadUrl(url, requestHeaders)
                     }
                     .create().show()
             }
-            if (handled) return // Exit loadUrl() if handled
+            return true
         } else {
-            // If the URL has "viola://" prefix but hasn't been handled till here,
-            // wire it up with the "chrome://" suffix.
-            if (url.startsWith(ExportedUrls.violaPrefix)) {
-                super.loadUrl(url.replace(ExportedUrls.violaPrefix, ExportedUrls.chromePrefix))
-                return
-            }
-
-            // By this point, it is probably a webpage or a search query.
-            val checkedUrl = UrlUtils.validateUrlOrConvertToSearch(settingsPreference, url)
-            onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
-
-            // Prevent creating duplicate entries
-            if (currentBroha.url == checkedUrl && historyState != UpdateHistoryState.STATE_DISABLED)
-                historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED
-
-            super.loadUrl(checkedUrl, requestHeaders)
+            return false
         }
+    }
+
+    override fun loadUrl(url: String) {
+        if (url.trim().isEmpty()) return
+        if (BussUtils.sendAndRequestResponse(this, url)) return
+
+        // Check for privileged URLs
+        if (PrivilegedPages.isPrivilegedPage(url)) super.loadUrl(url)
+        val privilegedActualUrl = PrivilegedPages.getActualUrl(url)
+        if (privilegedActualUrl != null) {
+            loadRealUrl(privilegedActualUrl)
+            return
+        }
+
+        // Check for view source
+        if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
+
+        // Handle App Links
+        if (loadAppLinkUrl(url)) return
+
+        // If the URL has "viola://" prefix but hasn't been handled till here,
+        // wire it up with the "chrome://" suffix.
+        if (url.startsWith(ExportedUrls.violaPrefix)) {
+            super.loadUrl(url.replace(ExportedUrls.violaPrefix, ExportedUrls.chromePrefix))
+            return
+        }
+
+        // By this point, it is probably a webpage or a search query.
+        val checkedUrl = UrlUtils.validateUrlOrConvertToSearch(settingsPreference, url)
+        onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
+
+        // Prevent creating duplicate entries
+        if (currentBroha.url == checkedUrl && historyState != UpdateHistoryState.STATE_DISABLED)
+            historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED
+
+        super.loadUrl(checkedUrl, requestHeaders)
     }
 
     // This should only be accessed by us!
@@ -325,7 +326,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun filterUrl(url: String): String {
         return if (url.startsWith(ExportedUrls.viewSourcePrefix)) url
-        else if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
+        else if (PrivilegedPages.shouldShowEmptyUrl(url)) ""
         else PrivilegedPages.getDisplayUrl(url) ?: url
     }
 
@@ -504,7 +505,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     class UserAgentBundle {
-        var userAgentString = CommonUtils.EMPTY_STRING
+        var userAgentString = ""
         var iconView: AppCompatImageView? = null
         var enableDesktop = false // Defaults to true with UserAgentMode.DESKTOP
         var noReload = false
@@ -514,7 +515,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (useStartPage) {
             loadRealUrl(ExportedUrls.actualStartUrl)
         } else {
-            loadUrl(SearchEngineEntries.getDefaultHomeUrl(settingsPreference))
+            loadUrl(SearchEngineEntries.getPreferredHomePageUrl(settingsPreference))
         }
 
     }

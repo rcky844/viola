@@ -11,7 +11,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import tipz.viola.databinding.ActivityCustomTabBinding
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebViewActivity
 
 class CustomTabsActivity : VWebViewActivity() {
@@ -46,7 +45,7 @@ class CustomTabsActivity : VWebViewActivity() {
         openBrowser.setOnClickListener {
             val url = webview.url
             val intent = Intent(this, BrowserActivity::class.java)
-            intent.data = Uri.parse(UrlUtils.patchUrlForCVEMitigation(url))
+            intent.data = Uri.parse(url)
             startActivity(intent)
             finish()
         }
@@ -72,7 +71,7 @@ class CustomTabsActivity : VWebViewActivity() {
     }
 
     override fun onUrlUpdated(url: String?) {
-        host.text = Uri.parse(UrlUtils.patchUrlForCVEMitigation(url!!)).host
+        host.text = Uri.parse(url!!).host
     }
 
     override fun onTitleUpdated(title: String?) {

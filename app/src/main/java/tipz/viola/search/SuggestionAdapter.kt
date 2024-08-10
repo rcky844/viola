@@ -4,7 +4,6 @@
 
 package tipz.viola.search
 
-import android.content.Context
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -19,8 +18,7 @@ import tipz.viola.databinding.TemplateTextSuggestionsBinding
 import tipz.viola.webview.VWebViewActivity
 import java.util.Locale
 
-class SuggestionAdapter(private val mContext: Context)
-    : BaseAdapter(), Filterable {
+class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), Filterable {
     private var items = listOf<String>()
     private val filter = ItemFilter()
     private var queryText: String? = null
@@ -37,7 +35,7 @@ class SuggestionAdapter(private val mContext: Context)
 
         if (convertView == null) {
             binding = TemplateTextSuggestionsBinding.inflate(
-                LayoutInflater.from(mContext), parent, false)
+                LayoutInflater.from(context), parent, false)
             itemView = binding.root
         } else {
             binding = TemplateTextSuggestionsBinding.bind(itemView!!)
@@ -65,10 +63,10 @@ class SuggestionAdapter(private val mContext: Context)
             title.text = suggestion
         }
         copyToSearchBarButton.setOnClickListener {
-            (mContext as VWebViewActivity).onUrlUpdated(suggestion, suggestion.length)
+            context.onUrlUpdated(suggestion, suggestion.length)
         }
         itemView.setOnLongClickListener {
-            (mContext as VWebViewActivity).onUrlUpdated(suggestion, suggestion.length)
+            context.onUrlUpdated(suggestion, suggestion.length)
             true
         }
         return itemView
@@ -99,5 +97,5 @@ class SuggestionAdapter(private val mContext: Context)
     }
 
     private val provider: SuggestionProvider
-        get() = SuggestionProvider(mContext)
+        get() = SuggestionProvider(context)
 }

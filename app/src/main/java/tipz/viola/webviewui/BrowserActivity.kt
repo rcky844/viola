@@ -95,7 +95,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
-    private var sslErrorHost: String = CommonUtils.EMPTY_STRING
+    private var sslErrorHost: String = ""
     private var setFabHiddenViews = false
     private lateinit var imm: InputMethodManager
 
@@ -358,7 +358,6 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.home -> {
                 val reqVal: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
                 webview.loadHomepage(reqVal)
-                if (reqVal) urlEditText.setText(CommonUtils.EMPTY_STRING)
             }
 
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
@@ -520,7 +519,6 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.home -> {
                 val reqVal: Boolean = settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
                 webview.loadHomepage(reqVal)
-                if (reqVal) urlEditText.setText(CommonUtils.EMPTY_STRING)
             }
 
             R.drawable.share -> CommonUtils.copyClipboard(this, webview.url)

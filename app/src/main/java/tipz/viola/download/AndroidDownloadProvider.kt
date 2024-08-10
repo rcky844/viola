@@ -15,7 +15,6 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import tipz.viola.R
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.UrlUtils
 
 class AndroidDownloadProvider(override val context: Context) : DownloadProvider {
     private var downloadID: Long = 0
@@ -40,9 +39,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                 return
             }
 
-            val request = DownloadManager.Request(
-                Uri.parse(UrlUtils.patchUrlForCVEMitigation(uriString))
-            )
+            val request = DownloadManager.Request(Uri.parse(uriString))
 
             Log.i(LOG_TAG, "startDownload(): uriString=${uriString}")
 

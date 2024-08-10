@@ -3,12 +3,10 @@
 
 package tipz.viola.utils
 
-import android.os.Build
 import android.util.Log
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.utils.CommonUtils.language
 
 object UrlUtils {
     private const val LOG_TAG = "UrlUtils"
@@ -23,24 +21,6 @@ object UrlUtils {
                 "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?")
             .toRegex()
     val nonStandardUri = listOf("viola", "chrome", "file", "javascript", "about")
-
-    /**
-     * Some revisions of Android (before 2018-04-01 SPL) before Android Pie has
-     * security flaws in producing correct host name from url string in android.net.Uri,
-     * patch it ourselves.
-     *
-     *
-     * Ref: CVE-2017-13274
-     *
-     * @param url supplied url to check.
-     * @return fixed up url
-     */
-    fun patchUrlForCVEMitigation(url: String): String {
-        return if (url.contains("\\") && Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) url.replace(
-            "\\",
-            "/"
-        ) else url
-    }
 
     fun isUriLaunchable(uri: String): Boolean {
         return uri.matches(uriRegex) || uri.startsWith("data:")
@@ -68,10 +48,7 @@ object UrlUtils {
                 }
                 2 -> {
                     // If run 0 failed, make it a search url
-                    checkedUrl = SearchEngineEntries.getSearchUrl(
-                        pref.getString(SettingsKeys.searchName),
-                        input, language
-                    )
+                    checkedUrl = SearchEngineEntries.getPreferredSearchUrl(pref, input)
                 }
                 else -> {
                     Log.d(LOG_TAG, "toValidHttpUrl(): Unable to convert into valid url!")
@@ -82,6 +59,6 @@ object UrlUtils {
             if (run == maxRuns) break
             run++
         }
-        return patchUrlForCVEMitigation(checkedUrl.trim())
+        return checkedUrl.trim()
     }
 }

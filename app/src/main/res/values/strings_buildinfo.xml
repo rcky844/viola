@@ -7,7 +7,7 @@
         {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
         Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
     -->
-    <string name="buildinfo_dialog_version">%1$s %2$s\nVersion %3$s (Build %4$s)\n\n</string>
+    <string name="buildinfo_dialog_version">%1$s (%2$s)\nVersion %3$s (Build %4$s%5$s)\n\n</string>
 
     <!--
         Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team

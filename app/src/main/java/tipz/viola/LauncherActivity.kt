@@ -50,7 +50,7 @@ class LauncherActivity : AppCompatActivity() {
             if (type != null) {
                 if ("text/plain" == type) {
                     val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
-                    uri = if (sharedText.isNullOrBlank()) Uri.EMPTY else Uri.parse(UrlUtils.patchUrlForCVEMitigation(sharedText))
+                    uri = if (sharedText.isNullOrBlank()) Uri.EMPTY else Uri.parse(sharedText)
                 }
             }
         } else if (Intent.ACTION_VIEW == action) { /* From default browser */

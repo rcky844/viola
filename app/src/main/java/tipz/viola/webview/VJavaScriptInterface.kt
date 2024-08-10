@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import tipz.build.info.BuildInfo
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.InternalDownloadProvider
-import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.pages.ExportedUrls
 import java.io.IOException
 
@@ -38,7 +37,7 @@ class VJavaScriptInterface(private val activity: VWebViewActivity) {
     }
 
     @JavascriptInterface
-    fun getProductBuildTag(): String = BuildInfo().getProductBuildTag() ?: CommonUtils.EMPTY_STRING
+    fun getProductBuildTag(): String = BuildInfo().getProductBuildTag() ?: ""
 
     companion object {
         val LOG_TAG = "VJavaScriptInterface"

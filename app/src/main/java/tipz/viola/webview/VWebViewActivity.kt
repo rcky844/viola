@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.activity.addCallback
@@ -30,6 +31,8 @@ import tipz.viola.webviewui.BaseActivity
 
 
 open class VWebViewActivity : BaseActivity() {
+    private val LOG_TAG = "VWebViewActivity"
+
     lateinit var settingsPreference: SettingsSharedPreference
     lateinit var webview: VWebView
     var favicon: AppCompatImageView? = null
@@ -127,10 +130,7 @@ open class VWebViewActivity : BaseActivity() {
                 startPageLayout?.background = BitmapDrawable(resources, bitmap)
             } catch (_: SecurityException) {
                 startPageLayout?.setBackgroundResource(0)
-                settingsPreference.setString(
-                    SettingsKeys.startPageWallpaper,
-                    CommonUtils.EMPTY_STRING
-                )
+                settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
             }
         }
     }
@@ -184,13 +184,13 @@ open class VWebViewActivity : BaseActivity() {
     open fun onSwipeRefreshLayoutRefreshingUpdated(isRefreshing: Boolean) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
         swipeRefreshLayout.isRefreshing = isRefreshing
-        webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overflow-y')") { value1: String ->
-            updateSwipeRefreshLayoutEnabled(getTrueCSSValue(value1) != "hidden")
-            if (swipeRefreshLayoutEnabled) webview.evaluateJavascript("getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y')") { value2: String ->
-                updateSwipeRefreshLayoutEnabled(
-                    getTrueCSSValue(value2) == "auto"
-                )
-            }
+        webview.evaluateJavascript(
+            "getComputedStyle(document.body).getPropertyValue('overflow-y') == \"hidden\"" +
+                    "|| getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y') != \"auto\""
+        ) { value: String ->
+            val overscroll = getTrueCSSValue(value) != "true"
+            if (!overscroll) Log.d(LOG_TAG, "Webpage does not want to overscroll.")
+            updateSwipeRefreshLayoutEnabled(overscroll)
         }
     }
 

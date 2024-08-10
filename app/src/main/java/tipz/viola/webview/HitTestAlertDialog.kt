@@ -21,7 +21,6 @@ import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.download.DownloadObject
 import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.UrlUtils
 import tipz.viola.webviewui.BrowserActivity
 import tipz.viola.widget.StringResAdapter
 
@@ -97,7 +96,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
 
                 R.string.open_in_new_tab -> {
                     val intent = Intent(context, BrowserActivity::class.java)
-                    intent.data = Uri.parse(UrlUtils.patchUrlForCVEMitigation(url))
+                    intent.data = Uri.parse(url)
                     context.startActivity(intent)
                 }
 

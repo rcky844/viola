@@ -9,7 +9,6 @@ import android.content.SharedPreferences
 import tipz.viola.Application
 import tipz.viola.settings.migrations.ExoticMigrations
 import tipz.viola.settings.migrations.InitialMigrations
-import tipz.viola.utils.CommonUtils
 
 class SettingsSharedPreference(context: Context) {
     private var preference: SharedPreferences
@@ -39,7 +38,7 @@ class SettingsSharedPreference(context: Context) {
     }
 
     fun getString(prefName: String): String {
-        return preference.getString(prefName, null) ?: CommonUtils.EMPTY_STRING
+        return preference.getString(prefName, null) ?: ""
     }
 
     fun setString(prefName: String, value: String) {
