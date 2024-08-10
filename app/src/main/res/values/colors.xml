@@ -3,9 +3,6 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
-    <!-- SUW disabled text color -->
-    <color name="suwOff_text_color">#000000</color>
-
     <!-- Default value for unavailable attrs -->
     <color name="legacy_colorSurface">#FEF7FF</color>
     <color name="legacy_colorSurfaceVariant">#E7E0EC</color>
