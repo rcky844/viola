@@ -16,43 +16,11 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
     FloatingActionButton(context, attrs) {
     lateinit var activity: AppCompatActivity
     var hiddenViews: MutableList<View> = mutableListOf()
-    var faded = false
+    private var faded = false
 
-    init {
-        // Basic setup
-        setImageResource(R.drawable.fullscreen_close)
-        setOnClickListener {
-            // Animations
-            if (faded) {
-                this.alpha = 1f
-                faded = false
-                fadeOut()
-                return@setOnClickListener
-            }
-
-            // Handle views
-            hiddenViews.forEach {
-                it.visibility = VISIBLE
-            }
-            this.visibility = GONE
-
-            // Immersive Mode
-            CommonUtils.setImmersiveMode(activity, false)
-        }
-    }
-
-    override fun show() {
-        // Handle views
-        hiddenViews.forEach {
-            it.visibility = GONE
-        }
-        this.visibility = VISIBLE
-
-        // Immersive Mode
-        CommonUtils.setImmersiveMode(activity, true)
-
-        // Animations
-        fadeOut()
+    private fun resetAnim() {
+        this.alpha = 1f
+        faded = false
     }
 
     private fun fadeOut() {
@@ -68,5 +36,41 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
             faded = true
         }
         animate.start()
+    }
+
+    init {
+        // Basic setup
+        setImageResource(R.drawable.fullscreen_close)
+        setOnClickListener {
+            // Animations
+            if (faded) {
+                resetAnim()
+                fadeOut()
+            } else {
+                // Handle views
+                hiddenViews.forEach {
+                    it.visibility = VISIBLE
+                }
+                this.visibility = GONE
+
+                // Immersive Mode
+                CommonUtils.setImmersiveMode(activity, false)
+            }
+        }
+    }
+
+    override fun show() {
+        // Handle views
+        hiddenViews.forEach {
+            it.visibility = GONE
+        }
+        this.visibility = VISIBLE
+
+        // Immersive Mode
+        CommonUtils.setImmersiveMode(activity, true)
+
+        // Animations
+        resetAnim()
+        fadeOut()
     }
 }
