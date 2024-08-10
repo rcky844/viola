@@ -230,11 +230,44 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun setUpdateHistory(value: Boolean) {
         historyState = if (value) UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
-            else UpdateHistoryState.STATE_DISABLED
+        else UpdateHistoryState.STATE_DISABLED
     }
 
     fun onSslErrorProceed() {
         activity.onSslErrorProceed()
+    }
+
+    fun loadAppLinkUrl(url: String): Boolean {
+        if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
+            && UrlUtils.isUriLaunchable(url)) {
+            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            webIntent.addCategory(Intent.CATEGORY_BROWSABLE)
+            webIntent.setFlags(
+                FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REQUIRE_NON_BROWSER or
+                        FLAG_ACTIVITY_REQUIRE_DEFAULT
+            )
+            val packageManager = activity.packageManager
+            if (packageManager?.let { webIntent.resolveActivity(it) } != null) {
+                val dialog = MaterialAlertDialogBuilder(activity)
+                dialog.setTitle(R.string.dialog_open_external_title)
+                    .setMessage(R.string.dialog_open_external_message)
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                        try {
+                            activity.startActivity(webIntent)
+                        } catch (e: ActivityNotFoundException) {
+                            // Do not load actual url on failure
+                        }
+                    }
+                    .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
+                        // Load actual url if user cancelled the request.
+                        super.loadUrl(url, requestHeaders)
+                    }
+                    .create().show()
+            }
+            return true
+        } else {
+            return false
+        }
     }
 
     override fun loadUrl(url: String) {
@@ -253,54 +286,24 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
 
         // Handle App Links
-        if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
-            && UrlUtils.isUriLaunchable(url)) {
-            var handled = false
-            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            webIntent.addCategory(Intent.CATEGORY_BROWSABLE)
-            webIntent.setFlags(
-                FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REQUIRE_NON_BROWSER or
-                        FLAG_ACTIVITY_REQUIRE_DEFAULT
-            )
-            val packageManager = activity.packageManager
-            if (packageManager?.let { webIntent.resolveActivity(it) } != null) {
-                val dialog = MaterialAlertDialogBuilder(activity)
-                dialog.setTitle(R.string.dialog_open_external_title)
-                    .setMessage(R.string.dialog_open_external_message)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        try {
-                            activity.startActivity(webIntent)
-                            handled = true
-                        } catch (e: ActivityNotFoundException) {
-                            // Do not load actual url on failure
-                        }
-                    }
-                    .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
-                        // Load actual url if user cancelled the request
-                        val checkedUrl = url
-                        super.loadUrl(checkedUrl, requestHeaders)
-                    }
-                    .create().show()
-            }
-            if (handled) return // Exit loadUrl() if handled
-        } else {
-            // If the URL has "viola://" prefix but hasn't been handled till here,
-            // wire it up with the "chrome://" suffix.
-            if (url.startsWith(ExportedUrls.violaPrefix)) {
-                super.loadUrl(url.replace(ExportedUrls.violaPrefix, ExportedUrls.chromePrefix))
-                return
-            }
+        if (loadAppLinkUrl(url)) return
 
-            // By this point, it is probably a webpage or a search query.
-            val checkedUrl = UrlUtils.validateUrlOrConvertToSearch(settingsPreference, url)
-            onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
-
-            // Prevent creating duplicate entries
-            if (currentBroha.url == checkedUrl && historyState != UpdateHistoryState.STATE_DISABLED)
-                historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED
-
-            super.loadUrl(checkedUrl, requestHeaders)
+        // If the URL has "viola://" prefix but hasn't been handled till here,
+        // wire it up with the "chrome://" suffix.
+        if (url.startsWith(ExportedUrls.violaPrefix)) {
+            super.loadUrl(url.replace(ExportedUrls.violaPrefix, ExportedUrls.chromePrefix))
+            return
         }
+
+        // By this point, it is probably a webpage or a search query.
+        val checkedUrl = UrlUtils.validateUrlOrConvertToSearch(settingsPreference, url)
+        onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
+
+        // Prevent creating duplicate entries
+        if (currentBroha.url == checkedUrl && historyState != UpdateHistoryState.STATE_DISABLED)
+            historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED
+
+        super.loadUrl(checkedUrl, requestHeaders)
     }
 
     // This should only be accessed by us!
