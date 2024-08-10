@@ -39,7 +39,6 @@ import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
 import tipz.viola.download.DownloadActivity.ItemsAdapter.EmptyViewHolder
 import tipz.viola.download.DownloadActivity.ItemsAdapter.ListViewHolder
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.copyClipboard
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.webviewui.BaseActivity
@@ -200,7 +199,7 @@ class ListInterfaceActivity : BaseActivity() {
                 }
 
                 holder.title.text = title ?: url
-                holder.url.text = Uri.parse(url ?: CommonUtils.EMPTY_STRING).host
+                holder.url.text = Uri.parse(url ?: "").host
                 if (activityMode == mode_history) {
                     val date = Calendar.getInstance()
                     date.timeInMillis = data.timestamp * 1000L

@@ -95,7 +95,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
-    private var sslErrorHost: String = CommonUtils.EMPTY_STRING
+    private var sslErrorHost: String = ""
     private var setFabHiddenViews = false
     private lateinit var imm: InputMethodManager
 

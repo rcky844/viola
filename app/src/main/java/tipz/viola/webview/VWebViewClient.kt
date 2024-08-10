@@ -138,7 +138,7 @@ open class VWebViewClient(
             if (adServersHandler.adServers!!.contains(" ${Uri.parse(url).host}"))
                 return WebResourceResponse(
                     "text/plain", "utf-8",
-                    ByteArrayInputStream(CommonUtils.EMPTY_STRING.toByteArray())
+                    ByteArrayInputStream("".toByteArray())
                 )
         }
 

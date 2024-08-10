@@ -12,7 +12,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.utils.CommonUtils
 
 class ListPickerAlertDialog(context: Context, settingsPreference: SettingsSharedPreference,
                             private val listPickerObject: ListPickerObject
@@ -22,7 +21,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
 
     init {
         listPickerObject.apply {
-            val useNamePreference = namePreference != CommonUtils.EMPTY_STRING
+            val useNamePreference = namePreference != ""
 
             // Set checked item to current settings
             var checkedItem = getCheckedItem(mSettingsPreference)
@@ -34,7 +33,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                 if (customIndexEnabled && checkedItem == customIndex) createCustomDialog(checkedItem)
                 else {
                     if (!stringPreference.isNullOrBlank())
-                        mSettingsPreference.setString(stringPreference!!, CommonUtils.EMPTY_STRING)
+                        mSettingsPreference.setString(stringPreference!!, "")
 
                     if (useNamePreference) {
                         mSettingsPreference.setString(namePreference,
@@ -96,8 +95,8 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
     class ListPickerObject {
         var preference: Preference? = null // Preference for this dialog
         var nameList: Array<String>? = null // Array list consisting of names of options
-        var idPreference = CommonUtils.EMPTY_STRING // Preference key for storing IDs
-        var namePreference = CommonUtils.EMPTY_STRING // Preference key for storing names
+        var idPreference = "" // Preference key for storing IDs
+        var namePreference = "" // Preference key for storing names
         var nameToIdFunction: (name: String) -> Int = this::stubNameToIdFunction
         var stringPreference: String? = null // Preference key for storing strings
         var dialogTitle: String? = null // Dialog title
@@ -108,7 +107,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         var customIndexEnabled = false // Uses custom item index
         var customIndex = 0 // Custom item index
 
-        fun getUseNamePreference() = namePreference != CommonUtils.EMPTY_STRING
+        fun getUseNamePreference() = namePreference != ""
         fun getCheckedItem(pref: SettingsSharedPreference) = if (getUseNamePreference()) {
             nameToIdFunction(pref.getString(namePreference))
         } else {

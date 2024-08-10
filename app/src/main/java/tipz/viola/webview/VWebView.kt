@@ -49,7 +49,6 @@ import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.buss.BussUtils
 import tipz.viola.webview.pages.ExportedUrls
@@ -325,7 +324,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun filterUrl(url: String): String {
         return if (url.startsWith(ExportedUrls.viewSourcePrefix)) url
-        else if (PrivilegedPages.shouldShowEmptyUrl(url)) CommonUtils.EMPTY_STRING
+        else if (PrivilegedPages.shouldShowEmptyUrl(url)) ""
         else PrivilegedPages.getDisplayUrl(url) ?: url
     }
 
@@ -504,7 +503,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     }
 
     class UserAgentBundle {
-        var userAgentString = CommonUtils.EMPTY_STRING
+        var userAgentString = ""
         var iconView: AppCompatImageView? = null
         var enableDesktop = false // Defaults to true with UserAgentMode.DESKTOP
         var noReload = false

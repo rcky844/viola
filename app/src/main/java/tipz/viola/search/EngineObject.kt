@@ -3,10 +3,8 @@
 
 package tipz.viola.search
 
-import tipz.viola.utils.CommonUtils
-
 class EngineObject {
-    var name: String = CommonUtils.EMPTY_STRING // We assume each engine have unique identifiers
+    var name: String = "" // We assume each engine have unique identifiers
     var homePage: String? = null
     var search: String? = null
     var suggestion: String? = null

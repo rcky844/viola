@@ -36,7 +36,6 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.pages.ExportedUrls
@@ -248,10 +247,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                             resources.getString(R.string.default_res)
                         )
                     )
-                    settingsPreference.setString(
-                        SettingsKeys.startPageWallpaper,
-                        CommonUtils.EMPTY_STRING
-                    )
+                    settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
                 }
                 true
             }

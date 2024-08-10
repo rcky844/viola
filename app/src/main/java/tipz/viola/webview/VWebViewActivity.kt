@@ -127,10 +127,7 @@ open class VWebViewActivity : BaseActivity() {
                 startPageLayout?.background = BitmapDrawable(resources, bitmap)
             } catch (_: SecurityException) {
                 startPageLayout?.setBackgroundResource(0)
-                settingsPreference.setString(
-                    SettingsKeys.startPageWallpaper,
-                    CommonUtils.EMPTY_STRING
-                )
+                settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
             }
         }
     }

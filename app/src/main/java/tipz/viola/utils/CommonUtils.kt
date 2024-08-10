@@ -22,7 +22,6 @@ import tipz.viola.R
 import java.util.Locale
 
 object CommonUtils {
-    const val EMPTY_STRING = ""
     private const val DEFAULT_LANGUAGE = "en-US"
 
     fun shareUrl(context: Context, url: String?): Boolean {

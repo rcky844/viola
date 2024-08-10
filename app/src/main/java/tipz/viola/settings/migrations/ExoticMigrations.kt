@@ -5,7 +5,6 @@ package tipz.viola.settings.migrations
 
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.utils.CommonUtils
 
 // For version 7.0.x
 class ExoticMigrations(private val pref: SettingsSharedPreference) {
@@ -25,7 +24,7 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
      */
     private val oldEnginesMapping = arrayOf("google", "baidu", "duckduckgo",
         "bing", "yahoo", "ecosia", "yandex", "brave", "startpage", "whoogle",
-        "swisscows", "qwant", "sogou", "so360", CommonUtils.EMPTY_STRING
+        "swisscows", "qwant", "sogou", "so360", ""
     )
 
     private fun migrateSearchIndex() {
