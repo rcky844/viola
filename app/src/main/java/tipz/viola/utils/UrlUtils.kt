@@ -20,6 +20,9 @@ object UrlUtils {
         ("^(?:[a-z+]+:)?//" +
                 "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?")
             .toRegex()
+
+    val httpPrefix = "http://"
+    val httpsPrefix = "https://"
     val nonStandardUri = listOf("viola", "chrome", "file", "javascript", "about")
 
     fun isUriLaunchable(uri: String): Boolean {
@@ -34,6 +37,14 @@ object UrlUtils {
         // Check for any non-standard schemes
         if (nonStandardUri.any{ input.matches("$it:(//)?.*".toRegex()) }) return input
 
+        // Return if input matches URI regex
+        // Also, enforce HTTPS on URLs that match
+        if (input.matches(uriRegex)) {
+            return if (input.startsWith(httpPrefix) && pref.getIntBool(SettingsKeys.enforceHttps))
+                input.replaceFirst(httpPrefix, httpsPrefix)
+            else input
+        }
+
         // Start processing
         var checkedUrl = input
         var run = 1
@@ -44,7 +55,7 @@ object UrlUtils {
                 1 -> {
                     // Attempt to fix the url by adding in http prefixes
                     checkedUrl = (if (pref.getIntBool(SettingsKeys.enforceHttps))
-                        "https://" else "http://") + input
+                        httpsPrefix else httpPrefix) + input
                 }
                 2 -> {
                     // If run 0 failed, make it a search url
@@ -59,6 +70,7 @@ object UrlUtils {
             if (run == maxRuns) break
             run++
         }
+
         return checkedUrl.trim()
     }
 }

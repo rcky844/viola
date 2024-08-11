@@ -73,6 +73,8 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     internal var adServersHandler: AdServersClient
 
     private val requestHeaders = HashMap<String, String>()
+    var consoleLogging = false
+    val consoleMessages = StringBuilder()
 
     private val titleHandler = Handler { message ->
         val webLongPress = HitTestAlertDialog(mContext)
@@ -363,6 +365,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return
                 activity.onFaviconProgressUpdated(true)
                 activity.onPageLoadProgressChanged(-1)
+                consoleMessages.clear()
             }
 
             PageLoadState.PAGE_FINISHED -> {

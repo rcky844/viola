@@ -10,6 +10,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.TextUtils
 import android.util.TypedValue
 import android.widget.Toast
@@ -61,7 +62,11 @@ object CommonUtils {
         (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(
             ClipData.newPlainText("clipboard", s)
         )
-        showMessage(context, R.string.copied_clipboard)
+
+        // Starting in Android 13, the system displays a new visual confirmation when
+        // content is added to the clipboard, effectively rendering this toast pointless.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+            showMessage(context, R.string.copied_clipboard)
     }
 
     val language: String

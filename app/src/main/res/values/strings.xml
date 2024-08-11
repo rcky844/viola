@@ -164,6 +164,10 @@
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
     <string name="current_user_agent">Current user agent:\n%s</string>
+    <string name="ssl_failed_handshake">Failed to perform SSL handshake. Page load may still be possible by downgrading to HTTP.</string>
+    <string name="dialog_console_title">Console</string>
+    <string name="toast_console_enabled">Console logging has been enabled!</string>
+    <string name="disable">Disable</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

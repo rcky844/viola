@@ -12,8 +12,25 @@ object SettingsKeys {
      * indicates data type.
      */
     const val configDataStore = "config" /* Pref file name */ /* TODO: Migrate to something newer? */
+    const val protocolVersion = "protocolVersion" /* INTEGER */ /* Protocol of settings config */
 
-    /* Search */
+    /* Ad blocker */
+    const val enableAdBlock = "enableAdBlock" /* INTEGER */
+    const val adServerId = "adServerId" /* STRING */
+    const val adServerUrl = "adServerUrl" /* STRING */
+
+    /* Broha */
+    const val favApi = "favApi" /* INTEGER */
+    const val historyApi = "historyApi" /* INTEGER */
+
+    /* Custom Tabs */
+    const val useCustomTabs = "useCustomTabs" /* INTEGER */
+
+    /* Download Manager */
+    const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
+    const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
+
+    /* Search & Startpage */
     /* TODO: Remove custom settings when support creating custom EngineObjects */
     const val homePageName = "homePageName" /* STRING */
     const val homePageCustomUrl = "homePageCustomUrl" /* STRING */
@@ -21,33 +38,28 @@ object SettingsKeys {
     const val searchCustomUrl = "searchCustomUrl" /* STRING */
     const val suggestionsName = "suggestionsName" /* STRING */
     const val suggestionsCustomUrl = "suggestionsCustomUrl" /* STRING */
+    const val useWebHomePage = "useWebHomePage" /* INTEGER */
+
+    /* Visuals & Theming */
+    const val themeId = "themeId" /* INTEGER */
+    const val useForceDark = "useForceDark" /* INTEGER */
+    const val showFavicon = "showFavicon" /* INTEGER */
+    const val startPageWallpaper = "startPageWallpaper" /* STRING */
+    const val reverseAddressBar = "reverseAddressBar" /* INTEGER */
+    const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
+
+    /* Updater */
+    const val updateChannelName = "updateChannelName" /* STRING */
 
     /* Miscellaneous */
-    const val adServerId = "adServerId" /* STRING */
-    const val adServerUrl = "adServerUrl" /* STRING */
     const val checkAppLink = "checkAppLink" /* INTEGER */
-    const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
-    const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
-    const val enableAdBlock = "enableAdBlock" /* INTEGER */
     const val enableGoogleSafeBrowse = "enableGoogleSafeBrowse" /* INTEGER */
     const val enableSwipeRefresh = "enableSwipeRefresh" /* INTEGER */
     const val enforceHttps = "enforceHttps" /* INTEGER */
-    const val favApi = "favApi" /* INTEGER */
-    const val historyApi = "historyApi" /* INTEGER */
     const val isJavaScriptEnabled = "isJavaScriptEnabled" /* INTEGER */
-    const val protocolVersion = "protocolVersion" /* INTEGER */
-    const val reverseAddressBar = "reverseAddressBar" /* INTEGER */
     const val sendDNT = "sendDNT" /* INTEGER */
     const val sendSaveData = "sendSaveData" /* INTEGER */
     const val sendSecGPC = "sendSecGPC" /* INTEGER */
-    const val showFavicon = "showFavicon" /* INTEGER */
-    const val startPageWallpaper = "startPageWallpaper" /* STRING */
-    const val themeId = "themeId" /* INTEGER */
-    const val useCustomTabs = "useCustomTabs" /* INTEGER */
-    const val useForceDark = "useForceDark" /* INTEGER */
-    const val useWebHomePage = "useWebHomePage" /* INTEGER */
-    const val updateChannelName = "updateChannelName" /* STRING */
-    const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
 
     /* Removed in 7.0.x */
     const val defaultHomePage = "defaultHomePage" /* STRING */

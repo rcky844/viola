@@ -3,6 +3,7 @@
 
 package tipz.viola.webviewui
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
@@ -18,6 +19,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -99,10 +101,14 @@ class BrowserActivity : VWebViewActivity() {
     private var setFabHiddenViews = false
     private lateinit var imm: InputMethodManager
 
+    private var urlEditTextY1 = 0f
+    private var urlEditTextY2 = 0f
+
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -250,8 +256,19 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setOnClickListener {
             if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
         }
-        urlEditText.setOnLongClickListener {
-            sslLock.performClick()
+        urlEditText.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    urlEditTextY1 = event.y
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    urlEditTextY2 = event.y
+                    if (urlEditTextY1 < urlEditTextY2)
+                        sslLock.performClick()
+                }
+            }
+            false
         }
         urlEditText.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, mView: View, _: Int, _: Long ->
@@ -522,6 +539,24 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.share -> CommonUtils.copyClipboard(this, webview.url)
+
+            R.drawable.code -> {
+                if (webview.consoleLogging) {
+                    MaterialAlertDialogBuilder(this).setTitle(R.string.dialog_console_title)
+                        .setMessage(webview.consoleMessages) // TODO: Make it dynamically update
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setNeutralButton(R.string.clear) { _: DialogInterface?, _: Int ->
+                            webview.consoleMessages.clear()
+                        }
+                        .setNegativeButton(R.string.disable) { _: DialogInterface?, _: Int ->
+                            webview.consoleLogging = false
+                        }
+                        .create().show()
+                } else {
+                    CommonUtils.showMessage(this, R.string.toast_console_enabled)
+                    webview.consoleLogging = true
+                }
+            }
         }
     }
 
