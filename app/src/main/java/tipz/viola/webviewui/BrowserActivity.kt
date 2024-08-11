@@ -539,6 +539,24 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.share -> CommonUtils.copyClipboard(this, webview.url)
+
+            R.drawable.code -> {
+                if (webview.consoleLogging) {
+                    MaterialAlertDialogBuilder(this).setTitle(R.string.dialog_console_title)
+                        .setMessage(webview.consoleMessages) // TODO: Make it dynamically update
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setNeutralButton(R.string.clear) { _: DialogInterface?, _: Int ->
+                            webview.consoleMessages.clear()
+                        }
+                        .setNegativeButton(R.string.disable) { _: DialogInterface?, _: Int ->
+                            webview.consoleLogging = false
+                        }
+                        .create().show()
+                } else {
+                    CommonUtils.showMessage(this, R.string.toast_console_enabled)
+                    webview.consoleLogging = true
+                }
+            }
         }
     }
 

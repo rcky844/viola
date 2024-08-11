@@ -14,6 +14,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.webkit.ConsoleMessage
 import android.webkit.GeolocationPermissions
 import android.webkit.JsPromptResult
 import android.webkit.JsResult
@@ -189,5 +190,12 @@ open class VChromeWebClient(private val mContext: Context,
     ): Boolean {
         jsDialog(url, message, defaultValue, result, R.string.js_page_says)
         return true
+    }
+
+    // TODO: Add more comprehensive information to the console
+    override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+        if (mVWebView.consoleLogging && consoleMessage != null)
+            mVWebView.consoleMessages.append(consoleMessage.message())
+        return super.onConsoleMessage(consoleMessage)
     }
 }
