@@ -133,6 +133,8 @@
     <string name="toolbar_expandable_viewport">Viewing mode</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">Add to favorites</string>
+    <!-- Expandable toolbar: Translate -->
+    <string name="toolbar_expandable_translate">Translate</string>
     <!-- Expandable toolbar: Downloads -->
     <string name="toolbar_expandable_downloads">Downloads</string>
     <!-- Expandable toolbar: Enter full screen -->
@@ -154,6 +156,11 @@
     <string name="viewing_mode_current_user_agent">Current user agent</string>
     <!-- Viewing mode: Wide viewport mode -->
     <string name="viewing_mode_wide_viewport_mode">Enable wide viewport mode</string>
+
+    <!-- Translate: Page language -->
+    <string name="dialog_translate_page_lang">Page Language (e.g. zh-TW)</string>
+    <!-- Translate: Target language -->
+    <string name="dialog_translate_target_lang">Target Language (e.g. en)</string>
 
     <!-- Shortcuts: Browser Access -->
     <string name="shortcuts_menu_browser">Browser Access</string>

@@ -48,6 +48,7 @@ import tipz.viola.database.instances.FavClient
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
+import tipz.viola.databinding.DialogTranslateBinding
 import tipz.viola.databinding.DialogUaEditBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.ext.copyClipboard
@@ -344,6 +345,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     // This function returns true to close ToolBar, and vice versa.
+    @SuppressLint("SetTextI18n")
     fun itemSelected(view: AppCompatImageView?, item: Int): Boolean {
         when (item) {
             R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
@@ -485,6 +487,36 @@ class BrowserActivity : VWebViewActivity() {
                     setFabHiddenViews = true
                 }
                 fullscreenFab.show()
+            }
+
+            R.drawable.translate -> {
+                if (webview.url.isBlank() || PrivilegedPages.isPrivilegedPage(webview.url))
+                    return false
+
+                val binding: DialogTranslateBinding =
+                    DialogTranslateBinding.inflate(layoutInflater)
+                val editView = binding.root
+
+                val pageLangEditText = binding.pageLangEditText
+                val targetLangEditText = binding.targetLangEditText
+                pageLangEditText.setText("auto")
+
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.toolbar_expandable_translate)
+                    .setView(editView)
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                        val targetLang = targetLangEditText.text.toString()
+                        if (targetLang.isBlank()) return@setPositiveButton
+
+                        var pageLang = pageLangEditText.text.toString()
+                        if (pageLang.isBlank()) pageLang = "auto"
+                        webview.loadUrl("https://translate.google.com/translate?js=n" +
+                                "&sl=${pageLang}" +
+                                "&tl=${targetLang}" +
+                                "&u=${webview.url}")
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show()
             }
         }
         return true // Close ToolBar if not interrupted
