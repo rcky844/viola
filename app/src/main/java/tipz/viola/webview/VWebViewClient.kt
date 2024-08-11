@@ -55,19 +55,29 @@ open class VWebViewClient(
     override fun onReceivedError(
         view: WebView, errorCode: Int, description: String, failingUrl: String
     ) {
+        if (description.contains("ERR_SSL_PROTOCOL_ERROR")) {
+            getSslDialog(ERROR_FAILED_SSL_HANDSHAKE)
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    mVWebView.loadRealUrl(
+                        failingUrl.replaceFirst(UrlUtils.httpsPrefix, UrlUtils.httpPrefix))
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show()
+        }
         mVWebView.onPageInformationUpdated(PageLoadState.PAGE_ERROR, failingUrl,
             null, description)
     }
 
-    private fun getSslDialog(error: SslError): MaterialAlertDialogBuilder {
+    private fun getSslDialog(error: Int): MaterialAlertDialogBuilder {
         val dialog = MaterialAlertDialogBuilder(mContext)
-        @StringRes var stringResId = when (error.primaryError) {
+        @StringRes val stringResId = when (error) {
             SslError.SSL_DATE_INVALID -> R.string.ssl_certificate_date_invalid
             SslError.SSL_INVALID -> R.string.ssl_certificate_invalid
             SslError.SSL_EXPIRED -> R.string.ssl_certificate_expired
             SslError.SSL_IDMISMATCH -> R.string.ssl_certificate_idmismatch
             SslError.SSL_NOTYETVALID -> R.string.ssl_certificate_notyetvalid
             SslError.SSL_UNTRUSTED -> R.string.ssl_certificate_untrusted
+            ERROR_FAILED_SSL_HANDSHAKE -> R.string.ssl_failed_handshake
             else -> R.string.ssl_certificate_unknown
         }
 
@@ -84,7 +94,7 @@ open class VWebViewClient(
     @Deprecated("Deprecated in Java")
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         if (unsecureURLSet.contains(url)) {
-            getSslDialog(unsecureURLErrorSet[unsecureURLSet.indexOf(url)])
+            getSslDialog(unsecureURLErrorSet[unsecureURLSet.indexOf(url)].primaryError)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     run {
                         view.loadUrl(url)
@@ -108,7 +118,7 @@ open class VWebViewClient(
     @SuppressLint("WebViewClientOnReceivedSslError")
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
         unsecureURLErrorSet.add(error)
-        getSslDialog(error)
+        getSslDialog(error.primaryError)
             .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 run {
                     handler.proceed()
