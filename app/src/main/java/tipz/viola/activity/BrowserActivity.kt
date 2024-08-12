@@ -16,11 +16,9 @@ import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.Settings
 import android.view.Gravity
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -56,6 +54,7 @@ import kotlinx.coroutines.launch
 import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.activity.components.FullscreenFloatingActionButton
+import tipz.viola.activity.components.SwipeController
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha
@@ -258,27 +257,9 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setOnClickListener {
             if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
         }
-        urlEditText.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    urlEditTextY1 = event.y
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    urlEditTextY2 = event.y
-                    if ((urlEditTextY2 - urlEditTextY1) > urlEditTextSwipeThreshold) {
-                        sslLock.performClick()
-                        urlEditText.performHapticFeedback(
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                                HapticFeedbackConstants.GESTURE_END
-                            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                                HapticFeedbackConstants.CONTEXT_CLICK
-                            else HapticFeedbackConstants.KEYBOARD_TAP)
-                    }
-                }
-            }
-            false
-        }
+        urlEditText.setOnTouchListener(SwipeController(SwipeController.DIRECTION_SWIPE_DOWN) {
+            sslLock.performClick()
+        })
         urlEditText.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, mView: View, _: Int, _: Long ->
                 webview.loadUrl((mView.findViewById<View>(android.R.id.text1) as AppCompatTextView)
