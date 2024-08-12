@@ -257,9 +257,11 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setOnClickListener {
             if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
         }
-        urlEditText.setOnTouchListener(SwipeController(SwipeController.DIRECTION_SWIPE_DOWN) {
-            sslLock.performClick()
-        })
+        urlEditText.setOnTouchListener(
+            SwipeController(if (settingsPreference.getIntBool(SettingsKeys.reverseAddressBar))
+                    SwipeController.DIRECTION_SWIPE_UP else SwipeController.DIRECTION_SWIPE_DOWN) {
+                sslLock.performClick()
+            })
         urlEditText.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, mView: View, _: Int, _: Long ->
                 webview.loadUrl((mView.findViewById<View>(android.R.id.text1) as AppCompatTextView)
