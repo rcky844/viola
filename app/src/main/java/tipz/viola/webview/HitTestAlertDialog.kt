@@ -21,7 +21,7 @@ import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.download.DownloadObject
 import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.utils.CommonUtils
-import tipz.viola.webviewui.BrowserActivity
+import tipz.viola.activity.BrowserActivity
 import tipz.viola.widget.StringResAdapter
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {

@@ -1,7 +1,7 @@
 // Copyright (c) 2020-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.webviewui
+package tipz.viola.activity
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
@@ -55,6 +55,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.LauncherActivity
 import tipz.viola.R
+import tipz.viola.activity.components.FullscreenFloatingActionButton
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha
@@ -74,7 +75,6 @@ import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
-import tipz.viola.webviewui.components.FullscreenFloatingActionButton
 import tipz.viola.widget.StringResAdapter
 import java.lang.ref.WeakReference
 import java.text.DateFormat

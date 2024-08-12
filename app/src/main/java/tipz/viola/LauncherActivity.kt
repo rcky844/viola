@@ -13,8 +13,8 @@ import cat.ereza.customactivityoncrash.config.CaocConfig
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
-import tipz.viola.webviewui.BrowserActivity
-import tipz.viola.webviewui.CustomTabsActivity
+import tipz.viola.activity.BrowserActivity
+import tipz.viola.activity.CustomTabsActivity
 import kotlin.system.exitProcess
 
 class LauncherActivity : AppCompatActivity() {

@@ -9,7 +9,7 @@ import androidx.activity.addCallback
 import tipz.viola.R
 import tipz.viola.databinding.ActivitySettingsBinding
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.webviewui.BaseActivity
+import tipz.viola.activity.BaseActivity
 
 class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding

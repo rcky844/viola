@@ -39,7 +39,7 @@ import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Mater
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.pages.ExportedUrls
-import tipz.viola.webviewui.BaseActivity.Companion.darkModeCheck
+import tipz.viola.activity.BaseActivity.Companion.darkModeCheck
 import java.io.IOException
 
 class SettingsMainFragment : PreferenceFragmentCompat() {

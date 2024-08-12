@@ -53,7 +53,7 @@ import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.buss.BussUtils
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
-import tipz.viola.webviewui.BaseActivity
+import tipz.viola.activity.BaseActivity
 import java.util.regex.Pattern
 
 @SuppressLint("SetJavaScriptEnabled")

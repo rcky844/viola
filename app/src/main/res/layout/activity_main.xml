@@ -212,7 +212,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <tipz.viola.webviewui.components.FullscreenFloatingActionButton
+    <tipz.viola.activity.components.FullscreenFloatingActionButton
         android:id="@+id/fullscreen_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
