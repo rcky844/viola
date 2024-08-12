@@ -16,6 +16,7 @@ import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.Settings
 import android.view.Gravity
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -103,6 +104,7 @@ class BrowserActivity : VWebViewActivity() {
 
     private var urlEditTextY1 = 0f
     private var urlEditTextY2 = 0f
+    private var urlEditTextSwipeThreshold = 500f
 
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
@@ -264,8 +266,15 @@ class BrowserActivity : VWebViewActivity() {
 
                 MotionEvent.ACTION_UP -> {
                     urlEditTextY2 = event.y
-                    if (urlEditTextY1 < urlEditTextY2)
+                    if ((urlEditTextY2 - urlEditTextY1) > urlEditTextSwipeThreshold) {
                         sslLock.performClick()
+                        urlEditText.performHapticFeedback(
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                                HapticFeedbackConstants.GESTURE_END
+                            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                HapticFeedbackConstants.CONTEXT_CLICK
+                            else HapticFeedbackConstants.KEYBOARD_TAP)
+                    }
                 }
             }
             false
