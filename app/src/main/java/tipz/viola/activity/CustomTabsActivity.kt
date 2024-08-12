@@ -1,7 +1,7 @@
 // Copyright (c) 2022-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.webviewui
+package tipz.viola.activity
 
 import android.content.Intent
 import android.net.Uri

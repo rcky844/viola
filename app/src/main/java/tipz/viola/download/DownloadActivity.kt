@@ -24,7 +24,7 @@ import tipz.viola.R
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
-import tipz.viola.webviewui.BaseActivity
+import tipz.viola.activity.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
 
