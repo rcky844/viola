@@ -17,11 +17,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
+import tipz.viola.activity.BrowserActivity
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.download.DownloadObject
 import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.utils.CommonUtils
-import tipz.viola.activity.BrowserActivity
 import tipz.viola.widget.StringResAdapter
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
@@ -38,11 +38,9 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         if (type == WebView.HitTestResult.UNKNOWN_TYPE
             || type == WebView.HitTestResult.EDIT_TEXT_TYPE) return false
 
-        // Truncate url string to make things load faster
-        url = if (url.length > 75) url.substring(0, 74) + "…" else url
-
         if (title.isNullOrBlank()) {
-            setTitle(url)
+            // Truncate url string to make things load faster
+            setTitle(if (url.length > 100) url.substring(0, 99) + "…" else url)
         } else {
             val binding: DialogHitTestTitleBinding =
                 DialogHitTestTitleBinding.inflate(LayoutInflater.from(context))
