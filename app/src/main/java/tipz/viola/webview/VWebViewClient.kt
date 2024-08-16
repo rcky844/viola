@@ -105,7 +105,7 @@ open class VWebViewClient(
                 .create().show()
             return true
         }
-        if (UrlUtils.isUriLaunchable(url)) return false
+        if (UrlUtils.isUriSupported(url)) return false
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             mContext.startActivity(intent)
