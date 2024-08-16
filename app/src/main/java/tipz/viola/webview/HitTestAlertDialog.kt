@@ -66,7 +66,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         }
 
         // Add items to array adapter
-        arrayAdapter.addAll(R.string.open_in_new_tab, R.string.copy_url)
+        arrayAdapter.addAll(R.string.open_in_new_tab, R.string.copy_url, R.string.download_url)
         if (title.isNullOrBlank()) arrayAdapter.add(R.string.copy_text_url)
         if (!src.isNullOrBlank()) arrayAdapter.addAll(
             R.string.download_image,
@@ -78,7 +78,15 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
             when (arrayAdapter.getItemResId(which)) {
                 R.string.copy_url -> CommonUtils.copyClipboard(context, url)
+
                 R.string.copy_text_url -> CommonUtils.copyClipboard(context, title)
+
+                R.string.download_url -> {
+                    view.downloadClient.addToQueue(DownloadObject().apply {
+                        uriString = url
+                    })
+                }
+
                 R.string.copy_src_url -> CommonUtils.copyClipboard(context, src)
 
                 R.string.download_image -> {

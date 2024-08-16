@@ -168,6 +168,7 @@
     <string name="dialog_console_title">Console</string>
     <string name="toast_console_enabled">Console logging has been enabled!</string>
     <string name="disable">Disable</string>
+    <string name="download_url">Download link</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
