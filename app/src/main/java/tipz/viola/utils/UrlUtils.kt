@@ -20,13 +20,15 @@ object UrlUtils {
         ("^(?:[a-z+]+:)?//" +
                 "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?")
             .toRegex()
-
+    val supportedUriScheme =
+        listOf("http", "https", "ftp", "file", "data",
+            "viola", "chrome", "javascript", "about")
     val httpPrefix = "http://"
     val httpsPrefix = "https://"
-    val nonStandardUri = listOf("viola", "chrome", "file", "javascript", "about")
 
-    fun isUriLaunchable(uri: String): Boolean {
-        return uri.matches(uriRegex) || uri.startsWith("data:")
+    fun isUriSupported(uri: String): Boolean {
+        return uri.matches(uriRegex)
+                && supportedUriScheme.any { uri.matches("$it:(//)?.*".toRegex()) }
     }
 
     fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String) =
@@ -34,9 +36,6 @@ object UrlUtils {
 
     fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String,
                                      maxRuns: Int): String {
-        // Check for any non-standard schemes
-        if (nonStandardUri.any{ input.matches("$it:(//)?.*".toRegex()) }) return input
-
         // Return if input matches URI regex
         // Also, enforce HTTPS on URLs that match
         if (input.matches(uriRegex)) {
@@ -48,7 +47,7 @@ object UrlUtils {
         // Start processing
         var checkedUrl = input
         var run = 1
-        while (!checkedUrl.matches(uriRegex)) {
+        while (!isUriSupported(checkedUrl)) {
             Log.d(LOG_TAG, "toValidHttpUrl(): Uri regex does not match, " +
                     "run=$run, input=$input")
             when (run) {

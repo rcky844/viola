@@ -14,7 +14,8 @@ class MiniDownloadHelper {
     companion object {
         suspend fun startDownload(uriString: String): ByteArray? {
             if (uriString.startsWith("data:")) {
-                DownloadUtils.base64StringToByteArray(DownloadUtils.getRawDataFromDataUri(uriString))
+                return DownloadUtils.base64StringToByteArray(
+                    DownloadUtils.getRawDataFromDataUri(uriString))
             } else if (uriString.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
                 return null
             }

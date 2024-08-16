@@ -241,7 +241,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
 
     fun loadAppLinkUrl(url: String): Boolean {
         if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
-            && UrlUtils.isUriLaunchable(url)) {
+            && !UrlUtils.isUriSupported(url)) {
             val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             webIntent.addCategory(Intent.CATEGORY_BROWSABLE)
             webIntent.setFlags(
