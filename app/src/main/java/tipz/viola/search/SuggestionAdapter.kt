@@ -65,10 +65,6 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
         copyToSearchBarButton.setOnClickListener {
             context.onUrlUpdated(suggestion, suggestion.length)
         }
-        itemView.setOnLongClickListener {
-            context.onUrlUpdated(suggestion, suggestion.length)
-            true
-        }
         return itemView
     }
 
