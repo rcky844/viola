@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
-import tipz.viola.activity.BrowserActivity
+import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.download.DownloadObject
 import tipz.viola.download.MiniDownloadHelper

@@ -27,7 +27,7 @@ import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
-import tipz.viola.activity.BaseActivity
+import tipz.viola.webview.activity.BaseActivity
 
 
 open class VWebViewActivity : BaseActivity() {
@@ -42,7 +42,6 @@ open class VWebViewActivity : BaseActivity() {
     var startPageLayout: View? = null
     internal lateinit var appbar: AppBarLayout
     internal lateinit var webviewContainer: RelativeLayout
-    internal lateinit var toolsContainer: RelativeLayout
     private var swipeRefreshLayoutEnabled = true
 
     override fun onCreate(savedInstanceState: Bundle?) {

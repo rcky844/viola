@@ -16,7 +16,6 @@
     <string name="fav_list_empty">"Aucun favori enregistré."</string>
     <string name="copy_title">"Copier le titre du site web"</string>
     <string name="address_bar_hint">"Rechercher ou taper une adresse…"</string>
-    <string name="favicon_desp">"Icône de la page web, cilquer sur moi ouvrira une fenêtre avec le titre de la page web."</string>
     <string name="fab_desp">"Cliquer sur un bouton affichera ou fermera la barre d’action."</string>
     <string name="settings">Réglages</string>
     <string name="search_engine">"Moteur de recherche"</string>
