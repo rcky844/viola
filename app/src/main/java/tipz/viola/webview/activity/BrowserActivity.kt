@@ -15,7 +15,6 @@ import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -26,7 +25,6 @@ import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.pm.ShortcutInfoCompat
@@ -141,20 +139,8 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup favicon
         favicon?.setOnClickListener {
-            val popupMenu = PopupMenu(this, favicon!!)
-            val menu = popupMenu.menu
-            if (webview.visibility == View.GONE) menu.add(R.string.start_page).isEnabled = false
-            else menu.add(webview.title).isEnabled = false
-
-            menu.add(R.string.copy_title)
-            popupMenu.setOnMenuItemClickListener { item: MenuItem ->
-                if (item.title.toString() == resources.getString(R.string.copy_title)) {
-                    CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
-                    return@setOnMenuItemClickListener true
-                }
-                false
-            }
-            popupMenu.show()
+            // Link up with SSL Lock dialog instead
+            sslLock.performClick()
         }
 
         // Setup SSL Lock
