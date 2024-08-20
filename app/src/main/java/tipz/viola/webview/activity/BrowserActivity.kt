@@ -6,7 +6,6 @@ package tipz.viola.webview.activity
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -14,8 +13,6 @@ import android.os.Bundle
 import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
-import android.provider.Settings
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -29,7 +26,6 @@ import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -38,9 +34,6 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionManager
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -53,8 +46,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.LauncherActivity
 import tipz.viola.R
-import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
-import tipz.viola.webview.activity.components.SwipeController
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha
@@ -62,7 +53,6 @@ import tipz.viola.broha.database.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogUaEditBinding
-import tipz.viola.databinding.TemplateIconDescriptionItemBinding
 import tipz.viola.databinding.TemplateIconItemBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.search.SuggestionAdapter
@@ -72,6 +62,9 @@ import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
+import tipz.viola.webview.activity.components.ExpandableToolbarView
+import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
+import tipz.viola.webview.activity.components.SwipeController
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.widget.StringResAdapter
@@ -91,8 +84,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var favClient: FavClient
     private lateinit var iconHashClient: IconHashClient
     private lateinit var toolBar: RecyclerView
-    private lateinit var toolsBarExtendableRecycler: RecyclerView
-    private lateinit var toolsBarExtendableBackground: ConstraintLayout
+    private lateinit var expandableToolbarView: ExpandableToolbarView
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
@@ -151,24 +143,14 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup toolbar expandable
-        toolsBarExtendableRecycler = binding.toolsBarExtendableRecycler
-        toolsBarExtendableRecycler.adapter =
-            ToolbarItemsAdapter(this, toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
-        (toolsBarExtendableRecycler.layoutManager as FlexboxLayoutManager).apply {
-            justifyContent = JustifyContent.SPACE_AROUND
-            alignItems = AlignItems.CENTER
-            flexDirection = FlexDirection.ROW
-            flexWrap = FlexWrap.WRAP
-        }
-
-        toolsBarExtendableBackground = binding.toolsBarExtendableBackground
-        toolsBarExtendableBackground.post {
-            toolsBarExtendableBackground.visibility = View.GONE
-        }
+        expandableToolbarView = binding.expandableToolbarView
+        expandableToolbarView.activity = this
+        expandableToolbarView.init()
 
         // Layout HitBox
         webview.setOnTouchListener { _, _ ->
-            if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
+            if (expandableToolbarView.visibility == View.VISIBLE)
+                expandableToolbarView.expandToolBar()
             if (urlEditText.hasFocus() && imm.isAcceptingText) closeKeyboard()
             false
         }
@@ -255,7 +237,8 @@ class BrowserActivity : VWebViewActivity() {
             }
         }
         urlEditText.setOnClickListener {
-            if (toolsBarExtendableBackground.visibility == View.VISIBLE) expandToolBar()
+            if (expandableToolbarView.visibility == View.VISIBLE)
+                expandableToolbarView.expandToolBar()
         }
         urlEditText.setOnTouchListener(
             SwipeController(if (settingsPreference.getIntBool(SettingsKeys.reverseAddressBar))
@@ -281,7 +264,7 @@ class BrowserActivity : VWebViewActivity() {
             progressBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             sslLock.bringToFront()
-            toolsBarExtendableBackground.bringToFront()
+            expandableToolbarView.bringToFront()
         }
 
         // Finally, load homepage
@@ -297,19 +280,6 @@ class BrowserActivity : VWebViewActivity() {
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.clear()
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        val params =
-            toolsBarExtendableBackground.layoutParams as ConstraintLayout.LayoutParams
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            params.height = resources.getDimension(R.dimen.toolbar_extendable_height).toInt()
-            params.matchConstraintMaxWidth =
-                resources.getDimension(R.dimen.toolbar_extendable_max_width).toInt()
-        }
     }
 
     override fun doSettingsCheck() {
@@ -451,7 +421,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.close -> finish()
-            R.drawable.view_stream -> expandToolBar()
+            R.drawable.view_stream -> expandableToolbarView.expandToolBar()
             R.drawable.code -> return webview.loadViewSourcePage(null)
             R.drawable.new_tab -> {
                 val i = Intent(this, BrowserActivity::class.java)
@@ -552,19 +522,6 @@ class BrowserActivity : VWebViewActivity() {
         }
     }
 
-    fun expandToolBar() {
-        val viewVisible: Boolean = toolsBarExtendableBackground.visibility == View.VISIBLE
-        val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration = resources.getInteger(R.integer.anim_expandable_speed) *
-                (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    Settings.Global.getFloat(contentResolver,
-                        Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)
-                else 1.0f).toLong()
-        transition.addTarget(R.id.toolsBarExtendableBackground)
-        TransitionManager.beginDelayedTransition(toolsBarExtendableBackground, transition)
-        toolsBarExtendableBackground.visibility = if (viewVisible) View.GONE else View.VISIBLE
-    }
-
     override fun onPageLoadProgressChanged(progress: Int) {
         super.onPageLoadProgressChanged(progress)
         if (progress == -1) upRightFab.setImageResource(R.drawable.stop)
@@ -656,51 +613,6 @@ class BrowserActivity : VWebViewActivity() {
         }
     }
 
-    class ToolbarItemsAdapter(
-        mainActivity: BrowserActivity,
-        itemsList: List<Int>,
-        descriptionList: List<Int>
-    ) :
-        RecyclerView.Adapter<ToolbarItemsAdapter.ViewHolder>() {
-        private lateinit var binding: TemplateIconDescriptionItemBinding
-        private val mBrowserActivity: WeakReference<BrowserActivity> = WeakReference(mainActivity)
-        private val mItemsList: WeakReference<List<Int>> = WeakReference(itemsList)
-        private val mDescriptionList: WeakReference<List<Int>> = WeakReference(descriptionList)
-
-        class ViewHolder(binding: TemplateIconDescriptionItemBinding)
-            : RecyclerView.ViewHolder(binding.root) {
-            val mItemBox: LinearLayoutCompat = binding.root
-            val mImageView: AppCompatImageView = binding.imageView
-            val mTextView: AppCompatTextView = binding.textView
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            binding = TemplateIconDescriptionItemBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false)
-            return ViewHolder(binding)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.mItemBox.setOnClickListener {
-                val closeToolBar = mBrowserActivity.get()!!
-                    .itemSelected(holder.mImageView, mItemsList.get()!![position])
-                if (closeToolBar) mBrowserActivity.get()!!.expandToolBar()
-            }
-            holder.mItemBox.setOnLongClickListener {
-                mBrowserActivity.get()!!
-                    .itemLongSelected(holder.mImageView, mItemsList.get()!![position])
-                true
-            }
-            holder.mImageView.setImageResource(mItemsList.get()!![position])
-            holder.mTextView.text =
-                mBrowserActivity.get()!!.resources.getString(mDescriptionList.get()!![position])
-        }
-
-        override fun getItemCount(): Int {
-            return mItemsList.get()!!.size
-        }
-    }
-
     companion object {
         // TODO: Add support for reverting to legacy layout
         private val legacyToolsBarItemList = listOf(
@@ -725,36 +637,6 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.home,
             R.drawable.share,
             R.drawable.view_stream
-        )
-
-        private val toolsBarExpandableItemList = listOf(
-            R.drawable.new_tab,
-            R.drawable.favorites,
-            R.drawable.history,
-            R.drawable.smartphone,
-            R.drawable.favorites_add,
-            R.drawable.download,
-            R.drawable.fullscreen,
-            R.drawable.app_shortcut,
-            R.drawable.settings,
-            R.drawable.code,
-            R.drawable.print,
-            R.drawable.close
-        )
-
-        private val toolsBarExpandableDescriptionList = listOf(
-            R.string.toolbar_expandable_new_tab,
-            R.string.toolbar_expandable_favorites,
-            R.string.toolbar_expandable_history,
-            R.string.toolbar_expandable_viewport,
-            R.string.toolbar_expandable_favorites_add,
-            R.string.toolbar_expandable_downloads,
-            R.string.toolbar_expandable_fullscreen,
-            R.string.toolbar_expandable_app_shortcut,
-            R.string.toolbar_expandable_settings,
-            R.string.toolbar_expandable_view_page_source,
-            R.string.toolbar_expandable_print,
-            R.string.toolbar_expandable_close
         )
     }
 }

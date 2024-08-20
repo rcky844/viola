@@ -173,44 +173,17 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/toolsBarExtendableBackground"
+    <tipz.viola.webview.activity.components.ExpandableToolbarView
+        android:id="@+id/expandableToolbarView"
         android:layout_width="0dp"
         android:layout_height="@dimen/toolbar_extendable_height"
         android:layout_margin="8dp"
-        android:background="@drawable/toolbar_expandable_background"
         android:translationZ="6dp"
-        android:foregroundGravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@id/toolsContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_max="@dimen/toolbar_extendable_max_width">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/toolsBarExtendableHint"
-            android:layout_width="64dp"
-            android:layout_height="16dp"
-            android:layout_marginBottom="4dp"
-            android:padding="6dp"
-            app:layout_constraintBottom_toTopOf="@id/toolsBarExtendableRecycler"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/toolbar_expandable_hint" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/toolsBarExtendableRecycler"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="4dp"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolsBarExtendableHint" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintWidth_max="@dimen/toolbar_extendable_max_width" />
 
     <tipz.viola.webview.activity.components.FullscreenFloatingActionButton
         android:id="@+id/fullscreen_fab"
