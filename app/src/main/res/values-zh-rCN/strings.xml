@@ -16,7 +16,6 @@
     <string name="fav_list_empty">没有已添加的收藏</string>
     <string name="copy_title">复制网站标题</string>
     <string name="address_bar_hint">"搜索或输入网址…"</string>
-    <string name="favicon_desp">"网页的图标, 点击我将㑹打开一个带有网页标题的对话框"</string>
     <string name="fab_desp">单击按钮时将显示或关闭操作栏</string>
     <string name="settings">设置</string>
     <string name="search_engine">搜索引擎</string>

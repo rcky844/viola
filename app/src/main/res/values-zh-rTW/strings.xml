@@ -16,7 +16,6 @@
     <string name="fav_list_empty">沒有已新增的書籤</string>
     <string name="copy_title">複製網站標題</string>
     <string name="address_bar_hint">"搜尋或輸入網址…"</string>
-    <string name="favicon_desp">"網頁的圖示, 點擊我將㑹打開一個帶有網頁標題的對話框"</string>
     <string name="fab_desp">單擊按鈕時將顯示或關閉操作列</string>
     <string name="settings">設定</string>
     <string name="search_engine">搜尋引擎</string>

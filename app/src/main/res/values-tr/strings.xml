@@ -16,7 +16,6 @@
     <string name="fav_list_empty">"Sık kullanılan listesi boş."</string>
     <string name="copy_title">"Web sitesinin başlığını kopyala"</string>
     <string name="address_bar_hint">"Arayın ya da adres girin…"</string>
-    <string name="favicon_desp">"Sitenin simgesine dokunmak, site\'nin başlığını içeren bir diyalog gösterecektir."</string>
     <string name="fab_desp">"Dokunulduğunda araç çubuğunu gizleyecek\gösterecek bir tuş."</string>
     <string name="settings">Ayarlar</string>
     <string name="search_engine">"Arama motoru"</string>

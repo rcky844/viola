@@ -16,7 +16,6 @@
     <string name="fav_list_empty">"Chưa lưu trang yêu thích nào."</string>
     <string name="copy_title">"Sao chép tiêu đề"</string>
     <string name="address_bar_hint">"Tìm hoặc nhập địa chỉ trang web"</string>
-    <string name="favicon_desp">"Biểu tượng của trang web, nhấn biểu tượng để mở hộp thoại với tiêu đề trang web."</string>
     <string name="fab_desp">"Nút khi nhấn sẽ mở hoặc đóng thanh hành động."</string>
     <string name="settings">Cài đặt</string>
     <string name="search_engine">"Công cụ tìm kiếm"</string>
