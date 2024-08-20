@@ -16,11 +16,9 @@
     <string name="fav_list_empty">"Sık kullanılan listesi boş."</string>
     <string name="copy_title">"Web sitesinin başlığını kopyala"</string>
     <string name="address_bar_hint">"Arayın ya da adres girin…"</string>
-    <string name="fab_desp">"Dokunulduğunda araç çubuğunu gizleyecek\gösterecek bir tuş."</string>
     <string name="settings">Ayarlar</string>
     <string name="search_engine">"Arama motoru"</string>
     <string name="homepage">"Ana sayfa"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nTarihinde derlendi %4$s\n\nViola Browservio bazlı bir üründür.\n\nTelif hakkı © 2020-%5$s Tipz Team\n\nBu ürün, Apache Lisansı altında lisanslanmıştır.</string>
     <string name="pref_check_for_updates_title">Güncellemeleri denetle</string>
     <string name="pref_check_for_updates_summary">Yeni güncellemeyi kontrol edin ve varsa indirmenize izin verin.</string>
     <string name="version_latest_toast">"Viola'nun en güncel sürümünü kullanmaktasınız."</string>
@@ -41,7 +39,6 @@
     <string name="feedback_desp">"Hataları bildirin veya yeni özellikler isteyin."</string>
     <string name="source_code">"Kaynak kodu"</string>
     <string name="source_code_desp">"Viola\'nun kaynak kodunu görüntüleyin."</string>
-    <string name="download_title">"Viola Güncellemesi"</string>
     <string name="fav">Sık kullanılanlar</string>
     <string name="delete">"Sil"</string>
     <string name="delete_all_entries">"Tüm girişleri sil"</string>
@@ -77,7 +74,6 @@
     <string name="no_webview">WebView gereklidir ancak yüklü değildir.</string>
     <string name="share_url">Bağlantıyı paylaş</string>
     <string name="pref_theme">Tema</string>
-    <string name="ssl_info">SSL Sertifika ayrıntıları</string>
     <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL Sertifika hatası</string>
     <string name="ssl_certificate_error_dialog_content">%s Yine de devam etmek istiyor musunuz?</string>
@@ -143,7 +139,6 @@
     <string name="pref_send_save_data_summary">Desteklenen web sitelerine veri kaydetme isteği gönderir </string>.
     <string name="pref_send_sec_gpc_title">Genel Gizlilik Denetimi</string>
     <string name="pref_send_sec_gpc_summary">Kişisel bilgilerinizin ziyaret ettiğiniz web sitelerinde satılmasına veya üçüncü taraflarla paylaşılmasına izin verin </string>.
-    <string name="homepage_webpage_home">Anasayfa</string>
     <string name="toolbar_expandable_shortcuts_menu_browser">Tarayıcı Erişimi</string>
     <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Özel Sekmeler</string>
     <string name="toolbar_expandable_shortcuts_menu_webapp">internet uygulaması</string>

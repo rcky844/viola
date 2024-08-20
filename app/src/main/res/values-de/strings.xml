@@ -16,11 +16,9 @@
     <string name="fav_list_empty">"Es wurden keine Favoriten gespeichert."</string>
     <string name="copy_title">"Webseitentitel kopieren"</string>
     <string name="address_bar_hint">"Suchen oder URL eingeben…"</string>
-    <string name="fab_desp">"Ein Knopf, wenn gedrückt, wird die Aktionsleiste anzeigen oder schließen."</string>
     <string name="settings">Einstellungen</string>
     <string name="search_engine">"Suchmaschine"</string>
     <string name="homepage">"Startseite"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nErstellt am %4$s\n\nViola ist ein Produkt, das auf Browservio basiert.\n\nCopyright © 2020-%5$s Tipz Team\n\nDieses Produkt ist lizenziert unter der Apache License.</string>
     <string name="pref_check_for_updates_title">Auf Aktualisierungen prüfen</string>
     <string name="pref_check_for_updates_summary">Suchen Sie nach einem neuen Update und ermöglichen Sie Ihnen den Download, falls eines verfügbar ist.</string>
     <string name="version_latest_toast">"Sie verwenden aktuell die neueste Version von Viola."</string>
@@ -41,7 +39,6 @@
     <string name="feedback_desp">"Melden Sie Fehler oder fordern Sie neue Funktionen an."</string>
     <string name="source_code">"Quellcode"</string>
     <string name="source_code_desp">"Sehen Sie sich den Quellcode von Viola an."</string>
-    <string name="download_title">"Viola-Aktualisierung"</string>
     <string name="fav">Favoriten</string>
     <string name="delete">"Diesen"</string>
     <string name="delete_all_entries">"Alle Einträge löschen"</string>
@@ -77,7 +74,6 @@
     <string name="no_webview">WebView ist erforderlich, aber nicht installiert.</string>
     <string name="share_url">Link teilen</string>
     <string name="pref_theme">Thema</string>
-    <string name="ssl_info">SSL-Zertifikatdetails</string>
     <string name="ssl_info_dialog_content">Ausgestellt für\n\tAllgemeiner Name (CN): %1$s\n\tOrganisation (O): %2$s\n\tOrganisationseinheit (OU): %3$s\n\nAusgestellt von\n\tAllgemeiner Name (CN): %4$s\n\tOrganisation (O): %5$s\n\tOrganisationseinheit (OU): %6$s\n\nGültigkeitsdauer\n\tAusgestellt am: %7$s\n\tGültig bis: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL-Zertifikatsfehler</string>
     <string name="ssl_certificate_error_dialog_content">%s Möchtest du trotzdem weitermachen?</string>
@@ -143,7 +139,6 @@
     <string name="pref_send_save_data_summary">Sendet eine Datenspeicherungsanfrage an unterstützte Websites </string>
     <string name="pref_send_sec_gpc_title">Globale Datenschutzkontrolle</string>
     <string name="pref_send_sec_gpc_summary">Erlauben Sie den Verkauf oder die Weitergabe Ihrer persönlichen Daten an Dritte auf den von Ihnen besuchten Websites</string>
-    <string name="homepage_webpage_home">Startseite</string>
     <string name="toolbar_expandable_shortcuts_menu_browser">Browserzugriff</string>
     <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Benutzerdefinierte Registerkarten</string>
     <string name="toolbar_expandable_shortcuts_menu_webapp">Web-App</string>

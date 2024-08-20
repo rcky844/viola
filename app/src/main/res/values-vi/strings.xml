@@ -16,11 +16,9 @@
     <string name="fav_list_empty">"Chưa lưu trang yêu thích nào."</string>
     <string name="copy_title">"Sao chép tiêu đề"</string>
     <string name="address_bar_hint">"Tìm hoặc nhập địa chỉ trang web"</string>
-    <string name="fab_desp">"Nút khi nhấn sẽ mở hoặc đóng thanh hành động."</string>
     <string name="settings">Cài đặt</string>
     <string name="search_engine">"Công cụ tìm kiếm"</string>
     <string name="homepage">"Trang chủ"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nBiên soạn trên %4$s\n\nViola là một sản phẩm dựa trên Browservio.\n\nBản quyền © 2020-%5$s Tipz Team\nSản phẩm này được cấp phép theo Giấy phép Apache.</string>
     <string name="pref_check_for_updates_title">Tìm bản cập nhật mới</string>
     <string name="pref_check_for_updates_summary">Kiểm tra bản cập nhật mới và cho phép bạn tải xuống nếu có.</string>
     <string name="version_latest_toast">"Bạn đang chạy phiên bản mới nhất của Viola."</string>
@@ -41,7 +39,6 @@
     <string name="feedback_desp">"Báo cáo lỗi hoặc yêu cầu các tính năng mới."</string>
     <string name="source_code">"Mã nguồn"</string>
     <string name="source_code_desp">"Xem mã nguồn của Viola."</string>
-    <string name="download_title">"Cập nhật Viola"</string>
     <string name="fav">Yêu thích</string>
     <string name="delete">"Xóa"</string>
     <string name="delete_all_entries">"Xóa toàn bộ các mục"</string>
@@ -77,7 +74,6 @@
     <string name="no_webview">WebView cần thiết nhưng chưa được cài đặt.</string>
     <string name="share_url">Chia sẻ đường dẫn</string>
     <string name="pref_theme">Chủ đề</string>
-    <string name="ssl_info">Chi tiết chứng chỉ SSL</string>
     <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">Lỗi chứng chỉ SSL</string>
     <string name="ssl_certificate_error_dialog_content">%s Bạn có muốn đi tiếp?</string>
@@ -143,7 +139,6 @@
     <string name="pref_send_save_data_summary">Gửi yêu cầu tiết kiệm dữ liệu tới các trang web được hỗ trợ </string>
     <string name="pref_send_sec_gpc_title">Kiểm soát quyền riêng tư toàn cầu</string>
     <string name="pref_send_sec_gpc_summary">Cho phép bán hoặc chia sẻ thông tin cá nhân của bạn với bên thứ ba trên các trang web bạn truy cập </string>
-    <string name="homepage_webpage_home">Trang chủ</string>
     <string name="toolbar_expandable_shortcuts_menu_browser">Truy cập trình duyệt</string>
     <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Tab tùy chỉnh</string>
     <string name="toolbar_expandable_shortcuts_menu_webapp">ứng dụng web</string>

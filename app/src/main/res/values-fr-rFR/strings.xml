@@ -16,11 +16,9 @@
     <string name="fav_list_empty">"Aucun favori enregistré."</string>
     <string name="copy_title">"Copier le titre du site web"</string>
     <string name="address_bar_hint">"Rechercher ou taper une adresse…"</string>
-    <string name="fab_desp">"Cliquer sur un bouton affichera ou fermera la barre d’action."</string>
     <string name="settings">Réglages</string>
     <string name="search_engine">"Moteur de recherche"</string>
     <string name="homepage">"Page d’accueil"</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\nCompilé sur %4$s\n\nViola est un produit basé sur Browservio.\n\nDroit d'auteur © 2020-%5$s Tipz Team\n\nCe produit est licencié sous la licence Apache</string>
     <string name="pref_check_for_updates_title">Vérifier les mises à jour</string>
     <string name="pref_check_for_updates_summary">Recherchez une nouvelle mise à jour et autorisez-la à la télécharger si elle est disponible.</string>
     <string name="version_latest_toast">"Vous disposez actuellement de la dernière version de Viola."</string>
@@ -41,7 +39,6 @@
     <string name="feedback_desp">"Signaler des bugs ou demander de nouvelles fonctionnalités."</string>
     <string name="source_code">"Code source"</string>
     <string name="source_code_desp">"Afficher le code source de Viola."</string>
-    <string name="download_title">"Mise à jour Viola"</string>
     <string name="fav">Favoris</string>
     <string name="delete">"Effacer"</string>
     <string name="delete_all_entries">"Effacer toutes les entrées"</string>
@@ -77,7 +74,6 @@
     <string name="no_webview">WebView est nécessaire mais n’est pas installé.</string>
     <string name="share_url">SPartager le lien</string>
     <string name="pref_theme">Thème</string>
-    <string name="ssl_info">Détails du certificat SSL</string>
     <string name="ssl_info_dialog_content">Publié à\n\tNom Commun (NC): %1$s\n\tOrganisation (O): %2$s\n\tUnité Organisationnelle (OU): %3$s\n\nPublié Par\n\tNom Commun (CN): %4$s\n\tOrganisation (O): %5$s\n\tUnité Organisationnelle (OU): %6$s\n\nPériode de Validité\n\tPublié Sur : %7$s\n\tExpire Le: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">Erreur du certificat SSL</string>
     <string name="ssl_certificate_error_dialog_content">%s Voulez-vous malgré tout continuer ?</string>
@@ -143,7 +139,6 @@
     <string name="pref_send_save_data_summary">Envoie une demande de sauvegarde de données aux sites Web pris en charge </string>.
     <string name="pref_send_sec_gpc_title">Contrôle global de la confidentialité</string>
     <string name="pref_send_sec_gpc_summary">Autorisez la vente ou le partage de vos informations personnelles avec des tiers sur les sites Web que vous visitez </string>.
-    <string name="homepage_webpage_home">Page d\'accueil</string>
     <string name="toolbar_expandable_shortcuts_menu_browser">Accès au navigateur</string>
     <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Onglets personnalisés</string>
     <string name="toolbar_expandable_shortcuts_menu_webapp">Application Web</string>

@@ -16,11 +16,9 @@
     <string name="fav_list_empty">没有已添加的收藏</string>
     <string name="copy_title">复制网站标题</string>
     <string name="address_bar_hint">"搜索或输入网址…"</string>
-    <string name="fab_desp">单击按钮时将显示或关闭操作栏</string>
     <string name="settings">设置</string>
     <string name="search_engine">搜索引擎</string>
     <string name="homepage">主页</string>
-    <string name="version_info_message">"%1$s %2$s (%3$s)\n编译于%4$s\n\nViola是一款基于Browservio的产品\n\n版权所有 © 2020-%5$s Tipz Team\n本产品已获得 Apache 许可</string>
     <string name="pref_check_for_updates_title">检查更新</string>
     <string name="pref_check_for_updates_summary">检查是否有新更新，如果有可用则允许您下载</string>
     <string name="version_latest_toast">您当前使用的是最新版本的Viola</string>
@@ -28,7 +26,6 @@
     <string name="new_update_detect_title">"检测到新的版本"</string>
     <string name="new_update_detect_message">"Viola %1$s (%2$s) 可用, 你想更新吗?"</string>
     <string name="update_down_failed_toast">更新下载失败!</string>
-    <string name="download_title">"Viola 更新"</string>
     <string name="general">基本</string>
     <string name="reset_btn">重置为默认值</string>
     <string name="advanced">进阶</string>
@@ -77,7 +74,6 @@
     <string name="no_webview">WebView是必需的，但未安裝</string>
     <string name="share_url">分享链接</string>
     <string name="pref_theme">主题</string>
-    <string name="ssl_info">SSL证书信息</string>
     <string name="ssl_info_dialog_content">颁发给\n\t通用名 (CN): %1$s\n\t机构 (O): %2$s\n\t机构单位 (OU): %3$s\n\n颁发者\n\t通用名 (CN): %4$s\n\t机构 (O): %5$s\n\t机构单位 (OU): %6$s\n\n有效期\n\t颁发日期: %7$s\n\t到期日期: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL证书错误</string>
     <string name="ssl_certificate_error_dialog_content">%s你想继续吗?</string>
@@ -143,7 +139,6 @@
     <string name="pref_send_save_data_summary">向支持的网站发送流量节省请求</string>
     <string name="pref_send_sec_gpc_title">全局隐私控制</string>
     <string name="pref_send_sec_gpc_summary">允许在您访问的网站上与第三方出售或共享您的个人信息</string>
-    <string name="homepage_webpage_home">网页首页</string>
     <string name="toolbar_expandable_shortcuts_menu_browser">浏览器访问</string>
     <string name="toolbar_expandable_shortcuts_menu_custom_tabs">Custom Tabs</string>
     <string name="toolbar_expandable_shortcuts_menu_webapp">Web App</string>
