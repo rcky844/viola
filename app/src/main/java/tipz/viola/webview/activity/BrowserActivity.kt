@@ -86,10 +86,6 @@ class BrowserActivity : VWebViewActivity() {
     private var setFabHiddenViews = false
     private lateinit var imm: InputMethodManager
 
-    private var urlEditTextY1 = 0f
-    private var urlEditTextY2 = 0f
-    private var urlEditTextSwipeThreshold = 500f
-
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
     }
