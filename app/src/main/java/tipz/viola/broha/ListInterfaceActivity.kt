@@ -39,7 +39,7 @@ import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.CommonUtils.copyClipboard
 import tipz.viola.utils.CommonUtils.showMessage
-import tipz.viola.activity.BaseActivity
+import tipz.viola.webview.activity.BaseActivity
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Calendar

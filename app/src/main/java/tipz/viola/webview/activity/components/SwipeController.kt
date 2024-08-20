@@ -1,4 +1,4 @@
-package tipz.viola.activity.components
+package tipz.viola.webview.activity.components
 
 import android.annotation.SuppressLint
 import android.os.Build

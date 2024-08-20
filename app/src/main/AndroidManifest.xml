@@ -101,11 +101,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.BrowserActivity"
+            android:name="tipz.viola.webview.activity.BrowserActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:documentLaunchMode="always" />
         <activity
-            android:name=".activity.CustomTabsActivity"
+            android:name="tipz.viola.webview.activity.CustomTabsActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:documentLaunchMode="always" />
         <activity

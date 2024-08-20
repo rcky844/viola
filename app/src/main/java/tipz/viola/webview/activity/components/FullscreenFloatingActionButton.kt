@@ -1,7 +1,7 @@
 // Copyright (c) 2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.activity.components
+package tipz.viola.webview.activity.components
 
 import android.content.Context
 import android.provider.Settings

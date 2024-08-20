@@ -1,7 +1,7 @@
 // Copyright (c) 2020-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.activity
+package tipz.viola.webview.activity
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
@@ -53,8 +53,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.LauncherActivity
 import tipz.viola.R
-import tipz.viola.activity.components.FullscreenFloatingActionButton
-import tipz.viola.activity.components.SwipeController
+import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
+import tipz.viola.webview.activity.components.SwipeController
 import tipz.viola.broha.ListInterfaceActivity
 import tipz.viola.broha.api.FavClient
 import tipz.viola.broha.database.Broha

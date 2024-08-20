@@ -27,7 +27,7 @@ import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
-import tipz.viola.activity.BaseActivity
+import tipz.viola.webview.activity.BaseActivity
 
 
 open class VWebViewActivity : BaseActivity() {
