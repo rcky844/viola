@@ -53,11 +53,12 @@ class ListInterfaceActivity : BaseActivity() {
     lateinit var itemsAdapter: ItemsAdapter
     lateinit var fab: FloatingActionButton
 
-    fun updateListData() {
+    fun updateListData(callback: () -> Any) {
         CoroutineScope(Dispatchers.IO).launch {
             listData =
-                if (activityMode == mode_history) historyClient.getAll() as MutableList<Broha>?
-                else favClient.getAll() as MutableList<Broha>?
+                (if (activityMode == mode_history) historyClient.getAll()
+                else favClient.getAll()) as MutableList<Broha>?
+            CoroutineScope(Dispatchers.Main).launch { callback() }
         }
     }
 
@@ -124,9 +125,10 @@ class ListInterfaceActivity : BaseActivity() {
         val layoutManager = brohaList.layoutManager as LinearLayoutManager
         layoutManager.reverseLayout = activityMode == mode_history
         layoutManager.stackFromEnd = activityMode == mode_history
-        updateListData()
-        itemsAdapter = ItemsAdapter(this@ListInterfaceActivity)
-        brohaList.adapter = itemsAdapter
+        updateListData {
+            itemsAdapter = ItemsAdapter(this@ListInterfaceActivity)
+            brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
+        }
     }
 
     class ItemsAdapter(
