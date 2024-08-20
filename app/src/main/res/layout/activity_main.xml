@@ -136,32 +136,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/toolsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_icon_size"
-        android:elevation="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/webviewContainer">
-
-        <View style="@style/Divider" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/toolBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hardwareAccelerated="true"
-            android:orientation="horizontal"
-            android:scrollbars="none"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/webviewContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/toolsContainer"
+        app:layout_constraintBottom_toTopOf="@id/toolbarView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar">
@@ -173,13 +151,23 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
 
+    <tipz.viola.webview.activity.components.ToolbarView
+        android:id="@+id/toolbarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/webviewContainer" />
+
     <tipz.viola.webview.activity.components.ExpandableToolbarView
         android:id="@+id/expandableToolbarView"
         android:layout_width="0dp"
         android:layout_height="@dimen/toolbar_extendable_height"
         android:layout_margin="8dp"
         android:translationZ="6dp"
-        app:layout_constraintBottom_toTopOf="@id/toolsContainer"
+        app:layout_constraintBottom_toTopOf="@id/toolbarView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"

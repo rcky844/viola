@@ -33,12 +33,6 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.updateLayoutParams
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +47,6 @@ import tipz.viola.broha.database.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogUaEditBinding
-import tipz.viola.databinding.TemplateIconItemBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsKeys
@@ -65,10 +58,10 @@ import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.activity.components.ExpandableToolbarView
 import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
 import tipz.viola.webview.activity.components.SwipeController
+import tipz.viola.webview.activity.components.ToolbarView
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.widget.StringResAdapter
-import java.lang.ref.WeakReference
 import java.text.DateFormat
 
 
@@ -83,7 +76,7 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUAWideView = false
     private lateinit var favClient: FavClient
     private lateinit var iconHashClient: IconHashClient
-    private lateinit var toolBar: RecyclerView
+    private lateinit var toolbarView: ToolbarView
     private lateinit var expandableToolbarView: ExpandableToolbarView
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
@@ -111,7 +104,7 @@ class BrowserActivity : VWebViewActivity() {
         // Initialize variables
         appbar = binding.appbar
         webviewContainer = binding.webviewContainer
-        toolsContainer = binding.toolsContainer
+        toolbarView = binding.toolbarView
         upRightFab = binding.upRightFab
         urlEditText = binding.urlEditText
         progressBar = binding.webviewProgressBar
@@ -133,14 +126,9 @@ class BrowserActivity : VWebViewActivity() {
         UpdateService(this, true)
 
         // Setup toolbar
-        toolBar = binding.toolBar
-        toolBar.adapter = ItemsAdapter(this, toolsBarItemList)
-        (toolBar.layoutManager as FlexboxLayoutManager).apply {
-            justifyContent = JustifyContent.SPACE_AROUND
-            alignItems = AlignItems.CENTER
-            flexDirection = FlexDirection.ROW
-            flexWrap = FlexWrap.WRAP
-        }
+        toolbarView = binding.toolbarView
+        toolbarView.activity = this
+        toolbarView.init()
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
@@ -288,7 +276,7 @@ class BrowserActivity : VWebViewActivity() {
         if (reverseAddressBar != viewMode) {
             appbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topToBottom = when (reverseAddressBar) {
-                    1 -> R.id.toolsContainer
+                    1 -> R.id.toolbarView
                     else -> ConstraintSet.UNSET
                 }
                 bottomToBottom = when (reverseAddressBar) {
@@ -314,7 +302,7 @@ class BrowserActivity : VWebViewActivity() {
                     else -> ConstraintSet.UNSET
                 }
             }
-            toolsContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            toolbarView.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 bottomToTop = when (reverseAddressBar) {
                     1 -> R.id.appbar
                     else -> ConstraintSet.UNSET
@@ -454,7 +442,7 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.fullscreen -> {
                 if (!setFabHiddenViews) {
-                    fullscreenFab.hiddenViews = mutableListOf(appbar, toolsContainer)
+                    fullscreenFab.hiddenViews = mutableListOf(appbar, toolbarView)
                     fullscreenFab.activity = this
                     setFabHiddenViews = true
                 }
@@ -577,66 +565,5 @@ class BrowserActivity : VWebViewActivity() {
     override fun onStartPageEditTextPressed() {
         urlEditText.requestFocus()
         imm.showSoftInput(urlEditText, InputMethodManager.SHOW_FORCED)
-    }
-
-    class ItemsAdapter(mainActivity: BrowserActivity, itemsList: List<Int>) :
-        RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
-        private lateinit var binding: TemplateIconItemBinding
-        private val mBrowserActivity: WeakReference<BrowserActivity> = WeakReference(mainActivity)
-        private val mItemsList: WeakReference<List<Int>> = WeakReference(itemsList)
-
-        class ViewHolder(binding: TemplateIconItemBinding) : RecyclerView.ViewHolder(binding.root) {
-            val mImageView: AppCompatImageView = binding.imageView
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            binding = TemplateIconItemBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false)
-            return ViewHolder(binding)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.mImageView.setImageResource(mItemsList.get()!![position])
-            holder.mImageView.setOnClickListener {
-                mBrowserActivity.get()!!
-                    .itemSelected(holder.mImageView, mItemsList.get()!![position])
-            }
-            holder.mImageView.setOnLongClickListener {
-                mBrowserActivity.get()!!
-                    .itemLongSelected(holder.mImageView, mItemsList.get()!![position])
-                true
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return mItemsList.get()!!.size
-        }
-    }
-
-    companion object {
-        // TODO: Add support for reverting to legacy layout
-        private val legacyToolsBarItemList = listOf(
-            R.drawable.arrow_back_alt,
-            R.drawable.arrow_forward_alt,
-            R.drawable.refresh,
-            R.drawable.home,
-            R.drawable.smartphone,
-            R.drawable.new_tab,
-            R.drawable.share,
-            R.drawable.app_shortcut,
-            R.drawable.settings,
-            R.drawable.history,
-            R.drawable.favorites,
-            R.drawable.download,
-            R.drawable.close
-        )
-
-        private val toolsBarItemList = listOf(
-            R.drawable.arrow_back_alt,
-            R.drawable.arrow_forward_alt,
-            R.drawable.home,
-            R.drawable.share,
-            R.drawable.view_stream
-        )
     }
 }
