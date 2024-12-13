@@ -37,7 +37,7 @@ class DownloadClient(context: Application) {
         downloadQueue.forEach {
             if (it.downloadStatus) return@forEach
 
-            // Match download manager
+            // Match download provider
             val provider : DownloadProvider = when (it.downloadMode) {
                 DownloadMode.AUTO_DOWNLOAD_PROVIDER.value -> { // TODO: Move auto detection to UI
                     var retProvider: DownloadProvider? = null
@@ -52,9 +52,12 @@ class DownloadClient(context: Application) {
             } ?: return@forEach
             Log.i(LOG_TAG, "id=${it.taskId}: DownloadProvider found, provider=${provider.javaClass.name}")
 
-            // Start download
+            // Set-up for download provider
             it.vWebView = vWebView
             if (it.downloadPath == null) it.downloadPath = defaultDownloadPath
+            provider.resolveFilename(it)
+
+            // Start download
             it.downloadStatus = true
             if (it.showDialog)
                 CoroutineScope(Dispatchers.Main).launch {

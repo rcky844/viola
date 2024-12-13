@@ -10,6 +10,9 @@ interface DownloadProvider {
     val capabilities: List<DownloadCapabilities>
     var statusListener: DownloadStatusListener?
 
+    fun resolveFilename(downloadObject: DownloadObject) {
+    }
+
     fun startDownload(downloadObject: DownloadObject) {
         if (downloadObject.statusListener != null) {
             statusListener = downloadObject.statusListener!!
