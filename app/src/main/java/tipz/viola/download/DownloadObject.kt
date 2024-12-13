@@ -22,6 +22,7 @@ class DownloadObject {
 
     /* DownloadProvider specifics */
     var checkIsOnline = true
+    var showDialog = false
     var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
     /* Helper functions / features */

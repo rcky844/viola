@@ -163,6 +163,8 @@
     <string name="toast_console_enabled">Console logging has been enabled!</string>
     <string name="disable">Disable</string>
     <string name="download_url">Download link</string>
+    <string name="download_title">Download file?</string>
+    <string name="download_message">Do you want to download %s?</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

@@ -116,6 +116,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType
                 requestUrl = getRealUrl()
+                showDialog = true
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
