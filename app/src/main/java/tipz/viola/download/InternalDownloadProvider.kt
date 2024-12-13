@@ -26,14 +26,27 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         DownloadCapabilities.PROTOCOL_BLOB)
     override var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
+    override fun resolveFilename(downloadObject: DownloadObject) {
+        downloadObject.apply {
+            filename = when (DownloadCapabilities.fromString(getUriProtocol())) {
+                DownloadCapabilities.PROTOCOL_DATA -> {
+                    (System.currentTimeMillis().toString() + "."
+                            + DownloadUtils.dataStringToExtension(uriString))
+                }
+
+                DownloadCapabilities.PROTOCOL_BLOB ->
+                    "blob" // FIXME: Actual file name needed
+
+                else -> return@apply // TODO: Implement all
+            }
+        }
+    }
+
     override fun startDownload(downloadObject: DownloadObject) {
         super.startDownload(downloadObject)
         downloadObject.apply {
             when (DownloadCapabilities.fromString(downloadObject.getUriProtocol())) {
                 DownloadCapabilities.PROTOCOL_DATA -> {
-                    filename = (System.currentTimeMillis().toString() + "."
-                            + DownloadUtils.dataStringToExtension(uriString))
-
                     byteArrayToFile(context,
                         DownloadUtils.dataStringToByteArray(uriString), filename!!)
                 }

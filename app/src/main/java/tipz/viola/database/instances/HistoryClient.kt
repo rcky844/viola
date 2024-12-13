@@ -1,11 +1,11 @@
 // Copyright (c) 2022-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.broha.api
+package tipz.viola.database.instances
 
 import android.content.Context
 import tipz.viola.Application
-import tipz.viola.broha.database.BrohaClient
+import tipz.viola.database.BrohaClient
 import tipz.viola.settings.SettingsKeys
 
 class HistoryClient(context: Context) : BrohaClient(context, "history") {

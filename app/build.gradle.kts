@@ -14,7 +14,7 @@ plugins {
 fun getGitInfo(info: String): String {
     return try {
         val byteOut = ByteArrayOutputStream()
-        project.exec {
+        providers.exec {
             commandLine = when (info) {
                 "revision" -> "git describe --match=NeVeRmAtCh --always --dirty"
                 "branch" -> "git rev-parse --abbrev-ref HEAD"
@@ -33,12 +33,12 @@ fun getGitInfo(info: String): String {
 
 android {
     namespace = "tipz.viola"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "tipz.viola"
         minSdk = 14
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 62
         versionName = "7.0"
 
@@ -152,7 +152,7 @@ dependencies {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
     }
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    annotationProcessor("androidx.annotation:annotation:1.8.1")
+    annotationProcessor("androidx.annotation:annotation:1.9.1")
 
     // AndroidX Room
     val roomVersion = "2.6.1"
@@ -167,10 +167,10 @@ dependencies {
     // For compatibility
     // Modern dependencies
     val modernImplementation by configurations
-    modernImplementation("androidx.core:core-ktx:1.13.1")
+    modernImplementation("androidx.core:core-ktx:1.15.0")
     modernImplementation("androidx.appcompat:appcompat:1.7.0")
     modernImplementation("com.google.android.material:material:1.12.0")
-    modernImplementation("androidx.webkit:webkit:1.11.0")
+    modernImplementation("androidx.webkit:webkit:1.12.1")
 
     // Legacy dependencies
     // These will remain on their currently defined versions indefinitely,

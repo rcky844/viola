@@ -9,6 +9,7 @@ class DownloadObject {
     /* DownloadClient specifics */
     internal var taskId = 0
     internal var downloadMode = 0
+    internal var downloadStatus = false // TODO: Expand on this when needed
     internal var vWebView: VWebView? = null
 
     /* Download task specifics */
@@ -21,6 +22,7 @@ class DownloadObject {
 
     /* DownloadProvider specifics */
     var checkIsOnline = true
+    var showDialog = false
     var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
     /* Helper functions / features */

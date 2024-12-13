@@ -1,7 +1,7 @@
 // Copyright (c) 2022-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.broha.database
+package tipz.viola.database
 
 import android.content.Context
 import androidx.room.Dao
@@ -9,13 +9,11 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Room.databaseBuilder
 import androidx.room.Update
+import tipz.viola.database.Broha
 
 open class BrohaClient(context: Context?, dbName: String?) {
-    private val appDatabase: BrohaDatabase
-
-    init {
-        appDatabase = databaseBuilder(context!!, BrohaDatabase::class.java, dbName).build()
-    }
+    private val appDatabase: BrohaDatabase =
+        databaseBuilder(context!!, BrohaDatabase::class.java, dbName).build()
 
     val dao: BrohaDao?
         get() = appDatabase.brohaDao()

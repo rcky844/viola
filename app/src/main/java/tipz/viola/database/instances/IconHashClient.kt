@@ -1,7 +1,7 @@
 // Copyright (c) 2022-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.broha.database
+package tipz.viola.database.instances
 
 import android.content.Context
 import android.graphics.Bitmap

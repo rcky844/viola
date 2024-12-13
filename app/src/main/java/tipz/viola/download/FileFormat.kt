@@ -15,6 +15,7 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
         "application/vnd.android.package-archive",
         arrayOf("apk", "apks", "aab", "xapk", "apkm", "akp")
     ),
+    FORMAT_BINARY_DATA("application/octet-stream", arrayOf()),
     FORMAT_PDF("application/pdf", arrayOf("pdf")),
     FORMAT_APPLICATION_GENERIC("application/", arrayOf()),
 
@@ -47,6 +48,7 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
         }
 
         fun determineFileFormat(obj: DownloadObject): FileFormat {
+            if (obj.filename.isNullOrBlank()) return FORMAT_BINARY_DATA // Say we have binary data
             val extensionSpec = obj.filename!!.substringAfterLast(".")
             Log.d(LOG_TAG, "determineFileFormat(): extensionSpec=${extensionSpec}")
 
@@ -68,6 +70,7 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
 
                 /* Application */
                 FORMAT_ANDROID_PACKAGE -> R.drawable.document_apk
+                FORMAT_BINARY_DATA -> R.drawable.document_application
                 FORMAT_PDF -> R.drawable.document_pdf
                 FORMAT_APPLICATION_GENERIC -> R.drawable.document_application
 

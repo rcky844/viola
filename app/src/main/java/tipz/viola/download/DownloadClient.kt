@@ -3,16 +3,22 @@
 
 package tipz.viola.download
 
-import android.content.Context
+import android.content.DialogInterface
 import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import tipz.viola.ActivityManager
 import tipz.viola.Application
+import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VWebView
 
-class DownloadClient(context: Context) {
+class DownloadClient(context: Application) {
     private val LOG_TAG = "DownloadClient"
 
     private var settingsPreference = (context.applicationContext as Application).settingsPreference
@@ -29,7 +35,9 @@ class DownloadClient(context: Context) {
         if (downloadQueue.isEmpty()) return@Observer
 
         downloadQueue.forEach {
-            // Match download manager
+            if (it.downloadStatus) return@forEach
+
+            // Match download provider
             val provider : DownloadProvider = when (it.downloadMode) {
                 DownloadMode.AUTO_DOWNLOAD_PROVIDER.value -> { // TODO: Move auto detection to UI
                     var retProvider: DownloadProvider? = null
@@ -44,10 +52,25 @@ class DownloadClient(context: Context) {
             } ?: return@forEach
             Log.i(LOG_TAG, "id=${it.taskId}: DownloadProvider found, provider=${provider.javaClass.name}")
 
-            // Start download
+            // Set-up for download provider
             it.vWebView = vWebView
             if (it.downloadPath == null) it.downloadPath = defaultDownloadPath
-            provider.startDownload(it)
+            provider.resolveFilename(it)
+
+            // Start download
+            it.downloadStatus = true
+            if (it.showDialog)
+                CoroutineScope(Dispatchers.Main).launch {
+                    MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
+                        .setTitle(R.string.download_title)
+                        .setMessage(context.getString(R.string.download_message, it.filename))
+                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                            provider.startDownload(it)
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show()
+                }
+            else provider.startDownload(it)
         }
     }
 

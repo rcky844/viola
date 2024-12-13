@@ -30,6 +30,18 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
         DownloadCapabilities.PROTOCOL_HTTPS)
     override var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
+    override fun resolveFilename(downloadObject: DownloadObject) {
+        downloadObject.apply {
+            try {
+                if (filename == null)
+                    filename = DownloadUtils.guessFileName(uriString, contentDisposition, mimeType)
+                Log.i(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
+            } catch (e: IllegalStateException) {
+                CommonUtils.showMessage(context, R.string.downloadFailed)
+            }
+        }
+    }
+
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun startDownload(downloadObject: DownloadObject) {
         super.startDownload(downloadObject)
@@ -54,14 +66,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
             request.setNotificationVisibility(
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
-            try {
-                if (filename == null)
-                    filename = DownloadUtils.guessFileName(uriString, contentDisposition, mimeType)
-                Log.i(LOG_TAG, "startDownload(): filename=${filename}")
-                request.setDestinationUri(Uri.parse("file://$downloadPath$filename"))
-            } catch (e: IllegalStateException) {
-                CommonUtils.showMessage(context, R.string.downloadFailed)
-            }
+            request.setDestinationUri(Uri.parse("file://$downloadPath$filename"))
             request.setMimeType(
                 MimeTypeMap.getSingleton().getMimeTypeFromExtension(
                     MimeTypeMap.getFileExtensionFromUrl(uriString)

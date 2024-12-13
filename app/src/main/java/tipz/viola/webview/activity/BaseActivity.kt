@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import tipz.viola.Application
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
+import tipz.viola.utils.InsetUtils
 
 
 open class BaseActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         settingsPreference = (applicationContext as Application).settingsPreference
         windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        InsetUtils.applyWindowInsetsListener(findViewById(android.R.id.content))
     }
 
     public override fun onStart() {
