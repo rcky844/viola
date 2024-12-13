@@ -75,6 +75,10 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
 
         // Here we go!
         val data = MiniDownloadHelper.startDownload(ExportedUrls.updateJSONUrl)!!
+        if (data.isEmpty()) {
+            showMessage(R.string.update_down_failed_toast)
+            return@launch
+        }
         val jObject = JSONObject(String(data))
 
         // Get update channel name
