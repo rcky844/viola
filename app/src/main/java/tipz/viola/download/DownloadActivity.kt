@@ -14,8 +14,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +26,7 @@ import tipz.viola.R
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
+import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.webview.activity.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
@@ -31,6 +34,9 @@ import java.lang.ref.WeakReference
 class DownloadActivity : BaseActivity() {
     private lateinit var binding: ActivityRecyclerDataListBinding
     private lateinit var downloadClient: DownloadClient
+
+    lateinit var itemsAdapter: ItemsAdapter
+    lateinit var fab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +52,16 @@ class DownloadActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
+
+        // Clear all button
+        fab = binding.fab
+        fab.setOnClickListener {
+            downloadClient.downloadQueue = MutableLiveData(mutableListOf())
+            val size = listData!!.size
+            listData!!.clear()
+            itemsAdapter.notifyItemRangeRemoved(0, size)
+            showMessage(this, R.string.wiped_success)
+        }
     }
 
     override fun onStart() {
@@ -56,7 +72,8 @@ class DownloadActivity : BaseActivity() {
             listData = downloadClient.downloadQueue.value
         }
 
-        downloadList.adapter = ItemsAdapter(this)
+        itemsAdapter = ItemsAdapter(this)
+        downloadList.setAdapter(itemsAdapter) // Property access is causing lint issues
     }
 
     class ItemsAdapter(downloadActivity: DownloadActivity)
@@ -132,8 +149,12 @@ class DownloadActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
+            val isEmpty = listData == null || listData!!.size == 0
+            mDownloadActivity.get()!!.fab.visibility =
+                if (isEmpty) View.GONE else View.VISIBLE
+
             // Return 1 so that empty message is shown
-            return if (listData == null || listData!!.size == 0) 1
+            return if (isEmpty) 1
             else listData!!.size
         }
     }
