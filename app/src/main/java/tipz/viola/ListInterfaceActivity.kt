@@ -1,7 +1,7 @@
 // Copyright (c) 2020-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.broha
+package tipz.viola
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
@@ -27,11 +27,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tipz.viola.R
-import tipz.viola.broha.api.FavClient
-import tipz.viola.broha.api.HistoryClient
-import tipz.viola.broha.database.Broha
-import tipz.viola.broha.database.IconHashClient
+import tipz.viola.database.instances.IconHashClient
+import tipz.viola.database.Broha
+import tipz.viola.database.instances.FavClient
+import tipz.viola.database.instances.HistoryClient
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
@@ -277,7 +276,8 @@ class ListInterfaceActivity : BaseActivity() {
                             PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     clientActivity.favClient.insert(
-                                        Broha(data.iconHash, title, url!!))
+                                        Broha(data.iconHash, title, url!!)
+                                    )
                                 }
                                 showMessage(listInterfaceActivity, R.string.save_successful)
                             }

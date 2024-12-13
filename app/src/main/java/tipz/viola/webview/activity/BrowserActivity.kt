@@ -38,10 +38,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.LauncherActivity
 import tipz.viola.R
-import tipz.viola.broha.ListInterfaceActivity
-import tipz.viola.broha.api.FavClient
-import tipz.viola.broha.database.Broha
-import tipz.viola.broha.database.IconHashClient
+import tipz.viola.ListInterfaceActivity
+import tipz.viola.database.instances.FavClient
+import tipz.viola.database.Broha
+import tipz.viola.database.instances.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogUaEditBinding

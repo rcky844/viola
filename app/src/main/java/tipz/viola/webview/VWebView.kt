@@ -41,10 +41,10 @@ import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
-import tipz.viola.broha.api.HistoryClient
-import tipz.viola.broha.api.HistoryClient.UpdateHistoryState
-import tipz.viola.broha.database.Broha
-import tipz.viola.broha.database.IconHashClient
+import tipz.viola.database.instances.HistoryClient
+import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
+import tipz.viola.database.Broha
+import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
