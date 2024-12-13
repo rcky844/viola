@@ -29,6 +29,8 @@ class DownloadClient(context: Context) {
         if (downloadQueue.isEmpty()) return@Observer
 
         downloadQueue.forEach {
+            if (it.downloadStatus) return@forEach
+
             // Match download manager
             val provider : DownloadProvider = when (it.downloadMode) {
                 DownloadMode.AUTO_DOWNLOAD_PROVIDER.value -> { // TODO: Move auto detection to UI
@@ -48,6 +50,7 @@ class DownloadClient(context: Context) {
             it.vWebView = vWebView
             if (it.downloadPath == null) it.downloadPath = defaultDownloadPath
             provider.startDownload(it)
+            it.downloadStatus = true
         }
     }
 
