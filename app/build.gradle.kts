@@ -14,7 +14,7 @@ plugins {
 fun getGitInfo(info: String): String {
     return try {
         val byteOut = ByteArrayOutputStream()
-        project.exec {
+        providers.exec {
             commandLine = when (info) {
                 "revision" -> "git describe --match=NeVeRmAtCh --always --dirty"
                 "branch" -> "git rev-parse --abbrev-ref HEAD"
