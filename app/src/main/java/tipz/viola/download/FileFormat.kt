@@ -30,13 +30,23 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
     FORMAT_7Z("application/x-7z-compressed", arrayOf("7z")),
 
     /* Audio */
-    FORMAT_AUDIO_GENERIC("audio/", arrayOf()),
+    FORMAT_AUDIO_GENERIC("audio/",
+        arrayOf("mp3", "aac", "ogg", /* Lossy */
+                "flac", "m4a", /* Lossless */
+                "wav", "aiff", "pcm" /* Uncompressed */)
+    ),
 
     /* Image */
-    FORMAT_IMAGE_GENERIC("image/", arrayOf()),
+    FORMAT_IMAGE_GENERIC("image/",
+        arrayOf("jpg", "jpeg", /* Lossy */
+                "png", "bmp", "gif", /* Lossless */
+                "webp", "avif", "tiff" /* Both */)
+    ),
 
     /* Video */
-    FORMAT_VIDEO_GENERIC("video/", arrayOf());
+    FORMAT_VIDEO_GENERIC("video/",
+        arrayOf("mp4", "webm", "mkv", "avi", "mov", "wmv")
+    );
 
     companion object {
         private val LOG_TAG = "FileFormat"
