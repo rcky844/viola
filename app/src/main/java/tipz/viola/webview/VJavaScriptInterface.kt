@@ -5,13 +5,9 @@ package tipz.viola.webview
 
 import android.util.Log
 import android.webkit.JavascriptInterface
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import tipz.build.info.BuildInfo
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.InternalDownloadProvider
-import tipz.viola.webview.pages.ExportedUrls
 import java.io.IOException
 
 class VJavaScriptInterface(private val activity: VWebViewActivity) {
@@ -26,14 +22,6 @@ class VJavaScriptInterface(private val activity: VWebViewActivity) {
                 "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}"
             )
         }
-    }
-
-    @JavascriptInterface
-    fun focusInputBox() = CoroutineScope(Dispatchers.Main).launch {
-        // TODO: Make this possible to enable
-        if (activity.webview.getRealUrl() != ExportedUrls.actualStartUrl) return@launch
-
-        activity.onStartPageEditTextPressed()
     }
 
     @JavascriptInterface
