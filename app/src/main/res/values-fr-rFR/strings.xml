@@ -33,7 +33,7 @@
     <string name="javascript_desp">"Activer ceci autorisera le chargement du contenu JavaScript."</string>
     <string name="show_favicon">"Montrer l’icône des favoris"</string>
     <string name="show_favicon_desp">"Montrer l’icône des favoris de la page web à côté de la barre d’adresse."</string>
-    <string name="help">Aide</string>
+    <string name="about">À propos</string>
     <string name="version">Version</string>
     <string name="feedback">Suggestions</string>
     <string name="feedback_desp">"Signaler des bugs ou demander de nouvelles fonctionnalités."</string>

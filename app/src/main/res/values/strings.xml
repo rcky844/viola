@@ -35,7 +35,7 @@
     <string name="javascript_desp">"Enabling this will allow JavaScript web content to load."</string>
     <string name="show_favicon">"Show favicon"</string>
     <string name="show_favicon_desp">"Show the favicon of the webpage next to the address bar."</string>
-    <string name="help">About, help and feedback</string>
+    <string name="about">About</string>
     <string name="version">Version</string>
     <string name="feedback">Feedback</string>
     <string name="feedback_desp">"Report bugs or request new features."</string>
@@ -166,6 +166,7 @@
     <string name="download_url">Download link</string>
     <string name="download_title">Download file?</string>
     <string name="download_message">Do you want to download %s?</string>
+    <string name="item_build_number">Build number</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

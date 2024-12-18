@@ -33,7 +33,7 @@
     <string name="javascript_desp">"Bunu etkinleştirmek JavaScript web içeriğinin yüklenmesine izin verecektir."</string>
     <string name="show_favicon">"Web sitesi simgesini göster"</string>
     <string name="show_favicon_desp">"Adres çubuğu yanında web sitesinin simgesini gösterir."</string>
-    <string name="help">Yardım</string>
+    <string name="about">Hakkında</string>
     <string name="version">Sürüm</string>
     <string name="feedback">Geri bildirim</string>
     <string name="feedback_desp">"Hataları bildirin veya yeni özellikler isteyin."</string>

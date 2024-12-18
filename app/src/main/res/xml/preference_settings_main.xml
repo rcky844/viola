@@ -172,23 +172,11 @@
             android:title="@string/pref_update_channel_title" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/help">
+    <androidx.preference.PreferenceCategory android:title="@string/advanced">
         <androidx.preference.Preference
-            android:key="version"
+            android:key="about"
             android:summary=""
-            android:title="@string/version" />
-        <androidx.preference.Preference
-            android:key="website"
-            android:summary="@string/pref_website_summary"
-            android:title="@string/pref_website" />
-        <androidx.preference.Preference
-            android:key="feedback"
-            android:summary="@string/feedback_desp"
-            android:title="@string/feedback" />
-        <androidx.preference.Preference
-            android:key="source_code"
-            android:summary="@string/source_code_desp"
-            android:title="@string/source_code" />
+            android:title="@string/about" />
     </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

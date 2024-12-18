@@ -33,7 +33,7 @@
     <string name="javascript_desp">"Bật nút này sẽ cho phép chạy các nội dung JavaScript trên web."</string>
     <string name="show_favicon">"Hiện favicon"</string>
     <string name="show_favicon_desp">"Hiện favicon của trang web bên cạnh thanh địa chỉ trang web."</string>
-    <string name="help">Hỗ trợ</string>
+    <string name="about">Về</string>
     <string name="version">Phiên bản</string>
     <string name="feedback">Phản hồi</string>
     <string name="feedback_desp">"Báo cáo lỗi hoặc yêu cầu các tính năng mới."</string>

@@ -17,5 +17,5 @@
     <!--
         This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
     -->
-    <string name="buildinfo_dialog_license">This product is licensed to you under the %s.\n</string>
+    <string name="buildinfo_dialog_license">This product is licensed to you under the %s.</string>
 </resources>

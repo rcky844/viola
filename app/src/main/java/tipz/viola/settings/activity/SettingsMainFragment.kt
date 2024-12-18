@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebStorage
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,7 +27,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import tipz.build.info.BuildInfoDialog
+import tipz.build.info.BuildInfoActivity
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
@@ -36,9 +37,9 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
+import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.UpdateService
-import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.activity.BaseActivity.Companion.darkModeCheck
 import java.io.IOException
 
@@ -54,12 +55,6 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
             settingsActivity.contentResolver.takePersistableUriPermission(uri, flag)
             settingsPreference.setString(SettingsKeys.startPageWallpaper, uri.toString())
         }
-
-    private val dialogVersionDetails = BuildInfoDialog.BuildInfoDialogDetails.also {
-        it.loader = this::needLoad
-        it.changelogUrl = ExportedUrls.changelogUrl
-        it.licenseUrl = ExportedUrls.actualLicenseUrl
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -91,10 +86,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         val start_page_wallpaper = findPreference<Preference>("start_page_wallpaper")!!
         val check_for_updates = findPreference<Preference>("check_for_updates")!!
         val update_channel = findPreference<Preference>("update_channel")!!
-        val version = findPreference<Preference>("version")!!
-        val website = findPreference<Preference>("website")!!
-        val feedback = findPreference<Preference>("feedback")!!
-        val source_code = findPreference<Preference>("source_code")!!
+        val about = findPreference<Preference>("about")!!
 
         search_engine.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
@@ -282,23 +274,10 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 true
             }
 
-        version.onPreferenceClickListener =
+        about.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                BuildInfoDialog(settingsActivity, dialogVersionDetails).create().show()
-                true
-            }
-        website.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                needLoad(ExportedUrls.websiteUrl)
-                true
-            }
-        Preference.OnPreferenceClickListener {
-            needLoad(ExportedUrls.feedbackUrl)
-            true
-        }.also { feedback.onPreferenceClickListener = it }
-        source_code.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                needLoad(ExportedUrls.sourceUrl)
+                val intent = Intent(context, BuildInfoActivity::class.java)
+                mGetNeedLoadFromNonMain.launch(intent)
                 true
             }
         search_engine.summary =
@@ -332,7 +311,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 )
             )
         }
-        version.summary =
+        about.summary =
             resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME
     }
 
@@ -342,6 +321,12 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         settingsActivity.setResult(0, needLoad)
         settingsActivity.finish()
     }
+
+    val mGetNeedLoadFromNonMain =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.data == null) return@registerForActivityResult
+            result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { needLoad(it) }
+        }
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         var dialogFragment: DialogFragment? = null

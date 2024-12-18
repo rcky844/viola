@@ -33,7 +33,7 @@
     <string name="javascript_desp">啟用將允許加載JavaScript內容</string>
     <string name="show_favicon">顯示網站圖示</string>
     <string name="show_favicon_desp">在網址列旁邊顯示網站的圖示</string>
-    <string name="help">幫助</string>
+    <string name="about">關於</string>
     <string name="version">版本</string>
     <string name="feedback">回饋</string>
     <string name="feedback_desp">報告錯誤或請求新功能</string>
