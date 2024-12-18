@@ -52,7 +52,7 @@ open class BuildInfo {
      * Defaults to "0".
      */
     @Size(min=1)
-    var productBuildRevision: String? = BuildConfig.VERSION_BUILD_REVISION
+    var productBuildRevision = BuildConfig.VERSION_BUILD_REVISION
 
     /* PRODUCT_BUILD_GIT_REVISION
      *
