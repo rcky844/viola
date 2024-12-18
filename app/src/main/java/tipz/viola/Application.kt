@@ -53,4 +53,8 @@ class Application : Application() {
         super.attachBaseContext(base)
         MultiDex.install(base)
     }
+
+    override fun onTerminate() {
+        super.onTerminate()
+    }
 }

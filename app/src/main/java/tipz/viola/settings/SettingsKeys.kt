@@ -28,6 +28,7 @@ object SettingsKeys {
     const val useCustomTabs = "useCustomTabs" /* INTEGER */
 
     /* Download Manager */
+    const val downloadApi = "downloadApi" /* INTEGER */
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
     const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
 
