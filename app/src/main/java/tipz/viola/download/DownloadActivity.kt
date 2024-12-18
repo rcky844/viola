@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -23,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.database.instances.DownloadHistoryClient
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
@@ -34,6 +36,7 @@ import java.lang.ref.WeakReference
 class DownloadActivity : BaseActivity() {
     private lateinit var binding: ActivityRecyclerDataListBinding
     private lateinit var downloadClient: DownloadClient
+    private lateinit var brohaClient: DownloadHistoryClient
 
     lateinit var itemsAdapter: ItemsAdapter
     lateinit var fab: FloatingActionButton
@@ -44,7 +47,9 @@ class DownloadActivity : BaseActivity() {
         val view = binding.root
         setContentView(view)
 
+        // Set-up clients
         downloadClient = (applicationContext as Application).downloadClient
+        brohaClient = downloadClient.brohaClient
 
         setTitle(R.string.toolbar_expandable_downloads)
         val toolbar = binding.toolbar
@@ -57,23 +62,38 @@ class DownloadActivity : BaseActivity() {
         fab = binding.fab
         fab.setOnClickListener {
             downloadClient.downloadQueue = MutableLiveData(mutableListOf())
-            val size = listData!!.size
-            listData!!.clear()
+            val size = listData.size
+            listData.clear()
+            CoroutineScope(Dispatchers.IO).launch { brohaClient.deleteAll() }
             itemsAdapter.notifyItemRangeRemoved(0, size)
             showMessage(this, R.string.wiped_success)
         }
+
+        // Set-up RecyclerView
+        val downloadList = binding.recyclerView
+        itemsAdapter = ItemsAdapter(this)
+        downloadList.setAdapter(itemsAdapter) // Property access is causing lint issues
+
+        // Set-up layout manager
+        val layoutManager = downloadList.layoutManager as LinearLayoutManager
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
     }
 
     override fun onStart() {
         super.onStart()
-        val downloadList = binding.recyclerView
 
         CoroutineScope(Dispatchers.IO).launch {
-            listData = downloadClient.downloadQueue.value
+            // TODO: Move to custom database
+            listData = mutableListOf() // Reset
+            brohaClient.getAll().forEach {
+                listData.add(DownloadObject().apply {
+                    filename = it.title
+                    requestUrl = it.url
+                })
+            }
+            listData.addAll(downloadClient.downloadQueue.value!!)
         }
-
-        itemsAdapter = ItemsAdapter(this)
-        downloadList.setAdapter(itemsAdapter) // Property access is causing lint issues
     }
 
     class ItemsAdapter(downloadActivity: DownloadActivity)
@@ -96,7 +116,7 @@ class DownloadActivity : BaseActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val isEmpty = listData!!.size == 0
+            val isEmpty = listData.size == 0
             binding = if (isEmpty) {
                 TemplateEmptyBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false)
@@ -116,7 +136,7 @@ class DownloadActivity : BaseActivity() {
             if (holder is EmptyViewHolder) {
                 holder.text.setText(R.string.no_downloads)
             } else if (holder is ListViewHolder) {
-                val data = listData!![position]
+                val data = listData[position]
 
                 holder.icon.setImageResource(FileFormat.getFileDrawableResId(data))
                 holder.title.text = data.filename
@@ -149,19 +169,19 @@ class DownloadActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
-            val isEmpty = listData == null || listData!!.size == 0
+            val isEmpty = listData.size == 0
             mDownloadActivity.get()!!.fab.visibility =
                 if (isEmpty) View.GONE else View.VISIBLE
 
             // Return 1 so that empty message is shown
             return if (isEmpty) 1
-            else listData!!.size
+            else listData.size
         }
     }
 
     companion object {
         private var LOG_TAG = "DownloadActivity"
-        private var listData: MutableList<DownloadObject>? = null
+        private var listData: MutableList<DownloadObject> = mutableListOf()
         private lateinit var binding: ViewBinding
     }
 }

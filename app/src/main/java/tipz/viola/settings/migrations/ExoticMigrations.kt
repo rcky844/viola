@@ -55,6 +55,7 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
             // Migrations
             migrateSearchIndex()
             migrateDefaultBoolean()
+            pref.setInt(SettingsKeys.enableHistoryStorage, 1) // migrateHistoryStorageEnablement()
 
             // Remove deleted keys
             deletedKeys.forEach { pref.remove(it) }

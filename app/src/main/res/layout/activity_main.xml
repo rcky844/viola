@@ -70,6 +70,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:padding="12dp"
                     android:translationZ="2dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/barrier"
                     app:layout_constraintTop_toTopOf="parent"
@@ -83,7 +84,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
-                    android:background="@drawable/url_edit_bg"
+                    android:background="@drawable/round_corner_elevated"
                     android:completionThreshold="1"
                     android:dropDownWidth="match_parent"
                     android:fadingEdge="vertical"
@@ -100,6 +101,7 @@
                     android:selectAllOnFocus="true"
                     android:singleLine="true"
                     android:textSize="16sp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/upRightFab"
                     app:layout_constraintStart_toEndOf="@id/barrier"
@@ -147,6 +149,12 @@
             layout="@layout/layout_webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <tipz.viola.webview.activity.components.LocalNtpPageView
+            android:id="@+id/local_ntp_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <tipz.viola.webview.activity.components.ToolbarView

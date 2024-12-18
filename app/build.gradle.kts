@@ -14,7 +14,7 @@ plugins {
 fun getGitInfo(info: String): String {
     return try {
         val byteOut = ByteArrayOutputStream()
-        providers.exec {
+        project.exec {
             commandLine = when (info) {
                 "revision" -> "git describe --match=NeVeRmAtCh --always --dirty"
                 "branch" -> "git rev-parse --abbrev-ref HEAD"
@@ -49,7 +49,7 @@ android {
         buildConfigField("String", "VERSION_COPYRIGHT_YEAR", "\"2020-2024\"")
         buildConfigField("String", "VERSION_BUILD_EXTRA", "\"Beta 2 Patch 1\"")
         buildConfigField("String", "VERSION_BUILD_ID", "\"${versionCode}\"")
-        buildConfigField("String", "VERSION_BUILD_REVISION", "\"5\"")
+        buildConfigField("int", "VERSION_BUILD_REVISION", "5")
         buildConfigField("String", "VERSION_BUILD_GIT_REVISION",
             "\"${getGitInfo("revision")}\"")
         buildConfigField("String", "VERSION_BUILD_BRANCH",

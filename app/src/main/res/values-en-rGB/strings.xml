@@ -33,7 +33,7 @@
     <string name="javascript_desp">"Enabling this will allow JavaScript web content to load."</string>
     <string name="show_favicon">"Show favicon"</string>
     <string name="show_favicon_desp">"Show the favicon of the webpage next to the address bar."</string>
-    <string name="help">Help</string>
+    <string name="about">About</string>
     <string name="version">Version</string>
     <string name="feedback">Feedback</string>
     <string name="feedback_desp">"Report bugs or request new features."</string>

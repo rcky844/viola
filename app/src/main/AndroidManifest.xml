@@ -112,6 +112,9 @@
             android:name=".settings.activity.SettingsActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
         <activity
+            android:name="tipz.build.info.BuildInfoActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
+        <activity
             android:name=".ListInterfaceActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
         <activity

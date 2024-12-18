@@ -22,11 +22,13 @@ object SettingsKeys {
     /* Broha */
     const val favApi = "favApi" /* INTEGER */
     const val historyApi = "historyApi" /* INTEGER */
+    const val enableHistoryStorage = "enableHistoryStorage" /* INTEGER */
 
     /* Custom Tabs */
     const val useCustomTabs = "useCustomTabs" /* INTEGER */
 
     /* Download Manager */
+    const val downloadApi = "downloadApi" /* INTEGER */
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
     const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
 

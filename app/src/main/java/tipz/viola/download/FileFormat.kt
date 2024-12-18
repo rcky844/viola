@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.DrawableRes
 import tipz.viola.R
 
+
 enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
     FORMAT_UNKNOWN(null, arrayOf()),
 
@@ -19,14 +20,33 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
     FORMAT_PDF("application/pdf", arrayOf("pdf")),
     FORMAT_APPLICATION_GENERIC("application/", arrayOf()),
 
+    /* Application: Archives */
+    FORMAT_BZIP2("application/x-bzip2", arrayOf("bz2")),
+    FORMAT_GZIP("application/gzip", arrayOf("gz")),
+    FORMAT_RAR("application/vnd.rar", arrayOf("rar", "rev")),
+    FORMAT_TAR("application/x-tar", arrayOf("tar")),
+    FORMAT_XZ("application/x-xz", arrayOf("xz")),
+    FORMAT_ZIP("application/zip", arrayOf("zip", "zipx")),
+    FORMAT_7Z("application/x-7z-compressed", arrayOf("7z")),
+
     /* Audio */
-    FORMAT_AUDIO_GENERIC("audio/", arrayOf()),
+    FORMAT_AUDIO_GENERIC("audio/",
+        arrayOf("mp3", "aac", "ogg", /* Lossy */
+                "flac", "m4a", /* Lossless */
+                "wav", "aiff", "pcm" /* Uncompressed */)
+    ),
 
     /* Image */
-    FORMAT_IMAGE_GENERIC("image/", arrayOf()),
+    FORMAT_IMAGE_GENERIC("image/",
+        arrayOf("jpg", "jpeg", /* Lossy */
+                "png", "bmp", "gif", /* Lossless */
+                "webp", "avif", "tiff" /* Both */)
+    ),
 
     /* Video */
-    FORMAT_VIDEO_GENERIC("video/", arrayOf());
+    FORMAT_VIDEO_GENERIC("video/",
+        arrayOf("mp4", "webm", "mkv", "avi", "mov", "wmv")
+    );
 
     companion object {
         private val LOG_TAG = "FileFormat"
@@ -73,6 +93,11 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
                 FORMAT_BINARY_DATA -> R.drawable.document_application
                 FORMAT_PDF -> R.drawable.document_pdf
                 FORMAT_APPLICATION_GENERIC -> R.drawable.document_application
+
+                /* Application: Archives */
+                FORMAT_BZIP2, FORMAT_GZIP, FORMAT_RAR,
+                FORMAT_TAR, FORMAT_XZ, FORMAT_ZIP, FORMAT_7Z
+                    -> R.drawable.document_zip
 
                 /* Audio */
                 FORMAT_AUDIO_GENERIC -> R.drawable.document_audio

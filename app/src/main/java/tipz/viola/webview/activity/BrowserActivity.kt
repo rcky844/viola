@@ -37,10 +37,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.LauncherActivity
-import tipz.viola.R
 import tipz.viola.ListInterfaceActivity
-import tipz.viola.database.instances.FavClient
+import tipz.viola.R
 import tipz.viola.database.Broha
+import tipz.viola.database.instances.FavClient
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
@@ -55,6 +55,7 @@ import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.activity.components.ExpandableToolbarView
 import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
+import tipz.viola.webview.activity.components.LocalNtpPageView
 import tipz.viola.webview.activity.components.SwipeController
 import tipz.viola.webview.activity.components.ToolbarView
 import tipz.viola.webview.pages.ExportedUrls
@@ -66,7 +67,6 @@ import java.text.DateFormat
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var urlEditText: MaterialAutoCompleteTextView
     private lateinit var upRightFab: AppCompatImageView
     private var currentUserAgentState = VWebView.UserAgentMode.MOBILE
@@ -74,6 +74,7 @@ class BrowserActivity : VWebViewActivity() {
     private var currentCustomUAWideView = false
     private lateinit var favClient: FavClient
     private lateinit var iconHashClient: IconHashClient
+    private lateinit var localNtpPageView: LocalNtpPageView
     private lateinit var toolbarView: ToolbarView
     private lateinit var expandableToolbarView: ExpandableToolbarView
     private lateinit var sslLock: AppCompatImageView
@@ -98,6 +99,7 @@ class BrowserActivity : VWebViewActivity() {
         // Initialize variables
         appbar = binding.appbar
         webviewContainer = binding.webviewContainer
+        localNtpPageView = binding.localNtpPage
         toolbarView = binding.toolbarView
         upRightFab = binding.upRightFab
         urlEditText = binding.urlEditText
@@ -237,6 +239,9 @@ class BrowserActivity : VWebViewActivity() {
             expandableToolbarView.bringToFront()
         }
 
+        // Set-up local new tab page
+        localNtpPageView.setRealSearchBar(urlEditText, sslLock)
+
         // Finally, load homepage
         val dataUri = intent.data
         if (dataUri != null) {
@@ -365,6 +370,9 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.history -> {
+                if (!settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage))
+                    return false
+
                 val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
                 intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_history)
                 mGetNeedLoad.launch(intent)
@@ -547,5 +555,17 @@ class BrowserActivity : VWebViewActivity() {
     override fun onStartPageEditTextPressed() {
         urlEditText.requestFocus()
         imm.showSoftInput(urlEditText, InputMethodManager.SHOW_FORCED)
+    }
+
+    fun checkHomePageVisibility() {
+        val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
+        localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
+        sslLock.visibility = if (isHomePage) View.GONE else View.VISIBLE
+        urlEditText.visibility = if (isHomePage) View.GONE else View.VISIBLE
+        webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
+
+        // TODO: Move this somewhere else
+        if (isHomePage)
+            localNtpPageView.fakeSearchBar.visibility = View.VISIBLE
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="app_banner" type="id" />
+    <item name="app_banner_barrier" type="id" />
+    <item name="fake_search_bar" type="id" />
+    <item name="page_flow" type="id" />
+</resources>

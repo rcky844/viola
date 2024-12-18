@@ -33,7 +33,7 @@
     <string name="javascript_desp">启用將允許加載JavaScript內容</string>
     <string name="show_favicon">显示网站图标</string>
     <string name="show_favicon_desp">在地址栏旁边显示网站的图标</string>
-    <string name="help">帮助</string>
+    <string name="about">关于</string>
     <string name="version">版本</string>
     <string name="feedback">反馈</string>
     <string name="feedback_desp">报告错误或请求新功能</string>

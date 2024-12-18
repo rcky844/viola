@@ -39,6 +39,7 @@ open class VWebViewClient(
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         mVWebView.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url, favicon)
+        mVWebView.checkHomePageVisibility()
     }
 
     override fun onPageFinished(view: WebView, url: String) {

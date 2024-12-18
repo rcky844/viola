@@ -14,7 +14,8 @@ object ExportedUrls {
     const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
     const val websiteUrl = "https://rcky844.github.io/viola/"
     val changelogUrl = "${websiteUrl}changelogs/build" +
-                (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION) + ".html"
+                (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION) +
+            (if (BuildConfig.VERSION_BUILD_REVISION == 0) "" else "r${BuildConfig.VERSION_BUILD_REVISION}")
     const val feedbackUrl = "$sourceUrl-/issues"
     const val updateJSONUrl = "${websiteUrl}updates.json"
 

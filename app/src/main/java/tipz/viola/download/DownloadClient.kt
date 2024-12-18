@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 import tipz.viola.ActivityManager
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.database.Broha
+import tipz.viola.database.instances.DownloadHistoryClient
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VWebView
 
@@ -25,6 +27,7 @@ class DownloadClient(context: Application) {
     private var clientMode = settingsPreference.getInt(SettingsKeys.downloadMgrMode)
 
     private var vWebView: VWebView? = null
+    var brohaClient: DownloadHistoryClient = DownloadHistoryClient(context)
     var downloadQueue: MutableLiveData<MutableList<DownloadObject>> = MutableLiveData(mutableListOf())
     private var currentTaskId = 0
 
@@ -71,6 +74,9 @@ class DownloadClient(context: Application) {
                         .create().show()
                 }
             else provider.startDownload(it)
+
+            // Commit to Broha
+            commitToBroha(it)
         }
     }
 
@@ -108,6 +114,20 @@ class DownloadClient(context: Application) {
 
     fun destroy() {
         downloadQueue.removeObserver(downloadObserver)
+    }
+
+    fun commitToBroha(downloadObject: DownloadObject) {
+        val downloadQueue = downloadQueue.value!!
+        if (downloadQueue.isEmpty()) return
+
+        // TODO: Move to custom database
+        val broha = Broha().apply {
+            title = downloadObject.filename
+            url = downloadObject.requestUrl
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            brohaClient.insert(broha)
+        }
     }
 
     companion object {
