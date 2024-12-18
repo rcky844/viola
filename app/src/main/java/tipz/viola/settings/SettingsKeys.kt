@@ -22,6 +22,7 @@ object SettingsKeys {
     /* Broha */
     const val favApi = "favApi" /* INTEGER */
     const val historyApi = "historyApi" /* INTEGER */
+    const val enableHistoryStorage = "enableHistoryStorage" /* INTEGER */
 
     /* Custom Tabs */
     const val useCustomTabs = "useCustomTabs" /* INTEGER */

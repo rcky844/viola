@@ -370,6 +370,9 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.history -> {
+                if (!settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage))
+                    return false
+
                 val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
                 intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_history)
                 mGetNeedLoad.launch(intent)

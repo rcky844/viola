@@ -230,6 +230,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED)
             historyClient = HistoryClient(activity)
+        historyClient.doSettingsCheck()
     }
 
     fun setUpdateHistory(value: Boolean) {

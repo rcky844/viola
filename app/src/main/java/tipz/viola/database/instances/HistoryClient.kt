@@ -13,11 +13,16 @@ class HistoryClient(context: Context) : BrohaClient(context, "history") {
         STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK
     }
 
+    val settingsPreference = (context.applicationContext as Application).settingsPreference
+
     init {
-        val settingsPreference = (context.applicationContext as Application).settingsPreference
         val historyApiVer = settingsPreference.getInt(SettingsKeys.historyApi)
         if (historyApiVer > LATEST_API || historyApiVer <= -1) throw RuntimeException()
         settingsPreference.setInt(SettingsKeys.historyApi, LATEST_API)
+    }
+
+    fun doSettingsCheck() {
+        brohaEnabled = settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage)
     }
 
     companion object {

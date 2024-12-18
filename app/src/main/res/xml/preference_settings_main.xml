@@ -65,6 +65,12 @@
             android:title="@string/pref_google_safe_browsing_title"
             app:preferenceTag="enableGoogleSafeBrowse"
             app:needReload="false" />
+        <tipz.viola.settings.activity.MaterialSwitchPreference
+            android:key="enable_history"
+            android:summary="@string/pref_enable_history_summary"
+            android:title="@string/pref_enable_history_title"
+            app:preferenceTag="enableHistoryStorage"
+            app:needReload="false" />
         <tipz.viola.settings.activity.MaterialDialogPreference
             android:key="clear_cache"
             android:title="@string/pref_clear_cache"

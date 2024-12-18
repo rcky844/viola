@@ -20,6 +20,7 @@ class InitialMigrations(pref: SettingsSharedPreference) {
             pref.setInt(SettingsKeys.adServerId, 0)
             pref.setInt(SettingsKeys.closeAppAfterDownload, 1)
             pref.setInt(SettingsKeys.downloadMgrMode, 0)
+            pref.setInt(SettingsKeys.enableHistoryStorage, 1)
             pref.setInt(SettingsKeys.isJavaScriptEnabled, 1)
             pref.setInt(SettingsKeys.enableAdBlock, 0)
             pref.setInt(SettingsKeys.enableGoogleSafeBrowse, 0)

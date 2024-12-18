@@ -167,6 +167,8 @@
     <string name="download_title">Download file?</string>
     <string name="download_message">Do you want to download %s?</string>
     <string name="item_build_number">Build number</string>
+    <string name="pref_enable_history_title">Use history storage</string>
+    <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
