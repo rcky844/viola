@@ -8,8 +8,12 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View.OnFocusChangeListener
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +26,9 @@ class LocalNtpPageView(
     context: Context, attrs: AttributeSet?
 ) : ConstraintLayout(context, attrs) {
     private lateinit var realSearchBar: AppCompatAutoCompleteTextView
+    private lateinit var sslLock: AppCompatImageView
+    var fakeSearchBar: AppCompatAutoCompleteTextView
+    private val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
     private var set = ConstraintSet()
 
     init {
@@ -41,7 +48,7 @@ class LocalNtpPageView(
         addView(appBanner)
 
         // Create fake search bar
-        val fakeSearchBar = AppCompatAutoCompleteTextView(context).apply {
+        fakeSearchBar = AppCompatAutoCompleteTextView(context).apply {
             id = R.id.fake_search_bar
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             setPadding( // This is hacky...
@@ -52,8 +59,14 @@ class LocalNtpPageView(
             setBackgroundResource(R.drawable.url_edit_bg)
         }
         addView(fakeSearchBar)
-        fakeSearchBar.setOnClickListener {
-            realSearchBar.performClick()
+        fakeSearchBar.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                realSearchBar.visibility = VISIBLE
+                sslLock.visibility = VISIBLE
+                fakeSearchBar.visibility = GONE
+                realSearchBar.requestFocus()
+                imm.showSoftInput(realSearchBar, InputMethodManager.SHOW_IMPLICIT)
+            }
         }
 
         // Set-up Flow
@@ -71,9 +84,24 @@ class LocalNtpPageView(
         set.constrainHeight(fakeSearchBar.id,
             CommonUtils.getDisplayMetrics(context, 52).toInt())
         set.applyTo(this)
+
+        // Allow page to show up again on clicked
+        setOnClickListener {
+            if (realSearchBar.isFocused) {
+                realSearchBar.visibility = GONE
+                sslLock.visibility = GONE
+                imm.hideSoftInputFromWindow(realSearchBar.windowToken, 0)
+                realSearchBar.clearFocus()
+            }
+            fakeSearchBar.visibility = VISIBLE
+        }
     }
 
-    fun setRealSearchBar(searchBar: AppCompatAutoCompleteTextView) {
-        realSearchBar = searchBar
+    fun setRealSearchBar(
+        searchBar: AppCompatAutoCompleteTextView,
+        sslLock: AppCompatImageView
+    ) {
+        this.realSearchBar = searchBar
+        this.sslLock = sslLock
     }
 }

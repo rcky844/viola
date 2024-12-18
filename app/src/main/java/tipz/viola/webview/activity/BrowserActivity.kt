@@ -240,7 +240,7 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Set-up local new tab page
-        localNtpPageView.setRealSearchBar(urlEditText)
+        localNtpPageView.setRealSearchBar(urlEditText, sslLock)
 
         // Finally, load homepage
         val dataUri = intent.data
@@ -555,7 +555,14 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     fun checkHomePageVisibility() {
-        localNtpPageView.visibility =
-            if (webview.getRealUrl() == ExportedUrls.actualStartUrl) View.VISIBLE else View.GONE
+        val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
+        localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
+        sslLock.visibility = if (isHomePage) View.GONE else View.VISIBLE
+        urlEditText.visibility = if (isHomePage) View.GONE else View.VISIBLE
+        webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
+
+        // TODO: Move this somewhere else
+        if (isHomePage)
+            localNtpPageView.fakeSearchBar.visibility = View.VISIBLE
     }
 }
