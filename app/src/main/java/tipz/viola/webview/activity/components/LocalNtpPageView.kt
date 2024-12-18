@@ -56,7 +56,7 @@ class LocalNtpPageView(
                 CommonUtils.getDisplayMetrics(context, 28 + 72).toInt(), 0
             )
             setHint(R.string.address_bar_hint)
-            setBackgroundResource(R.drawable.url_edit_bg)
+            setBackgroundResource(R.drawable.round_corner_elevated)
         }
         addView(fakeSearchBar)
         fakeSearchBar.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->

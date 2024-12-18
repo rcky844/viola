@@ -84,7 +84,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
-                    android:background="@drawable/url_edit_bg"
+                    android:background="@drawable/round_corner_elevated"
                     android:completionThreshold="1"
                     android:dropDownWidth="match_parent"
                     android:fadingEdge="vertical"
