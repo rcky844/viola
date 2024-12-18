@@ -41,19 +41,20 @@ import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
+import tipz.viola.database.Broha
 import tipz.viola.database.instances.HistoryClient
 import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
-import tipz.viola.database.Broha
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadObject
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
+import tipz.viola.webview.activity.BaseActivity
+import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.buss.BussUtils
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
-import tipz.viola.webview.activity.BaseActivity
 import java.util.regex.Pattern
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -519,13 +520,15 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         var noReload = false
     }
 
+    // FIXME: Assertion
+    fun checkHomePageVisibility() = (activity as BrowserActivity).checkHomePageVisibility()
+
     fun loadHomepage(useStartPage : Boolean) {
         if (useStartPage) {
             loadRealUrl(ExportedUrls.actualStartUrl)
         } else {
             loadUrl(SearchEngineEntries.getPreferredHomePageUrl(settingsPreference))
         }
-
     }
 
     fun loadViewSourcePage(url: String?): Boolean {
