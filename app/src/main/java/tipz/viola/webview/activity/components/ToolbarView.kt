@@ -18,7 +18,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import tipz.viola.R
 import tipz.viola.databinding.TemplateIconItemBinding
-import tipz.viola.utils.dpToPx
+import tipz.viola.ext.dpToPx
 import tipz.viola.webview.activity.BrowserActivity
 
 class ToolbarView(
