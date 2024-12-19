@@ -10,8 +10,8 @@ import android.os.Bundle
 import android.webkit.CookieManager
 import androidx.appcompat.app.AppCompatActivity
 import cat.ereza.customactivityoncrash.config.CaocConfig
+import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.activity.CustomTabsActivity
@@ -22,7 +22,7 @@ class LauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.setBackgroundDrawableResource(android.R.color.transparent)
         if (!webViewEnabled()) {
-            CommonUtils.showMessage(this, R.string.no_webview)
+            showMessage(R.string.no_webview)
             exitProcess(0)
         }
         CaocConfig.Builder.create()

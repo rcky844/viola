@@ -18,7 +18,7 @@ import tipz.viola.download.DownloadCapabilities
 import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.database.Droha
-import tipz.viola.utils.CommonUtils
+import tipz.viola.ext.showMessage
 
 class AndroidDownloadProvider(override val context: Context) : DownloadProvider {
     private var downloadID: Long = 0
@@ -42,7 +42,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                     filename = DownloadUtils.guessFileName(uriString, contentDisposition, mimeType)
                 Log.i(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
             } catch (e: IllegalStateException) {
-                CommonUtils.showMessage(context, R.string.downloadFailed)
+                context.showMessage(R.string.downloadFailed)
             }
         }
     }
@@ -81,7 +81,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
             try {
                 downloadID = dm.enqueue(request)
             } catch (e: RuntimeException) {
-                CommonUtils.showMessage(context, R.string.downloadFailed)
+                context.showMessage(R.string.downloadFailed)
                 return@apply
             }
 

@@ -46,6 +46,9 @@ import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogUaEditBinding
 import tipz.viola.download.DownloadActivity
+import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.shareUrl
+import tipz.viola.ext.showMessage
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.activity.SettingsActivity
@@ -185,7 +188,7 @@ class BrowserActivity : VWebViewActivity() {
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNeutralButton(R.string.copy_title) { _: DialogInterface?, _: Int ->
-                    CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
+                    copyClipboard(webview.title)
                 }
                 .create().show()
         }
@@ -329,7 +332,7 @@ class BrowserActivity : VWebViewActivity() {
                 currentUserAgentState = userAgentMode()
             }
 
-            R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
+            R.drawable.share -> shareUrl(webview.url)
             R.drawable.app_shortcut -> { // FIXME: Shortcuts pointing to the same URL does not behave as expected
                 // Bail out for certain URLs
                 if (webview.title.isNullOrBlank() || webview.url.isBlank()) return false
@@ -395,7 +398,7 @@ class BrowserActivity : VWebViewActivity() {
                     val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
                     favClient.insert(Broha(iconHash, title, url))
                 }
-                CommonUtils.showMessage(this, R.string.save_successful)
+                showMessage(R.string.save_successful)
             }
 
             R.drawable.close -> finish()
@@ -478,7 +481,7 @@ class BrowserActivity : VWebViewActivity() {
                 webview.loadHomepage(reqVal)
             }
 
-            R.drawable.share -> CommonUtils.copyClipboard(this, webview.url)
+            R.drawable.share -> copyClipboard(webview.url)
 
             R.drawable.code -> {
                 if (webview.consoleLogging) {
@@ -493,7 +496,7 @@ class BrowserActivity : VWebViewActivity() {
                         }
                         .create().show()
                 } else {
-                    CommonUtils.showMessage(this, R.string.toast_console_enabled)
+                    showMessage(R.string.toast_console_enabled)
                     webview.consoleLogging = true
                 }
             }

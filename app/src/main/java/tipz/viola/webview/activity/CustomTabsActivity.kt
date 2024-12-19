@@ -10,7 +10,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import tipz.viola.databinding.ActivityCustomTabBinding
-import tipz.viola.utils.CommonUtils
+import tipz.viola.ext.shareUrl
 import tipz.viola.webview.VWebViewActivity
 
 class CustomTabsActivity : VWebViewActivity() {
@@ -38,7 +38,7 @@ class CustomTabsActivity : VWebViewActivity() {
 
         /* Share */
         val share = binding.share
-        share.setOnClickListener { CommonUtils.shareUrl(this, webview.url) }
+        share.setOnClickListener { shareUrl(webview.url) }
 
         /* Open in Browser */
         val openBrowser = binding.openBrowser

@@ -12,6 +12,7 @@ import tipz.viola.download.DownloadCapabilities
 import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.database.Droha
+import tipz.viola.ext.showMessage
 import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.VJavaScriptInterface
 import java.io.File
@@ -88,7 +89,7 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
 
                 // Tell the media scanner about the new file so that it is immediately available to the user.
                 MediaScannerConnection.scanFile(context, arrayOf(file.toString()), null, null)
-                CommonUtils.showMessage(context, context.resources.getString(
+                context.showMessage(context.resources.getString(
                     R.string.notification_download_successful, filename))
             } catch (ignored: IOException) {
             }

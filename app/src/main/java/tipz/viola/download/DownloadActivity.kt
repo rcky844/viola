@@ -29,7 +29,7 @@ import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
 import tipz.viola.download.database.Droha
 import tipz.viola.download.database.DrohaClient
-import tipz.viola.utils.CommonUtils.showMessage
+import tipz.viola.ext.showMessage
 import tipz.viola.webview.activity.BaseActivity
 import java.io.File
 import java.lang.ref.WeakReference
@@ -67,7 +67,7 @@ class DownloadActivity : BaseActivity() {
             listData.clear()
             CoroutineScope(Dispatchers.IO).launch { drohaClient.deleteAll() }
             itemsAdapter.notifyItemRangeRemoved(0, size)
-            showMessage(this, R.string.wiped_success)
+            showMessage(R.string.wiped_success)
         }
 
         // Set-up RecyclerView

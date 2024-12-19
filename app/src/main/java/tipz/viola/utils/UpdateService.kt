@@ -21,6 +21,7 @@ import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.MiniDownloadHelper
+import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.pages.ExportedUrls
@@ -64,7 +65,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
 
     private fun showMessage(@StringRes resId: Int) =
         CoroutineScope(Dispatchers.Main).launch {
-            if (!silent) CommonUtils.showMessage(context, resId)
+            if (!silent) context.showMessage(resId)
         }
 
     fun checkUpdates() = CoroutineScope(Dispatchers.IO).launch {

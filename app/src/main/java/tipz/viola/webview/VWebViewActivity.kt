@@ -24,6 +24,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.CommonUtils
@@ -96,7 +97,7 @@ open class VWebViewActivity : BaseActivity() {
 
             if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0) {
                 webview.adServersHandler.downloadAdServers {
-                    CommonUtils.showMessage(this, R.string.toast_ad_servers_finished)
+                    showMessage(R.string.toast_ad_servers_finished)
                 }
             }
         }

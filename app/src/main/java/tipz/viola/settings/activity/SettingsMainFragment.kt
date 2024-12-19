@@ -32,13 +32,12 @@ import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.databinding.DialogEdittextBinding
+import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
-import tipz.viola.utils.CommonUtils
-import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.activity.BaseActivity.Companion.darkModeCheck
 import java.io.IOException
@@ -170,7 +169,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 override fun onDialogClosed(positiveResult: Boolean) {
                     if (!positiveResult) return
                     WebStorage.getInstance().deleteAllData()
-                    showMessage(settingsActivity, R.string.cleared_toast)
+                    settingsActivity.showMessage(R.string.cleared_toast)
                 }
             }
         clear_cookies.materialDialogPreferenceListener =
@@ -189,14 +188,14 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                         cookieSyncMgr.stopSync()
                         cookieSyncMgr.sync()
                     }
-                    showMessage(settingsActivity, R.string.cleared_toast)
+                    settingsActivity.showMessage(R.string.cleared_toast)
                 }
             }
         reset_to_default.materialDialogPreferenceListener =
             object : MaterialDialogPreferenceListener {
                 override fun onDialogClosed(positiveResult: Boolean) {
                     if (!positiveResult) return
-                    showMessage(settingsActivity, R.string.reset_complete)
+                    settingsActivity.showMessage(R.string.reset_complete)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         (settingsActivity.getSystemService(ACTIVITY_SERVICE)
                                 as ActivityManager).clearApplicationUserData()

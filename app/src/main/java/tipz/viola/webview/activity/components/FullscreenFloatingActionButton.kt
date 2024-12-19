@@ -10,7 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import tipz.viola.R
-import tipz.viola.utils.CommonUtils
+import tipz.viola.ext.setImmersiveMode
 
 class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
     FloatingActionButton(context, attrs) {
@@ -54,7 +54,7 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
                 this.visibility = GONE
 
                 // Immersive Mode
-                CommonUtils.setImmersiveMode(activity, false)
+                activity.setImmersiveMode(false)
             }
         }
     }
@@ -67,7 +67,7 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
         this.visibility = VISIBLE
 
         // Immersive Mode
-        CommonUtils.setImmersiveMode(activity, true)
+        activity.setImmersiveMode(true)
 
         // Animations
         resetAnim()

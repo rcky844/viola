@@ -27,17 +27,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tipz.viola.database.instances.IconHashClient
 import tipz.viola.database.Broha
 import tipz.viola.database.instances.FavClient
 import tipz.viola.database.instances.HistoryClient
+import tipz.viola.database.instances.IconHashClient
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
+import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.utils.CommonUtils.copyClipboard
-import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.webview.activity.BaseActivity
 import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
@@ -113,7 +113,7 @@ class ListInterfaceActivity : BaseActivity() {
                     val size = listData!!.size
                     listData!!.clear()
                     itemsAdapter.notifyItemRangeRemoved(0, size)
-                    showMessage(this, R.string.wiped_success)
+                    showMessage(R.string.wiped_success)
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
@@ -271,7 +271,7 @@ class ListInterfaceActivity : BaseActivity() {
                                     .create().show()
                             }
                             PopupMenuMap.COPY_URL.itemId -> {
-                                copyClipboard(listInterfaceActivity, url)
+                                listInterfaceActivity.copyClipboard(url)
                             }
                             PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
                                 CoroutineScope(Dispatchers.IO).launch {
@@ -279,7 +279,7 @@ class ListInterfaceActivity : BaseActivity() {
                                         Broha(data.iconHash, title, url!!)
                                     )
                                 }
-                                showMessage(listInterfaceActivity, R.string.save_successful)
+                                listInterfaceActivity.showMessage(R.string.save_successful)
                             }
                         }
                         true
