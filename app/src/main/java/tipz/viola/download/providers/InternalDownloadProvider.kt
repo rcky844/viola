@@ -13,7 +13,6 @@ import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.database.Droha
 import tipz.viola.ext.showMessage
-import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.VJavaScriptInterface
 import java.io.File
 import java.io.FileOutputStream

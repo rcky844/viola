@@ -6,6 +6,8 @@ package tipz.viola.webview.activity
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -52,7 +54,6 @@ import tipz.viola.ext.showMessage
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.activity.SettingsActivity
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
@@ -352,14 +353,22 @@ class BrowserActivity : VWebViewActivity() {
                         .setAction(Intent.ACTION_VIEW)
                         .putExtra(LauncherActivity.EXTRA_SHORTCUT_TYPE, which)
 
+                    val drawable = favicon!!.drawable
+
+                    val icon = Bitmap.createBitmap(
+                        drawable.intrinsicWidth,
+                        drawable.intrinsicHeight,
+                        Bitmap.Config.ARGB_8888
+                    )
+
+                    val canvas = Canvas(icon)
+                    drawable.setBounds(0, 0, canvas.width, canvas.height)
+                    drawable.draw(canvas)
+
                     ShortcutManagerCompat.requestPinShortcut(
                         this, ShortcutInfoCompat.Builder(this, webview.title!!)
                             .setShortLabel(webview.title!!)
-                            .setIcon(
-                                IconCompat.createWithBitmap(
-                                    CommonUtils.drawableToBitmap(favicon!!.drawable)
-                                )
-                            )
+                            .setIcon(IconCompat.createWithBitmap(icon))
                             .setIntent(launchIntent)
                             .build(), null
                     )

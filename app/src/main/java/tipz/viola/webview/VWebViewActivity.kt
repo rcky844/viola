@@ -27,7 +27,6 @@ import tipz.viola.R
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.activity.BaseActivity
 
 
