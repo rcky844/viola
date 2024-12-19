@@ -65,7 +65,7 @@ open class AdServersClient(context: Context, private val pref: SettingsSharedPre
             while (scanner.hasNextLine()) {
                 val line = scanner.nextLine()
                 if (localHostUrls.any { line.startsWith(it) })
-                    builder.append(line).append(System.lineSeparator())
+                    builder.append(line).append("\n")
             }
             adServers = builder.toString()
 

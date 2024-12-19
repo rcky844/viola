@@ -80,14 +80,14 @@ object BussHtmlUtils {
 
             // Process some outer tags
             if (currentHtmlTag == "head") {
-                builder.append(line).append(System.lineSeparator())
+                builder.append(line).append("\n")
                 if (!defaultCssAdded) {
-                    builder.append("<style>$DEFAULT_CSS</style>").append(System.lineSeparator())
+                    builder.append("<style>$DEFAULT_CSS</style>").append("\n")
                     defaultCssAdded = true
                 }
                 continue
             } else if (currentHtmlTag == "/head") {
-                builder.append(line).append(System.lineSeparator())
+                builder.append(line).append("\n")
                 continue
             }
 
@@ -100,7 +100,7 @@ object BussHtmlUtils {
                             cssUrl = realUrl.substringBeforeLast('/') + "/" + cssUrl
 
                         val cssData = MiniDownloadHelper.startDownload(cssUrl)!!
-                        builder.append("<style>${String(cssData)}</style>").append(System.lineSeparator())
+                        builder.append("<style>${String(cssData)}</style>").append("\n")
                         continue
                     }
                 }
@@ -113,7 +113,7 @@ object BussHtmlUtils {
                 if (rel != null) line = appendProperty(line, "href",
                     "rel=\"${rel}\"", true)
 
-                builder.append(line).append(System.lineSeparator())
+                builder.append(line).append("\n")
                 continue
             }
 
@@ -132,7 +132,7 @@ object BussHtmlUtils {
             if (line.contains('>')) {
                 inHtmlTag = false
             }
-            builder.append(line).append(System.lineSeparator())
+            builder.append(line).append("\n")
         }
 
         return builder.toString()
