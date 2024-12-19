@@ -15,8 +15,10 @@ import kotlinx.coroutines.launch
 import tipz.viola.ActivityManager
 import tipz.viola.Application
 import tipz.viola.R
-import tipz.viola.database.Broha
-import tipz.viola.database.instances.DownloadHistoryClient
+import tipz.viola.download.database.Droha
+import tipz.viola.download.database.DrohaClient
+import tipz.viola.download.providers.AndroidDownloadProvider
+import tipz.viola.download.providers.InternalDownloadProvider
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VWebView
 
@@ -27,11 +29,11 @@ class DownloadClient(context: Application) {
     private var clientMode = settingsPreference.getInt(SettingsKeys.downloadMgrMode)
 
     private var vWebView: VWebView? = null
-    var brohaClient: DownloadHistoryClient = DownloadHistoryClient(context)
-    var downloadQueue: MutableLiveData<MutableList<DownloadObject>> = MutableLiveData(mutableListOf())
+    var drohaClient: DrohaClient = DrohaClient(context)
+    var downloadQueue: MutableLiveData<MutableList<Droha>> = MutableLiveData(mutableListOf())
     private var currentTaskId = 0
 
-    private val downloadObserver = Observer<MutableList<DownloadObject>> {
+    private val downloadObserver = Observer<MutableList<Droha>> {
         Log.i(LOG_TAG, "Queue updated")
 
         val downloadQueue = downloadQueue.value!!
@@ -75,8 +77,8 @@ class DownloadClient(context: Application) {
                 }
             else provider.startDownload(it)
 
-            // Commit to Broha
-            commitToBroha(it)
+            // Commit to Droha
+            commitToDroha(it)
         }
     }
 
@@ -86,7 +88,7 @@ class DownloadClient(context: Application) {
 
     /* Private methods */
     private fun isProviderCapable(
-        downloadObject: DownloadObject,
+        downloadObject: Droha,
         capabilities: List<DownloadCapabilities>
     ) : Boolean {
         var isProviderCapable = false
@@ -97,7 +99,7 @@ class DownloadClient(context: Application) {
     }
 
     /* Public methods */
-    fun addToQueue(vararg downloadObject: DownloadObject) {
+    fun addToQueue(vararg downloadObject: Droha) {
         downloadObject.forEach {
             it.taskId = currentTaskId
             currentTaskId++
@@ -116,17 +118,9 @@ class DownloadClient(context: Application) {
         downloadQueue.removeObserver(downloadObserver)
     }
 
-    fun commitToBroha(downloadObject: DownloadObject) {
-        val downloadQueue = downloadQueue.value!!
-        if (downloadQueue.isEmpty()) return
-
-        // TODO: Move to custom database
-        val broha = Broha().apply {
-            title = downloadObject.filename
-            url = downloadObject.requestUrl
-        }
+    fun commitToDroha(droha: Droha) {
         CoroutineScope(Dispatchers.IO).launch {
-            brohaClient.insert(broha)
+            drohaClient.insert(droha)
         }
     }
 

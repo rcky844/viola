@@ -3,9 +3,10 @@
 
 package tipz.viola.search
 
+import android.text.TextUtils
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.utils.CommonUtils
+import java.util.Locale
 
 object SearchEngineEntries {
     private const val queryPlaceholder = "{query}"
@@ -134,7 +135,7 @@ object SearchEngineEntries {
         val url: String? = findObjWithName(name)!!.search
         if (url.isNullOrBlank()) return ""
         return url.replace(queryPlaceholder, query)
-            .replace(languagePlaceholder, CommonUtils.language)
+            .replace(languagePlaceholder, language)
     }
 
     fun getPreferredSuggestionsUrl(pref: SettingsSharedPreference, query: String): String {
@@ -145,6 +146,16 @@ object SearchEngineEntries {
         val url: String? = findObjWithName(name)!!.suggestion
         if (url.isNullOrBlank()) return ""
         return url.replace(queryPlaceholder, query)
-            .replace(languagePlaceholder, CommonUtils.language)
+            .replace(languagePlaceholder, language)
     }
+
+    // Language
+    private const val DEFAULT_LANGUAGE = "en-US"
+    val language: String
+        get() {
+            var language = Locale.getDefault().language
+            val country = Locale.getDefault().country
+            if (TextUtils.isEmpty(language)) language = DEFAULT_LANGUAGE
+            return "$language-$country"
+        }
 }

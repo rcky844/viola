@@ -28,7 +28,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
 import tipz.viola.databinding.DialogEdittextBinding
-import tipz.viola.utils.CommonUtils
+import tipz.viola.ext.setImmersiveMode
 import java.util.Objects
 
 open class VChromeWebClient(private val mContext: Context,
@@ -53,7 +53,7 @@ open class VChromeWebClient(private val mContext: Context,
         (mContext as AppCompatActivity).requestedOrientation =
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         mCustomViewCallback = viewCallback
-        CommonUtils.setImmersiveMode(mContext, true)
+        mContext.setImmersiveMode(true)
         (mContext.window.decorView as FrameLayout).addView(
             mCustomView,
             FrameLayout.LayoutParams(-1, -1)
@@ -65,7 +65,7 @@ open class VChromeWebClient(private val mContext: Context,
         (mContext as AppCompatActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         ((mContext as Activity).window.decorView as FrameLayout).removeView(mCustomView)
         mCustomView = null
-        CommonUtils.setImmersiveMode(mContext, false)
+        mContext.setImmersiveMode(false)
         mContext.requestedOrientation = mContext.resources.configuration.orientation
         mCustomViewCallback!!.onCustomViewHidden()
         mCustomViewCallback = null

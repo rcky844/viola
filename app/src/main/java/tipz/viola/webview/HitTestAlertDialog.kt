@@ -17,11 +17,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
-import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.databinding.DialogHitTestTitleBinding
-import tipz.viola.download.DownloadObject
 import tipz.viola.download.MiniDownloadHelper
-import tipz.viola.utils.CommonUtils
+import tipz.viola.download.database.Droha
+import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.shareUrl
+import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.widget.StringResAdapter
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
@@ -77,20 +78,20 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
 
         setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
             when (arrayAdapter.getItemResId(which)) {
-                R.string.copy_url -> CommonUtils.copyClipboard(context, url)
+                R.string.copy_url -> context.copyClipboard(url)
 
-                R.string.copy_text_url -> CommonUtils.copyClipboard(context, title)
+                R.string.copy_text_url -> context.copyClipboard(title)
 
                 R.string.download_url -> {
-                    view.downloadClient.addToQueue(DownloadObject().apply {
+                    view.downloadClient.addToQueue(Droha().apply {
                         uriString = url
                     })
                 }
 
-                R.string.copy_src_url -> CommonUtils.copyClipboard(context, src)
+                R.string.copy_src_url -> context.copyClipboard(src)
 
                 R.string.download_image -> {
-                    view.downloadClient.addToQueue(DownloadObject().apply {
+                    view.downloadClient.addToQueue(Droha().apply {
                         uriString = src ?: url
                     })
                 }
@@ -106,7 +107,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                     context.startActivity(intent)
                 }
 
-                R.string.share_url -> CommonUtils.shareUrl(context, url)
+                R.string.share_url -> context.shareUrl(url)
             }
         }
         return true

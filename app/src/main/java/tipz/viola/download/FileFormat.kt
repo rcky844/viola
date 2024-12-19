@@ -6,6 +6,7 @@ package tipz.viola.download
 import android.util.Log
 import androidx.annotation.DrawableRes
 import tipz.viola.R
+import tipz.viola.download.database.Droha
 
 
 enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
@@ -67,7 +68,7 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
             return FORMAT_UNKNOWN
         }
 
-        fun determineFileFormat(obj: DownloadObject): FileFormat {
+        fun determineFileFormat(obj: Droha): FileFormat {
             if (obj.filename.isNullOrBlank()) return FORMAT_BINARY_DATA // Say we have binary data
             val extensionSpec = obj.filename!!.substringAfterLast(".")
             Log.d(LOG_TAG, "determineFileFormat(): extensionSpec=${extensionSpec}")
@@ -84,7 +85,7 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
         }
 
         @DrawableRes
-        fun getFileDrawableResId(obj: DownloadObject): Int {
+        fun getFileDrawableResId(obj: Droha): Int {
             return when (determineFileFormat(obj)) {
                 FORMAT_UNKNOWN -> R.drawable.document // Also represents generic documents
 

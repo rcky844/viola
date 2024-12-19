@@ -1,7 +1,7 @@
 // Copyright (c) 2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.download
+package tipz.viola.download.providers
 
 import android.annotation.SuppressLint
 import android.app.DownloadManager
@@ -14,7 +14,11 @@ import android.os.Build
 import android.util.Log
 import android.webkit.MimeTypeMap
 import tipz.viola.R
-import tipz.viola.utils.CommonUtils
+import tipz.viola.download.DownloadCapabilities
+import tipz.viola.download.DownloadProvider
+import tipz.viola.download.DownloadUtils
+import tipz.viola.download.database.Droha
+import tipz.viola.ext.showMessage
 
 class AndroidDownloadProvider(override val context: Context) : DownloadProvider {
     private var downloadID: Long = 0
@@ -27,23 +31,24 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
 
     override val capabilities = listOf(
         DownloadCapabilities.PROTOCOL_HTTP,
-        DownloadCapabilities.PROTOCOL_HTTPS)
+        DownloadCapabilities.PROTOCOL_HTTPS
+    )
     override var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
-    override fun resolveFilename(downloadObject: DownloadObject) {
+    override fun resolveFilename(downloadObject: Droha) {
         downloadObject.apply {
             try {
                 if (filename == null)
                     filename = DownloadUtils.guessFileName(uriString, contentDisposition, mimeType)
                 Log.i(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
             } catch (e: IllegalStateException) {
-                CommonUtils.showMessage(context, R.string.downloadFailed)
+                context.showMessage(R.string.downloadFailed)
             }
         }
     }
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
-    override fun startDownload(downloadObject: DownloadObject) {
+    override fun startDownload(downloadObject: Droha) {
         super.startDownload(downloadObject)
         downloadObject.apply {
             if (checkIsOnline && !DownloadUtils.isOnline(context)) {
@@ -76,7 +81,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
             try {
                 downloadID = dm.enqueue(request)
             } catch (e: RuntimeException) {
-                CommonUtils.showMessage(context, R.string.downloadFailed)
+                context.showMessage(R.string.downloadFailed)
                 return@apply
             }
 

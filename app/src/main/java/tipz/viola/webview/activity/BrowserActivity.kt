@@ -6,6 +6,8 @@ package tipz.viola.webview.activity
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -13,6 +15,7 @@ import android.os.Bundle
 import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
+import android.provider.MediaStore
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -46,10 +49,12 @@ import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogUaEditBinding
 import tipz.viola.download.DownloadActivity
+import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.shareUrl
+import tipz.viola.ext.showMessage
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.activity.SettingsActivity
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
@@ -185,7 +190,7 @@ class BrowserActivity : VWebViewActivity() {
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNeutralButton(R.string.copy_title) { _: DialogInterface?, _: Int ->
-                    CommonUtils.copyClipboard(this@BrowserActivity, webview.title)
+                    copyClipboard(webview.title)
                 }
                 .create().show()
         }
@@ -301,6 +306,22 @@ class BrowserActivity : VWebViewActivity() {
             }
             viewMode = reverseAddressBar
         }
+
+        // Start Page Wallpaper
+        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
+            localNtpPageView.setBackgroundResource(0)
+        } else {
+            try {
+                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+                )
+                localNtpPageView.background = BitmapDrawable(resources, bitmap)
+            } catch (_: SecurityException) {
+                localNtpPageView.setBackgroundResource(0)
+                settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
+            }
+        }
     }
 
     // This function returns true to close ToolBar, and vice versa.
@@ -329,7 +350,7 @@ class BrowserActivity : VWebViewActivity() {
                 currentUserAgentState = userAgentMode()
             }
 
-            R.drawable.share -> CommonUtils.shareUrl(this, webview.url)
+            R.drawable.share -> shareUrl(webview.url)
             R.drawable.app_shortcut -> { // FIXME: Shortcuts pointing to the same URL does not behave as expected
                 // Bail out for certain URLs
                 if (webview.title.isNullOrBlank() || webview.url.isBlank()) return false
@@ -349,14 +370,22 @@ class BrowserActivity : VWebViewActivity() {
                         .setAction(Intent.ACTION_VIEW)
                         .putExtra(LauncherActivity.EXTRA_SHORTCUT_TYPE, which)
 
+                    val drawable = favicon!!.drawable
+
+                    val icon = Bitmap.createBitmap(
+                        drawable.intrinsicWidth,
+                        drawable.intrinsicHeight,
+                        Bitmap.Config.ARGB_8888
+                    )
+
+                    val canvas = Canvas(icon)
+                    drawable.setBounds(0, 0, canvas.width, canvas.height)
+                    drawable.draw(canvas)
+
                     ShortcutManagerCompat.requestPinShortcut(
                         this, ShortcutInfoCompat.Builder(this, webview.title!!)
                             .setShortLabel(webview.title!!)
-                            .setIcon(
-                                IconCompat.createWithBitmap(
-                                    CommonUtils.drawableToBitmap(favicon!!.drawable)
-                                )
-                            )
+                            .setIcon(IconCompat.createWithBitmap(icon))
                             .setIntent(launchIntent)
                             .build(), null
                     )
@@ -395,7 +424,7 @@ class BrowserActivity : VWebViewActivity() {
                     val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
                     favClient.insert(Broha(iconHash, title, url))
                 }
-                CommonUtils.showMessage(this, R.string.save_successful)
+                showMessage(R.string.save_successful)
             }
 
             R.drawable.close -> finish()
@@ -478,7 +507,7 @@ class BrowserActivity : VWebViewActivity() {
                 webview.loadHomepage(reqVal)
             }
 
-            R.drawable.share -> CommonUtils.copyClipboard(this, webview.url)
+            R.drawable.share -> copyClipboard(webview.url)
 
             R.drawable.code -> {
                 if (webview.consoleLogging) {
@@ -493,7 +522,7 @@ class BrowserActivity : VWebViewActivity() {
                         }
                         .create().show()
                 } else {
-                    CommonUtils.showMessage(this, R.string.toast_console_enabled)
+                    showMessage(R.string.toast_console_enabled)
                     webview.consoleLogging = true
                 }
             }
@@ -550,11 +579,6 @@ class BrowserActivity : VWebViewActivity() {
         sslState = SslState.ERROR
         sslLock.setImageResource(R.drawable.warning)
         sslLock.isClickable = true
-    }
-
-    override fun onStartPageEditTextPressed() {
-        urlEditText.requestFocus()
-        imm.showSoftInput(urlEditText, InputMethodManager.SHOW_FORCED)
     }
 
     fun checkHomePageVisibility() {

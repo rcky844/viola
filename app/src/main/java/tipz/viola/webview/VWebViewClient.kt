@@ -20,8 +20,8 @@ import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView.PageLoadState
 import java.io.ByteArrayInputStream
@@ -111,7 +111,7 @@ open class VWebViewClient(
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             mContext.startActivity(intent)
         } catch (ignored: ActivityNotFoundException) {
-            CommonUtils.showMessage(mContext, R.string.toast_no_app_to_handle)
+            mContext.showMessage(R.string.toast_no_app_to_handle)
         }
         return true
     }

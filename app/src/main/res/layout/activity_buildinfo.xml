@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -81,12 +81,16 @@
                     android:id="@+id/changelog_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/get_changelog" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/license_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/license_btn" />
             </LinearLayout>
 

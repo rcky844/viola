@@ -7,7 +7,7 @@ import android.util.Log
 import android.webkit.JavascriptInterface
 import tipz.build.info.BuildInfo
 import tipz.viola.download.DownloadUtils
-import tipz.viola.download.InternalDownloadProvider
+import tipz.viola.download.providers.InternalDownloadProvider
 import java.io.IOException
 
 class VJavaScriptInterface(private val activity: VWebViewActivity) {

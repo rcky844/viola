@@ -6,10 +6,8 @@ package tipz.viola.webview
 import android.app.ActivityManager.TaskDescription
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
@@ -24,9 +22,9 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.activity.BaseActivity
 
 
@@ -39,7 +37,6 @@ open class VWebViewActivity : BaseActivity() {
     var faviconProgressBar: CircularProgressIndicator? = null
     lateinit var progressBar: LinearProgressIndicator
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    var startPageLayout: View? = null
     internal lateinit var appbar: AppBarLayout
     internal lateinit var webviewContainer: RelativeLayout
     private var swipeRefreshLayoutEnabled = true
@@ -96,7 +93,7 @@ open class VWebViewActivity : BaseActivity() {
 
             if (result.data!!.getIntExtra(SettingsKeys.updateAdServers, 0) != 0) {
                 webview.adServersHandler.downloadAdServers {
-                    CommonUtils.showMessage(this, R.string.toast_ad_servers_finished)
+                    showMessage(R.string.toast_ad_servers_finished)
                 }
             }
         }
@@ -116,22 +113,6 @@ open class VWebViewActivity : BaseActivity() {
             if (settingsPreference.getIntBool(SettingsKeys.showFavicon) && faviconProgressBar?.visibility == View.VISIBLE)
                 favicon!!.visibility = View.GONE
         }
-
-        // Start Page Wallpaper
-        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
-            startPageLayout?.setBackgroundResource(0)
-        } else {
-            try {
-                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
-                )
-                startPageLayout?.background = BitmapDrawable(resources, bitmap)
-            } catch (_: SecurityException) {
-                startPageLayout?.setBackgroundResource(0)
-                settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
-            }
-        }
     }
 
     open fun onUrlUpdated(url: String?) {}
@@ -140,7 +121,8 @@ open class VWebViewActivity : BaseActivity() {
     @Suppress("DEPRECATION")
     @CallSuper
     open fun onTitleUpdated(title: String?) {
-        if (settingsPreference.getIntBool(SettingsKeys.updateRecentsIcon) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (settingsPreference.getIntBool(SettingsKeys.updateRecentsIcon)
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val description = TaskDescription(title)
             setTaskDescription(description)
         }
@@ -151,8 +133,6 @@ open class VWebViewActivity : BaseActivity() {
     open fun onSslCertificateUpdated() {}
 
     open fun onSslErrorProceed() {}
-
-    open fun onStartPageEditTextPressed() {}
 
     @Suppress("DEPRECATION")
     @CallSuper
