@@ -24,6 +24,9 @@ object SettingsKeys {
     const val historyApi = "historyApi" /* INTEGER */
     const val enableHistoryStorage = "enableHistoryStorage" /* INTEGER */
 
+    /* Buss */
+    const val bussApiUrl = "bussApiUrl" /* STRING */
+
     /* Custom Tabs */
     const val useCustomTabs = "useCustomTabs" /* INTEGER */
 
