@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
+import android.provider.MediaStore
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -304,6 +305,22 @@ class BrowserActivity : VWebViewActivity() {
                 }
             }
             viewMode = reverseAddressBar
+        }
+
+        // Start Page Wallpaper
+        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
+            localNtpPageView.setBackgroundResource(0)
+        } else {
+            try {
+                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                    this.contentResolver,
+                    Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+                )
+                localNtpPageView.background = BitmapDrawable(resources, bitmap)
+            } catch (_: SecurityException) {
+                localNtpPageView.setBackgroundResource(0)
+                settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
+            }
         }
     }
 
