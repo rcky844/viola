@@ -134,8 +134,6 @@ open class VWebViewActivity : BaseActivity() {
 
     open fun onSslErrorProceed() {}
 
-    open fun onStartPageEditTextPressed() {}
-
     @Suppress("DEPRECATION")
     @CallSuper
     open fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {

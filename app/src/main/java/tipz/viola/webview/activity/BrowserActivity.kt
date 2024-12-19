@@ -581,11 +581,6 @@ class BrowserActivity : VWebViewActivity() {
         sslLock.isClickable = true
     }
 
-    override fun onStartPageEditTextPressed() {
-        urlEditText.requestFocus()
-        imm.showSoftInput(urlEditText, InputMethodManager.SHOW_FORCED)
-    }
-
     fun checkHomePageVisibility() {
         val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
