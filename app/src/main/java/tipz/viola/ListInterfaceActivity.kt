@@ -19,6 +19,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -287,6 +288,9 @@ class ListInterfaceActivity : BaseActivity() {
                     popup.show()
                     true
                 }
+
+                // Set tint to none
+                ImageViewCompat.setImageTintList(holder.icon, null)
             }
         }
 
