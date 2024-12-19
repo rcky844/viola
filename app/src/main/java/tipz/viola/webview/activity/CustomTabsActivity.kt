@@ -64,7 +64,7 @@ class CustomTabsActivity : VWebViewActivity() {
         webview = binding.layoutWebview.webview
         webview.setUpdateHistory(false)
 
-        // Finally, load webpge
+        // Finally, load webpage
         super.onStart()
         val dataUri = intent.data
         if (dataUri != null) webview.loadUrl(dataUri.toString())
