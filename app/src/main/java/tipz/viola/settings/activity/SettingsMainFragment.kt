@@ -37,10 +37,10 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
-import tipz.viola.utils.CommonUtils
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.activity.BaseActivity.Companion.darkModeCheck
+import tipz.viola.webview.scriptloader.ScriptLoaderActivity
 import java.io.IOException
 
 class SettingsMainFragment : PreferenceFragmentCompat() {
@@ -84,6 +84,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         val reset_to_default = findPreference<MaterialDialogPreference>("reset_to_default")!!
         val theme = findPreference<Preference>("theme")!!
         val start_page_wallpaper = findPreference<Preference>("start_page_wallpaper")!!
+        val scriptloader = findPreference<Preference>("scriptloader")!!
         val check_for_updates = findPreference<Preference>("check_for_updates")!!
         val update_channel = findPreference<Preference>("update_channel")!!
         val about = findPreference<Preference>("about")!!
@@ -225,6 +226,11 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
 
                 ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
                     .create().show()
+                true
+            }
+        scriptloader.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                startActivity(Intent(context, ScriptLoaderActivity::class.java))
                 true
             }
         start_page_wallpaper.onPreferenceClickListener =

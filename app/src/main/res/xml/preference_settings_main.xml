@@ -140,6 +140,11 @@
             android:title="@string/javascript"
             app:preferenceTag="isJavaScriptEnabled"
             app:needReload="true" />
+        <androidx.preference.Preference
+            android:dependency="javascript"
+            android:key="scriptloader"
+            android:summary="@string/scriptloader_summary"
+            android:title="@string/scriptloader" />
         <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="use_custom_tabs"
             android:summary="@string/pref_use_custom_tabs_summary"

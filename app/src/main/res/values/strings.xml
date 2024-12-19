@@ -169,6 +169,11 @@
     <string name="item_build_number">Build number</string>
     <string name="pref_enable_history_title">Use history storage</string>
     <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
+    <string name="scriptloader">Scriptloader</string>
+    <string name="scriptloader_summary">Load custom JavaScripts globally.</string>
+    <string name="scriptloader_warning">Scriptloader loads a given JavaScript globally, allowing for advanced global customizations. However, it does not validate or confirm whether the scripts loaded are safe.\n\nPlease ensure the scripts you load are safe manually. You have been warned.</string>
+    <string name="scriptloader_add">Add script</string>
+    <string name="caution_capital">CAUTION</string>
 
     <string-array name="errMsg">
         <item>Error!</item>
