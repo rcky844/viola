@@ -16,11 +16,9 @@ class Broha {
     @ColumnInfo
     var iconHash: Int?
 
-    @JvmField
     @ColumnInfo
     var title: String?
 
-    @JvmField
     @ColumnInfo
     var url: String?
 
