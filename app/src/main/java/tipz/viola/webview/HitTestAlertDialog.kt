@@ -17,11 +17,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.R
-import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.databinding.DialogHitTestTitleBinding
-import tipz.viola.download.DownloadObject
 import tipz.viola.download.MiniDownloadHelper
+import tipz.viola.download.database.Droha
 import tipz.viola.utils.CommonUtils
+import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.widget.StringResAdapter
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
@@ -82,7 +82,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 R.string.copy_text_url -> CommonUtils.copyClipboard(context, title)
 
                 R.string.download_url -> {
-                    view.downloadClient.addToQueue(DownloadObject().apply {
+                    view.downloadClient.addToQueue(Droha().apply {
                         uriString = url
                     })
                 }
@@ -90,7 +90,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 R.string.copy_src_url -> CommonUtils.copyClipboard(context, src)
 
                 R.string.download_image -> {
-                    view.downloadClient.addToQueue(DownloadObject().apply {
+                    view.downloadClient.addToQueue(Droha().apply {
                         uriString = src ?: url
                     })
                 }

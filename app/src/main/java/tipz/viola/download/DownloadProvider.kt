@@ -4,16 +4,19 @@
 package tipz.viola.download
 
 import android.content.Context
+import tipz.viola.download.database.Droha
+import tipz.viola.download.providers.AndroidDownloadProvider
+import tipz.viola.download.providers.InternalDownloadProvider
 
 interface DownloadProvider {
     val context: Context
     val capabilities: List<DownloadCapabilities>
     var statusListener: DownloadStatusListener?
 
-    fun resolveFilename(downloadObject: DownloadObject) {
+    fun resolveFilename(downloadObject: Droha) {
     }
 
-    fun startDownload(downloadObject: DownloadObject) {
+    fun startDownload(downloadObject: Droha) {
         if (downloadObject.statusListener != null) {
             statusListener = downloadObject.statusListener!!
             statusListener!!.post(DownloadStatus.STARTED)

@@ -46,7 +46,7 @@ import tipz.viola.database.instances.HistoryClient
 import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
-import tipz.viola.download.DownloadObject
+import tipz.viola.download.database.Droha
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
@@ -112,7 +112,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0
                 )
 
-            downloadClient.addToQueue(DownloadObject().apply {
+            downloadClient.addToQueue(Droha().apply {
                 uriString = vUrl!!
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType

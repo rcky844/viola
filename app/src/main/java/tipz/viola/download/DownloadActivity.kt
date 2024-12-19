@@ -24,10 +24,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.R
-import tipz.viola.database.instances.DownloadHistoryClient
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
+import tipz.viola.download.database.Droha
+import tipz.viola.download.database.DrohaClient
 import tipz.viola.utils.CommonUtils.showMessage
 import tipz.viola.webview.activity.BaseActivity
 import java.io.File
@@ -36,7 +37,7 @@ import java.lang.ref.WeakReference
 class DownloadActivity : BaseActivity() {
     private lateinit var binding: ActivityRecyclerDataListBinding
     private lateinit var downloadClient: DownloadClient
-    private lateinit var brohaClient: DownloadHistoryClient
+    private lateinit var drohaClient: DrohaClient
 
     lateinit var itemsAdapter: ItemsAdapter
     lateinit var fab: FloatingActionButton
@@ -49,7 +50,7 @@ class DownloadActivity : BaseActivity() {
 
         // Set-up clients
         downloadClient = (applicationContext as Application).downloadClient
-        brohaClient = downloadClient.brohaClient
+        drohaClient = downloadClient.drohaClient
 
         setTitle(R.string.toolbar_expandable_downloads)
         val toolbar = binding.toolbar
@@ -64,7 +65,7 @@ class DownloadActivity : BaseActivity() {
             downloadClient.downloadQueue = MutableLiveData(mutableListOf())
             val size = listData.size
             listData.clear()
-            CoroutineScope(Dispatchers.IO).launch { brohaClient.deleteAll() }
+            CoroutineScope(Dispatchers.IO).launch { drohaClient.deleteAll() }
             itemsAdapter.notifyItemRangeRemoved(0, size)
             showMessage(this, R.string.wiped_success)
         }
@@ -84,15 +85,8 @@ class DownloadActivity : BaseActivity() {
         super.onStart()
 
         CoroutineScope(Dispatchers.IO).launch {
-            // TODO: Move to custom database
             listData = mutableListOf() // Reset
-            brohaClient.getAll().forEach {
-                listData.add(DownloadObject().apply {
-                    filename = it.title
-                    requestUrl = it.url
-                })
-            }
-            listData.addAll(downloadClient.downloadQueue.value!!)
+            listData.addAll(drohaClient.getAll())
         }
     }
 
@@ -181,7 +175,7 @@ class DownloadActivity : BaseActivity() {
 
     companion object {
         private var LOG_TAG = "DownloadActivity"
-        private var listData: MutableList<DownloadObject> = mutableListOf()
+        private var listData: MutableList<Droha> = mutableListOf()
         private lateinit var binding: ViewBinding
     }
 }

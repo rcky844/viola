@@ -1,13 +1,17 @@
 // Copyright (c) 2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.download
+package tipz.viola.download.providers
 
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Environment
 import android.util.Log
 import tipz.viola.R
+import tipz.viola.download.DownloadCapabilities
+import tipz.viola.download.DownloadProvider
+import tipz.viola.download.DownloadUtils
+import tipz.viola.download.database.Droha
 import tipz.viola.utils.CommonUtils
 import tipz.viola.webview.VJavaScriptInterface
 import java.io.File
@@ -23,10 +27,11 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         // DownloadCapabilities.PROTOCOL_FILE.
         // DownloadCapabilities.PROTOCOL_FTP.
         DownloadCapabilities.PROTOCOL_DATA,
-        DownloadCapabilities.PROTOCOL_BLOB)
+        DownloadCapabilities.PROTOCOL_BLOB
+    )
     override var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
-    override fun resolveFilename(downloadObject: DownloadObject) {
+    override fun resolveFilename(downloadObject: Droha) {
         downloadObject.apply {
             filename = when (DownloadCapabilities.fromString(getUriProtocol())) {
                 DownloadCapabilities.PROTOCOL_DATA -> {
@@ -42,7 +47,7 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         }
     }
 
-    override fun startDownload(downloadObject: DownloadObject) {
+    override fun startDownload(downloadObject: Droha) {
         super.startDownload(downloadObject)
         downloadObject.apply {
             when (DownloadCapabilities.fromString(downloadObject.getUriProtocol())) {
