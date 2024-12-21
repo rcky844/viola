@@ -228,9 +228,10 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         requestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
 
         // Setup history client
-        if (historyState != UpdateHistoryState.STATE_DISABLED)
+        if (historyState != UpdateHistoryState.STATE_DISABLED) {
             historyClient = HistoryClient(activity)
-        historyClient.doSettingsCheck()
+            historyClient.doSettingsCheck()
+        }
     }
 
     fun setUpdateHistory(value: Boolean) {
@@ -521,8 +522,13 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         var noReload = false
     }
 
-    // FIXME: Assertion
-    fun checkHomePageVisibility() = (activity as BrowserActivity).checkHomePageVisibility()
+    fun checkHomePageVisibility() {
+        if (activity is BrowserActivity) {
+            return (activity as BrowserActivity).checkHomePageVisibility()
+        } else {
+            return
+        }
+    }
 
     fun loadHomepage(useStartPage : Boolean) {
         if (useStartPage) {

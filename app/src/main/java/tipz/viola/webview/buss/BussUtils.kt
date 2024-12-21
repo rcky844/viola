@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import tipz.viola.download.MiniDownloadHelper
+import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebView.PageLoadState
@@ -28,8 +29,11 @@ object BussUtils {
         view.onPageLoadProgressChanged(20)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val apiUrl = "$apiUrl/domain/${split}"
-            val data = MiniDownloadHelper.startDownload(apiUrl)!!
+            var apiUrl = view.settingsPreference.getString(SettingsKeys.bussApiUrl)
+            if (apiUrl.trim().isEmpty()) apiUrl = this@BussUtils.apiUrl
+
+            val requestUrl = "$apiUrl/domain/${split}"
+            val data = MiniDownloadHelper.startDownload(requestUrl)!!
             if (data.isEmpty()) {
                 CoroutineScope(Dispatchers.Main).launch {
                     // No data returned means it probably isn't registered
