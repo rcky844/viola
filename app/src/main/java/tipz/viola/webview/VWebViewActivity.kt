@@ -163,9 +163,13 @@ open class VWebViewActivity : BaseActivity() {
     open fun onSwipeRefreshLayoutRefreshingUpdated(isRefreshing: Boolean) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
         swipeRefreshLayout.isRefreshing = isRefreshing
-        webview.evaluateJavascript(
-            "getComputedStyle(document.body).getPropertyValue('overflow-y') == \"hidden\"" +
-                    "|| getComputedStyle(document.body).getPropertyValue('overscroll-behavior-y') != \"auto\""
+        webview.evaluateJavascript("""
+            function _viola_styleHelper(property, checkVal, expectVal) {
+                var propVal = getComputedStyle(document.body).getPropertyValue(property);
+                return propVal != "" && propVal == checkVal & expectVal;
+            }
+            _viola_styleHelper('overflow-y', 'hidden', true) || _viola_styleHelper('overscroll-behavior-y', 'auto', false)
+        """.trimIndent()
         ) { value: String ->
             val overscroll = getTrueCSSValue(value) != "true"
             if (!overscroll) Log.d(LOG_TAG, "Webpage does not want to overscroll.")
