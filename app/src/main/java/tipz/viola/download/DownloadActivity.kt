@@ -4,6 +4,7 @@
 package tipz.viola.download
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -156,7 +157,12 @@ class DownloadActivity : BaseActivity() {
                             .setAction(Intent.ACTION_VIEW)
                             .setData(openUri)
                             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        mDownloadActivity.get()!!.startActivity(intent)
+                        try {
+                            mDownloadActivity.get()!!.startActivity(intent)
+                        } catch (e: ActivityNotFoundException) {
+                            e.printStackTrace()
+                            downloadActivity.showMessage(R.string.toast_no_app_to_handle)
+                        }
                     }
                 }
             }
