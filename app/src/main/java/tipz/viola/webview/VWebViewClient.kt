@@ -4,7 +4,6 @@
 package tipz.viola.webview
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -94,6 +93,7 @@ open class VWebViewClient(
 
     @Deprecated("Deprecated in Java")
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+        // Handle SSL errors
         if (unsecureURLSet.contains(url)) {
             getSslDialog(unsecureURLErrorSet[unsecureURLSet.indexOf(url)].primaryError)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
@@ -106,12 +106,24 @@ open class VWebViewClient(
                 .create().show()
             return true
         }
+
+        // Handle open in app
+        if (!settingsPreference.getIntBool(SettingsKeys.checkAppLink)) return true
         if (UrlUtils.isUriSupported(url)) return false
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            mContext.startActivity(intent)
-        } catch (ignored: ActivityNotFoundException) {
-            mContext.showMessage(R.string.toast_no_app_to_handle)
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        if (intent.resolveActivity(mContext.packageManager) != null) {
+            MaterialAlertDialogBuilder(mContext)
+                .setTitle(R.string.dialog_open_external_title)
+                .setMessage(R.string.dialog_open_external_message)
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    mContext.startActivity(intent)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show()
+        } else {
+            if (mVWebView.progress == 100) {
+                mContext.showMessage(R.string.toast_no_app_to_handle)
+            }
         }
         return true
     }
