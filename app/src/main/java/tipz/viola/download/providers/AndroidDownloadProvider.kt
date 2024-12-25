@@ -38,9 +38,13 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
     override fun resolveFilename(downloadObject: Droha) {
         downloadObject.apply {
             try {
-                if (filename == null)
+                if (filename == null) {
+                    Log.d(LOG_TAG, "id=${taskId}: uriString=${uriString}")
+                    Log.d(LOG_TAG, "id=${taskId}: contentDisposition=${contentDisposition}")
+                    Log.d(LOG_TAG, "id=${taskId}: mimeType=${mimeType}")
                     filename = DownloadUtils.guessFileName(uriString, contentDisposition, mimeType)
-                Log.i(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
+                }
+                Log.d(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
             } catch (e: IllegalStateException) {
                 context.showMessage(R.string.downloadFailed)
             }
