@@ -7,6 +7,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Build
 import android.util.TypedValue
 import android.widget.Toast
@@ -71,5 +72,17 @@ fun Context.setImmersiveMode(enable: Boolean) {
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     } else {
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+    }
+}
+
+@Suppress("DEPRECATION")
+fun Context.isOnline(): Boolean {
+    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        cm.activeNetwork != null
+    } else {
+        val n = cm.activeNetworkInfo
+        n != null && n.isAvailable
     }
 }

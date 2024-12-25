@@ -18,6 +18,7 @@ import tipz.viola.download.DownloadCapabilities
 import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.database.Droha
+import tipz.viola.ext.isOnline
 import tipz.viola.ext.showMessage
 
 class AndroidDownloadProvider(override val context: Context) : DownloadProvider {
@@ -55,7 +56,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
     override fun startDownload(downloadObject: Droha) {
         super.startDownload(downloadObject)
         downloadObject.apply {
-            if (checkIsOnline && !DownloadUtils.isOnline(context)) {
+            if (checkIsOnline && !context.isOnline()) {
                 statusListener!!.post(DownloadProvider.Companion.DownloadStatus.NO_INTERNET)
                 return
             }

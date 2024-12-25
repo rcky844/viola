@@ -276,7 +276,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         about.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val intent = Intent(context, BuildInfoActivity::class.java)
-                mGetNeedLoadFromNonMain.launch(intent)
+                getNeedLoadFromNonMain.launch(intent)
                 true
             }
         search_engine.summary =
@@ -321,7 +321,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         settingsActivity.finish()
     }
 
-    val mGetNeedLoadFromNonMain =
+    val getNeedLoadFromNonMain =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.data == null) return@registerForActivityResult
             result.data!!.getStringExtra(SettingsKeys.needLoadUrl)?.let { needLoad(it) }

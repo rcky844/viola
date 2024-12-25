@@ -26,29 +26,29 @@ import tipz.viola.webview.VWebView.PageLoadState
 import java.io.ByteArrayInputStream
 
 open class VWebViewClient(
-    private val mContext: Context,
-    private val mVWebView: VWebView,
+    private val context: Context,
+    private val vWebView: VWebView,
     private val adServersHandler: AdServersClient
 ) : WebViewClientCompat() {
     private val settingsPreference =
-        (mContext.applicationContext as Application).settingsPreference
+        (context.applicationContext as Application).settingsPreference
     private val unsecureURLSet = ArrayList<String>()
     private val unsecureURLErrorSet = ArrayList<SslError>()
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
-        mVWebView.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url, favicon)
-        mVWebView.checkHomePageVisibility()
+        vWebView.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url, favicon)
+        vWebView.checkHomePageVisibility()
     }
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
-        mVWebView.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url, null)
+        vWebView.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url, null)
     }
 
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
-        mVWebView.onPageInformationUpdated(PageLoadState.UPDATE_HISTORY, url, null)
+        vWebView.onPageInformationUpdated(PageLoadState.UPDATE_HISTORY, url, null)
     }
 
     @Deprecated("Deprecated in Java")
@@ -58,18 +58,18 @@ open class VWebViewClient(
         if (description.contains("ERR_SSL_PROTOCOL_ERROR")) {
             getSslDialog(ERROR_FAILED_SSL_HANDSHAKE)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    mVWebView.loadRealUrl(
+                    vWebView.loadRealUrl(
                         failingUrl.replaceFirst(UrlUtils.httpsPrefix, UrlUtils.httpPrefix))
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
         }
-        mVWebView.onPageInformationUpdated(PageLoadState.PAGE_ERROR, failingUrl,
+        vWebView.onPageInformationUpdated(PageLoadState.PAGE_ERROR, failingUrl,
             null, description)
     }
 
     private fun getSslDialog(error: Int): MaterialAlertDialogBuilder {
-        val dialog = MaterialAlertDialogBuilder(mContext)
+        val dialog = MaterialAlertDialogBuilder(context)
         @StringRes val stringResId = when (error) {
             SslError.SSL_DATE_INVALID -> R.string.ssl_certificate_date_invalid
             SslError.SSL_INVALID -> R.string.ssl_certificate_invalid
@@ -83,9 +83,9 @@ open class VWebViewClient(
 
         dialog.setTitle(R.string.ssl_certificate_error_dialog_title)
             .setMessage(
-                mContext.resources.getString(
+                context.resources.getString(
                     R.string.ssl_certificate_error_dialog_content,
-                    mContext.resources.getString(stringResId)
+                    context.resources.getString(stringResId)
                 )
             )
         return dialog
@@ -99,7 +99,7 @@ open class VWebViewClient(
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     run {
                         view.loadUrl(url)
-                        mVWebView.onSslErrorProceed()
+                        vWebView.onSslErrorProceed()
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)
@@ -111,18 +111,18 @@ open class VWebViewClient(
         if (!settingsPreference.getIntBool(SettingsKeys.checkAppLink)) return true
         if (UrlUtils.isUriSupported(url)) return false
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        if (intent.resolveActivity(mContext.packageManager) != null) {
-            MaterialAlertDialogBuilder(mContext)
+        if (intent.resolveActivity(context.packageManager) != null) {
+            MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.dialog_open_external_title)
                 .setMessage(R.string.dialog_open_external_message)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    mContext.startActivity(intent)
+                    context.startActivity(intent)
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
         } else {
-            if (mVWebView.progress == 100) {
-                mContext.showMessage(R.string.toast_no_app_to_handle)
+            if (vWebView.progress == 100) {
+                context.showMessage(R.string.toast_no_app_to_handle)
             }
         }
         return true
@@ -135,7 +135,7 @@ open class VWebViewClient(
             .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 run {
                     handler.proceed()
-                    mVWebView.onSslErrorProceed()
+                    vWebView.onSslErrorProceed()
                     unsecureURLSet.add(error.url)
                 }
             }

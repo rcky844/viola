@@ -9,12 +9,13 @@ import android.os.Bundle
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-open class MaterialPreferenceDialogFragmentCompat(private val mMaterialPreferenceDialogListener: MaterialDialogPreferenceListener) :
-    PreferenceDialogFragmentCompat() {
+open class MaterialPreferenceDialogFragmentCompat(
+    private val materialPreferenceDialogListener: MaterialDialogPreferenceListener
+) : PreferenceDialogFragmentCompat() {
     /** Which button was clicked.  */
-    private var mWhichButtonClicked = 0
+    private var whichButtonClicked = 0
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        mWhichButtonClicked = DialogInterface.BUTTON_NEGATIVE
+        whichButtonClicked = DialogInterface.BUTTON_NEGATIVE
         val builder = MaterialAlertDialogBuilder(requireContext())
             .setTitle(preference.dialogTitle)
             .setIcon(preference.dialogIcon)
@@ -32,16 +33,16 @@ open class MaterialPreferenceDialogFragmentCompat(private val mMaterialPreferenc
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
-        mWhichButtonClicked = which
+        whichButtonClicked = which
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        onDialogClosed(mWhichButtonClicked == DialogInterface.BUTTON_POSITIVE)
+        onDialogClosed(whichButtonClicked == DialogInterface.BUTTON_POSITIVE)
     }
 
     override fun onDialogClosed(positiveResult: Boolean) {
-        mMaterialPreferenceDialogListener.onDialogClosed(positiveResult)
+        materialPreferenceDialogListener.onDialogClosed(positiveResult)
     }
 
     interface MaterialDialogPreferenceListener {

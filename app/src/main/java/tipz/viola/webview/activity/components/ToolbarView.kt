@@ -4,6 +4,7 @@
 package tipz.viola.webview.activity.components
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +37,8 @@ class ToolbarView(
         val dividerParams = LayoutParams(LayoutParams.MATCH_PARENT, context.dpToPx(1))
         divider.layoutParams = dividerParams
         val dividerAttrs = context.obtainStyledAttributes(intArrayOf(android.R.attr.listDivider))
-        divider.background = dividerAttrs.getDrawable(0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            divider.background = dividerAttrs.getDrawable(0)
         dividerAttrs.recycle()
         addView(divider)
 

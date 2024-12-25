@@ -17,14 +17,14 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                             private val listPickerObject: ListPickerObject
 ) :
     MaterialAlertDialogBuilder(context) {
-    private var mSettingsPreference: SettingsSharedPreference = settingsPreference
+    private var settingsPreference: SettingsSharedPreference = settingsPreference
 
     init {
         listPickerObject.apply {
             val useNamePreference = namePreference != ""
 
             // Set checked item to current settings
-            var checkedItem = getCheckedItem(mSettingsPreference)
+            var checkedItem = getCheckedItem(this@ListPickerAlertDialog.settingsPreference)
 
             if (dialogTitleResId != 0) setTitle(dialogTitleResId)
             else setTitle(dialogTitle)
@@ -33,13 +33,13 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                 if (customIndexEnabled && checkedItem == customIndex) createCustomDialog(checkedItem)
                 else {
                     if (!stringPreference.isNullOrBlank())
-                        mSettingsPreference.setString(stringPreference!!, "")
+                        this@ListPickerAlertDialog.settingsPreference.setString(stringPreference!!, "")
 
                     if (useNamePreference) {
-                        mSettingsPreference.setString(namePreference,
+                        this@ListPickerAlertDialog.settingsPreference.setString(namePreference,
                             SearchEngineEntries.getNameByIndex(checkedItem))
                     } else {
-                        mSettingsPreference.setInt(idPreference, checkedItem)
+                        this@ListPickerAlertDialog.settingsPreference.setInt(idPreference, checkedItem)
                     }
 
                     preference?.summary = nameList!![checkedItem]
@@ -72,15 +72,15 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     if (customInput.text?.trim().toString().isNotEmpty()) {
                         if (!stringPreference.isNullOrBlank())
-                            mSettingsPreference.setString(stringPreference!!,
+                            settingsPreference.setString(stringPreference!!,
                                 customInput.text.toString())
                         if (getUseNamePreference()) {
-                            mSettingsPreference.setString(
+                            settingsPreference.setString(
                                 namePreference,
                                 SearchEngineEntries.getNameByIndex(checkedItem)
                             )
                         } else {
-                            mSettingsPreference.setInt(idPreference, checkedItem)
+                            settingsPreference.setInt(idPreference, checkedItem)
                         }
 
                         preference?.summary = nameList!![checkedItem]

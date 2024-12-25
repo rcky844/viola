@@ -7,17 +7,17 @@ import android.app.Activity
 import java.lang.ref.WeakReference
 
 class ActivityManager private constructor() {
-    private var mCurrentActivityWeakRef: WeakReference<Activity>? = null
+    private var currentActivityWeakRef: WeakReference<Activity>? = null
 
     var currentActivity: Activity?
         get() {
-            if (mCurrentActivityWeakRef != null) {
-                return mCurrentActivityWeakRef!!.get()
+            if (currentActivityWeakRef != null) {
+                return currentActivityWeakRef!!.get()
             }
             return null
         }
         set(activity) {
-            mCurrentActivityWeakRef = WeakReference(activity)
+            currentActivityWeakRef = WeakReference(activity)
         }
 
     companion object {

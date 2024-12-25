@@ -3,11 +3,7 @@
 
 package tipz.viola.download
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.Uri
-import android.os.Build
 import android.util.Base64
 import android.webkit.MimeTypeMap
 import java.io.ByteArrayOutputStream
@@ -15,24 +11,6 @@ import java.io.UnsupportedEncodingException
 import java.util.regex.Pattern
 
 object DownloadUtils {
-    fun isOnline(context: Context): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val n = cm.activeNetwork
-            if (n != null) {
-                val nc = cm.getNetworkCapabilities(n)
-                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
-                    NetworkCapabilities.TRANSPORT_WIFI
-                )
-            }
-            return false
-        } else {
-            val netInfo = cm.activeNetworkInfo
-            return netInfo != null && netInfo.isConnectedOrConnecting
-        }
-    }
-
     fun dataStringToExtension(dataString: String) : String? {
         val dataInfo =
             dataString.substring(dataString.indexOf(":") + 1, dataString.indexOf(","))

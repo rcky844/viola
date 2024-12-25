@@ -51,10 +51,15 @@ open class BaseActivity : AppCompatActivity() {
 
         fun darkModeCheck(context: Context) {
             // Dark mode
-            if (settingsPreference.getInt(SettingsKeys.themeId) == 0) AppCompatDelegate.setDefaultNightMode(
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1) AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            if (settingsPreference.getInt(SettingsKeys.themeId) == 0)
+                AppCompatDelegate.setDefaultNightMode(
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
+                        AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+                    else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             else AppCompatDelegate.setDefaultNightMode(
-                if (settingsPreference.getInt(SettingsKeys.themeId) == 2) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+                if (settingsPreference.getInt(SettingsKeys.themeId) == 2)
+                    AppCompatDelegate.MODE_NIGHT_YES
+                else AppCompatDelegate.MODE_NIGHT_NO
             )
 
             windowInsetsController.isAppearanceLightStatusBars = !getDarkMode(context)
