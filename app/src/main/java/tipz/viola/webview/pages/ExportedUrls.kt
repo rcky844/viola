@@ -11,7 +11,7 @@ object ExportedUrls {
     const val actualLicenseUrl = "file:///android_asset/LICENSE.txt"
 
     // Project URLs
-    const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
+    const val sourceUrl = "https://codeberg.org/TipzTeam/viola"
     const val websiteUrl = "https://rcky844.github.io/viola/"
     val changelogUrl = "${websiteUrl}builds/build" +
                 (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION) +
