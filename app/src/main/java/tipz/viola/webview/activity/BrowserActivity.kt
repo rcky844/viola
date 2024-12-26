@@ -317,7 +317,7 @@ class BrowserActivity : VWebViewActivity() {
                     this.contentResolver,
                     Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
                 )
-                localNtpPageView.background = BitmapDrawable(resources, bitmap)
+                localNtpPageView.setBackgroundDrawable(BitmapDrawable(resources, bitmap))
             } catch (_: SecurityException) {
                 localNtpPageView.setBackgroundResource(0)
                 settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
