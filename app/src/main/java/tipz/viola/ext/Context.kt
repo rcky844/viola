@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Build
-import android.util.TypedValue
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -54,11 +53,6 @@ fun Context.copyClipboard(s: String?) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
         showMessage(R.string.copied_clipboard)
 }
-
-fun Context.getDisplayMetrics(measuredDp: Int): Float =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-        measuredDp.toFloat(), resources.displayMetrics
-    )
 
 fun Context.setImmersiveMode(enable: Boolean) {
     val windowInsetsController = WindowCompat.getInsetsController(

@@ -19,7 +19,7 @@ import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import tipz.viola.R
-import tipz.viola.ext.getDisplayMetrics
+import tipz.viola.ext.dpToPx
 
 
 class LocalNtpPageView(
@@ -42,7 +42,7 @@ class LocalNtpPageView(
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
             setTypeface(null, Typeface.BOLD)
             setPadding(0, 0, 0,
-                context.getDisplayMetrics(36).toInt() // This is hacky...
+                context.dpToPx(36) // This is hacky...
             )
         }
         addView(appBanner)
@@ -52,8 +52,8 @@ class LocalNtpPageView(
             id = R.id.fake_search_bar
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             setPadding( // This is hacky...
-                context.getDisplayMetrics(28).toInt(), 0,
-                context.getDisplayMetrics(28 + 72).toInt(), 0
+                context.dpToPx(28), 0,
+                context.dpToPx(28 + 72), 0
             )
             setHint(R.string.address_bar_hint)
             setBackgroundResource(R.drawable.round_corner_elevated)
@@ -84,8 +84,7 @@ class LocalNtpPageView(
         set.clone(this)
         set.centerHorizontally(pageFlow.id, 0)
         set.centerVertically(pageFlow.id, 0)
-        set.constrainHeight(fakeSearchBar.id,
-            context.getDisplayMetrics(52).toInt())
+        set.constrainHeight(fakeSearchBar.id, context.dpToPx(52))
         set.applyTo(this)
 
         // Allow page to show up again on clicked
