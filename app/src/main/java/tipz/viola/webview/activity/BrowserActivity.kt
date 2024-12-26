@@ -217,11 +217,6 @@ class BrowserActivity : VWebViewActivity() {
             if (expandableToolbarView.visibility == View.VISIBLE)
                 expandableToolbarView.expandToolBar()
         }
-        urlEditText.setOnTouchListener(
-            SwipeController(if (settingsPreference.getIntBool(SettingsKeys.reverseAddressBar))
-                    SwipeController.DIRECTION_SWIPE_UP else SwipeController.DIRECTION_SWIPE_DOWN) {
-                sslLock.performClick()
-            })
         urlEditText.onItemClickListener =
             OnItemClickListener { _: AdapterView<*>?, mView: View, _: Int, _: Long ->
                 webview.loadUrl((mView.findViewById<View>(android.R.id.text1) as AppCompatTextView)
@@ -262,6 +257,7 @@ class BrowserActivity : VWebViewActivity() {
         outState.clear()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun doSettingsCheck() {
         super.doSettingsCheck()
         val reverseAddressBar = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
@@ -304,6 +300,11 @@ class BrowserActivity : VWebViewActivity() {
                     else -> ConstraintSet.UNSET
                 }
             }
+            urlEditText.setOnTouchListener(
+                SwipeController(if (settingsPreference.getIntBool(SettingsKeys.reverseAddressBar))
+                    SwipeController.DIRECTION_SWIPE_UP else SwipeController.DIRECTION_SWIPE_DOWN) {
+                    sslLock.performClick()
+                })
             viewMode = reverseAddressBar
         }
 
