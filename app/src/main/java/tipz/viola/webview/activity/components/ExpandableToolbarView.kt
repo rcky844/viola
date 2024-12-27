@@ -43,7 +43,13 @@ class ExpandableToolbarView(
 
     init {
         /* Set-up LinearLayoutCompat */
-        background = ContextCompat.getDrawable(context, R.drawable.toolbar_expandable_background)
+        ContextCompat.getDrawable(context, R.drawable.toolbar_expandable_background).let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                background = it
+            } else {
+                @Suppress("DEPRECATION") setBackgroundDrawable(it)
+            }
+        }
         orientation = VERTICAL
         gravity = Gravity.CENTER_HORIZONTAL
         visibility = View.GONE
