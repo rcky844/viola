@@ -108,7 +108,7 @@ open class VWebViewClient(
         }
 
         // Handle open in app
-        if (!settingsPreference.getIntBool(SettingsKeys.checkAppLink)) return true
+        if (!settingsPreference.getIntBool(SettingsKeys.checkAppLink)) return false
         if (UrlUtils.isUriSupported(url)) return false
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         if (intent.resolveActivity(context.packageManager) != null) {
