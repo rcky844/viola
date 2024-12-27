@@ -246,8 +246,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REQUIRE_NON_BROWSER or
                         FLAG_ACTIVITY_REQUIRE_DEFAULT
             )
-            val packageManager = activity.packageManager;
-            if (packageManager?.let { webIntent.resolveActivity(it) } != null) {
+            if (webIntent.resolveActivity(context.packageManager) != null) {
                 val dialog = MaterialAlertDialogBuilder(activity)
                 dialog.setTitle(resources.getString(R.string.dialog_open_external_title))
                     .setMessage(resources.getString(R.string.dialog_open_external_message))
