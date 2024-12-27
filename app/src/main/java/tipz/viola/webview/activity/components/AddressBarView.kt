@@ -56,8 +56,6 @@ class AddressBarView(
             isSingleLine = true
             dropDownWidth = LayoutParams.MATCH_PARENT
             isHorizontalFadingEdgeEnabled = true
-            isFocusable = true
-            isFocusableInTouchMode = true
             setHint(R.string.address_bar_hint)
 
             imeOptions = (EditorInfo.IME_ACTION_GO

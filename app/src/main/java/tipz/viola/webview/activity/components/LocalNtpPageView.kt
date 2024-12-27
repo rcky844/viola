@@ -58,8 +58,6 @@ class LocalNtpPageView(
             setHint(R.string.address_bar_hint)
             setBackgroundResource(R.drawable.round_corner_elevated)
             isSingleLine = true
-            isFocusable = true
-            isFocusableInTouchMode = true
         }
         addView(fakeSearchBar)
         fakeSearchBar.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
