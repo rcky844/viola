@@ -52,16 +52,15 @@ import tipz.viola.download.DownloadActivity
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
-import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.activity.SettingsActivity
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
+import tipz.viola.webview.activity.components.AddressBarView
 import tipz.viola.webview.activity.components.ExpandableToolbarView
 import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
 import tipz.viola.webview.activity.components.LocalNtpPageView
-import tipz.viola.webview.activity.components.SwipeController
 import tipz.viola.webview.activity.components.ToolbarView
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
@@ -72,7 +71,6 @@ import java.text.DateFormat
 @Suppress("DEPRECATION")
 class BrowserActivity : VWebViewActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var urlEditText: MaterialAutoCompleteTextView
     private lateinit var upRightFab: AppCompatImageView
     private var currentUserAgentState = VWebView.UserAgentMode.MOBILE
     private var currentCustomUserAgent: String? = null
@@ -82,6 +80,8 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var localNtpPageView: LocalNtpPageView
     private lateinit var toolbarView: ToolbarView
     private lateinit var expandableToolbarView: ExpandableToolbarView
+    private lateinit var addressBar: AddressBarView
+    private lateinit var urlEditText: MaterialAutoCompleteTextView
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var viewMode: Int = 0
@@ -107,13 +107,14 @@ class BrowserActivity : VWebViewActivity() {
         localNtpPageView = binding.localNtpPage
         toolbarView = binding.toolbarView
         upRightFab = binding.upRightFab
-        urlEditText = binding.urlEditText
+        addressBar = binding.addressBar
+        urlEditText = addressBar.textView
+        sslLock = addressBar.sslLock
         progressBar = binding.webviewProgressBar
         faviconProgressBar = binding.faviconProgressBar
         swipeRefreshLayout = binding.layoutWebview.swipe
         webview = binding.layoutWebview.webview
         favicon = binding.favicon
-        sslLock = binding.sslLock
         fullscreenFab = binding.fullscreenFab
 
         // Broha Clients
@@ -207,7 +208,8 @@ class BrowserActivity : VWebViewActivity() {
             })
         urlEditText.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
-                if (urlEditText.text.toString() != webview.url) urlEditText.setText(webview.url)
+                if (urlEditText.text.toString() != webview.url)
+                    urlEditText.setText(webview.url)
                 urlEditText.dropDownHeight = 0
             } else {
                 urlEditText.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -223,7 +225,6 @@ class BrowserActivity : VWebViewActivity() {
                     .text.toString())
                 closeKeyboard()
             }
-        urlEditText.setAdapter(SuggestionAdapter(this))
 
         // Setup the up most fab (currently for reload)
         upRightFab.setOnClickListener {
@@ -235,12 +236,11 @@ class BrowserActivity : VWebViewActivity() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
             progressBar.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            sslLock.bringToFront()
             expandableToolbarView.bringToFront()
         }
 
         // Set-up local new tab page
-        localNtpPageView.setRealSearchBar(urlEditText, sslLock)
+        localNtpPageView.setRealSearchBar(addressBar)
 
         // Finally, load homepage
         val dataUri = intent.data
@@ -257,9 +257,10 @@ class BrowserActivity : VWebViewActivity() {
         outState.clear()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun doSettingsCheck() {
         super.doSettingsCheck()
+        addressBar.doSettingsCheck()
+
         val reverseAddressBar = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
         if (reverseAddressBar != viewMode) {
             appbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -300,11 +301,6 @@ class BrowserActivity : VWebViewActivity() {
                     else -> ConstraintSet.UNSET
                 }
             }
-            urlEditText.setOnTouchListener(
-                SwipeController(if (settingsPreference.getIntBool(SettingsKeys.reverseAddressBar))
-                    SwipeController.DIRECTION_SWIPE_UP else SwipeController.DIRECTION_SWIPE_DOWN) {
-                    sslLock.performClick()
-                })
             viewMode = reverseAddressBar
         }
 
@@ -585,8 +581,7 @@ class BrowserActivity : VWebViewActivity() {
     fun checkHomePageVisibility() {
         val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
-        sslLock.visibility = if (isHomePage) View.GONE else View.VISIBLE
-        urlEditText.visibility = if (isHomePage) View.GONE else View.VISIBLE
+        addressBar.visibility = if (isHomePage) View.GONE else View.VISIBLE
         webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
 
         // TODO: Move this somewhere else

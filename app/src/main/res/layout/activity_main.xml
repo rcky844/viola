@@ -54,57 +54,13 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.Barrier
-                    android:id="@+id/barrier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:barrierDirection="right"
-                    app:constraint_referenced_ids="favicon,faviconProgressBar" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ssl_lock"
-                    android:layout_width="@dimen/actionbar_widget_height"
-                    android:layout_height="@dimen/actionbar_widget_height"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:padding="12dp"
-                    android:translationZ="2dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/barrier"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/search"
-                    app:tint="?attr/colorOnSurface" />
-
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/urlEditText"
+                <tipz.viola.webview.activity.components.AddressBarView
+                    android:id="@+id/addressBar"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/actionbar_widget_height"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/round_corner_elevated"
-                    android:completionThreshold="1"
-                    android:dropDownWidth="match_parent"
-                    android:fadingEdge="vertical"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="@string/address_bar_hint"
-                    android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
-                    android:importantForAutofill="no"
-                    android:inputType="textUri"
-                    android:paddingStart="52dp"
-                    android:paddingLeft="52dp"
-                    android:paddingEnd="16dp"
-                    android:paddingRight="16dp"
-                    android:selectAllOnFocus="true"
-                    android:singleLine="true"
-                    android:textSize="16sp"
-                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/upRightFab"
-                    app:layout_constraintStart_toEndOf="@id/barrier"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView

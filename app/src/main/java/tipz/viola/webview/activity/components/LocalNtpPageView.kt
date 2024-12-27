@@ -13,11 +13,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import tipz.viola.R
 import tipz.viola.ext.dpToPx
 
@@ -25,8 +25,8 @@ import tipz.viola.ext.dpToPx
 class LocalNtpPageView(
     context: Context, attrs: AttributeSet?
 ) : ConstraintLayout(context, attrs) {
-    private lateinit var realSearchBar: AppCompatAutoCompleteTextView
-    private lateinit var sslLock: AppCompatImageView
+    private lateinit var addressBar: AddressBarView
+    private lateinit var realSearchBar: MaterialAutoCompleteTextView
     var fakeSearchBar: AppCompatAutoCompleteTextView
     private val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
     private var set = ConstraintSet()
@@ -64,8 +64,7 @@ class LocalNtpPageView(
         addView(fakeSearchBar)
         fakeSearchBar.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                realSearchBar.visibility = VISIBLE
-                sslLock.visibility = VISIBLE
+                addressBar.visibility = VISIBLE
                 fakeSearchBar.visibility = GONE
                 realSearchBar.requestFocus()
                 imm.showSoftInput(realSearchBar, InputMethodManager.SHOW_IMPLICIT)
@@ -90,8 +89,7 @@ class LocalNtpPageView(
         // Allow page to show up again on clicked
         setOnClickListener {
             if (realSearchBar.isFocused) {
-                realSearchBar.visibility = GONE
-                sslLock.visibility = GONE
+                addressBar.visibility = GONE
                 imm.hideSoftInputFromWindow(realSearchBar.windowToken, 0)
                 realSearchBar.clearFocus()
             }
@@ -99,11 +97,8 @@ class LocalNtpPageView(
         }
     }
 
-    fun setRealSearchBar(
-        searchBar: AppCompatAutoCompleteTextView,
-        sslLock: AppCompatImageView
-    ) {
-        this.realSearchBar = searchBar
-        this.sslLock = sslLock
+    fun setRealSearchBar(addressBar: AddressBarView) {
+        this.addressBar = addressBar
+        this.realSearchBar = addressBar.textView
     }
 }

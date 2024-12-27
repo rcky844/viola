@@ -10,6 +10,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Build
 import android.widget.Toast
+import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -79,4 +80,12 @@ fun Context.isOnline(): Boolean {
         val n = cm.activeNetworkInfo
         n != null && n.isAvailable
     }
+}
+
+@ColorInt
+fun Context.getOnSurfaceColor(): Int {
+    val attrs = theme.obtainStyledAttributes(
+        intArrayOf(com.google.android.material.R.attr.colorOnSurface)
+    )
+    return attrs.getColor(0, 0)
 }
