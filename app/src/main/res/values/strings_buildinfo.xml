@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2024 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!--
         {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
         Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})

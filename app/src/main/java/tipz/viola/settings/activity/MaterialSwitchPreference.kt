@@ -16,26 +16,26 @@ class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
     SwitchPreferenceCompat(context, attrs) {
     private val settingsPreference: SettingsSharedPreference =
         (context.applicationContext as Application).settingsPreference
-    private val mPreferenceTag: String?
-    private val mNeedReload: Boolean
-    private val mRequiredApi: Int
+    private val preferenceTag: String?
+    private val needReload: Boolean
+    private val requiredApi: Int
 
     init {
         // Get attrs
         val a = context.obtainStyledAttributes(attrs, R.styleable.MaterialSwitchPreference)
-        mPreferenceTag = a.getString(R.styleable.MaterialSwitchPreference_preferenceTag)
-        mNeedReload = a.getBoolean(R.styleable.MaterialSwitchPreference_needReload, false)
-        mRequiredApi = a.getInteger(R.styleable.MaterialSwitchPreference_requiredApi, 1)
+        preferenceTag = a.getString(R.styleable.MaterialSwitchPreference_preferenceTag)
+        needReload = a.getBoolean(R.styleable.MaterialSwitchPreference_needReload, false)
+        requiredApi = a.getInteger(R.styleable.MaterialSwitchPreference_requiredApi, 1)
         a.recycle()
 
         // Handle checkbox
-        isChecked = settingsPreference.getIntBool(mPreferenceTag!!)
+        isChecked = settingsPreference.getIntBool(preferenceTag!!)
         onPreferenceClickListener = OnPreferenceClickListener {
-            settingsPreference.setIntBool(mPreferenceTag, isChecked)
-            SettingsMainFragment.needReload = mNeedReload
+            settingsPreference.setIntBool(preferenceTag, isChecked)
+            SettingsMainFragment.needReload = needReload
             true
         }
-        if (mRequiredApi > Build.VERSION.SDK_INT) this.isEnabled = false
+        if (requiredApi > Build.VERSION.SDK_INT) this.isEnabled = false
 
         // Use material switch
         widgetLayoutResource = R.layout.preference_material_switch

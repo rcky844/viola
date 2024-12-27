@@ -5,7 +5,6 @@ package tipz.viola.webview
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -31,56 +30,55 @@ import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.ext.setImmersiveMode
 import java.util.Objects
 
-open class VChromeWebClient(private val mContext: Context,
-                            private val mVWebView: VWebView) : WebChromeClient() {
-    private var mCustomView: View? = null
-    private var mCustomViewCallback: CustomViewCallback? = null
+open class VChromeWebClient(private val context: Activity,
+                            private val vWebView: VWebView) : WebChromeClient() {
+    private var customView: View? = null
+    private var customViewCallback: CustomViewCallback? = null
 
-    private var mUploadMessage: ValueCallback<Array<Uri>>? = null
-    private val mFileChooser =
-        (mContext as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if (null == mUploadMessage || uri == null) return@registerForActivityResult
-            mUploadMessage!!.onReceiveValue(arrayOf(uri))
-            mUploadMessage = null
+    private var uploadMessage: ValueCallback<Array<Uri>>? = null
+    private val fileChooser =
+        (context as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (null == uploadMessage || uri == null) return@registerForActivityResult
+            uploadMessage!!.onReceiveValue(arrayOf(uri))
+            uploadMessage = null
         }
 
     override fun onShowCustomView(paramView: View, viewCallback: CustomViewCallback) {
-        if (mCustomView != null) {
+        if (customView != null) {
             onHideCustomView()
             return
         }
-        mCustomView = paramView
-        (mContext as AppCompatActivity).requestedOrientation =
-            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        mCustomViewCallback = viewCallback
-        mContext.setImmersiveMode(true)
-        (mContext.window.decorView as FrameLayout).addView(
-            mCustomView,
+        customView = paramView
+        context.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        customViewCallback = viewCallback
+        context.setImmersiveMode(true)
+        (context.window.decorView as FrameLayout).addView(
+            customView,
             FrameLayout.LayoutParams(-1, -1)
         )
-        mContext.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        context.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onHideCustomView() {
-        (mContext as AppCompatActivity).window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        ((mContext as Activity).window.decorView as FrameLayout).removeView(mCustomView)
-        mCustomView = null
-        mContext.setImmersiveMode(false)
-        mContext.requestedOrientation = mContext.resources.configuration.orientation
-        mCustomViewCallback!!.onCustomViewHidden()
-        mCustomViewCallback = null
+        context.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        (context.window.decorView as FrameLayout).removeView(customView)
+        customView = null
+        context.setImmersiveMode(false)
+        context.requestedOrientation = context.resources.configuration.orientation
+        customViewCallback!!.onCustomViewHidden()
+        customViewCallback = null
     }
 
     override fun onProgressChanged(view: WebView, progress: Int) {
-        mVWebView.onPageLoadProgressChanged(progress)
+        vWebView.onPageLoadProgressChanged(progress)
     }
 
     override fun onReceivedIcon(view: WebView, favicon: Bitmap) {
-        mVWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_FAVICON, null, favicon)
+        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_FAVICON, null, favicon)
     }
 
     override fun onReceivedTitle(view: WebView, title: String) {
-        mVWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_TITLE, null, null)
+        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_TITLE, null, null)
     }
 
     override fun onGeolocationPermissionsShowPrompt(
@@ -102,11 +100,11 @@ open class VChromeWebClient(private val mContext: Context,
          */
 
         if (ContextCompat.checkSelfPermission(
-                mContext,
+                context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
             || ContextCompat.checkSelfPermission(
-                mContext,
+                context,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) callback.invoke(origin, true, false)
@@ -117,9 +115,9 @@ open class VChromeWebClient(private val mContext: Context,
         filePathCallback: ValueCallback<Array<Uri>>,
         fileChooserParams: FileChooserParams
     ): Boolean {
-        if (mUploadMessage != null) mUploadMessage!!.onReceiveValue(null)
-        mUploadMessage = filePathCallback
-        mFileChooser.launch("*/*")
+        if (uploadMessage != null) uploadMessage!!.onReceiveValue(null)
+        uploadMessage = filePathCallback
+        fileChooser.launch("*/*")
         return true
     }
 
@@ -131,12 +129,12 @@ open class VChromeWebClient(private val mContext: Context,
         titleResId: Int
     ) {
         val binding: DialogEdittextBinding =
-            DialogEdittextBinding.inflate(LayoutInflater.from(mContext))
+            DialogEdittextBinding.inflate(LayoutInflater.from(context))
         val view = binding.root
 
         val jsMessage = binding.edittext
-        val dialog = MaterialAlertDialogBuilder(mContext)
-        dialog.setTitle(mContext.resources.getString(titleResId, url))
+        val dialog = MaterialAlertDialogBuilder(context)
+        dialog.setTitle(context.resources.getString(titleResId, url))
             .setMessage(message)
             .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 if (defaultValue == null) result.confirm()
@@ -145,7 +143,7 @@ open class VChromeWebClient(private val mContext: Context,
             }
             .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                 result.cancel()
-                mVWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED, null, null)
+                vWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED, null, null)
             }
         if (defaultValue != null) dialog.setView(view)
         dialog.create().show()
@@ -194,8 +192,8 @@ open class VChromeWebClient(private val mContext: Context,
 
     // TODO: Add more comprehensive information to the console
     override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-        if (mVWebView.consoleLogging && consoleMessage != null)
-            mVWebView.consoleMessages.append(consoleMessage.message())
+        if (vWebView.consoleLogging && consoleMessage != null)
+            vWebView.consoleMessages.append(consoleMessage.message())
         return super.onConsoleMessage(consoleMessage)
     }
 }

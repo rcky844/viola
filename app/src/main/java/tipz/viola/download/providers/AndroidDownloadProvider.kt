@@ -18,6 +18,7 @@ import tipz.viola.download.DownloadCapabilities
 import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.database.Droha
+import tipz.viola.ext.isOnline
 import tipz.viola.ext.showMessage
 
 class AndroidDownloadProvider(override val context: Context) : DownloadProvider {
@@ -38,9 +39,13 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
     override fun resolveFilename(downloadObject: Droha) {
         downloadObject.apply {
             try {
-                if (filename == null)
+                if (filename == null) {
+                    Log.d(LOG_TAG, "id=${taskId}: uriString=${uriString}")
+                    Log.d(LOG_TAG, "id=${taskId}: contentDisposition=${contentDisposition}")
+                    Log.d(LOG_TAG, "id=${taskId}: mimeType=${mimeType}")
                     filename = DownloadUtils.guessFileName(uriString, contentDisposition, mimeType)
-                Log.i(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
+                }
+                Log.d(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
             } catch (e: IllegalStateException) {
                 context.showMessage(R.string.downloadFailed)
             }
@@ -51,7 +56,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
     override fun startDownload(downloadObject: Droha) {
         super.startDownload(downloadObject)
         downloadObject.apply {
-            if (checkIsOnline && !DownloadUtils.isOnline(context)) {
+            if (checkIsOnline && !context.isOnline()) {
                 statusListener!!.post(DownloadProvider.Companion.DownloadStatus.NO_INTERNET)
                 return
             }

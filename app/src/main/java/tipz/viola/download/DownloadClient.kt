@@ -21,6 +21,7 @@ import tipz.viola.download.providers.AndroidDownloadProvider
 import tipz.viola.download.providers.InternalDownloadProvider
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VWebView
+import java.net.URLDecoder
 
 class DownloadClient(context: Application) {
     private val LOG_TAG = "DownloadClient"
@@ -41,6 +42,9 @@ class DownloadClient(context: Application) {
 
         downloadQueue.forEach {
             if (it.downloadStatus) return@forEach
+
+            // Decode URL string
+            it.uriString = URLDecoder.decode(it.uriString, "UTF-8")
 
             // Match download provider
             val provider : DownloadProvider = when (it.downloadMode) {

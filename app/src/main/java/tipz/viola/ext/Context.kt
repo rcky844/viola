@@ -7,9 +7,10 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Build
-import android.util.TypedValue
 import android.widget.Toast
+import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -54,11 +55,6 @@ fun Context.copyClipboard(s: String?) {
         showMessage(R.string.copied_clipboard)
 }
 
-fun Context.getDisplayMetrics(measuredDp: Int): Float =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-        measuredDp.toFloat(), resources.displayMetrics
-    )
-
 fun Context.setImmersiveMode(enable: Boolean) {
     val windowInsetsController = WindowCompat.getInsetsController(
         (this as AppCompatActivity).window,
@@ -72,4 +68,24 @@ fun Context.setImmersiveMode(enable: Boolean) {
     } else {
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
     }
+}
+
+@Suppress("DEPRECATION")
+fun Context.isOnline(): Boolean {
+    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        cm.activeNetwork != null
+    } else {
+        val n = cm.activeNetworkInfo
+        n != null && n.isAvailable
+    }
+}
+
+@ColorInt
+fun Context.getOnSurfaceColor(): Int {
+    val attrs = theme.obtainStyledAttributes(
+        intArrayOf(com.google.android.material.R.attr.colorOnSurface)
+    )
+    return attrs.getColor(0, 0)
 }

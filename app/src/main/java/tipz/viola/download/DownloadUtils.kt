@@ -3,37 +3,14 @@
 
 package tipz.viola.download
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.Uri
-import android.os.Build
 import android.util.Base64
 import android.webkit.MimeTypeMap
 import java.io.ByteArrayOutputStream
 import java.io.UnsupportedEncodingException
-import java.util.Locale
 import java.util.regex.Pattern
 
 object DownloadUtils {
-    fun isOnline(context: Context): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val n = cm.activeNetwork
-            if (n != null) {
-                val nc = cm.getNetworkCapabilities(n)
-                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
-                    NetworkCapabilities.TRANSPORT_WIFI
-                )
-            }
-            return false
-        } else {
-            val netInfo = cm.activeNetworkInfo
-            return netInfo != null && netInfo.isConnectedOrConnecting
-        }
-    }
-
     fun dataStringToExtension(dataString: String) : String? {
         val dataInfo =
             dataString.substring(dataString.indexOf(":") + 1, dataString.indexOf(","))
@@ -65,16 +42,6 @@ object DownloadUtils {
     }
 
     /**
-     * Keep aligned with desktop generic content types:
-     * https://searchfox.org/mozilla-central/source/browser/components/downloads/DownloadsCommon.jsm#208
-     */
-    private val GENERIC_CONTENT_TYPES = arrayOf(
-        "application/octet-stream",
-        "binary/octet-stream",
-        "application/unknown"
-    )
-
-    /**
      * Guess the name of the file that should be downloaded.
      *
      *
@@ -93,13 +60,7 @@ object DownloadUtils {
         // Split filename between base and extension
         // Add an extension if filename does not have one
         return if (extractedFileName.contains(".")) {
-            if (listOf(*GENERIC_CONTENT_TYPES)
-                    .contains(mimeType)
-            ) {
-                extractedFileName
-            } else {
-                changeExtension(extractedFileName, sanitizedMimeType)
-            }
+            extractedFileName
         } else {
             extractedFileName + createExtension(sanitizedMimeType)
         }
@@ -338,29 +299,6 @@ object DownloadUtils {
             }
         }
         return stream.toString(encoding)
-    }
-
-    /**
-     * Compare the filename extension with the mime type and change it if necessary.
-     */
-    fun changeExtension(filename: String, mimeType: String?): String {
-        var extension = createExtension(mimeType)
-        val dotIndex = filename.lastIndexOf(".")
-        if (mimeType != null) {
-            val mimeTypeMap = MimeTypeMap.getSingleton()
-            // Compare the last segment of the extension against the mime type.
-            // If there's a mismatch, discard the entire extension.
-            val typeFromExt =
-                mimeTypeMap.getMimeTypeFromExtension(filename.substringAfterLast("."))
-            if (typeFromExt != null && typeFromExt.equals(mimeType, ignoreCase = true)) {
-                extension = "." + mimeTypeMap.getExtensionFromMimeType(mimeType)
-                // Check if the extension needs to be changed
-                if (filename.lowercase().endsWith(extension.lowercase(Locale.getDefault()))) {
-                    return filename
-                }
-            }
-        }
-        return filename.substring(0, dotIndex) + extension
     }
 
     /**

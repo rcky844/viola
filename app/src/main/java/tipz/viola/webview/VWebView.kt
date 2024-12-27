@@ -58,19 +58,19 @@ import tipz.viola.webview.pages.PrivilegedPages
 import java.util.regex.Pattern
 
 @SuppressLint("SetJavaScriptEnabled")
-class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
-    mContext, attrs
+class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
+    context, attrs
 ) {
-    private var activity: VWebViewActivity = mContext as VWebViewActivity
+    private var activity: VWebViewActivity = context as VWebViewActivity
     private lateinit var historyClient: HistoryClient
-    val downloadClient: DownloadClient = (mContext.applicationContext as Application).downloadClient
-    private val iconHashClient = IconHashClient(mContext)
+    val downloadClient: DownloadClient = (context.applicationContext as Application).downloadClient
+    private val iconHashClient = IconHashClient(context)
     val webSettings = this.settings
     private var currentBroha = Broha()
     var currentFavicon: Bitmap? = null
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     val settingsPreference =
-        (mContext.applicationContext as Application).settingsPreference
+        (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
 
     private val requestHeaders = HashMap<String, String>()
@@ -78,14 +78,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     val consoleMessages = StringBuilder()
 
     private val titleHandler = Handler { message ->
-        val webLongPress = HitTestAlertDialog(mContext)
+        val webLongPress = HitTestAlertDialog(context)
         if (!webLongPress.setupDialogForShowing(this, message.data)) return@Handler false
         webLongPress.show()
 
         return@Handler true
     }
 
-    private val template = mContext.assets.open("error.html")
+    private val template = context.assets.open("error.html")
         .bufferedReader().use { it.readText() }
 
     enum class PageLoadState {
@@ -153,14 +153,14 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         webSettings.domStorageEnabled = true
 
         // Ad Server Hosts
-        adServersHandler = AdServersClient(mContext, settingsPreference)
+        adServersHandler = AdServersClient(context, settingsPreference)
 
-        this.webViewClient = VWebViewClient(mContext, this, adServersHandler)
-        this.webChromeClient = VChromeWebClient(mContext, this)
+        this.webViewClient = VWebViewClient(context, this, adServersHandler)
+        this.webChromeClient = VChromeWebClient(activity, this)
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE))
             WebViewCompat.setWebViewRenderProcessClient(
                 this,
-                VWebViewRenderProcessClient(mContext, this)
+                VWebViewRenderProcessClient(context, this)
             )
 
         /* Hit Test Menu */
@@ -178,7 +178,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
     @Suppress("deprecation")
     fun doSettingsCheck() {
         // Dark mode
-        val darkMode = BaseActivity.getDarkMode(mContext)
+        val darkMode = BaseActivity.getDarkMode(context)
         val forceDark = settingsPreference.getIntBool(SettingsKeys.useForceDark)
         if (forceDark) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
@@ -195,15 +195,19 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Javascript
-        webSettings.javaScriptEnabled =
-            settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled)
-        webSettings.javaScriptCanOpenWindowsAutomatically =
-            settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled)
+        settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled).apply {
+            webSettings.javaScriptEnabled = this
+            webSettings.javaScriptCanOpenWindowsAutomatically = this
+
+        }
 
         // HTTPS enforce setting
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) webSettings.mixedContentMode =
-            if (settingsPreference.getIntBool(SettingsKeys.enforceHttps)) WebSettings.MIXED_CONTENT_NEVER_ALLOW
-            else WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSettings.mixedContentMode =
+                if (settingsPreference.getIntBool(SettingsKeys.enforceHttps))
+                    WebSettings.MIXED_CONTENT_NEVER_ALLOW
+                else WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        }
 
         // Google's "Safe" Browsing
         if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
@@ -387,7 +391,7 @@ class VWebView(private val mContext: Context, attrs: AttributeSet?) : WebView(
                 var errorContent = template
                 for (i in 0..5) errorContent = errorContent.replace(
                     "$$i",
-                    mContext.resources.getStringArray(R.array.errMsg)[i]
+                    context.resources.getStringArray(R.array.errMsg)[i]
                 )
                 errorContent = errorContent.replace("$6", "$description")
 
