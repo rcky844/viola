@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2024 Tipz Team
+<!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -169,6 +169,10 @@
     <string name="item_build_number">Build number</string>
     <string name="pref_enable_history_title">Use history storage</string>
     <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
+    <string name="dialog_auth_title">Authentication required</string>
+    <string name="dialog_auth_detail">%s requires a username and password.</string>
+    <string name="dialog_auth_username">Username</string>
+    <string name="dialog_auth_password">Password</string>
 
     <string-array name="errMsg">
         <item>Error!</item>

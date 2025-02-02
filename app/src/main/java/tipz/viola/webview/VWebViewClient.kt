@@ -11,6 +11,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.util.Log
+import android.view.LayoutInflater
+import android.webkit.HttpAuthHandler
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceResponse
@@ -20,6 +22,7 @@ import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.databinding.DialogAuthBinding
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
@@ -69,6 +72,29 @@ open class VWebViewClient(
         }
         vWebView.onPageInformationUpdated(PageLoadState.PAGE_ERROR, failingUrl,
             null, description)
+    }
+
+    override fun onReceivedHttpAuthRequest(
+        view: WebView, handler: HttpAuthHandler,
+        host: String, realm: String
+    ) {
+        val binding: DialogAuthBinding = DialogAuthBinding.inflate(LayoutInflater.from(context))
+        val editView = binding.root
+
+        val usernameEditText = binding.usernameEditText
+        val passwordEditText = binding.passwordEditText
+        binding.message.text = context.getString(R.string.dialog_auth_detail, vWebView.url)
+
+        MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.dialog_auth_title)
+            .setView(editView)
+            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                handler.proceed(usernameEditText.text.toString(), passwordEditText.text.toString())
+            }
+            .setNegativeButton(android.R.string.cancel, { _: DialogInterface?, _: Int ->
+                handler.cancel()
+            })
+            .create().show()
     }
 
     private fun getSslDialog(error: Int): MaterialAlertDialogBuilder {
