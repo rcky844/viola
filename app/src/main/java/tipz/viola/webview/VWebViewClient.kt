@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2024 Tipz Team
+// Copyright (c) 2020-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
@@ -10,6 +10,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
+import android.util.Log
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceResponse
@@ -30,6 +31,8 @@ open class VWebViewClient(
     private val vWebView: VWebView,
     private val adServersHandler: AdServersClient
 ) : WebViewClientCompat() {
+    private val LOG_TAG = "VWebViewClient"
+
     private val settingsPreference =
         (context.applicationContext as Application).settingsPreference
     private val unsecureURLSet = ArrayList<String>()
@@ -107,10 +110,18 @@ open class VWebViewClient(
             return true
         }
 
-        // Handle open in app
-        if (!settingsPreference.getIntBool(SettingsKeys.checkAppLink)) return false
+        // Do not override loading if URL scheme is supported
         if (UrlUtils.isUriSupported(url)) return false
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+
+        // Handle open in app
+        Log.i(LOG_TAG, "Handling possible App Link, url=$url")
+        if (!settingsPreference.getIntBool(SettingsKeys.checkAppLink)) {
+            Log.i(LOG_TAG, "App Link checking is disabled.")
+            return true
+        }
+        val intent =
+            if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+            else Intent(Intent.ACTION_VIEW, Uri.parse(url))
         if (intent.resolveActivity(context.packageManager) != null) {
             MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.dialog_open_external_title)
@@ -124,6 +135,7 @@ open class VWebViewClient(
             if (vWebView.progress == 100) {
                 context.showMessage(R.string.toast_no_app_to_handle)
             }
+            Log.w(LOG_TAG, "Found no application to handle App Link!")
         }
         return true
     }
