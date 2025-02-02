@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
@@ -166,7 +166,7 @@ open class VWebViewActivity : BaseActivity() {
         webview.evaluateJavascript("""
             function _viola_styleHelper(property, checkVal, expectVal) {
                 var propVal = getComputedStyle(document.body).getPropertyValue(property);
-                return propVal != "" && propVal == checkVal & expectVal;
+                return propVal != "" && Boolean(propVal == checkVal & expectVal);
             }
             _viola_styleHelper('overflow-y', 'hidden', true) || _viola_styleHelper('overscroll-behavior-y', 'auto', false)
         """.trimIndent()
