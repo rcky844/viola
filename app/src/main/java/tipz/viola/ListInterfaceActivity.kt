@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2024 Tipz Team
+// Copyright (c) 2020-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola
@@ -40,7 +40,6 @@ import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BaseActivity
-import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Objects
@@ -126,20 +125,17 @@ class ListInterfaceActivity : BaseActivity() {
         layoutManager.reverseLayout = activityMode == mode_history
         layoutManager.stackFromEnd = activityMode == mode_history
         updateListData {
-            itemsAdapter = ItemsAdapter(this@ListInterfaceActivity)
+            itemsAdapter = ItemsAdapter()
             brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
         }
     }
 
-    class ItemsAdapter(
-        brohaListInterfaceActivity: ListInterfaceActivity
-    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    class ItemsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val LOG_TAG = "ListInterfaceAdapter"
 
         private lateinit var binding: ViewBinding
-        private val mBrohaListInterfaceActivity: WeakReference<ListInterfaceActivity> =
-            WeakReference(brohaListInterfaceActivity)
-        private val mIconHashClient: IconHashClient = IconHashClient(brohaListInterfaceActivity)
+        private val activity = ActivityManager.instance.currentActivity!! as ListInterfaceActivity
+        private val mIconHashClient: IconHashClient = IconHashClient(activity)
 
         class ListViewHolder(binding: TemplateIconTitleDescriptorTimeBinding)
             : RecyclerView.ViewHolder(binding.root) {
@@ -171,15 +167,12 @@ class ListInterfaceActivity : BaseActivity() {
 
         @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val listInterfaceActivity = mBrohaListInterfaceActivity.get()!!
-
             if (holder is EmptyViewHolder) {
                 holder.text.setText(
                     if (activityMode == mode_history) R.string.hist_empty
                     else R.string.fav_list_empty
                 )
             } else if (holder is ListViewHolder) {
-                val clientActivity = mBrohaListInterfaceActivity.get()!!
                 val iconHashClient = mIconHashClient
                 val data = listData!![position]
                 val title = data.title
@@ -208,12 +201,12 @@ class ListInterfaceActivity : BaseActivity() {
                 holder.back.setOnClickListener {
                     val needLoad = Intent()
                     needLoad.putExtra(SettingsKeys.needLoadUrl, url)
-                    listInterfaceActivity.setResult(0, needLoad)
-                    listInterfaceActivity.finish()
+                    activity.setResult(0, needLoad)
+                    activity.finish()
                 }
                 holder.back.setOnLongClickListener { view: View? ->
                     val popup = PopupMenu(
-                        listInterfaceActivity, view!!
+                        activity, view!!
                     )
                     val menu = popup.menu
                     if (activityMode == mode_history) {
@@ -230,9 +223,9 @@ class ListInterfaceActivity : BaseActivity() {
                             PopupMenuMap.DELETE.itemId -> {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     if (activityMode == mode_history)
-                                        clientActivity.historyClient.deleteById(data.id)
+                                        activity.historyClient.deleteById(data.id)
                                     else if (activityMode == mode_favorites)
-                                        clientActivity.favClient.deleteById(data.id)
+                                        activity.favClient.deleteById(data.id)
                                 }
                                 listData!!.removeAt(position)
                                 notifyItemRemoved(position)
@@ -240,14 +233,14 @@ class ListInterfaceActivity : BaseActivity() {
                             }
                             PopupMenuMap.EDIT.itemId -> {
                                 val binding: DialogFavEditBinding =
-                                    DialogFavEditBinding.inflate(listInterfaceActivity.layoutInflater)
+                                    DialogFavEditBinding.inflate(activity.layoutInflater)
                                 val editView = binding.root
 
                                 val titleEditText = binding.titleEditText
                                 val urlEditText = binding.favUrlEditText
                                 titleEditText.setText(title)
                                 urlEditText.setText(url)
-                                MaterialAlertDialogBuilder(listInterfaceActivity)
+                                MaterialAlertDialogBuilder(activity)
                                     .setTitle(R.string.favMenuEdit)
                                     .setView(editView)
                                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
@@ -258,9 +251,9 @@ class ListInterfaceActivity : BaseActivity() {
                                             data.url = Objects.requireNonNull(urlEditText.text).toString()
                                             data.setTimestamp()
                                             CoroutineScope(Dispatchers.IO).launch {
-                                                clientActivity.favClient.update(data)
+                                                activity.favClient.update(data)
                                                 // FIXME: Update list dynamically to save system resources
-                                                listData = clientActivity.favClient.getAll() as MutableList<Broha>?
+                                                listData = activity.favClient.getAll() as MutableList<Broha>?
                                                 CoroutineScope(Dispatchers.Main).launch {
                                                     notifyItemRangeRemoved(position, 1)
                                                 }
@@ -272,15 +265,15 @@ class ListInterfaceActivity : BaseActivity() {
                                     .create().show()
                             }
                             PopupMenuMap.COPY_URL.itemId -> {
-                                listInterfaceActivity.copyClipboard(url)
+                                activity.copyClipboard(url)
                             }
                             PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    clientActivity.favClient.insert(
+                                    activity.favClient.insert(
                                         Broha(data.iconHash, title, url!!)
                                     )
                                 }
-                                listInterfaceActivity.showMessage(R.string.save_successful)
+                                activity.showMessage(R.string.save_successful)
                             }
                         }
                         true
@@ -296,8 +289,7 @@ class ListInterfaceActivity : BaseActivity() {
 
         override fun getItemCount(): Int {
             val isEmpty = listData == null || listData!!.size == 0
-            mBrohaListInterfaceActivity.get()!!.fab.visibility =
-                if (isEmpty) View.GONE else View.VISIBLE
+            activity.fab.visibility = if (isEmpty) View.GONE else View.VISIBLE
 
             // Return 1 so that empty message is shown
             return if (isEmpty) 1
