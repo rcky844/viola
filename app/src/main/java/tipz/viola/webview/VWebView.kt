@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2024 Tipz Team
+// Copyright (c) 2020-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 @file:Suppress("DEPRECATION")
@@ -330,7 +330,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     override fun reload() {
         if (currentBroha.url == getRealUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
-        loadUrl(getRealUrl())
+        loadUrl(getUrl())
     }
 
     override fun getUrl(): String {
@@ -340,7 +340,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun filterUrl(url: String): String {
-        return if (url.startsWith(ExportedUrls.viewSourcePrefix)) url
+        return if (url.startsWith(ExportedUrls.viewSourcePrefix))
+            // TODO: This causes reload button to show cross icon, why?
+            url.replace(ExportedUrls.viewSourcePrefix, "")
         else if (PrivilegedPages.shouldShowEmptyUrl(url)) ""
         else PrivilegedPages.getDisplayUrl(url) ?: url
     }
