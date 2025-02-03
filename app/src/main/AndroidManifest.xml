@@ -65,7 +65,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-            <!-- For these schemes were not particular MIME type has been
+            <!-- For these schemes where not particular MIME type has been
                  supplied, we are a good candidate. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
