@@ -1,10 +1,9 @@
-// Copyright (c) 2020-2024 Tipz Team
+// Copyright (c) 2020-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
 
 import android.Manifest
-import android.app.Activity
 import android.content.DialogInterface
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -30,14 +29,14 @@ import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.ext.setImmersiveMode
 import java.util.Objects
 
-open class VChromeWebClient(private val context: Activity,
+open class VChromeWebClient(private val activity: VWebViewActivity,
                             private val vWebView: VWebView) : WebChromeClient() {
     private var customView: View? = null
     private var customViewCallback: CustomViewCallback? = null
 
     private var uploadMessage: ValueCallback<Array<Uri>>? = null
     private val fileChooser =
-        (context as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        (activity as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (null == uploadMessage || uri == null) return@registerForActivityResult
             uploadMessage!!.onReceiveValue(arrayOf(uri))
             uploadMessage = null
@@ -49,22 +48,22 @@ open class VChromeWebClient(private val context: Activity,
             return
         }
         customView = paramView
-        context.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         customViewCallback = viewCallback
-        context.setImmersiveMode(true)
-        (context.window.decorView as FrameLayout).addView(
+        activity.setImmersiveMode(true)
+        (activity.window.decorView as FrameLayout).addView(
             customView,
             FrameLayout.LayoutParams(-1, -1)
         )
-        context.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onHideCustomView() {
-        context.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        (context.window.decorView as FrameLayout).removeView(customView)
+        activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        (activity.window.decorView as FrameLayout).removeView(customView)
         customView = null
-        context.setImmersiveMode(false)
-        context.requestedOrientation = context.resources.configuration.orientation
+        activity.setImmersiveMode(false)
+        activity.requestedOrientation = activity.resources.configuration.orientation
         customViewCallback!!.onCustomViewHidden()
         customViewCallback = null
     }
@@ -100,11 +99,11 @@ open class VChromeWebClient(private val context: Activity,
          */
 
         if (ContextCompat.checkSelfPermission(
-                context,
+                activity,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
             || ContextCompat.checkSelfPermission(
-                context,
+                activity,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) callback.invoke(origin, true, false)
@@ -129,12 +128,12 @@ open class VChromeWebClient(private val context: Activity,
         titleResId: Int
     ) {
         val binding: DialogEdittextBinding =
-            DialogEdittextBinding.inflate(LayoutInflater.from(context))
+            DialogEdittextBinding.inflate(LayoutInflater.from(activity))
         val view = binding.root
 
         val jsMessage = binding.edittext
-        val dialog = MaterialAlertDialogBuilder(context)
-        dialog.setTitle(context.resources.getString(titleResId, url))
+        val dialog = MaterialAlertDialogBuilder(activity)
+        dialog.setTitle(activity.resources.getString(titleResId, url))
             .setMessage(message)
             .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 if (defaultValue == null) result.confirm()

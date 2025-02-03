@@ -20,7 +20,6 @@ import android.webkit.WebView
 import androidx.annotation.StringRes
 import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.databinding.DialogAuthBinding
 import tipz.viola.ext.showMessage
@@ -30,14 +29,12 @@ import tipz.viola.webview.VWebView.PageLoadState
 import java.io.ByteArrayInputStream
 
 open class VWebViewClient(
-    private val context: Context,
-    private val vWebView: VWebView,
+    private val context: Context, private val vWebView: VWebView,
     private val adServersHandler: AdServersClient
 ) : WebViewClientCompat() {
     private val LOG_TAG = "VWebViewClient"
 
-    private val settingsPreference =
-        (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = vWebView.settingsPreference
     private val unsecureURLSet = ArrayList<String>()
     private val unsecureURLErrorSet = ArrayList<SslError>()
 
@@ -158,7 +155,7 @@ open class VWebViewClient(
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
         } else {
-            if (vWebView.progress == 100) {
+            if (view.progress == 100) {
                 context.showMessage(R.string.toast_no_app_to_handle)
             }
             Log.w(LOG_TAG, "Found no application to handle App Link!")
