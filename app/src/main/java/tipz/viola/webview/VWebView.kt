@@ -214,7 +214,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         // WebView Debugging
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setWebContentsDebuggingEnabled(Settings.Secure.getInt(context.contentResolver,
+            setWebContentsDebuggingEnabled(Settings.Global.getInt(context.contentResolver,
                 Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1)
         }
 
