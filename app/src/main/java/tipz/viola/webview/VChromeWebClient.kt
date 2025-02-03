@@ -6,9 +6,9 @@ package tipz.viola.webview
 import android.Manifest
 import android.content.DialogInterface
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -16,17 +16,17 @@ import android.webkit.ConsoleMessage
 import android.webkit.GeolocationPermissions
 import android.webkit.JsPromptResult
 import android.webkit.JsResult
+import android.webkit.PermissionRequest
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
 import tipz.viola.databinding.DialogEdittextBinding
+import tipz.viola.ext.askForPermission
 import tipz.viola.ext.setImmersiveMode
 import java.util.Objects
 
@@ -85,16 +85,30 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
         origin: String,
         callback: GeolocationPermissions.Callback
     ) {
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
-            || ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED)
-            ActivityCompat.requestPermissions(activity,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION),
-                0)
-        else callback.invoke(origin, true, false)
+        if (activity.askForPermission(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)))
+            callback.invoke(origin, true, false)
+    }
+
+    override fun onPermissionRequest(request: PermissionRequest?) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return
+
+        val grantedPermissions = ArrayList<String>()
+        request!!.resources.forEach {
+            when (it) {
+                PermissionRequest.RESOURCE_AUDIO_CAPTURE -> {
+                    if (activity.askForPermission(arrayOf(Manifest.permission.RECORD_AUDIO)))
+                        grantedPermissions.add(PermissionRequest.RESOURCE_AUDIO_CAPTURE)
+                }
+                PermissionRequest.RESOURCE_VIDEO_CAPTURE -> {
+                    if (activity.askForPermission(arrayOf(Manifest.permission.CAMERA)))
+                        grantedPermissions.add(PermissionRequest.RESOURCE_VIDEO_CAPTURE)
+                }
+            }
+        }
+        request.grant(grantedPermissions.toTypedArray())
     }
 
     override fun onShowFileChooser(
