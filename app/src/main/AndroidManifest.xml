@@ -46,7 +46,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App"
         android:usesCleartextTraffic="true"
-        tools:targetApi="s">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="tiramisu">
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />
