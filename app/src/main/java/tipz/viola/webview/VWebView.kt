@@ -472,6 +472,10 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 when (agentMode) {
                     UserAgentMode.MOBILE -> { }
                     UserAgentMode.DESKTOP -> {
+                        // Replace Android version and build number
+                        if (group.contains("Linux; Android "))
+                            group = "(Linux) "
+
                         // Remove references to Mobile Safari
                         if (group.startsWith("Mobile Safari"))
                             group = group.replace("Mobile ", "")
