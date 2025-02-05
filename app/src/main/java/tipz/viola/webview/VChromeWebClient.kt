@@ -1,15 +1,14 @@
-// Copyright (c) 2020-2024 Tipz Team
+// Copyright (c) 2020-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
 
 import android.Manifest
-import android.app.Activity
 import android.content.DialogInterface
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -17,27 +16,28 @@ import android.webkit.ConsoleMessage
 import android.webkit.GeolocationPermissions
 import android.webkit.JsPromptResult
 import android.webkit.JsResult
+import android.webkit.PermissionRequest
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
 import tipz.viola.databinding.DialogEdittextBinding
+import tipz.viola.ext.askForPermission
 import tipz.viola.ext.setImmersiveMode
 import java.util.Objects
 
-open class VChromeWebClient(private val context: Activity,
+open class VChromeWebClient(private val activity: VWebViewActivity,
                             private val vWebView: VWebView) : WebChromeClient() {
     private var customView: View? = null
     private var customViewCallback: CustomViewCallback? = null
 
     private var uploadMessage: ValueCallback<Array<Uri>>? = null
     private val fileChooser =
-        (context as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        (activity as AppCompatActivity).registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (null == uploadMessage || uri == null) return@registerForActivityResult
             uploadMessage!!.onReceiveValue(arrayOf(uri))
             uploadMessage = null
@@ -49,22 +49,22 @@ open class VChromeWebClient(private val context: Activity,
             return
         }
         customView = paramView
-        context.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         customViewCallback = viewCallback
-        context.setImmersiveMode(true)
-        (context.window.decorView as FrameLayout).addView(
+        activity.setImmersiveMode(true)
+        (activity.window.decorView as FrameLayout).addView(
             customView,
             FrameLayout.LayoutParams(-1, -1)
         )
-        context.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onHideCustomView() {
-        context.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        (context.window.decorView as FrameLayout).removeView(customView)
+        activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        (activity.window.decorView as FrameLayout).removeView(customView)
         customView = null
-        context.setImmersiveMode(false)
-        context.requestedOrientation = context.resources.configuration.orientation
+        activity.setImmersiveMode(false)
+        activity.requestedOrientation = activity.resources.configuration.orientation
         customViewCallback!!.onCustomViewHidden()
         customViewCallback = null
     }
@@ -85,29 +85,30 @@ open class VChromeWebClient(private val context: Activity,
         origin: String,
         callback: GeolocationPermissions.Callback
     ) {
-        // FIXME: Re-enable permission dialog
-        /*
-        if (ContextCompat.checkSelfPermission(
-                mContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_DENIED
-            || ContextCompat.checkSelfPermission(
-                mContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_DENIED
-        ) ActivityCompat.requestPermissions(mVioWebViewActivity!!,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 0)
-         */
+        if (activity.askForPermission(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)))
+            callback.invoke(origin, true, false)
+    }
 
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-            || ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) callback.invoke(origin, true, false)
+    override fun onPermissionRequest(request: PermissionRequest?) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return
+
+        val grantedPermissions = ArrayList<String>()
+        request!!.resources.forEach {
+            when (it) {
+                PermissionRequest.RESOURCE_AUDIO_CAPTURE -> {
+                    if (activity.askForPermission(arrayOf(Manifest.permission.RECORD_AUDIO)))
+                        grantedPermissions.add(PermissionRequest.RESOURCE_AUDIO_CAPTURE)
+                }
+                PermissionRequest.RESOURCE_VIDEO_CAPTURE -> {
+                    if (activity.askForPermission(arrayOf(Manifest.permission.CAMERA)))
+                        grantedPermissions.add(PermissionRequest.RESOURCE_VIDEO_CAPTURE)
+                }
+            }
+        }
+        request.grant(grantedPermissions.toTypedArray())
     }
 
     override fun onShowFileChooser(
@@ -129,12 +130,12 @@ open class VChromeWebClient(private val context: Activity,
         titleResId: Int
     ) {
         val binding: DialogEdittextBinding =
-            DialogEdittextBinding.inflate(LayoutInflater.from(context))
+            DialogEdittextBinding.inflate(LayoutInflater.from(activity))
         val view = binding.root
 
         val jsMessage = binding.edittext
-        val dialog = MaterialAlertDialogBuilder(context)
-        dialog.setTitle(context.resources.getString(titleResId, url))
+        val dialog = MaterialAlertDialogBuilder(activity)
+        dialog.setTitle(activity.resources.getString(titleResId, url))
             .setMessage(message)
             .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 if (defaultValue == null) result.confirm()

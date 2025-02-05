@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2024 Tipz Team
+// Copyright (c) 2020-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 @file:Suppress("DEPRECATION")
@@ -72,6 +72,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     val settingsPreference =
         (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
+    private val initialUserAgent = settings.userAgentString
 
     private val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
@@ -101,16 +102,12 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         })
 
         /* Start the download manager service */
-        setDownloadListener { vUrl: String?, _: String?, vContentDisposition: String?, vMimeType: String?, _: Long ->
-            if (ContextCompat.checkSelfPermission(
-                    activity,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_DENIED
-            )
-                ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0
-                )
+        setDownloadListener { vUrl: String?, _: String?,
+                              vContentDisposition: String?, vMimeType: String?, _: Long ->
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                ActivityCompat.requestPermissions(activity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
 
             downloadClient.addToQueue(Droha().apply {
                 uriString = vUrl!!
@@ -218,7 +215,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         // WebView Debugging
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setWebContentsDebuggingEnabled(Settings.Secure.getInt(activity.contentResolver,
+            setWebContentsDebuggingEnabled(Settings.Global.getInt(context.contentResolver,
                 Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1)
         }
 
@@ -233,7 +230,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED) {
-            historyClient = HistoryClient(activity)
+            historyClient = HistoryClient(context)
             historyClient.doSettingsCheck()
         }
     }
@@ -257,12 +254,12 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                         FLAG_ACTIVITY_REQUIRE_DEFAULT
             )
             if (webIntent.resolveActivity(context.packageManager) != null) {
-                val dialog = MaterialAlertDialogBuilder(activity)
+                val dialog = MaterialAlertDialogBuilder(context)
                 dialog.setTitle(R.string.dialog_open_external_title)
                     .setMessage(R.string.dialog_open_external_message)
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         try {
-                            activity.startActivity(webIntent)
+                            context.startActivity(webIntent)
                         } catch (e: ActivityNotFoundException) {
                             // Do not load actual url on failure
                         }
@@ -330,7 +327,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     override fun reload() {
         if (currentBroha.url == getRealUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
-        loadUrl(getRealUrl())
+        loadUrl(getUrl())
     }
 
     override fun getUrl(): String {
@@ -340,7 +337,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun filterUrl(url: String): String {
-        return if (url.startsWith(ExportedUrls.viewSourcePrefix)) url
+        return if (url.startsWith(ExportedUrls.viewSourcePrefix))
+            // TODO: This causes reload button to show cross icon, why?
+            url.replace(ExportedUrls.viewSourcePrefix, "")
         else if (PrivilegedPages.shouldShowEmptyUrl(url)) ""
         else PrivilegedPages.getDisplayUrl(url) ?: url
     }
@@ -436,9 +435,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.UPDATE_TITLE -> {
                 if (currentUrl.isBlank() || getRealUrl() == ExportedUrls.aboutBlankUrl) return
                 activity.onTitleUpdated(
-                    if (this.visibility == View.GONE) resources.getString(
-                        R.string.start_page
-                    ) else title?.trim()
+                    if (this.visibility == View.GONE) resources.getString(R.string.start_page)
+                    else title?.trim()
                 )
                 activity.onSwipeRefreshLayoutRefreshingUpdated(false)
             }
@@ -468,12 +466,16 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             userAgentBuilder.append(dataBundle.userAgentString)
         } else {
             val pattern = Pattern.compile("\\(.*?\\)\\s|.*?/.*?(\\s|\$)")
-            val matcher = pattern.matcher(settings.userAgentString)
+            val matcher = pattern.matcher(initialUserAgent)
             while (matcher.find()) {
                 var group = matcher.group()
                 when (agentMode) {
                     UserAgentMode.MOBILE -> { }
                     UserAgentMode.DESKTOP -> {
+                        // Replace Android version and build number
+                        if (group.contains("Linux; Android "))
+                            group = "(Linux) "
+
                         // Remove references to Mobile Safari
                         if (group.startsWith("Mobile Safari"))
                             group = group.replace("Mobile ", "")
@@ -483,9 +485,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
                 // Don't declare ourselves as a WebView, this breaks many sites
                 // as they may thing we can only provide a simple WebView.
-                if (group.matches("\\((.*)?;\\s?wv((;\\s.*)?)\\)\\s".toRegex()))
-                    group = group.replace(
-                        "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex(), "(\$1\$2)")
+                // "wv" and "Version/4.0" is removed.
+                val wvRegex = "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex()
+                if (group.contains(wvRegex))
+                    group = group.replace(wvRegex, "(\$1\$2)")
+
+                if (group.contains("Version/4.0"))
+                    continue
 
                 // Add to builder
                 userAgentBuilder.append(group)
