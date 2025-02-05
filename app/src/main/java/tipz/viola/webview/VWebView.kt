@@ -480,9 +480,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
                 // Don't declare ourselves as a WebView, this breaks many sites
                 // as they may thing we can only provide a simple WebView.
-                if (group.matches("\\((.*)?;\\s?wv((;\\s.*)?)\\)\\s".toRegex()))
-                    group = group.replace(
-                        "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex(), "(\$1\$2)")
+                // "wv" and "Version/4.0" is removed.
+                val wvRegex = "\\((.*)?;\\s?wv((;\\s.*)?)\\)".toRegex()
+                if (group.contains(wvRegex))
+                    group = group.replace(wvRegex, "(\$1\$2)")
+
+                if (group.contains("Version/4.0"))
+                    continue
 
                 // Add to builder
                 userAgentBuilder.append(group)
