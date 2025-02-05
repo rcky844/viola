@@ -72,6 +72,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     val settingsPreference =
         (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
+    private val initialUserAgent = settings.userAgentString
 
     private val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
@@ -465,7 +466,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             userAgentBuilder.append(dataBundle.userAgentString)
         } else {
             val pattern = Pattern.compile("\\(.*?\\)\\s|.*?/.*?(\\s|\$)")
-            val matcher = pattern.matcher(settings.userAgentString)
+            val matcher = pattern.matcher(initialUserAgent)
             while (matcher.find()) {
                 var group = matcher.group()
                 when (agentMode) {
