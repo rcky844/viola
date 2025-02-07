@@ -496,8 +496,9 @@ class BrowserActivity : VWebViewActivity() {
                 val customUserAgent = binding.edittext
                 val deskMode = binding.deskMode
 
-                message.text = resources.getString(R.string.current_user_agent,
-                    webview.webSettings.userAgentString)
+                message.property = arrayListOf(
+                    arrayOf(R.string.current_user_agent, webview.webSettings.userAgentString)
+                )
                 deskMode.isChecked = currentCustomUAWideView
                 val dialog = MaterialAlertDialogBuilder(this)
                 dialog.setTitle(R.string.customUA)
