@@ -384,7 +384,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 activity.onFaviconProgressUpdated(false)
                 activity.onPageLoadProgressChanged(0)
                 activity.onSslCertificateUpdated()
-                activity.onSwipeRefreshLayoutRefreshingUpdated(false)
+                activity.swipeRefreshLayout.setRefreshing(false)
             }
 
             PageLoadState.PAGE_ERROR -> {
@@ -415,7 +415,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                     CookieManager.getInstance().flush()
                 else CookieSyncManager.getInstance().sync()
-                activity.onSwipeRefreshLayoutRefreshingUpdated(false)
+                activity.swipeRefreshLayout.setRefreshing(false)
             }
 
             PageLoadState.UPDATE_FAVICON -> {
@@ -429,7 +429,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 }
                 if (historyState == UpdateHistoryState.STATE_DISABLED_DUPLICATED)
                     historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
-                activity.onSwipeRefreshLayoutRefreshingUpdated(false)
+                activity.swipeRefreshLayout.setRefreshing(false)
             }
 
             PageLoadState.UPDATE_TITLE -> {
@@ -438,7 +438,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     if (this.visibility == View.GONE) resources.getString(R.string.start_page)
                     else title?.trim()
                 )
-                activity.onSwipeRefreshLayoutRefreshingUpdated(false)
+                activity.swipeRefreshLayout.setRefreshing(false)
             }
 
             PageLoadState.UNKNOWN -> {
