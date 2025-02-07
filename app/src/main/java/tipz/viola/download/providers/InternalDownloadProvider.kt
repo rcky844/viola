@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.download.providers
@@ -59,9 +59,7 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
                 DownloadCapabilities.PROTOCOL_BLOB -> mimeType?.let {
                     if (vWebView != null)
                         vWebView!!.evaluateJavascript(
-                            VJavaScriptInterface.getBase64StringFromBlobUrl(uriString, it),
-                            null
-                        )
+                            VJavaScriptInterface.getBase64StringFromBlobUrl(uriString, it))
                 }
 
                 else -> return@apply // TODO: Implement all
