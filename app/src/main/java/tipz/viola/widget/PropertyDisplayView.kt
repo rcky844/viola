@@ -23,10 +23,14 @@ class PropertyDisplayView : LinearLayoutCompat {
 
     private fun updateView() {
         property.forEach {
+            val isCategory = it.size <= 1
             val title = TextView(context).apply {
                 setPadding(0, context.dpToPx(8), 0, 0)
                 setTypeface(null, Typeface.BOLD)
-                isAllCaps = true
+
+                if (isCategory) {
+                    isAllCaps = true
+                }
             }
             val value = TextView(context).apply {
                 setPadding(0, 0, 0, context.dpToPx(8))
@@ -37,7 +41,7 @@ class PropertyDisplayView : LinearLayoutCompat {
             else return@forEach
 
             var hasValue = true
-            if (it.size <= 1) {
+            if (isCategory) {
                 hasValue = false
             } else {
                 if (it[1] is CharSequence) value.text = it[1] as CharSequence
