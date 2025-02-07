@@ -16,6 +16,11 @@ class VJavaScriptInterface(private val activity: VWebViewActivity) {
     fun getBase64FromBlobData(uriString: String, mimeType: String) =
         InternalDownloadProvider.getBase64FromBlobData(activity, uriString, mimeType)
 
+    // Swipe Refresh Layout
+    @JavascriptInterface
+    fun setOverscrollEnabled(overscroll: Boolean) =
+        activity.swipeRefreshLayout.setOverscrollEnabled(overscroll)
+
     companion object {
         val LOG_TAG = "VJavaScriptInterface"
         val INTERFACE_NAME = "ViolaBrowser"
