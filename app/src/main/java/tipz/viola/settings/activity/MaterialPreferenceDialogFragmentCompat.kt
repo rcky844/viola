@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2024 Tipz Team
+// Copyright (c) 2023-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.activity
@@ -12,8 +12,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 open class MaterialPreferenceDialogFragmentCompat(
     private val materialPreferenceDialogListener: MaterialDialogPreferenceListener
 ) : PreferenceDialogFragmentCompat() {
-    /** Which button was clicked.  */
+    /* Which button was clicked. */
     private var whichButtonClicked = 0
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         whichButtonClicked = DialogInterface.BUTTON_NEGATIVE
         val builder = MaterialAlertDialogBuilder(requireContext())

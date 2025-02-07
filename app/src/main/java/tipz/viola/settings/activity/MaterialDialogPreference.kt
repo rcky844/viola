@@ -9,7 +9,7 @@ import androidx.preference.DialogPreference
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 
 class MaterialDialogPreference : DialogPreference {
-    var materialDialogPreferenceListener: MaterialDialogPreferenceListener? = null
+    lateinit var materialDialogPreferenceListener: MaterialDialogPreferenceListener
 
     constructor(context: Context) : super(context, null)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
