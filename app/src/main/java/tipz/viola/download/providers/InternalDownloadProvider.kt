@@ -34,10 +34,8 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
     override fun resolveFilename(downloadObject: Droha) {
         downloadObject.apply {
             filename = when (DownloadCapabilities.fromString(getUriProtocol())) {
-                DownloadCapabilities.PROTOCOL_DATA -> {
-                    (System.currentTimeMillis().toString() + "."
-                            + DownloadUtils.dataStringToExtension(uriString))
-                }
+                DownloadCapabilities.PROTOCOL_DATA ->
+                    "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}"
 
                 DownloadCapabilities.PROTOCOL_BLOB ->
                     "blob" // FIXME: Actual file name needed
@@ -51,14 +49,12 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         super.startDownload(downloadObject)
         downloadObject.apply {
             when (DownloadCapabilities.fromString(downloadObject.getUriProtocol())) {
-                DownloadCapabilities.PROTOCOL_DATA -> {
-                    byteArrayToFile(context,
-                        DownloadUtils.dataStringToByteArray(uriString), filename!!)
-                }
+                DownloadCapabilities.PROTOCOL_DATA -> byteArrayToFile(context,
+                    DownloadUtils.dataStringToByteArray(uriString), filename!!)
 
                 DownloadCapabilities.PROTOCOL_BLOB -> mimeType?.let {
-                    if (vWebView != null)
-                        vWebView!!.evaluateJavascript(getBase64StringFromBlobUrl(uriString, it))
+                    if (vWebView == null) return
+                    vWebView!!.evaluateJavascript(getBase64StringFromBlobUrl(uriString, it))
                 }
 
                 else -> return@apply // TODO: Implement all
@@ -78,33 +74,33 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
          */
         fun getBase64StringFromBlobUrl(blobUrl: String, mimeType: String): String {
             // Script to convert blob URL to Base64 data in Web layer, then process it in Android layer
-            return "javascript: var xhr = new XMLHttpRequest();" +
-                    "xhr.open('GET', '${blobUrl}', true);" +
-                    "xhr.setRequestHeader('Content-type','${mimeType}');" +
-                    "xhr.responseType = 'blob';" +
-                    "xhr.onload = function(e) {" +
-                    "if (this.status == 200) {" +
-                    "var blobFile = this.response;" +
-                    "var reader = new FileReader();" +
-                    "reader.readAsDataURL(blobFile);" +
-                    "reader.onloadend = function() {" +
-                    "uriString = reader.result;" +
-                    "$INTERFACE_NAME.getBase64FromBlobData(uriString, '${mimeType}');" +
-                    "}" +
-                    "}" +
-                    "};" +
-                    "xhr.send();"
+            return """
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '${blobUrl}', true);
+                xhr.setRequestHeader('Content-type','${mimeType}');
+                xhr.responseType = 'blob';
+                xhr.onload = function(e) {
+                    if (this.status == 200) {
+                        var blobFile = this.response;
+                        var reader = new FileReader();
+                        reader.readAsDataURL(blobFile);
+                        reader.onloadend = function() {
+                            uriString = reader.result;
+                            $INTERFACE_NAME.getBase64FromBlobData(uriString, '${mimeType}');
+                        };
+                    };
+                };
+                xhr.send();
+            """.trimIndent()
         }
 
         @Throws(IOException::class)
         fun getBase64FromBlobData(context: Context, uriString: String, mimeType: String) {
             Log.i(LOG_TAG, "getBase64FromBlobData(): mimeType=${mimeType}")
-            InternalDownloadProvider.apply {
-                byteArrayToFile(context,
-                    DownloadUtils.base64StringToByteArray(DownloadUtils.getRawDataFromDataUri(uriString)),
-                    "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}"
-                )
-            }
+            byteArrayToFile(context,
+                DownloadUtils.base64StringToByteArray(DownloadUtils.getRawDataFromDataUri(uriString)),
+                "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}"
+            )
         }
 
         fun byteArrayToFile(context: Context, barr: ByteArray, filename: String) {
@@ -120,13 +116,14 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
                 val os: OutputStream = FileOutputStream(file)
                 os.write(barr)
                 os.close()
-
-                // Tell the media scanner about the new file so that it is immediately available to the user.
-                MediaScannerConnection.scanFile(context, arrayOf(file.toString()), null, null)
-                context.showMessage(context.resources.getString(
-                    R.string.notification_download_successful, filename))
             } catch (ignored: IOException) {
             }
+
+            // Tell the media scanner about the new file so that it is immediately available to the user.
+            MediaScannerConnection.scanFile(context, arrayOf(file.toString()),
+                null, null)
+            context.showMessage(context.resources.getString(
+                R.string.notification_download_successful, filename))
         }
     }
 }
