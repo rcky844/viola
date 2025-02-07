@@ -44,7 +44,11 @@ class PropertyDisplayView : LinearLayoutCompat {
             if (isCategory) {
                 hasValue = false
             } else {
-                if (it[1] is CharSequence) value.text = it[1] as CharSequence
+                if (it[1] is CharSequence) {
+                    val text = it[1] as CharSequence
+                    if (text.isBlank()) return@forEach // Value is CharSequence but empty, skip
+                    else value.text = it[1] as CharSequence
+                }
                 else if (it[1] is Int) value.setText(it[1] as Int)
                 else hasValue = false
             }
