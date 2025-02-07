@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.download
@@ -48,15 +48,15 @@ class DownloadClient(context: Application) {
 
             // Match download provider
             val provider : DownloadProvider = when (it.downloadMode) {
-                DownloadMode.AUTO_DOWNLOAD_PROVIDER.value -> { // TODO: Move auto detection to UI
+                DownloadMode.AUTO_DOWNLOAD_PROVIDER -> { // TODO: Move auto detection to UI
                     var retProvider: DownloadProvider? = null
                     DownloadProvider.getPreferredDownloadProvider(context).forEach { itProvider ->
                         if (isProviderCapable(it, itProvider.capabilities)) retProvider = itProvider
                     }
                     retProvider // Return
                 }
-                DownloadMode.ANDROID_DOWNLOAD_PROVIDER.value -> AndroidDownloadProvider(context) /* 0 */
-                DownloadMode.INTERNAL_DOWNLOAD_PROVIDER.value -> InternalDownloadProvider(context) /* 1 */
+                DownloadMode.ANDROID_DOWNLOAD_PROVIDER -> AndroidDownloadProvider(context)
+                DownloadMode.INTERNAL_DOWNLOAD_PROVIDER -> InternalDownloadProvider(context)
                 else -> null
             } ?: return@forEach
             Log.i(LOG_TAG, "id=${it.taskId}: DownloadProvider found, provider=${provider.javaClass.name}")
