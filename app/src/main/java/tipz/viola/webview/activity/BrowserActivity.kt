@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2024 Tipz Team
+// Copyright (c) 2020-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity
@@ -34,6 +34,7 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.widget.NestedScrollView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
@@ -50,6 +51,7 @@ import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogUaEditBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.dpToPx
 import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
@@ -64,6 +66,7 @@ import tipz.viola.webview.activity.components.LocalNtpPageView
 import tipz.viola.webview.activity.components.ToolbarView
 import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
+import tipz.viola.widget.PropertyDisplayView
 import tipz.viola.widget.StringResAdapter
 import java.text.DateFormat
 
@@ -154,41 +157,57 @@ class BrowserActivity : VWebViewActivity() {
         // Setup SSL Lock
         sslLock.setOnClickListener {
             val cert = webview.certificate
-            val dialog = MaterialAlertDialogBuilder(this@BrowserActivity)
+            val dialog = MaterialAlertDialogBuilder(this)
             val binding: DialogHitTestTitleBinding =
-                DialogHitTestTitleBinding.inflate(LayoutInflater.from(this@BrowserActivity))
-
-            // Custom Title
-            val mView = binding.root
-
-            binding.title.text = webview.title
-            binding.url.text = Uri.parse(webview.url).host
-
-            val icon = binding.icon
-            val favicon = webview.currentFavicon
-            if (favicon == null) icon.setImageResource(R.drawable.default_favicon)
-            else icon.setImageBitmap(favicon)
+                DialogHitTestTitleBinding.inflate(LayoutInflater.from(this)).apply {
+                    title.text = webview.title
+                    url.text = Uri.parse(webview.url).host
+                    this.icon.apply {
+                        val favicon = webview.currentFavicon
+                        if (favicon == null) setImageResource(R.drawable.default_favicon)
+                        else setImageBitmap(favicon)
+                    }
+                }
+            val titleView = binding.root
 
             // SSL information
-            val message = if (cert != null) {
+            val messageView = if (cert != null) {
                 val issuedTo = cert.issuedTo
                 val issuedBy = cert.issuedBy
-                resources.getString(
-                    R.string.ssl_info_dialog_content,
-                    issuedTo.cName, issuedTo.oName, issuedTo.uName,
-                    issuedBy.cName, issuedBy.oName, issuedBy.uName,
-                    DateFormat.getDateTimeInstance()
-                        .format(cert.validNotBeforeDate),
-                    DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)
-                )
-            } else if (sslState == SslState.SEARCH) {
-                resources.getString(R.string.address_bar_hint)
-            } else {
-                resources.getString(R.string.ssl_info_dialog_content_nocert)
-            }
 
-            dialog.setCustomTitle(mView)
-                .setMessage(message)
+                val scrollView = NestedScrollView(this)
+                scrollView.addView(PropertyDisplayView(this).apply {
+                    property = arrayListOf(
+                        arrayOf(R.string.ssl_info_dialog_issued_to),
+                        arrayOf(R.string.ssl_info_dialog_common_name, issuedTo.cName),
+                        arrayOf(R.string.ssl_info_dialog_organization, issuedTo.oName),
+                        arrayOf(R.string.ssl_info_dialog_organization_unit, issuedTo.uName),
+                        arrayOf(R.string.ssl_info_dialog_issued_by),
+                        arrayOf(R.string.ssl_info_dialog_common_name, issuedBy.cName),
+                        arrayOf(R.string.ssl_info_dialog_organization, issuedBy.oName),
+                        arrayOf(R.string.ssl_info_dialog_organization_unit, issuedBy.uName),
+                        arrayOf(R.string.ssl_info_dialog_validity_period),
+                        arrayOf(R.string.ssl_info_dialog_issued_on,
+                            DateFormat.getDateTimeInstance().format(cert.validNotBeforeDate)),
+                        arrayOf(R.string.ssl_info_dialog_expires_on,
+                            DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)),
+                    )
+                })
+
+                scrollView // Return
+            } else if (sslState == SslState.SEARCH) {
+                TextView(this).apply {
+                    setText(R.string.address_bar_hint)
+                }
+            } else {
+                TextView(this).apply {
+                    setText(R.string.ssl_info_dialog_content_nocert)
+                }
+            }
+            messageView.setPadding(dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
+
+            dialog.setCustomTitle(titleView)
+                .setView(messageView)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNeutralButton(R.string.copy_title) { _: DialogInterface?, _: Int ->
                     copyClipboard(webview.title)
