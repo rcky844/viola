@@ -15,7 +15,6 @@ class PropertyDisplayView : LinearLayoutCompat {
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
 
     var property: ArrayList<Array<Any>> = arrayListOf(arrayOf(Any(), Any()))
-        get() = field
         set(value) {
             field = value
             updateView()
