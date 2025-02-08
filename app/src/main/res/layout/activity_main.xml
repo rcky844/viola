@@ -33,41 +33,20 @@
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <tipz.viola.webview.activity.components.FavIconView
                     android:id="@+id/favicon"
-                    android:layout_width="@dimen/actionbar_widget_height"
-                    android:layout_height="@dimen/actionbar_widget_height"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/default_favicon" />
-
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/faviconProgressBar"
-                    android:layout_width="@dimen/actionbar_widget_height"
-                    android:layout_height="@dimen/actionbar_widget_height"
-                    android:indeterminate="true"
-                    android:padding="8dp"
-                    android:visibility="gone"
-                    app:indicatorSize="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.Barrier
-                    android:id="@+id/faviconBarrier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:barrierDirection="right"
-                    app:constraint_referenced_ids="favicon,faviconProgressBar" />
 
                 <tipz.viola.webview.activity.components.AddressBarView
                     android:id="@+id/addressBar"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/actionbar_widget_height"
                     app:layout_constraintEnd_toStartOf="@id/upRightFab"
-                    app:layout_constraintStart_toEndOf="@id/faviconBarrier"
+                    app:layout_constraintStart_toEndOf="@id/favicon"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
