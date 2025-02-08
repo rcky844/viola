@@ -43,7 +43,6 @@
     <string name="delete">"刪除"</string>
     <string name="dialog_delete_all_entries_title">刪除全部書籤</string>
     <string name="dialog_delete_all_entries_favorites_message">"您將要刪除全部書籤, 您確定要這樣做嗎?"</string>
-    <string name="wiped_success">清除成功!</string>
     <string name="history_title">歷史記錄</string>
     <string name="menu_save_to_favorites">儲存到書籤</string>
     <string name="dialog_delete_all_entries_history_message">"您將要刪除全部歷史記錄, 您確定要這樣做嗎?"</string>
@@ -74,7 +73,6 @@
     <string name="toast_no_webview">WebView是必要的，但並未安裝</string>
     <string name="hit_test_share_link">分享鏈接</string>
     <string name="pref_theme_title">主題</string>
-    <string name="ssl_info_dialog_content">頒發給\n\t通用名 (CN): %1$s\n\t機構 (O): %2$s\n\t機構單位 (OU): %3$s\n\n頒發者\n\t通用名 (CN): %4$s\n\t機構 (O): %5$s\n\t機構單位 (OU): %6$s\n\n有效期\n\t頒發日期: %7$s\n\t到期日期: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL憑證錯誤</string>
     <string name="ssl_certificate_error_dialog_message">%s你想繼續嗎?</string>
     <string name="ssl_certificate_date_invalid">憑證日期無效</string>
@@ -131,7 +129,7 @@
     <string name="start_page">起始頁</string>
     <string name="hit_test_copy_link_text">複製連結文字</string>
     <string name="hit_test_copy_image_link">複製圖片連結</string>
-    <string name="software_updates">軟體更新</string>
+    <string name="pref_category_software_updates">軟體更新</string>
     <string name="pref_update_channel_title">選擇更新頻道</string>
     <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器主機檔案</string>
     <string name="pref_ad_blocker_source_title">廣告攔截器主機來源</string>

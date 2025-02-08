@@ -43,7 +43,6 @@
     <string name="delete">"Xóa"</string>
     <string name="dialog_delete_all_entries_title">"Xóa toàn bộ các mục"</string>
     <string name="dialog_delete_all_entries_favorites_message">"Bạn đang định xóa toàn bộ các mục yêu thích, bạn chắc chắn chứ?"</string>
-    <string name="wiped_success">"Xóa thành công!"</string>
     <string name="history_title">Lịch sử</string>
     <string name="menu_save_to_favorites">"Lưu vào Yêu thích"</string>
     <string name="dialog_delete_all_entries_history_message">"Bạn đang định xóa toàn bộ lịch sử, bạn chắc chắn chứ?"</string>
@@ -74,7 +73,6 @@
     <string name="toast_no_webview">WebView cần thiết nhưng chưa được cài đặt.</string>
     <string name="hit_test_share_link">Chia sẻ đường dẫn</string>
     <string name="pref_theme_title">Chủ đề</string>
-    <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">Lỗi chứng chỉ SSL</string>
     <string name="ssl_certificate_error_dialog_message">%s Bạn có muốn đi tiếp?</string>
     <string name="ssl_certificate_date_invalid">Ngày của chứng chỉ SSL không hợp lệ.</string>
@@ -131,7 +129,7 @@
     <string name="start_page">Trang bắt đầu</string>
     <string name="hit_test_copy_link_text">Sao chép văn bản liên kết</string>
     <string name="hit_test_copy_image_link">Sao chép liên kết hình ảnh</string>
-    <string name="software_updates">Cập nhật phần mềm</string>
+    <string name="pref_category_software_updates">Cập nhật phần mềm</string>
     <string name="pref_update_channel_title">Chọn kênh cập nhật</string>
     <string name="pref_ad_blocker_download_hosts_title">Tải xuống tệp máy chủ chặn quảng cáo</string>
     <string name="pref_ad_blocker_source_title">Nguồn máy chủ chặn quảng cáo</string>

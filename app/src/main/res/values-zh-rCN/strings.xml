@@ -43,7 +43,6 @@
     <string name="delete">"删除"</string>
     <string name="dialog_delete_all_entries_title">刪除所有收藏</string>
     <string name="dialog_delete_all_entries_favorites_message">"您将要删除所有收藏, 您确定要这样做吗?"</string>
-    <string name="wiped_success">清除成功!</string>
     <string name="history_title">历史记录</string>
     <string name="menu_save_to_favorites">保存到收藏夹</string>
     <string name="dialog_delete_all_entries_history_message">"您将要删除所有历史记录, 您确定要这样做吗?"</string>
@@ -74,7 +73,6 @@
     <string name="toast_no_webview">WebView是必需的，但未安裝</string>
     <string name="hit_test_share_link">分享链接</string>
     <string name="pref_theme_title">主题</string>
-    <string name="ssl_info_dialog_content">颁发给\n\t通用名 (CN): %1$s\n\t机构 (O): %2$s\n\t机构单位 (OU): %3$s\n\n颁发者\n\t通用名 (CN): %4$s\n\t机构 (O): %5$s\n\t机构单位 (OU): %6$s\n\n有效期\n\t颁发日期: %7$s\n\t到期日期: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL证书错误</string>
     <string name="ssl_certificate_error_dialog_message">%s你想继续吗?</string>
     <string name="ssl_certificate_date_invalid">证书日期无效</string>
@@ -131,7 +129,7 @@
     <string name="start_page">起始页</string>
     <string name="hit_test_copy_link_text">复制链接文本</string>
     <string name="hit_test_copy_image_link">复制图片链接</string>
-    <string name="software_updates">软件更新</string>
+    <string name="pref_category_software_updates">软件更新</string>
     <string name="pref_update_channel_title">选择更新频道</string>
     <string name="pref_ad_blocker_download_hosts_title">下载广告拦截器主机文件</string>
     <string name="pref_ad_blocker_source_title">广告拦截器主机源</string>
