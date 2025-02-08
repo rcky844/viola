@@ -43,7 +43,6 @@
     <string name="delete">"Diesen"</string>
     <string name="dialog_delete_all_entries_title">"Alle Einträge löschen"</string>
     <string name="dialog_delete_all_entries_favorites_message">"Sie sind dabei, alle Favoriten zu löschen. Sind Sie sicher, dass Sie fortfahren möchten?"</string>
-    <string name="wiped_success">"Erfolgreich bereinigt!"</string>
     <string name="history_title">Verlauf</string>
     <string name="menu_save_to_favorites">"Als Favoriten speichern"</string>
     <string name="dialog_delete_all_entries_history_message">"Sie sind dabei, den gesamten Verlauf zu löschen. Sind Sie sich sicher?"</string>
@@ -74,7 +73,6 @@
     <string name="toast_no_webview">WebView ist erforderlich, aber nicht installiert.</string>
     <string name="hit_test_share_link">Link teilen</string>
     <string name="pref_theme_title">Thema</string>
-    <string name="ssl_info_dialog_content">Ausgestellt für\n\tAllgemeiner Name (CN): %1$s\n\tOrganisation (O): %2$s\n\tOrganisationseinheit (OU): %3$s\n\nAusgestellt von\n\tAllgemeiner Name (CN): %4$s\n\tOrganisation (O): %5$s\n\tOrganisationseinheit (OU): %6$s\n\nGültigkeitsdauer\n\tAusgestellt am: %7$s\n\tGültig bis: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL-Zertifikatsfehler</string>
     <string name="ssl_certificate_error_dialog_message">%s Möchtest du trotzdem weitermachen?</string>
     <string name="ssl_certificate_date_invalid">Das Datum des Zertifikats ist ungültig.</string>
@@ -131,7 +129,7 @@
     <string name="start_page">Startseite</string>
     <string name="hit_test_copy_link_text">Linktext kopieren</string>
     <string name="hit_test_copy_image_link">Bildlink kopieren</string>
-    <string name="software_updates">Software-Updates</string>
+    <string name="pref_category_software_updates">Software-Updates</string>
     <string name="pref_update_channel_title">Update-Kanal auswählen</string>
     <string name="pref_ad_blocker_download_hosts_title">Werbeblocker-Hostdatei herunterladen</string>
     <string name="pref_ad_blocker_source_title">Werbeblocker-Hostquelle</string>

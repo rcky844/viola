@@ -43,7 +43,6 @@
     <string name="delete">"Delete"</string>
     <string name="dialog_delete_all_entries_title">"Delete all entries"</string>
     <string name="dialog_delete_all_entries_favorites_message">"You are about to delete all favourites entries, are you sure about this?"</string>
-    <string name="wiped_success">"Wiped successfully!"</string>
     <string name="history_title">History</string>
     <string name="menu_save_to_favorites">"Save to favourites"</string>
     <string name="dialog_delete_all_entries_history_message">"You are about to delete all history entries, are you sure about this?"</string>
@@ -74,7 +73,6 @@
     <string name="toast_no_webview">WebView is required but not installed.</string>
     <string name="hit_test_share_link">Share link</string>
     <string name="pref_theme_title">Theme</string>
-    <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>
     <string name="ssl_certificate_error_dialog_message">%s Do you want to continue anyway?</string>
     <string name="ssl_certificate_date_invalid">The date of the certificate is invalid.</string>
@@ -131,7 +129,7 @@
     <string name="start_page">Start Page</string>
     <string name="hit_test_copy_link_text">Copy link text</string>
     <string name="hit_test_copy_image_link">Copy image link</string>
-    <string name="software_updates">Software updates</string>
+    <string name="pref_category_software_updates">Software updates</string>
     <string name="pref_update_channel_title">Select update channel</string>
     <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocker Hosts File</string>
     <string name="pref_ad_blocker_source_title">Ad Blocker Hosts Source</string>

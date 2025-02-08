@@ -43,7 +43,6 @@
     <string name="delete">"Sil"</string>
     <string name="dialog_delete_all_entries_title">"Tüm girişleri sil"</string>
     <string name="dialog_delete_all_entries_favorites_message">"Tüm sık kullanılanları silmek üzeresiniz. Devam etmek istiyor musunuz?"</string>
-    <string name="wiped_success">"Başarıyla silindi!"</string>
     <string name="history_title">Geçmiş</string>
     <string name="menu_save_to_favorites">"Sık kullanılanlara ekle"</string>
     <string name="dialog_delete_all_entries_history_message">"Tüm geçmişi silmek üzeresiniz. Devam etmek istiyor musunuz?"</string>
@@ -74,7 +73,6 @@
     <string name="toast_no_webview">WebView gereklidir ancak yüklü değildir.</string>
     <string name="hit_test_share_link">Bağlantıyı paylaş</string>
     <string name="pref_theme_title">Tema</string>
-    <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">SSL Sertifika hatası</string>
     <string name="ssl_certificate_error_dialog_message">%s Yine de devam etmek istiyor musunuz?</string>
     <string name="ssl_certificate_date_invalid">Sertifikanın tarihi geçersiz.</string>
@@ -131,7 +129,7 @@
     <string name="start_page">Başlangıç sayfası</string>
     <string name="hit_test_copy_link_text">Bağlantı metnini kopyala</string>
     <string name="hit_test_copy_image_link">Resim bağlantısını kopyala</string>
-    <string name="software_updates">Yazılım güncellemeleri</string>
+    <string name="pref_category_software_updates">Yazılım güncellemeleri</string>
     <string name="pref_update_channel_title">Güncelleme kanalını seçin</string>
     <string name="pref_ad_blocker_download_hosts_title">Reklam engelleyici ana makine dosyasını indirin</string>
     <string name="pref_ad_blocker_source_title">Reklam Engelleyici Ana Bilgisayar Kaynağı</string>

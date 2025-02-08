@@ -43,7 +43,6 @@
     <string name="delete">"Effacer"</string>
     <string name="dialog_delete_all_entries_title">"Effacer toutes les entrées"</string>
     <string name="dialog_delete_all_entries_favorites_message">"Vous êtes sur le point d’effacer tous les favoris, êtes-vous sûr ?"</string>
-    <string name="wiped_success">"Effacement réussi !"</string>
     <string name="history_title">Historique</string>
     <string name="menu_save_to_favorites">"Sauvegarder comme favori"</string>
     <string name="dialog_delete_all_entries_history_message">"Vous êtes sur le point d’effacer tout l’historique, êtes-vous sûr ?"</string>
@@ -74,7 +73,6 @@
     <string name="toast_no_webview">WebView est nécessaire mais n’est pas installé.</string>
     <string name="hit_test_share_link">SPartager le lien</string>
     <string name="pref_theme_title">Thème</string>
-    <string name="ssl_info_dialog_content">Publié à\n\tNom Commun (NC): %1$s\n\tOrganisation (O): %2$s\n\tUnité Organisationnelle (OU): %3$s\n\nPublié Par\n\tNom Commun (CN): %4$s\n\tOrganisation (O): %5$s\n\tUnité Organisationnelle (OU): %6$s\n\nPériode de Validité\n\tPublié Sur : %7$s\n\tExpire Le: %8$s</string>
     <string name="ssl_certificate_error_dialog_title">Erreur du certificat SSL</string>
     <string name="ssl_certificate_error_dialog_message">%s Voulez-vous malgré tout continuer ?</string>
     <string name="ssl_certificate_date_invalid">La date du certificat est invalide.</string>
@@ -131,7 +129,7 @@
     <string name="start_page">Page de démarrage</string>
     <string name="hit_test_copy_link_text">Copier le texte du lien</string>
     <string name="hit_test_copy_image_link">Copier le lien de l\'image</string>
-    <string name="software_updates">Mises à jour de logiciel</string>
+    <string name="pref_category_software_updates">Mises à jour de logiciel</string>
     <string name="pref_update_channel_title">Sélectionner le canal de mise à jour</string>
     <string name="pref_ad_blocker_download_hosts_title">Télécharger le fichier hôte du bloqueur de publicité</string>
     <string name="pref_ad_blocker_source_title">Source de l\'hôte du bloqueur de publicité</string>
