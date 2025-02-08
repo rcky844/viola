@@ -447,7 +447,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         // Update favicon
         currentFavicon = favicon
-        activity.onFaviconUpdated(favicon, false)
+        activity.onFaviconUpdated(favicon, state == PageLoadState.UPDATE_FAVICON)
 
         activity.onUrlUpdated(newUrl)
         activity.onDropDownDismissed()
