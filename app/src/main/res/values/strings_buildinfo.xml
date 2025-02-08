@@ -20,7 +20,7 @@
         Build Info: License information
         This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
     -->
-    <string name="buildinfo_license">This product is licensed to you under the %s.</string>
+    <string name="buildinfo_license">This product is licensed under the %s.</string>
 
     <!-- Build Info: License button -->
     <string name="buildinfo_license_button">License</string>
