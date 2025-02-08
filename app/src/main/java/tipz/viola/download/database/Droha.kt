@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.download.database
@@ -7,6 +7,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import tipz.viola.download.DownloadMode
 import tipz.viola.download.DownloadProvider
 import tipz.viola.webview.VWebView
 
@@ -17,7 +18,7 @@ class Droha {
     internal var taskId = 0
 
     @Ignore
-    internal var downloadMode = 0
+    internal var downloadMode = DownloadMode.AUTO_DOWNLOAD_PROVIDER // TODO: Change when implemented in UI
 
     @Ignore
     internal var downloadStatus = false // TODO: Expand on this when needed

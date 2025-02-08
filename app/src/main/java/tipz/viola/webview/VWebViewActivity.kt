@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.activity.addCallback
@@ -16,7 +15,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.CallSuper
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -29,17 +27,14 @@ import tipz.viola.webview.activity.BaseActivity
 
 
 open class VWebViewActivity : BaseActivity() {
-    private val LOG_TAG = "VWebViewActivity"
-
     lateinit var settingsPreference: SettingsSharedPreference
+    lateinit var swipeRefreshLayout: VSwipeRefreshLayout
     lateinit var webview: VWebView
     var favicon: AppCompatImageView? = null
     var faviconProgressBar: CircularProgressIndicator? = null
     lateinit var progressBar: LinearProgressIndicator
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
     internal lateinit var appbar: AppBarLayout
     internal lateinit var webviewContainer: RelativeLayout
-    private var swipeRefreshLayoutEnabled = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +49,8 @@ open class VWebViewActivity : BaseActivity() {
         // Init VioWebView
         webview.doSettingsCheck()
 
-        // Setup swipe refresh layout
-        swipeRefreshLayout.setOnRefreshListener { webview.reload() }
+        // Swipe to Refresh
+        swipeRefreshLayout.initialize(webview)
 
         // Setup favicon
         faviconProgressBar?.setOnClickListener { favicon?.performClick() }
@@ -101,10 +96,6 @@ open class VWebViewActivity : BaseActivity() {
     @Suppress("DEPRECATION")
     override fun doSettingsCheck() {
         super.doSettingsCheck()
-
-        // Pull to Refresh
-        if (swipeRefreshLayoutEnabled) swipeRefreshLayout.isEnabled =
-            settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh)
 
         // Favicon
         if (favicon != null) {
@@ -157,39 +148,6 @@ open class VWebViewActivity : BaseActivity() {
             favicon?.visibility = View.VISIBLE
             faviconProgressBar?.visibility = View.GONE
         }
-    }
-
-    @CallSuper
-    open fun onSwipeRefreshLayoutRefreshingUpdated(isRefreshing: Boolean) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
-        swipeRefreshLayout.isRefreshing = isRefreshing
-        webview.evaluateJavascript("""
-            function _viola_styleHelper(property, checkVal, expectVal) {
-                var propVal = getComputedStyle(document.body).getPropertyValue(property);
-                return propVal != "" && Boolean(propVal == checkVal & expectVal);
-            }
-            _viola_styleHelper('overflow-y', 'hidden', true) || _viola_styleHelper('overscroll-behavior-y', 'auto', false)
-        """.trimIndent()
-        ) { value: String ->
-            val overscroll = getTrueCSSValue(value) != "true"
-            if (!overscroll) Log.d(LOG_TAG, "Webpage does not want to overscroll.")
-            updateSwipeRefreshLayoutEnabled(overscroll)
-        }
-    }
-
-    private fun updateSwipeRefreshLayoutEnabled(isEnabled: Boolean) {
-        swipeRefreshLayoutEnabled = isEnabled
-        if (settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh))
-            swipeRefreshLayout.isEnabled = swipeRefreshLayoutEnabled
-    }
-
-    private fun getTrueCSSValue(rawValue: String): String {
-        var mValue = rawValue
-        if (mValue.contains("\"")) mValue = mValue.replace("\"", "")
-        if (mValue == "null") return "auto"
-        val arrayValue: Array<String> =
-            mValue.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        return arrayValue[arrayValue.size - 1]
     }
 
     @CallSuper

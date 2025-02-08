@@ -16,7 +16,7 @@ object ExportedUrls {
     val changelogUrl = "${websiteUrl}builds/build" +
                 (BuildConfig.VERSION_BUILD_ID ?: BuildConfig.VERSION_BUILD_GIT_REVISION) +
             (if (BuildConfig.VERSION_BUILD_REVISION == 0) "" else "r${BuildConfig.VERSION_BUILD_REVISION}")
-    const val feedbackUrl = "$sourceUrl-/issues"
+    const val feedbackUrl = "$sourceUrl/issues"
     const val updateJSONUrl = "${websiteUrl}updates.json"
 
     // Browser handling

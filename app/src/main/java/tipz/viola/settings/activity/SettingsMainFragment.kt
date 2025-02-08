@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 @file:Suppress("DEPRECATION")
@@ -331,7 +331,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         var dialogFragment: DialogFragment? = null
         if (preference is MaterialDialogPreference) {
             dialogFragment =
-                newInstance(preference.getKey(), preference.materialDialogPreferenceListener!!)
+                newInstance(preference.getKey(), preference.materialDialogPreferenceListener)
         }
         if (dialogFragment != null) {
             dialogFragment.setTargetFragment(this, 0)

@@ -77,6 +77,14 @@
     <string name="share_url">Share link</string>
     <string name="pref_theme">Theme</string>
     <string name="ssl_info_dialog_content">Issued To\n\tCommon Name (CN): %1$s\n\tOrganization (O): %2$s\n\tOrganizational Unit (OU): %3$s\n\nIssued By\n\tCommon Name (CN): %4$s\n\tOrganization (O): %5$s\n\tOrganizational Unit (OU): %6$s\n\nValidity Period\n\tIssued On: %7$s\n\tExpires On: %8$s</string>
+    <string name="ssl_info_dialog_issued_to">"Issued To:"</string>
+    <string name="ssl_info_dialog_issued_by">"Issued By:"</string>
+    <string name="ssl_info_dialog_validity_period">"Validity Period:"</string>
+    <string name="ssl_info_dialog_common_name">"Common Name (CN)"</string>
+    <string name="ssl_info_dialog_organization">"Organization (O)"</string>
+    <string name="ssl_info_dialog_organization_unit">"Organizational Unit (OU)"</string>
+    <string name="ssl_info_dialog_issued_on">"Issued On"</string>
+    <string name="ssl_info_dialog_expires_on">"Expires On"</string>
     <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>
     <string name="ssl_certificate_error_dialog_content">%s Do you want to continue anyway?</string>
     <string name="ssl_certificate_date_invalid">The date of the certificate is invalid.</string>
@@ -158,7 +166,7 @@
     <string name="ssl_info_dialog_content_nocert">"This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards)."</string>
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
-    <string name="current_user_agent">Current user agent:\n%s</string>
+    <string name="current_user_agent">Current user agent</string>
     <string name="ssl_failed_handshake">Failed to perform SSL handshake. Page load may still be possible by downgrading to HTTP.</string>
     <string name="dialog_console_title">Console</string>
     <string name="toast_console_enabled">Console logging has been enabled!</string>
