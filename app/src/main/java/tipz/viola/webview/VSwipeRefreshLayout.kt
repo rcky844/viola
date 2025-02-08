@@ -6,7 +6,10 @@ package tipz.viola.webview
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.webkit.JavascriptInterface
+import androidx.lifecycle.lifecycleScope
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VJavaScriptInterface.Companion.INTERFACE_NAME
@@ -16,6 +19,7 @@ class VSwipeRefreshLayout(
 ) : SwipeRefreshLayout(context, attrs) {
     private val LOG_TAG = "VSwipeRefreshLayout"
 
+    private var activity: VWebViewActivity = context as VWebViewActivity
     private lateinit var webview: VWebView
     private var layoutEnabled = true
 
@@ -47,9 +51,13 @@ class VSwipeRefreshLayout(
         """.trimIndent())
     }
 
+    @JavascriptInterface
     fun setOverscrollEnabled(overscroll: Boolean) {
         if (!overscroll) Log.d(LOG_TAG, "Webpage does not want to overscroll.")
         layoutEnabled = overscroll
-        if (settingEnabled()) isEnabled = overscroll
+
+        activity.lifecycleScope.launch {
+            if (settingEnabled()) isEnabled = overscroll
+        }
     }
 }
