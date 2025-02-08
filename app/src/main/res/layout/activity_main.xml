@@ -55,13 +55,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/faviconBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="right"
+                    app:constraint_referenced_ids="favicon,faviconProgressBar" />
+
                 <tipz.viola.webview.activity.components.AddressBarView
                     android:id="@+id/addressBar"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/actionbar_widget_height"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/upRightFab"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/faviconBarrier"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
