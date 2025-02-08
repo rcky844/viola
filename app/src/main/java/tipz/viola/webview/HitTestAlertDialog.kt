@@ -67,47 +67,47 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         }
 
         // Add items to array adapter
-        arrayAdapter.addAll(R.string.open_in_new_tab, R.string.copy_url, R.string.download_url)
-        if (title.isNullOrBlank()) arrayAdapter.add(R.string.copy_text_url)
+        arrayAdapter.addAll(R.string.hit_test_open_in_new_tab, R.string.menu_copy_link, R.string.hit_test_download_link)
+        if (title.isNullOrBlank()) arrayAdapter.add(R.string.hit_test_copy_link_text)
         if (!src.isNullOrBlank()) arrayAdapter.addAll(
-            R.string.download_image,
-            R.string.copy_src_url,
-            R.string.search_image
+            R.string.hit_test_download_image,
+            R.string.hit_test_copy_image_link,
+            R.string.hit_test_search_image
         )
-        arrayAdapter.add(R.string.share_url)
+        arrayAdapter.add(R.string.hit_test_share_link)
 
         setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
             when (arrayAdapter.getItemResId(which)) {
-                R.string.copy_url -> context.copyClipboard(url)
+                R.string.menu_copy_link -> context.copyClipboard(url)
 
-                R.string.copy_text_url -> context.copyClipboard(title)
+                R.string.hit_test_copy_link_text -> context.copyClipboard(title)
 
-                R.string.download_url -> {
+                R.string.hit_test_download_link -> {
                     view.downloadClient.addToQueue(Droha().apply {
                         uriString = url
                     })
                 }
 
-                R.string.copy_src_url -> context.copyClipboard(src)
+                R.string.hit_test_copy_image_link -> context.copyClipboard(src)
 
-                R.string.download_image -> {
+                R.string.hit_test_download_image -> {
                     view.downloadClient.addToQueue(Droha().apply {
                         uriString = src ?: url
                     })
                 }
 
-                R.string.search_image -> {
+                R.string.hit_test_search_image -> {
                     val fileSearch = src ?: url
                     view.loadUrl("http://images.google.com/searchbyimage?image_url=$fileSearch")
                 }
 
-                R.string.open_in_new_tab -> {
+                R.string.hit_test_open_in_new_tab -> {
                     val intent = Intent(context, BrowserActivity::class.java)
                     intent.data = Uri.parse(url)
                     context.startActivity(intent)
                 }
 
-                R.string.share_url -> context.shareUrl(url)
+                R.string.hit_test_share_link -> context.shareUrl(url)
             }
         }
         return true

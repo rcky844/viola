@@ -123,7 +123,7 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
             MediaScannerConnection.scanFile(context, arrayOf(file.toString()),
                 null, null)
             context.showMessage(context.resources.getString(
-                R.string.notification_download_successful, filename))
+                R.string.downloads_toast_success, filename))
         }
     }
 }

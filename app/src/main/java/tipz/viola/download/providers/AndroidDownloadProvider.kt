@@ -47,7 +47,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                 }
                 Log.d(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
             } catch (e: IllegalStateException) {
-                context.showMessage(R.string.downloadFailed)
+                context.showMessage(R.string.downloads_toast_failed)
             }
         }
     }
@@ -86,7 +86,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
             try {
                 downloadID = dm.enqueue(request)
             } catch (e: RuntimeException) {
-                context.showMessage(R.string.downloadFailed)
+                context.showMessage(R.string.downloads_toast_failed)
                 return@apply
             }
 

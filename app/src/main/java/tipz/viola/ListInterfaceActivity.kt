@@ -63,9 +63,9 @@ class ListInterfaceActivity : BaseActivity() {
 
     enum class PopupMenuMap(val itemId: Int, @StringRes val resId: Int) {
         DELETE(1, R.string.delete),
-        EDIT(2, R.string.favMenuEdit),
-        COPY_URL(3, R.string.copy_url),
-        ADD_TO_FAVORITES(4, R.string.add_to_fav);
+        EDIT(2, R.string.favorites_menu_edit),
+        COPY_URL(3, R.string.menu_copy_link),
+        ADD_TO_FAVORITES(4, R.string.menu_save_to_favorites);
 
         /* Helper functions */
         companion object {
@@ -87,7 +87,7 @@ class ListInterfaceActivity : BaseActivity() {
         historyClient = HistoryClient(this)
 
         // Setup UI
-        setTitle(if (activityMode == mode_history) R.string.hist else R.string.fav)
+        setTitle(if (activityMode == mode_history) R.string.history_title else R.string.favorites_title)
 
         // Toolbar
         val toolbar = binding.toolbar
@@ -100,10 +100,10 @@ class ListInterfaceActivity : BaseActivity() {
         fab = binding.fab
         fab.setOnClickListener {
             MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.delete_all_entries)
+                .setTitle(R.string.dialog_delete_all_entries_title)
                 .setMessage(
-                    if (activityMode == mode_history) R.string.del_hist_message
-                    else R.string.delete_fav_message
+                    if (activityMode == mode_history) R.string.dialog_delete_all_entries_history_message
+                    else R.string.dialog_delete_all_entries_favorites_message
                 )
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     CoroutineScope(Dispatchers.IO).launch {
@@ -113,7 +113,7 @@ class ListInterfaceActivity : BaseActivity() {
                     val size = listData!!.size
                     listData!!.clear()
                     itemsAdapter.notifyItemRangeRemoved(0, size)
-                    showMessage(R.string.wiped_success)
+                    showMessage(R.string.toast_cleared)
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
@@ -169,8 +169,8 @@ class ListInterfaceActivity : BaseActivity() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (holder is EmptyViewHolder) {
                 holder.text.setText(
-                    if (activityMode == mode_history) R.string.hist_empty
-                    else R.string.fav_list_empty
+                    if (activityMode == mode_history) R.string.history_empty_message
+                    else R.string.favorites_empty_message
                 )
             } else if (holder is ListViewHolder) {
                 val iconHashClient = mIconHashClient
@@ -241,7 +241,7 @@ class ListInterfaceActivity : BaseActivity() {
                                 titleEditText.setText(title)
                                 urlEditText.setText(url)
                                 MaterialAlertDialogBuilder(activity)
-                                    .setTitle(R.string.favMenuEdit)
+                                    .setTitle(R.string.favorites_menu_edit)
                                     .setView(editView)
                                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                                         if (Objects.requireNonNull(titleEditText.text).toString() != title

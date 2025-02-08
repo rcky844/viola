@@ -71,7 +71,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
     fun checkUpdates() = CoroutineScope(Dispatchers.IO).launch {
         // Check for internet access
         if (!context.isOnline()) {
-            showMessage(R.string.network_unavailable_toast)
+            showMessage(R.string.toast_network_unavailable)
         }
 
         // Here we go!
@@ -97,7 +97,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
             else "channel_data_legacy"
 
         if (!jChannelObject.has(jChannelDataString)) {
-            showMessage(R.string.version_latest_toast)
+            showMessage(R.string.toast_version_latest)
             return@launch
         }
 
@@ -108,20 +108,20 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         if (BuildConfig.VERSION_CODE > remoteVerCode
             || (BuildConfig.VERSION_CODE == remoteVerCode
                     && BuildConfig.VERSION_BUILD_REVISION >= remoteVerRev)) {
-            showMessage(R.string.version_latest_toast)
+            showMessage(R.string.toast_version_latest)
             return@launch
         }
 
         CoroutineScope(Dispatchers.Main).launch {
             MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.new_update_detect_title)
+                .setTitle(R.string.dialog_update_available_title)
                 .setMessage(
                     context.resources.getString(
-                        R.string.new_update_detect_message,
+                        R.string.dialog_update_available_message,
                         jChannelUpdateObject.getString("name"),
                         jChannelUpdateObject.getInt("code").toString()
                     ) + "\n" + context.resources.getString(
-                                R.string.new_update_detect_details,
+                                R.string.dialog_update_available_release_date_message,
                                 jChannelUpdateObject.getString("date"))
                 )
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->

@@ -209,7 +209,7 @@ class BrowserActivity : VWebViewActivity() {
             dialog.setCustomTitle(titleView)
                 .setView(messageView)
                 .setPositiveButton(android.R.string.ok, null)
-                .setNeutralButton(R.string.copy_title) { _: DialogInterface?, _: Int ->
+                .setNeutralButton(R.string.ssl_info_dialog_copy_website_title) { _: DialogInterface?, _: Int ->
                     copyClipboard(webview.title)
                 }
                 .create().show()
@@ -377,9 +377,9 @@ class BrowserActivity : VWebViewActivity() {
 
                 // TODO: Export as proper list
                 val arrayAdapter = StringResAdapter(this)
-                arrayAdapter.add(R.string.toolbar_expandable_shortcuts_menu_browser)
-                arrayAdapter.add(R.string.toolbar_expandable_shortcuts_menu_custom_tabs)
-                arrayAdapter.add(R.string.toolbar_expandable_shortcuts_menu_webapp)
+                arrayAdapter.add(R.string.shortcuts_menu_browser)
+                arrayAdapter.add(R.string.shortcuts_menu_custom_tabs)
+                arrayAdapter.add(R.string.shortcuts_menu_webapp)
                 dialog.setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
                     val launchIntent = Intent(this, LauncherActivity::class.java)
                         .setData(Uri.parse(webview.url))
@@ -497,11 +497,11 @@ class BrowserActivity : VWebViewActivity() {
                 val deskMode = binding.deskMode
 
                 message.property = arrayListOf(
-                    arrayOf(R.string.current_user_agent, webview.webSettings.userAgentString)
+                    arrayOf(R.string.viewing_mode_current_user_agent, webview.webSettings.userAgentString)
                 )
                 deskMode.isChecked = currentCustomUAWideView
                 val dialog = MaterialAlertDialogBuilder(this)
-                dialog.setTitle(R.string.customUA)
+                dialog.setTitle(R.string.viewing_mode_custom_user_agent)
                     .setView(mView)
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         val dataBundle = VWebView.UserAgentBundle()
@@ -528,18 +528,18 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.code -> {
                 if (webview.consoleLogging) {
-                    MaterialAlertDialogBuilder(this).setTitle(R.string.dialog_console_title)
+                    MaterialAlertDialogBuilder(this).setTitle(R.string.console_dialog_title)
                         .setMessage(webview.consoleMessages) // TODO: Make it dynamically update
                         .setPositiveButton(android.R.string.ok, null)
                         .setNeutralButton(R.string.clear) { _: DialogInterface?, _: Int ->
                             webview.consoleMessages.clear()
                         }
-                        .setNegativeButton(R.string.disable) { _: DialogInterface?, _: Int ->
+                        .setNegativeButton(R.string.console_logging_disable) { _: DialogInterface?, _: Int ->
                             webview.consoleLogging = false
                         }
                         .create().show()
                 } else {
-                    showMessage(R.string.toast_console_enabled)
+                    showMessage(R.string.console_toast_enabled)
                     webview.consoleLogging = true
                 }
             }

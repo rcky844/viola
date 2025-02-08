@@ -96,7 +96,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     nameToIdFunction = SearchEngineEntries::getIndexByName
                     stringPreference = SettingsKeys.searchCustomUrl
                     dialogTitleResId = R.string.search_engine
-                    dialogCustomMessageResId = R.string.custom_search_guide
+                    dialogCustomMessageResId = R.string.search_dialog_custom_message
                     customIndexEnabled = true
                     customIndex = SearchEngineEntries.customIndex
                 }
@@ -131,7 +131,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     nameToIdFunction = SearchEngineEntries::getIndexByName
                     stringPreference = SettingsKeys.suggestionsCustomUrl
                     dialogTitleResId = R.string.search_suggestions_title
-                    dialogCustomMessageResId = R.string.custom_search_guide
+                    dialogCustomMessageResId = R.string.search_dialog_custom_message
                     customIndexEnabled = true
                     customIndex = SearchEngineEntries.customIndex
                 }
@@ -147,7 +147,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     nameList = adBlockerHostsEntries
                     idPreference = SettingsKeys.adServerId
                     stringPreference = SettingsKeys.adServerUrl
-                    dialogTitleResId = R.string.pref_adBlockerSource_title
+                    dialogTitleResId = R.string.pref_ad_blocker_source_title
                     customIndexEnabled = true
                     customIndex = SearchEngineEntries.customIndex
                 }
@@ -169,7 +169,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 override fun onDialogClosed(positiveResult: Boolean) {
                     if (!positiveResult) return
                     WebStorage.getInstance().deleteAllData()
-                    settingsActivity.showMessage(R.string.cleared_toast)
+                    settingsActivity.showMessage(R.string.toast_cleared)
                 }
             }
         clear_cookies.materialDialogPreferenceListener =
@@ -188,14 +188,14 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                         cookieSyncMgr.stopSync()
                         cookieSyncMgr.sync()
                     }
-                    settingsActivity.showMessage(R.string.cleared_toast)
+                    settingsActivity.showMessage(R.string.toast_cleared)
                 }
             }
         reset_to_default.materialDialogPreferenceListener =
             object : MaterialDialogPreferenceListener {
                 override fun onDialogClosed(positiveResult: Boolean) {
                     if (!positiveResult) return
-                    settingsActivity.showMessage(R.string.reset_complete)
+                    settingsActivity.showMessage(R.string.toast_reset_complete)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         (settingsActivity.getSystemService(ACTIVITY_SERVICE)
                                 as ActivityManager).clearApplicationUserData()
@@ -216,7 +216,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     preference = theme
                     nameList = themeList
                     idPreference = SettingsKeys.themeId
-                    dialogTitleResId = R.string.pref_theme
+                    dialogTitleResId = R.string.pref_theme_title
                     dialogPositivePressed = {
                         darkModeCheck(settingsActivity)
                     }

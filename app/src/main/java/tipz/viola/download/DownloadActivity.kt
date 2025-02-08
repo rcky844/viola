@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.download
@@ -68,7 +68,7 @@ class DownloadActivity : BaseActivity() {
             listData.clear()
             CoroutineScope(Dispatchers.IO).launch { drohaClient.deleteAll() }
             itemsAdapter.notifyItemRangeRemoved(0, size)
-            showMessage(R.string.wiped_success)
+            showMessage(R.string.toast_cleared)
         }
 
         // Set-up RecyclerView
@@ -129,7 +129,7 @@ class DownloadActivity : BaseActivity() {
             val downloadActivity = mDownloadActivity.get()!!
 
             if (holder is EmptyViewHolder) {
-                holder.text.setText(R.string.no_downloads)
+                holder.text.setText(R.string.downloads_empty_message)
             } else if (holder is ListViewHolder) {
                 val data = listData[position]
 

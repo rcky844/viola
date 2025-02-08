@@ -54,17 +54,17 @@ class BuildInfoActivity : BaseActivity() {
             else " - $productBuildExtra"
 
         val textVersion = resources.getString(
-            R.string.buildinfo_dialog_version,
+            R.string.buildinfo_version,
             buildInfo.productName, buildInfo.productVersionCodename,
             buildInfo.productVersion, buildId,
             productBuildExtra
         )
         val textCopyright = resources.getString(
-            R.string.buildinfo_dialog_copyright,
+            R.string.buildinfo_copyright,
             buildInfo.productCopyrightYear
         )
         val textLicense = resources.getString(
-            R.string.buildinfo_dialog_license,
+            R.string.buildinfo_license,
             buildInfo.productLicenseDocument
         )
 
@@ -83,7 +83,7 @@ class BuildInfoActivity : BaseActivity() {
 
         // Set-up items
         websiteItem.apply {
-            text1.setText(R.string.pref_website)
+            text1.setText(R.string.pref_website_title)
             text2.setText(R.string.pref_website_summary)
             viewParent.setOnClickListener {
                 needLoad(ExportedUrls.websiteUrl)
@@ -91,23 +91,23 @@ class BuildInfoActivity : BaseActivity() {
         }
 
         feedbackItem.apply {
-            text1.setText(R.string.feedback)
-            text2.setText(R.string.feedback_desp)
+            text1.setText(R.string.pref_feedback_title)
+            text2.setText(R.string.pref_feedback_summary)
             viewParent.setOnClickListener {
                 needLoad(ExportedUrls.feedbackUrl)
             }
         }
 
         sourceCodeItem.apply {
-            text1.setText(R.string.source_code)
-            text2.setText(R.string.source_code_desp)
+            text1.setText(R.string.pref_source_code_title)
+            text2.setText(R.string.pref_source_code_summary)
             viewParent.setOnClickListener {
                 needLoad(ExportedUrls.sourceUrl)
             }
         }
 
         buildNumberItem.apply {
-            text1.setText(R.string.item_build_number)
+            text1.setText(R.string.buildinfo_pref_build_number_title)
             text2.text = BuildInfo().getProductBuildTag() ?: ""
         }
     }
