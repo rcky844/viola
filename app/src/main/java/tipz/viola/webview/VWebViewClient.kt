@@ -80,7 +80,7 @@ open class VWebViewClient(
 
         val usernameEditText = binding.usernameEditText
         val passwordEditText = binding.passwordEditText
-        binding.message.text = context.getString(R.string.dialog_auth_detail, vWebView.url)
+        binding.message.text = context.getString(R.string.dialog_auth_message, vWebView.url)
 
         MaterialAlertDialogBuilder(context)
             .setTitle(R.string.dialog_auth_title)
@@ -103,14 +103,14 @@ open class VWebViewClient(
             SslError.SSL_IDMISMATCH -> R.string.ssl_certificate_idmismatch
             SslError.SSL_NOTYETVALID -> R.string.ssl_certificate_notyetvalid
             SslError.SSL_UNTRUSTED -> R.string.ssl_certificate_untrusted
-            ERROR_FAILED_SSL_HANDSHAKE -> R.string.ssl_failed_handshake
+            ERROR_FAILED_SSL_HANDSHAKE -> R.string.dialog_ssl_failed_handshake_title
             else -> R.string.ssl_certificate_unknown
         }
 
         dialog.setTitle(R.string.ssl_certificate_error_dialog_title)
             .setMessage(
                 context.resources.getString(
-                    R.string.ssl_certificate_error_dialog_content,
+                    R.string.ssl_certificate_error_dialog_message,
                     context.resources.getString(stringResId)
                 )
             )

@@ -156,7 +156,7 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
         message: String,
         result: JsResult
     ): Boolean {
-        jsDialog(url, message, null, result, R.string.js_page_says)
+        jsDialog(url, message, null, result, R.string.dialog_js_title)
         return true
     }
 
@@ -166,7 +166,7 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
         message: String,
         result: JsResult
     ): Boolean {
-        jsDialog(url, message, null, result, R.string.js_leave_page_prompt)
+        jsDialog(url, message, null, result, R.string.dialog_js_leave_page_title)
         return true
     }
 
@@ -176,7 +176,7 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
         message: String,
         result: JsResult
     ): Boolean {
-        jsDialog(url, message, null, result, R.string.js_page_says)
+        jsDialog(url, message, null, result, R.string.dialog_js_title)
         return true
     }
 
@@ -187,7 +187,7 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
         defaultValue: String,
         result: JsPromptResult
     ): Boolean {
-        jsDialog(url, message, defaultValue, result, R.string.js_page_says)
+        jsDialog(url, message, defaultValue, result, R.string.dialog_js_title)
         return true
     }
 

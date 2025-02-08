@@ -71,8 +71,8 @@ class DownloadClient(context: Application) {
             if (it.showDialog)
                 CoroutineScope(Dispatchers.Main).launch {
                     MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
-                        .setTitle(R.string.download_title)
-                        .setMessage(context.getString(R.string.download_message, it.filename))
+                        .setTitle(R.string.downloads_dialog_title)
+                        .setMessage(context.getString(R.string.downloads_dialog_message, it.filename))
                         .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                             provider.startDownload(it)
                         }

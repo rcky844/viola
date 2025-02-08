@@ -21,7 +21,7 @@
             android:id="@+id/titleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/favMenuTitle" />
+            android:hint="@string/favorites_dialog_title" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -34,7 +34,7 @@
             android:id="@+id/favUrlEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/favMenuLink" />
+            android:hint="@string/favorites_dialog_link" />
 
     </com.google.android.material.textfield.TextInputLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

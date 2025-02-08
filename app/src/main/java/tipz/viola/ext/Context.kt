@@ -32,7 +32,7 @@ fun Context.shareUrl(url: String?): Boolean {
     val i = Intent(Intent.ACTION_SEND)
     i.type = "text/plain"
     i.putExtra(Intent.EXTRA_TEXT, url)
-    startActivity(Intent.createChooser(i, resources.getString(R.string.share_url_dialog_title)))
+    startActivity(Intent.createChooser(i, resources.getString(R.string.dialog_share_title)))
     return true
 }
 
@@ -52,7 +52,7 @@ fun Context.copyClipboard(s: String?) {
     // Starting in Android 13, the system displays a new visual confirmation when
     // content is added to the clipboard, effectively rendering this toast pointless.
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-        showMessage(R.string.copied_clipboard)
+        showMessage(R.string.toast_copied_clipboard)
 }
 
 fun Context.setImmersiveMode(enable: Boolean) {

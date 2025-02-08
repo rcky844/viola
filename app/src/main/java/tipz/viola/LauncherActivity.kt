@@ -27,7 +27,7 @@ class LauncherActivity : AppCompatActivity() {
 
         // Disable app if device has no WebView
         if (!webViewEnabled()) {
-            showMessage(R.string.no_webview)
+            showMessage(R.string.toast_no_webview)
             exitProcess(0)
         }
 
