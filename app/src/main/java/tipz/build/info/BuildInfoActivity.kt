@@ -24,7 +24,7 @@ class BuildInfoActivity : BaseActivity() {
         setContentView(view)
 
         // Setup toolbar
-        val toolbar = binding.materialToolbar
+        val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
