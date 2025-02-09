@@ -28,7 +28,7 @@ object UrlUtils {
 
     fun isUriSupported(uri: String): Boolean {
         return uri.matches(uriRegex)
-                && supportedUriScheme.any { uri.matches("$it:(//)?.*".toRegex()) }
+                || supportedUriScheme.any { uri.matches("$it:(//)?.*".toRegex()) }
     }
 
     fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String) =
