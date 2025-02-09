@@ -90,8 +90,7 @@ class ExpandableToolbarView(
 
     fun init() {
         /* Initialize RecyclerView */
-        recyclerView.adapter = ToolbarItemsAdapter(this,
-            toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
+        recyclerView.adapter = ToolbarItemsAdapter(this, toolsBarExpandableItemList)
     }
 
     fun expandToolBar() {
@@ -105,8 +104,7 @@ class ExpandableToolbarView(
 
     class ToolbarItemsAdapter(
         private val expandableToolbarView: ExpandableToolbarView,
-        private val itemsList: List<Int>,
-        private val descriptionList: List<Int>
+        private val itemsList: ArrayList<Array<Int>>,
     ) : Adapter<ToolbarItemsAdapter.ViewHolder>() {
         private lateinit var binding: TemplateIconDescriptionItemBinding
 
@@ -126,17 +124,17 @@ class ExpandableToolbarView(
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.itemBox.setOnClickListener {
                 val closeToolBar = expandableToolbarView.activity
-                    .itemSelected(holder.imageView, itemsList[position])
+                    .itemSelected(holder.imageView, itemsList[position][0])
                 if (closeToolBar) expandableToolbarView.expandToolBar()
             }
             holder.itemBox.setOnLongClickListener {
                 expandableToolbarView.activity
-                    .itemLongSelected(holder.imageView, itemsList[position])
+                    .itemLongSelected(holder.imageView, itemsList[position][0])
                 true
             }
-            holder.imageView.setImageResource(itemsList[position])
+            holder.imageView.setImageResource(itemsList[position][0])
             holder.textView.text =
-                expandableToolbarView.activity.resources.getString(descriptionList[position])
+                expandableToolbarView.activity.resources.getString(itemsList[position][1])
         }
 
         override fun getItemCount(): Int {
@@ -145,34 +143,20 @@ class ExpandableToolbarView(
     }
 
     companion object {
-        private val toolsBarExpandableItemList = listOf(
-            R.drawable.new_tab,
-            R.drawable.favorites,
-            R.drawable.history,
-            R.drawable.smartphone,
-            R.drawable.favorites_add,
-            R.drawable.download,
-            R.drawable.fullscreen,
-            R.drawable.app_shortcut,
-            R.drawable.settings,
-            R.drawable.code,
-            R.drawable.print,
-            R.drawable.close
-        )
-
-        private val toolsBarExpandableDescriptionList = listOf(
-            R.string.toolbar_expandable_new_tab,
-            R.string.toolbar_expandable_favorites,
-            R.string.toolbar_expandable_history,
-            R.string.toolbar_expandable_viewport,
-            R.string.toolbar_expandable_favorites_add,
-            R.string.toolbar_expandable_downloads,
-            R.string.toolbar_expandable_fullscreen,
-            R.string.toolbar_expandable_app_shortcut,
-            R.string.toolbar_expandable_settings,
-            R.string.toolbar_expandable_view_page_source,
-            R.string.toolbar_expandable_print,
-            R.string.toolbar_expandable_close
-        )
+        private val toolsBarExpandableItemList: ArrayList<Array<Int>> =
+            arrayListOf(
+                arrayOf(R.drawable.new_tab, R.string.toolbar_expandable_new_tab),
+                arrayOf(R.drawable.favorites, R.string.toolbar_expandable_favorites),
+                arrayOf(R.drawable.history, R.string.toolbar_expandable_history),
+                arrayOf(R.drawable.smartphone, R.string.toolbar_expandable_viewport),
+                arrayOf(R.drawable.favorites_add, R.string.toolbar_expandable_favorites_add),
+                arrayOf(R.drawable.download, R.string.toolbar_expandable_downloads),
+                arrayOf(R.drawable.fullscreen, R.string.toolbar_expandable_fullscreen),
+                arrayOf(R.drawable.app_shortcut, R.string.toolbar_expandable_app_shortcut),
+                arrayOf(R.drawable.settings, R.string.toolbar_expandable_settings),
+                arrayOf(R.drawable.code, R.string.toolbar_expandable_view_page_source),
+                arrayOf(R.drawable.print, R.string.toolbar_expandable_print),
+                arrayOf(R.drawable.close, R.string.toolbar_expandable_close)
+            )
     }
 }
