@@ -21,9 +21,10 @@ import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.transition.Fade
 import androidx.transition.Slide
-import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -95,10 +96,16 @@ class ExpandableToolbarView(
 
     fun expandToolBar() {
         val viewVisible: Boolean = visibility == View.VISIBLE
-        val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration = resources.getInteger(R.integer.anim_expandable_speed).toLong()
-        transition.addTarget(this)
-        TransitionManager.beginDelayedTransition(this, transition)
+        val transitionSet = TransitionSet()
+            .addTransition(Slide()
+                .addTarget(this)
+                .setDuration(resources.getInteger(R.integer.anim_toolbar_expand_slide_speed).toLong())
+            )
+            .addTransition(Fade()
+                .addTarget(this)
+                .setDuration(resources.getInteger(R.integer.anim_toolbar_expand_fade_speed).toLong())
+            )
+        TransitionManager.beginDelayedTransition(this, transitionSet)
         visibility = if (viewVisible) View.GONE else View.VISIBLE
     }
 
