@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -6,7 +6,6 @@ package tipz.viola.webview.activity.components
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
-import android.provider.Settings
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -98,11 +97,7 @@ class ExpandableToolbarView(
     fun expandToolBar() {
         val viewVisible: Boolean = visibility == View.VISIBLE
         val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration = resources.getInteger(R.integer.anim_expandable_speed) *
-                (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    Settings.Global.getFloat(context.contentResolver,
-                        Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)
-                else 1.0f).toLong()
+        transition.duration = resources.getInteger(R.integer.anim_expandable_speed).toLong()
         transition.addTarget(this)
         TransitionManager.beginDelayedTransition(this, transition)
         visibility = if (viewVisible) View.GONE else View.VISIBLE
