@@ -483,12 +483,7 @@ class BrowserActivity : VWebViewActivity() {
     fun expandToolBar() {
         val viewVisible: Boolean = toolsBarExtendableBackground.visibility == View.VISIBLE
         val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration =
-            (resources.getInteger(R.integer.anim_expandable_speed) * Settings.Global.getFloat(
-                contentResolver,
-                Settings.Global.ANIMATOR_DURATION_SCALE,
-                1.0f
-            )).toLong()
+        transition.duration = resources.getInteger(R.integer.anim_expandable_speed).toLong()
         transition.addTarget(R.id.toolsBarExtendableBackground)
         TransitionManager.beginDelayedTransition(toolsBarExtendableBackground, transition)
         toolsBarExtendableBackground.visibility = if (viewVisible) View.GONE else View.VISIBLE
