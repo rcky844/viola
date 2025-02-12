@@ -119,7 +119,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                     context.resources.getString(
                         R.string.dialog_update_available_message,
                         jChannelUpdateObject.getString("name"),
-                        jChannelUpdateObject.getInt("code").toString()
+                        if (remoteVerRev > 0) "$remoteVerCode.$remoteVerRev" else remoteVerCode.toString()
                     ) + "\n" + context.resources.getString(
                                 R.string.dialog_update_available_release_date_message,
                                 jChannelUpdateObject.getString("date"))
