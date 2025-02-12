@@ -314,11 +314,13 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         updateChannel.summary = settingsPreference.getString(SettingsKeys.updateChannelName)
         startPageWallpaper.summary = resources.getString(
             R.string.pref_start_page_wallpaper_summary,
-            DocumentFile.fromSingleUri(
-                settingsActivity,
-                Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
-            )?.name!!.ifEmpty {
+            if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
                 resources.getString(R.string.default_res)
+            } else {
+                DocumentFile.fromSingleUri(
+                    settingsActivity,
+                    Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+                )?.name
             }
         )
         about.summary =
