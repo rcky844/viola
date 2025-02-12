@@ -68,6 +68,10 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
             val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
             settingsActivity.contentResolver.takePersistableUriPermission(uri, flag)
             settingsPreference.setString(SettingsKeys.startPageWallpaper, uri.toString())
+            startPageWallpaper.summary = resources.getString(
+                R.string.pref_start_page_wallpaper_summary,
+                DocumentFile.fromSingleUri(settingsActivity, uri)?.name
+            )
         }
 
     override fun onAttach(context: Context) {
@@ -308,24 +312,15 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
             adBlockerHostsEntries[settingsPreference.getInt(SettingsKeys.adServerId)]
         themePicker.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
         updateChannel.summary = settingsPreference.getString(SettingsKeys.updateChannelName)
-        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
-            startPageWallpaper.setSummary(
-                resources.getString(
-                    R.string.pref_start_page_wallpaper_summary,
-                    resources.getString(R.string.default_res)
-                )
-            )
-        } else {
-            startPageWallpaper.setSummary(
-                resources.getString(
-                    R.string.pref_start_page_wallpaper_summary,
-                    DocumentFile.fromSingleUri(
-                        settingsActivity,
-                        Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
-                    )?.name
-                )
-            )
-        }
+        startPageWallpaper.summary = resources.getString(
+            R.string.pref_start_page_wallpaper_summary,
+            DocumentFile.fromSingleUri(
+                settingsActivity,
+                Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+            )?.name!!.ifEmpty {
+                resources.getString(R.string.default_res)
+            }
+        )
         about.summary =
             resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME
     }

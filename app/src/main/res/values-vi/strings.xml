@@ -124,7 +124,7 @@
     <string name="toolbar_expandable_print">ấn loát</string>
     <string name="toolbar_expandable_close">Đóng ứng dụng</string>
     <string name="pref_start_page_wallpaper_title">Chọn hình nền cho trang bắt đầu</string>
-    <string name="pref_start_page_wallpaper_summary">Hiện tại: %s (Nhấp để đặt lại, làm mới để cập nhật)</string>
+    <string name="pref_start_page_wallpaper_summary">Hiện tại: %s</string>
     <string name="default_res">Mặc định</string>
     <string name="start_page">Trang bắt đầu</string>
     <string name="hit_test_copy_link_text">Sao chép văn bản liên kết</string>

@@ -124,7 +124,7 @@
     <string name="toolbar_expandable_print">Drucken</string>
     <string name="toolbar_expandable_close">App schließen</string>
     <string name="pref_start_page_wallpaper_title">Wählen Sie ein Hintergrundbild für die Startseite aus</string>
-    <string name="pref_start_page_wallpaper_summary">Aktuell: %s (Zum Zurücksetzen klicken, zum Aktualisieren aktualisieren)</string>
+    <string name="pref_start_page_wallpaper_summary">Aktuell: %s</string>
     <string name="default_res">Standard</string>
     <string name="start_page">Startseite</string>
     <string name="hit_test_copy_link_text">Linktext kopieren</string>

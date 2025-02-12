@@ -124,7 +124,7 @@
     <string name="toolbar_expandable_print">Yazdır</string>
     <string name="toolbar_expandable_close">Uygulamayı kapat</string>
     <string name="pref_start_page_wallpaper_title">Başlangıç sayfası için bir duvar kağıdı seçin</string>
-    <string name="pref_start_page_wallpaper_summary">Güncel: %s (Sıfırlamak için tıklayın, güncellemek için yenileyin)</string>
+    <string name="pref_start_page_wallpaper_summary">Güncel: %s</string>
     <string name="default_res">Varsayılan</string>
     <string name="start_page">Başlangıç sayfası</string>
     <string name="hit_test_copy_link_text">Bağlantı metnini kopyala</string>
