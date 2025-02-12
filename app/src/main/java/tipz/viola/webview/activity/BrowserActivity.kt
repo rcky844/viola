@@ -61,6 +61,7 @@ import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.activity.components.AddressBarView
 import tipz.viola.webview.activity.components.ExpandableToolbarView
+import tipz.viola.webview.activity.components.FavIconView
 import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
 import tipz.viola.webview.activity.components.LocalNtpPageView
 import tipz.viola.webview.activity.components.ToolbarView
@@ -83,6 +84,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var localNtpPageView: LocalNtpPageView
     private lateinit var toolbarView: ToolbarView
     private lateinit var expandableToolbarView: ExpandableToolbarView
+    private lateinit var favicon: FavIconView
     private lateinit var addressBar: AddressBarView
     private lateinit var urlEditText: MaterialAutoCompleteTextView
     private lateinit var sslLock: AppCompatImageView
@@ -111,13 +113,12 @@ class BrowserActivity : VWebViewActivity() {
         toolbarView = binding.toolbarView
         upRightFab = binding.upRightFab
         addressBar = binding.addressBar
+        favicon = binding.favicon
         urlEditText = addressBar.textView
         sslLock = addressBar.sslLock
         progressBar = binding.webviewProgressBar
-        faviconProgressBar = binding.faviconProgressBar
         swipeRefreshLayout = binding.layoutWebview.swipe
         webview = binding.layoutWebview.webview
-        favicon = binding.favicon
         fullscreenFab = binding.fullscreenFab
 
         // Broha Clients
@@ -149,7 +150,7 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup favicon
-        favicon?.setOnClickListener {
+        favicon.setOnClickListener {
             // Link up with SSL Lock dialog instead
             sslLock.performClick()
         }
@@ -260,6 +261,7 @@ class BrowserActivity : VWebViewActivity() {
 
         // Set-up local new tab page
         localNtpPageView.setRealSearchBar(addressBar)
+        localNtpPageView.setInvolvedView(appbar)
 
         // Finally, load homepage
         val dataUri = intent.data
@@ -278,6 +280,7 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun doSettingsCheck() {
         super.doSettingsCheck()
+        favicon.updateIsDisplayed()
         addressBar.doSettingsCheck()
 
         val reverseAddressBar = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
@@ -386,7 +389,7 @@ class BrowserActivity : VWebViewActivity() {
                         .setAction(Intent.ACTION_VIEW)
                         .putExtra(LauncherActivity.EXTRA_SHORTCUT_TYPE, which)
 
-                    val drawable = favicon!!.drawable
+                    val drawable = favicon.imageView.drawable
 
                     val icon = Bitmap.createBitmap(
                         drawable.intrinsicWidth,
@@ -433,7 +436,7 @@ class BrowserActivity : VWebViewActivity() {
                 val url = webview.url
                 if (url.isBlank() || PrivilegedPages.isPrivilegedPage(url)) return false
 
-                val icon = favicon!!.drawable
+                val icon = favicon.imageView.drawable
                 val title = webview.title
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -598,14 +601,20 @@ class BrowserActivity : VWebViewActivity() {
         sslLock.isClickable = true
     }
 
+    override fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {
+        super.onFaviconUpdated(icon, checkInstance)
+        if (checkInstance && favicon.imageView.drawable is BitmapDrawable) return
+        if (icon == null) favicon.setImageResource(R.drawable.default_favicon)
+        else favicon.setImageBitmap(icon)
+    }
+
+    override fun onFaviconProgressUpdated(isLoading: Boolean) {
+        favicon.isLoading = isLoading
+    }
+
     fun checkHomePageVisibility() {
         val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
-        addressBar.visibility = if (isHomePage) View.GONE else View.VISIBLE
-        webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
-
-        // TODO: Move this somewhere else
-        if (isHomePage)
-            localNtpPageView.fakeSearchBar.visibility = View.VISIBLE
+        localNtpPageView.updateVisibility(isHomePage)
     }
 }

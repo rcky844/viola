@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -34,7 +34,6 @@ class AddressBarView(
 
     init {
         val actionBarHeight = context.resources.getDimension(R.dimen.actionbar_widget_height).toInt()
-        visibility = View.GONE // TODO: Remove hack
 
         // Set-up text view
         textView.apply {

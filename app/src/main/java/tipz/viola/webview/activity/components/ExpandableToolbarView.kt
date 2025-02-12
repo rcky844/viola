@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -6,7 +6,6 @@ package tipz.viola.webview.activity.components
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
-import android.provider.Settings
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -22,9 +21,10 @@ import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.transition.Fade
 import androidx.transition.Slide
-import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -91,27 +91,27 @@ class ExpandableToolbarView(
 
     fun init() {
         /* Initialize RecyclerView */
-        recyclerView.adapter = ToolbarItemsAdapter(this,
-            toolsBarExpandableItemList, toolsBarExpandableDescriptionList)
+        recyclerView.adapter = ToolbarItemsAdapter(this, toolsBarExpandableItemList)
     }
 
     fun expandToolBar() {
         val viewVisible: Boolean = visibility == View.VISIBLE
-        val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration = resources.getInteger(R.integer.anim_expandable_speed) *
-                (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    Settings.Global.getFloat(context.contentResolver,
-                        Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f)
-                else 1.0f).toLong()
-        transition.addTarget(this)
-        TransitionManager.beginDelayedTransition(this, transition)
+        val transitionSet = TransitionSet()
+            .addTransition(Slide()
+                .addTarget(this)
+                .setDuration(resources.getInteger(R.integer.anim_toolbar_expand_slide_speed).toLong())
+            )
+            .addTransition(Fade()
+                .addTarget(this)
+                .setDuration(resources.getInteger(R.integer.anim_toolbar_expand_fade_speed).toLong())
+            )
+        TransitionManager.beginDelayedTransition(this, transitionSet)
         visibility = if (viewVisible) View.GONE else View.VISIBLE
     }
 
     class ToolbarItemsAdapter(
         private val expandableToolbarView: ExpandableToolbarView,
-        private val itemsList: List<Int>,
-        private val descriptionList: List<Int>
+        private val itemsList: ArrayList<Array<Int>>,
     ) : Adapter<ToolbarItemsAdapter.ViewHolder>() {
         private lateinit var binding: TemplateIconDescriptionItemBinding
 
@@ -131,17 +131,17 @@ class ExpandableToolbarView(
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.itemBox.setOnClickListener {
                 val closeToolBar = expandableToolbarView.activity
-                    .itemSelected(holder.imageView, itemsList[position])
+                    .itemSelected(holder.imageView, itemsList[position][0])
                 if (closeToolBar) expandableToolbarView.expandToolBar()
             }
             holder.itemBox.setOnLongClickListener {
                 expandableToolbarView.activity
-                    .itemLongSelected(holder.imageView, itemsList[position])
+                    .itemLongSelected(holder.imageView, itemsList[position][0])
                 true
             }
-            holder.imageView.setImageResource(itemsList[position])
+            holder.imageView.setImageResource(itemsList[position][0])
             holder.textView.text =
-                expandableToolbarView.activity.resources.getString(descriptionList[position])
+                expandableToolbarView.activity.resources.getString(itemsList[position][1])
         }
 
         override fun getItemCount(): Int {
@@ -150,34 +150,20 @@ class ExpandableToolbarView(
     }
 
     companion object {
-        private val toolsBarExpandableItemList = listOf(
-            R.drawable.new_tab,
-            R.drawable.favorites,
-            R.drawable.history,
-            R.drawable.smartphone,
-            R.drawable.favorites_add,
-            R.drawable.download,
-            R.drawable.fullscreen,
-            R.drawable.app_shortcut,
-            R.drawable.settings,
-            R.drawable.code,
-            R.drawable.print,
-            R.drawable.close
-        )
-
-        private val toolsBarExpandableDescriptionList = listOf(
-            R.string.toolbar_expandable_new_tab,
-            R.string.toolbar_expandable_favorites,
-            R.string.toolbar_expandable_history,
-            R.string.toolbar_expandable_viewport,
-            R.string.toolbar_expandable_favorites_add,
-            R.string.toolbar_expandable_downloads,
-            R.string.toolbar_expandable_fullscreen,
-            R.string.toolbar_expandable_app_shortcut,
-            R.string.toolbar_expandable_settings,
-            R.string.toolbar_expandable_view_page_source,
-            R.string.toolbar_expandable_print,
-            R.string.toolbar_expandable_close
-        )
+        private val toolsBarExpandableItemList: ArrayList<Array<Int>> =
+            arrayListOf(
+                arrayOf(R.drawable.new_tab, R.string.toolbar_expandable_new_tab),
+                arrayOf(R.drawable.favorites, R.string.toolbar_expandable_favorites),
+                arrayOf(R.drawable.history, R.string.toolbar_expandable_history),
+                arrayOf(R.drawable.smartphone, R.string.toolbar_expandable_viewport),
+                arrayOf(R.drawable.favorites_add, R.string.toolbar_expandable_favorites_add),
+                arrayOf(R.drawable.download, R.string.toolbar_expandable_downloads),
+                arrayOf(R.drawable.fullscreen, R.string.toolbar_expandable_fullscreen),
+                arrayOf(R.drawable.app_shortcut, R.string.toolbar_expandable_app_shortcut),
+                arrayOf(R.drawable.settings, R.string.toolbar_expandable_settings),
+                arrayOf(R.drawable.code, R.string.toolbar_expandable_view_page_source),
+                arrayOf(R.drawable.print, R.string.toolbar_expandable_print),
+                arrayOf(R.drawable.close, R.string.toolbar_expandable_close)
+            )
     }
 }

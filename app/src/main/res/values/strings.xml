@@ -226,7 +226,7 @@
     <!-- Settings: Start page wallpaper title -->
     <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
     <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">Current: %s (Click to reset, refresh to update)</string>
+    <string name="pref_start_page_wallpaper_summary">Current: %s</string>
     <!-- Settings: Show favicon title -->
     <string name="pref_show_favicon">Show favicon</string>
     <!-- Settings: Show favicon summary -->

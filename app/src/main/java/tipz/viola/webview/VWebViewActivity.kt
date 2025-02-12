@@ -5,18 +5,14 @@ package tipz.viola.webview
 
 import android.app.ActivityManager.TaskDescription
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.RelativeLayout
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.CallSuper
-import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tipz.viola.Application
 import tipz.viola.R
@@ -30,8 +26,6 @@ open class VWebViewActivity : BaseActivity() {
     lateinit var settingsPreference: SettingsSharedPreference
     lateinit var swipeRefreshLayout: VSwipeRefreshLayout
     lateinit var webview: VWebView
-    var favicon: AppCompatImageView? = null
-    var faviconProgressBar: CircularProgressIndicator? = null
     lateinit var progressBar: LinearProgressIndicator
     internal lateinit var appbar: AppBarLayout
     internal lateinit var webviewContainer: RelativeLayout
@@ -52,8 +46,6 @@ open class VWebViewActivity : BaseActivity() {
         // Swipe to Refresh
         swipeRefreshLayout.initialize(webview)
 
-        // Setup favicon
-        faviconProgressBar?.setOnClickListener { favicon?.performClick() }
         super.onStart()
     }
 
@@ -93,19 +85,6 @@ open class VWebViewActivity : BaseActivity() {
             }
         }
 
-    @Suppress("DEPRECATION")
-    override fun doSettingsCheck() {
-        super.doSettingsCheck()
-
-        // Favicon
-        if (favicon != null) {
-            favicon!!.visibility =
-                if (settingsPreference.getIntBool(SettingsKeys.showFavicon)) View.VISIBLE else View.GONE
-            if (settingsPreference.getIntBool(SettingsKeys.showFavicon) && faviconProgressBar?.visibility == View.VISIBLE)
-                favicon!!.visibility = View.GONE
-        }
-    }
-
     open fun onUrlUpdated(url: String?) {}
     open fun onUrlUpdated(url: String?, position: Int) {}
 
@@ -128,27 +107,13 @@ open class VWebViewActivity : BaseActivity() {
     @Suppress("DEPRECATION")
     @CallSuper
     open fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {
-        if (checkInstance && favicon?.drawable is BitmapDrawable) return
-        if (icon == null) favicon?.setImageResource(R.drawable.default_favicon) else favicon?.setImageBitmap(
-            icon
-        )
         if (settingsPreference.getIntBool(SettingsKeys.updateRecentsIcon) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val description = TaskDescription(webview.title, icon)
             setTaskDescription(description)
         }
     }
 
-    @CallSuper
-    open fun onFaviconProgressUpdated(isLoading: Boolean) {
-        if (!settingsPreference.getIntBool(SettingsKeys.showFavicon)) return
-        if (isLoading) {
-            favicon?.visibility = View.GONE
-            faviconProgressBar?.visibility = View.VISIBLE
-        } else {
-            favicon?.visibility = View.VISIBLE
-            faviconProgressBar?.visibility = View.GONE
-        }
-    }
+    open fun onFaviconProgressUpdated(isLoading: Boolean) {}
 
     @CallSuper
     open fun onPageLoadProgressChanged(progress: Int) {
