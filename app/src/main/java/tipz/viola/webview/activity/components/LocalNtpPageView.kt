@@ -5,6 +5,7 @@ package tipz.viola.webview.activity.components
 
 import android.content.Context
 import android.graphics.Typeface
+import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -60,6 +61,7 @@ class LocalNtpPageView(
             setHint(R.string.address_bar_hint)
             setBackgroundResource(R.drawable.round_corner_elevated)
             isSingleLine = true
+            inputType = InputType.TYPE_NULL
         }
         addView(fakeSearchBar)
         fakeSearchBar.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
