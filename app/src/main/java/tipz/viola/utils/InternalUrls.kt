@@ -24,10 +24,10 @@ object InternalUrls {
     const val violaStartUrl = violaPrefix + "start"
 
     // Project URLs
-    const val sourceUrl = "https://gitlab.com/TipzTeam/viola/"
+    const val sourceUrl = "https://codeberg.org/TipzTeam/viola/"
     val changelogUrl = "https://rcky844.github.io/viola/changelogs/build" +
             BuildConfig.VERSION_CODE + ".html"
-    const val feedbackUrl = "$sourceUrl-/issues"
+    const val feedbackUrl = "$sourceUrl/issues"
     const val updateJSONUrl = "https://rcky844.github.io/viola/updates.json"
 
     // Internal assets
