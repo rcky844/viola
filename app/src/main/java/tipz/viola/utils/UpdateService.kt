@@ -103,8 +103,9 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
 
         // Process the update channel object
         val jChannelUpdateObject = jChannelObject.getJSONObject(jChannelDataString)
-        val remoteVerCode = jChannelUpdateObject.getInt("code")
-        val remoteVerRev = jChannelUpdateObject.getInt("revision")
+
+        val remoteVerCode = jChannelUpdateObject.optInt("code", 0)
+        val remoteVerRev = jChannelUpdateObject.optInt("revision", 0)
         if (BuildConfig.VERSION_CODE > remoteVerCode
             || (BuildConfig.VERSION_CODE == remoteVerCode
                     && BuildConfig.VERSION_BUILD_REVISION >= remoteVerRev)) {
