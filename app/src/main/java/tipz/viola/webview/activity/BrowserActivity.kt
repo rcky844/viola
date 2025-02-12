@@ -261,6 +261,7 @@ class BrowserActivity : VWebViewActivity() {
 
         // Set-up local new tab page
         localNtpPageView.setRealSearchBar(addressBar)
+        localNtpPageView.setInvolvedView(appbar)
 
         // Finally, load homepage
         val dataUri = intent.data
@@ -614,7 +615,7 @@ class BrowserActivity : VWebViewActivity() {
     fun checkHomePageVisibility() {
         val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
-        addressBar.visibility = if (isHomePage) View.GONE else View.VISIBLE
+        appbar.visibility = if (isHomePage) View.GONE else View.VISIBLE
         webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
 
         // TODO: Move this somewhere else

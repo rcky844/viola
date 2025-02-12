@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
@@ -27,6 +28,7 @@ class LocalNtpPageView(
 ) : ConstraintLayout(context, attrs) {
     private lateinit var addressBar: AddressBarView
     private lateinit var realSearchBar: MaterialAutoCompleteTextView
+    private lateinit var involvedView: View
     var fakeSearchBar: AppCompatAutoCompleteTextView
     private val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
     private var set = ConstraintSet()
@@ -62,7 +64,8 @@ class LocalNtpPageView(
         addView(fakeSearchBar)
         fakeSearchBar.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                addressBar.visibility = VISIBLE
+                if (this::involvedView.isInitialized) involvedView.visibility = VISIBLE
+                else addressBar.visibility = VISIBLE
                 fakeSearchBar.visibility = GONE
                 realSearchBar.requestFocus()
                 imm.showSoftInput(realSearchBar, InputMethodManager.SHOW_IMPLICIT)
@@ -87,7 +90,8 @@ class LocalNtpPageView(
         // Allow page to show up again on clicked
         setOnClickListener {
             if (realSearchBar.isFocused) {
-                addressBar.visibility = GONE
+                if (this::involvedView.isInitialized) involvedView.visibility = GONE
+                else addressBar.visibility = GONE
                 imm.hideSoftInputFromWindow(realSearchBar.windowToken, 0)
                 realSearchBar.clearFocus()
             }
@@ -98,5 +102,9 @@ class LocalNtpPageView(
     fun setRealSearchBar(addressBar: AddressBarView) {
         this.addressBar = addressBar
         this.realSearchBar = addressBar.textView
+    }
+
+    fun setInvolvedView(involvedView: View) {
+        this.involvedView = involvedView
     }
 }
