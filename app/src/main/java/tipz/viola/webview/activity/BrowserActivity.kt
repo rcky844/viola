@@ -614,6 +614,7 @@ class BrowserActivity : VWebViewActivity() {
 
     fun checkHomePageVisibility() {
         val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
+        webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
         localNtpPageView.updateVisibility(isHomePage)
     }
