@@ -46,6 +46,21 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
     private lateinit var settingsActivity: SettingsActivity
     private lateinit var settingsPreference: SettingsSharedPreference
 
+    /* Preferences */
+    private lateinit var searchEngine: Preference
+    private lateinit var homePage: Preference
+    private lateinit var searchSuggestions: Preference
+    private lateinit var adBlockerSource: Preference
+    private lateinit var adBlockerDownload: Preference
+    private lateinit var clearCache: MaterialDialogPreference
+    private lateinit var clearCookies: MaterialDialogPreference
+    private lateinit var resetToDefault: MaterialDialogPreference
+    private lateinit var themePicker: Preference
+    private lateinit var startPageWallpaper: Preference
+    private lateinit var checkUpdates: Preference
+    private lateinit var updateChannel: Preference
+    private lateinit var about: Preference
+
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest> =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -65,6 +80,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
     @SuppressLint("UnspecifiedRegisterReceiverFlag") // For older SDKs
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_main, rootKey)
+
         /* Lists */
         val searchHomePageList =
             settingsActivity.resources.getStringArray(R.array.search_entries)
@@ -73,24 +89,24 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         val themeList = settingsActivity.resources.getStringArray(R.array.themes)
 
         /* Settings */
-        val search_engine = findPreference<Preference>("search_engine")!!
-        val homepage = findPreference<Preference>("homepage")!!
-        val search_suggestions = findPreference<Preference>("search_suggestions")!!
-        val adBlockerSource = findPreference<Preference>("adBlockerSource")!!
-        val adBlockerDownload = findPreference<Preference>("adBlockerDownload")!!
-        val clear_cache = findPreference<MaterialDialogPreference>("clear_cache")!!
-        val clear_cookies = findPreference<MaterialDialogPreference>("clear_cookies")!!
-        val reset_to_default = findPreference<MaterialDialogPreference>("reset_to_default")!!
-        val theme = findPreference<Preference>("theme")!!
-        val start_page_wallpaper = findPreference<Preference>("start_page_wallpaper")!!
-        val check_for_updates = findPreference<Preference>("check_for_updates")!!
-        val update_channel = findPreference<Preference>("update_channel")!!
-        val about = findPreference<Preference>("about")!!
+        searchEngine = findPreference("search_engine")!!
+        homePage = findPreference("homepage")!!
+        searchSuggestions = findPreference("search_suggestions")!!
+        adBlockerSource = findPreference("adBlockerSource")!!
+        adBlockerDownload = findPreference("adBlockerDownload")!!
+        clearCache = findPreference("clear_cache")!!
+        clearCookies = findPreference("clear_cookies")!!
+        resetToDefault = findPreference("reset_to_default")!!
+        themePicker = findPreference("theme")!!
+        startPageWallpaper = findPreference("start_page_wallpaper")!!
+        checkUpdates = findPreference("check_for_updates")!!
+        updateChannel = findPreference("update_channel")!!
+        about = findPreference("about")!!
 
-        search_engine.onPreferenceClickListener =
+        searchEngine.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
-                    preference = search_engine
+                    preference = searchEngine
                     nameList = searchHomePageList
                     namePreference = SettingsKeys.searchName
                     nameToIdFunction = SearchEngineEntries::getIndexByName
@@ -105,10 +121,10 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     .create().show()
                 true
             }
-        homepage.onPreferenceClickListener =
+        homePage.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
-                    preference = homepage
+                    preference = homePage
                     nameList = searchHomePageList
                     namePreference = SettingsKeys.homePageName
                     nameToIdFunction = SearchEngineEntries::getIndexByName
@@ -122,10 +138,10 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     .create().show()
                 true
             }
-        search_suggestions.onPreferenceClickListener =
+        searchSuggestions.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
-                    preference = search_suggestions
+                    preference = searchSuggestions
                     nameList = searchHomePageList
                     namePreference = SettingsKeys.suggestionsName
                     nameToIdFunction = SearchEngineEntries::getIndexByName
@@ -164,7 +180,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 settingsActivity.finish()
                 true
             }
-        clear_cache.materialDialogPreferenceListener =
+        clearCache.materialDialogPreferenceListener =
             object : MaterialDialogPreferenceListener {
                 override fun onDialogClosed(positiveResult: Boolean) {
                     if (!positiveResult) return
@@ -172,7 +188,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     settingsActivity.showMessage(R.string.toast_cleared)
                 }
             }
-        clear_cookies.materialDialogPreferenceListener =
+        clearCookies.materialDialogPreferenceListener =
             object : MaterialDialogPreferenceListener {
                 override fun onDialogClosed(positiveResult: Boolean) {
                     if (!positiveResult) return
@@ -191,7 +207,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     settingsActivity.showMessage(R.string.toast_cleared)
                 }
             }
-        reset_to_default.materialDialogPreferenceListener =
+        resetToDefault.materialDialogPreferenceListener =
             object : MaterialDialogPreferenceListener {
                 override fun onDialogClosed(positiveResult: Boolean) {
                     if (!positiveResult) return
@@ -210,10 +226,10 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     }
                 }
             }
-        theme.onPreferenceClickListener =
+        themePicker.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
-                    preference = theme
+                    preference = themePicker
                     nameList = themeList
                     idPreference = SettingsKeys.themeId
                     dialogTitleResId = R.string.pref_theme_title
@@ -226,13 +242,13 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     .create().show()
                 true
             }
-        start_page_wallpaper.onPreferenceClickListener =
+        startPageWallpaper.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
                     pickMedia.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 } else {
-                    start_page_wallpaper.setSummary(
+                    startPageWallpaper.setSummary(
                         resources.getString(
                             R.string.pref_start_page_wallpaper_summary,
                             resources.getString(R.string.default_res)
@@ -243,29 +259,29 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 true
             }
 
-        check_for_updates.onPreferenceClickListener =
+        checkUpdates.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 UpdateService(settingsActivity, false).checkUpdates()
                 true
             }
 
         // TODO: Load update channels from online JSON
-        update_channel.onPreferenceClickListener =
+        updateChannel.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val binding: DialogEdittextBinding = DialogEdittextBinding.inflate(layoutInflater)
                 val view = binding.root
 
-                val updateChannel = binding.edittext
+                val editText = binding.edittext
                 MaterialAlertDialogBuilder(settingsActivity)
                     .setTitle(R.string.pref_update_channel_title)
                     .setView(view)
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        if (updateChannel.text.toString().isNotEmpty()) {
+                        if (editText.text.toString().isNotEmpty()) {
                             settingsPreference.setString(
                                 SettingsKeys.updateChannelName,
-                                updateChannel.text.toString()
+                                editText.text.toString()
                             )
-                            update_channel.summary = updateChannel.text.toString()
+                            updateChannel.summary = editText.text.toString()
                         }
                     }
                     .setNegativeButton(android.R.string.cancel, null)
@@ -279,28 +295,28 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 getNeedLoadFromNonMain.launch(intent)
                 true
             }
-        search_engine.summary =
+        searchEngine.summary =
             searchHomePageList[SearchEngineEntries.getIndexByName(
                 settingsPreference.getString(SettingsKeys.searchName))]
-        homepage.summary =
+        homePage.summary =
             searchHomePageList[SearchEngineEntries.getIndexByName(
                 settingsPreference.getString(SettingsKeys.homePageName))]
-        search_suggestions.summary =
+        searchSuggestions.summary =
             searchHomePageList[SearchEngineEntries.getIndexByName(
                 settingsPreference.getString(SettingsKeys.suggestionsName))]
         adBlockerSource.summary =
             adBlockerHostsEntries[settingsPreference.getInt(SettingsKeys.adServerId)]
-        theme.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
-        update_channel.summary = settingsPreference.getString(SettingsKeys.updateChannelName)
+        themePicker.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
+        updateChannel.summary = settingsPreference.getString(SettingsKeys.updateChannelName)
         if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
-            start_page_wallpaper.setSummary(
+            startPageWallpaper.setSummary(
                 resources.getString(
                     R.string.pref_start_page_wallpaper_summary,
                     resources.getString(R.string.default_res)
                 )
             )
         } else {
-            start_page_wallpaper.setSummary(
+            startPageWallpaper.setSummary(
                 resources.getString(
                     R.string.pref_start_page_wallpaper_summary,
                     DocumentFile.fromSingleUri(
