@@ -24,7 +24,7 @@ object UrlUtils {
     fun getUriRegex(): Regex = getUriRegex(true)
 
     fun getUriRegex(requireStartSlashes: Boolean): Regex {
-        var firstPart = "(?:[a-z+]+:)?//"
+        var firstPart = "(?:[a-z+]+:)?([\\/]+)"
         if (!requireStartSlashes) firstPart += "?"
 
         val secondPart = "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.?" +
