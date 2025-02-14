@@ -72,16 +72,14 @@ class DownloadClient(context: Application) {
             // Start download
             it.downloadStatus = true
             if (it.showDialog)
-                CoroutineScope(Dispatchers.Main).launch {
-                    MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
-                        .setTitle(R.string.downloads_dialog_title)
-                        .setMessage(context.getString(R.string.downloads_dialog_message, it.filename))
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                            provider.startDownload(it)
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show()
-                }
+                MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
+                    .setTitle(R.string.downloads_dialog_title)
+                    .setMessage(context.getString(R.string.downloads_dialog_message, it.filename))
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                        provider.startDownload(it)
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show()
             else provider.startDownload(it)
 
             // Commit to Droha
