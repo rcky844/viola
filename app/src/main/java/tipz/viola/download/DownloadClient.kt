@@ -9,6 +9,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.ketch.Ketch
+import com.ketch.NotificationConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ class DownloadClient(context: Application) {
 
     private var settingsPreference = (context.applicationContext as Application).settingsPreference
     private var clientMode = settingsPreference.getInt(SettingsKeys.downloadMgrMode)
+    var ketch: Ketch
 
     private var vWebView: VWebView? = null
     var drohaClient: DrohaClient = DrohaClient(context)
@@ -88,6 +91,12 @@ class DownloadClient(context: Application) {
 
     init {
         downloadQueue.observeForever(downloadObserver)
+        ketch = Ketch.builder().setNotificationConfig(
+            config = NotificationConfig(
+                enabled = true,
+                smallIcon = R.drawable.download
+            )
+        ).build(context)
     }
 
     /* Private methods */
@@ -120,6 +129,7 @@ class DownloadClient(context: Application) {
 
     fun destroy() {
         downloadQueue.removeObserver(downloadObserver)
+        ketch.clearAllDb() // Do not retain any history here
     }
 
     fun commitToDroha(droha: Droha) {

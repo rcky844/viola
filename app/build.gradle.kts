@@ -171,6 +171,7 @@ dependencies {
     modernImplementation("androidx.appcompat:appcompat:1.7.0")
     modernImplementation("com.google.android.material:material:1.12.0")
     modernImplementation("androidx.webkit:webkit:1.12.1")
+    modernImplementation("com.github.khushpanchal:Ketch:2.0.3")
 
     // Legacy dependencies
     // These will remain on their currently defined versions indefinitely,
@@ -180,4 +181,5 @@ dependencies {
     legacyImplementation("androidx.appcompat:appcompat:1.6.1")
     legacyImplementation("com.google.android.material:material:1.11.0")
     legacyImplementation("androidx.webkit:webkit:1.8.0")
+    legacyImplementation("com.github.khushpanchal:Ketch:2.0.1")
 }

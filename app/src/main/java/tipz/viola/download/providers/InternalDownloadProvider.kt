@@ -7,8 +7,10 @@ import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Environment
 import android.util.Log
+import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.download.DownloadCapabilities
+import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.database.Droha
@@ -20,12 +22,11 @@ import java.io.IOException
 import java.io.OutputStream
 
 class InternalDownloadProvider(override val context: Context) : DownloadProvider {
+    private val ketch = (context as Application).downloadClient.ketch
+
     override val capabilities = listOf(
-        // TODO: Enable for http/https/file/ftp downloads
-        // DownloadCapabilities.PROTOCOL_HTTP,
-        // DownloadCapabilities.PROTOCOL_HTTPS,
-        // DownloadCapabilities.PROTOCOL_FILE.
-        // DownloadCapabilities.PROTOCOL_FTP.
+        DownloadCapabilities.PROTOCOL_HTTP,
+        DownloadCapabilities.PROTOCOL_HTTPS,
         DownloadCapabilities.PROTOCOL_DATA,
         DownloadCapabilities.PROTOCOL_BLOB
     )
@@ -33,15 +34,25 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
 
     override fun resolveFilename(downloadObject: Droha) {
         downloadObject.apply {
-            filename = when (DownloadCapabilities.fromString(getUriProtocol())) {
+            if (filename != null) return
+            Log.d(LOG_TAG, "id=${taskId}: uriString=${uriString}")
+            Log.d(LOG_TAG, "id=${taskId}: contentDisposition=${contentDisposition}")
+            Log.d(LOG_TAG, "id=${taskId}: mimeType=${mimeType}")
+
+            when (DownloadCapabilities.fromString(getUriProtocol())) {
                 DownloadCapabilities.PROTOCOL_DATA ->
-                    "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}"
+                    filename = "${System.currentTimeMillis()}.${DownloadUtils.dataStringToExtension(uriString)}"
 
                 DownloadCapabilities.PROTOCOL_BLOB ->
-                    "blob" // FIXME: Actual file name needed
+                    filename = "blob" // FIXME: Actual file name needed
 
-                else -> return@apply // TODO: Implement all
+                else -> try {
+                    filename = DownloadUtils.guessFileName(uriString, contentDisposition, mimeType)
+                } catch (e: Exception) {
+                    context.showMessage(R.string.downloads_toast_failed)
+                }
             }
+            Log.d(LOG_TAG, "id=${taskId}: Resolved filename=${filename}")
         }
     }
 
@@ -57,7 +68,13 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
                     vWebView!!.evaluateJavascript(getBase64StringFromBlobUrl(uriString, it))
                 }
 
-                else -> return@apply // TODO: Implement all
+                else -> {
+                    ketch.download(
+                        url = uriString,
+                        path = DownloadClient.defaultDownloadPath,
+                        fileName = filename!!
+                    )
+                }
             }
         }
     }
