@@ -23,6 +23,7 @@ import tipz.viola.download.providers.AndroidDownloadProvider
 import tipz.viola.download.providers.InternalDownloadProvider
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VWebView
+import java.io.File
 import java.net.URLDecoder
 
 class DownloadClient(context: Application) {
@@ -74,7 +75,13 @@ class DownloadClient(context: Application) {
             if (it.showDialog)
                 MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
                     .setTitle(R.string.downloads_dialog_title)
-                    .setMessage(context.getString(R.string.downloads_dialog_message, it.filename))
+                    .setMessage(context.getString(
+                        // Check for duplication
+                        if (File(defaultDownloadPath, it.filename!!).exists())
+                            R.string.downloads_dialog_duplicated_message
+                        else R.string.downloads_dialog_message,
+                        it.filename
+                    ))
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         provider.startDownload(it)
                     }
@@ -132,6 +139,8 @@ class DownloadClient(context: Application) {
 
     fun commitToDroha(droha: Droha) {
         CoroutineScope(Dispatchers.IO).launch {
+            val matching = drohaClient.getWithFilename(droha.filename!!)
+            if (matching.isNotEmpty()) matching.forEach { drohaClient.deleteById(it.id) }
             drohaClient.insert(droha)
         }
     }
