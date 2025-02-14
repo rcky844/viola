@@ -5,7 +5,6 @@ package tipz.viola.download.providers
 
 import android.content.Context
 import android.media.MediaScannerConnection
-import android.os.Environment
 import android.util.Log
 import tipz.viola.Application
 import tipz.viola.R
@@ -123,7 +122,7 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         fun byteArrayToFile(context: Context, barr: ByteArray, filename: String) {
             Log.i(LOG_TAG, "byteArrayToFile(): filename=${filename}")
 
-            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val path = File(DownloadClient.defaultDownloadPath)
             val file = File(path, filename)
 
             try {
