@@ -162,7 +162,13 @@ class BrowserActivity : VWebViewActivity() {
             val dialog = MaterialAlertDialogBuilder(this)
             val binding: DialogHitTestTitleBinding =
                 DialogHitTestTitleBinding.inflate(LayoutInflater.from(this)).apply {
-                    title.text = webview.title
+                    title.apply {
+                        text = webview.title
+                        setOnLongClickListener {
+                            copyClipboard(webview.title)
+                            true
+                        }
+                    }
                     url.text = Uri.parse(webview.url).host
                     this.icon.apply {
                         val favicon = webview.currentFavicon
@@ -211,9 +217,6 @@ class BrowserActivity : VWebViewActivity() {
             dialog.setCustomTitle(titleView)
                 .setView(messageView)
                 .setPositiveButton(android.R.string.ok, null)
-                .setNeutralButton(R.string.ssl_info_dialog_copy_website_title) { _: DialogInterface?, _: Int ->
-                    copyClipboard(webview.title)
-                }
                 .create().show()
         }
 

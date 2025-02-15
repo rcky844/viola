@@ -108,8 +108,6 @@
     <string name="ssl_info_dialog_expires_on">Expires On</string>
     <!-- SSL Lock Dialog: No certificate message -->
     <string name="ssl_info_dialog_content_nocert">This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards).</string>
-    <!-- SSL Lock Dialog: Copy website title -->
-    <string name="ssl_info_dialog_copy_website_title">Copy Website Title</string>
 
     <!-- HTTP Authentication Dialog: Title -->
     <string name="dialog_auth_title">Authentication required</string>
