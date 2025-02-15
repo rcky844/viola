@@ -20,7 +20,6 @@
             android:id="@+id/pageLangEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
             android:hint="@string/dialog_translate_page_lang"
             android:singleLine="true" />
 
@@ -35,7 +34,6 @@
             android:id="@+id/targetLangEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
             android:hint="@string/dialog_translate_target_lang"
             android:singleLine="true" />
 
