@@ -110,15 +110,9 @@ class DownloadClient(context: Application) {
     }
 
     /* Private methods */
-    private fun isProviderCapable(
-        downloadObject: Droha,
-        capabilities: List<DownloadCapabilities>
-    ) : Boolean {
-        var isProviderCapable = false
-        capabilities.forEach {
-            if (downloadObject.compareUriProtocol(it.value)) isProviderCapable = true
-        }
-        return isProviderCapable
+    private fun isProviderCapable(downloadObject: Droha,
+                                  capabilities: List<DownloadCapabilities>) : Boolean {
+        return capabilities.any { downloadObject.compareUriProtocol(it.value) }
     }
 
     /* Public methods */
