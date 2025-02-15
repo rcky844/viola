@@ -9,10 +9,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
@@ -30,10 +34,10 @@ import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
 import tipz.viola.download.database.Droha
 import tipz.viola.download.database.DrohaClient
+import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.showMessage
 import tipz.viola.webview.activity.BaseActivity
 import java.io.File
-import java.lang.ref.WeakReference
 
 class DownloadActivity : BaseActivity() {
     private lateinit var binding: ActivityRecyclerDataListBinding
@@ -42,6 +46,19 @@ class DownloadActivity : BaseActivity() {
 
     lateinit var itemsAdapter: ItemsAdapter
     lateinit var fab: FloatingActionButton
+
+    enum class PopupMenuMap(val itemId: Int, @StringRes val resId: Int) {
+        DELETE(1, R.string.delete),
+        COPY_URL(2, R.string.menu_copy_link),
+        RE_DOWNLOAD(3, R.string.downloads_menu_re_download);
+
+        /* Helper functions */
+        companion object {
+            fun addMenu(menu: Menu, item: PopupMenuMap) {
+                menu.add(0, item.itemId, 0, item.resId)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,8 +141,6 @@ class DownloadActivity : BaseActivity() {
 
         @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val downloadActivity = mDownloadActivity.get()!!
-
             if (holder is EmptyViewHolder) {
                 holder.text.setText(R.string.downloads_empty_message)
             } else if (holder is ListViewHolder) {
@@ -144,9 +159,7 @@ class DownloadActivity : BaseActivity() {
                         }
 
                         val openUri = FileProvider.getUriForFile(
-                            mDownloadActivity.get()!!,
-                            mDownloadActivity.get()!!.applicationContext.packageName
-                                    + ".provider",
+                            activity, activity.applicationContext.packageName + ".provider",
                             file
                         )
                         Log.i(LOG_TAG, "onClickListener(): taskId=$taskId, openUri=$openUri")
@@ -156,20 +169,50 @@ class DownloadActivity : BaseActivity() {
                             .setData(openUri)
                             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         try {
-                            mDownloadActivity.get()!!.startActivity(intent)
+                            activity.startActivity(intent)
                         } catch (e: ActivityNotFoundException) {
                             e.printStackTrace()
-                            downloadActivity.showMessage(R.string.toast_no_app_to_handle)
+                            activity.showMessage(R.string.toast_no_app_to_handle)
                         }
                     }
+                }
+
+                holder.back.setOnLongClickListener { view: View? ->
+                    val popup = PopupMenu(
+                        activity, view!!
+                    )
+                    val menu = popup.menu
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.RE_DOWNLOAD)
+                    popup.setOnMenuItemClickListener { item: MenuItem ->
+                        when (item.itemId) {
+                            PopupMenuMap.DELETE.itemId -> {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    activity.drohaClient.deleteById(data.id)
+                                }
+                                listData.removeAt(position)
+                                notifyItemRemoved(position)
+                                notifyItemRangeRemoved(position, itemCount - position)
+                            }
+                            PopupMenuMap.COPY_URL.itemId -> {
+                                activity.copyClipboard(data.uriString)
+                            }
+                            PopupMenuMap.RE_DOWNLOAD.itemId -> {
+                                activity.downloadClient.addToQueue(data)
+                            }
+                        }
+                        true
+                    }
+                    popup.show()
+                    true
                 }
             }
         }
 
         override fun getItemCount(): Int {
             val isEmpty = listData.size == 0
-            mDownloadActivity.get()!!.fab.visibility =
-                if (isEmpty) View.GONE else View.VISIBLE
+            activity.fab.visibility = if (isEmpty) View.GONE else View.VISIBLE
 
             // Return 1 so that empty message is shown
             return if (isEmpty) 1

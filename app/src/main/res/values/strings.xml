@@ -343,6 +343,8 @@
     <string name="downloads_dialog_message">Do you want to download %s?</string>
     <!-- Downloads: Confirmation dialog duplicated message -->
     <string name="downloads_dialog_duplicated_message">File already present in your download directory, do you want to re-download %s?</string>
+    <!-- Downloads: Menu re-download option -->
+    <string name="downloads_menu_re_download">Download again</string>
 
     <!-- Crash Activity: Generic error explanation -->
     <string name="customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
