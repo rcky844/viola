@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!--
+        Build Info: Version information
+        {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
+        Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
+    -->
+    <string name="buildinfo_version">%1$s (%2$s)\n版本 %3$s (構建 %4$s%5$s)\n\n</string>
+    <!--
+        Build Info: Copyright information
+        Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team
+    -->
+    <string name="buildinfo_copyright">版權所有 © %s Tipz Team\n</string>
+    <!--
+        Build Info: License information
+        This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
+    -->
+    <string name="buildinfo_license">此商品以 %s 授權。</string>
+    <!-- Build Info: License button -->
+    <string name="buildinfo_license_button">授權</string>
+    <!-- Build Info: Changelog button -->
+    <string name="buildinfo_changelog_button">更新日誌</string>
+    <!-- Build Info: Website title -->
+    <string name="pref_website_title">網站</string>
+    <!-- Build Info: Website summary -->
+    <string name="pref_website_summary">查看項目網站。</string>
+    <!-- Build Info: Feedback title -->
+    <string name="pref_feedback_title">反饋</string>
+    <!-- Build Info: Feedback summary -->
+    <string name="pref_feedback_summary">"回報問題或建議新功能。"</string>
+    <!-- Build Info: Source code title -->
+    <string name="pref_source_code_title">"原始碼"</string>
+    <!-- Build Info: Source code summary -->
+    <string name="pref_source_code_summary">"查看 Viola 的原始碼。"</string>
+    <!-- Build Info: Build number title -->
+    <string name="buildinfo_pref_build_number_title">版本號碼</string>
+</resources>

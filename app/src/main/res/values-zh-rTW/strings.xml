@@ -1,156 +1,353 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2021-2024 Tipz Team
+<!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="viewing_mode_custom_user_agent">"自訂使用者代理"</string>
-    <string name="toast_reset_complete">重設已成功完成</string>
-    <string name="pref_clear_cache">清除快取</string>
-    <string name="pref_clear_cookies">清除Cookie設定</string>
-    <string name="clear">"清除"</string>
-    <string name="toast_cleared">成功清除%s!</string>
-    <string name="dialog_share_title">分享URL</string>
-    <string name="toast_copied_clipboard">成功複製到了剪貼簿!</string>
-    <string name="history_empty_message">歷史記錄是空的!</string>
-    <string name="save_successful">新增成功!</string>
-    <string name="favorites_empty_message">沒有已新增的書籤</string>
-    <string name="ssl_info_dialog_copy_website_title">複製網站標題</string>
-    <string name="address_bar_hint">"搜尋或輸入網址…"</string>
-    <string name="settings_title">設定</string>
+    <!-- Generic: Clear -->
+    <string name="clear">清除</string>
+    <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">搜尋引擎</string>
+    <!-- Generic - Defaults: Homepage -->
     <string name="homepage">首頁</string>
-    <string name="pref_check_for_updates_title">檢查更新</string>
-    <string name="pref_check_for_updates_summary">檢查是否有新更新，如果有可用則允許您下載</string>
-    <string name="toast_version_latest">您目前使用的是最新版本的Viola</string>
-    <string name="toast_network_unavailable">網路不可用</string>
-    <string name="dialog_update_available_title">"檢測到新的版本"</string>
-    <string name="dialog_update_available_message">"Viola %1$s (%2$s) 可用, 你想更新嗎?"</string>
-    <string name="update_down_failed_toast">更新下載失敗!</string>
-    <string name="pref_category_general">一般</string>
-    <string name="pref_reset_to_default_title">重設為預設值</string>
-    <string name="pref_category_advanced">進階</string>
-    <string name="pref_enable_javascript_title">啟用JavaScript</string>
-    <string name="pref_enable_javascript_summary">啟用將允許加載JavaScript內容</string>
-    <string name="pref_show_favicon">顯示網站圖示</string>
-    <string name="pref_show_favicon_summary">在網址列旁邊顯示網站的圖示</string>
-    <string name="pref_about_title">關於</string>
-    <string name="pref_category_version">版本</string>
-    <string name="pref_feedback_title">回饋</string>
-    <string name="pref_feedback_summary">報告錯誤或請求新功能</string>
-    <string name="pref_source_code_title">原始碼</string>
-    <string name="pref_source_code_summary">查看Viola的源代碼</string>
-    <string name="favorites_title">書籤</string>
-    <string name="delete">"刪除"</string>
-    <string name="dialog_delete_all_entries_title">刪除全部書籤</string>
-    <string name="dialog_delete_all_entries_favorites_message">"您將要刪除全部書籤, 您確定要這樣做嗎?"</string>
-    <string name="history_title">歷史記錄</string>
-    <string name="menu_save_to_favorites">儲存到書籤</string>
-    <string name="dialog_delete_all_entries_history_message">"您將要刪除全部歷史記錄, 您確定要這樣做嗎?"</string>
-    <string name="buildinfo_license_button">證書</string>
-    <string name="customactivityoncrash_error_activity_error_occurred_explanation" tools:keep="@string/customactivityoncrash_error_activity_error_occurred_explanation">錯誤發生對於給您帶來的不便，我們表示歉意</string>
-    <string name="customactivityoncrash_error_activity_restart_app" tools:keep="@string/customactivityoncrash_error_activity_restart_app">重開應用程式</string>
-    <string name="customactivityoncrash_error_activity_close_app" tools:keep="@string/customactivityoncrash_error_activity_close_app">關閉應用程式</string>
-    <string name="customactivityoncrash_error_activity_error_details" tools:keep="@string/customactivityoncrash_error_activity_error_details">錯誤詳細</string>
-    <string name="customactivityoncrash_error_activity_error_details_title" tools:keep="@string/customactivityoncrash_error_activity_error_details_title">錯誤詳細</string>
-    <string name="customactivityoncrash_error_activity_error_details_close" tools:keep="@string/customactivityoncrash_error_activity_error_details_close">關閉</string>
-    <string name="customactivityoncrash_error_activity_error_details_copy" tools:keep="@string/customactivityoncrash_error_activity_error_details_copy">複製到剪貼簿</string>
-    <string name="customactivityoncrash_error_activity_error_details_copied" tools:keep="@string/customactivityoncrash_error_activity_error_details_copied">成功複製到了剪貼簿</string>
-    <string name="customactivityoncrash_error_activity_error_details_clipboard_label" tools:keep="@string/customactivityoncrash_error_activity_error_details_clipboard_label">錯誤資訊</string>
-    <string name="pref_category_visuals">視覺效果</string>
-    <string name="pref_category_data_privacy">資料和隱私</string>
-    <string name="pref_reset_to_default_summary">清除全部瀏覽器資料</string>
-    <string name="dialog_settings_reset_to_default_message">這將會清除全部瀏覽器資料\n</string>
-    <string name="dialog_continue_prompt_message">您確定要繼續嗎？</string>
+    <!-- Generic - Defaults: Search Suggestions -->
     <string name="search_suggestions_title">搜尋建議</string>
-    <string name="buildinfo_changelog_button">閱讀變更日誌</string>
-    <string name="pref_ad_blocker_title">啟用廣告阻擋器</string>
-    <string name="pref_ad_blocker_summary">阻擋分散注意力而且煩人的廣告</string>
-    <string name="pref_do_not_track_title">不要追蹤</string>
-    <string name="pref_do_not_track_summary">傳送不要追蹤要求到您瀏覽的網站</string>
+    <!-- Toasts: No WebView -->
+    <string name="toast_no_webview">WebView 是必要的，但尚未安裝。</string>
+    <!-- Toasts: Cleared -->
+    <string name="toast_cleared">清除成功！</string>
+    <!-- Toasts: Copied to clipboard -->
+    <string name="toast_copied_clipboard">已複製到剪貼簿！</string>
+    <!-- Toasts: Saved -->
+    <string name="save_successful">保存成功！</string>
+    <!-- Dialogs: Continue prompt message -->
+    <string name="dialog_continue_prompt_message">您確定要繼續嗎？</string>
+    <!-- Menus: Copy link -->
     <string name="menu_copy_link">複製鏈接</string>
-    <string name="hit_test_download_image">下載圖片</string>
-    <string name="hit_test_open_in_new_tab">在新分頁中開啟</string>
-    <string name="toast_no_webview">WebView是必要的，但並未安裝</string>
-    <string name="hit_test_share_link">分享鏈接</string>
-    <string name="pref_theme_title">主題</string>
-    <string name="ssl_certificate_error_dialog_title">SSL憑證錯誤</string>
-    <string name="ssl_certificate_error_dialog_message">%s你想繼續嗎?</string>
-    <string name="ssl_certificate_date_invalid">憑證日期無效</string>
-    <string name="ssl_certificate_invalid">發生了普通的SSL錯誤</string>
-    <string name="ssl_certificate_expired">憑證已過期</string>
-    <string name="ssl_certificate_idmismatch">憑證主機名不匹配</string>
-    <string name="ssl_certificate_notyetvalid">憑證尚未生效</string>
-    <string name="ssl_certificate_untrusted">憑證頒發機構不受信任</string>
-    <string name="ssl_certificate_unknown">發生未知SSL錯誤</string>
-    <string name="favorites_menu_edit">編輯</string>
-    <string name="favorites_dialog_title">標題</string>
-    <string name="favorites_dialog_link">鏈接</string>
-    <string name="downloads_toast_failed">文件下載失敗!</string>
-    <string name="hit_test_search_image">搜尋相似圖片</string>
-    <string name="viewing_mode_wide_viewport_mode">啟用寬窗口模式</string>
-    <string name="downloads_toast_success">%s下載成功</string>
-    <string name="pref_enable_swipe_refresh_title">啟用滑動刷新</string>
-    <string name="pref_enable_swipe_refresh_summary">啟用由垂直過度滾動內容觸發的頁面重新加載</string>
-    <string name="pref_enforce_https_title">強制HTTPS</string>
-    <string name="pref_enforce_https_summary">始終使用HTTPS訪問網站以增加安全性 (實驗性)</string>
-    <string name="pref_use_custom_tabs_title">使用Custom Tabs</string>
-    <string name="pref_use_custom_tabs_summary">從其他應用程式打開連結時，始終打開Custom Tabs</string>
-    <string name="pref_close_app_after_download_title">僅下載連結後關閉</string>
-    <string name="pref_close_app_after_download_summary">如果連結是可下載的，始終自動關閉Viola</string>
-    <string name="pref_reverse_address_bar_title">單手模式</string>
-    <string name="pref_reverse_address_bar_summary">重新定位介面元素以方便單手使用</string>
-    <string name="search_dialog_custom_message">格式:\n{query}: 搜索內容\n{language}: 語言</string>
-    <string name="pref_update_recents_icon_title">更新最近使用的應用中的圖示和標籤</string>
-    <string name="pref_update_recents_icon_summary">自動把“最近使用的應用”中選項卡的圖標和標籤更新為網頁的</string>
-    <string name="dialog_js_title">%s說</string>
-    <string name="dialog_js_leave_page_title">%s說, 你想離開這個頁面嗎?</string>
-    <string name="toolbar_expandable_view_page_source">查看頁面原始程式碼</string>
-    <string name="pref_google_safe_browsing_title">啟用Google的安全流覽</string>
-    <string name="pref_google_safe_browsing_summary">允許Google的安全流覽功能遮罩其認為危險的網站.</string>
-    <string name="dialog_page_unresponsive_title">頁面無回應</string>
-    <string name="dialog_page_unresponsive_message">您可以等待它回應或終止此分頁頁</string>
-    <string name="dialog_page_unresponsive_wait">等待</string>
-    <string name="dialog_page_unresponsive_terminate">終止</string>
-    <string name="toast_no_app_to_handle">沒有應用程式可以處理此操作</string>
-    <string name="pref_use_web_homepage_title">使用基於網路的主頁</string>
-    <string name="pref_use_web_homepage_summary">開啟一個網頁而不是起始頁作為首頁</string>
-    <string name="toolbar_expandable_new_tab">新標籤</string>
-    <string name="toolbar_expandable_favorites">收藏夾</string>
-    <string name="toolbar_expandable_history">歷史記錄</string>
-    <string name="toolbar_expandable_viewport">檢視模式</string>
-    <string name="toolbar_expandable_favorites_add">加入到收藏夾</string>
-    <string name="toolbar_expandable_app_shortcut">建立捷徑</string>
-    <string name="toolbar_expandable_settings">設定</string>
-    <string name="toolbar_expandable_print">列印</string>
-    <string name="toolbar_expandable_close">關閉應用程式</string>
-    <string name="pref_start_page_wallpaper_title">選擇起始頁桌布</string>
-    <string name="pref_start_page_wallpaper_summary">目前：%s</string>
-    <string name="default_res">預設</string>
+    <!-- WebView: Start page -->
     <string name="start_page">起始頁</string>
-    <string name="hit_test_copy_link_text">複製連結文字</string>
-    <string name="hit_test_copy_image_link">複製圖片連結</string>
-    <string name="pref_category_software_updates">軟體更新</string>
-    <string name="pref_update_channel_title">選擇更新頻道</string>
-    <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器主機檔案</string>
-    <string name="pref_ad_blocker_source_title">廣告攔截器主機來源</string>
-    <string name="pref_send_save_data_title">流量節省</string>
-    <string name="pref_send_save_data_summary">向支援的網站發送流量節省請求</string>
-    <string name="pref_send_sec_gpc_title">全域隱私控制</string>
-    <string name="pref_send_sec_gpc_summary">允許在您造訪的網站上與第三方出售或分享您的個人資訊</string>
-    <string name="shortcuts_menu_browser">瀏覽器訪問</string>
-    <string name="shortcuts_menu_custom_tabs">Custom Tabs</string>
-    <string name="shortcuts_menu_webapp">Web App</string>
-    <string name="pref_check_app_link_title">檢查可啟動的應用程式鏈接</string>
-    <string name="pref_check_app_link_summary">在載入前詢問是否需要在外部開啟 App Link</string>
+    <!-- WebView: No app to handle action -->
+    <string name="toast_no_app_to_handle">沒有應用程式可以處理此操作。</string>
+    <!-- WebView: JavaScript dialog title -->
+    <string name="dialog_js_title">%s 說</string>
+    <!-- WebView: JavaScript leave page dialog title -->
+    <string name="dialog_js_leave_page_title">%s 說, 你想離開這個頁面嗎？</string>
+    <!-- WebView: JavaScript page unresponsive title -->
+    <string name="dialog_page_unresponsive_title">頁面無回應</string>
+    <!-- WebView: JavaScript page unresponsive message -->
+    <string name="dialog_page_unresponsive_message">您可以等待它回應或終止此分頁。</string>
+    <!-- WebView: JavaScript page unresponsive wait -->
+    <string name="dialog_page_unresponsive_wait">等待</string>
+    <!-- WebView: JavaScript page unresponsive terminate -->
+    <string name="dialog_page_unresponsive_terminate">終止</string>
+    <!-- WebView: SSL certification error dialog title -->
+    <string name="ssl_certificate_error_dialog_title">SSL 憑證錯誤</string>
+    <!-- WebView: SSL certification error dialog message -->
+    <string name="ssl_certificate_error_dialog_message">%s 你想繼續嗎？</string>
+    <!-- WebView: SSL certificate date invalid -->
+    <string name="ssl_certificate_date_invalid">憑證日期無效。</string>
+    <!-- WebView: SSL certificate invalid -->
+    <string name="ssl_certificate_invalid">發生了普通的SSL錯誤。</string>
+    <!-- WebView: SSL certificate expired -->
+    <string name="ssl_certificate_expired">憑證已過期。</string>
+    <!-- WebView: SSL certificate hostname mismatch -->
+    <string name="ssl_certificate_idmismatch">憑證主機名不匹配。</string>
+    <!-- WebView: SSL certificate not yet valid -->
+    <string name="ssl_certificate_notyetvalid">憑證尚未生效。</string>
+    <!-- WebView: SSL certificate authority not trusted -->
+    <string name="ssl_certificate_untrusted">憑證頒發機構不受信任。</string>
+    <!-- WebView: SSL certificate unknown -->
+    <string name="ssl_certificate_unknown">發生未知SSL錯誤。</string>
+    <!-- WebView: SSL handshake failed dialog title -->
+    <string name="dialog_ssl_failed_handshake_title">無法進行SSL握手，惟降級到HTTP有可能可以載入頁面。</string>
+    <!-- WebView: App link detected dialog title -->
     <string name="dialog_open_external_title">檢測到可啟動的 App Link</string>
+    <!-- WebView: App link detected dialog message -->
     <string name="dialog_open_external_message">您想在外部應用程式中開啟此 App Link 嗎？</string>
+    <!-- Address bar: Hint -->
+    <string name="address_bar_hint">搜尋或輸入網址…</string>
+    <!-- Hit Test Dialog: Copy link text -->
+    <string name="hit_test_copy_link_text">複製連結文字</string>
+    <!-- Hit Test Dialog: Download link -->
+    <string name="hit_test_download_link">下載連結</string>
+    <!-- Hit Test Dialog: Download image -->
+    <string name="hit_test_download_image">下載圖片</string>
+    <!-- Hit Test Dialog: Copy image link -->
+    <string name="hit_test_copy_image_link">複製圖片連結</string>
+    <!-- Hit Test Dialog: Search for similar images -->
+    <string name="hit_test_search_image">搜尋相似圖片</string>
+    <!-- Hit Test Dialog: Open in new tab -->
+    <string name="hit_test_open_in_new_tab">在新分頁開啟</string>
+    <!-- Hit Test Dialog: Share link -->
+    <string name="hit_test_share_link">分享鏈接</string>
+    <!-- SSL Lock Dialog: Issued to -->
+    <string name="ssl_info_dialog_issued_to">發證對象：</string>
+    <!-- SSL Lock Dialog: Issued by -->
+    <string name="ssl_info_dialog_issued_by">發證來源：</string>
+    <!-- SSL Lock Dialog: Validity Period -->
+    <string name="ssl_info_dialog_validity_period">有效期：</string>
+    <!-- SSL Lock Dialog: Common Name -->
+    <string name="ssl_info_dialog_common_name">通用名稱 (CN)</string>
+    <!-- SSL Lock Dialog: Organization -->
+    <string name="ssl_info_dialog_organization">組織 (O)</string>
+    <!-- SSL Lock Dialog: Organizational Unit -->
+    <string name="ssl_info_dialog_organization_unit">組織單位 (OU)</string>
+    <!-- SSL Lock Dialog: Issued On -->
+    <string name="ssl_info_dialog_issued_on">發證時間</string>
+    <!-- SSL Lock Dialog: Expires On -->
+    <string name="ssl_info_dialog_expires_on">有效期至</string>
+    <!-- SSL Lock Dialog: No certificate message -->
+    <string name="ssl_info_dialog_content_nocert">當前網站不提供SSL憑證，請勿提供敏感資訊 (例如密碼或信用卡)。</string>
+    <!-- SSL Lock Dialog: Copy website title -->
+    <string name="ssl_info_dialog_copy_website_title">複製網站標題</string>
+    <!-- HTTP Authentication Dialog: Title -->
+    <string name="dialog_auth_title">需要身份驗證</string>
+    <!-- HTTP Authentication Dialog: Message -->
+    <string name="dialog_auth_message">%s 需要使用者名稱與密碼。</string>
+    <!-- HTTP Authentication Dialog: Username -->
+    <string name="dialog_auth_username">使用者名稱</string>
+    <!-- HTTP Authentication Dialog: Password -->
+    <string name="dialog_auth_password">密碼</string>
+    <!-- Toolbar: Share dialog title -->
+    <string name="dialog_share_title">分享 URL</string>
+    <!-- Expandable toolbar: New Tab -->
+    <string name="toolbar_expandable_new_tab">新分頁</string>
+    <!-- Expandable toolbar: Favorites -->
+    <string name="toolbar_expandable_favorites">書籤夾</string>
+    <!-- Expandable toolbar: History -->
+    <string name="toolbar_expandable_history">歷史記錄</string>
+    <!-- Expandable toolbar: Viewing Mode -->
+    <string name="toolbar_expandable_viewport">瀏覽模式</string>
+    <!-- Expandable toolbar: Add to favorites -->
+    <string name="toolbar_expandable_favorites_add">添加到書籤夾</string>
+    <!-- Expandable toolbar: Translate -->
+    <string name="toolbar_expandable_translate">翻譯</string>
+    <!-- Expandable toolbar: Downloads -->
     <string name="toolbar_expandable_downloads">下載</string>
-
+    <!-- Expandable toolbar: Enter full screen -->
+    <string name="toolbar_expandable_fullscreen">全螢幕</string>
+    <!-- Expandable toolbar: Create shortcut -->
+    <string name="toolbar_expandable_app_shortcut">創建捷徑</string>
+    <!-- Expandable toolbar: Settings -->
+    <string name="toolbar_expandable_settings">設定</string>
+    <!-- Expandable toolbar: View Page Source -->
+    <string name="toolbar_expandable_view_page_source">檢視頁面原始碼</string>
+    <!-- Expandable toolbar: Print -->
+    <string name="toolbar_expandable_print">列印</string>
+    <!-- Expandable toolbar: Close app -->
+    <string name="toolbar_expandable_close">關閉</string>
+    <!-- Viewing mode: Custom user agent dialog title -->
+    <string name="viewing_mode_custom_user_agent">自訂使用者代理</string>
+    <!-- Viewing mode: Current user agent property -->
+    <string name="viewing_mode_current_user_agent">當前的用戶代理</string>
+    <!-- Viewing mode: Wide viewport mode -->
+    <string name="viewing_mode_wide_viewport_mode">啟用寬視窗模式</string>
+    <!-- Translate: Page language -->
+    <string name="dialog_translate_page_lang">頁面語言 (e.g. zh-TW)</string>
+    <!-- Translate: Target language -->
+    <string name="dialog_translate_target_lang">目標語言 (e.g. en)</string>
+    <!-- Shortcuts: Browser Access -->
+    <string name="shortcuts_menu_browser">瀏覽器訪問</string>
+    <!-- Shortcuts: Custom Tabs -->
+    <string name="shortcuts_menu_custom_tabs">小分頁</string>
+    <!-- Shortcuts: Web App -->
+    <string name="shortcuts_menu_webapp">網頁應用</string>
+    <!-- Console: Dialog title -->
+    <string name="console_dialog_title">控制臺</string>
+    <!-- Console: Enabled toast -->
+    <string name="console_toast_enabled">控制台日誌已啟用！</string>
+    <!-- Console: Disable logging -->
+    <string name="console_logging_disable">停用</string>
+    <!-- Settings: Title -->
+    <string name="settings_title">設定</string>
+    <!-- Settings: General category -->
+    <string name="pref_category_general">常用</string>
+    <!-- Settings: Use web-based homepage title -->
+    <string name="pref_use_web_homepage_title">使用網路主頁</string>
+    <!-- Settings: Use web-based homepage summary -->
+    <string name="pref_use_web_homepage_summary">開啟網頁而非內建起始頁作為首頁。</string>
+    <!-- Settings: Data & Privacy category -->
+    <string name="pref_category_data_privacy">數據 &amp; 隱私</string>
+    <!-- Settings: Enable ad blocker title -->
+    <string name="pref_ad_blocker_title">啟用廣告阻擋器</string>
+    <!-- Settings: Enable ad blocker summary -->
+    <string name="pref_ad_blocker_summary">阻擋分散注意力而且煩人的廣告</string>
+    <!-- Settings: Ad blocker hosts source title -->
+    <string name="pref_ad_blocker_source_title">廣告攔截器列表來源</string>
+    <!-- Settings: Download ad blocker hosts title -->
+    <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器列表檔案</string>
+    <!-- Settings: Do Not Track title -->
+    <string name="pref_do_not_track_title">不追蹤</string>
+    <!-- Settings: Do Not Track summary -->
+    <string name="pref_do_not_track_summary">傳送「不追蹤」請求至您瀏覽的網站。</string>
+    <!-- Settings: Send GPC title -->
+    <string name="pref_send_sec_gpc_title">全域隱私控制</string>
+    <!-- Settings: Send GPC summary -->
+    <string name="pref_send_sec_gpc_summary">允許在您造訪的網站上與第三方出售或分享您的個人資訊。</string>
+    <!-- Settings: Enforce HTTPS title -->
+    <string name="pref_enforce_https_title">強制 HTTPS</string>
+    <!-- Settings: Enforce HTTPS summary -->
+    <string name="pref_enforce_https_summary">始終使用 HTTPS 訪問網站以增加安全性 (實驗性)</string>
+    <!-- Settings: Enable Google's Safe Browsing title -->
+    <string name="pref_google_safe_browsing_title">啟用 Google 安全流覽</string>
+    <!-- Settings: Enable Google's Safe Browsing summary -->
+    <string name="pref_google_safe_browsing_summary">允許 Google 安全流覽功能遮罩其認為危險的網站。</string>
+    <!-- Settings: Enable history storage title -->
+    <string name="pref_enable_history_title">存儲歷史記錄</string>
+    <!-- Settings: Enable history storage summary -->
+    <string name="pref_enable_history_summary">保留造訪過的網頁的歷史記錄。</string>
+    <!-- Settings: Clear cache title -->
+    <string name="pref_clear_cache">清除缓存</string>
+    <!-- Settings: Clear cookies title -->
+    <string name="pref_clear_cookies">清除 Cookies</string>
+    <!-- Settings: Reset to default title -->
+    <string name="pref_reset_to_default_title">還原至預設設定</string>
+    <!-- Settings: Reset to default summary -->
+    <string name="pref_reset_to_default_summary">清除全部瀏覽器數據。</string>
+    <!-- Settings: Visuals category -->
+    <string name="pref_category_visuals">顯示</string>
+    <!-- Settings: Theme title -->
+    <string name="pref_theme_title">主題</string>
+    <!-- Settings: Use web content force dark title -->
+    <string name="pref_use_force_dark_title">允許強制黑暗網頁內容</string>
+    <!-- Settings: Use web content force dark summary -->
+    <string name="pref_use_force_dark_summary">將網頁的配色方案與瀏覽器的主題相匹配。</string>
+    <!-- Settings: Start page wallpaper title -->
+    <string name="pref_start_page_wallpaper_title">選擇起始頁桌布</string>
+    <!-- Settings: Start page wallpaper summary -->
+    <string name="pref_start_page_wallpaper_summary">目前：%s</string>
+    <!-- Settings: Show favicon title -->
+    <string name="pref_show_favicon">顯示網站圖示</string>
+    <!-- Settings: Show favicon summary -->
+    <string name="pref_show_favicon_summary">在網址列旁邊顯示網站的圖示。</string>
+    <!-- Settings: Reach mode title -->
+    <string name="pref_reverse_address_bar_title">單手模式</string>
+    <!-- Settings: Reach mode summary -->
+    <string name="pref_reverse_address_bar_summary">重新定位介面元素以方便單手使用。</string>
+    <!-- Settings: Swipe to Refresh title -->
+    <string name="pref_enable_swipe_refresh_title">啟用滑動刷新</string>
+    <!-- Settings: Swipe to Refresh summary -->
+    <string name="pref_enable_swipe_refresh_summary">啟用由垂直過度滾動內容觸發的頁面重新加載。</string>
+    <!-- Settings: Update Recents icons and labels title -->
+    <string name="pref_update_recents_icon_title">更新最近使用的應用中的圖示和標籤</string>
+    <!-- Settings: Update Recents icons and labels summary -->
+    <string name="pref_update_recents_icon_summary">自動把“最近使用的應用”中選項卡的圖標和標籤更新為網頁的。</string>
+    <!-- Settings: Advanced category -->
+    <string name="pref_category_advanced">進階</string>
+    <!-- Settings: Enable JavaScript title -->
+    <string name="pref_enable_javascript_title">啟用 JavaScript</string>
+    <!-- Settings: Enable JavaScript summary -->
+    <string name="pref_enable_javascript_summary">啟用將允許加載 JavaScript 內容。</string>
+    <!-- Settings: Use Custom Tabs title -->
+    <string name="pref_use_custom_tabs_title">使用小分页</string>
+    <!-- Settings: Use Custom Tabs summary -->
+    <string name="pref_use_custom_tabs_summary">從其他應用程式打開連結時，始終打開小分页。</string>
+    <!-- Settings: Check App Link title -->
+    <string name="pref_check_app_link_title">檢查可啟動的應用程式鏈接</string>
+    <!-- Settings: Check App Link summary -->
+    <string name="pref_check_app_link_summary">在載入前詢問是否需要在外部開啟 App Link。</string>
+    <!-- Settings: Data Saver title -->
+    <string name="pref_send_save_data_title">流量節省</string>
+    <!-- Settings: Data Saver summary -->
+    <string name="pref_send_save_data_summary">向支援的網站發送流量節省請求。</string>
+    <!-- Settings: Close app after download title -->
+    <string name="pref_close_app_after_download_title">僅下載連結後關閉</string>
+    <!-- Settings: Close app after download summary -->
+    <string name="pref_close_app_after_download_summary">如果連結可下載，始終關閉 Viola。</string>
+    <!-- Settings: Software updates category -->
+    <string name="pref_category_software_updates">軟體更新</string>
+    <!-- Settings: Check for updates title -->
+    <string name="pref_check_for_updates_title">檢查更新</string>
+    <!-- Settings: Check for updates summary -->
+    <string name="pref_check_for_updates_summary">檢查是否有新更新，如果有可用則下載。</string>
+    <!-- Settings: Select update channel title -->
+    <string name="pref_update_channel_title">選擇更新頻道</string>
+    <!-- Settings: Version category -->
+    <string name="pref_category_version">版本</string>
+    <!-- Settings: About title -->
+    <string name="pref_about_title">關於</string>
+    <!-- Settings - Search: Custom dialog message -->
+    <string name="search_dialog_custom_message">格式：\n{query}: 搜索內容\n{language}：語言</string>
+    <!-- Settings - Wallpaper: Default -->
+    <string name="default_res">預設</string>
+    <!-- Settings - Ad Servers: Downloading finished toast -->
+    <string name="toast_ad_servers_finished">廣告伺服器列表下載完畢！</string>
+    <!-- Settings - Reset to Default: Dialog message -->
+    <string name="dialog_settings_reset_to_default_message">這將會清除全部瀏覽器資料\n您確定要繼續嗎？</string>
+    <!-- Settings - Reset to Default: Toast message -->
+    <string name="toast_reset_complete">重設完成。</string>
+    <!-- Updates: Latest version toast -->
+    <string name="toast_version_latest">您目前使用的是最新版本的 Viola。</string>
+    <!-- Updates: Network unavailable toast -->
+    <string name="toast_network_unavailable">網路不可用。</string>
+    <!-- Updates: Update available dialog title -->
+    <string name="dialog_update_available_title">有可用更新</string>
+    <!-- Updates: Update available dialog message -->
+    <string name="dialog_update_available_message">Viola %1$s (%2$s) 可用，你想安裝它嗎？</string>
+    <!-- Updates: Update available dialog release date message -->
+    <string name="dialog_update_available_release_date_message">發布日期：%s</string>
+    <!-- Updates: Updated failed toast -->
+    <string name="update_down_failed_toast">更新下載失敗！</string>
+    <!-- Lists: Delete all entries dialog title -->
+    <string name="dialog_delete_all_entries_title">刪除全部書籤</string>
+    <!-- Lists: Delete menu option -->
+    <string name="delete">刪除</string>
+    <!-- History: Title -->
+    <string name="history_title">歷史記錄</string>
+    <!-- History: Empty message -->
+    <string name="history_empty_message">歷史記錄為空！</string>
+    <!-- History: Save to favorites menu option -->
+    <string name="menu_save_to_favorites">儲存到書籤</string>
+    <!-- History: Delete all entries dialog message -->
+    <string name="dialog_delete_all_entries_history_message">您確定要刪除所有歷史條目嗎？</string>
+    <!-- Favorites: Title -->
+    <string name="favorites_title">書籤夾</string>
+    <!-- Favorites: Empty message -->
+    <string name="favorites_empty_message">沒有已新增的書籤。</string>
+    <!-- Favorites: Menu edit option -->
+    <string name="favorites_menu_edit">編輯</string>
+    <!-- Favorites: Edit dialog title option -->
+    <string name="favorites_dialog_title">標題</string>
+    <!-- Favorites: Edit dialog link option -->
+    <string name="favorites_dialog_link">鏈接</string>
+    <!-- Favorites: Delete all entries dialog message -->
+    <string name="dialog_delete_all_entries_favorites_message">您确定要删除所有書籤条目吗？</string>
+    <!-- Downloads: Toast failed -->
+    <string name="downloads_toast_failed">下載失敗！</string>
+    <!-- Downloads: Toast success -->
+    <string name="downloads_toast_success">%s 下載成功。</string>
+    <!-- Downloads: Empty message -->
+    <string name="downloads_empty_message">無下載記錄</string>
+    <!-- Downloads: Confirmation dialog title -->
+    <string name="downloads_dialog_title">下載檔案？</string>
+    <!-- Downloads: Confirmation dialog message -->
+    <string name="downloads_dialog_message">您想下載 %s 嗎？</string>
+    <!-- Downloads: Confirmation dialog duplicated message -->
+    <string name="downloads_dialog_duplicated_message">檔案已存在於您的下載目錄中，是否要重新下載 %s？</string>
+    <!-- Downloads: Menu re-download option -->
+    <string name="downloads_menu_re_download">再次下載</string>
+    <!-- Crash Activity: Generic error explanation -->
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">發生錯誤，很抱歉造成不便。</string>
+    <!-- Crash Activity: Restart app button -->
+    <string name="customactivityoncrash_error_activity_restart_app">重開應用</string>
+    <!-- Crash Activity: Close app button -->
+    <string name="customactivityoncrash_error_activity_close_app">關閉應用</string>
+    <!-- Crash Activity: Error details app button -->
+    <string name="customactivityoncrash_error_activity_error_details">錯誤詳細</string>
+    <!-- Crash Activity: Error details dialog title -->
+    <string name="customactivityoncrash_error_activity_error_details_title">錯誤詳細</string>
+    <!-- Crash Activity: Error details dialog close button -->
+    <string name="customactivityoncrash_error_activity_error_details_close">關閉</string>
+    <!-- Crash Activity: Error details dialog copy button -->
+    <string name="customactivityoncrash_error_activity_error_details_copy">複製到剪貼簿</string>
+    <!-- Crash Activity: Error details dialog copy toast -->
+    <string name="customactivityoncrash_error_activity_error_details_copied">已複製到剪貼簿</string>
+    <!-- Crash Activity: Error details clipboard label -->
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">錯誤資訊</string>
     <string-array name="errMsg">
-        <item>錯誤!</item>
+        <item>錯誤！</item>
         <item>無法打開此頁面</item>
-        <item>Viola 無法打開您的網頁</item>
-        <item>您可以嘗試:</item>
+        <item>Viola 無法打開您的網頁。</item>
+        <item>您可以嘗試：</item>
         <item>檢查您的網路連接</item>
         <item>重新載入網頁</item>
     </string-array>
@@ -159,18 +356,24 @@
         <item>百度</item>
         <item>DuckDuckGo</item>
         <item>Bing</item>
-        <item>Yahoo!</item>
+        <item>雅虎</item>
         <item>Ecosia</item>
         <item>Yandex</item>
-        <item>Brave Search</item>
-        <!-- TODO: Check Translation -->
+        <item>Brave 搜尋</item>
         <item>Startpage</item>
         <item>Whoogle</item>
         <item>Swisscows</item>
         <item>Qwant</item>
         <item>搜狗</item>
-        <item>360搜索</item>
-        <item>FrogFind!</item>
+        <item>360 搜索</item>
+        <item>FrogFind</item>
+        <item>自訂</item>
+    </string-array>
+    <string-array name="ad_blocker_hosts_entries">
+        <item>AdAway</item>
+        <item>GoodbyeAds</item>
+        <item>Unified hosts</item>
+        <item>Eulaurarien 主方追蹤器</item>
         <item>自訂</item>
     </string-array>
     <string-array name="themes">
