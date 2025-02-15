@@ -174,8 +174,8 @@
         <item>Benutzerdefiniert</item>
     </string-array>
     <string-array name="themes">
-        <item>Systemfehler</item>
-        <item>helle Farbe</item>
-        <item>dunkel</item>
+        <item>System</item>
+        <item>Hell</item>
+        <item>Dunkle</item>
     </string-array>
 </resources>
