@@ -13,13 +13,16 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.webkit.MimeTypeMap
+import androidx.core.net.toUri
 import tipz.viola.R
 import tipz.viola.download.DownloadCapabilities
+import tipz.viola.download.DownloadClient.Companion.defaultDownloadPath
 import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.database.Droha
 import tipz.viola.ext.isOnline
 import tipz.viola.ext.showMessage
+import java.io.File
 
 class AndroidDownloadProvider(override val context: Context) : DownloadProvider {
     private var downloadID: Long = 0
@@ -76,7 +79,11 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
             request.setNotificationVisibility(
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
-            request.setDestinationUri(Uri.parse("file://$downloadPath$filename"))
+            // Delete file if exists
+            val file = File(defaultDownloadPath, filename!!)
+            if (file.exists()) file.delete()
+
+            request.setDestinationUri(file.toUri())
             request.setMimeType(
                 MimeTypeMap.getSingleton().getMimeTypeFromExtension(
                     MimeTypeMap.getFileExtensionFromUrl(uriString)
