@@ -16,19 +16,52 @@ object UrlUtils {
         "text/html", "text/plain", "application/xhtml+xml", "application/vnd.wap.xhtml+xml",
         "http", "https", "ftp", "file"
     )
-    val uriRegex =
-        ("^(?:[a-z+]+:)?//" +
-                "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?")
-            .toRegex()
-    val supportedUriScheme =
-        listOf("http", "https", "ftp", "file", "data",
-            "viola", "chrome", "javascript", "about")
+
     val httpPrefix = "http://"
     val httpsPrefix = "https://"
 
+    // Default for getting generic URL regex
+    fun getUriRegex(): Regex = getUriRegex(true, false)
+    fun getUriRegex(requireStartSlashes: Boolean): Regex =
+        getUriRegex(requireStartSlashes, false)
+
+    fun getUriRegex(requireStartSlashes: Boolean, hasDots: Boolean): Regex {
+        var firstPart = "(?:[a-z+]+:)?([\\/]+)"
+        if (!requireStartSlashes) firstPart += "?"
+
+        var secondPart = "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\."
+        if (!hasDots) secondPart += "?"
+
+        val thirdPart = "[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
+
+        return "$firstPart$secondPart$thirdPart".toRegex()
+    }
+
+    enum class UriScheme(val prefix: String, val requireStartSlashes: Boolean) {
+        SCHEME_HTTP("http", true),
+        SCHEME_HTTPS("https",  true),
+        SCHEME_FTP("ftp", true),
+        SCHEME_FILE("file", true),
+        SCHEME_DATA("data", false),
+        SCHEME_JAVASCRIPT("javascript", false),
+        SCHEME_ABOUT("about", false),
+        SCHEME_CHROME("chrome", true),
+        SCHEME_VIOLA("viola", true);
+
+        companion object {
+            fun getUriScheme(prefix: String): UriScheme? {
+                for (it in entries) {
+                    if (it.prefix == prefix) return it
+                }
+                return null
+            }
+        }
+    }
+
     fun isUriSupported(uri: String): Boolean {
-        return uri.matches(uriRegex)
-                || supportedUriScheme.any { uri.matches("$it:(//)?.*".toRegex()) }
+        val scheme = UriScheme.getUriScheme(uri.substringBefore(":")) ?: return false
+        val regex = getUriRegex(scheme.requireStartSlashes)
+        return uri.matches(regex)
     }
 
     fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String) =
@@ -36,9 +69,9 @@ object UrlUtils {
 
     fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String,
                                      maxRuns: Int): String {
-        // Return if input matches URI regex
+        // Return if input URI is supported
         // Also, enforce HTTPS on URLs that match
-        if (input.matches(uriRegex)) {
+        if (isUriSupported(input)) {
             return if (input.startsWith(httpPrefix) && pref.getIntBool(SettingsKeys.enforceHttps))
                 input.replaceFirst(httpPrefix, httpsPrefix)
             else input
@@ -55,6 +88,10 @@ object UrlUtils {
                     // Attempt to fix the url by adding in http prefixes
                     checkedUrl = (if (pref.getIntBool(SettingsKeys.enforceHttps))
                         httpsPrefix else httpPrefix) + input
+
+                    // Check whether it has dots
+                    if (!checkedUrl.matches(getUriRegex(true, true)))
+                        checkedUrl = input
                 }
                 2 -> {
                     // If run 0 failed, make it a search url

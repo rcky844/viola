@@ -5,6 +5,7 @@ package tipz.viola.download
 
 import android.content.DialogInterface
 import android.os.Environment
+import android.text.Html
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -15,12 +16,14 @@ import kotlinx.coroutines.launch
 import tipz.viola.ActivityManager
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.R.string
 import tipz.viola.download.database.Droha
 import tipz.viola.download.database.DrohaClient
 import tipz.viola.download.providers.AndroidDownloadProvider
 import tipz.viola.download.providers.InternalDownloadProvider
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VWebView
+import java.io.File
 import java.net.URLDecoder
 
 class DownloadClient(context: Application) {
@@ -34,6 +37,7 @@ class DownloadClient(context: Application) {
     var downloadQueue: MutableLiveData<MutableList<Droha>> = MutableLiveData(mutableListOf())
     private var currentTaskId = 0
 
+    @Suppress("DEPRECATION")
     private val downloadObserver = Observer<MutableList<Droha>> {
         Log.i(LOG_TAG, "Queue updated")
 
@@ -68,21 +72,27 @@ class DownloadClient(context: Application) {
 
             // Start download
             it.downloadStatus = true
-            if (it.showDialog)
-                CoroutineScope(Dispatchers.Main).launch {
-                    MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
-                        .setTitle(R.string.downloads_dialog_title)
-                        .setMessage(context.getString(R.string.downloads_dialog_message, it.filename))
-                        .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                            provider.startDownload(it)
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create().show()
-                }
-            else provider.startDownload(it)
+            val downloadActions = {
+                provider.startDownload(it)
+                commitToDroha(it) // Commit to Droha
+            }
 
-            // Commit to Droha
-            commitToDroha(it)
+            if (it.showDialog)
+                MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
+                    .setTitle(string.downloads_dialog_title)
+                    .setMessage(Html.fromHtml(context.getString(
+                        // Check for duplication
+                        if (File(defaultDownloadPath, it.filename!!).exists())
+                            string.downloads_dialog_duplicated_message
+                        else string.downloads_dialog_message,
+                        "<b>${it.filename}</b>")
+                    ))
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                        downloadActions()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show()
+            else downloadActions()
         }
     }
 
@@ -91,15 +101,9 @@ class DownloadClient(context: Application) {
     }
 
     /* Private methods */
-    private fun isProviderCapable(
-        downloadObject: Droha,
-        capabilities: List<DownloadCapabilities>
-    ) : Boolean {
-        var isProviderCapable = false
-        capabilities.forEach {
-            if (downloadObject.compareUriProtocol(it.value)) isProviderCapable = true
-        }
-        return isProviderCapable
+    private fun isProviderCapable(downloadObject: Droha,
+                                  capabilities: List<DownloadCapabilities>) : Boolean {
+        return capabilities.any { downloadObject.compareUriProtocol(it.value) }
     }
 
     /* Public methods */
@@ -124,6 +128,8 @@ class DownloadClient(context: Application) {
 
     fun commitToDroha(droha: Droha) {
         CoroutineScope(Dispatchers.IO).launch {
+            val matching = drohaClient.getWithFilename(droha.filename!!)
+            if (matching.isNotEmpty()) matching.forEach { drohaClient.deleteById(it.id) }
             drohaClient.insert(droha)
         }
     }

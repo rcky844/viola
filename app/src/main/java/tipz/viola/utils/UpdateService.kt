@@ -103,8 +103,9 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
 
         // Process the update channel object
         val jChannelUpdateObject = jChannelObject.getJSONObject(jChannelDataString)
-        val remoteVerCode = jChannelUpdateObject.getInt("code")
-        val remoteVerRev = jChannelUpdateObject.getInt("revision")
+
+        val remoteVerCode = jChannelUpdateObject.optInt("code", 0)
+        val remoteVerRev = jChannelUpdateObject.optInt("revision", 0)
         if (BuildConfig.VERSION_CODE > remoteVerCode
             || (BuildConfig.VERSION_CODE == remoteVerCode
                     && BuildConfig.VERSION_BUILD_REVISION >= remoteVerRev)) {
@@ -119,7 +120,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                     context.resources.getString(
                         R.string.dialog_update_available_message,
                         jChannelUpdateObject.getString("name"),
-                        jChannelUpdateObject.getInt("code").toString()
+                        if (remoteVerRev > 0) "$remoteVerCode.$remoteVerRev" else remoteVerCode.toString()
                     ) + "\n" + context.resources.getString(
                                 R.string.dialog_update_available_release_date_message,
                                 jChannelUpdateObject.getString("date"))

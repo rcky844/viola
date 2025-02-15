@@ -276,17 +276,17 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 val view = binding.root
 
                 val editText = binding.edittext
+                editText.setText(settingsPreference.getString(SettingsKeys.updateChannelName))
+                
                 MaterialAlertDialogBuilder(settingsActivity)
                     .setTitle(R.string.pref_update_channel_title)
                     .setView(view)
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        if (editText.text.toString().isNotEmpty()) {
-                            settingsPreference.setString(
-                                SettingsKeys.updateChannelName,
-                                editText.text.toString()
-                            )
-                            updateChannel.summary = editText.text.toString()
-                        }
+                        settingsPreference.setString(
+                            SettingsKeys.updateChannelName,
+                            editText.text.toString()
+                        )
+                        updateChannel.summary = editText.text.toString()
                     }
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show()
