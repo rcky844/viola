@@ -75,6 +75,11 @@ class DownloadClient(context: Application) {
 
             // Start download
             it.downloadStatus = true
+            val downloadActions = {
+                provider.startDownload(it)
+                commitToDroha(it) // Commit to Droha
+            }
+
             if (it.showDialog)
                 MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
                     .setTitle(string.downloads_dialog_title)
@@ -86,14 +91,11 @@ class DownloadClient(context: Application) {
                         "<b>${it.filename}</b>")
                     ))
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        provider.startDownload(it)
+                        downloadActions()
                     }
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show()
-            else provider.startDownload(it)
-
-            // Commit to Droha
-            commitToDroha(it)
+            else downloadActions()
         }
     }
 
