@@ -21,16 +21,20 @@ object UrlUtils {
     val httpsPrefix = "https://"
 
     // Default for getting generic URL regex
-    fun getUriRegex(): Regex = getUriRegex(true)
+    fun getUriRegex(): Regex = getUriRegex(true, false)
+    fun getUriRegex(requireStartSlashes: Boolean): Regex =
+        getUriRegex(requireStartSlashes, false)
 
-    fun getUriRegex(requireStartSlashes: Boolean): Regex {
+    fun getUriRegex(requireStartSlashes: Boolean, hasDots: Boolean): Regex {
         var firstPart = "(?:[a-z+]+:)?([\\/]+)"
         if (!requireStartSlashes) firstPart += "?"
 
-        val secondPart = "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\.?" +
-                "[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
+        var secondPart = "(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\\."
+        if (!hasDots) secondPart += "?"
 
-        return "$firstPart$secondPart".toRegex()
+        val thirdPart = "[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&\\\\=]*)(/.*)?"
+
+        return "$firstPart$secondPart$thirdPart".toRegex()
     }
 
     enum class UriScheme(val prefix: String, val requireStartSlashes: Boolean) {
@@ -84,6 +88,10 @@ object UrlUtils {
                     // Attempt to fix the url by adding in http prefixes
                     checkedUrl = (if (pref.getIntBool(SettingsKeys.enforceHttps))
                         httpsPrefix else httpPrefix) + input
+
+                    // Check whether it has dots
+                    if (!checkedUrl.matches(getUriRegex(true, true)))
+                        checkedUrl = input
                 }
                 2 -> {
                     // If run 0 failed, make it a search url
