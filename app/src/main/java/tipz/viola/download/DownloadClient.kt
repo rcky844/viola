@@ -5,6 +5,7 @@ package tipz.viola.download
 
 import android.content.DialogInterface
 import android.os.Environment
+import android.text.Html
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import tipz.viola.ActivityManager
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.R.string
 import tipz.viola.download.database.Droha
 import tipz.viola.download.database.DrohaClient
 import tipz.viola.download.providers.AndroidDownloadProvider
@@ -38,6 +40,7 @@ class DownloadClient(context: Application) {
     var downloadQueue: MutableLiveData<MutableList<Droha>> = MutableLiveData(mutableListOf())
     private var currentTaskId = 0
 
+    @Suppress("DEPRECATION")
     private val downloadObserver = Observer<MutableList<Droha>> {
         Log.i(LOG_TAG, "Queue updated")
 
@@ -74,13 +77,13 @@ class DownloadClient(context: Application) {
             it.downloadStatus = true
             if (it.showDialog)
                 MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
-                    .setTitle(R.string.downloads_dialog_title)
-                    .setMessage(context.getString(
+                    .setTitle(string.downloads_dialog_title)
+                    .setMessage(Html.fromHtml(context.getString(
                         // Check for duplication
                         if (File(defaultDownloadPath, it.filename!!).exists())
-                            R.string.downloads_dialog_duplicated_message
-                        else R.string.downloads_dialog_message,
-                        it.filename
+                            string.downloads_dialog_duplicated_message
+                        else string.downloads_dialog_message,
+                        "<b>${it.filename}</b>")
                     ))
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         provider.startDownload(it)
