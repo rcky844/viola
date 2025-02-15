@@ -91,11 +91,9 @@ class DownloadActivity : BaseActivity() {
         }
     }
 
-    class ItemsAdapter(downloadActivity: DownloadActivity)
-        : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        private val mDownloadActivity: WeakReference<DownloadActivity> =
-            WeakReference(downloadActivity)
-
+    class ItemsAdapter(
+        private val activity: DownloadActivity
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             private val binding = Companion.binding as TemplateIconTitleDescriptorTimeBinding
             val back: ConstraintLayout = binding.bg

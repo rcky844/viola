@@ -125,16 +125,17 @@ class ListInterfaceActivity : BaseActivity() {
         layoutManager.reverseLayout = activityMode == mode_history
         layoutManager.stackFromEnd = activityMode == mode_history
         updateListData {
-            itemsAdapter = ItemsAdapter()
+            itemsAdapter = ItemsAdapter(this)
             brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
         }
     }
 
-    class ItemsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    class ItemsAdapter(
+        private val activity: ListInterfaceActivity
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val LOG_TAG = "ListInterfaceAdapter"
 
         private lateinit var binding: ViewBinding
-        private val activity = ActivityManager.instance.currentActivity!! as ListInterfaceActivity
         private val mIconHashClient: IconHashClient = IconHashClient(activity)
 
         class ListViewHolder(binding: TemplateIconTitleDescriptorTimeBinding)
