@@ -102,12 +102,12 @@ android {
     productFlavors {
         create("modern") {
             dimension = "apilevel"
-            minSdk = 19
+            minSdk = 21
         }
         create("legacy") {
             dimension = "apilevel"
             minSdk = 14
-            maxSdk = 18
+            maxSdk = 20
             buildConfigField("String", "VERSION_BUILD_BRANCH",
                 "\"${getGitInfo("branch")}_legacy\"")
             vectorDrawables.useSupportLibrary = true
