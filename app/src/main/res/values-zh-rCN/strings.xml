@@ -97,8 +97,6 @@
     <string name="ssl_info_dialog_expires_on">到期日期</string>
     <!-- SSL Lock Dialog: No certificate message -->
     <string name="ssl_info_dialog_content_nocert">当前网站不提供SSL凭证，请勿提供敏感资讯 (例如密码或信用卡)。</string>
-    <!-- SSL Lock Dialog: Copy website title -->
-    <string name="ssl_info_dialog_copy_website_title">复制网站标题</string>
     <!-- HTTP Authentication Dialog: Title -->
     <string name="dialog_auth_title">需要身份验证</string>
     <!-- HTTP Authentication Dialog: Message -->
@@ -171,7 +169,7 @@
     <string name="pref_ad_blocker_title">启用广告拦截器</string>
     <!-- Settings: Enable ad blocker summary -->
     <string name="pref_ad_blocker_summary">拦截分散注意力而且烦人的广告。</string>
-    <!-- Settings: Ad blocker hosts source title -->
+    <!-- Settings: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">广告拦截器列表源</string>
     <!-- Settings: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">下载广告拦截器列表文件</string>

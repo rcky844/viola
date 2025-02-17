@@ -65,8 +65,8 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
 
-        resourceConfigurations += listOf("de", "en-rGB", "fr", "pt-rBR",
-            "tr", "vi", "zh-rCN", "zh-rTW")
+        resourceConfigurations += listOf("de", "en-rGB", "es-rES", "fr",
+            "pt-rBR", "tr", "vi", "zh-rCN", "zh-rTW")
     }
 
     buildFeatures {

@@ -4,9 +4,9 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Generic: Clear -->
-    <string name="clear">Clear</string>
+    <string name="clear">Eliminar</string>
     <!-- Generic - Defaults: Search engine -->
-    <string name="search_engine">Search engine</string>
+    <string name="search_engine">Motor de búsqueda</string>
     <!-- Generic - Defaults: Homepage -->
     <string name="homepage">Homepage</string>
     <!-- Generic - Defaults: Search Suggestions -->
@@ -22,7 +22,7 @@
     <!-- Dialogs: Continue prompt message -->
     <string name="dialog_continue_prompt_message">Are you sure you want to continue?</string>
     <!-- Menus: Copy link -->
-    <string name="menu_copy_link">Copy link</string>
+    <string name="menu_copy_link">Copiar enlace</string>
     <!-- WebView: Start page -->
     <string name="start_page">Start Page</string>
     <!-- WebView: No app to handle action -->
@@ -64,73 +64,73 @@
     <!-- WebView: App link detected dialog message -->
     <string name="dialog_open_external_message">Would you like to open this link in an external app?</string>
     <!-- Address bar: Hint -->
-    <string name="address_bar_hint">Search or type web address…</string>
+    <string name="address_bar_hint">Busca o escribe una dirección web…</string>
     <!-- Hit Test Dialog: Copy link text -->
-    <string name="hit_test_copy_link_text">Copy link text</string>
+    <string name="hit_test_copy_link_text">Copiar texto de enlace</string>
     <!-- Hit Test Dialog: Download link -->
-    <string name="hit_test_download_link">Download link</string>
+    <string name="hit_test_download_link">Descargar enlace</string>
     <!-- Hit Test Dialog: Download image -->
-    <string name="hit_test_download_image">Download image</string>
+    <string name="hit_test_download_image">Descargar imagen</string>
     <!-- Hit Test Dialog: Copy image link -->
     <string name="hit_test_copy_image_link">Copy image link</string>
     <!-- Hit Test Dialog: Search for similar images -->
     <string name="hit_test_search_image">Search for similar images</string>
     <!-- Hit Test Dialog: Open in new tab -->
-    <string name="hit_test_open_in_new_tab">Open in new tab</string>
+    <string name="hit_test_open_in_new_tab">Abrir en una pestaña nueva</string>
     <!-- Hit Test Dialog: Share link -->
-    <string name="hit_test_share_link">Share link</string>
+    <string name="hit_test_share_link">Compartir enlace</string>
     <!-- SSL Lock Dialog: Issued to -->
-    <string name="ssl_info_dialog_issued_to">Issued To:</string>
+    <string name="ssl_info_dialog_issued_to">Emitido para:</string>
     <!-- SSL Lock Dialog: Issued by -->
-    <string name="ssl_info_dialog_issued_by">Issued By:</string>
+    <string name="ssl_info_dialog_issued_by">Emitido por:</string>
     <!-- SSL Lock Dialog: Validity Period -->
-    <string name="ssl_info_dialog_validity_period">Validity Period:</string>
+    <string name="ssl_info_dialog_validity_period">Periodo de validez:</string>
     <!-- SSL Lock Dialog: Common Name -->
-    <string name="ssl_info_dialog_common_name">Common Name (CN)</string>
+    <string name="ssl_info_dialog_common_name">Nombre común (CN)</string>
     <!-- SSL Lock Dialog: Organization -->
-    <string name="ssl_info_dialog_organization">Organization (O)</string>
+    <string name="ssl_info_dialog_organization">Empresa (O)</string>
     <!-- SSL Lock Dialog: Organizational Unit -->
-    <string name="ssl_info_dialog_organization_unit">Organizational Unit (OU)</string>
+    <string name="ssl_info_dialog_organization_unit">Consorcio (OU)</string>
     <!-- SSL Lock Dialog: Issued On -->
-    <string name="ssl_info_dialog_issued_on">Issued On</string>
+    <string name="ssl_info_dialog_issued_on">Emitido el</string>
     <!-- SSL Lock Dialog: Expires On -->
-    <string name="ssl_info_dialog_expires_on">Expires On</string>
+    <string name="ssl_info_dialog_expires_on">Expira el</string>
     <!-- SSL Lock Dialog: No certificate message -->
     <string name="ssl_info_dialog_content_nocert">This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards).</string>
     <!-- HTTP Authentication Dialog: Title -->
-    <string name="dialog_auth_title">Authentication required</string>
+    <string name="dialog_auth_title">Es necesario identificarse</string>
     <!-- HTTP Authentication Dialog: Message -->
-    <string name="dialog_auth_message">%s requires a username and password.</string>
+    <string name="dialog_auth_message">%s requiere un nombre de usuario y contraseña.</string>
     <!-- HTTP Authentication Dialog: Username -->
-    <string name="dialog_auth_username">Username</string>
+    <string name="dialog_auth_username">Nombre de usuario</string>
     <!-- HTTP Authentication Dialog: Password -->
-    <string name="dialog_auth_password">Password</string>
+    <string name="dialog_auth_password">Contraseña</string>
     <!-- Toolbar: Share dialog title -->
     <string name="dialog_share_title">Share URL using</string>
     <!-- Expandable toolbar: New Tab -->
-    <string name="toolbar_expandable_new_tab">New Tab</string>
+    <string name="toolbar_expandable_new_tab">Nueva Pestaña</string>
     <!-- Expandable toolbar: Favorites -->
-    <string name="toolbar_expandable_favorites">Favourites</string>
+    <string name="toolbar_expandable_favorites">Favoritos</string>
     <!-- Expandable toolbar: History -->
-    <string name="toolbar_expandable_history">History</string>
+    <string name="toolbar_expandable_history">Historial</string>
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">Viewing mode</string>
     <!-- Expandable toolbar: Add to favorites -->
-    <string name="toolbar_expandable_favorites_add">Add to favourites</string>
+    <string name="toolbar_expandable_favorites_add">Seite als Lesezeichen speichern</string>
     <!-- Expandable toolbar: Translate -->
     <string name="toolbar_expandable_translate">Translate</string>
     <!-- Expandable toolbar: Downloads -->
-    <string name="toolbar_expandable_downloads">Downloads</string>
+    <string name="toolbar_expandable_downloads">Descargas</string>
     <!-- Expandable toolbar: Enter full screen -->
     <string name="toolbar_expandable_fullscreen">Enter full screen</string>
     <!-- Expandable toolbar: Create shortcut -->
     <string name="toolbar_expandable_app_shortcut">Create shortcut</string>
     <!-- Expandable toolbar: Settings -->
-    <string name="toolbar_expandable_settings">Settings</string>
+    <string name="toolbar_expandable_settings">Ajustes</string>
     <!-- Expandable toolbar: View Page Source -->
     <string name="toolbar_expandable_view_page_source">View Page Source</string>
     <!-- Expandable toolbar: Print -->
-    <string name="toolbar_expandable_print">Print</string>
+    <string name="toolbar_expandable_print">Imprimir</string>
     <!-- Expandable toolbar: Close app -->
     <string name="toolbar_expandable_close">Close app</string>
     <!-- Viewing mode: Custom user agent dialog title -->
@@ -156,7 +156,7 @@
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">Disable</string>
     <!-- Settings: Title -->
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">Ajustes</string>
     <!-- Settings: General category -->
     <string name="pref_category_general">General</string>
     <!-- Settings: Use web-based homepage title -->
@@ -174,9 +174,9 @@
     <!-- Settings: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
     <!-- Settings: Do Not Track title -->
-    <string name="pref_do_not_track_title">Do Not Track</string>
+    <string name="pref_do_not_track_title">No rastrear</string>
     <!-- Settings: Do Not Track summary -->
-    <string name="pref_do_not_track_summary">Send a Do Not Track request to websites you visit.</string>
+    <string name="pref_do_not_track_summary">Envía una solicitud para evitar el rastreo en los sitios web que visites.</string>
     <!-- Settings: Send GPC title -->
     <string name="pref_send_sec_gpc_title">Global Privacy Control</string>
     <!-- Settings: Send GPC summary -->
@@ -196,7 +196,7 @@
     <!-- Settings: Clear cache title -->
     <string name="pref_clear_cache">Clear cache</string>
     <!-- Settings: Clear cookies title -->
-    <string name="pref_clear_cookies">Clear cookies</string>
+    <string name="pref_clear_cookies">Borrar cookies</string>
     <!-- Settings: Reset to default title -->
     <string name="pref_reset_to_default_title">Reset to default</string>
     <!-- Settings: Reset to default summary -->
@@ -230,9 +230,9 @@
     <!-- Settings: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
     <!-- Settings: Advanced category -->
-    <string name="pref_category_advanced">Advanced</string>
+    <string name="pref_category_advanced">Configuración avanzada</string>
     <!-- Settings: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">Enable JavaScript</string>
+    <string name="pref_enable_javascript_title">Activar JavaScript</string>
     <!-- Settings: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
     <!-- Settings: Use Custom Tabs title -->
@@ -288,27 +288,27 @@
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">Delete all entries</string>
     <!-- Lists: Delete menu option -->
-    <string name="delete">Delete</string>
+    <string name="delete">Eliminar</string>
     <!-- History: Title -->
-    <string name="history_title">History</string>
+    <string name="history_title">Historial</string>
     <!-- History: Empty message -->
     <string name="history_empty_message">History is empty!</string>
     <!-- History: Save to favorites menu option -->
-    <string name="menu_save_to_favorites">Save to favourites</string>
+    <string name="menu_save_to_favorites">Save to favorites</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">You are about to delete all history entries, are you sure about this?</string>
     <!-- Favorites: Title -->
-    <string name="favorites_title">Favourites</string>
+    <string name="favorites_title">Favoritos</string>
     <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">There are no favourites saved.</string>
+    <string name="favorites_empty_message">There are no favorites saved.</string>
     <!-- Favorites: Menu edit option -->
-    <string name="favorites_menu_edit">Edit</string>
+    <string name="favorites_menu_edit">Editar</string>
     <!-- Favorites: Edit dialog title option -->
-    <string name="favorites_dialog_title">Title</string>
+    <string name="favorites_dialog_title">Título</string>
     <!-- Favorites: Edit dialog link option -->
-    <string name="favorites_dialog_link">Link</string>
+    <string name="favorites_dialog_link">Enlace</string>
     <!-- Favorites: Delete all entries dialog message -->
-    <string name="dialog_delete_all_entries_favorites_message">You are about to delete all favourites entries, are you sure about this?</string>
+    <string name="dialog_delete_all_entries_favorites_message">You are about to delete all favorites entries, are you sure about this?</string>
     <!-- Downloads: Toast failed -->
     <string name="downloads_toast_failed">Download failed!</string>
     <!-- Downloads: Toast success -->
@@ -316,9 +316,9 @@
     <!-- Downloads: Empty message -->
     <string name="downloads_empty_message">No downloads</string>
     <!-- Downloads: Confirmation dialog title -->
-    <string name="downloads_dialog_title">Download file?</string>
+    <string name="downloads_dialog_title">¿Descargar archivo?</string>
     <!-- Downloads: Confirmation dialog message -->
-    <string name="downloads_dialog_message">Do you want to download %s?</string>
+    <string name="downloads_dialog_message">¿Quieres descargar %s?</string>
     <!-- Downloads: Confirmation dialog duplicated message -->
     <string name="downloads_dialog_duplicated_message">File already present in your download directory, do you want to re-download %s?</string>
     <!-- Downloads: Menu re-download option -->
@@ -334,7 +334,7 @@
     <!-- Crash Activity: Error details dialog title -->
     <string name="customactivityoncrash_error_activity_error_details_title">Error details</string>
     <!-- Crash Activity: Error details dialog close button -->
-    <string name="customactivityoncrash_error_activity_error_details_close">Close</string>
+    <string name="customactivityoncrash_error_activity_error_details_close">Cerrar</string>
     <!-- Crash Activity: Error details dialog copy button -->
     <string name="customactivityoncrash_error_activity_error_details_copy">Copy to clipboard</string>
     <!-- Crash Activity: Error details dialog copy toast -->

@@ -97,8 +97,6 @@
     <string name="ssl_info_dialog_expires_on">有效期至</string>
     <!-- SSL Lock Dialog: No certificate message -->
     <string name="ssl_info_dialog_content_nocert">當前網站不提供SSL憑證，請勿提供敏感資訊 (例如密碼或信用卡)。</string>
-    <!-- SSL Lock Dialog: Copy website title -->
-    <string name="ssl_info_dialog_copy_website_title">複製網站標題</string>
     <!-- HTTP Authentication Dialog: Title -->
     <string name="dialog_auth_title">需要身份驗證</string>
     <!-- HTTP Authentication Dialog: Message -->
@@ -171,10 +169,10 @@
     <string name="pref_ad_blocker_title">啟用廣告阻擋器</string>
     <!-- Settings: Enable ad blocker summary -->
     <string name="pref_ad_blocker_summary">阻擋分散注意力而且煩人的廣告</string>
-    <!-- Settings: Ad blocker hosts source title -->
+    <!-- Settings: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">廣告攔截器列表來源</string>
     <!-- Settings: Download ad blocker hosts title -->
-    <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器列表檔案</string>
+    <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器列表</string>
     <!-- Settings: Do Not Track title -->
     <string name="pref_do_not_track_title">不追蹤</string>
     <!-- Settings: Do Not Track summary -->

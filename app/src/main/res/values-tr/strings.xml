@@ -97,8 +97,6 @@
     <string name="ssl_info_dialog_expires_on">Expires On</string>
     <!-- SSL Lock Dialog: No certificate message -->
     <string name="ssl_info_dialog_content_nocert">This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards).</string>
-    <!-- SSL Lock Dialog: Copy website title -->
-    <string name="ssl_info_dialog_copy_website_title">Web sitesinin başlığını kopyala</string>
     <!-- HTTP Authentication Dialog: Title -->
     <string name="dialog_auth_title">Authentication required</string>
     <!-- HTTP Authentication Dialog: Message -->
@@ -171,10 +169,10 @@
     <string name="pref_ad_blocker_title">Reklam engelleyiciyi etkinleştir</string>
     <!-- Settings: Enable ad blocker summary -->
     <string name="pref_ad_blocker_summary">Reklamların rahatsızlık vermesini engeller.</string>
-    <!-- Settings: Ad blocker hosts source title -->
-    <string name="pref_ad_blocker_source_title">Reklam Engelleyici Ana Bilgisayar Kaynağı</string>
+    <!-- Settings: Ad Blocklist source title -->
+    <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
     <!-- Settings: Download ad blocker hosts title -->
-    <string name="pref_ad_blocker_download_hosts_title">Reklam engelleyici ana makine dosyasını indirin</string>
+    <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
     <!-- Settings: Do Not Track title -->
     <string name="pref_do_not_track_title">İzlemeyi Durdur (Do Not Track)</string>
     <!-- Settings: Do Not Track summary -->
@@ -270,7 +268,7 @@
     <!-- Settings - Wallpaper: Default -->
     <string name="default_res">Varsayılan</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
-    <string name="toast_ad_servers_finished">Finished downloading ad servers!</string>
+    <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
     <!-- Settings - Reset to Default: Dialog message -->
     <string name="dialog_settings_reset_to_default_message">This will clear all browser data\nAre you sure you want to continue?</string>
     <!-- Settings - Reset to Default: Toast message -->
