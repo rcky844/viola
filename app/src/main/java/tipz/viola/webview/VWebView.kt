@@ -57,7 +57,7 @@ import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
 import java.util.regex.Pattern
 
-@SuppressLint("SetJavaScriptEnabled")
+@SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
 class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     context, attrs
 ) {
@@ -244,6 +244,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         activity.onSslErrorProceed()
     }
 
+    @SuppressLint("InlinedApi")
     fun loadAppLinkUrl(url: String): Boolean {
         if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
             && !UrlUtils.isUriSupported(url)) {

@@ -108,8 +108,6 @@
     <string name="ssl_info_dialog_expires_on">Expires On</string>
     <!-- SSL Lock Dialog: No certificate message -->
     <string name="ssl_info_dialog_content_nocert">This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards).</string>
-    <!-- SSL Lock Dialog: Copy website title -->
-    <string name="ssl_info_dialog_copy_website_title">Copy Website Title</string>
 
     <!-- HTTP Authentication Dialog: Title -->
     <string name="dialog_auth_title">Authentication required</string>
@@ -190,10 +188,10 @@
     <string name="pref_ad_blocker_title">Enable Ad Blocker</string>
     <!-- Settings: Enable ad blocker summary -->
     <string name="pref_ad_blocker_summary">Stop annoying ads from distracting you.</string>
-    <!-- Settings: Ad blocker hosts source title -->
-    <string name="pref_ad_blocker_source_title">Ad Blocker Hosts Source</string>
+    <!-- Settings: Ad Blocklist source title -->
+    <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
     <!-- Settings: Download ad blocker hosts title -->
-    <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocker Hosts File</string>
+    <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
     <!-- Settings: Do Not Track title -->
     <string name="pref_do_not_track_title">Do Not Track</string>
     <!-- Settings: Do Not Track summary -->
@@ -292,7 +290,7 @@
     <string name="default_res">Default</string>
 
     <!-- Settings - Ad Servers: Downloading finished toast -->
-    <string name="toast_ad_servers_finished">Finished downloading ad servers!</string>
+    <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
     <!-- Settings - Reset to Default: Dialog message -->
     <string name="dialog_settings_reset_to_default_message">This will clear all browser data\nAre you sure you want to continue?</string>
     <!-- Settings - Reset to Default: Toast message -->
@@ -395,7 +393,7 @@
         <item>Qwant</item>
         <item>Sogou</item>
         <item>360 Search</item>
-        <item>FrogFind!</item>
+        <item>FrogFind</item>
         <item>Custom</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">

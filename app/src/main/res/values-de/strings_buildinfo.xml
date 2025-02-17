@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!--
+        Build Info: Version information
+        {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
+        Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
+    -->
+    <string name="buildinfo_version">%1$s (%2$s)\nVersion %3$s (Build %4$s%5$s)\n\n</string>
+    <!--
+        Build Info: Copyright information
+        Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team
+    -->
+    <string name="buildinfo_copyright">Copyright © %s Tipz Team\n</string>
+    <!--
+        Build Info: License information
+        This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
+    -->
+    <string name="buildinfo_license">Dieses Produkt ist unter der %s lizenziert.</string>
+    <!-- Build Info: License button -->
+    <string name="buildinfo_license_button">Lizenz</string>
+    <!-- Build Info: Changelog button -->
+    <string name="buildinfo_changelog_button">Read ChangeLogs</string>
+    <!-- Build Info: Website title -->
+    <string name="pref_website_title">Webseite</string>
+    <!-- Build Info: Website summary -->
+    <string name="pref_website_summary">Besuchen Sie die Website das Produkt.</string>
+    <!-- Build Info: Feedback title -->
+    <string name="pref_feedback_title">Rückmeldung</string>
+    <!-- Build Info: Feedback summary -->
+    <string name="pref_feedback_summary">"Melde Fehler oder schlage neue Features vor."</string>
+    <!-- Build Info: Source code title -->
+    <string name="pref_source_code_title">"Quellcode"</string>
+    <!-- Build Info: Source code summary -->
+    <string name="pref_source_code_summary">"Sehen Sie sich den Quellcode von Viola an."</string>
+    <!-- Build Info: Build number title -->
+    <string name="buildinfo_pref_build_number_title">Build-Nummer</string>
+</resources>

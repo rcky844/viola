@@ -35,7 +35,7 @@ open class BuildInfo {
      *
      * Describes the visible extra name given to the build
      */
-    @Size(min=1)
+    @Size(min=0)
     var productBuildExtra: String? = BuildConfig.VERSION_BUILD_EXTRA
 
     /* PRODUCT_BUILD_ID
