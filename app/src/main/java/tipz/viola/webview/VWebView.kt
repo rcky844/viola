@@ -122,7 +122,14 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
         }
+
+        // JavaScript interface
         addJavascriptInterface(VJavaScriptInterface(activity), VJavaScriptInterface.INTERFACE_NAME)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            removeJavascriptInterface("searchBoxJavaBridge_") /* CVE-2014-1939 */
+            removeJavascriptInterface("accessibility") /* CVE-2014-7224 */
+            removeJavascriptInterface("accessibilityTraversal") /* CVE-2014-7224 */
+        }
 
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
