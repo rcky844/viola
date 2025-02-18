@@ -95,7 +95,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             when (arrayAdapter.getItemResId(which)) {
                 R.string.menu_copy_link -> context.copyClipboard(url)
 
-                R.string.hit_test_copy_link_text -> context.copyClipboard(title)
+                R.string.hit_test_copy_link_text -> context.copyClipboard(title?.trim())
 
                 R.string.hit_test_download_link -> {
                     view.downloadClient.launchDownload(Droha().apply {
