@@ -5,6 +5,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Generic: Clear -->
     <string name="clear">Limpar</string>
+    <!-- Generic: Do not show again -->
+    <string name="do_not_show_again">Do not show again</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">Mecanismo de Busca</string>
     <!-- Generic - Defaults: Homepage -->
@@ -143,6 +145,10 @@
     <string name="dialog_translate_page_lang">Idioma da página (ex: zh-TW)</string>
     <!-- Translate: Target language -->
     <string name="dialog_translate_target_lang">Idioma de destino (ex. en)</string>
+    <!-- Fullscreen: Warning dialog title -->
+    <string name="dialog_fullscreen_title">Fullscreen mode</string>
+    <!-- Fullscreen: Warning dialog message -->
+    <string name="dialog_fullscreen_message">You have entered fullscreen mode. Exit by double tapping the button at the right bottom corner of your screen.</string>
     <!-- Shortcuts: Browser Access -->
     <string name="shortcuts_menu_browser">Acesso ao Navegador</string>
     <!-- Shortcuts: Custom Tabs -->
@@ -283,7 +289,7 @@
     <string name="dialog_update_available_message">Viola %1$s (%2$s) está disponível, deseja instalar?</string>
     <!-- Updates: Update available dialog release date message -->
     <string name="dialog_update_available_release_date_message">Data de lançamento: %s</string>
-    <!-- Updates: Updated failed toast -->
+    <!-- Updates: Update failed message -->
     <string name="update_download_failed">Falha ao baixar atualização!</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">Excluir todas as entradas</string>
@@ -319,6 +325,8 @@
     <string name="downloads_dialog_title">Baixar arquivo?</string>
     <!-- Downloads: Confirmation dialog message -->
     <string name="downloads_dialog_message">Deseja baixar %s?</string>
+    <!-- Downloads: Error details dialog title -->
+    <string name="downloads_dialog_error_details_title">Download failure details</string>
     <!-- Downloads: Confirmation dialog duplicated message -->
     <string name="downloads_dialog_duplicated_message">Arquivo já presente em seu diretório de download, você quer baixar %s novamente?</string>
     <!-- Downloads: Menu re-download option -->

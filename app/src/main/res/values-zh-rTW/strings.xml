@@ -5,6 +5,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Generic: Clear -->
     <string name="clear">清除</string>
+    <!-- Generic: Do not show again -->
+    <string name="do_not_show_again">不再提示</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">搜尋引擎</string>
     <!-- Generic - Defaults: Homepage -->
@@ -122,7 +124,7 @@
     <!-- Expandable toolbar: Downloads -->
     <string name="toolbar_expandable_downloads">下載</string>
     <!-- Expandable toolbar: Enter full screen -->
-    <string name="toolbar_expandable_fullscreen">全螢幕</string>
+    <string name="toolbar_expandable_fullscreen">進入全螢幕模式</string>
     <!-- Expandable toolbar: Create shortcut -->
     <string name="toolbar_expandable_app_shortcut">創建捷徑</string>
     <!-- Expandable toolbar: Settings -->
@@ -143,6 +145,10 @@
     <string name="dialog_translate_page_lang">頁面語言 (e.g. zh-TW)</string>
     <!-- Translate: Target language -->
     <string name="dialog_translate_target_lang">目標語言 (e.g. en)</string>
+    <!-- Fullscreen: Warning dialog title -->
+    <string name="dialog_fullscreen_title">全螢幕模式</string>
+    <!-- Fullscreen: Warning dialog message -->
+    <string name="dialog_fullscreen_message">您已進入全螢幕模式。雙擊螢幕右下角的按鈕即可退出。</string>
     <!-- Shortcuts: Browser Access -->
     <string name="shortcuts_menu_browser">瀏覽器訪問</string>
     <!-- Shortcuts: Custom Tabs -->
@@ -283,7 +289,7 @@
     <string name="dialog_update_available_message">Viola %1$s (%2$s) 可用，你想安裝它嗎？</string>
     <!-- Updates: Update available dialog release date message -->
     <string name="dialog_update_available_release_date_message">發布日期：%s</string>
-    <!-- Updates: Updated failed toast -->
+    <!-- Updates: Update failed message -->
     <string name="update_download_failed">更新下載失敗！</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">刪除全部書籤</string>
@@ -319,6 +325,8 @@
     <string name="downloads_dialog_title">下載檔案？</string>
     <!-- Downloads: Confirmation dialog message -->
     <string name="downloads_dialog_message">您想下載 %s 嗎？</string>
+    <!-- Downloads: Error details dialog title -->
+    <string name="downloads_dialog_error_details_title">下載失敗詳情</string>
     <!-- Downloads: Confirmation dialog duplicated message -->
     <string name="downloads_dialog_duplicated_message">檔案已存在於您的下載目錄中，是否要重新下載 %s？</string>
     <!-- Downloads: Menu re-download option -->

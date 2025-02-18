@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!--
+        Build Info: Version information
+        {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
+        Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
+    -->
+    <string name="buildinfo_version">%1$s (%2$s)\nВерсия %3$s (Сборка %4$s%5$s)\n\n</string>
+    <!--
+        Build Info: Copyright information
+        Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team
+    -->
+    <string name="buildinfo_copyright">Авторские права © %s Tipz Team\n</string>
+    <!--
+        Build Info: License information
+        This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
+    -->
+    <string name="buildinfo_license">Этот продукт лицензирован с %s.</string>
+    <!-- Build Info: License button -->
+    <string name="buildinfo_license_button">Лицензия</string>
+    <!-- Build Info: Changelog button -->
+    <string name="buildinfo_changelog_button">Изменения</string>
+    <!-- Build Info: Website title -->
+    <string name="pref_website_title">Сайт</string>
+    <!-- Build Info: Website summary -->
+    <string name="pref_website_summary">Сайт проекта.</string>
+    <!-- Build Info: Feedback title -->
+    <string name="pref_feedback_title">Отзыв</string>
+    <!-- Build Info: Feedback summary -->
+    <string name="pref_feedback_summary">"Сообщить об ошибке или запросить новые функции."</string>
+    <!-- Build Info: Source code title -->
+    <string name="pref_source_code_title">"Исходный код"</string>
+    <!-- Build Info: Source code summary -->
+    <string name="pref_source_code_summary">"Просмотреть исходный код браузера."</string>
+    <!-- Build Info: Build number title -->
+    <string name="buildinfo_pref_build_number_title">Номер сборки</string>
+</resources>

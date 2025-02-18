@@ -4,107 +4,107 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Generic: Clear -->
-    <string name="clear">মুছে ফেলুন</string>
+    <string name="clear">Очистить</string>
     <!-- Generic: Do not show again -->
-    <string name="do_not_show_again">Do not show again</string>
+    <string name="do_not_show_again">Не показывать снова</string>
     <!-- Generic - Defaults: Search engine -->
-    <string name="search_engine">সার্চ ইঞ্জিন</string>
+    <string name="search_engine">Система поиска</string>
     <!-- Generic - Defaults: Homepage -->
-    <string name="homepage">হোমপেজ</string>
+    <string name="homepage">Домашняя страница</string>
     <!-- Generic - Defaults: Search Suggestions -->
-    <string name="search_suggestions_title">অনুসন্ধানের পরামর্শ</string>
+    <string name="search_suggestions_title">Подсказки поиска</string>
     <!-- Toasts: No WebView -->
-    <string name="toast_no_webview">এটির জন্য ওয়েবভিউ দরকার, কিন্তু সেটা ইন্সটল করা নেই।</string>
+    <string name="toast_no_webview">Требуется WebView, но не установлен.</string>
     <!-- Toasts: Cleared -->
-    <string name="toast_cleared">পরিষ্কার করা সফল হয়েছে!</string>
+    <string name="toast_cleared">Успешно очищено!</string>
     <!-- Toasts: Copied to clipboard -->
-    <string name="toast_copied_clipboard">ক্লিপবোর্ডে কপি করা হয়েছে!</string>
+    <string name="toast_copied_clipboard">Скопировано в буфер обмена!</string>
     <!-- Toasts: Saved -->
-    <string name="save_successful">সংরক্ষণ সফল হয়েছে!</string>
+    <string name="save_successful">Успешно сохранено!</string>
     <!-- Dialogs: Continue prompt message -->
-    <string name="dialog_continue_prompt_message">আপনি কি সত্যিই এটি করতে চান?</string>
+    <string name="dialog_continue_prompt_message">Вы хотите продолжить?</string>
     <!-- Menus: Copy link -->
-    <string name="menu_copy_link">লিংক কপি করুন</string>
+    <string name="menu_copy_link">Скопировать ссылку</string>
     <!-- WebView: Start page -->
-    <string name="start_page">মূলপাতা</string>
+    <string name="start_page">Стартовая страница</string>
     <!-- WebView: No app to handle action -->
-    <string name="toast_no_app_to_handle">এই কাজটি করার মতো কোনো অ্যাপ্লিকেশন নেই।</string>
+    <string name="toast_no_app_to_handle">Ни одно приложение может выполнить это действие.</string>
     <!-- WebView: JavaScript dialog title -->
-    <string name="dialog_js_title">%s বলছে</string>
+    <string name="dialog_js_title">%s Говорит</string>
     <!-- WebView: JavaScript leave page dialog title -->
-    <string name="dialog_js_leave_page_title">%s বলছে, আপনি কি সত্যিই এইখান থেকে বেরোতে চান?</string>
+    <string name="dialog_js_leave_page_title">%s Говорит: Вы хотите покинуть эту страницу?</string>
     <!-- WebView: JavaScript page unresponsive title -->
-    <string name="dialog_page_unresponsive_title">পৃষ্ঠাটি প্রতিক্রিয়াহীন হয়ে পড়েছে</string>
+    <string name="dialog_page_unresponsive_title">Страница не отвечает</string>
     <!-- WebView: JavaScript page unresponsive message -->
-    <string name="dialog_page_unresponsive_message">পৃষ্ঠাটি ঠিক হওয়া অবধি আপনি দাঁড়াতে পারেন, অথবা পৃষ্ঠাটি বন্ধ করতে পারেন।</string>
+    <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
     <!-- WebView: JavaScript page unresponsive wait -->
-    <string name="dialog_page_unresponsive_wait">অপেক্ষা করুন</string>
+    <string name="dialog_page_unresponsive_wait">Подождать</string>
     <!-- WebView: JavaScript page unresponsive terminate -->
-    <string name="dialog_page_unresponsive_terminate">বন্ধ করুন</string>
+    <string name="dialog_page_unresponsive_terminate">Уничтожить</string>
     <!-- WebView: SSL certification error dialog title -->
-    <string name="ssl_certificate_error_dialog_title">SSL সার্টিফিকেটে সমস্যা দেখা দিয়েছে</string>
+    <string name="ssl_certificate_error_dialog_title">Ошибка SSL сертификата</string>
     <!-- WebView: SSL certification error dialog message -->
-    <string name="ssl_certificate_error_dialog_message">%s আপনি কি এ সত্যেও ঢুকতে চান?</string>
+    <string name="ssl_certificate_error_dialog_message">%s Продолжить в любом случае?</string>
     <!-- WebView: SSL certificate date invalid -->
-    <string name="ssl_certificate_date_invalid">এই সার্টিফিকেটের বৈধতা যাচাই করা যাচ্ছে না।</string>
+    <string name="ssl_certificate_date_invalid">Дата сертификата недействительна.</string>
     <!-- WebView: SSL certificate invalid -->
-    <string name="ssl_certificate_invalid">একটা সাধারণ SSL সমস্যা ঘটেছে।</string>
+    <string name="ssl_certificate_invalid">Общая ошибка SSL.</string>
     <!-- WebView: SSL certificate expired -->
-    <string name="ssl_certificate_expired">এই সার্টিফিকেট বৈধ নয়।</string>
+    <string name="ssl_certificate_expired">Сертификат устарел.</string>
     <!-- WebView: SSL certificate hostname mismatch -->
-    <string name="ssl_certificate_idmismatch">এই সার্টিফিকেটের সাথে হোস্টনেম মিলছে না।</string>
+    <string name="ssl_certificate_idmismatch">Имя сертификата и сервера не совпадают.</string>
     <!-- WebView: SSL certificate not yet valid -->
-    <string name="ssl_certificate_notyetvalid">এই সার্টিফিকেট এখনো বৈধ নয়।</string>
+    <string name="ssl_certificate_notyetvalid">Сертификат еще недействителен.</string>
     <!-- WebView: SSL certificate authority not trusted -->
-    <string name="ssl_certificate_untrusted">এই সার্টিফিকেট প্রতিষ্ঠাটাকে জানা নেই।</string>
+    <string name="ssl_certificate_untrusted">Центр сертификации не является доверенным.</string>
     <!-- WebView: SSL certificate unknown -->
-    <string name="ssl_certificate_unknown">একটা অস্বাভাবিক SSL সমস্যা ঘটেছে।</string>
+    <string name="ssl_certificate_unknown">Неизвестная ошибка SSL.</string>
     <!-- WebView: SSL handshake failed dialog title -->
-    <string name="dialog_ssl_failed_handshake_title">SSL হ্যান্ডশেক অসফল হয়েছে। পেজটিকে HTTP দ্বারা লোড করা যেতে পারে।</string>
+    <string name="dialog_ssl_failed_handshake_title">Не удалось выполнить SSL рукопожатие. Страница может быть загружена сменой на HTTP.</string>
     <!-- WebView: App link detected dialog title -->
-    <string name="dialog_open_external_title">অন্য অ্যাপে খোলার লিংক পাওয়া গেছে।</string>
+    <string name="dialog_open_external_title">Обнаружена ссылка на запускаемое приложение</string>
     <!-- WebView: App link detected dialog message -->
-    <string name="dialog_open_external_message">এই লিংকটি কি আপনি অন্য অ্যাপে খুলতে চান?</string>
+    <string name="dialog_open_external_message">Would you like to open this link in an external app?</string>
     <!-- Address bar: Hint -->
-    <string name="address_bar_hint">অনুসন্ধান করুন বা ওয়েব অ্যাড্রেস লিখুন…</string>
+    <string name="address_bar_hint">Введите запрос или ссылку…</string>
     <!-- Hit Test Dialog: Copy link text -->
-    <string name="hit_test_copy_link_text">লিংকের টেক্সট কপি করুন</string>
+    <string name="hit_test_copy_link_text">Скопировать текст ссылки</string>
     <!-- Hit Test Dialog: Download link -->
-    <string name="hit_test_download_link">লিংক ডাউনলোড করুন</string>
+    <string name="hit_test_download_link">Download link</string>
     <!-- Hit Test Dialog: Download image -->
-    <string name="hit_test_download_image">ছবি ডাউনলোড করুন</string>
+    <string name="hit_test_download_image">Download image</string>
     <!-- Hit Test Dialog: Copy image link -->
-    <string name="hit_test_copy_image_link">ছবির লিংক কপি করুন</string>
+    <string name="hit_test_copy_image_link">Copy image link</string>
     <!-- Hit Test Dialog: Search for similar images -->
-    <string name="hit_test_search_image">অনুরূপ ছবি খুঁজুন</string>
+    <string name="hit_test_search_image">Search for similar images</string>
     <!-- Hit Test Dialog: Open in new tab -->
-    <string name="hit_test_open_in_new_tab">নতুন পৃষ্ঠায় খুলুন</string>
+    <string name="hit_test_open_in_new_tab">Open in new tab</string>
     <!-- Hit Test Dialog: Share link -->
-    <string name="hit_test_share_link">লিংক পাঠান</string>
+    <string name="hit_test_share_link">Share link</string>
     <!-- SSL Lock Dialog: Issued to -->
-    <string name="ssl_info_dialog_issued_to">যাকে দেওয়া হয়েছে:</string>
+    <string name="ssl_info_dialog_issued_to">Issued To:</string>
     <!-- SSL Lock Dialog: Issued by -->
-    <string name="ssl_info_dialog_issued_by">প্রতিষ্ঠাতা:</string>
+    <string name="ssl_info_dialog_issued_by">Issued By:</string>
     <!-- SSL Lock Dialog: Validity Period -->
-    <string name="ssl_info_dialog_validity_period">বৈধতা:</string>
+    <string name="ssl_info_dialog_validity_period">Validity Period:</string>
     <!-- SSL Lock Dialog: Common Name -->
-    <string name="ssl_info_dialog_common_name">সাধারণ নাম (CN)</string>
+    <string name="ssl_info_dialog_common_name">Common Name (CN)</string>
     <!-- SSL Lock Dialog: Organization -->
-    <string name="ssl_info_dialog_organization">সংগঠন (O)</string>
+    <string name="ssl_info_dialog_organization">Organization (O)</string>
     <!-- SSL Lock Dialog: Organizational Unit -->
-    <string name="ssl_info_dialog_organization_unit">সাংগঠনিক ইউনিট (OU)</string>
+    <string name="ssl_info_dialog_organization_unit">Organizational Unit (OU)</string>
     <!-- SSL Lock Dialog: Issued On -->
-    <string name="ssl_info_dialog_issued_on">প্রতিষ্ঠিত</string>
+    <string name="ssl_info_dialog_issued_on">Issued On</string>
     <!-- SSL Lock Dialog: Expires On -->
-    <string name="ssl_info_dialog_expires_on">বৈধতা শেষ হচ্ছে</string>
+    <string name="ssl_info_dialog_expires_on">Expires On</string>
     <!-- SSL Lock Dialog: No certificate message -->
-    <string name="ssl_info_dialog_content_nocert">এই ওয়েবসাইট SSL সার্টিফিকেট দিয়ে অসক্ষম। এখানে সংবেদনশীল তথ্য (যেমন পাসওয়ার্ড বা ক্রেডিট কার্ড) দেওয়ার থেকে বঞ্চিত থাকুন।</string>
+    <string name="ssl_info_dialog_content_nocert">This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards).</string>
     <!-- HTTP Authentication Dialog: Title -->
-    <string name="dialog_auth_title">প্রমাণীকরণ প্রয়োজন</string>
+    <string name="dialog_auth_title">Authentication required</string>
     <!-- HTTP Authentication Dialog: Message -->
-    <string name="dialog_auth_message">%s এর একটা ইউজারনেম ও পাসওয়ার্ড দরকার।</string>
+    <string name="dialog_auth_message">%s requires a username and password.</string>
     <!-- HTTP Authentication Dialog: Username -->
-    <string name="dialog_auth_username">ইউজারনেম</string>
+    <string name="dialog_auth_username">Username</string>
     <!-- HTTP Authentication Dialog: Password -->
     <string name="dialog_auth_password">Password</string>
     <!-- Toolbar: Share dialog title -->
@@ -210,41 +210,41 @@
     <!-- Settings: Visuals category -->
     <string name="pref_category_visuals">Visuals</string>
     <!-- Settings: Theme title -->
-    <string name="pref_theme_title">রঙ</string>
+    <string name="pref_theme_title">Theme</string>
     <!-- Settings: Use web content force dark title -->
-    <string name="pref_use_force_dark_title">ওয়েবতথ্যকে জোর করে অন্ধকার করুন</string>
+    <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <!-- Settings: Use web content force dark summary -->
-    <string name="pref_use_force_dark_summary">ওয়েবপেজ এবং ব্রাউজার এর রঙ এক রাখুন।</string>
+    <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">মূলপাতায়ে ওয়ালপেপার লাগান</string>
+    <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
     <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">এই মুহূর্তে: %s</string>
+    <string name="pref_start_page_wallpaper_summary">Current: %s</string>
     <!-- Settings: Show favicon title -->
-    <string name="pref_show_favicon">ফাভিকন দেখুন</string>
+    <string name="pref_show_favicon">Show favicon</string>
     <!-- Settings: Show favicon summary -->
-    <string name="pref_show_favicon_summary">ওয়েবপেজ এর ফাভিকোন অ্যাড্রেসবার এর পাশে দেখান।</string>
+    <string name="pref_show_favicon_summary">Show the favicon of the webpage next to the address bar.</string>
     <!-- Settings: Reach mode title -->
-    <string name="pref_reverse_address_bar_title">রিচ মোড</string>
+    <string name="pref_reverse_address_bar_title">Reach mode</string>
     <!-- Settings: Reach mode summary -->
-    <string name="pref_reverse_address_bar_summary">একহাতে কাজ করার সহায়তায় ইন্টারফেসের কিছু জিনিস সরান।</string>
+    <string name="pref_reverse_address_bar_summary">Relocate interface elements for easier one-hand usage.</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">টেনে রিফ্রেশ করুন</string>
+    <string name="pref_enable_swipe_refresh_title">Enable Pull to Refresh</string>
     <!-- Settings: Swipe to Refresh summary -->
-    <string name="pref_enable_swipe_refresh_summary">নিচে টান মারায় পেজ রিফ্রেশ করুন।</string>
+    <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
     <!-- Settings: Update Recents icons and labels title -->
-    <string name="pref_update_recents_icon_title">সাম্প্রতিক ট্যাবগুলির আইকন এবং লেবেল আপডেট করুন</string>
+    <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
     <!-- Settings: Update Recents icons and labels summary -->
-    <string name="pref_update_recents_icon_summary">সাম্প্রতিক ট্যাবগুলির আইকন এবং নাম স্বয়ংক্রিয়ভাবে আপডেট করুন।</string>
+    <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
     <!-- Settings: Advanced category -->
-    <string name="pref_category_advanced">অতিরিক্ত</string>
+    <string name="pref_category_advanced">Advanced</string>
     <!-- Settings: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">JavaScript চালু করুন</string>
+    <string name="pref_enable_javascript_title">Enable JavaScript</string>
     <!-- Settings: Enable JavaScript summary -->
-    <string name="pref_enable_javascript_summary">এটিকে চালু করলে ওয়েবসাইটে JavaScript কন্টেন্ট লোড করতে সক্ষম হবেন।</string>
+    <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
     <!-- Settings: Use Custom Tabs title -->
-    <string name="pref_use_custom_tabs_title">কাস্টম ট্যাব ব্যবহার করুন</string>
+    <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
     <!-- Settings: Use Custom Tabs summary -->
-    <string name="pref_use_custom_tabs_summary">অন্য অ্যাপ থেকে খোলা অ্যাপ লিংকগুলি সবসময় কাস্টম ট্যাবেই খুলুন।</string>
+    <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
     <!-- Settings: Check App Link title -->
     <string name="pref_check_app_link_title">Check for launchable App Link</string>
     <!-- Settings: Check App Link summary -->
