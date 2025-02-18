@@ -54,7 +54,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
             if (src.isNullOrBlank()) icon.visibility = View.GONE
             else {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val data = MiniDownloadHelper.startDownload(src)!!
+                    val data = MiniDownloadHelper.startDownload(src).response
                     val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
                     if (bitmap != null)
                         CoroutineScope(Dispatchers.Main).launch {

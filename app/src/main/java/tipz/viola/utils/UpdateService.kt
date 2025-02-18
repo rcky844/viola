@@ -75,18 +75,18 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         }
 
         // Here we go!
-        val data = MiniDownloadHelper.startDownload(ExportedUrls.updateJSONUrl)!!
-        if (data.isEmpty()) {
-            showMessage(R.string.update_down_failed_toast)
-            return@launch
-        }
-        val jObject = JSONObject(String(data))
+        val r = MiniDownloadHelper.startDownloadWithDialog(context,
+            ExportedUrls.updateJSONUrl,
+            R.string.update_download_failed
+        )
+        if (!r.successful) return@launch
+        val jObject = JSONObject(String(r.response))
 
         // Get update channel name
         var updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
         if (updateChannelName.isBlank()) updateChannelName = BuildConfig.BUILD_TYPE
         if (!jObject.has(updateChannelName)) {
-            showMessage(R.string.update_down_failed_toast)
+            showMessage(R.string.update_download_failed)
             return@launch
         }
 
@@ -132,19 +132,17 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                     val apkFile = File(dirFile, filename)
 
                     CoroutineScope(Dispatchers.IO).launch {
-                        val apkData = MiniDownloadHelper.startDownload(
-                            jChannelUpdateObject.getString("download_url"))
-                        if (dirFile.exists() || dirFile.mkdirs()) {
-                            if (!apkFile.exists() || apkFile.delete()) {
-                                apkFile.createNewFile()
-                                val fos = FileOutputStream(apkFile)
-                                fos.write(apkData)
-                                fos.close()
-                                installApplication(apkFile)
-                                @Suppress("LABEL_NAME_CLASH") return@launch
-                            }
+                        val ar = MiniDownloadHelper.startDownloadWithDialog(context,
+                            jChannelUpdateObject.getString("download_url"),
+                            R.string.update_download_failed
+                        )
+                        if (ar.successful && (dirFile.exists() || dirFile.mkdirs())) {
+                            apkFile.createNewFile()
+                            val fos = FileOutputStream(apkFile)
+                            fos.write(ar.response)
+                            fos.close()
+                            installApplication(apkFile)
                         }
-                        showMessage(R.string.update_down_failed_toast)
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)

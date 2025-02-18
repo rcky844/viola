@@ -33,7 +33,7 @@ object BussUtils {
             if (apiUrl.trim().isEmpty()) apiUrl = this@BussUtils.apiUrl
 
             val requestUrl = "$apiUrl/domain/${split}"
-            val data = MiniDownloadHelper.startDownload(requestUrl)!!
+            val data = MiniDownloadHelper.startDownload(requestUrl).response
             if (data.isEmpty()) {
                 CoroutineScope(Dispatchers.Main).launch {
                     // No data returned means it probably isn't registered
@@ -51,7 +51,7 @@ object BussUtils {
             else UrlUtils.validateUrlOrConvertToSearch(view.settingsPreference, ip, 1)
             CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(40) }
 
-            val htmlData = MiniDownloadHelper.startDownload(realUrl)!!
+            val htmlData = MiniDownloadHelper.startDownload(realUrl).response
             if (htmlData.isEmpty()) {
                 CoroutineScope(Dispatchers.Main).launch {
                     // For those that can't download data, use a more generic one, since

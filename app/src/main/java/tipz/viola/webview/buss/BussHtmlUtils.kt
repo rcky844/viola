@@ -99,8 +99,8 @@ object BussHtmlUtils {
                         if (!cssUrl.matches(UrlUtils.getUriRegex()))
                             cssUrl = realUrl.substringBeforeLast('/') + "/" + cssUrl
 
-                        val cssData = MiniDownloadHelper.startDownload(cssUrl)!!
-                        builder.append("<style>${String(cssData)}</style>").append("\n")
+                        val cssData = MiniDownloadHelper.startDownload(cssUrl)
+                        builder.append("<style>${String(cssData.response)}</style>").append("\n")
                         continue
                     }
                 }

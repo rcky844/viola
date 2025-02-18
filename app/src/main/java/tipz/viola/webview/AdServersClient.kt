@@ -15,7 +15,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.Scanner
 
-open class AdServersClient(context: Context, private val pref: SettingsSharedPreference) {
+open class AdServersClient(
+    private val context: Context, private val pref: SettingsSharedPreference
+) {
     var adServers: String? = null
 
     private val LOG_TAG = "AdServersClient"
@@ -57,9 +59,9 @@ open class AdServersClient(context: Context, private val pref: SettingsSharedPre
         CoroutineScope(Dispatchers.IO).launch {
             Log.d(LOG_TAG, "Starting ad servers download")
             val scanner = Scanner(String(
-                MiniDownloadHelper.startDownload(
+                MiniDownloadHelper.startDownloadWithDialog(context,
                     (adServersList[pref.getInt(SettingsKeys.adServerId)]
-                        ?: pref.getString(SettingsKeys.adServerUrl)).toString())!!
+                        ?: pref.getString(SettingsKeys.adServerUrl)).toString()).response
             ))
             val builder = StringBuilder()
             while (scanner.hasNextLine()) {

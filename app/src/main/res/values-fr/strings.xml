@@ -284,7 +284,7 @@
     <!-- Updates: Update available dialog release date message -->
     <string name="dialog_update_available_release_date_message">Release date: %s</string>
     <!-- Updates: Updated failed toast -->
-    <string name="update_down_failed_toast">le téléchargement de la mise à jour a échoué !</string>
+    <string name="update_download_failed">le téléchargement de la mise à jour a échoué !</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">Effacer toutes les entrées</string>
     <!-- Lists: Delete menu option -->
