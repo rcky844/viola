@@ -52,6 +52,7 @@ object SettingsKeys {
     const val startPageWallpaper = "startPageWallpaper" /* STRING */
     const val reverseAddressBar = "reverseAddressBar" /* INTEGER */
     const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
+    const val showFullscreenWarningDialog = "showFullscreenWarningDialog" /* INTEGER */
 
     /* Updater */
     const val updateChannelName = "updateChannelName" /* STRING */

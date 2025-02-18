@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.migrations
@@ -51,7 +51,7 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
 
     init {
         // Apply migrations only to the previous protocol version
-        if (pref.getInt(SettingsKeys.protocolVersion) == 1) {
+        if (pref.getInt(SettingsKeys.protocolVersion) == 1) { // Update to protocol version 2
             // Migrations
             migrateSearchIndex()
             migrateDefaultBoolean()
@@ -59,6 +59,10 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
 
             // Remove deleted keys
             deletedKeys.forEach { pref.remove(it) }
+        } else if (pref.getInt(SettingsKeys.protocolVersion) == 2) { // Update to protocol version 3
+            // Migrations
+            // Download API version tracking is also introduced with protocol version 3
+            pref.setInt(SettingsKeys.showFullscreenWarningDialog, 1)
         }
     }
 }

@@ -3,29 +3,74 @@
 
 package tipz.viola.download
 
+import android.content.Context
 import android.util.Log
-import tipz.viola.webview.buss.BussUtils.LOG_TAG
+import androidx.annotation.StringRes
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import tipz.viola.R
+import tipz.viola.utils.UrlUtils.UriScheme
 import java.net.URL
 
 class MiniDownloadHelper {
-    private val LOG_TAG = "MiniDownloadHelper"
+    class Response {
+        var response = byteArrayOf()
+        var successful = true
+        var failure = ""
+    }
 
     /* Public methods */
     companion object {
-        suspend fun startDownload(uriString: String): ByteArray? {
-            if (uriString.startsWith("data:")) {
-                return DownloadUtils.base64StringToByteArray(
-                    DownloadUtils.getRawDataFromDataUri(uriString))
-            } else if (uriString.startsWith("blob:")) { /* TODO: Make it actually handle blob: URLs */
-                return null
+        const val LOG_TAG = "MiniDownloadHelper"
+        const val UNSUPPORTED = "unsupported"
+
+        fun startDownload(uriString: String): Response {
+            val r = Response()
+
+            when (UriScheme.getUriScheme(uriString.substringBefore(":"))) {
+                UriScheme.SCHEME_HTTP, UriScheme.SCHEME_HTTPS -> {
+                    try {
+                        r.response = URL(uriString).readBytes()
+                    } catch (e: Exception) {
+                        Log.e(LOG_TAG, "Request failed, url=${uriString}")
+                        e.printStackTrace()
+
+                        // Reflect failure of response
+                        r.successful = false
+                        r.failure = e.toString()
+                    }
+                }
+
+                UriScheme.SCHEME_DATA -> {
+                    r.response = DownloadUtils.base64StringToByteArray(
+                        DownloadUtils.getRawDataFromDataUri(uriString))
+                }
+
+                /* TODO: Make it actually handle blob: URLs */
+                else -> {
+                    r.failure = UNSUPPORTED
+                    r.successful = false
+                }
             }
-            val url = URL(uriString)
-            return try {
-                url.readBytes()
-            } catch (_: Exception) {
-                Log.e(LOG_TAG, "Request failed, url=${url}")
-                byteArrayOf() // Return empty byte array to not crash on Exception
+            return r
+        }
+
+        fun startDownloadWithDialog(
+            context: Context, uriString: String,
+            @StringRes titleMessage: Int = R.string.downloads_dialog_error_details_title
+        ): Response {
+            val r = startDownload(uriString)
+            if (!r.successful) {
+                MainScope().launch {
+                    MaterialAlertDialogBuilder(context)
+                        .setTitle(titleMessage)
+                        .setMessage(r.failure)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create().show()
+                }
             }
+            return r
         }
     }
 }

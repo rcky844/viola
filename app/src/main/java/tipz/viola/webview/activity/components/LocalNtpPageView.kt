@@ -89,7 +89,7 @@ class LocalNtpPageView(
 
         // Allow page to show up again on clicked
         setOnClickListener {
-            if (realSearchBar.isFocused) {
+            if (realSearchBar.isFocused && realSearchBar.text.isEmpty()) {
                 updateVisibility(true)
                 imm.hideSoftInputFromWindow(realSearchBar.windowToken, 0)
                 realSearchBar.clearFocus()
@@ -97,10 +97,12 @@ class LocalNtpPageView(
         }
     }
 
-    fun updateVisibility(visible: Boolean) {
-        if (this::involvedView.isInitialized)
-            involvedView.visibility = if (visible) GONE else VISIBLE
-        else addressBar.visibility = if (visible) GONE else VISIBLE
+    fun updateVisibility(visible: Boolean, updateInvolved: Boolean = true) {
+        if (updateInvolved) {
+            if (this::involvedView.isInitialized)
+                involvedView.visibility = if (visible) GONE else VISIBLE
+            else addressBar.visibility = if (visible) GONE else VISIBLE
+        }
         fakeSearchBar.visibility = if (visible) VISIBLE else GONE
     }
 

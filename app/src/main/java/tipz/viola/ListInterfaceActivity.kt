@@ -27,6 +27,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import tipz.viola.database.Broha
 import tipz.viola.database.instances.FavClient
@@ -57,7 +58,7 @@ class ListInterfaceActivity : BaseActivity() {
             listData =
                 (if (activityMode == mode_history) historyClient.getAll()
                 else favClient.getAll()) as MutableList<Broha>?
-            CoroutineScope(Dispatchers.Main).launch { callback() }
+            MainScope().launch { callback() }
         }
     }
 
@@ -184,9 +185,7 @@ class ListInterfaceActivity : BaseActivity() {
                     CoroutineScope(Dispatchers.IO).launch {
                         icon = iconHashClient.read(data.iconHash)
                         if (icon != null)
-                            CoroutineScope(Dispatchers.Main).launch {
-                                holder.icon.setImageBitmap(icon)
-                            }
+                            MainScope().launch { holder.icon.setImageBitmap(icon) }
                     }
                 } else {
                     holder.icon.setImageResource(R.drawable.default_favicon)
@@ -255,7 +254,7 @@ class ListInterfaceActivity : BaseActivity() {
                                                 activity.favClient.update(data)
                                                 // FIXME: Update list dynamically to save system resources
                                                 listData = activity.favClient.getAll() as MutableList<Broha>?
-                                                CoroutineScope(Dispatchers.Main).launch {
+                                                MainScope().launch {
                                                     notifyItemRangeRemoved(position, 1)
                                                 }
                                             }

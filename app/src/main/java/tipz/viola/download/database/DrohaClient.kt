@@ -6,13 +6,26 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Room.databaseBuilder
 import androidx.room.Update
+import tipz.viola.Application
+import tipz.viola.settings.SettingsKeys
 
-open class DrohaClient(context: Context?) {
+open class DrohaClient(context: Context) {
     private val appDatabase: DrohaDatabase =
-        databaseBuilder(context!!, DrohaDatabase::class.java, "downloads").build()
+        databaseBuilder(context, DrohaDatabase::class.java, "downloads").build()
 
     val dao: DrohaDao?
         get() = appDatabase.drohaDao()
+
+    init {
+        val settingsPreference = (context.applicationContext as Application).settingsPreference
+        val downloadApiVer = settingsPreference.getInt(SettingsKeys.downloadApi)
+        if (downloadApiVer > LATEST_API || downloadApiVer <= -1) throw RuntimeException()
+        settingsPreference.setInt(SettingsKeys.downloadApi, LATEST_API)
+    }
+
+    companion object {
+        private const val LATEST_API = 0
+    }
 
     suspend fun insert(vararg droha: Droha) = dao!!.insert(*droha)
     suspend fun update(vararg droha: Droha) = dao!!.update(*droha)

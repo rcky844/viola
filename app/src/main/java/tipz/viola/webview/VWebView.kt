@@ -21,6 +21,7 @@ import android.os.Build
 import android.os.Handler
 import android.provider.Settings
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
 import android.view.View
@@ -37,6 +38,7 @@ import androidx.webkit.WebViewFeature
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.BuildConfig
@@ -61,6 +63,8 @@ import java.util.regex.Pattern
 class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     context, attrs
 ) {
+    private val LOG_TAG = "VWebView"
+
     private var activity: VWebViewActivity = context as VWebViewActivity
     private lateinit var historyClient: HistoryClient
     val downloadClient: DownloadClient = (context.applicationContext as Application).downloadClient
@@ -104,12 +108,19 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         /* Start the download manager service */
         setDownloadListener { vUrl: String?, _: String?,
                               vContentDisposition: String?, vMimeType: String?, _: Long ->
+            Log.d(LOG_TAG, """
+                Incoming download request
+                URL: $vUrl
+                Content Disposition: $vContentDisposition
+                MIME Type: $vMimeType
+            """.trimIndent())
+
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
                 ActivityCompat.requestPermissions(activity,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
 
-            downloadClient.addToQueue(Droha().apply {
+            downloadClient.launchDownload(Droha().apply {
                 uriString = vUrl!!
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType
@@ -122,7 +133,14 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
         }
+
+        // JavaScript interface
         addJavascriptInterface(VJavaScriptInterface(activity), VJavaScriptInterface.INTERFACE_NAME)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            removeJavascriptInterface("searchBoxJavaBridge_") /* CVE-2014-1939 */
+            removeJavascriptInterface("accessibility") /* CVE-2014-7224 */
+            removeJavascriptInterface("accessibilityTraversal") /* CVE-2014-7224 */
+        }
 
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
@@ -165,11 +183,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             val message = titleHandler.obtainMessage()
             this.requestFocusNodeHref(message)
         }
-    }
-
-    override fun destroy() {
-        downloadClient.destroy()
-        super.destroy()
     }
 
     @Suppress("deprecation")
@@ -396,7 +409,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 )
                 errorContent = errorContent.replace("$6", "$description")
 
-                CoroutineScope(Dispatchers.Main).launch {
+                MainScope().launch {
                     // TODO: Figure out issue with failingUrl & historyUrl
                     // Although it is not stored in history, it could actually be an issue long term
                     loadDataWithBaseURL(

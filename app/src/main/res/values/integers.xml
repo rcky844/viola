@@ -5,6 +5,6 @@
 <resources>
     <integer name="anim_toolbar_expand_slide_speed">300</integer>
     <integer name="anim_toolbar_expand_fade_speed">100</integer>
-    <integer name="anim_fullscreen_fab_fade_out_delay">10000</integer>
+    <integer name="anim_fullscreen_fab_fade_out_delay">5000</integer>
     <integer name="anim_fullscreen_fab_fade_out_speed">10000</integer>
 </resources>

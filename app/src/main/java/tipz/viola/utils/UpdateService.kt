@@ -14,7 +14,9 @@ import androidx.core.content.FileProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import tipz.viola.Application
 import tipz.viola.BuildConfig
@@ -32,6 +34,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
     private var settingsPreference: SettingsSharedPreference =
         (context.applicationContext as Application).settingsPreference
     private val dirFile = File(context.filesDir.path + "/updates")
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     init {
         // Auto clean the directory on start
@@ -51,7 +54,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
     }
 
     private fun installApplication(file: File) =
-        CoroutineScope(Dispatchers.Main).launch {
+        MainScope().launch {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(uriFromFile(file), "application/vnd.android.package-archive")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -64,29 +67,27 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         }
 
     private fun showMessage(@StringRes resId: Int) =
-        CoroutineScope(Dispatchers.Main).launch {
-            if (!silent) context.showMessage(resId)
-        }
+        MainScope().launch { if (!silent) context.showMessage(resId) }
 
-    fun checkUpdates() = CoroutineScope(Dispatchers.IO).launch {
+    fun checkUpdates() = coroutineScope.launch {
         // Check for internet access
         if (!context.isOnline()) {
             showMessage(R.string.toast_network_unavailable)
         }
 
         // Here we go!
-        val data = MiniDownloadHelper.startDownload(ExportedUrls.updateJSONUrl)!!
-        if (data.isEmpty()) {
-            showMessage(R.string.update_down_failed_toast)
-            return@launch
-        }
-        val jObject = JSONObject(String(data))
+        val r = MiniDownloadHelper.startDownloadWithDialog(context,
+            ExportedUrls.updateJSONUrl,
+            R.string.update_download_failed
+        )
+        if (!r.successful) return@launch
+        val jObject = JSONObject(String(r.response))
 
         // Get update channel name
         var updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
         if (updateChannelName.isBlank()) updateChannelName = BuildConfig.BUILD_TYPE
         if (!jObject.has(updateChannelName)) {
-            showMessage(R.string.update_down_failed_toast)
+            showMessage(R.string.update_download_failed)
             return@launch
         }
 
@@ -113,7 +114,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
             return@launch
         }
 
-        CoroutineScope(Dispatchers.Main).launch {
+        withContext(Dispatchers.Main) {
             MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.dialog_update_available_title)
                 .setMessage(
@@ -131,20 +132,18 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                     val dirFile = File(context.filesDir.path + "/updates")
                     val apkFile = File(dirFile, filename)
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val apkData = MiniDownloadHelper.startDownload(
-                            jChannelUpdateObject.getString("download_url"))
-                        if (dirFile.exists() || dirFile.mkdirs()) {
-                            if (!apkFile.exists() || apkFile.delete()) {
-                                apkFile.createNewFile()
-                                val fos = FileOutputStream(apkFile)
-                                fos.write(apkData)
-                                fos.close()
-                                installApplication(apkFile)
-                                @Suppress("LABEL_NAME_CLASH") return@launch
-                            }
+                    coroutineScope.launch {
+                        val ar = MiniDownloadHelper.startDownloadWithDialog(context,
+                            jChannelUpdateObject.getString("download_url"),
+                            R.string.update_download_failed
+                        )
+                        if (ar.successful && (dirFile.exists() || dirFile.mkdirs())) {
+                            apkFile.createNewFile()
+                            val fos = FileOutputStream(apkFile)
+                            fos.write(ar.response)
+                            fos.close()
+                            installApplication(apkFile)
                         }
-                        showMessage(R.string.update_down_failed_toast)
                     }
                 }
                 .setNegativeButton(android.R.string.cancel, null)

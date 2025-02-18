@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2024 Tipz Team
+// Copyright (c) 2023-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings
@@ -24,9 +24,9 @@ class SettingsSharedPreference(context: Context) {
         InitialMigrations(this)
         ExoticMigrations(this)
 
-        // Sets CURRENT_PROTOCOL_VERSION, currently 2
+        // Sets CURRENT_PROTOCOL_VERSION, currently 3
         // Must be non-zero, as zero is defined as uninitialized
-        this.setInt(SettingsKeys.protocolVersion, 2)
+        this.setInt(SettingsKeys.protocolVersion, 3)
     }
 
     fun getInt(prefName: String): Int {
