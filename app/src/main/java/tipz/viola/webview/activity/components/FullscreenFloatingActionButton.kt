@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -18,6 +18,7 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
     lateinit var activity: AppCompatActivity
     var hiddenViews: MutableList<View> = mutableListOf()
     private var faded = false
+    var isFullscreen = false
 
     private fun resetAnim() {
         this.alpha = 1f
@@ -62,6 +63,8 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
                 resetAnim()
                 fadeOut()
             } else {
+                isFullscreen = false
+
                 // Handle views
                 hiddenViews.forEach {
                     it.visibility = VISIBLE
@@ -75,6 +78,8 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
     }
 
     override fun show() {
+        isFullscreen = true
+
         // Handle views
         hiddenViews.forEach {
             it.visibility = GONE

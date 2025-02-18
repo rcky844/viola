@@ -594,6 +594,7 @@ class BrowserActivity : VWebViewActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         urlEditText.clearFocus()
         webview.requestFocus()
+        if (fullscreenFab.isFullscreen) appbar.visibility = View.GONE
     }
 
     override fun onUrlUpdated(url: String?) {
@@ -651,6 +652,6 @@ class BrowserActivity : VWebViewActivity() {
         val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
         webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
-        localNtpPageView.updateVisibility(isHomePage)
+        localNtpPageView.updateVisibility(isHomePage, !fullscreenFab.isFullscreen)
     }
 }
