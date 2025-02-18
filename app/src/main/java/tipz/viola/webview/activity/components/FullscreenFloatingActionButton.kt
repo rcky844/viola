@@ -5,7 +5,6 @@ package tipz.viola.webview.activity.components
 
 import android.content.Context
 import android.os.Build
-import android.provider.Settings
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -28,23 +27,7 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
     private fun fadeOut() {
         val animate = this.animate()
         animate.alpha(0f)
-        animate.duration = resources.getInteger(R.integer.anim_fullscreen_fab_fade_out_speed) * (
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    Settings.Global.getFloat(
-                        context.contentResolver,
-                        Settings.Global.ANIMATOR_DURATION_SCALE,
-                        1.0f
-                    )
-                } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
-                    @Suppress("DEPRECATION")
-                    Settings.System.getFloat(
-                        context.contentResolver,
-                        Settings.System.ANIMATOR_DURATION_SCALE,
-                        1.0f
-                    )
-                } else {
-                    1.0f // Default for even older Android versions
-                }).toLong()
+        animate.duration = resources.getInteger(R.integer.anim_fullscreen_fab_fade_out_speed).toLong()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             animate.withEndAction {
                 faded = true
