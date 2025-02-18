@@ -61,6 +61,7 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
             deletedKeys.forEach { pref.remove(it) }
         } else if (pref.getInt(SettingsKeys.protocolVersion) == 2) {
             // Migrations
+            // Download API version tracking is also introduced with protocol version 3
             pref.setInt(SettingsKeys.showFullscreenWarningDialog, 1)
         }
     }
