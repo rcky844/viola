@@ -4,14 +4,13 @@
 package tipz.viola.download
 
 import android.util.Log
-import tipz.viola.webview.buss.BussUtils.LOG_TAG
 import java.net.URL
 
 class MiniDownloadHelper {
-    private val LOG_TAG = "MiniDownloadHelper"
-
     /* Public methods */
     companion object {
+        private val LOG_TAG = "MiniDownloadHelper"
+
         suspend fun startDownload(uriString: String): ByteArray? {
             if (uriString.startsWith("data:")) {
                 return DownloadUtils.base64StringToByteArray(
