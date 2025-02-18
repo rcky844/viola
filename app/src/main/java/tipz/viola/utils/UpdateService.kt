@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import tipz.viola.Application
 import tipz.viola.BuildConfig
@@ -32,6 +33,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
     private var settingsPreference: SettingsSharedPreference =
         (context.applicationContext as Application).settingsPreference
     private val dirFile = File(context.filesDir.path + "/updates")
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     init {
         // Auto clean the directory on start
@@ -64,11 +66,11 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         }
 
     private fun showMessage(@StringRes resId: Int) =
-        CoroutineScope(Dispatchers.Main).launch {
+        coroutineScope.launch(Dispatchers.Main) {
             if (!silent) context.showMessage(resId)
         }
 
-    fun checkUpdates() = CoroutineScope(Dispatchers.IO).launch {
+    fun checkUpdates() = coroutineScope.launch {
         // Check for internet access
         if (!context.isOnline()) {
             showMessage(R.string.toast_network_unavailable)
@@ -113,7 +115,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
             return@launch
         }
 
-        CoroutineScope(Dispatchers.Main).launch {
+        withContext(Dispatchers.Main) {
             MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.dialog_update_available_title)
                 .setMessage(
@@ -131,7 +133,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                     val dirFile = File(context.filesDir.path + "/updates")
                     val apkFile = File(dirFile, filename)
 
-                    CoroutineScope(Dispatchers.IO).launch {
+                    coroutineScope.launch {
                         val ar = MiniDownloadHelper.startDownloadWithDialog(context,
                             jChannelUpdateObject.getString("download_url"),
                             R.string.update_download_failed
