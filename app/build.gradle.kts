@@ -65,7 +65,7 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
 
-        resourceConfigurations += listOf("de", "en-rGB", "es-rES", "fr",
+        resourceConfigurations += listOf("bn", "de", "en-rGB", "es-rES", "fr",
             "pt-rBR", "tr", "vi", "zh-rCN", "zh-rTW")
     }
 

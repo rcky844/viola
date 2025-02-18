@@ -170,9 +170,9 @@
     <!-- Settings: Enable ad blocker summary -->
     <string name="pref_ad_blocker_summary">Impeça os anúncios irritantes de te distrair.</string>
     <!-- Settings: Ad Blocklist source title -->
-    <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
+    <string name="pref_ad_blocker_source_title">Fonte hosts do bloqueador de anúncios</string>
     <!-- Settings: Download ad blocker hosts title -->
-    <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
+    <string name="pref_ad_blocker_download_hosts_title">Baixar lista de bloqueio</string>
     <!-- Settings: Do Not Track title -->
     <string name="pref_do_not_track_title">Não rastrear</string>
     <!-- Settings: Do Not Track summary -->
@@ -268,7 +268,7 @@
     <!-- Settings - Wallpaper: Default -->
     <string name="default_res">Padrão</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
-    <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
+    <string name="toast_ad_servers_finished">Download dos servidores de anúncios concluído!</string>
     <!-- Settings - Reset to Default: Dialog message -->
     <string name="dialog_settings_reset_to_default_message">Isto irá limpar todos os dados do navegador\nVocê tem certeza que deseja continuar?</string>
     <!-- Settings - Reset to Default: Toast message -->
