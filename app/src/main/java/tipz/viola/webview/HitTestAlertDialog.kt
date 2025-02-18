@@ -29,6 +29,27 @@ import tipz.viola.widget.StringResAdapter
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
     private var arrayAdapter = StringResAdapter(context)
 
+    private fun getHitTestItemsList(hasLinkText: Boolean, hasSrc: Boolean): Collection<Int> {
+        val array = mutableListOf<Int>()
+        array.add(R.string.hit_test_open_in_new_tab)
+        array.add(R.string.menu_copy_link)
+        array.add(R.string.hit_test_download_link)
+
+        // Add link text option
+        if (hasLinkText) array.add(R.string.hit_test_copy_link_text)
+
+        // Add source related options
+        if (hasSrc) {
+            array.add(R.string.hit_test_download_image)
+            array.add(R.string.hit_test_copy_image_link)
+            array.add(R.string.hit_test_search_image)
+        }
+
+        array.add(R.string.hit_test_share_link)
+
+        return array
+    }
+
     open fun setupDialogForShowing(view: VWebView, bundle: Bundle): Boolean {
         val hr = view.hitTestResult
         val type = hr.type
@@ -66,14 +87,9 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
         }
 
         // Add items to array adapter
-        arrayAdapter.addAll(R.string.hit_test_open_in_new_tab, R.string.menu_copy_link, R.string.hit_test_download_link)
-        if (title.isNullOrBlank()) arrayAdapter.add(R.string.hit_test_copy_link_text)
-        if (!src.isNullOrBlank()) arrayAdapter.addAll(
-            R.string.hit_test_download_image,
-            R.string.hit_test_copy_image_link,
-            R.string.hit_test_search_image
-        )
-        arrayAdapter.add(R.string.hit_test_share_link)
+        getHitTestItemsList(!title.isNullOrBlank(), !src.isNullOrBlank()).forEach {
+            arrayAdapter.add(it)
+        }
 
         setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
             when (arrayAdapter.getItemResId(which)) {
