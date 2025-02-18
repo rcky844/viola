@@ -80,7 +80,6 @@ class DownloadActivity : BaseActivity() {
         // Clear all button
         fab = binding.fab
         fab.setOnClickListener {
-            downloadClient.downloadQueue = MutableLiveData(mutableListOf())
             val size = listData.size
             listData.clear()
             CoroutineScope(Dispatchers.IO).launch { drohaClient.deleteAll() }
@@ -199,7 +198,7 @@ class DownloadActivity : BaseActivity() {
                                 activity.copyClipboard(data.uriString)
                             }
                             PopupMenuMap.RE_DOWNLOAD.itemId -> {
-                                activity.downloadClient.addToQueue(data)
+                                activity.downloadClient.launchDownload(data)
                             }
                         }
                         true

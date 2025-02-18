@@ -21,6 +21,7 @@ import android.os.Build
 import android.os.Handler
 import android.provider.Settings
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
 import android.view.View
@@ -61,6 +62,8 @@ import java.util.regex.Pattern
 class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     context, attrs
 ) {
+    private val LOG_TAG = "VWebView"
+
     private var activity: VWebViewActivity = context as VWebViewActivity
     private lateinit var historyClient: HistoryClient
     val downloadClient: DownloadClient = (context.applicationContext as Application).downloadClient
@@ -104,12 +107,19 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         /* Start the download manager service */
         setDownloadListener { vUrl: String?, _: String?,
                               vContentDisposition: String?, vMimeType: String?, _: Long ->
+            Log.d(LOG_TAG, """
+                Incoming download request
+                URL: $vUrl
+                Content Disposition: $vContentDisposition
+                MIME Type: $vMimeType
+            """.trimIndent())
+
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
                 ActivityCompat.requestPermissions(activity,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
 
-            downloadClient.addToQueue(Droha().apply {
+            downloadClient.launchDownload(Droha().apply {
                 uriString = vUrl!!
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType
@@ -172,11 +182,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             val message = titleHandler.obtainMessage()
             this.requestFocusNodeHref(message)
         }
-    }
-
-    override fun destroy() {
-        downloadClient.destroy()
-        super.destroy()
     }
 
     @Suppress("deprecation")

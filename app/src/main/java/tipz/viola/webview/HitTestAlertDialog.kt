@@ -83,7 +83,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 R.string.hit_test_copy_link_text -> context.copyClipboard(title)
 
                 R.string.hit_test_download_link -> {
-                    view.downloadClient.addToQueue(Droha().apply {
+                    view.downloadClient.launchDownload(Droha().apply {
                         uriString = url
                     })
                 }
@@ -91,7 +91,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 R.string.hit_test_copy_image_link -> context.copyClipboard(src)
 
                 R.string.hit_test_download_image -> {
-                    view.downloadClient.addToQueue(Droha().apply {
+                    view.downloadClient.launchDownload(Droha().apply {
                         uriString = src ?: url
                     })
                 }
