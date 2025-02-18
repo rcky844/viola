@@ -15,7 +15,7 @@ import tipz.viola.utils.UrlUtils.UriScheme
 import java.net.URL
 
 class MiniDownloadHelper {
-    object Response {
+    class Response {
         var response = byteArrayOf()
         var successful = true
         var failure = ""
@@ -27,7 +27,7 @@ class MiniDownloadHelper {
         const val UNSUPPORTED = "unsupported"
 
         fun startDownload(uriString: String): Response {
-            val r = Response
+            val r = Response()
 
             when (UriScheme.getUriScheme(uriString.substringBefore(":"))) {
                 UriScheme.SCHEME_HTTP, UriScheme.SCHEME_HTTPS -> {
