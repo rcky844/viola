@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2024 Tipz Team
+// Copyright (c) 2023-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
@@ -32,9 +32,10 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
     open fun setupDialogForShowing(view: VWebView, bundle: Bundle): Boolean {
         val hr = view.hitTestResult
         val type = hr.type
-        var url = bundle.getString("url") ?: return false
+        val url = bundle.getString("url") ?: return false
         val title = bundle.getString("title")
-        val src = bundle.getString("src")
+        var src = bundle.getString("src")
+        if (src == null && url != hr.extra) src = hr.extra
 
         // Perform checks on the type of content we are dealing with
         if (type == WebView.HitTestResult.UNKNOWN_TYPE
