@@ -38,6 +38,7 @@ import androidx.webkit.WebViewFeature
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import tipz.viola.Application
 import tipz.viola.BuildConfig
@@ -408,7 +409,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 )
                 errorContent = errorContent.replace("$6", "$description")
 
-                CoroutineScope(Dispatchers.Main).launch {
+                MainScope().launch {
                     // TODO: Figure out issue with failingUrl & historyUrl
                     // Although it is not stored in history, it could actually be an issue long term
                     loadDataWithBaseURL(

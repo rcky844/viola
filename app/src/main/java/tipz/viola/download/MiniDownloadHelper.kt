@@ -7,8 +7,7 @@ import android.content.Context
 import android.util.Log
 import androidx.annotation.StringRes
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import tipz.viola.R
 import tipz.viola.utils.UrlUtils.UriScheme
@@ -63,7 +62,7 @@ class MiniDownloadHelper {
         ): Response {
             val r = startDownload(uriString)
             if (!r.successful) {
-                CoroutineScope(Dispatchers.Main).launch {
+                MainScope().launch {
                     MaterialAlertDialogBuilder(context)
                         .setTitle(titleMessage)
                         .setMessage(r.failure)

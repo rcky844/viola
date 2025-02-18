@@ -15,6 +15,7 @@ import android.webkit.WebView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import tipz.viola.R
 import tipz.viola.databinding.DialogHitTestTitleBinding
@@ -56,10 +57,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
                 CoroutineScope(Dispatchers.IO).launch {
                     val data = MiniDownloadHelper.startDownload(src).response
                     val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-                    if (bitmap != null)
-                        CoroutineScope(Dispatchers.Main).launch {
-                            icon.setImageBitmap(bitmap)
-                        }
+                    if (bitmap != null) MainScope().launch { icon.setImageBitmap(bitmap) }
                 }
             }
 

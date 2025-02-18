@@ -6,6 +6,7 @@ package tipz.viola.webview.buss
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import tipz.viola.download.MiniDownloadHelper
@@ -35,7 +36,7 @@ object BussUtils {
             val requestUrl = "$apiUrl/domain/${split}"
             val data = MiniDownloadHelper.startDownload(requestUrl).response
             if (data.isEmpty()) {
-                CoroutineScope(Dispatchers.Main).launch {
+                MainScope().launch {
                     // No data returned means it probably isn't registered
                     view.onPageInformationUpdated(
                         PageLoadState.PAGE_ERROR, url, null,
@@ -49,11 +50,11 @@ object BussUtils {
                 "https://raw.githubusercontent.com/" +
                         "${ip.replace(githubPrefix, "")}/main/index.html"
             else UrlUtils.validateUrlOrConvertToSearch(view.settingsPreference, ip, 1)
-            CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(40) }
+            MainScope().launch { view.onPageLoadProgressChanged(40) }
 
             val htmlData = MiniDownloadHelper.startDownload(realUrl).response
             if (htmlData.isEmpty()) {
-                CoroutineScope(Dispatchers.Main).launch {
+                MainScope().launch {
                     // For those that can't download data, use a more generic one, since
                     // MiniDownloadHelper can't give us error codes yet
                     view.onPageInformationUpdated(
@@ -62,13 +63,13 @@ object BussUtils {
                 }
                 return@launch
             }
-            CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(60) }
+            MainScope().launch { view.onPageLoadProgressChanged(60) }
 
             val parsedHtml = BussHtmlUtils.parseHtml(realUrl, htmlData)
-            CoroutineScope(Dispatchers.Main).launch { view.onPageLoadProgressChanged(80) }
+            MainScope().launch { view.onPageLoadProgressChanged(80) }
             Log.d(LOG_TAG, parsedHtml)
 
-            CoroutineScope(Dispatchers.Main).launch {
+            MainScope().launch {
                 view.loadDataWithBaseURL(realUrl, parsedHtml,
                     "text/html", "UTF-8", url)
                 view.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url, null)

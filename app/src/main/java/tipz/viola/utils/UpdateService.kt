@@ -14,6 +14,7 @@ import androidx.core.content.FileProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -53,7 +54,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
     }
 
     private fun installApplication(file: File) =
-        CoroutineScope(Dispatchers.Main).launch {
+        MainScope().launch {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(uriFromFile(file), "application/vnd.android.package-archive")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -66,9 +67,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         }
 
     private fun showMessage(@StringRes resId: Int) =
-        coroutineScope.launch(Dispatchers.Main) {
-            if (!silent) context.showMessage(resId)
-        }
+        MainScope().launch { if (!silent) context.showMessage(resId) }
 
     fun checkUpdates() = coroutineScope.launch {
         // Check for internet access
