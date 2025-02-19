@@ -95,6 +95,7 @@ class LocalNtpPageView(
         set.applyTo(this)
 
         // Allow page to show up again on clicked
+        isFocusable = false
         setOnClickListener {
             if (realSearchBar.isFocused && realSearchBar.text.isEmpty()) {
                 updateVisibility(true)
