@@ -84,8 +84,8 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         val jObject = JSONObject(String(r.response))
 
         // Get update channel name
-        var updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
-        if (updateChannelName.isBlank()) updateChannelName = BuildConfig.BUILD_TYPE
+        val updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
+            .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }
         if (!jObject.has(updateChannelName)) {
             showMessage(R.string.update_download_failed)
             return@launch

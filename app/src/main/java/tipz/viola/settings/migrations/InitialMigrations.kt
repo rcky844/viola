@@ -3,6 +3,7 @@
 
 package tipz.viola.settings.migrations
 
+import tipz.viola.BuildConfig
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 
@@ -15,6 +16,9 @@ class InitialMigrations(pref: SettingsSharedPreference) {
             pref.setString(SettingsKeys.homePageName, "brave")
             pref.setString(SettingsKeys.searchName, "brave")
             pref.setString(SettingsKeys.suggestionsName, "brave")
+
+            // Updates
+            pref.setString(SettingsKeys.updateChannelName, BuildConfig.VERSION_BUILD_TYPE)
 
             // Miscellaneous
             pref.setInt(SettingsKeys.adServerId, 0)
