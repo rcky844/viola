@@ -83,11 +83,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "VERSION_BUILD_TYPE", "\"stable\"")
         }
 
         // Next release
         create("next") {
             initWith(getByName("release"))
+            buildConfigField("String", "VERSION_BUILD_TYPE", "\"next\"")
         }
 
         // Debug internal
@@ -95,6 +97,7 @@ android {
             applicationIdSuffix = ".debug"
             multiDexEnabled = true
 
+            buildConfigField("String", "VERSION_BUILD_TYPE", "\"debug\"")
             buildConfigField("String", "VERSION_BUILD_ID", "null")
         }
     }

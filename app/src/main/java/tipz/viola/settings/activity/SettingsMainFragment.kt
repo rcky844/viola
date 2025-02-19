@@ -286,7 +286,8 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                             SettingsKeys.updateChannelName,
                             editText.text.toString().trim()
                         )
-                        updateChannel.summary = editText.text.toString()
+                        updateChannel.summary = editText.text.toString().trim()
+                            .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }
                     }
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show()
@@ -312,6 +313,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
             adBlockerHostsEntries[settingsPreference.getInt(SettingsKeys.adServerId)]
         themePicker.summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
         updateChannel.summary = settingsPreference.getString(SettingsKeys.updateChannelName)
+            .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }
         startPageWallpaper.summary = resources.getString(
             R.string.pref_start_page_wallpaper_summary,
             if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
