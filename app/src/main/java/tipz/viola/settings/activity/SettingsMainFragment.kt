@@ -284,7 +284,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                         settingsPreference.setString(
                             SettingsKeys.updateChannelName,
-                            editText.text.toString()
+                            editText.text.toString().trim()
                         )
                         updateChannel.summary = editText.text.toString()
                     }
