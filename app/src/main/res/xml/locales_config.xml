@@ -3,6 +3,7 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="ar"/> <!-- Arabic -->
     <locale android:name="bn"/> <!-- Bengali -->
     <locale android:name="de"/> <!-- German -->
     <locale android:name="en-GB"/> <!-- English (United Kingdom) -->

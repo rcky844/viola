@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020-2025 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Generic: Clear -->
+    <string name="clear">محو</string>
+    <!-- Generic: Do not show again -->
+    <string name="do_not_show_again">لا تظهر مرة أخرى</string>
+    <!-- Generic - Defaults: Search engine -->
+    <string name="search_engine">محرك البحث</string>
+    <!-- Generic - Defaults: Homepage -->
+    <string name="homepage">الصفحة الرئيسية</string>
+    <!-- Generic - Defaults: Search Suggestions -->
+    <string name="search_suggestions_title">اقتراحات البحث</string>
+    <!-- Toasts: No WebView -->
+    <string name="toast_no_webview">WebView مطلوب ولكن غير مثبت.</string>
+    <!-- Toasts: Cleared -->
+    <string name="toast_cleared">تم المسح بنجاح!</string>
+    <!-- Toasts: Copied to clipboard -->
+    <string name="toast_copied_clipboard">تم النسخ إلى الحافظة!</string>
+    <!-- Toasts: Saved -->
+    <string name="save_successful">تم الحفظ بنجاح!</string>
+    <!-- Dialogs: Continue prompt message -->
+    <string name="dialog_continue_prompt_message">هل أنت متأكد من أنك تريد المتابعة؟</string>
+    <!-- Menus: Copy link -->
+    <string name="menu_copy_link">نسخ الرابط</string>
+    <!-- WebView: Start page -->
+    <string name="start_page">صفحة البدء</string>
+    <!-- WebView: No app to handle action -->
+    <string name="toast_no_app_to_handle">لا يوجد تطبيق يمكنه التعامل مع هذا الإجراء.</string>
+    <!-- WebView: JavaScript dialog title -->
+    <string name="dialog_js_title">%s يقول:</string>
+    <!-- WebView: JavaScript leave page dialog title -->
+    <string name="dialog_js_leave_page_title">%s يقول: أتريد مغادرة هذه الصفحة؟</string>
+    <!-- WebView: JavaScript page unresponsive title -->
+    <string name="dialog_page_unresponsive_title">الصفحة لا تستجيب</string>
+    <!-- WebView: JavaScript page unresponsive message -->
+    <string name="dialog_page_unresponsive_message">يمكنك الانتظار حتى تصبح مستجيبة أو إنهاء علامة التبويب هذه.</string>
+    <!-- WebView: JavaScript page unresponsive wait -->
+    <string name="dialog_page_unresponsive_wait">انتظر</string>
+    <!-- WebView: JavaScript page unresponsive terminate -->
+    <string name="dialog_page_unresponsive_terminate">إنهاء</string>
+    <!-- WebView: SSL certification error dialog title -->
+    <string name="ssl_certificate_error_dialog_title">خطأ بشهادة SSL</string>
+    <!-- WebView: SSL certification error dialog message -->
+    <string name="ssl_certificate_error_dialog_message">%s هل تريد المتابعة على أية حال؟</string>
+    <!-- WebView: SSL certificate date invalid -->
+    <string name="ssl_certificate_date_invalid">تاريخ الشهادة غير صالح.</string>
+    <!-- WebView: SSL certificate invalid -->
+    <string name="ssl_certificate_invalid">حدث خطأ عام في SSL.</string>
+    <!-- WebView: SSL certificate expired -->
+    <string name="ssl_certificate_expired">انتهت صلاحية الشهادة.</string>
+    <!-- WebView: SSL certificate hostname mismatch -->
+    <string name="ssl_certificate_idmismatch">اسم مضيف الشهادة غير مطابق.</string>
+    <!-- WebView: SSL certificate not yet valid -->
+    <string name="ssl_certificate_notyetvalid">الشهادة غير صالحة حتى الآن.</string>
+    <!-- WebView: SSL certificate authority not trusted -->
+    <string name="ssl_certificate_untrusted">سلطة التصديق غير موثوقة.</string>
+    <!-- WebView: SSL certificate unknown -->
+    <string name="ssl_certificate_unknown">حدث خطأ غير معروف في SSL.</string>
+    <!-- WebView: SSL handshake failed dialog title -->
+    <string name="dialog_ssl_failed_handshake_title">فشِل تنفيذ مصافحة SSL. قد لا يزال تحميل الصفحة ممكناً بتنزيلها إلى HTTP.</string>
+    <!-- WebView: App link detected dialog title -->
+    <string name="dialog_open_external_title">تم اكتشاف رابط تطبيق قابل للتنفيذ.</string>
+    <!-- WebView: App link detected dialog message -->
+    <string name="dialog_open_external_message">أتود فتح هذا الرابط في تطبيق خارجي؟</string>
+    <!-- Address bar: Hint -->
+    <string name="address_bar_hint">ابحث أو اكتب عنوان الويب…</string>
+    <!-- Hit Test Dialog: Copy link text -->
+    <string name="hit_test_copy_link_text">نسخ نص الرابط</string>
+    <!-- Hit Test Dialog: Download link -->
+    <string name="hit_test_download_link">تحميل الرابط</string>
+    <!-- Hit Test Dialog: Download image -->
+    <string name="hit_test_download_image">تحميل الصورة</string>
+    <!-- Hit Test Dialog: Copy image link -->
+    <string name="hit_test_copy_image_link">نسخ رابط الصورة</string>
+    <!-- Hit Test Dialog: Search for similar images -->
+    <string name="hit_test_search_image">البحث عن صور مشابهة</string>
+    <!-- Hit Test Dialog: Open in new tab -->
+    <string name="hit_test_open_in_new_tab">فتح في علامة تبويب جديدة</string>
+    <!-- Hit Test Dialog: Share link -->
+    <string name="hit_test_share_link">مشاركة الرابط</string>
+    <!-- SSL Lock Dialog: Issued to -->
+    <string name="ssl_info_dialog_issued_to">مُصْدَرة إلى:</string>
+    <!-- SSL Lock Dialog: Issued by -->
+    <string name="ssl_info_dialog_issued_by">جهة الإصدار:</string>
+    <!-- SSL Lock Dialog: Validity Period -->
+    <string name="ssl_info_dialog_validity_period">فترة الصلاحية:</string>
+    <!-- SSL Lock Dialog: Common Name -->
+    <string name="ssl_info_dialog_common_name">الاسم الشائع (CN)</string>
+    <!-- SSL Lock Dialog: Organization -->
+    <string name="ssl_info_dialog_organization">منظمة (O)</string>
+    <!-- SSL Lock Dialog: Organizational Unit -->
+    <string name="ssl_info_dialog_organization_unit">الوحدة التنظيمية (OU)</string>
+    <!-- SSL Lock Dialog: Issued On -->
+    <string name="ssl_info_dialog_issued_on">صدر بتاريخ</string>
+    <!-- SSL Lock Dialog: Expires On -->
+    <string name="ssl_info_dialog_expires_on">تنتهي صلاحيته في</string>
+    <!-- SSL Lock Dialog: No certificate message -->
+    <string name="ssl_info_dialog_content_nocert">يبدو أن هذا الموقع لا يوفر شهادة SSL. لا تقبل طلبات الحصول على معلومات حساسة (مثل كلمات المرور أو بطاقات الائتمان).</string>
+    <!-- HTTP Authentication Dialog: Title -->
+    <string name="dialog_auth_title">المصادقة مطلوبة</string>
+    <!-- HTTP Authentication Dialog: Message -->
+    <string name="dialog_auth_message">يتطلب %s اسم المستخدم وكلمة المرور.</string>
+    <!-- HTTP Authentication Dialog: Username -->
+    <string name="dialog_auth_username">اسم المستخدم</string>
+    <!-- HTTP Authentication Dialog: Password -->
+    <string name="dialog_auth_password">كلمة المرور</string>
+    <!-- Toolbar: Share dialog title -->
+    <string name="dialog_share_title">مشاركة الرابط باستخدام</string>
+    <!-- Expandable toolbar: New Tab -->
+    <string name="toolbar_expandable_new_tab">علامة تبويب جديدة</string>
+    <!-- Expandable toolbar: Favorites -->
+    <string name="toolbar_expandable_favorites">المفضلات</string>
+    <!-- Expandable toolbar: History -->
+    <string name="toolbar_expandable_history">السّجل</string>
+    <!-- Expandable toolbar: Viewing Mode -->
+    <string name="toolbar_expandable_viewport">وضع العرض</string>
+    <!-- Expandable toolbar: Add to favorites -->
+    <string name="toolbar_expandable_favorites_add">إضافة إلى المفضلات</string>
+    <!-- Expandable toolbar: Translate -->
+    <string name="toolbar_expandable_translate">ترجمة</string>
+    <!-- Expandable toolbar: Downloads -->
+    <string name="toolbar_expandable_downloads">التنزيلات</string>
+    <!-- Expandable toolbar: Enter full screen -->
+    <string name="toolbar_expandable_fullscreen">أدخل ملء الشاشة</string>
+    <!-- Expandable toolbar: Create shortcut -->
+    <string name="toolbar_expandable_app_shortcut">إنشاء اختصار</string>
+    <!-- Expandable toolbar: Settings -->
+    <string name="toolbar_expandable_settings">الإعدادات</string>
+    <!-- Expandable toolbar: View Page Source -->
+    <string name="toolbar_expandable_view_page_source">عرض مصدر الصفحة</string>
+    <!-- Expandable toolbar: Print -->
+    <string name="toolbar_expandable_print">طباعة</string>
+    <!-- Expandable toolbar: Close app -->
+    <string name="toolbar_expandable_close">أغلِق التطبيق</string>
+    <!-- Viewing mode: Custom user agent dialog title -->
+    <string name="viewing_mode_custom_user_agent">وكيل مستخدم مخصص</string>
+    <!-- Viewing mode: Current user agent property -->
+    <string name="viewing_mode_current_user_agent">وكيل المستخدم الحالي</string>
+    <!-- Viewing mode: Wide viewport mode -->
+    <string name="viewing_mode_wide_viewport_mode">تفعيل وضع العرض الواسع</string>
+    <!-- Translate: Page language -->
+    <string name="dialog_translate_page_lang">لغة الصفحة (مثلاً zh-TW)</string>
+    <!-- Translate: Target language -->
+    <string name="dialog_translate_target_lang">اللغة المستهدفة (مثلاً: en)</string>
+    <!-- Fullscreen: Warning dialog title -->
+    <string name="dialog_fullscreen_title">وضع ملء الشاشة</string>
+    <!-- Fullscreen: Warning dialog message -->
+    <string name="dialog_fullscreen_message">لقد دخلت وضع ملء الشاشة. الخروج بالنقر المزدوج على الزر في الزاوية السفلية اليمنى من الشاشة.</string>
+    <!-- Shortcuts: Browser Access -->
+    <string name="shortcuts_menu_browser">الوصول إلى المتصفح</string>
+    <!-- Shortcuts: Custom Tabs -->
+    <string name="shortcuts_menu_custom_tabs">علامات التبويب المخصصة</string>
+    <!-- Shortcuts: Web App -->
+    <string name="shortcuts_menu_webapp">تطبيق ويب</string>
+    <!-- Console: Dialog title -->
+    <string name="console_dialog_title">مِعراض</string>
+    <!-- Console: Enabled toast -->
+    <string name="console_toast_enabled">تم تمكين تسجيل المِعراض!</string>
+    <!-- Console: Disable logging -->
+    <string name="console_logging_disable">تعطيل</string>
+    <!-- Settings: Title -->
+    <string name="settings_title">الإعدادات</string>
+    <!-- Settings: General category -->
+    <string name="pref_category_general">عام</string>
+    <!-- Settings: Use web-based homepage title -->
+    <string name="pref_use_web_homepage_title">استخدام الصفحة الرئيسية المستندة إلى الويب</string>
+    <!-- Settings: Use web-based homepage summary -->
+    <string name="pref_use_web_homepage_summary">افتح صفحة ويب بدلاً من صفحة البداية كصفحة رئيسية.</string>
+    <!-- Settings: Data & Privacy category -->
+    <string name="pref_category_data_privacy">Data &amp; Privacy</string>
+    <!-- Settings: Enable ad blocker title -->
+    <string name="pref_ad_blocker_title">تفعيل مانع الإعلانات</string>
+    <!-- Settings: Enable ad blocker summary -->
+    <string name="pref_ad_blocker_summary">أوقف الإعلانات المزعجة من تشتيتك.</string>
+    <!-- Settings: Ad Blocklist source title -->
+    <string name="pref_ad_blocker_source_title">مصدر قائمة منع الإعلانات</string>
+    <!-- Settings: Download ad blocker hosts title -->
+    <string name="pref_ad_blocker_download_hosts_title">تنزيل قائمة منع الإعلانات</string>
+    <!-- Settings: Do Not Track title -->
+    <string name="pref_do_not_track_title">لا تتّبع</string>
+    <!-- Settings: Do Not Track summary -->
+    <string name="pref_do_not_track_summary">إرسال طلب عدم التعقب إلى المواقع التي تزورها.</string>
+    <!-- Settings: Send GPC title -->
+    <string name="pref_send_sec_gpc_title">التحكم بالخصوصية العامة</string>
+    <!-- Settings: Send GPC summary -->
+    <string name="pref_send_sec_gpc_summary">تمكين الموافقة على بيع أو مشاركة معلوماتك الشخصية على مواقع الويب التي تزورها مع أطراف ثالثة.</string>
+    <!-- Settings: Enforce HTTPS title -->
+    <string name="pref_enforce_https_title">فرض HTTPS</string>
+    <!-- Settings: Enforce HTTPS summary -->
+    <string name="pref_enforce_https_summary">قم دائماً بزيارة مواقع الويب باستخدام HTTPS للحصول على أمان إضافي. (تجريبي)</string>
+    <!-- Settings: Enable Google's Safe Browsing title -->
+    <string name="pref_google_safe_browsing_title">تمكين تصفح جوجل الآمن</string>
+    <!-- Settings: Enable Google's Safe Browsing summary -->
+    <string name="pref_google_safe_browsing_summary">السماح لتصفح جوجل الآمن بحظر المواقع التي يعتبرها خطيرة.</string>
+    <!-- Settings: Enable history storage title -->
+    <string name="pref_enable_history_title">استخدام تخزين المحفوظات</string>
+    <!-- Settings: Enable history storage summary -->
+    <string name="pref_enable_history_summary">الحفاظ على تاريخ صفحات الويب التي تمت زيارتها.</string>
+    <!-- Settings: Clear cache title -->
+    <string name="pref_clear_cache">محو ذاكرة التخزين المؤقت</string>
+    <!-- Settings: Clear cookies title -->
+    <string name="pref_clear_cookies">مسح ملفات تعريف الارتباط</string>
+    <!-- Settings: Reset to default title -->
+    <string name="pref_reset_to_default_title">استعادة القيم الافتراضية</string>
+    <!-- Settings: Reset to default summary -->
+    <string name="pref_reset_to_default_summary">Clear all browser data.</string>
+    <!-- Settings: Visuals category -->
+    <string name="pref_category_visuals">Visuals</string>
+    <!-- Settings: Theme title -->
+    <string name="pref_theme_title">Theme</string>
+    <!-- Settings: Use web content force dark title -->
+    <string name="pref_use_force_dark_title">Allow web content force dark</string>
+    <!-- Settings: Use web content force dark summary -->
+    <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
+    <!-- Settings: Start page wallpaper title -->
+    <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
+    <!-- Settings: Start page wallpaper summary -->
+    <string name="pref_start_page_wallpaper_summary">Current: %s</string>
+    <!-- Settings: Show favicon title -->
+    <string name="pref_show_favicon">Show favicon</string>
+    <!-- Settings: Show favicon summary -->
+    <string name="pref_show_favicon_summary">Show the favicon of the webpage next to the address bar.</string>
+    <!-- Settings: Reach mode title -->
+    <string name="pref_reverse_address_bar_title">Reach mode</string>
+    <!-- Settings: Reach mode summary -->
+    <string name="pref_reverse_address_bar_summary">Relocate interface elements for easier one-hand usage.</string>
+    <!-- Settings: Swipe to Refresh title -->
+    <string name="pref_enable_swipe_refresh_title">Enable Pull to Refresh</string>
+    <!-- Settings: Swipe to Refresh summary -->
+    <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
+    <!-- Settings: Update Recents icons and labels title -->
+    <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
+    <!-- Settings: Update Recents icons and labels summary -->
+    <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
+    <!-- Settings: Advanced category -->
+    <string name="pref_category_advanced">Advanced</string>
+    <!-- Settings: Enable JavaScript title -->
+    <string name="pref_enable_javascript_title">Enable JavaScript</string>
+    <!-- Settings: Enable JavaScript summary -->
+    <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
+    <!-- Settings: Use Custom Tabs title -->
+    <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
+    <!-- Settings: Use Custom Tabs summary -->
+    <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
+    <!-- Settings: Check App Link title -->
+    <string name="pref_check_app_link_title">Check for launchable App Link</string>
+    <!-- Settings: Check App Link summary -->
+    <string name="pref_check_app_link_summary">Ask whether an App Link should be opened externally before loading.</string>
+    <!-- Settings: Data Saver title -->
+    <string name="pref_send_save_data_title">Data Saver</string>
+    <!-- Settings: Data Saver summary -->
+    <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
+    <!-- Settings: Close app after download title -->
+    <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
+    <!-- Settings: Close app after download summary -->
+    <string name="pref_close_app_after_download_summary">Always close Viola if the App Link is downloadable.</string>
+    <!-- Settings: Software updates category -->
+    <string name="pref_category_software_updates">Software updates</string>
+    <!-- Settings: Check for updates title -->
+    <string name="pref_check_for_updates_title">Check for Updates</string>
+    <!-- Settings: Check for updates summary -->
+    <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
+    <!-- Settings: Select update channel title -->
+    <string name="pref_update_channel_title">Select update channel</string>
+    <!-- Settings: Version category -->
+    <string name="pref_category_version">Version</string>
+    <!-- Settings: About title -->
+    <string name="pref_about_title">About</string>
+    <!-- Settings - Search: Custom dialog message -->
+    <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>
+    <!-- Settings - Wallpaper: Default -->
+    <string name="default_res">Default</string>
+    <!-- Settings - Ad Servers: Downloading finished toast -->
+    <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
+    <!-- Settings - Reset to Default: Dialog message -->
+    <string name="dialog_settings_reset_to_default_message">This will clear all browser data\nAre you sure you want to continue?</string>
+    <!-- Settings - Reset to Default: Toast message -->
+    <string name="toast_reset_complete">Reset completed successfully.</string>
+    <!-- Updates: Latest version toast -->
+    <string name="toast_version_latest">You are currently running the latest version of Viola.</string>
+    <!-- Updates: Network unavailable toast -->
+    <string name="toast_network_unavailable">Network is unavailable.</string>
+    <!-- Updates: Update available dialog title -->
+    <string name="dialog_update_available_title">Update available</string>
+    <!-- Updates: Update available dialog message -->
+    <string name="dialog_update_available_message">Viola %1$s (%2$s) is available, do you want to install it?</string>
+    <!-- Updates: Update available dialog release date message -->
+    <string name="dialog_update_available_release_date_message">Release date: %s</string>
+    <!-- Updates: Update failed message -->
+    <string name="update_download_failed">Update failed to download!</string>
+    <!-- Lists: Delete all entries dialog title -->
+    <string name="dialog_delete_all_entries_title">Delete all entries</string>
+    <!-- Lists: Delete menu option -->
+    <string name="delete">Delete</string>
+    <!-- History: Title -->
+    <string name="history_title">History</string>
+    <!-- History: Empty message -->
+    <string name="history_empty_message">History is empty!</string>
+    <!-- History: Save to favorites menu option -->
+    <string name="menu_save_to_favorites">Save to favorites</string>
+    <!-- History: Delete all entries dialog message -->
+    <string name="dialog_delete_all_entries_history_message">You are about to delete all history entries, are you sure about this?</string>
+    <!-- Favorites: Title -->
+    <string name="favorites_title">Favorites</string>
+    <!-- Favorites: Empty message -->
+    <string name="favorites_empty_message">There are no favorites saved.</string>
+    <!-- Favorites: Menu edit option -->
+    <string name="favorites_menu_edit">Edit</string>
+    <!-- Favorites: Edit dialog title option -->
+    <string name="favorites_dialog_title">Title</string>
+    <!-- Favorites: Edit dialog link option -->
+    <string name="favorites_dialog_link">Link</string>
+    <!-- Favorites: Delete all entries dialog message -->
+    <string name="dialog_delete_all_entries_favorites_message">You are about to delete all favorites entries, are you sure about this?</string>
+    <!-- Downloads: Toast failed -->
+    <string name="downloads_toast_failed">Download failed!</string>
+    <!-- Downloads: Toast success -->
+    <string name="downloads_toast_success">%s downloaded successfully.</string>
+    <!-- Downloads: Empty message -->
+    <string name="downloads_empty_message">No downloads</string>
+    <!-- Downloads: Confirmation dialog title -->
+    <string name="downloads_dialog_title">Download file?</string>
+    <!-- Downloads: Confirmation dialog message -->
+    <string name="downloads_dialog_message">Do you want to download %s?</string>
+    <!-- Downloads: Error details dialog title -->
+    <string name="downloads_dialog_error_details_title">Download failure details</string>
+    <!-- Downloads: Confirmation dialog duplicated message -->
+    <string name="downloads_dialog_duplicated_message">File already present in your download directory, do you want to re-download %s?</string>
+    <!-- Downloads: Menu re-download option -->
+    <string name="downloads_menu_re_download">Download again</string>
+    <!-- Crash Activity: Generic error explanation -->
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
+    <!-- Crash Activity: Restart app button -->
+    <string name="customactivityoncrash_error_activity_restart_app">Restart app</string>
+    <!-- Crash Activity: Close app button -->
+    <string name="customactivityoncrash_error_activity_close_app">Close app</string>
+    <!-- Crash Activity: Error details app button -->
+    <string name="customactivityoncrash_error_activity_error_details">Error details</string>
+    <!-- Crash Activity: Error details dialog title -->
+    <string name="customactivityoncrash_error_activity_error_details_title">Error details</string>
+    <!-- Crash Activity: Error details dialog close button -->
+    <string name="customactivityoncrash_error_activity_error_details_close">Close</string>
+    <!-- Crash Activity: Error details dialog copy button -->
+    <string name="customactivityoncrash_error_activity_error_details_copy">Copy to clipboard</string>
+    <!-- Crash Activity: Error details dialog copy toast -->
+    <string name="customactivityoncrash_error_activity_error_details_copied">Copied to clipboard</string>
+    <!-- Crash Activity: Error details clipboard label -->
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">Error information</string>
+    <string-array name="errMsg">
+        <item>Error!</item>
+        <item>Can\'t open this page</item>
+        <item>Viola failed to open your webpage.</item>
+        <item>Try:</item>
+        <item>Checking your internet connection</item>
+        <item>Reloading the webpage</item>
+    </string-array>
+    <string-array name="search_entries">
+        <item>Google</item>
+        <item>Baidu</item>
+        <item>DuckDuckGo</item>
+        <item>Bing</item>
+        <item>Yahoo!</item>
+        <item>Ecosia</item>
+        <item>Yandex</item>
+        <item>Brave Search</item>
+        <item>Startpage</item>
+        <item>Whoogle</item>
+        <item>Swisscows</item>
+        <item>Qwant</item>
+        <item>Sogou</item>
+        <item>360 Search</item>
+        <item>FrogFind</item>
+        <item>Custom</item>
+    </string-array>
+    <string-array name="ad_blocker_hosts_entries">
+        <item>AdAway</item>
+        <item>GoodbyeAds</item>
+        <item>Unified hosts</item>
+        <item>Eulaurarien First-Party Trackers</item>
+        <item>Custom</item>
+    </string-array>
+    <string-array name="themes">
+        <item>System Default</item>
+        <item>فاتح</item>
+        <item>داكن</item>
+    </string-array>
+</resources>
