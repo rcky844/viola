@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.util.AttributeSet
-import android.view.View
 import android.widget.CheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -18,10 +17,11 @@ import tipz.viola.ext.setImmersiveMode
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BrowserActivity
 
-class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
-    FloatingActionButton(context, attrs) {
+class FullscreenFloatingActionButton(
+    context: Context, attrs: AttributeSet?
+) : FloatingActionButton(context, attrs) {
     lateinit var activity: BrowserActivity
-    var hiddenViews: MutableList<View> = mutableListOf()
+    var hiddenViews: MutableList<BrowserActivity.ViewVisibility> = mutableListOf()
     private var faded = false
     var isFullscreen = false
 
@@ -56,7 +56,7 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
 
                 // Handle views
                 hiddenViews.forEach {
-                    it.visibility = VISIBLE
+                    if (it.isEnabledCallback()) it.view.visibility = VISIBLE
                 }
                 this.visibility = GONE
 
@@ -73,7 +73,7 @@ class FullscreenFloatingActionButton(context: Context, attrs: AttributeSet?) :
 
         // Handle views
         hiddenViews.forEach {
-            it.visibility = GONE
+            if (it.isEnabledCallback()) it.view.visibility = GONE
         }
         this.visibility = VISIBLE
 

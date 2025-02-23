@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
@@ -21,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import tipz.viola.R
 import tipz.viola.ext.dpToPx
+import tipz.viola.webview.activity.BrowserActivity
 
 
 class LocalNtpPageView(
@@ -28,7 +28,7 @@ class LocalNtpPageView(
 ) : ConstraintLayout(context, attrs) {
     private lateinit var addressBar: AddressBarView
     private lateinit var realSearchBar: MaterialAutoCompleteTextView
-    private lateinit var involvedView: View
+    var involvedView: MutableList<BrowserActivity.ViewVisibility> = mutableListOf()
     var fakeSearchBar: AppCompatAutoCompleteTextView
     private val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
     private var set = ConstraintSet()
@@ -61,7 +61,7 @@ class LocalNtpPageView(
             inputType = InputType.TYPE_NULL
             onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    updateVisibility(false)
+                    updateVisibility(visible = false, overrideCallback = true)
                     realSearchBar.requestFocus()
                     imm.showSoftInput(realSearchBar, InputMethodManager.SHOW_IMPLICIT)
                 }
@@ -98,18 +98,19 @@ class LocalNtpPageView(
         isFocusable = false
         setOnClickListener {
             if (realSearchBar.isFocused && realSearchBar.text.isEmpty()) {
-                updateVisibility(true)
+                updateVisibility(visible = true, overrideCallback = true)
                 imm.hideSoftInputFromWindow(realSearchBar.windowToken, 0)
                 realSearchBar.clearFocus()
             }
         }
     }
 
-    fun updateVisibility(visible: Boolean, updateInvolved: Boolean = true) {
-        if (updateInvolved) {
-            if (this::involvedView.isInitialized)
-                involvedView.visibility = if (visible) GONE else VISIBLE
-            else addressBar.visibility = if (visible) GONE else VISIBLE
+    fun updateVisibility(visible: Boolean, overrideCallback: Boolean = false) {
+        (if (visible) GONE else VISIBLE).let { vis ->
+            if (involvedView.isEmpty()) addressBar.visibility = vis
+            else involvedView.forEach {
+                if (overrideCallback || it.isEnabledCallback()) it.view.visibility = vis
+            }
         }
         fakeSearchBar.visibility = if (visible) VISIBLE else GONE
     }
@@ -117,9 +118,5 @@ class LocalNtpPageView(
     fun setRealSearchBar(addressBar: AddressBarView) {
         this.addressBar = addressBar
         this.realSearchBar = addressBar.textView
-    }
-
-    fun setInvolvedView(involvedView: View) {
-        this.involvedView = involvedView
     }
 }
