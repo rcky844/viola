@@ -265,7 +265,14 @@ class BrowserActivity : VWebViewActivity() {
 
         // Set-up local new tab page
         localNtpPageView.setRealSearchBar(addressBar)
-        localNtpPageView.setInvolvedView(appbar)
+        localNtpPageView.involvedView = mutableListOf(
+            ViewVisibility().apply {
+                this.view = appbar
+                isEnabledCallback = {
+                    !fullscreenFab.isFullscreen
+                }
+            }
+        )
 
         // Finally, load homepage
         val dataUri = intent.data
@@ -485,7 +492,17 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.fullscreen -> {
                 if (!setFabHiddenViews) {
-                    fullscreenFab.hiddenViews = mutableListOf(appbar, toolbarView)
+                    fullscreenFab.hiddenViews = mutableListOf(
+                        ViewVisibility().apply {
+                            this.view = appbar
+                            isEnabledCallback = {
+                                localNtpPageView.visibility != View.VISIBLE
+                            }
+                        },
+                        ViewVisibility().apply {
+                            this.view = toolbarView
+                        }
+                    )
                     fullscreenFab.activity = this
                     setFabHiddenViews = true
                 }
@@ -652,6 +669,11 @@ class BrowserActivity : VWebViewActivity() {
         val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
         webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
-        localNtpPageView.updateVisibility(isHomePage, !fullscreenFab.isFullscreen)
+        localNtpPageView.updateVisibility(isHomePage)
+    }
+
+    class ViewVisibility {
+        lateinit var view: View
+        var isEnabledCallback: () -> Boolean = { true }
     }
 }
