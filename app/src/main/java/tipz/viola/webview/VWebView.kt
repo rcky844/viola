@@ -7,13 +7,9 @@ package tipz.viola.webview
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.content.Intent.FLAG_ACTIVITY_REQUIRE_DEFAULT
-import android.content.Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
@@ -49,6 +45,7 @@ import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.database.Droha
+import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
@@ -73,6 +70,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private var currentBroha = Broha()
     var currentFavicon: Bitmap? = null
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+    var loadProgress = 100
     val settingsPreference =
         (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
@@ -129,7 +127,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
-            activity.onPageLoadProgressChanged(0)
+            onPageLoadProgressChanged(0)
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
         }
@@ -258,36 +256,29 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     @SuppressLint("InlinedApi")
-    fun loadAppLinkUrl(url: String): Boolean {
-        if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
-            && !UrlUtils.isUriSupported(url)) {
-            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            webIntent.addCategory(Intent.CATEGORY_BROWSABLE)
-            webIntent.setFlags(
-                FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REQUIRE_NON_BROWSER or
-                        FLAG_ACTIVITY_REQUIRE_DEFAULT
-            )
-            if (webIntent.resolveActivity(context.packageManager) != null) {
-                val dialog = MaterialAlertDialogBuilder(context)
-                dialog.setTitle(R.string.dialog_open_external_title)
-                    .setMessage(R.string.dialog_open_external_message)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        try {
-                            context.startActivity(webIntent)
-                        } catch (e: ActivityNotFoundException) {
-                            // Do not load actual url on failure
-                        }
-                    }
-                    .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
-                        // Load actual url if user cancelled the request.
-                        super.loadUrl(url, requestHeaders)
-                    }
-                    .create().show()
-                return true
-            } else {
-                return false
-            }
+    fun loadAppLinkUrl(url: String, noToast: Boolean = false): Boolean {
+        if (UrlUtils.isUriSupported(url)) return false
+
+        Log.i(LOG_TAG, "Checking for possible App Link, url=$url")
+        val intent =
+            if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+            else Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        if (intent.resolveActivity(context.packageManager) != null) {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.dialog_open_external_title)
+                .setMessage(R.string.dialog_open_external_message)
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    context.startActivity(intent)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show()
+            return true
         } else {
+            if (!noToast && (loadProgress == 0 || loadProgress == 100)) {
+                Log.v(LOG_TAG, "App Link not handled and page loaded, showing toast")
+                context.showMessage(R.string.toast_no_app_to_handle)
+            }
+            Log.w(LOG_TAG, "Found no application to handle App Link!")
             return false
         }
     }
@@ -312,7 +303,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
 
         // Handle App Links
-        if (loadAppLinkUrl(url)) return
+        if (loadAppLinkUrl(url, true)) return
 
         // If the URL has "viola://" prefix but hasn't been handled till here,
         // wire it up with the "chrome://" suffix.
@@ -389,14 +380,14 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         when (state) {
             PageLoadState.PAGE_STARTED -> {
                 if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return
+                onPageLoadProgressChanged(-1)
                 activity.onFaviconProgressUpdated(true)
-                activity.onPageLoadProgressChanged(-1)
                 consoleMessages.clear()
             }
 
             PageLoadState.PAGE_FINISHED -> {
+                onPageLoadProgressChanged(0)
                 activity.onFaviconProgressUpdated(false)
-                activity.onPageLoadProgressChanged(0)
                 activity.onSslCertificateUpdated()
                 activity.swipeRefreshLayout.setRefreshing(false)
             }
@@ -468,6 +459,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageLoadProgressChanged(progress: Int) {
+        loadProgress = progress
         activity.onPageLoadProgressChanged(progress)
     }
 

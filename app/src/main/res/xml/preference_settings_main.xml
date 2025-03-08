@@ -147,13 +147,6 @@
             app:preferenceTag="useCustomTabs"
             app:needReload="false" />
         <tipz.viola.settings.activity.MaterialSwitchPreference
-            android:key="check_app_link"
-            android:summary="@string/pref_check_app_link_summary"
-            android:title="@string/pref_check_app_link_title"
-            app:preferenceTag="checkAppLink"
-            app:needReload="false"
-            app:requiredApi="30" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="send_save_data"
             android:summary="@string/pref_send_save_data_summary"
             android:title="@string/pref_send_save_data_title"

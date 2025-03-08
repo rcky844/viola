@@ -265,10 +265,6 @@
     <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
     <!-- Settings: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
-    <!-- Settings: Check App Link title -->
-    <string name="pref_check_app_link_title">Check for launchable App Link</string>
-    <!-- Settings: Check App Link summary -->
-    <string name="pref_check_app_link_summary">Ask whether an App Link should be opened externally before loading.</string>
     <!-- Settings: Data Saver title -->
     <string name="pref_send_save_data_title">Data Saver</string>
     <!-- Settings: Data Saver summary -->

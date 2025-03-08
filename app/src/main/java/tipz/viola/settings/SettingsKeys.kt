@@ -1,4 +1,4 @@
-// Copyright (c) 2021-2024 Tipz Team
+// Copyright (c) 2021-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings
@@ -58,7 +58,6 @@ object SettingsKeys {
     const val updateChannelName = "updateChannelName" /* STRING */
 
     /* Miscellaneous */
-    const val checkAppLink = "checkAppLink" /* INTEGER */
     const val enableGoogleSafeBrowse = "enableGoogleSafeBrowse" /* INTEGER */
     const val enableSwipeRefresh = "enableSwipeRefresh" /* INTEGER */
     const val enforceHttps = "enforceHttps" /* INTEGER */
@@ -66,6 +65,9 @@ object SettingsKeys {
     const val sendDNT = "sendDNT" /* INTEGER */
     const val sendSaveData = "sendSaveData" /* INTEGER */
     const val sendSecGPC = "sendSecGPC" /* INTEGER */
+
+    /* Removed in 7.1.x */
+    const val checkAppLink = "checkAppLink" /* INTEGER */
 
     /* Removed in 7.0.x */
     const val defaultHomePage = "defaultHomePage" /* STRING */
