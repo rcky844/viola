@@ -71,7 +71,10 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
 
             // Let this downloaded file be scanned by MediaScanner - so that it can
             // show up in Gallery app, for example.
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) request.allowScanningByMediaScanner()
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                @Suppress("Deprecation")
+                request.allowScanningByMediaScanner()
+            }
 
             // Referer header for some sites which use the same HTML link for the download link
             request.addRequestHeader("Referer", requestUrl ?: uriString)
