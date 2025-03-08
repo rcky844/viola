@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.buss
@@ -49,7 +49,7 @@ object BussUtils {
             val realUrl = if (ip.contains(githubPrefix))
                 "https://raw.githubusercontent.com/" +
                         "${ip.replace(githubPrefix, "")}/main/index.html"
-            else UrlUtils.validateUrlOrConvertToSearch(view.settingsPreference, ip, 1)
+            else UrlUtils.UrlOrSearchValidator.validate(view.settingsPreference, ip, 1)
             MainScope().launch { view.onPageLoadProgressChanged(40) }
 
             val htmlData = MiniDownloadHelper.startDownload(realUrl).response

@@ -302,9 +302,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Check for view source
         if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
 
-        // Handle App Links
-        if (loadAppLinkUrl(url, true)) return
-
         // If the URL has "viola://" prefix but hasn't been handled till here,
         // wire it up with the "chrome://" suffix.
         if (url.startsWith(ExportedUrls.violaPrefix)) {
@@ -313,7 +310,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
 
         // By this point, it is probably a webpage or a search query.
-        val checkedUrl = UrlUtils.validateUrlOrConvertToSearch(settingsPreference, url)
+        val checkedUrl = UrlUtils.UrlOrSearchValidator.validate(settingsPreference, url)
+        if (UrlUtils.UrlOrSearchValidator.isSearch) {
+            // Handle App Links
+            if (loadAppLinkUrl(url, true)) return
+        }
         onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
 
         // Prevent creating duplicate entries

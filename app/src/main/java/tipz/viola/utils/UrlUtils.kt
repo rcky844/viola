@@ -1,4 +1,4 @@
-// Copyright (c) 2021-2024 Tipz Team
+// Copyright (c) 2021-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.utils
@@ -64,49 +64,56 @@ object UrlUtils {
         return uri.matches(regex)
     }
 
-    fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String) =
-        validateUrlOrConvertToSearch(pref, input, 2)
+    object UrlOrSearchValidator {
+        var isSearch = false
 
-    fun validateUrlOrConvertToSearch(pref: SettingsSharedPreference, input: String,
-                                     maxRuns: Int): String {
-        // Return if input URI is supported
-        // Also, enforce HTTPS on URLs that match
-        if (isUriSupported(input)) {
-            return if (input.startsWith(httpPrefix) && pref.getIntBool(SettingsKeys.enforceHttps))
-                input.replaceFirst(httpPrefix, httpsPrefix)
-            else input
-        }
+        fun validate(pref: SettingsSharedPreference, input: String) =
+            validate(pref, input, 2)
 
-        // Start processing
-        var checkedUrl = input
-        var run = 1
-        while (!isUriSupported(checkedUrl)) {
-            Log.d(LOG_TAG, "toValidHttpUrl(): Uri regex does not match, " +
-                    "run=$run, input=$input")
-            when (run) {
-                1 -> {
-                    // Attempt to fix the url by adding in http prefixes
-                    checkedUrl = (if (pref.getIntBool(SettingsKeys.enforceHttps))
-                        httpsPrefix else httpPrefix) + input
+        fun validate(pref: SettingsSharedPreference, input: String,
+                                         maxRuns: Int): String {
+            isSearch = false
 
-                    // Check whether it has dots
-                    if (!checkedUrl.matches(getUriRegex(true, true)))
-                        checkedUrl = input
-                }
-                2 -> {
-                    // If run 0 failed, make it a search url
-                    checkedUrl = SearchEngineEntries.getPreferredSearchUrl(pref, input)
-                }
-                else -> {
-                    Log.d(LOG_TAG, "toValidHttpUrl(): Unable to convert into valid url!")
-                    checkedUrl = "" // Provide empty string on error
-                    break
-                }
+            // Return if input URI is supported
+            // Also, enforce HTTPS on URLs that match
+            if (isUriSupported(input)) {
+                return if (input.startsWith(httpPrefix) && pref.getIntBool(SettingsKeys.enforceHttps))
+                    input.replaceFirst(httpPrefix, httpsPrefix)
+                else input
             }
-            if (run == maxRuns) break
-            run++
-        }
 
-        return checkedUrl.trim()
+            // Start processing
+            var checkedUrl = input
+            var run = 1
+            while (!isUriSupported(checkedUrl)) {
+                Log.d(LOG_TAG, "toValidHttpUrl(): Uri regex does not match, " +
+                        "run=$run, input=$input")
+                when (run) {
+                    1 -> {
+                        // Attempt to fix the url by adding in http prefixes
+                        checkedUrl = (if (pref.getIntBool(SettingsKeys.enforceHttps))
+                            httpsPrefix else httpPrefix) + input
+
+                        // Check whether it has dots
+                        if (!checkedUrl.matches(getUriRegex(true, true)))
+                            checkedUrl = input
+                    }
+                    2 -> {
+                        // If run 0 failed, make it a search url
+                        checkedUrl = SearchEngineEntries.getPreferredSearchUrl(pref, input)
+                        isSearch = true
+                    }
+                    else -> {
+                        Log.d(LOG_TAG, "toValidHttpUrl(): Unable to convert into valid url!")
+                        checkedUrl = "" // Provide empty string on error
+                        break
+                    }
+                }
+                if (run == maxRuns) break
+                run++
+            }
+
+            return checkedUrl.trim()
+        }
     }
 }
