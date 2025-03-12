@@ -1,5 +1,5 @@
 // Copyright (c) 2020-2023 The LineageOS Project
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.search
@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.Space
+import androidx.constraintlayout.widget.ConstraintLayout
 import tipz.viola.databinding.TemplateTextSuggestionsBinding
 import tipz.viola.webview.VWebViewActivity
 import java.util.Locale
@@ -33,7 +35,7 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
         val binding: TemplateTextSuggestionsBinding
         var itemView = convertView
 
-        if (convertView == null) {
+        if (convertView == null || convertView !is ConstraintLayout) {
             binding = TemplateTextSuggestionsBinding.inflate(
                 LayoutInflater.from(context), parent, false)
             itemView = binding.root
@@ -43,7 +45,7 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
 
         val title = binding.text1
         val copyToSearchBarButton = binding.copyToSearchBarButton
-        val suggestion = items[position]
+        val suggestion = items.getOrNull(position) ?: return Space(context)
 
         if (queryText != null) {
             val spannable = SpannableStringBuilder(suggestion)
