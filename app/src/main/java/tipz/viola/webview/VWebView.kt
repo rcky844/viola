@@ -164,6 +164,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Enable some HTML5 related settings
         webSettings.databaseEnabled = false // Disabled as no-op since Android 15
         webSettings.domStorageEnabled = true
+        webSettings.savePassword = false
 
         // Ad Server Hosts
         adServersHandler = AdServersClient(context, settingsPreference)
