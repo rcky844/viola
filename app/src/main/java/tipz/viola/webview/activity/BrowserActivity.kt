@@ -338,19 +338,20 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Start Page Wallpaper
-        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
-            localNtpPageView.setBackgroundResource(0)
-        } else {
+        settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
             try {
-                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+                localNtpPageView.setBackgroundDrawable(
+                    BitmapDrawable(
+                        resources,
+                        MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(it))
+                    )
                 )
-                localNtpPageView.setBackgroundDrawable(BitmapDrawable(resources, bitmap))
             } catch (_: SecurityException) {
                 localNtpPageView.setBackgroundResource(0)
                 settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
             }
+        } ?: run {
+            localNtpPageView.setBackgroundResource(0)
         }
     }
 
