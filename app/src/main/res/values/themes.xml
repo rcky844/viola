@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2024 Tipz Team
+<!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
@@ -15,10 +15,10 @@
 
     <!-- Collapsing toolbar style -->
     <style name="Theme.App.Settings.ToolbarCollapsed" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
         <item name="android:textSize">20sp</item>
     </style>
-    Widget.App.LinearProgressIndicator
+
     <style name="Theme.App.Settings.ToolbarExpanded" parent="Theme.App.Settings.ToolbarCollapsed">
         <item name="android:textSize">36sp</item>
         <item name="android:drawablePadding">10dp</item>
