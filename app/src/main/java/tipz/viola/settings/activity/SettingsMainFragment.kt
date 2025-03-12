@@ -39,7 +39,7 @@ import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.utils.UpdateService
-import tipz.viola.webview.activity.BaseActivity.Companion.darkModeCheck
+import tipz.viola.webview.activity.BaseActivity.Companion.performThemeModeChecks
 import java.io.IOException
 
 class SettingsMainFragment : PreferenceFragmentCompat() {
@@ -238,7 +238,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                     idPreference = SettingsKeys.themeId
                     dialogTitleResId = R.string.pref_theme_title
                     dialogPositivePressed = {
-                        darkModeCheck(settingsActivity)
+                        performThemeModeChecks(settingsActivity)
                     }
                 }
 

@@ -187,20 +187,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     @Suppress("deprecation")
     fun doSettingsCheck() {
         // Dark mode
-        val darkMode = BaseActivity.getDarkMode(context)
+        val darkMode = BaseActivity.isDarkMode(context)
         val forceDark = settingsPreference.getIntBool(SettingsKeys.useForceDark)
-        if (forceDark) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-                && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
-                WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode)
-            else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
-                WebSettingsCompat.setForceDark(webSettings,
-                    if (darkMode) WebSettingsCompat.FORCE_DARK_ON
-                    else WebSettingsCompat.FORCE_DARK_OFF
-                )
-        } else {
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
-                WebSettingsCompat.setForceDark(webSettings, WebSettingsCompat.FORCE_DARK_OFF)
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode && forceDark)
+        } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+            if (darkMode && forceDark) WebSettingsCompat.FORCE_DARK_ON
+            else WebSettingsCompat.FORCE_DARK_OFF
         }
 
         // Javascript

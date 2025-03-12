@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity
@@ -40,31 +40,31 @@ open class BaseActivity : AppCompatActivity() {
     @CallSuper
     open fun doSettingsCheck() {
         // Dark Mode
-        darkModeCheck(this)
+        performThemeModeChecks(this)
     }
 
     companion object {
         lateinit var settingsPreference: SettingsSharedPreference
         lateinit var windowInsetsController: WindowInsetsControllerCompat
 
-        fun darkModeCheck(context: Context) {
-            // Dark mode
-            if (settingsPreference.getInt(SettingsKeys.themeId) == 0)
-                AppCompatDelegate.setDefaultNightMode(
+        fun performThemeModeChecks(context: Context) {
+            val mode = when (settingsPreference.getInt(SettingsKeys.themeId)) {
+                1 -> AppCompatDelegate.MODE_NIGHT_NO
+                2 -> AppCompatDelegate.MODE_NIGHT_YES
+                else -> {
                     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O_MR1)
                         AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-                    else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            else AppCompatDelegate.setDefaultNightMode(
-                if (settingsPreference.getInt(SettingsKeys.themeId) == 2)
-                    AppCompatDelegate.MODE_NIGHT_YES
-                else AppCompatDelegate.MODE_NIGHT_NO
-            )
+                    else AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                }
+            }
+            AppCompatDelegate.setDefaultNightMode(mode)
 
-            windowInsetsController.isAppearanceLightStatusBars = !getDarkMode(context)
-            windowInsetsController.isAppearanceLightNavigationBars = !getDarkMode(context)
+
+            windowInsetsController.isAppearanceLightStatusBars = !isDarkMode(context)
+            windowInsetsController.isAppearanceLightNavigationBars = !isDarkMode(context)
         }
 
-        fun getDarkMode(context: Context): Boolean {
+        fun isDarkMode(context: Context): Boolean {
             return context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
                     Configuration.UI_MODE_NIGHT_YES
         }
