@@ -57,7 +57,7 @@ class ListInterfaceActivity : BaseActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             listData =
                 (if (activityMode == mode_history) historyClient.getAll()
-                else favClient.getAll()) as MutableList<Broha>?
+                else favClient.getAll()).toMutableList()
             MainScope().launch { callback() }
         }
     }
@@ -111,8 +111,8 @@ class ListInterfaceActivity : BaseActivity() {
                         if (activityMode == mode_history) historyClient.deleteAll()
                         else if (activityMode == mode_favorites) favClient.deleteAll()
                     }
-                    val size = listData!!.size
-                    listData!!.clear()
+                    val size = listData.size
+                    listData.clear()
                     itemsAdapter.notifyItemRangeRemoved(0, size)
                     showMessage(R.string.toast_cleared)
                 }
@@ -154,8 +154,7 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val isEmpty = listData == null || listData!!.size == 0
-            binding = if (isEmpty) {
+            binding = if (listData.isEmpty()) {
                 TemplateEmptyBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false)
             } else {
@@ -163,7 +162,7 @@ class ListInterfaceActivity : BaseActivity() {
                     LayoutInflater.from(parent.context), parent, false)
             }
 
-            return if (isEmpty) EmptyViewHolder(binding as TemplateEmptyBinding)
+            return if (listData.isEmpty()) EmptyViewHolder(binding as TemplateEmptyBinding)
             else ListViewHolder(binding as TemplateIconTitleDescriptorTimeBinding)
         }
 
@@ -176,7 +175,7 @@ class ListInterfaceActivity : BaseActivity() {
                 )
             } else if (holder is ListViewHolder) {
                 val iconHashClient = mIconHashClient
-                val data = listData!![position]
+                val data = listData[position]
                 val title = data.title
                 val url = data.url
                 var icon: Bitmap?
@@ -253,7 +252,7 @@ class ListInterfaceActivity : BaseActivity() {
                                             CoroutineScope(Dispatchers.IO).launch {
                                                 activity.favClient.update(data)
                                                 // FIXME: Update list dynamically to save system resources
-                                                listData = activity.favClient.getAll() as MutableList<Broha>?
+                                                listData = activity.favClient.getAll().toMutableList()
                                                 MainScope().launch {
                                                     notifyItemRangeRemoved(position, 1)
                                                 }
@@ -288,17 +287,13 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
-            val isEmpty = listData == null || listData!!.size == 0
-            activity.fab.visibility = if (isEmpty) View.GONE else View.VISIBLE
-
-            // Return 1 so that empty message is shown
-            return if (isEmpty) 1
-            else listData!!.size
+            activity.fab.visibility = if (listData.isEmpty()) View.GONE else View.VISIBLE
+            return if (listData.isEmpty()) 1 else listData.size
         }
     }
 
     companion object {
-        private var listData: MutableList<Broha>? = null
+        private var listData: MutableList<Broha> = mutableListOf()
 
         /* Activity mode */
         var activityMode: String? = null

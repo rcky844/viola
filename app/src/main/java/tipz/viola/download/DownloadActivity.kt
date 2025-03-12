@@ -19,7 +19,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -125,8 +124,7 @@ class DownloadActivity : BaseActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val isEmpty = listData.size == 0
-            binding = if (isEmpty) {
+            binding = if (listData.isEmpty()) {
                 TemplateEmptyBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false)
             } else {
@@ -134,7 +132,7 @@ class DownloadActivity : BaseActivity() {
                     LayoutInflater.from(parent.context), parent, false)
             }
 
-            return if (isEmpty) EmptyViewHolder(binding.root)
+            return if (listData.isEmpty()) EmptyViewHolder(binding.root)
             else ListViewHolder(binding.root)
         }
 
@@ -210,12 +208,8 @@ class DownloadActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
-            val isEmpty = listData.size == 0
-            activity.fab.visibility = if (isEmpty) View.GONE else View.VISIBLE
-
-            // Return 1 so that empty message is shown
-            return if (isEmpty) 1
-            else listData.size
+            activity.fab.visibility = if (listData.isEmpty()) View.GONE else View.VISIBLE
+            return if (listData.isEmpty()) 1 else listData.size
         }
     }
 
