@@ -297,10 +297,35 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Check for view source
         if (url.startsWith(BrowserUrls.viewSourcePrefix)) loadRealUrl(url)
 
-        // If the URL has "viola://" prefix but hasn't been handled till here,
-        // wire it up with the "chrome://" suffix.
-        if (url.startsWith(BrowserUrls.violaPrefix)) {
-            super.loadUrl(url.replace(BrowserUrls.violaPrefix, BrowserUrls.chromePrefix))
+        // Handle "chrome://" and "viola://" prefix (i.e. browser handling URLs)
+        val isViolaUrl = url.startsWith(BrowserUrls.violaPrefix)
+        val isChromeUrl = url.startsWith(BrowserUrls.chromePrefix)
+        if (isViolaUrl || isChromeUrl) {
+            // If the URL has "viola://" prefix but hasn't been handled till here,
+            // wire it up with the "chrome://" prefix.
+            val handlingSuffix = url
+                .replaceFirst(BrowserUrls.violaPrefix, "", true)
+                .replaceFirst(BrowserUrls.chromePrefix, "", true)
+
+            // Browser mode specific URLs
+            activity.takeIf { it is BrowserActivity }?.let { it as BrowserActivity
+                // Bookmarks / Favorites
+                // "favorites" does not exist as "chrome://" prefix,
+                // so limit to "viola://" prefix.
+                if (handlingSuffix.startsWith(BrowserUrls.bookmarksChromeSuffix)
+                    || (isViolaUrl && handlingSuffix.startsWith(BrowserUrls.favouritesViolaSuffix))) {
+                    it.itemSelected(null, R.drawable.favorites)
+                    return
+                }
+
+                // History
+                if (handlingSuffix.startsWith(BrowserUrls.historyChromeSuffix)) {
+                    it.itemSelected(null, R.drawable.history)
+                    return
+                }
+            }
+
+            super.loadUrl("${BrowserUrls.chromePrefix}$handlingSuffix")
             return
         }
 

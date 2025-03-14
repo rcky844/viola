@@ -11,4 +11,7 @@ object BrowserUrls {
     // Internal URLs
     const val violaPrefix = "viola://"
     const val chromePrefix = "chrome://"
+    const val bookmarksChromeSuffix = "bookmarks"
+    const val historyChromeSuffix = "history"
+    const val favouritesViolaSuffix = "favorites"
 }
