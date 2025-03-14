@@ -66,8 +66,8 @@ import tipz.viola.webview.activity.components.FavIconView
 import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
 import tipz.viola.webview.activity.components.LocalNtpPageView
 import tipz.viola.webview.activity.components.ToolbarView
-import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
+import tipz.viola.webview.pages.ProjectUrls
 import tipz.viola.widget.PropertyDisplayView
 import tipz.viola.widget.StringResAdapter
 import java.text.DateFormat
@@ -630,7 +630,7 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onSslCertificateUpdated() {
         // Startpage
-        if (webview.getRealUrl() == ExportedUrls.actualStartUrl) {
+        if (webview.getRealUrl() == ProjectUrls.actualStartUrl) {
             sslState = SslState.SEARCH
             sslLock.setImageResource(R.drawable.search)
             return
@@ -667,7 +667,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     fun checkHomePageVisibility() {
-        val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
+        val isHomePage = webview.getRealUrl() == ProjectUrls.actualStartUrl
         webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
         localNtpPageView.updateVisibility(isHomePage)

@@ -52,8 +52,9 @@ import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.activity.BaseActivity
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.buss.BussUtils
-import tipz.viola.webview.pages.ExportedUrls
+import tipz.viola.webview.pages.BrowserUrls
 import tipz.viola.webview.pages.PrivilegedPages
+import tipz.viola.webview.pages.ProjectUrls
 import java.util.regex.Pattern
 
 @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
@@ -294,12 +295,12 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Check for view source
-        if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
+        if (url.startsWith(BrowserUrls.viewSourcePrefix)) loadRealUrl(url)
 
         // If the URL has "viola://" prefix but hasn't been handled till here,
         // wire it up with the "chrome://" suffix.
-        if (url.startsWith(ExportedUrls.violaPrefix)) {
-            super.loadUrl(url.replace(ExportedUrls.violaPrefix, ExportedUrls.chromePrefix))
+        if (url.startsWith(BrowserUrls.violaPrefix)) {
+            super.loadUrl(url.replace(BrowserUrls.violaPrefix, BrowserUrls.chromePrefix))
             return
         }
 
@@ -320,7 +321,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     // This should only be accessed by us!
     fun loadRealUrl(url: String) {
-        if (url.isBlank()) super.loadUrl(ExportedUrls.aboutBlankUrl)
+        if (url.isBlank()) super.loadUrl(BrowserUrls.aboutBlankUrl)
         super.loadUrl(url)
     }
 
@@ -332,19 +333,19 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     override fun getUrl(): String {
         val superUrl = super.getUrl()
-        return if (superUrl.isNullOrBlank()) ExportedUrls.aboutBlankUrl
+        return if (superUrl.isNullOrBlank()) BrowserUrls.aboutBlankUrl
         else filterUrl(superUrl)
     }
 
     fun filterUrl(url: String): String {
-        return if (url.startsWith(ExportedUrls.viewSourcePrefix))
+        return if (url.startsWith(BrowserUrls.viewSourcePrefix))
             // TODO: This causes reload button to show cross icon, why?
-            url.replace(ExportedUrls.viewSourcePrefix, "")
+            url.replace(BrowserUrls.viewSourcePrefix, "")
         else if (PrivilegedPages.shouldShowEmptyUrl(url)) ""
         else PrivilegedPages.getDisplayUrl(url) ?: url
     }
 
-    fun getRealUrl(): String = super.getUrl() ?: ExportedUrls.aboutBlankUrl
+    fun getRealUrl(): String = super.getUrl() ?: BrowserUrls.aboutBlankUrl
 
     override fun goBack() {
         activity.onDropDownDismissed()
@@ -374,7 +375,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
-                if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return
+                if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return
                 onPageLoadProgressChanged(-1)
                 activity.onFaviconProgressUpdated(true)
                 consoleMessages.clear()
@@ -407,7 +408,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_HISTORY -> {
-                if (currentUrl.isBlank() || getRealUrl() == ExportedUrls.aboutBlankUrl) return
+                if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK) {
                     currentBroha = Broha(title, currentUrl)
                     historyState = UpdateHistoryState.STATE_URL_UPDATED
@@ -419,7 +420,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_FAVICON -> {
-                if (currentUrl.isBlank() || getRealUrl() == ExportedUrls.aboutBlankUrl) return
+                if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
                         currentBroha.iconHash = iconHashClient.save(favicon!!)
@@ -433,7 +434,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_TITLE -> {
-                if (currentUrl.isBlank() || getRealUrl() == ExportedUrls.aboutBlankUrl) return
+                if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 activity.onTitleUpdated(
                     if (this.visibility == View.GONE) resources.getString(R.string.start_page)
                     else title?.trim()
@@ -544,7 +545,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     fun loadHomepage(useStartPage : Boolean) {
         if (useStartPage) {
-            loadRealUrl(ExportedUrls.actualStartUrl)
+            loadRealUrl(ProjectUrls.actualStartUrl)
         } else {
             loadUrl(SearchEngineEntries.getPreferredHomePageUrl(settingsPreference))
         }
@@ -553,8 +554,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     fun loadViewSourcePage(url: String?): Boolean {
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
         if (PrivilegedPages.isPrivilegedPage(getRealUrl())) return false
-        if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
-        loadRealUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
+        if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
+        loadRealUrl("${BrowserUrls.viewSourcePrefix}$currentUrl")
         return true
     }
 }

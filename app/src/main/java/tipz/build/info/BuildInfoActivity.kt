@@ -10,7 +10,7 @@ import tipz.viola.R
 import tipz.viola.databinding.ActivityBuildinfoBinding
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BaseActivity
-import tipz.viola.webview.pages.ExportedUrls
+import tipz.viola.webview.pages.ProjectUrls
 
 @SuppressLint("SetTextI18n")
 class BuildInfoActivity : BaseActivity() {
@@ -74,11 +74,11 @@ class BuildInfoActivity : BaseActivity() {
         // Set-up buttons
         changelogBtn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE
         changelogBtn.setOnClickListener {
-            needLoad(ExportedUrls.changelogUrl)
+            needLoad(ProjectUrls.changelogUrl)
         }
 
         licenseBtn.setOnClickListener {
-            needLoad(ExportedUrls.actualLicenseUrl)
+            needLoad(ProjectUrls.actualLicenseUrl)
         }
 
         // Set-up items
@@ -86,7 +86,7 @@ class BuildInfoActivity : BaseActivity() {
             text1.setText(R.string.pref_website_title)
             text2.setText(R.string.pref_website_summary)
             viewParent.setOnClickListener {
-                needLoad(ExportedUrls.websiteUrl)
+                needLoad(ProjectUrls.websiteUrl)
             }
         }
 
@@ -94,7 +94,7 @@ class BuildInfoActivity : BaseActivity() {
             text1.setText(R.string.pref_feedback_title)
             text2.setText(R.string.pref_feedback_summary)
             viewParent.setOnClickListener {
-                needLoad(ExportedUrls.feedbackUrl)
+                needLoad(ProjectUrls.feedbackUrl)
             }
         }
 
@@ -102,7 +102,7 @@ class BuildInfoActivity : BaseActivity() {
             text1.setText(R.string.pref_source_code_title)
             text2.setText(R.string.pref_source_code_summary)
             viewParent.setOnClickListener {
-                needLoad(ExportedUrls.sourceUrl)
+                needLoad(ProjectUrls.sourceUrl)
             }
         }
 
