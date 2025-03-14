@@ -26,6 +26,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -357,7 +358,7 @@ class BrowserActivity : VWebViewActivity() {
 
     // This function returns true to close ToolBar, and vice versa.
     @SuppressLint("SetTextI18n")
-    fun itemSelected(view: AppCompatImageView?, item: Int): Boolean {
+    fun itemSelected(view: AppCompatImageView?, @DrawableRes item: Int): Boolean {
         when (item) {
             R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
@@ -542,7 +543,7 @@ class BrowserActivity : VWebViewActivity() {
         return true // Close ToolBar if not interrupted
     }
 
-    fun itemLongSelected(view: AppCompatImageView?, item: Int) {
+    fun itemLongSelected(view: AppCompatImageView?, @DrawableRes item: Int) {
         when (item) {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
                 val binding: DialogUaEditBinding = DialogUaEditBinding.inflate(layoutInflater)
