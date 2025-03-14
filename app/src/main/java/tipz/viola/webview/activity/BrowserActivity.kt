@@ -279,7 +279,7 @@ class BrowserActivity : VWebViewActivity() {
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
         } else {
-            webview.loadHomepage(!settingsPreference.getIntBool(SettingsKeys.useWebHomePage))
+            webview.loadHomepage()
         }
     }
 
@@ -363,8 +363,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
             R.drawable.refresh -> webview.reload()
             R.drawable.home -> {
-                val reqVal: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
-                webview.loadHomepage(reqVal)
+                webview.loadHomepage()
             }
 
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
@@ -576,8 +575,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.home -> {
-                val reqVal: Boolean = settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
-                webview.loadHomepage(reqVal)
+                webview.loadHomepage(settingsPreference.getIntBool(SettingsKeys.useWebHomePage))
             }
 
             R.drawable.share -> copyClipboard(webview.url)

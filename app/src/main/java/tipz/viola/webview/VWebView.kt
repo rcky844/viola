@@ -324,6 +324,12 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     return
                 }
 
+                // New Tab
+                if (handlingSuffix.startsWith(BrowserUrls.newTabChromeSuffix)) {
+                    loadHomepage()
+                    return
+                }
+
                 // New Tab Page
                 if (handlingSuffix.startsWith(BrowserUrls.newTabPageChromeSuffix)) {
                     loadHomepage(true)
@@ -586,7 +592,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
     }
 
-    fun loadHomepage(useStartPage : Boolean) {
+    fun loadHomepage(useStartPage: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
         if (useStartPage) {
             loadRealUrl(ProjectUrls.actualStartUrl)
         } else {
