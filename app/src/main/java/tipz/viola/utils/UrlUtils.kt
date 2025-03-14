@@ -37,16 +37,18 @@ object UrlUtils {
         return "$firstPart$secondPart$thirdPart".toRegex()
     }
 
-    enum class UriScheme(val prefix: String, val requireStartSlashes: Boolean) {
+    enum class UriScheme(val prefix: String,
+                         val requireStartSlashes: Boolean,
+                         val ignoreRegex: Boolean = false) {
         SCHEME_HTTP("http", true),
         SCHEME_HTTPS("https",  true),
         SCHEME_FTP("ftp", true),
-        SCHEME_FILE("file", true),
-        SCHEME_DATA("data", false),
-        SCHEME_JAVASCRIPT("javascript", false),
-        SCHEME_ABOUT("about", false),
-        SCHEME_CHROME("chrome", true),
-        SCHEME_VIOLA("viola", true);
+        SCHEME_FILE("file", true, true),
+        SCHEME_DATA("data", false, true),
+        SCHEME_JAVASCRIPT("javascript", false, true),
+        SCHEME_ABOUT("about", false, true),
+        SCHEME_CHROME("chrome", true, true),
+        SCHEME_VIOLA("viola", true, true);
 
         companion object {
             fun getUriScheme(prefix: String): UriScheme? {
@@ -60,6 +62,8 @@ object UrlUtils {
 
     fun isUriSupported(uri: String): Boolean {
         val scheme = UriScheme.getUriScheme(uri.substringBefore(":")) ?: return false
+        if (scheme.ignoreRegex) return true
+
         val regex = getUriRegex(scheme.requireStartSlashes)
         return uri.matches(regex)
     }
