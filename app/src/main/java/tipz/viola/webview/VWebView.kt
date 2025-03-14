@@ -277,8 +277,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
     }
 
-    override fun loadUrl(url: String) {
-        if (url.trim().isEmpty()) return
+    override fun loadUrl(inUrl: String) = inUrl.trim().let { url ->
+        if (url.isEmpty()) return
         if (BussUtils.sendAndRequestResponse(this, url)) return
 
         // Check for privileged URLs
@@ -304,7 +304,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
 
         // By this point, it is probably a webpage or a search query.
-        val checkedUrl = UrlUtils.UrlOrSearchValidator.validate(settingsPreference, url)
+        val checkedUrl = UrlUtils.UrlOrSearchValidator.validate(settingsPreference, inUrl)
         if (UrlUtils.UrlOrSearchValidator.isSearch) {
             // Handle App Links
             if (loadAppLinkUrl(url, true)) return
