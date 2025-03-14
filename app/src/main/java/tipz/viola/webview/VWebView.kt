@@ -325,6 +325,12 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 }
             }
 
+            // Quit
+            if (handlingSuffix.startsWith(BrowserUrls.quitChromeSuffix)) {
+                activity.finish()
+                return
+            }
+
             super.loadUrl("${BrowserUrls.chromePrefix}$handlingSuffix")
             return
         }
