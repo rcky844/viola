@@ -1,9 +1,8 @@
-// Copyright (c) 2023-2024 Tipz Team
+// Copyright (c) 2023-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
 
-import android.content.Context
 import android.content.DialogInterface
 import android.webkit.WebView
 import androidx.webkit.WebViewCompat
@@ -13,18 +12,18 @@ import androidx.webkit.WebViewRenderProcessClient
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
 
-class VWebViewRenderProcessClient(mContext: Context, mVWebView: VWebView) :
+class VWebViewRenderProcessClient(vWebView: VWebView) :
     WebViewRenderProcessClient() {
-    private val mWebViewRenderProcess =
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER)) WebViewCompat.getWebViewRenderProcess(
-            mVWebView
-        ) else null
+    private val webViewRenderProcess =
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.GET_WEB_VIEW_RENDERER))
+            WebViewCompat.getWebViewRenderProcess(vWebView)
+        else null
 
-    private var dialog = MaterialAlertDialogBuilder(mContext)
+    private var dialog = MaterialAlertDialogBuilder(vWebView.context)
         .setTitle(R.string.dialog_page_unresponsive_title)
         .setMessage(R.string.dialog_page_unresponsive_message)
         .setPositiveButton(R.string.dialog_page_unresponsive_wait, null)
-        .setNegativeButton(R.string.dialog_page_unresponsive_terminate) { _: DialogInterface?, _: Int -> mWebViewRenderProcess!!.terminate() }
+        .setNegativeButton(R.string.dialog_page_unresponsive_terminate) { _: DialogInterface?, _: Int -> webViewRenderProcess!!.terminate() }
         .create()
 
     override fun onRenderProcessUnresponsive(view: WebView, renderer: WebViewRenderProcess?) {

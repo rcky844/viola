@@ -174,7 +174,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE))
             WebViewCompat.setWebViewRenderProcessClient(
                 this,
-                VWebViewRenderProcessClient(context, this)
+                VWebViewRenderProcessClient(this)
             )
 
         /* Hit Test Menu */
