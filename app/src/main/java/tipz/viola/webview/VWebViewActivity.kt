@@ -16,13 +16,14 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tipz.viola.Application
 import tipz.viola.R
+import tipz.viola.ext.finishAndRemoveTaskExt
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.activity.BaseActivity
 
 
-open class VWebViewActivity : BaseActivity() {
+open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivity() {
     lateinit var settingsPreference: SettingsSharedPreference
     lateinit var swipeRefreshLayout: VSwipeRefreshLayout
     lateinit var webview: VWebView
@@ -35,7 +36,10 @@ open class VWebViewActivity : BaseActivity() {
         settingsPreference = (applicationContext as Application).settingsPreference
 
         onBackPressedDispatcher.addCallback(this) {
-            if (webview.canGoBack()) webview.goBack() else finish()
+            if (webview.canGoBack()) webview.goBack()
+            else {
+                if (volatile) finishAndRemoveTaskExt() else finish()
+            }
         }
     }
 
