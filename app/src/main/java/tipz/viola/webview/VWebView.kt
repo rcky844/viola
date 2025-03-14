@@ -323,6 +323,18 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     it.itemSelected(null, R.drawable.history)
                     return
                 }
+
+                // New Tab Page
+                if (handlingSuffix.startsWith(BrowserUrls.newTabPageChromeSuffix)) {
+                    loadHomepage(true)
+                    return
+                }
+
+                // New Tab Page (Third party)
+                if (handlingSuffix.startsWith(BrowserUrls.newTabPageThirdPartyChromeSuffix)) {
+                    loadHomepage(false)
+                    return
+                }
             }
 
             // Quit

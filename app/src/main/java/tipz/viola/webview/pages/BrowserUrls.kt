@@ -13,6 +13,8 @@ object BrowserUrls {
     const val chromePrefix = "chrome://"
     const val bookmarksChromeSuffix = "bookmarks"
     const val historyChromeSuffix = "history"
+    const val newTabPageChromeSuffix = "new-tab-page"
+    const val newTabPageThirdPartyChromeSuffix = "new-tab-page-third-party"
     const val quitChromeSuffix = "quit"
     const val favouritesViolaSuffix = "favorites"
 }
