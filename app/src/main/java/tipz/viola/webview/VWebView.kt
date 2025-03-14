@@ -45,6 +45,7 @@ import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.database.Droha
+import tipz.viola.ext.equalsWithIgnore
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
@@ -312,39 +313,39 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 // Bookmarks / Favorites
                 // "favorites" does not exist as "chrome://" prefix,
                 // so limit to "viola://" prefix.
-                if (handlingSuffix.startsWith(BrowserUrls.bookmarksChromeSuffix)
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.bookmarksChromeSuffix)
                     || (isViolaUrl && handlingSuffix.startsWith(BrowserUrls.favouritesViolaSuffix))) {
                     it.itemSelected(null, R.drawable.favorites)
                     return
                 }
 
                 // History
-                if (handlingSuffix.startsWith(BrowserUrls.historyChromeSuffix)) {
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.historyChromeSuffix)) {
                     it.itemSelected(null, R.drawable.history)
                     return
                 }
 
                 // New Tab
-                if (handlingSuffix.startsWith(BrowserUrls.newTabChromeSuffix)) {
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabChromeSuffix)) {
                     loadHomepage()
                     return
                 }
 
                 // New Tab Page
-                if (handlingSuffix.startsWith(BrowserUrls.newTabPageChromeSuffix)) {
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabPageChromeSuffix)) {
                     loadHomepage(true)
                     return
                 }
 
                 // New Tab Page (Third party)
-                if (handlingSuffix.startsWith(BrowserUrls.newTabPageThirdPartyChromeSuffix)) {
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabPageThirdPartyChromeSuffix)) {
                     loadHomepage(false)
                     return
                 }
             }
 
             // Quit
-            if (handlingSuffix.startsWith(BrowserUrls.quitChromeSuffix)) {
+            if (handlingSuffix.equalsWithIgnore(BrowserUrls.quitChromeSuffix)) {
                 activity.finish()
                 return
             }
