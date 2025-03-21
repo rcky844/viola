@@ -13,9 +13,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.webkit.CookieManager
-import android.webkit.CookieSyncManager
-import android.webkit.WebStorage
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
@@ -39,6 +36,7 @@ import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.utils.UpdateService
+import tipz.viola.webview.VWebStorage
 import tipz.viola.webview.activity.BaseActivity.Companion.performThemeModeChecks
 import java.io.IOException
 
@@ -52,8 +50,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
     private lateinit var searchSuggestions: Preference
     private lateinit var adBlockerSource: Preference
     private lateinit var adBlockerDownload: Preference
-    private lateinit var clearCache: MaterialDialogPreference
-    private lateinit var clearCookies: MaterialDialogPreference
+    private lateinit var clearBrowsingData: MaterialDialogPreference
     private lateinit var resetToDefault: MaterialDialogPreference
     private lateinit var themePicker: Preference
     private lateinit var startPageWallpaper: Preference
@@ -98,8 +95,7 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
         searchSuggestions = findPreference("search_suggestions")!!
         adBlockerSource = findPreference("adBlockerSource")!!
         adBlockerDownload = findPreference("adBlockerDownload")!!
-        clearCache = findPreference("clear_cache")!!
-        clearCookies = findPreference("clear_cookies")!!
+        clearBrowsingData = findPreference("clear_browsing_data")!!
         resetToDefault = findPreference("reset_to_default")!!
         themePicker = findPreference("theme")!!
         startPageWallpaper = findPreference("start_page_wallpaper")!!
@@ -184,31 +180,13 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
                 settingsActivity.finish()
                 true
             }
-        clearCache.materialDialogPreferenceListener =
+        clearBrowsingData.materialDialogPreferenceListener =
             object : MaterialDialogPreferenceListener {
                 override fun onDialogClosed(positiveResult: Boolean) {
                     if (!positiveResult) return
-                    WebStorage.getInstance().deleteAllData()
-                    settingsActivity.showMessage(R.string.toast_cleared)
-                }
-            }
-        clearCookies.materialDialogPreferenceListener =
-            object : MaterialDialogPreferenceListener {
-                override fun onDialogClosed(positiveResult: Boolean) {
-                    if (!positiveResult) return
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        CookieManager.getInstance().removeAllCookies(null)
-                        CookieManager.getInstance().flush()
-                    } else {
-                        val cookieSyncMgr = CookieSyncManager.createInstance(settingsActivity)
-                        val cookieManager = CookieManager.getInstance()
-                        cookieSyncMgr.startSync()
-                        cookieManager.removeAllCookie()
-                        cookieManager.removeSessionCookie()
-                        cookieSyncMgr.stopSync()
-                        cookieSyncMgr.sync()
+                    VWebStorage.deleteBrowsingData {
+                        settingsActivity.showMessage(R.string.toast_cleared)
                     }
-                    settingsActivity.showMessage(R.string.toast_cleared)
                 }
             }
         resetToDefault.materialDialogPreferenceListener =
