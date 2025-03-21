@@ -24,9 +24,9 @@ class SettingsSharedPreference(context: Context) {
         InitialMigrations(this)
         ExoticMigrations(this)
 
-        // Sets CURRENT_PROTOCOL_VERSION, currently 3
+        // Sets CURRENT_PROTOCOL_VERSION, currently 4
         // Must be non-zero, as zero is defined as uninitialized
-        this.setInt(SettingsKeys.protocolVersion, 3)
+        this.setInt(SettingsKeys.protocolVersion, 4)
     }
 
     fun getInt(prefName: String): Int {
