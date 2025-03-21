@@ -2,6 +2,7 @@ package tipz.build.info
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -128,6 +129,25 @@ class BuildInfoActivity : BaseActivity() {
         buildNumberItem.apply {
             text1.setText(R.string.buildinfo_pref_build_number_title)
             text2.text = BuildInfo().getProductBuildTag() ?: ""
+        }
+    }
+
+    override fun doSettingsCheck() {
+        super.doSettingsCheck()
+
+        // Set light status bar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!isDarkMode(this)) {
+                // FIXME: Figure out why light status bar does not work on R+
+                windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.run {
+                // TODO: Investigate why setAppearanceLightStatusBars() does not work
+                @Suppress("DEPRECATION")
+                systemUiVisibility =
+                    systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+            }
         }
     }
 
