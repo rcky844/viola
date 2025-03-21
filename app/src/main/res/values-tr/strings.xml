@@ -193,10 +193,6 @@
     <string name="pref_enable_history_title">Use history storage</string>
     <!-- Settings: Enable history storage summary -->
     <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
-    <!-- Settings: Clear cache title -->
-    <string name="pref_clear_cache">Önbellek temizle</string>
-    <!-- Settings: Clear cookies title -->
-    <string name="pref_clear_cookies">Çerezler temizle</string>
     <!-- Settings: Reset to default title -->
     <string name="pref_reset_to_default_title">Varsayılanlara sıfırla</string>
     <!-- Settings: Reset to default summary -->
@@ -239,10 +235,6 @@
     <string name="pref_use_custom_tabs_title">Özel Sekmeleri Kullanma</string>
     <!-- Settings: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Uygulama Bağlantıları\'nı başka bir uygulamadan açıldığında her zaman Özel Sekmeler\'de açın.</string>
-    <!-- Settings: Check App Link title -->
-    <string name="pref_check_app_link_title">Başlatılabilir Uygulama Bağlantısını kontrol edin</string>
-    <!-- Settings: Check App Link summary -->
-    <string name="pref_check_app_link_summary">Yüklemeden önce bir Uygulama Bağlantısının harici olarak açılması gerekip gerekmediğini sorun.</string>
     <!-- Settings: Data Saver title -->
     <string name="pref_send_save_data_title">Veri kaydetme</string>
     <!-- Settings: Data Saver summary -->
