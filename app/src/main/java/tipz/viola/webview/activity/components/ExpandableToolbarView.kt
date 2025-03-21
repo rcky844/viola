@@ -4,7 +4,9 @@
 package tipz.viola.webview.activity.components
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
@@ -19,8 +21,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.transition.Fade
@@ -144,6 +148,18 @@ class ExpandableToolbarView(
             holder.imageView.setImageResource(itemsList[position].drawable)
             holder.textView.text =
                 expandableToolbarView.activity.resources.getString(itemsList[position].name)
+
+            // API checks
+            if (Build.VERSION.SDK_INT < itemsList[position].minApi || !itemsList[position].enabled) {
+                holder.itemBox.setBackgroundResource(0)
+                holder.itemBox.setOnClickListener { }
+                holder.itemBox.setOnLongClickListener { true }
+                ImageViewCompat.setImageTintList(holder.imageView, ColorStateList.valueOf(Color.LTGRAY))
+            }
+        }
+
+        override fun getItemViewType(position: Int): Int {
+            return position
         }
 
         override fun getItemCount(): Int {
@@ -151,7 +167,8 @@ class ExpandableToolbarView(
         }
     }
 
-    data class ToolBarItem(@StringRes val name: Int, @DrawableRes val drawable: Int)
+    data class ToolBarItem(@StringRes val name: Int, @DrawableRes val drawable: Int,
+                           val minApi: Int = 1, val enabled: Boolean = true)
     private val toolsBarExpandableItemList: ArrayList<ToolBarItem> =
         arrayListOf(
             ToolBarItem(R.string.toolbar_expandable_new_tab, R.drawable.new_tab),
@@ -162,10 +179,13 @@ class ExpandableToolbarView(
             ToolBarItem(R.string.toolbar_expandable_downloads, R.drawable.download),
             ToolBarItem(R.string.toolbar_expandable_translate, R.drawable.translate),
             ToolBarItem(R.string.toolbar_expandable_fullscreen, R.drawable.fullscreen),
-            ToolBarItem(R.string.toolbar_expandable_app_shortcut, R.drawable.app_shortcut),
+            ToolBarItem(R.string.toolbar_expandable_app_shortcut, R.drawable.app_shortcut,
+                enabled = ShortcutManagerCompat.isRequestPinShortcutSupported(context)),
             ToolBarItem(R.string.toolbar_expandable_settings, R.drawable.settings),
-            ToolBarItem(R.string.toolbar_expandable_view_page_source, R.drawable.code),
-            ToolBarItem(R.string.toolbar_expandable_print, R.drawable.print),
+            ToolBarItem(R.string.toolbar_expandable_view_page_source, R.drawable.code,
+                minApi = Build.VERSION_CODES.KITKAT),
+            ToolBarItem(R.string.toolbar_expandable_print, R.drawable.print,
+                minApi = Build.VERSION_CODES.KITKAT),
             ToolBarItem(R.string.toolbar_expandable_close, R.drawable.close),
         )
 }
