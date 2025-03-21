@@ -137,7 +137,7 @@ class BuildInfoActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!isDarkMode(this)) {
                 // FIXME: Figure out why light status bar does not work on R+
-                windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+                windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.run {
