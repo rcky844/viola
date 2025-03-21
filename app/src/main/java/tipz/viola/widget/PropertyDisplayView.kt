@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.dpToPx
 
 class PropertyDisplayView : LinearLayoutCompat {
@@ -35,6 +36,10 @@ class PropertyDisplayView : LinearLayoutCompat {
             }
             val value = TextView(context).apply {
                 setPadding(0, 0, 0, context.dpToPx(8))
+                setOnLongClickListener {
+                    context.copyClipboard(text.toString())
+                    true
+                }
             }
 
             if (it[0] is CharSequence) title.text = it[0] as CharSequence
