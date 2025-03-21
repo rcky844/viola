@@ -2,19 +2,24 @@
 <!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
-
+<resources xmlns:tools="http://schemas.android.com/tools" tools:targetApi="tiramisu">
     <style name="Theme.App" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- DMN: Status bar icons color cannot be modified until Lollipop -->
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/black</item>
-
-        <!-- SUW: AlertDialog -->
+        <!-- AlertDialog Theme -->
         <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
         <item name="dialogCornerRadius">28dp</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+
+        <!-- Navigation bar -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
     </style>
 
     <style name="Theme.App.TranslucentStatus" parent="Theme.App">
-        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <!-- Collapsing toolbar style -->
