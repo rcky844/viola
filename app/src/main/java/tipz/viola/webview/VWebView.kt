@@ -58,7 +58,7 @@ import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webview.pages.ProjectUrls
 import java.util.regex.Pattern
 
-@SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
+@SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface", "RequiresFeature")
 class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     context, attrs
 ) {
@@ -173,11 +173,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         this.webViewClient = VWebViewClient(context, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(activity, this)
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE))
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE)) {
             WebViewCompat.setWebViewRenderProcessClient(
-                this,
-                VWebViewRenderProcessClient(this)
+                this, VWebViewRenderProcessClient(this)
             )
+        }
 
         /* Hit Test Menu */
         setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
@@ -191,9 +191,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Dark mode
         val darkMode = BaseActivity.isDarkMode(context)
         val forceDark = settingsPreference.getIntBool(SettingsKeys.useForceDark)
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode && forceDark)
-        } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+        } else if (WebkitCompat.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
             if (darkMode && forceDark) WebSettingsCompat.FORCE_DARK_ON
             else WebSettingsCompat.FORCE_DARK_OFF
         }
@@ -214,7 +214,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Google's "Safe" Browsing
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
             WebSettingsCompat.setSafeBrowsingEnabled(
                 webSettings,
                 settingsPreference.getIntBool(SettingsKeys.enableGoogleSafeBrowse)

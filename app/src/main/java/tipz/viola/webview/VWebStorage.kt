@@ -3,6 +3,7 @@
 
 package tipz.viola.webview
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
@@ -16,9 +17,10 @@ import kotlinx.coroutines.launch
 object VWebStorage {
     private val instance = WebStorage.getInstance()
 
+    @SuppressLint("RequiresFeature")
     @Suppress("DEPRECATION")
     fun deleteBrowsingData(doneCallback: () -> Any) {
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.DELETE_BROWSING_DATA)) {
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.DELETE_BROWSING_DATA)) {
             // Compatibility class for supported WebView
             WebStorageCompat.deleteBrowsingData(instance) { doneCallback() }
         } else {
