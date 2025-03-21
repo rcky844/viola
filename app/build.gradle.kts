@@ -130,6 +130,12 @@ android {
         }
     }
 
+    // Disables dependency metadata when building APKs and Android App Bundles.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
