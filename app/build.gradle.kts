@@ -135,7 +135,7 @@ android {
         includeInApk = false
         includeInBundle = false
     }
-    
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -179,7 +179,7 @@ dependencies {
     modernImplementation("androidx.core:core-ktx:1.15.0")
     modernImplementation("androidx.appcompat:appcompat:1.7.0")
     modernImplementation("com.google.android.material:material:1.12.0")
-    modernImplementation("androidx.webkit:webkit:1.12.1")
+    modernImplementation("androidx.webkit:webkit:1.13.0")
 
     // Legacy dependencies
     // These will remain on their currently defined versions indefinitely,
