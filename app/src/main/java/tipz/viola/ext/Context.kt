@@ -60,7 +60,6 @@ fun Context.setImmersiveMode(enable: Boolean) {
         (this as AppCompatActivity).window,
         window.decorView
     )
-    WindowCompat.setDecorFitsSystemWindows(window, !enable)
     if (enable) {
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior =
