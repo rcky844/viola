@@ -13,6 +13,10 @@
         <item name="dialogCornerRadius">28dp</item>
     </style>
 
+    <style name="Theme.App.TranslucentStatus" parent="Theme.App">
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
+    </style>
+
     <!-- Collapsing toolbar style -->
     <style name="Theme.App.Settings.ToolbarCollapsed" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
         <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>

@@ -120,7 +120,8 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
         <activity
             android:name="tipz.build.info.BuildInfoActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.App.TranslucentStatus" />
         <activity
             android:name=".ListInterfaceActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
