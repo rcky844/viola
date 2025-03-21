@@ -6,12 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.databinding.ActivityBuildinfoBinding
+import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.dpToPx
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BaseActivity
@@ -34,20 +34,18 @@ class BuildInfoActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowInsets ->
-            windowInsets.getInsets(WindowInsetsCompat.Type.statusBars()).apply {
+        toolbar.doOnApplyWindowInsets { v, insets, _, _ ->
+            insets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
                 v.updatePadding(top = top)
                 v.layoutParams.height = dpToPx(179) + top
             }
-            WindowInsetsCompat.CONSUMED
         }
 
         // Setup ScrollView
-        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollView) { v, insets ->
+        binding.scrollView.doOnApplyWindowInsets { v, insets, _, _ ->
             insets.getInsets(WindowInsetsCompat.Type.navigationBars()).apply {
-                v.setPadding(left, top, right, bottom)
+                v.updatePadding(left = left, right = right, bottom = bottom)
             }
-            insets
         }
 
         // Set-up views

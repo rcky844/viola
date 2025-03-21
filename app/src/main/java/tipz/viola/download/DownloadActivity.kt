@@ -19,9 +19,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -37,6 +37,7 @@ import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
 import tipz.viola.download.database.Droha
 import tipz.viola.download.database.DrohaClient
 import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
 import tipz.viola.webview.activity.BaseActivity
 import java.io.File
@@ -78,15 +79,14 @@ class DownloadActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowInsets ->
-            windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+        toolbar.doOnApplyWindowInsets { v, insets, _, _ ->
+            insets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
                 v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                     leftMargin = left
                     topMargin = top
                     rightMargin = right
                 }
             }
-            WindowInsetsCompat.CONSUMED
         }
 
         // Clear all button
@@ -98,24 +98,24 @@ class DownloadActivity : BaseActivity() {
             itemsAdapter.notifyItemRangeRemoved(0, size)
             showMessage(R.string.toast_cleared)
         }
-        ViewCompat.setOnApplyWindowInsetsListener(fab) { v, windowInsets ->
-            windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+        fab.doOnApplyWindowInsets { v, insets, _, margin ->
+            insets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
                 v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    bottomMargin = bottom
+                    leftMargin = left + margin.left
+                    bottomMargin = bottom + margin.bottom
+                    rightMargin = right + margin.right
                 }
             }
-            WindowInsetsCompat.CONSUMED
         }
 
         // Set-up RecyclerView
         val downloadList = binding.recyclerView
         itemsAdapter = ItemsAdapter(this)
         downloadList.setAdapter(itemsAdapter) // Property access is causing lint issues
-        ViewCompat.setOnApplyWindowInsetsListener(downloadList) { v, insets ->
-            insets.getInsets(WindowInsetsCompat.Type.navigationBars()).apply {
-                v.setPadding(left, top, right, bottom)
+        downloadList.doOnApplyWindowInsets { v, insets, _, _ ->
+            insets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+                v.updatePadding(left = left, right = right, bottom = bottom)
             }
-            insets
         }
 
         // Set-up layout manager
