@@ -19,6 +19,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -75,6 +78,16 @@ class DownloadActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowInsets ->
+            windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    leftMargin = left
+                    topMargin = top
+                    rightMargin = right
+                }
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Clear all button
         fab = binding.fab
@@ -85,11 +98,25 @@ class DownloadActivity : BaseActivity() {
             itemsAdapter.notifyItemRangeRemoved(0, size)
             showMessage(R.string.toast_cleared)
         }
+        ViewCompat.setOnApplyWindowInsetsListener(fab) { v, windowInsets ->
+            windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    bottomMargin = bottom
+                }
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Set-up RecyclerView
         val downloadList = binding.recyclerView
         itemsAdapter = ItemsAdapter(this)
         downloadList.setAdapter(itemsAdapter) // Property access is causing lint issues
+        ViewCompat.setOnApplyWindowInsetsListener(downloadList) { v, insets ->
+            insets.getInsets(WindowInsetsCompat.Type.navigationBars()).apply {
+                v.setPadding(left, top, right, bottom)
+            }
+            insets
+        }
 
         // Set-up layout manager
         val layoutManager = downloadList.layoutManager as LinearLayoutManager

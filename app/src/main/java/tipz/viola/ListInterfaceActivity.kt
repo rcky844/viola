@@ -19,6 +19,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -96,6 +99,16 @@ class ListInterfaceActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowInsets ->
+            windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    leftMargin = left
+                    topMargin = top
+                    rightMargin = right
+                }
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Clear all button
         fab = binding.fab
@@ -119,6 +132,14 @@ class ListInterfaceActivity : BaseActivity() {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
         }
+        ViewCompat.setOnApplyWindowInsetsListener(fab) { v, windowInsets ->
+            windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    bottomMargin = bottom
+                }
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         // RecyclerView
         val brohaList = binding.recyclerView
@@ -128,6 +149,12 @@ class ListInterfaceActivity : BaseActivity() {
         updateListData {
             itemsAdapter = ItemsAdapter(this)
             brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(brohaList) { v, insets ->
+            insets.getInsets(WindowInsetsCompat.Type.navigationBars()).apply {
+                v.setPadding(left, top, right, bottom)
+            }
+            insets
         }
     }
 
