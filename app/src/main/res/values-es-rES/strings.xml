@@ -199,6 +199,8 @@
     <string name="pref_enable_history_title">Use history storage</string>
     <!-- Settings: Enable history storage summary -->
     <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
+    <!-- Settings: Clear browsing data title -->
+    <string name="pref_clear_browsing_data">Clear browsing data</string>
     <!-- Settings: Reset to default title -->
     <string name="pref_reset_to_default_title">Reset to default</string>
     <!-- Settings: Reset to default summary -->

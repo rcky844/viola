@@ -199,6 +199,8 @@
     <string name="pref_enable_history_title">استخدام تخزين المحفوظات</string>
     <!-- Settings: Enable history storage summary -->
     <string name="pref_enable_history_summary">الحفاظ على تاريخ صفحات الويب التي تمت زيارتها.</string>
+    <!-- Settings: Clear browsing data title -->
+    <string name="pref_clear_browsing_data">Clear browsing data</string>
     <!-- Settings: Reset to default title -->
     <string name="pref_reset_to_default_title">استعادة القيم الافتراضية</string>
     <!-- Settings: Reset to default summary -->

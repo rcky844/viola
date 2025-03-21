@@ -199,6 +199,8 @@
     <string name="pref_enable_history_title">存储历史记录</string>
     <!-- Settings: Enable history storage summary -->
     <string name="pref_enable_history_summary">保留造访过的网页的历史记录。</string>
+    <!-- Settings: Clear browsing data title -->
+    <string name="pref_clear_browsing_data">清空浏览数据</string>
     <!-- Settings: Reset to default title -->
     <string name="pref_reset_to_default_title">还原到默认设置</string>
     <!-- Settings: Reset to default summary -->
