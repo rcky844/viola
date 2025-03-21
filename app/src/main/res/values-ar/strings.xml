@@ -199,10 +199,8 @@
     <string name="pref_enable_history_title">استخدام تخزين المحفوظات</string>
     <!-- Settings: Enable history storage summary -->
     <string name="pref_enable_history_summary">الحفاظ على تاريخ صفحات الويب التي تمت زيارتها.</string>
-    <!-- Settings: Clear cache title -->
-    <string name="pref_clear_cache">محو ذاكرة التخزين المؤقت</string>
-    <!-- Settings: Clear cookies title -->
-    <string name="pref_clear_cookies">مسح ملفات تعريف الارتباط</string>
+    <!-- Settings: Clear browsing data title -->
+    <string name="pref_clear_browsing_data">Clear browsing data</string>
     <!-- Settings: Reset to default title -->
     <string name="pref_reset_to_default_title">استعادة القيم الافتراضية</string>
     <!-- Settings: Reset to default summary -->
@@ -245,10 +243,6 @@
     <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
     <!-- Settings: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
-    <!-- Settings: Check App Link title -->
-    <string name="pref_check_app_link_title">Check for launchable App Link</string>
-    <!-- Settings: Check App Link summary -->
-    <string name="pref_check_app_link_summary">Ask whether an App Link should be opened externally before loading.</string>
     <!-- Settings: Data Saver title -->
     <string name="pref_send_save_data_title">Data Saver</string>
     <!-- Settings: Data Saver summary -->

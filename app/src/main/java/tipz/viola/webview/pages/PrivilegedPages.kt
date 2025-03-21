@@ -9,11 +9,11 @@ class PrivilegedPages {
             PageObject().apply {
                 displayUrl = "viola://start"
                 showEmptyUrl = true
-                actualUrl = ExportedUrls.actualStartUrl
+                actualUrl = ProjectUrls.actualStartUrl
             },
             PageObject().apply {
                 displayUrl = "viola://license"
-                actualUrl = ExportedUrls.actualLicenseUrl
+                actualUrl = ProjectUrls.actualLicenseUrl
             },
         )
 

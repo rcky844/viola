@@ -63,6 +63,10 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
             // Migrations
             // Download API version tracking is also introduced with protocol version 3
             pref.setInt(SettingsKeys.showFullscreenWarningDialog, 1)
+        } else if (pref.getInt(SettingsKeys.protocolVersion) == 3) {
+            // Migrations
+            // Check App Link is enabled by default in protocol version 4
+            pref.remove(SettingsKeys.checkAppLink)
         }
     }
 }

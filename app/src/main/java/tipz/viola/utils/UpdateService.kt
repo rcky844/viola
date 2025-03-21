@@ -26,7 +26,7 @@ import tipz.viola.ext.isOnline
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.webview.pages.ExportedUrls
+import tipz.viola.webview.pages.ProjectUrls
 import java.io.File
 import java.io.FileOutputStream
 
@@ -77,7 +77,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
 
         // Here we go!
         val r = MiniDownloadHelper.startDownloadWithDialog(context,
-            ExportedUrls.updateJSONUrl,
+            ProjectUrls.updateJSONUrl,
             R.string.update_download_failed
         )
         if (!r.successful) return@launch

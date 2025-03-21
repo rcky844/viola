@@ -18,13 +18,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import tipz.viola.R
 
-fun Context.dpToPx(dp: Int): Int {
-    return (dp * resources.displayMetrics.density).toInt()
-}
-
-fun Context.pxToDp(px: Int): Int {
-    return (px / resources.displayMetrics.density).toInt()
-}
+fun Context.dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
+fun Context.pxToDp(px: Int): Int = (px / resources.displayMetrics.density).toInt()
 
 fun Context.shareUrl(url: String?): Boolean {
     if (url.isNullOrBlank()) return false
@@ -55,32 +50,25 @@ fun Context.copyClipboard(s: String?) {
         showMessage(R.string.toast_copied_clipboard)
 }
 
-fun Context.setImmersiveMode(enable: Boolean) {
-    val windowInsetsController = WindowCompat.getInsetsController(
-        (this as AppCompatActivity).window,
-        window.decorView
-    )
-    WindowCompat.setDecorFitsSystemWindows(window, !enable)
-    if (enable) {
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-    } else {
-        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+fun Context.setImmersiveMode(enable: Boolean) =
+    WindowCompat.getInsetsController((this as AppCompatActivity).window, window.decorView).run {
+        if (enable) {
+            hide(WindowInsetsCompat.Type.systemBars())
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        } else {
+            show(WindowInsetsCompat.Type.systemBars())
+        }
     }
-}
 
 @Suppress("DEPRECATION")
-fun Context.isOnline(): Boolean {
-    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        cm.activeNetwork != null
-    } else {
-        val n = cm.activeNetworkInfo
-        n != null && n.isAvailable
+fun Context.isOnline(): Boolean =
+    (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).run {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activeNetwork != null
+        } else {
+            activeNetworkInfo.run { this != null && isAvailable }
+        }
     }
-}
 
 @ColorInt
 fun Context.getOnSurfaceColor(): Int {

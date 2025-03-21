@@ -6,11 +6,9 @@ package tipz.viola.webview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
-import android.util.Log
 import android.view.LayoutInflater
 import android.webkit.HttpAuthHandler
 import android.webkit.RenderProcessGoneDetail
@@ -22,7 +20,6 @@ import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
 import tipz.viola.databinding.DialogAuthBinding
-import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView.PageLoadState
@@ -137,29 +134,7 @@ open class VWebViewClient(
         if (UrlUtils.isUriSupported(url)) return false
 
         // Handle open in app
-        Log.i(LOG_TAG, "Handling possible App Link, url=$url")
-        if (!settingsPreference.getIntBool(SettingsKeys.checkAppLink)) {
-            Log.i(LOG_TAG, "App Link checking is disabled.")
-            return true
-        }
-        val intent =
-            if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-            else Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        if (intent.resolveActivity(context.packageManager) != null) {
-            MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.dialog_open_external_title)
-                .setMessage(R.string.dialog_open_external_message)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    context.startActivity(intent)
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
-        } else {
-            if (view.progress == 100) {
-                context.showMessage(R.string.toast_no_app_to_handle)
-            }
-            Log.w(LOG_TAG, "Found no application to handle App Link!")
-        }
+        vWebView.loadAppLinkUrl(url)
         return true
     }
 

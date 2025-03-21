@@ -19,6 +19,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +41,7 @@ import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
 import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BaseActivity
@@ -57,7 +61,7 @@ class ListInterfaceActivity : BaseActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             listData =
                 (if (activityMode == mode_history) historyClient.getAll()
-                else favClient.getAll()) as MutableList<Broha>?
+                else favClient.getAll()).toMutableList()
             MainScope().launch { callback() }
         }
     }
@@ -96,6 +100,15 @@ class ListInterfaceActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener { finish() }
+        toolbar.doOnApplyWindowInsets { v, insets, _, _ ->
+            insets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    leftMargin = left
+                    topMargin = top
+                    rightMargin = right
+                }
+            }
+        }
 
         // Clear all button
         fab = binding.fab
@@ -111,13 +124,21 @@ class ListInterfaceActivity : BaseActivity() {
                         if (activityMode == mode_history) historyClient.deleteAll()
                         else if (activityMode == mode_favorites) favClient.deleteAll()
                     }
-                    val size = listData!!.size
-                    listData!!.clear()
+                    val size = listData.size
+                    listData.clear()
                     itemsAdapter.notifyItemRangeRemoved(0, size)
                     showMessage(R.string.toast_cleared)
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
+        }
+        fab.doOnApplyWindowInsets { v, insets, _, margin ->
+            insets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    bottomMargin = bottom + margin.bottom
+                    rightMargin = right + margin.right
+                }
+            }
         }
 
         // RecyclerView
@@ -128,6 +149,11 @@ class ListInterfaceActivity : BaseActivity() {
         updateListData {
             itemsAdapter = ItemsAdapter(this)
             brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
+        }
+        brohaList.doOnApplyWindowInsets { v, insets, _, _ ->
+            insets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
+                v.updatePadding(left = left, right = right, bottom = bottom)
+            }
         }
     }
 
@@ -154,8 +180,7 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val isEmpty = listData == null || listData!!.size == 0
-            binding = if (isEmpty) {
+            binding = if (listData.isEmpty()) {
                 TemplateEmptyBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false)
             } else {
@@ -163,7 +188,7 @@ class ListInterfaceActivity : BaseActivity() {
                     LayoutInflater.from(parent.context), parent, false)
             }
 
-            return if (isEmpty) EmptyViewHolder(binding as TemplateEmptyBinding)
+            return if (listData.isEmpty()) EmptyViewHolder(binding as TemplateEmptyBinding)
             else ListViewHolder(binding as TemplateIconTitleDescriptorTimeBinding)
         }
 
@@ -176,7 +201,7 @@ class ListInterfaceActivity : BaseActivity() {
                 )
             } else if (holder is ListViewHolder) {
                 val iconHashClient = mIconHashClient
-                val data = listData!![position]
+                val data = listData[position]
                 val title = data.title
                 val url = data.url
                 var icon: Bitmap?
@@ -253,7 +278,7 @@ class ListInterfaceActivity : BaseActivity() {
                                             CoroutineScope(Dispatchers.IO).launch {
                                                 activity.favClient.update(data)
                                                 // FIXME: Update list dynamically to save system resources
-                                                listData = activity.favClient.getAll() as MutableList<Broha>?
+                                                listData = activity.favClient.getAll().toMutableList()
                                                 MainScope().launch {
                                                     notifyItemRangeRemoved(position, 1)
                                                 }
@@ -288,17 +313,13 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
-            val isEmpty = listData == null || listData!!.size == 0
-            activity.fab.visibility = if (isEmpty) View.GONE else View.VISIBLE
-
-            // Return 1 so that empty message is shown
-            return if (isEmpty) 1
-            else listData!!.size
+            activity.fab.visibility = if (listData.isEmpty()) View.GONE else View.VISIBLE
+            return if (listData.isEmpty()) 1 else listData.size
         }
     }
 
     companion object {
-        private var listData: MutableList<Broha>? = null
+        private var listData: MutableList<Broha> = mutableListOf()
 
         /* Activity mode */
         var activityMode: String? = null

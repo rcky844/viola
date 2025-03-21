@@ -26,6 +26,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -66,8 +67,8 @@ import tipz.viola.webview.activity.components.FavIconView
 import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
 import tipz.viola.webview.activity.components.LocalNtpPageView
 import tipz.viola.webview.activity.components.ToolbarView
-import tipz.viola.webview.pages.ExportedUrls
 import tipz.viola.webview.pages.PrivilegedPages
+import tipz.viola.webview.pages.ProjectUrls
 import tipz.viola.widget.PropertyDisplayView
 import tipz.viola.widget.StringResAdapter
 import java.text.DateFormat
@@ -279,7 +280,7 @@ class BrowserActivity : VWebViewActivity() {
         if (dataUri != null) {
             webview.loadUrl(dataUri.toString())
         } else {
-            webview.loadHomepage(!settingsPreference.getIntBool(SettingsKeys.useWebHomePage))
+            webview.loadHomepage()
         }
     }
 
@@ -338,32 +339,32 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Start Page Wallpaper
-        if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
-            localNtpPageView.setBackgroundResource(0)
-        } else {
+        settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
             try {
-                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                    this.contentResolver,
-                    Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+                localNtpPageView.setBackgroundDrawable(
+                    BitmapDrawable(
+                        resources,
+                        MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(it))
+                    )
                 )
-                localNtpPageView.setBackgroundDrawable(BitmapDrawable(resources, bitmap))
             } catch (_: SecurityException) {
                 localNtpPageView.setBackgroundResource(0)
                 settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
             }
+        } ?: run {
+            localNtpPageView.setBackgroundResource(0)
         }
     }
 
     // This function returns true to close ToolBar, and vice versa.
     @SuppressLint("SetTextI18n")
-    fun itemSelected(view: AppCompatImageView?, item: Int): Boolean {
+    fun itemSelected(view: AppCompatImageView?, @DrawableRes item: Int): Boolean {
         when (item) {
             R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
             R.drawable.refresh -> webview.reload()
             R.drawable.home -> {
-                val reqVal: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
-                webview.loadHomepage(reqVal)
+                webview.loadHomepage()
             }
 
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
@@ -542,7 +543,7 @@ class BrowserActivity : VWebViewActivity() {
         return true // Close ToolBar if not interrupted
     }
 
-    fun itemLongSelected(view: AppCompatImageView?, item: Int) {
+    fun itemLongSelected(view: AppCompatImageView?, @DrawableRes item: Int) {
         when (item) {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
                 val binding: DialogUaEditBinding = DialogUaEditBinding.inflate(layoutInflater)
@@ -575,8 +576,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.home -> {
-                val reqVal: Boolean = settingsPreference.getIntBool(SettingsKeys.useWebHomePage)
-                webview.loadHomepage(reqVal)
+                webview.loadHomepage(settingsPreference.getIntBool(SettingsKeys.useWebHomePage))
             }
 
             R.drawable.share -> copyClipboard(webview.url)
@@ -629,7 +629,7 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onSslCertificateUpdated() {
         // Startpage
-        if (webview.getRealUrl() == ExportedUrls.actualStartUrl) {
+        if (webview.getRealUrl() == ProjectUrls.actualStartUrl) {
             sslState = SslState.SEARCH
             sslLock.setImageResource(R.drawable.search)
             return
@@ -666,7 +666,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     fun checkHomePageVisibility() {
-        val isHomePage = webview.getRealUrl() == ExportedUrls.actualStartUrl
+        val isHomePage = webview.getRealUrl() == ProjectUrls.actualStartUrl
         webview.visibility = if (isHomePage) View.GONE else View.VISIBLE
         localNtpPageView.visibility = if (isHomePage) View.VISIBLE else View.GONE
         localNtpPageView.updateVisibility(isHomePage)

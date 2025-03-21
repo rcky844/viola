@@ -79,6 +79,9 @@ class Droha {
     @Ignore
     var statusListener: DownloadProvider.Companion.DownloadStatusListener? = null
 
+    @Ignore
+    var userAgent: String? = null
+
     /* Helper functions / features */
     internal fun getUriProtocol() = uriString.substringBefore(':')
     internal fun compareUriProtocol(value: String) : Boolean = getUriProtocol() == value

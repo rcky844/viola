@@ -7,13 +7,9 @@ package tipz.viola.webview
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.content.Intent.FLAG_ACTIVITY_REQUIRE_DEFAULT
-import android.content.Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
@@ -49,17 +45,20 @@ import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.database.Droha
+import tipz.viola.ext.equalsWithIgnore
+import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.activity.BaseActivity
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.buss.BussUtils
-import tipz.viola.webview.pages.ExportedUrls
+import tipz.viola.webview.pages.BrowserUrls
 import tipz.viola.webview.pages.PrivilegedPages
+import tipz.viola.webview.pages.ProjectUrls
 import java.util.regex.Pattern
 
-@SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
+@SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface", "RequiresFeature")
 class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     context, attrs
 ) {
@@ -73,6 +72,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private var currentBroha = Broha()
     var currentFavicon: Bitmap? = null
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+    var loadProgress = 100
     val settingsPreference =
         (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
@@ -129,7 +129,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
-            activity.onPageLoadProgressChanged(0)
+            onPageLoadProgressChanged(0)
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
         }
@@ -166,17 +166,18 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Enable some HTML5 related settings
         webSettings.databaseEnabled = false // Disabled as no-op since Android 15
         webSettings.domStorageEnabled = true
+        webSettings.savePassword = false
 
         // Ad Server Hosts
         adServersHandler = AdServersClient(context, settingsPreference)
 
         this.webViewClient = VWebViewClient(context, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(activity, this)
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE))
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE)) {
             WebViewCompat.setWebViewRenderProcessClient(
-                this,
-                VWebViewRenderProcessClient(context, this)
+                this, VWebViewRenderProcessClient(this)
             )
+        }
 
         /* Hit Test Menu */
         setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
@@ -188,20 +189,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     @Suppress("deprecation")
     fun doSettingsCheck() {
         // Dark mode
-        val darkMode = BaseActivity.getDarkMode(context)
+        val darkMode = BaseActivity.isDarkMode(context)
         val forceDark = settingsPreference.getIntBool(SettingsKeys.useForceDark)
-        if (forceDark) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-                && WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
-                WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode)
-            else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
-                WebSettingsCompat.setForceDark(webSettings,
-                    if (darkMode) WebSettingsCompat.FORCE_DARK_ON
-                    else WebSettingsCompat.FORCE_DARK_OFF
-                )
-        } else {
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK))
-                WebSettingsCompat.setForceDark(webSettings, WebSettingsCompat.FORCE_DARK_OFF)
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode && forceDark)
+        } else if (WebkitCompat.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+            if (darkMode && forceDark) WebSettingsCompat.FORCE_DARK_ON
+            else WebSettingsCompat.FORCE_DARK_OFF
         }
 
         // Javascript
@@ -220,7 +214,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Google's "Safe" Browsing
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.SAFE_BROWSING_ENABLE))
             WebSettingsCompat.setSafeBrowsingEnabled(
                 webSettings,
                 settingsPreference.getIntBool(SettingsKeys.enableGoogleSafeBrowse)
@@ -258,42 +252,35 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     @SuppressLint("InlinedApi")
-    fun loadAppLinkUrl(url: String): Boolean {
-        if (settingsPreference.getIntBool(SettingsKeys.checkAppLink)
-            && !UrlUtils.isUriSupported(url)) {
-            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            webIntent.addCategory(Intent.CATEGORY_BROWSABLE)
-            webIntent.setFlags(
-                FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_REQUIRE_NON_BROWSER or
-                        FLAG_ACTIVITY_REQUIRE_DEFAULT
-            )
-            if (webIntent.resolveActivity(context.packageManager) != null) {
-                val dialog = MaterialAlertDialogBuilder(context)
-                dialog.setTitle(R.string.dialog_open_external_title)
-                    .setMessage(R.string.dialog_open_external_message)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        try {
-                            context.startActivity(webIntent)
-                        } catch (e: ActivityNotFoundException) {
-                            // Do not load actual url on failure
-                        }
-                    }
-                    .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
-                        // Load actual url if user cancelled the request.
-                        super.loadUrl(url, requestHeaders)
-                    }
-                    .create().show()
-                return true
-            } else {
-                return false
-            }
+    fun loadAppLinkUrl(url: String, noToast: Boolean = false): Boolean {
+        if (UrlUtils.isUriSupported(url)) return false
+
+        Log.i(LOG_TAG, "Checking for possible App Link, url=$url")
+        val intent =
+            if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+            else Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        if (intent.resolveActivity(context.packageManager) != null) {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.dialog_open_external_title)
+                .setMessage(R.string.dialog_open_external_message)
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    context.startActivity(intent)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .create().show()
+            return true
         } else {
+            if (!noToast && (loadProgress == 0 || loadProgress == 100)) {
+                Log.v(LOG_TAG, "App Link not handled and page loaded, showing toast")
+                context.showMessage(R.string.toast_no_app_to_handle)
+            }
+            Log.w(LOG_TAG, "Found no application to handle App Link!")
             return false
         }
     }
 
-    override fun loadUrl(url: String) {
-        if (url.trim().isEmpty()) return
+    override fun loadUrl(inUrl: String) = inUrl.trim().let { url ->
+        if (url.isEmpty()) return
         if (BussUtils.sendAndRequestResponse(this, url)) return
 
         // Check for privileged URLs
@@ -309,20 +296,70 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
 
         // Check for view source
-        if (url.startsWith(ExportedUrls.viewSourcePrefix)) loadRealUrl(url)
+        if (url.startsWith(BrowserUrls.viewSourcePrefix)) loadRealUrl(url)
 
-        // Handle App Links
-        if (loadAppLinkUrl(url)) return
+        // Handle "chrome://" and "viola://" prefix (i.e. browser handling URLs)
+        val isViolaUrl = url.startsWith(BrowserUrls.violaPrefix)
+        val isChromeUrl = url.startsWith(BrowserUrls.chromePrefix)
+        if (isViolaUrl || isChromeUrl) {
+            // If the URL has "viola://" prefix but hasn't been handled till here,
+            // wire it up with the "chrome://" prefix.
+            val handlingSuffix = url
+                .replaceFirst(BrowserUrls.violaPrefix, "", true)
+                .replaceFirst(BrowserUrls.chromePrefix, "", true)
 
-        // If the URL has "viola://" prefix but hasn't been handled till here,
-        // wire it up with the "chrome://" suffix.
-        if (url.startsWith(ExportedUrls.violaPrefix)) {
-            super.loadUrl(url.replace(ExportedUrls.violaPrefix, ExportedUrls.chromePrefix))
+            // Browser mode specific URLs
+            activity.takeIf { it is BrowserActivity }?.let { it as BrowserActivity
+                // Bookmarks / Favorites
+                // "favorites" does not exist as "chrome://" prefix,
+                // so limit to "viola://" prefix.
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.bookmarksChromeSuffix)
+                    || (isViolaUrl && handlingSuffix.startsWith(BrowserUrls.favouritesViolaSuffix))) {
+                    it.itemSelected(null, R.drawable.favorites)
+                    return
+                }
+
+                // History
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.historyChromeSuffix)) {
+                    it.itemSelected(null, R.drawable.history)
+                    return
+                }
+
+                // New Tab
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabChromeSuffix)) {
+                    loadHomepage()
+                    return
+                }
+
+                // New Tab Page
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabPageChromeSuffix)) {
+                    loadHomepage(true)
+                    return
+                }
+
+                // New Tab Page (Third party)
+                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabPageThirdPartyChromeSuffix)) {
+                    loadHomepage(false)
+                    return
+                }
+            }
+
+            // Quit
+            if (handlingSuffix.equalsWithIgnore(BrowserUrls.quitChromeSuffix)) {
+                activity.finish()
+                return
+            }
+
+            super.loadUrl("${BrowserUrls.chromePrefix}$handlingSuffix")
             return
         }
 
         // By this point, it is probably a webpage or a search query.
-        val checkedUrl = UrlUtils.validateUrlOrConvertToSearch(settingsPreference, url)
+        val checkedUrl = UrlUtils.UrlOrSearchValidator.validate(settingsPreference, inUrl)
+        if (UrlUtils.UrlOrSearchValidator.isSearch) {
+            // Handle App Links
+            if (loadAppLinkUrl(url, true)) return
+        }
         onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
 
         // Prevent creating duplicate entries
@@ -334,7 +371,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     // This should only be accessed by us!
     fun loadRealUrl(url: String) {
-        if (url.isBlank()) super.loadUrl(ExportedUrls.aboutBlankUrl)
+        if (url.isBlank()) super.loadUrl(BrowserUrls.aboutBlankUrl)
         super.loadUrl(url)
     }
 
@@ -346,19 +383,19 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     override fun getUrl(): String {
         val superUrl = super.getUrl()
-        return if (superUrl.isNullOrBlank()) ExportedUrls.aboutBlankUrl
+        return if (superUrl.isNullOrBlank()) BrowserUrls.aboutBlankUrl
         else filterUrl(superUrl)
     }
 
     fun filterUrl(url: String): String {
-        return if (url.startsWith(ExportedUrls.viewSourcePrefix))
+        return if (url.startsWith(BrowserUrls.viewSourcePrefix))
             // TODO: This causes reload button to show cross icon, why?
-            url.replace(ExportedUrls.viewSourcePrefix, "")
+            url.replace(BrowserUrls.viewSourcePrefix, "")
         else if (PrivilegedPages.shouldShowEmptyUrl(url)) ""
         else PrivilegedPages.getDisplayUrl(url) ?: url
     }
 
-    fun getRealUrl(): String = super.getUrl() ?: ExportedUrls.aboutBlankUrl
+    fun getRealUrl(): String = super.getUrl() ?: BrowserUrls.aboutBlankUrl
 
     override fun goBack() {
         activity.onDropDownDismissed()
@@ -388,15 +425,15 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
-                if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return
+                if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return
+                onPageLoadProgressChanged(-1)
                 activity.onFaviconProgressUpdated(true)
-                activity.onPageLoadProgressChanged(-1)
                 consoleMessages.clear()
             }
 
             PageLoadState.PAGE_FINISHED -> {
+                onPageLoadProgressChanged(0)
                 activity.onFaviconProgressUpdated(false)
-                activity.onPageLoadProgressChanged(0)
                 activity.onSslCertificateUpdated()
                 activity.swipeRefreshLayout.setRefreshing(false)
             }
@@ -421,7 +458,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_HISTORY -> {
-                if (currentUrl.isBlank() || getRealUrl() == ExportedUrls.aboutBlankUrl) return
+                if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK) {
                     currentBroha = Broha(title, currentUrl)
                     historyState = UpdateHistoryState.STATE_URL_UPDATED
@@ -433,7 +470,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_FAVICON -> {
-                if (currentUrl.isBlank() || getRealUrl() == ExportedUrls.aboutBlankUrl) return
+                if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
                     CoroutineScope(Dispatchers.IO).launch {
                         currentBroha.iconHash = iconHashClient.save(favicon!!)
@@ -447,7 +484,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.UPDATE_TITLE -> {
-                if (currentUrl.isBlank() || getRealUrl() == ExportedUrls.aboutBlankUrl) return
+                if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 activity.onTitleUpdated(
                     if (this.visibility == View.GONE) resources.getString(R.string.start_page)
                     else title?.trim()
@@ -468,6 +505,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageLoadProgressChanged(progress: Int) {
+        loadProgress = progress
         activity.onPageLoadProgressChanged(progress)
     }
 
@@ -555,9 +593,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
     }
 
-    fun loadHomepage(useStartPage : Boolean) {
+    fun loadHomepage(useStartPage: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
         if (useStartPage) {
-            loadRealUrl(ExportedUrls.actualStartUrl)
+            loadRealUrl(ProjectUrls.actualStartUrl)
         } else {
             loadUrl(SearchEngineEntries.getPreferredHomePageUrl(settingsPreference))
         }
@@ -566,8 +604,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     fun loadViewSourcePage(url: String?): Boolean {
         val currentUrl = if (url.isNullOrBlank()) getUrl() else url
         if (PrivilegedPages.isPrivilegedPage(getRealUrl())) return false
-        if (currentUrl.startsWith(ExportedUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
-        loadRealUrl("${ExportedUrls.viewSourcePrefix}$currentUrl")
+        if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
+        loadRealUrl("${BrowserUrls.viewSourcePrefix}$currentUrl")
         return true
     }
 }

@@ -199,10 +199,8 @@
     <string name="pref_enable_history_title">Use history storage</string>
     <!-- Settings: Enable history storage summary -->
     <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
-    <!-- Settings: Clear cache title -->
-    <string name="pref_clear_cache">Effacer cache</string>
-    <!-- Settings: Clear cookies title -->
-    <string name="pref_clear_cookies">Effacer Cookies</string>
+    <!-- Settings: Clear browsing data title -->
+    <string name="pref_clear_browsing_data">Clear browsing data</string>
     <!-- Settings: Reset to default title -->
     <string name="pref_reset_to_default_title">Réinitaliser par défaut</string>
     <!-- Settings: Reset to default summary -->
@@ -245,10 +243,6 @@
     <string name="pref_use_custom_tabs_title">Utiliser des onglets personnalisés</string>
     <!-- Settings: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Ouvrez toujours les liens d’application dans les onglets personnalisés lorsqu’il est ouvert à partir d’une autre application.</string>
-    <!-- Settings: Check App Link title -->
-    <string name="pref_check_app_link_title">Rechercher un lien d\'application pouvant être lancé</string>
-    <!-- Settings: Check App Link summary -->
-    <string name="pref_check_app_link_summary">Demandez si un App Link doit être ouvert en externe avant le chargement.</string>
     <!-- Settings: Data Saver title -->
     <string name="pref_send_save_data_title">Sauvegarde des données</string>
     <!-- Settings: Data Saver summary -->

@@ -13,6 +13,8 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
+    <uses-sdk tools:overrideLibrary="androidx.annotation.experimental,androidx.webkit" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_ASSISTED_GPS" />
@@ -42,7 +44,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:localeConfig="@xml/locales_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.App"
         android:usesCleartextTraffic="true"
@@ -118,7 +120,8 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
         <activity
             android:name="tipz.build.info.BuildInfoActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.App.TranslucentStatus" />
         <activity
             android:name=".ListInterfaceActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />

@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity
@@ -10,10 +10,11 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import tipz.viola.databinding.ActivityCustomTabBinding
+import tipz.viola.ext.finishAndRemoveTaskExt
 import tipz.viola.ext.shareUrl
 import tipz.viola.webview.VWebViewActivity
 
-class CustomTabsActivity : VWebViewActivity() {
+class CustomTabsActivity : VWebViewActivity(true) {
     private lateinit var binding: ActivityCustomTabBinding
     private lateinit var title: AppCompatTextView
     private lateinit var host: AppCompatTextView
@@ -30,7 +31,7 @@ class CustomTabsActivity : VWebViewActivity() {
 
         /* Back button */
         val actionBarBack : AppCompatImageView = binding.close
-        actionBarBack.setOnClickListener { finish() }
+        actionBarBack.setOnClickListener { finishAndRemoveTaskExt() }
 
         /* Title and Host */
         title = binding.title
@@ -47,7 +48,7 @@ class CustomTabsActivity : VWebViewActivity() {
             val intent = Intent(this, BrowserActivity::class.java)
             intent.data = Uri.parse(url)
             startActivity(intent)
-            finish()
+            finishAndRemoveTaskExt()
         }
 
         /* Progress Bar */

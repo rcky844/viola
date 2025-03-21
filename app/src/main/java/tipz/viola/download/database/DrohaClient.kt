@@ -1,3 +1,6 @@
+// Copyright (c) 2024-2025 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
 package tipz.viola.download.database
 
 import android.content.Context

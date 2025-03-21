@@ -40,7 +40,7 @@ android {
         minSdk = 14
         targetSdk = 35
         versionCode = 74
-        versionName = "7.1"
+        versionName = "7.2"
 
         /* Extra build info */
         buildConfigField("String", "PRODUCT_LICENSE_DOCUMENT",
@@ -130,6 +130,12 @@ android {
         }
     }
 
+    // Disables dependency metadata when building APKs and Android App Bundles.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -155,6 +161,7 @@ dependencies {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
     }
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.webkit:webkit:1.13.0")
     annotationProcessor("androidx.annotation:annotation:1.9.1")
 
     // AndroidX Room
@@ -173,7 +180,6 @@ dependencies {
     modernImplementation("androidx.core:core-ktx:1.15.0")
     modernImplementation("androidx.appcompat:appcompat:1.7.0")
     modernImplementation("com.google.android.material:material:1.12.0")
-    modernImplementation("androidx.webkit:webkit:1.12.1")
 
     // Legacy dependencies
     // These will remain on their currently defined versions indefinitely,
@@ -182,5 +188,4 @@ dependencies {
     legacyImplementation("androidx.core:core-ktx:1.12.0")
     legacyImplementation("androidx.appcompat:appcompat:1.6.1")
     legacyImplementation("com.google.android.material:material:1.11.0")
-    legacyImplementation("androidx.webkit:webkit:1.8.0")
 }

@@ -4,7 +4,9 @@
 package tipz.viola.webview.activity.components
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
@@ -12,13 +14,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.transition.Fade
@@ -111,7 +117,7 @@ class ExpandableToolbarView(
 
     class ToolbarItemsAdapter(
         private val expandableToolbarView: ExpandableToolbarView,
-        private val itemsList: ArrayList<Array<Int>>,
+        private val itemsList: ArrayList<ToolBarItem>,
     ) : Adapter<ToolbarItemsAdapter.ViewHolder>() {
         private lateinit var binding: TemplateIconDescriptionItemBinding
 
@@ -131,17 +137,29 @@ class ExpandableToolbarView(
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.itemBox.setOnClickListener {
                 val closeToolBar = expandableToolbarView.activity
-                    .itemSelected(holder.imageView, itemsList[position][0])
+                    .itemSelected(holder.imageView, itemsList[position].drawable)
                 if (closeToolBar) expandableToolbarView.expandToolBar()
             }
             holder.itemBox.setOnLongClickListener {
                 expandableToolbarView.activity
-                    .itemLongSelected(holder.imageView, itemsList[position][0])
+                    .itemLongSelected(holder.imageView, itemsList[position].drawable)
                 true
             }
-            holder.imageView.setImageResource(itemsList[position][0])
+            holder.imageView.setImageResource(itemsList[position].drawable)
             holder.textView.text =
-                expandableToolbarView.activity.resources.getString(itemsList[position][1])
+                expandableToolbarView.activity.resources.getString(itemsList[position].name)
+
+            // API checks
+            if (Build.VERSION.SDK_INT < itemsList[position].minApi || !itemsList[position].enabled) {
+                holder.itemBox.setBackgroundResource(0)
+                holder.itemBox.setOnClickListener { }
+                holder.itemBox.setOnLongClickListener { true }
+                ImageViewCompat.setImageTintList(holder.imageView, ColorStateList.valueOf(Color.LTGRAY))
+            }
+        }
+
+        override fun getItemViewType(position: Int): Int {
+            return position
         }
 
         override fun getItemCount(): Int {
@@ -149,22 +167,25 @@ class ExpandableToolbarView(
         }
     }
 
-    companion object {
-        private val toolsBarExpandableItemList: ArrayList<Array<Int>> =
-            arrayListOf(
-                arrayOf(R.drawable.new_tab, R.string.toolbar_expandable_new_tab),
-                arrayOf(R.drawable.favorites, R.string.toolbar_expandable_favorites),
-                arrayOf(R.drawable.history, R.string.toolbar_expandable_history),
-                arrayOf(R.drawable.smartphone, R.string.toolbar_expandable_viewport),
-                arrayOf(R.drawable.favorites_add, R.string.toolbar_expandable_favorites_add),
-                arrayOf(R.drawable.download, R.string.toolbar_expandable_downloads),
-                arrayOf(R.drawable.translate, R.string.toolbar_expandable_translate),
-                arrayOf(R.drawable.fullscreen, R.string.toolbar_expandable_fullscreen),
-                arrayOf(R.drawable.app_shortcut, R.string.toolbar_expandable_app_shortcut),
-                arrayOf(R.drawable.settings, R.string.toolbar_expandable_settings),
-                arrayOf(R.drawable.code, R.string.toolbar_expandable_view_page_source),
-                arrayOf(R.drawable.print, R.string.toolbar_expandable_print),
-                arrayOf(R.drawable.close, R.string.toolbar_expandable_close)
-            )
-    }
+    data class ToolBarItem(@StringRes val name: Int, @DrawableRes val drawable: Int,
+                           val minApi: Int = 1, val enabled: Boolean = true)
+    private val toolsBarExpandableItemList: ArrayList<ToolBarItem> =
+        arrayListOf(
+            ToolBarItem(R.string.toolbar_expandable_new_tab, R.drawable.new_tab),
+            ToolBarItem(R.string.toolbar_expandable_favorites, R.drawable.favorites),
+            ToolBarItem(R.string.toolbar_expandable_history, R.drawable.history),
+            ToolBarItem(R.string.toolbar_expandable_viewport, R.drawable.smartphone),
+            ToolBarItem(R.string.toolbar_expandable_favorites_add, R.drawable.favorites_add),
+            ToolBarItem(R.string.toolbar_expandable_downloads, R.drawable.download),
+            ToolBarItem(R.string.toolbar_expandable_translate, R.drawable.translate),
+            ToolBarItem(R.string.toolbar_expandable_fullscreen, R.drawable.fullscreen),
+            ToolBarItem(R.string.toolbar_expandable_app_shortcut, R.drawable.app_shortcut,
+                enabled = ShortcutManagerCompat.isRequestPinShortcutSupported(context)),
+            ToolBarItem(R.string.toolbar_expandable_settings, R.drawable.settings),
+            ToolBarItem(R.string.toolbar_expandable_view_page_source, R.drawable.code,
+                minApi = Build.VERSION_CODES.KITKAT),
+            ToolBarItem(R.string.toolbar_expandable_print, R.drawable.print,
+                minApi = Build.VERSION_CODES.KITKAT),
+            ToolBarItem(R.string.toolbar_expandable_close, R.drawable.close),
+        )
 }

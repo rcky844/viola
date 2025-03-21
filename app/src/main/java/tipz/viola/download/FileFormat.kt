@@ -18,6 +18,20 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
         arrayOf("apk", "apks", "aab", "xapk", "apkm", "akp")
     ),
     FORMAT_BINARY_DATA("application/octet-stream", arrayOf()),
+    FORMAT_EPUB("application/epub+zip", arrayOf("epub")),
+    FORMAT_MS_WORD("application/msword",
+        arrayOf("doc", "dot",
+                "docx", "dotx", "docm", "dotm")),
+    FORMAT_MS_PPT("application/vnd.ms-powerpoint",
+        arrayOf("ppt", "pot", "pps", "ppa",
+                "pptx", "potx", "ppsx", "ppam", "pptm", "potm", "ppsm")),
+    FORMAT_MS_EXCEL("application/vnd.ms-excel",
+        arrayOf("xls", "xlt", "xla",
+                "xlsx", "xltx", "xlsm", "xltm", "xlam", "xlsb")),
+    FORMAT_MS_WORKS("application/vnd.ms-works",
+        arrayOf("wcm", "wdb", "wks", "wps", "xlr")),
+    FORMAT_OPENDOCUMENT("application/vnd.oasis.opendocument.",
+        arrayOf("odt", "ods", "odp", "odg", "odf", "fodt", "fods", "fodp", "fodg")),
     FORMAT_PDF("application/pdf", arrayOf("pdf")),
     FORMAT_APPLICATION_GENERIC("application/", arrayOf()),
 
@@ -32,21 +46,22 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
 
     /* Audio */
     FORMAT_AUDIO_GENERIC("audio/",
-        arrayOf("mp3", "aac", "ogg", /* Lossy */
-                "flac", "m4a", /* Lossless */
+        arrayOf("mp3", "aac", /* Lossy */
+                "ogg", "oga", "ogv", "ogx", "opus", /* Lossy: Ogg & Opus */
+                "mid", "midi", "flac", "m4a", /* Lossless */
                 "wav", "aiff", "pcm" /* Uncompressed */)
     ),
 
     /* Image */
     FORMAT_IMAGE_GENERIC("image/",
         arrayOf("jpg", "jpeg", /* Lossy */
-                "png", "bmp", "gif", /* Lossless */
+                "png", "apng", "bmp", "gif", "ico", /* Lossless */
                 "webp", "avif", "tiff" /* Both */)
     ),
 
     /* Video */
     FORMAT_VIDEO_GENERIC("video/",
-        arrayOf("mp4", "webm", "mkv", "avi", "mov", "wmv")
+        arrayOf("mp4", "mpeg", "webm", "mkv", "avi", "mov", "wmv", "3gp", "3g2")
     );
 
     companion object {
@@ -87,11 +102,14 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
         @DrawableRes
         fun getFileDrawableResId(obj: Droha): Int {
             return when (determineFileFormat(obj)) {
-                FORMAT_UNKNOWN -> R.drawable.document // Also represents generic documents
+                FORMAT_UNKNOWN -> R.drawable.document_generic // Also represents generic documents
 
                 /* Application */
                 FORMAT_ANDROID_PACKAGE -> R.drawable.document_apk
                 FORMAT_BINARY_DATA -> R.drawable.document_application
+                FORMAT_EPUB -> R.drawable.book
+                FORMAT_MS_WORD, FORMAT_MS_PPT, FORMAT_MS_EXCEL, FORMAT_MS_WORKS, FORMAT_OPENDOCUMENT
+                    -> R.drawable.document
                 FORMAT_PDF -> R.drawable.document_pdf
                 FORMAT_APPLICATION_GENERIC -> R.drawable.document_application
 

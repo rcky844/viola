@@ -5,6 +5,7 @@ package tipz.viola.ext
 
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -18,4 +19,12 @@ fun Activity.askForPermission(permission: Array<String>): Boolean {
     if (shouldRequest)
         ActivityCompat.requestPermissions(this, permission, 0)
     return !shouldRequest
+}
+
+fun Activity.finishAndRemoveTaskExt() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        finishAndRemoveTask()
+    } else {
+        finish()
+    }
 }
