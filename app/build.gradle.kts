@@ -40,7 +40,7 @@ android {
         minSdk = 14
         targetSdk = 35
         versionCode = 1
-        versionName = "7.0"
+        versionName = "7.2"
 
         /* Extra build info */
         buildConfigField("String", "PRODUCT_LICENSE_DOCUMENT",
