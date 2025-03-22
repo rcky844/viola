@@ -8,14 +8,9 @@
         <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
         <item name="dialogCornerRadius">28dp</item>
 
-        <!-- Status bar -->
+        <!-- Status bar & Navigation bar -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
-        <item name="android:enforceStatusBarContrast">false</item>
-
-        <!-- Navigation bar -->
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:enforceNavigationBarContrast">false</item>
     </style>
 
     <style name="Theme.App.TranslucentStatus" parent="Theme.App">
