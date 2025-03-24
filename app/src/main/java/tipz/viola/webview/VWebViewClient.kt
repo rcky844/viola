@@ -37,18 +37,18 @@ open class VWebViewClient(
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
-        vWebView.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url, favicon)
+        vWebView.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url)
         vWebView.checkHomePageVisibility()
     }
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
-        vWebView.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url, null)
+        vWebView.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url)
     }
 
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
-        vWebView.onPageInformationUpdated(PageLoadState.UPDATE_HISTORY, url, null)
+        vWebView.onPageInformationUpdated(PageLoadState.UPDATE_HISTORY, url)
     }
 
     @Deprecated("Deprecated in Java")
@@ -64,8 +64,7 @@ open class VWebViewClient(
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
         }
-        vWebView.onPageInformationUpdated(PageLoadState.PAGE_ERROR, failingUrl,
-            null, description)
+        vWebView.onPageInformationUpdated(PageLoadState.PAGE_ERROR, failingUrl, description)
     }
 
     override fun onReceivedHttpAuthRequest(

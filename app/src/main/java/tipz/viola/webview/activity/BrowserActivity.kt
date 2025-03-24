@@ -172,9 +172,10 @@ class BrowserActivity : VWebViewActivity() {
                     }
                     url.text = Uri.parse(webview.url).host
                     this.icon.apply {
-                        val favicon = webview.currentFavicon
-                        if (favicon == null) setImageResource(R.drawable.default_favicon)
-                        else setImageBitmap(favicon)
+                        webview.favicon.let {
+                            if (it == null) setImageResource(R.drawable.default_favicon)
+                            else setImageBitmap(it)
+                        }
                     }
                 }
             val titleView = binding.root

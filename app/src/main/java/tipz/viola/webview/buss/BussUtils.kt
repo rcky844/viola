@@ -26,7 +26,7 @@ object BussUtils {
         if (!url.startsWith(bussPrefix)) return false
         val split = url.replace(bussPrefix, "")
             .replace('.', '/')
-        view.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url, null)
+        view.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url)
         view.onPageLoadProgressChanged(20)
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -39,7 +39,7 @@ object BussUtils {
                 MainScope().launch {
                     // No data returned means it probably isn't registered
                     view.onPageInformationUpdated(
-                        PageLoadState.PAGE_ERROR, url, null,
+                        PageLoadState.PAGE_ERROR, url,
                         "net::ERR_NAME_NOT_RESOLVED")
                 }
                 return@launch
@@ -58,7 +58,7 @@ object BussUtils {
                     // For those that can't download data, use a more generic one, since
                     // MiniDownloadHelper can't give us error codes yet
                     view.onPageInformationUpdated(
-                        PageLoadState.PAGE_ERROR, url, null,
+                        PageLoadState.PAGE_ERROR, url,
                         "net::ERR_CONNECTION_FAILED")
                 }
                 return@launch

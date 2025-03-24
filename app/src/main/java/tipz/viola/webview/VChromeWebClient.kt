@@ -74,11 +74,11 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
     }
 
     override fun onReceivedIcon(view: WebView, favicon: Bitmap) {
-        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_FAVICON, null, favicon)
+        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_FAVICON, null)
     }
 
     override fun onReceivedTitle(view: WebView, title: String) {
-        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_TITLE, null, null)
+        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_TITLE, null)
     }
 
     override fun onGeolocationPermissionsShowPrompt(
@@ -144,7 +144,7 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
             }
             .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
                 result.cancel()
-                vWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED, null, null)
+                vWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED, null)
             }
         if (defaultValue != null) dialog.setView(view)
         dialog.create().show()
