@@ -25,7 +25,6 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +39,7 @@ import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
+import tipz.viola.download.DownloadActivity.ItemsAdapter.EmptyViewHolder
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
@@ -162,7 +162,6 @@ class ListInterfaceActivity : BaseActivity() {
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val LOG_TAG = "ListInterfaceAdapter"
 
-        private lateinit var binding: ViewBinding
         private val mIconHashClient: IconHashClient = IconHashClient(activity)
 
         class ListViewHolder(binding: TemplateIconTitleDescriptorTimeBinding)
@@ -179,27 +178,26 @@ class ListInterfaceActivity : BaseActivity() {
             val text: AppCompatTextView = binding.text
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            binding = if (listData.isEmpty()) {
-                TemplateEmptyBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            if (listData.isEmpty()) {
+                EmptyViewHolder(TemplateEmptyBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false))
             } else {
-                TemplateIconTitleDescriptorTimeBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false)
+                ListViewHolder(TemplateIconTitleDescriptorTimeBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false))
             }
-
-            return if (listData.isEmpty()) EmptyViewHolder(binding as TemplateEmptyBinding)
-            else ListViewHolder(binding as TemplateIconTitleDescriptorTimeBinding)
-        }
 
         @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is EmptyViewHolder) {
-                holder.text.setText(
+            if (listData.isEmpty()) {
+                if (holder is EmptyViewHolder) holder.text.setText(
                     if (activityMode == mode_history) R.string.history_empty_message
                     else R.string.favorites_empty_message
                 )
-            } else if (holder is ListViewHolder) {
+                return
+            }
+
+            if (holder is ListViewHolder) {
                 val iconHashClient = mIconHashClient
                 val data = listData[position]
                 val title = data.title
@@ -252,7 +250,7 @@ class ListInterfaceActivity : BaseActivity() {
                                     else if (activityMode == mode_favorites)
                                         activity.favClient.deleteById(data.id)
                                 }
-                                listData!!.removeAt(position)
+                                listData.removeAt(position)
                                 notifyItemRemoved(position)
                                 notifyItemRangeRemoved(position, itemCount - position)
                             }
