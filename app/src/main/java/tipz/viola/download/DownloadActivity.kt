@@ -24,7 +24,6 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -136,8 +135,8 @@ class DownloadActivity : BaseActivity() {
     class ItemsAdapter(
         private val activity: DownloadActivity
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            private val binding = Companion.binding as TemplateIconTitleDescriptorTimeBinding
+        class ListViewHolder(binding: TemplateIconTitleDescriptorTimeBinding)
+            : RecyclerView.ViewHolder(binding.root) {
             val back: ConstraintLayout = binding.bg
             val icon: AppCompatImageView = binding.icon
             val title: AppCompatTextView = binding.title
@@ -145,23 +144,19 @@ class DownloadActivity : BaseActivity() {
             val time: AppCompatTextView = binding.time
         }
 
-        class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            private val binding = Companion.binding as TemplateEmptyBinding
+        class EmptyViewHolder(binding: TemplateEmptyBinding)
+            : RecyclerView.ViewHolder(binding.root) {
             val text: AppCompatTextView = binding.text
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            binding = if (listData.isEmpty()) {
-                TemplateEmptyBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            if (listData.isEmpty()) {
+                EmptyViewHolder(TemplateEmptyBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false))
             } else {
-                TemplateIconTitleDescriptorTimeBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false)
+                ListViewHolder(TemplateIconTitleDescriptorTimeBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false))
             }
-
-            return if (listData.isEmpty()) EmptyViewHolder(binding.root)
-            else ListViewHolder(binding.root)
-        }
 
         @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -246,6 +241,5 @@ class DownloadActivity : BaseActivity() {
     companion object {
         private var LOG_TAG = "DownloadActivity"
         private var listData: MutableList<Droha> = mutableListOf()
-        private lateinit var binding: ViewBinding
     }
 }

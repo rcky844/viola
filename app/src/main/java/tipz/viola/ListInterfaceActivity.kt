@@ -25,7 +25,6 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
@@ -163,7 +162,6 @@ class ListInterfaceActivity : BaseActivity() {
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val LOG_TAG = "ListInterfaceAdapter"
 
-        private lateinit var binding: ViewBinding
         private val mIconHashClient: IconHashClient = IconHashClient(activity)
 
         class ListViewHolder(binding: TemplateIconTitleDescriptorTimeBinding)
@@ -180,18 +178,14 @@ class ListInterfaceActivity : BaseActivity() {
             val text: AppCompatTextView = binding.text
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            binding = if (listData.isEmpty()) {
-                TemplateEmptyBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            if (listData.isEmpty()) {
+                EmptyViewHolder(TemplateEmptyBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false))
             } else {
-                TemplateIconTitleDescriptorTimeBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false)
+                ListViewHolder(TemplateIconTitleDescriptorTimeBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false))
             }
-
-            return if (listData.isEmpty()) EmptyViewHolder(binding as TemplateEmptyBinding)
-            else ListViewHolder(binding as TemplateIconTitleDescriptorTimeBinding)
-        }
 
         @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
