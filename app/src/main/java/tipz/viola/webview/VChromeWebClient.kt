@@ -74,7 +74,7 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
     }
 
     override fun onReceivedIcon(view: WebView, favicon: Bitmap) {
-        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_FAVICON, null)
+        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_FAVICON, null, favicon, null)
     }
 
     override fun onReceivedTitle(view: WebView, title: String) {

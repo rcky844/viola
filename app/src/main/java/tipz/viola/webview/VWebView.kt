@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
@@ -412,10 +413,14 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?) {
-        onPageInformationUpdated(state, url, null)
+        onPageInformationUpdated(state, url, null, null)
     }
 
     fun onPageInformationUpdated(state: PageLoadState, url: String?, description: String?) {
+        onPageInformationUpdated(state, url, null, description)
+    }
+
+    fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?, description: String?) {
         val currentUrl = this.url
         val newUrl = if (!url.isNullOrBlank()) filterUrl(url) else currentUrl
 
@@ -466,7 +471,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.UPDATE_FAVICON -> {
                 if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
-                    val iconHash = if (favicon != null) iconHashClient.save(favicon!!) else null
+                    val iconHash = if (favicon != null) iconHashClient.save(favicon) else null
                     val currentTitle = title
                     CoroutineScope(Dispatchers.IO).launch {
                         historyClient.insert(Broha(iconHash, currentTitle, newUrl))
