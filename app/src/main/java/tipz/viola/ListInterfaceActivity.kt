@@ -40,6 +40,7 @@ import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
+import tipz.viola.download.DownloadActivity.ItemsAdapter.EmptyViewHolder
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
@@ -194,12 +195,15 @@ class ListInterfaceActivity : BaseActivity() {
 
         @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is EmptyViewHolder) {
-                holder.text.setText(
+            if (listData.isEmpty()) {
+                if (holder is EmptyViewHolder) holder.text.setText(
                     if (activityMode == mode_history) R.string.history_empty_message
                     else R.string.favorites_empty_message
                 )
-            } else if (holder is ListViewHolder) {
+                return
+            }
+
+            if (holder is ListViewHolder) {
                 val iconHashClient = mIconHashClient
                 val data = listData[position]
                 val title = data.title
@@ -252,7 +256,7 @@ class ListInterfaceActivity : BaseActivity() {
                                     else if (activityMode == mode_favorites)
                                         activity.favClient.deleteById(data.id)
                                 }
-                                listData!!.removeAt(position)
+                                listData.removeAt(position)
                                 notifyItemRemoved(position)
                                 notifyItemRangeRemoved(position, itemCount - position)
                             }

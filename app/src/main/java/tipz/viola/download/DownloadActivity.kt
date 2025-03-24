@@ -165,9 +165,12 @@ class DownloadActivity : BaseActivity() {
 
         @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is EmptyViewHolder) {
-                holder.text.setText(R.string.downloads_empty_message)
-            } else if (holder is ListViewHolder) {
+            if (listData.isEmpty()) {
+                if (holder is EmptyViewHolder) holder.text.setText(R.string.downloads_empty_message)
+                return
+            }
+
+            if (holder is ListViewHolder) {
                 val data = listData[position]
 
                 holder.icon.setImageResource(FileFormat.getFileDrawableResId(data))
