@@ -49,7 +49,7 @@ android {
         buildConfigField("String", "VERSION_COPYRIGHT_YEAR", "\"2020-2025\"")
         buildConfigField("String", "VERSION_BUILD_EXTRA", "\"\"")
         buildConfigField("String", "VERSION_BUILD_ID", "\"${versionCode}\"")
-        buildConfigField("int", "VERSION_BUILD_REVISION", "0")
+        buildConfigField("int", "VERSION_BUILD_REVISION", "1")
         buildConfigField("String", "VERSION_BUILD_GIT_REVISION",
             "\"${getGitInfo("revision")}\"")
         buildConfigField("String", "VERSION_BUILD_BRANCH",
