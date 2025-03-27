@@ -168,7 +168,7 @@ class BrowserActivity : VWebViewActivity() {
                     }
                     url.text = Uri.parse(webview.url).host
                     this.icon.apply {
-                        webview.favicon.takeUnless { it == null }?.let {
+                        webview.faviconExt.takeUnless { it == null }?.let {
                             setImageBitmap(it)
                         } ?: setImageResource(R.drawable.default_favicon)
                     }
@@ -644,9 +644,9 @@ class BrowserActivity : VWebViewActivity() {
         sslLock.isClickable = true
     }
 
-    override fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {
-        super.onFaviconUpdated(icon, checkInstance)
-        if (checkInstance && favicon.imageView.drawable is BitmapDrawable) return
+    override fun onFaviconUpdated(icon: Bitmap?) {
+        super.onFaviconUpdated(icon)
+        if (favicon.imageView.drawable is BitmapDrawable) return
         if (icon == null) favicon.setImageResource(R.drawable.default_favicon)
         else favicon.setImageBitmap(icon)
     }

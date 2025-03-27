@@ -35,7 +35,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
@@ -65,9 +69,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private val LOG_TAG = "VWebView"
 
     private var activity: VWebViewActivity = context as VWebViewActivity
-    private lateinit var historyClient: HistoryClient
     val downloadClient: DownloadClient = (context.applicationContext as Application).downloadClient
-    private val iconHashClient = IconHashClient(context)
     val webSettings = this.settings
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     var loadProgress = 100
@@ -79,6 +81,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
     val consoleMessages = StringBuilder()
+
+    // Broha related (history & favorites)
+    private lateinit var historyClient: HistoryClient
+    private val iconHashClient = IconHashClient(context)
+    var faviconExt: Bitmap? = null
 
     private val titleHandler = Handler { message ->
         val webLongPress = HitTestAlertDialog(context)
@@ -93,7 +100,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     enum class PageLoadState {
         PAGE_STARTED, PAGE_FINISHED, PAGE_ERROR,
-        UPDATE_HISTORY, UPDATE_FAVICON, UPDATE_TITLE, UNKNOWN
+        UPDATE_HISTORY, UPDATE_TITLE, UNKNOWN
     }
 
     init {
@@ -126,7 +133,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 showDialog = true
             })
 
-            onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!, null)
+            onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!)
             onPageLoadProgressChanged(0)
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
@@ -358,7 +365,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             // Handle App Links
             if (loadAppLinkUrl(url, true)) return
         }
-        onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl, null)
+        onPageInformationUpdated(PageLoadState.UNKNOWN, checkedUrl)
 
         // Prevent creating duplicate entries
         if (getRealUrl() == checkedUrl && historyState != UpdateHistoryState.STATE_DISABLED)
@@ -412,17 +419,22 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             super.loadUrl("javascript:function(){${script}}()");
     }
 
-    fun onPageInformationUpdated(state: PageLoadState, url: String?) {
-        onPageInformationUpdated(state, url, null, null)
+    private suspend fun commitHistory(newUrl: String) {
+        val currentTitle = runBlocking {
+            withContext(Dispatchers.Main) { title }
+        }
+        val iconHash = faviconExt.takeUnless { it == null }?.let { iconHashClient.save(it) }
+        historyClient.insert(Broha(iconHash, currentTitle, newUrl))
+        Log.d(LOG_TAG, "History committed, url=$newUrl")
     }
 
-    fun onPageInformationUpdated(state: PageLoadState, url: String?, description: String?) {
-        onPageInformationUpdated(state, url, null, description)
-    }
-
-    fun onPageInformationUpdated(state: PageLoadState, url: String?, favicon: Bitmap?, description: String?) {
+    fun onPageInformationUpdated(state: PageLoadState, url: String? = null,
+                                 favicon: Bitmap? = null, description: String? = null) {
         val currentUrl = this.url
         val newUrl = if (!url.isNullOrBlank()) filterUrl(url) else currentUrl
+
+        // Update favicon
+        this.faviconExt = favicon
 
         when (state) {
             PageLoadState.PAGE_STARTED -> {
@@ -466,21 +478,24 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     CookieManager.getInstance().flush()
                 else CookieSyncManager.getInstance().sync()
                 activity.swipeRefreshLayout.setRefreshing(false)
-            }
 
-            PageLoadState.UPDATE_FAVICON -> {
-                if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
-                if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
-                    val iconHash = if (favicon != null) iconHashClient.save(favicon) else null
-                    val currentTitle = title
-                    CoroutineScope(Dispatchers.IO).launch {
-                        historyClient.insert(Broha(iconHash, currentTitle, newUrl))
+                CoroutineScope(Dispatchers.IO).launch {
+                    Log.d(LOG_TAG, "History commit job START")
+                    runBlocking {
+                        withTimeoutOrNull(25000L) {
+                            while (faviconExt == null) {
+                                delay(1000)
+                                continue
+                            }
+                        }
                     }
-                    historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+
+                    if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
+                        historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+                        commitHistory(newUrl)
+                    }
+                    MainScope().launch { activity.onFaviconUpdated(faviconExt) }
                 }
-                if (historyState == UpdateHistoryState.STATE_DISABLED_DUPLICATED)
-                    historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
-                activity.swipeRefreshLayout.setRefreshing(false)
             }
 
             PageLoadState.UPDATE_TITLE -> {
@@ -495,9 +510,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.UNKNOWN -> {
             }
         }
-
-        // Update favicon
-        activity.onFaviconUpdated(favicon, state == PageLoadState.UPDATE_FAVICON)
+        Log.v(LOG_TAG, "onPageInformationUpdated(): state=${state.name}")
 
         activity.onUrlUpdated(newUrl)
         activity.onDropDownDismissed()

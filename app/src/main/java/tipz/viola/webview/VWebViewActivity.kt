@@ -110,7 +110,7 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
 
     @Suppress("DEPRECATION")
     @CallSuper
-    open fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {
+    open fun onFaviconUpdated(icon: Bitmap?) {
         if (settingsPreference.getIntBool(SettingsKeys.updateRecentsIcon) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val description = TaskDescription(webview.title, icon)
             setTaskDescription(description)

@@ -64,7 +64,7 @@ open class VWebViewClient(
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
         }
-        vWebView.onPageInformationUpdated(PageLoadState.PAGE_ERROR, failingUrl, description)
+        vWebView.onPageInformationUpdated(PageLoadState.PAGE_ERROR, failingUrl, description = description)
     }
 
     override fun onReceivedHttpAuthRequest(
