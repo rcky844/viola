@@ -2,20 +2,18 @@
 <!-- Copyright (c) 2022-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_view_height"
-        android:elevation="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:elevation="12dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
@@ -26,70 +24,58 @@
             app:contentInsetStart="0dp"
             app:title="@null">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="?attr/minTouchTargetSize"
+                android:layout_gravity="center">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/close"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_alignParentStart="true"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@null"
                     android:padding="12dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/close"
                     app:tint="?attr/colorOnSurface" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/title"
-                    android:layout_width="0dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toStartOf="@id/share"
-                    app:layout_constraintStart_toEndOf="@id/close"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/host" />
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/share"
+                    android:layout_toEndOf="@id/close"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/host"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/share"
-                    app:layout_constraintStart_toEndOf="@id/close"
-                    app:layout_constraintTop_toBottomOf="@id/title" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingBottom="2dp"
+                        android:textSize="16sp" />
 
-                <androidx.constraintlayout.widget.Barrier
-                    android:id="@+id/barrier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:barrierDirection="right"
-                    app:constraint_referenced_ids="title,host" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/host"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/title"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/share"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_toStartOf="@id/open_browser"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@null"
                     android:padding="12dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/open_browser"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/share"
                     app:tint="?attr/colorOnSurface" />
 
@@ -97,15 +83,13 @@
                     android:id="@+id/open_browser"
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_alignParentEnd="true"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@null"
                     android:padding="12dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/new_tab"
                     app:tint="?attr/colorOnSurface" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -123,12 +107,8 @@
 
     <RelativeLayout
         android:id="@+id/webviewContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appbar">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/layout_webview"
@@ -137,4 +117,4 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

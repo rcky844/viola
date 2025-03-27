@@ -4,7 +4,6 @@
 package tipz.viola.webview.activity
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -22,10 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
-import android.widget.TextView.OnEditorActionListener
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -172,10 +168,9 @@ class BrowserActivity : VWebViewActivity() {
                     }
                     url.text = Uri.parse(webview.url).host
                     this.icon.apply {
-                        webview.favicon.let {
-                            if (it == null) setImageResource(R.drawable.default_favicon)
-                            else setImageBitmap(it)
-                        }
+                        webview.faviconExt.takeUnless { it == null }?.let {
+                            setImageBitmap(it)
+                        } ?: setImageResource(R.drawable.default_favicon)
                     }
                 }
             val titleView = binding.root
@@ -223,34 +218,37 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup Url EditText box
-        urlEditText.setOnEditorActionListener(
-            OnEditorActionListener { _: TextView?, actionId: Int, _: KeyEvent? ->
-                if (actionId == EditorInfo.IME_ACTION_GO || actionId == KeyEvent.ACTION_DOWN) {
-                    webview.loadUrl(urlEditText.text.toString())
-                    closeKeyboard()
-                    return@OnEditorActionListener true
+        urlEditText.run {
+            setOnEditorActionListener { _, actionId, _ ->
+                when (actionId) {
+                    EditorInfo.IME_ACTION_GO, KeyEvent.ACTION_DOWN -> {
+                        webview.loadUrl(urlEditText.text.toString())
+                        closeKeyboard()
+                        return@setOnEditorActionListener true
+                    }
                 }
                 false
-            })
-        urlEditText.setOnFocusChangeListener { _: View?, hasFocus: Boolean ->
-            if (!hasFocus) {
-                if (urlEditText.text.toString() != webview.url)
-                    urlEditText.setText(webview.url)
-                urlEditText.dropDownHeight = 0
-            } else {
-                urlEditText.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
             }
-        }
-        urlEditText.setOnClickListener {
-            if (expandableToolbarView.visibility == View.VISIBLE)
-                expandableToolbarView.expandToolBar()
-        }
-        urlEditText.onItemClickListener =
-            OnItemClickListener { _: AdapterView<*>?, mView: View, _: Int, _: Long ->
-                webview.loadUrl((mView.findViewById<View>(android.R.id.text1) as AppCompatTextView)
-                    .text.toString())
+
+            setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+                } else {
+                    webview.url.takeIf { it != text.toString() }.let { setText(it) }
+                    dropDownHeight = 0
+                }
+            }
+
+            setOnClickListener {
+                if (expandableToolbarView.visibility == View.VISIBLE)
+                    expandableToolbarView.expandToolBar()
+            }
+
+            setOnItemClickListener { _, v, _, _ ->
+                webview.loadUrl(v.findViewById<AppCompatTextView>(android.R.id.text1).text.toString())
                 closeKeyboard()
             }
+        }
 
         // Setup the up most fab (currently for reload)
         upRightFab.setOnClickListener {
@@ -277,12 +275,9 @@ class BrowserActivity : VWebViewActivity() {
         )
 
         // Finally, load homepage
-        val dataUri = intent.data
-        if (dataUri != null) {
-            webview.loadUrl(dataUri.toString())
-        } else {
-            webview.loadHomepage()
-        }
+        intent.data.takeUnless { it == null }?.let {
+            webview.loadUrl(it.toString())
+        } ?: webview.loadHomepage()
     }
 
     // https://stackoverflow.com/a/57840629/10866268
@@ -364,9 +359,7 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.arrow_back_alt -> if (webview.canGoBack()) webview.goBack()
             R.drawable.arrow_forward_alt -> if (webview.canGoForward()) webview.goForward()
             R.drawable.refresh -> webview.reload()
-            R.drawable.home -> {
-                webview.loadHomepage()
-            }
+            R.drawable.home -> webview.loadHomepage()
 
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
                 val userAgentMode = {
@@ -397,7 +390,7 @@ class BrowserActivity : VWebViewActivity() {
                 arrayAdapter.add(R.string.shortcuts_menu_browser)
                 arrayAdapter.add(R.string.shortcuts_menu_custom_tabs)
                 arrayAdapter.add(R.string.shortcuts_menu_webapp)
-                dialog.setAdapter(arrayAdapter) { _: DialogInterface?, which: Int ->
+                dialog.setAdapter(arrayAdapter) { _, which ->
                     val launchIntent = Intent(this, LauncherActivity::class.java)
                         .setData(Uri.parse(webview.url))
                         .setAction(Intent.ACTION_VIEW)
@@ -526,7 +519,7 @@ class BrowserActivity : VWebViewActivity() {
                 MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.toolbar_expandable_translate)
                     .setView(editView)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
                         val targetLang = targetLangEditText.text.toString()
                         if (targetLang.isBlank()) return@setPositiveButton
 
@@ -560,7 +553,7 @@ class BrowserActivity : VWebViewActivity() {
                 val dialog = MaterialAlertDialogBuilder(this)
                 dialog.setTitle(R.string.viewing_mode_custom_user_agent)
                     .setView(mView)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
                         val dataBundle = VWebView.UserAgentBundle()
                         dataBundle.userAgentString = customUserAgent.text.toString()
                         dataBundle.iconView = view
@@ -587,12 +580,8 @@ class BrowserActivity : VWebViewActivity() {
                     MaterialAlertDialogBuilder(this).setTitle(R.string.console_dialog_title)
                         .setMessage(webview.consoleMessages) // TODO: Make it dynamically update
                         .setPositiveButton(android.R.string.ok, null)
-                        .setNeutralButton(R.string.clear) { _: DialogInterface?, _: Int ->
-                            webview.consoleMessages.clear()
-                        }
-                        .setNegativeButton(R.string.console_logging_disable) { _: DialogInterface?, _: Int ->
-                            webview.consoleLogging = false
-                        }
+                        .setNeutralButton(R.string.clear) { _, _ -> webview.consoleMessages.clear() }
+                        .setNegativeButton(R.string.console_logging_disable) { _, _ -> webview.consoleLogging = false }
                         .create().show()
                 } else {
                     showMessage(R.string.console_toast_enabled)
@@ -655,9 +644,9 @@ class BrowserActivity : VWebViewActivity() {
         sslLock.isClickable = true
     }
 
-    override fun onFaviconUpdated(icon: Bitmap?, checkInstance: Boolean) {
-        super.onFaviconUpdated(icon, checkInstance)
-        if (checkInstance && favicon.imageView.drawable is BitmapDrawable) return
+    override fun onFaviconUpdated(icon: Bitmap?) {
+        super.onFaviconUpdated(icon)
+        if (favicon.imageView.drawable is BitmapDrawable) return
         if (icon == null) favicon.setImageResource(R.drawable.default_favicon)
         else favicon.setImageBitmap(icon)
     }

@@ -27,7 +27,7 @@
             app:contentInsetStart="0dp"
             app:title="@null">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="4dp"
@@ -35,33 +35,28 @@
 
                 <tipz.viola.webview.activity.components.FavIconView
                     android:id="@+id/favicon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_width="@dimen/actionbar_widget_height"
+                    android:layout_height="@dimen/actionbar_widget_height"
+                    android:layout_alignParentStart="true" />
 
                 <tipz.viola.webview.activity.components.AddressBarView
                     android:id="@+id/addressBar"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/actionbar_widget_height"
-                    app:layout_constraintEnd_toStartOf="@id/upRightFab"
-                    app:layout_constraintStart_toEndOf="@id/favicon"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_toStartOf="@id/upRightFab"
+                    android:layout_toEndOf="@id/favicon" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/upRightFab"
                     android:layout_width="@dimen/actionbar_widget_height"
                     android:layout_height="@dimen/actionbar_widget_height"
+                    android:layout_alignParentEnd="true"
                     android:background="?attr/selectableItemBackground"
                     android:focusable="true"
                     android:padding="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/refresh"
                     app:tint="?attr/colorOnSurface" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 

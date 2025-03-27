@@ -19,7 +19,6 @@ import tipz.viola.settings.SettingsKeys
 class FavIconView(
     context: Context, attributeSet: AttributeSet
 ) : CoordinatorLayout(context, attributeSet) {
-    private val actionBarHeight = resources.getDimensionPixelSize(R.dimen.actionbar_widget_height)
     private val settingsPreference = (context.applicationContext as Application).settingsPreference
 
     val imageView = AppCompatImageView(context)
@@ -44,13 +43,13 @@ class FavIconView(
 
     init {
         imageView.apply {
-            layoutParams = LayoutParams(actionBarHeight, actionBarHeight)
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             setPadding(context.dpToPx(8))
             setImageResource(R.drawable.default_favicon)
         }
         progressBar.apply {
             visibility = GONE
-            layoutParams = LayoutParams(actionBarHeight, actionBarHeight)
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             setPadding(context.dpToPx(8))
             indicatorSize = context.dpToPx(24)
             isIndeterminate = true

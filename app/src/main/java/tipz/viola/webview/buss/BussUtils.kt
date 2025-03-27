@@ -40,7 +40,7 @@ object BussUtils {
                     // No data returned means it probably isn't registered
                     view.onPageInformationUpdated(
                         PageLoadState.PAGE_ERROR, url,
-                        "net::ERR_NAME_NOT_RESOLVED")
+                        description = "net::ERR_NAME_NOT_RESOLVED")
                 }
                 return@launch
             }
@@ -59,7 +59,7 @@ object BussUtils {
                     // MiniDownloadHelper can't give us error codes yet
                     view.onPageInformationUpdated(
                         PageLoadState.PAGE_ERROR, url,
-                        "net::ERR_CONNECTION_FAILED")
+                        description = "net::ERR_CONNECTION_FAILED")
                 }
                 return@launch
             }
