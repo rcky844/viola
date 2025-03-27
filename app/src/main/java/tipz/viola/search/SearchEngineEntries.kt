@@ -79,47 +79,32 @@ object SearchEngineEntries {
 
     val customIndex = engines.size - 1
 
-    private fun findObjWithName(name: String): EngineItem? = engines.find {
-        it.name == name
-    }
-
-    // TODO: Remove
+    // TODO: Improvements needed
     fun getNameByIndex(index: Int): String = engines[index].name
-    fun getIndexByName(name: String): Int = engines.indexOfFirst {
-        it.name == name
-    }
+    fun getIndexByName(name: String): Int = engines.indexOfFirst { it.name == name }
 
-    fun getPreferredHomePageUrl(pref: SettingsSharedPreference): String {
-        val name = pref.getString(SettingsKeys.homePageName)
-        if (name.isEmpty()) return pref.getString(SettingsKeys.homePageCustomUrl)
+    private fun findByName(name: String): EngineItem? = engines.find { it.name == name }
 
-        val url: String? = findObjWithName(name)!!.homePage
-        if (url.isNullOrBlank()) return ""
-        return url
-    }
+    fun getPreferredHomePageUrl(pref: SettingsSharedPreference): String =
+        pref.getString(SettingsKeys.homePageName).takeUnless { it.isEmpty() }?.let {
+            findByName(it)!!.homePage.takeUnless { url -> url.isNullOrBlank() } ?: ""
+        } ?: pref.getString(SettingsKeys.homePageCustomUrl)
 
-    fun getPreferredSearchUrl(pref: SettingsSharedPreference, query: String): String {
-        if (query.isEmpty()) return ""
+    fun getPreferredSearchUrl(pref: SettingsSharedPreference, query: String): String =
+        query.takeUnless { it.isEmpty() }?.let {
+            (pref.getString(SettingsKeys.searchName).takeUnless { it.isEmpty() }?.let {
+                findByName(it)!!.search.takeUnless { url -> url.isNullOrBlank() } ?: ""
+            } ?: pref.getString(SettingsKeys.searchCustomUrl))
+                .replace(queryPlaceholder, query).replace(languagePlaceholder, language)
+        } ?: ""
 
-        val name = pref.getString(SettingsKeys.searchName)
-        if (name.isEmpty()) return pref.getString(SettingsKeys.searchCustomUrl)
-
-        val url: String? = findObjWithName(name)!!.search
-        if (url.isNullOrBlank()) return ""
-        return url.replace(queryPlaceholder, query)
-            .replace(languagePlaceholder, language)
-    }
-
-    fun getPreferredSuggestionsUrl(pref: SettingsSharedPreference, query: String): String {
-        if (query.isEmpty()) return ""
-        val name = pref.getString(SettingsKeys.suggestionsName)
-        if (name.isEmpty()) return pref.getString(SettingsKeys.suggestionsCustomUrl)
-
-        val url: String? = findObjWithName(name)!!.suggestion
-        if (url.isNullOrBlank()) return ""
-        return url.replace(queryPlaceholder, query)
-            .replace(languagePlaceholder, language)
-    }
+    fun getPreferredSuggestionsUrl(pref: SettingsSharedPreference, query: String): String =
+        query.takeUnless { it.isEmpty() }?.let {
+            (pref.getString(SettingsKeys.suggestionsName).takeUnless { it.isEmpty() }?.let {
+                findByName(it)!!.suggestion.takeUnless { url -> url.isNullOrBlank() } ?: ""
+            } ?: pref.getString(SettingsKeys.suggestionsCustomUrl))
+                .replace(queryPlaceholder, query).replace(languagePlaceholder, language)
+        } ?: ""
 
     // Language
     private const val DEFAULT_LANGUAGE = "en-US"
