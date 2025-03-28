@@ -469,7 +469,7 @@ class BrowserActivity : VWebViewActivity() {
                 // Bail out for certain URLs
                 if (webview.url.isBlank()) return false
 
-                val jobName = getString(R.string.app_name) + " Document"
+                val jobName = webview.title ?: (getString(R.string.app_name_display) + " Document")
                 val printAdapter: PrintDocumentAdapter =
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         webview.createPrintDocumentAdapter(jobName)
