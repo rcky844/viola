@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022-2024 Tipz Team
+<!-- Copyright (c) 2022-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,5 +9,5 @@
     android:viewportHeight="960">
   <path
       android:fillColor="@android:color/white"
-      android:pathData="M256,732.31L227.69,704L451.69,480L227.69,256L256,227.69L480,451.69L704,227.69L732.31,256L508.31,480L732.31,704L704,732.31L480,508.31L256,732.31Z"/>
+      android:pathData="M256 732.31L227.69 704l224-224-224-224L256 227.69l224 224 224-224L732.31 256l-224 224 224 224L704 732.31l-224-224-224 224z"/>
 </vector>
