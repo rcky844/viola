@@ -62,7 +62,7 @@
                 android:padding="8dp"
                 android:textSize="16sp" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="8dp"
@@ -83,11 +83,10 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/buildinfo_license_button" />
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <View style="@style/Divider"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp" />
+                android:layout_marginTop="16dp" />
 
             <include
                 android:id="@+id/item_website"
