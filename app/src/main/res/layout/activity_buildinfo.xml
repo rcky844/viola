@@ -85,7 +85,9 @@
                     android:text="@string/buildinfo_license_button" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <View style="@style/Divider"
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
 
             <include
@@ -100,7 +102,9 @@
                 android:id="@+id/item_source_code"
                 layout="@layout/item_buildinfo_double" />
 
-            <View style="@style/Divider"
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp" />
 
