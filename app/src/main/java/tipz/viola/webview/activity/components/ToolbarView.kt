@@ -1,10 +1,9 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
 
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +16,9 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.divider.MaterialDivider
 import tipz.viola.R
 import tipz.viola.databinding.TemplateIconItemBinding
-import tipz.viola.ext.dpToPx
 import tipz.viola.webview.activity.BrowserActivity
 
 class ToolbarView(
@@ -33,14 +32,9 @@ class ToolbarView(
         orientation = VERTICAL
 
         /* Create divider */
-        val divider = View(context)
-        val dividerParams = LayoutParams(LayoutParams.MATCH_PARENT, context.dpToPx(1))
-        divider.layoutParams = dividerParams
-        val dividerAttrs = context.obtainStyledAttributes(intArrayOf(android.R.attr.listDivider))
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            divider.background = dividerAttrs.getDrawable(0)
-        dividerAttrs.recycle()
-        addView(divider)
+        addView(MaterialDivider(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        })
 
         /* Create RecyclerView */
         val recyclerViewParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
