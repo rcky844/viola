@@ -15,14 +15,17 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.MediaStore
+import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -30,13 +33,19 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 import tipz.viola.LauncherActivity
 import tipz.viola.ListInterfaceActivity
 import tipz.viola.R
@@ -50,6 +59,8 @@ import tipz.viola.databinding.DialogUaEditBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.dpToPx
+import tipz.viola.ext.getMinTouchTargetSize
+import tipz.viola.ext.getOnSurfaceColor
 import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
@@ -469,7 +480,7 @@ class BrowserActivity : VWebViewActivity() {
                 // Bail out for certain URLs
                 if (webview.url.isBlank()) return false
 
-                val jobName = getString(R.string.app_name) + " Document"
+                val jobName = webview.title ?: (getString(R.string.app_name_display) + " Document")
                 val printAdapter: PrintDocumentAdapter =
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         webview.createPrintDocumentAdapter(jobName)
@@ -537,6 +548,7 @@ class BrowserActivity : VWebViewActivity() {
         return true // Close ToolBar if not interrupted
     }
 
+    @SuppressLint("RestrictedApi")
     fun itemLongSelected(view: AppCompatImageView?, @DrawableRes item: Int) {
         when (item) {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
@@ -578,7 +590,67 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.code -> {
                 if (webview.consoleLogging) {
                     MaterialAlertDialogBuilder(this).setTitle(R.string.console_dialog_title)
-                        .setMessage(webview.consoleMessages) // TODO: Make it dynamically update
+                        .setView(RelativeLayout(this).apply {
+                            val textView = AppCompatTextView(this@BrowserActivity).apply {
+                                id = ViewCompat.generateViewId()
+                                layoutParams = RelativeLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                                )
+                                text = webview.consoleMessages
+                            }
+                            val editText = AppCompatEditText(this@BrowserActivity)
+                            val sendButton = AppCompatImageView(this@BrowserActivity).apply {
+                                id = ViewCompat.generateViewId()
+                                getMinTouchTargetSize().let {
+                                    layoutParams = RelativeLayout.LayoutParams(it, it).apply {
+                                        setPadding(context.dpToPx(8))
+                                        addRule(RelativeLayout.BELOW, textView.id)
+                                        addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+                                    }
+                                }
+                                setImageResource(R.drawable.arrow_up)
+                                setColorFilter(context.getOnSurfaceColor())
+                                setOnClickListener {
+                                    editText.text.toString().takeUnless { it.isBlank() }?.let {
+                                        webview.evaluateJavascript(it)
+                                    } ?: return@setOnClickListener
+                                    
+                                    // TODO: Improve listener
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        runBlocking {
+                                            withTimeoutOrNull(25000L) {
+                                                val initialLength = textView.length()
+                                                while (initialLength == webview.consoleMessages.length) {
+                                                    delay(1000)
+                                                }
+                                            }
+                                        }
+                                        MainScope().launch { textView.text = webview.consoleMessages }
+                                    }
+                                }
+
+                                val typedValue = TypedValue()
+                                context.theme.resolveAttribute(
+                                    android.R.attr.selectableItemBackground,
+                                    typedValue,
+                                    true
+                                )
+                                setBackgroundResource(typedValue.resourceId)
+                            }
+                            editText.layoutParams = RelativeLayout.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                getMinTouchTargetSize()
+                            ).apply {
+                                addRule(RelativeLayout.BELOW, textView.id)
+                                addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+                                addRule(RelativeLayout.LEFT_OF, sendButton.id)
+                            }
+
+                            addView(textView)
+                            addView(editText)
+                            addView(sendButton)
+                        }, dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
                         .setPositiveButton(android.R.string.ok, null)
                         .setNeutralButton(R.string.clear) { _, _ -> webview.consoleMessages.clear() }
                         .setNegativeButton(R.string.console_logging_disable) { _, _ -> webview.consoleLogging = false }

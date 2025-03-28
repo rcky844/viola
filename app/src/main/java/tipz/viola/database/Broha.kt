@@ -35,38 +35,10 @@ class Broha {
     }
 
     @Ignore
-    constructor(iconHash: Int?, title: String?, url: String) {
+    constructor(iconHash: Int? = null, title: String? = null, url: String) {
         this.iconHash = iconHash
         this.title = title
         this.url = url
-        timestamp = System.currentTimeMillis() / 1000L
-    }
-
-    @Ignore
-    constructor(title: String?, url: String) {
-        iconHash = null
-        this.title = title
-        this.url = url
-        timestamp = System.currentTimeMillis() / 1000L
-    }
-
-    @Ignore
-    constructor(url: String) {
-        iconHash = null
-        title = null
-        this.url = url
-        timestamp = System.currentTimeMillis() / 1000L
-    }
-
-    @Ignore
-    constructor() {
-        iconHash = null
-        title = null
-        this.url = ""
-        timestamp = System.currentTimeMillis() / 1000L
-    }
-
-    fun setTimestamp() {
         timestamp = System.currentTimeMillis() / 1000L
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M304.62 840q-43.39 0-74-30.62-30.62-30.61-30.62-74V240q0-50.31 34.85-85.15Q269.69 120 320 120h440v550.77q-26.54 0-45.58 19.04t-19.04 45.57q0 26.54 19.04 45.58T760 800v40H304.62zM240 654.54q13.23-11.62 29.38-17.69 16.16-6.08 35.24-6.08h30.76V160H320q-32.69 0-56.35 23.65Q240 207.31 240 240v414.54zm135.38-23.77H720V160H375.38v470.77zM240 654.54V175.38v479.16zM304.62 800h374.53q-11.38-13.23-17.57-29.27-6.2-16.04-6.2-35.35 0-18.3 6.08-34.84 6.08-16.54 17.69-29.77H304.62q-27.54 0-46.08 19.04T240 735.38q0 27.54 18.54 46.08T304.62 800z"/>
+</vector>

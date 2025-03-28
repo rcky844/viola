@@ -4,7 +4,6 @@
 package tipz.viola.webview
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.net.Uri
@@ -137,12 +136,12 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
         val dialog = MaterialAlertDialogBuilder(activity)
         dialog.setTitle(activity.resources.getString(titleResId, url))
             .setMessage(message)
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 if (defaultValue == null) result.confirm()
                 else (result as JsPromptResult).confirm(
                     Objects.requireNonNull(jsMessage.text).toString())
             }
-            .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
                 result.cancel()
                 vWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED)
             }

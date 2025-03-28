@@ -8,6 +8,7 @@ package tipz.viola.webview
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,11 +19,10 @@ import android.os.Handler
 import android.provider.Settings
 import android.util.AttributeSet
 import android.util.Log
-import android.view.ContextMenu
-import android.view.ContextMenu.ContextMenuInfo
 import android.view.View
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import android.webkit.WebIconDatabase
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.appcompat.widget.AppCompatImageView
@@ -73,8 +73,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     val webSettings = this.settings
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     var loadProgress = 100
-    val settingsPreference =
-        (context.applicationContext as Application).settingsPreference
+    val settingsPreference = (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
 
@@ -111,8 +110,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         })
 
         /* Start the download manager service */
-        setDownloadListener { vUrl: String?, _: String?,
-                              vContentDisposition: String?, vMimeType: String?, _: Long ->
+        setDownloadListener { vUrl, _, vContentDisposition, vMimeType, _ ->
             Log.d(LOG_TAG, """
                 Incoming download request
                 URL: $vUrl
@@ -184,8 +182,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             )
         }
 
+        // Favicon
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            WebIconDatabase.getInstance().open(context.getDir("icons", MODE_PRIVATE).path)
+        }
+
         /* Hit Test Menu */
-        setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
+        setOnCreateContextMenuListener { _, _, _ ->
             val message = titleHandler.obtainMessage()
             this.requestFocusNodeHref(message)
         }

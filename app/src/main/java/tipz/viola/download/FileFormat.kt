@@ -107,7 +107,7 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
                 /* Application */
                 FORMAT_ANDROID_PACKAGE -> R.drawable.document_apk
                 FORMAT_BINARY_DATA -> R.drawable.document_application
-                FORMAT_EPUB -> R.drawable.book
+                FORMAT_EPUB -> R.drawable.document_book
                 FORMAT_MS_WORD, FORMAT_MS_PPT, FORMAT_MS_EXCEL, FORMAT_MS_WORKS, FORMAT_OPENDOCUMENT
                     -> R.drawable.document
                 FORMAT_PDF -> R.drawable.document_pdf

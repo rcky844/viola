@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022-2024 Tipz Team
+<!-- Copyright (c) 2022-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,5 +9,5 @@
     android:viewportHeight="960">
     <path
         android:fillColor="@android:color/white"
-        android:pathData="M731.69,760L280,308.31L280,600L240,600L240,240L600,240L600,280L308.31,280L760,731.69L731.69,760Z"/>
+        android:pathData="M731.69 760L280 308.31V600h-40V240h360v40H308.31L760 731.69 731.69 760z"/>
 </vector>

@@ -3,7 +3,6 @@
 
 package tipz.viola.webview
 
-import android.content.DialogInterface
 import android.webkit.WebView
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
@@ -23,7 +22,7 @@ class VWebViewRenderProcessClient(vWebView: VWebView) :
         .setTitle(R.string.dialog_page_unresponsive_title)
         .setMessage(R.string.dialog_page_unresponsive_message)
         .setPositiveButton(R.string.dialog_page_unresponsive_wait, null)
-        .setNegativeButton(R.string.dialog_page_unresponsive_terminate) { _: DialogInterface?, _: Int -> webViewRenderProcess!!.terminate() }
+        .setNegativeButton(R.string.dialog_page_unresponsive_terminate) { _, _ -> webViewRenderProcess!!.terminate() }
         .create()
 
     override fun onRenderProcessUnresponsive(view: WebView, renderer: WebViewRenderProcess?) {

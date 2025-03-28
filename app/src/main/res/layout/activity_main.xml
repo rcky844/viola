@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2025 Tipz Team
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,20 +36,24 @@
                     android:id="@+id/favicon"
                     android:layout_width="@dimen/actionbar_widget_height"
                     android:layout_height="@dimen/actionbar_widget_height"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true" />
 
                 <tipz.viola.webview.activity.components.AddressBarView
                     android:id="@+id/addressBar"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/actionbar_widget_height"
                     android:layout_toStartOf="@id/upRightFab"
-                    android:layout_toEndOf="@id/favicon" />
+                    android:layout_toLeftOf="@id/upRightFab"
+                    android:layout_toEndOf="@id/favicon"
+                    android:layout_toRightOf="@id/favicon" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/upRightFab"
                     android:layout_width="@dimen/actionbar_widget_height"
                     android:layout_height="@dimen/actionbar_widget_height"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:background="?attr/selectableItemBackground"
                     android:focusable="true"
                     android:padding="8dp"
@@ -72,7 +75,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/webviewContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -92,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
-    </RelativeLayout>
+    </FrameLayout>
 
     <tipz.viola.webview.activity.components.ToolbarView
         android:id="@+id/toolbarView"

@@ -4,7 +4,6 @@
 package tipz.viola
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -47,7 +46,6 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BaseActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Objects
 
 class ListInterfaceActivity : BaseActivity() {
     private lateinit var binding: ActivityRecyclerDataListBinding
@@ -119,7 +117,7 @@ class ListInterfaceActivity : BaseActivity() {
                     if (activityMode == mode_history) R.string.dialog_delete_all_entries_history_message
                     else R.string.dialog_delete_all_entries_favorites_message
                 )
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     CoroutineScope(Dispatchers.IO).launch {
                         if (activityMode == mode_history) historyClient.deleteAll()
                         else if (activityMode == mode_favorites) favClient.deleteAll()
@@ -227,7 +225,7 @@ class ListInterfaceActivity : BaseActivity() {
                     activity.setResult(0, needLoad)
                     activity.finish()
                 }
-                holder.back.setOnLongClickListener { view: View? ->
+                holder.back.setOnLongClickListener { view ->
                     val popup = PopupMenu(
                         activity, view!!
                     )
@@ -266,13 +264,12 @@ class ListInterfaceActivity : BaseActivity() {
                                 MaterialAlertDialogBuilder(activity)
                                     .setTitle(R.string.favorites_menu_edit)
                                     .setView(editView)
-                                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                                        if (Objects.requireNonNull(titleEditText.text).toString() != title
-                                            || Objects.requireNonNull(urlEditText.text).toString() != url) {
-                                            data.title =
-                                                Objects.requireNonNull(titleEditText.text).toString()
-                                            data.url = Objects.requireNonNull(urlEditText.text).toString()
-                                            data.setTimestamp()
+                                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                                        val sTitle = titleEditText.text.toString()
+                                        val sUrl = urlEditText.text.toString()
+                                        if (sTitle != title || sUrl != url) {
+                                            data.title = sTitle
+                                            data.url = sUrl
                                             CoroutineScope(Dispatchers.IO).launch {
                                                 activity.favClient.update(data)
                                                 // FIXME: Update list dynamically to save system resources
