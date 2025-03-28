@@ -8,6 +8,7 @@ package tipz.viola.webview
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -21,6 +22,7 @@ import android.util.Log
 import android.view.View
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import android.webkit.WebIconDatabase
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.appcompat.widget.AppCompatImageView
@@ -178,6 +180,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             WebViewCompat.setWebViewRenderProcessClient(
                 this, VWebViewRenderProcessClient(this)
             )
+        }
+
+        // Favicon
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            WebIconDatabase.getInstance().open(context.getDir("icons", MODE_PRIVATE).path)
         }
 
         /* Hit Test Menu */
