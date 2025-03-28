@@ -6,8 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -34,6 +34,7 @@
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@null"
                     android:padding="12dp"
@@ -45,7 +46,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@id/share"
+                    android:layout_toLeftOf="@id/share"
                     android:layout_toEndOf="@id/close"
+                    android:layout_toRightOf="@id/close"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp">
 
@@ -73,6 +76,7 @@
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
                     android:layout_toStartOf="@id/open_browser"
+                    android:layout_toLeftOf="@id/open_browser"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@null"
                     android:padding="12dp"
@@ -84,6 +88,7 @@
                     android:layout_width="?attr/minTouchTargetSize"
                     android:layout_height="?attr/minTouchTargetSize"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@null"
                     android:padding="12dp"
