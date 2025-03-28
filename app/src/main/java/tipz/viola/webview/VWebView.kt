@@ -18,8 +18,6 @@ import android.os.Handler
 import android.provider.Settings
 import android.util.AttributeSet
 import android.util.Log
-import android.view.ContextMenu
-import android.view.ContextMenu.ContextMenuInfo
 import android.view.View
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
@@ -73,8 +71,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     val webSettings = this.settings
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     var loadProgress = 100
-    val settingsPreference =
-        (context.applicationContext as Application).settingsPreference
+    val settingsPreference = (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
 
@@ -111,8 +108,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         })
 
         /* Start the download manager service */
-        setDownloadListener { vUrl: String?, _: String?,
-                              vContentDisposition: String?, vMimeType: String?, _: Long ->
+        setDownloadListener { vUrl, _, vContentDisposition, vMimeType, _ ->
             Log.d(LOG_TAG, """
                 Incoming download request
                 URL: $vUrl
@@ -185,7 +181,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         }
 
         /* Hit Test Menu */
-        setOnCreateContextMenuListener { _: ContextMenu?, _: View?, _: ContextMenuInfo? ->
+        setOnCreateContextMenuListener { _, _, _ ->
             val message = titleHandler.obtainMessage()
             this.requestFocusNodeHref(message)
         }

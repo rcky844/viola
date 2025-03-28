@@ -5,7 +5,6 @@ package tipz.viola.webview
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
@@ -57,7 +56,7 @@ open class VWebViewClient(
     ) {
         if (description.contains("ERR_SSL_PROTOCOL_ERROR")) {
             getSslDialog(ERROR_FAILED_SSL_HANDSHAKE)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     vWebView.loadRealUrl(
                         failingUrl.replaceFirst(UrlUtils.httpsPrefix, UrlUtils.httpPrefix))
                 }
@@ -81,10 +80,10 @@ open class VWebViewClient(
         MaterialAlertDialogBuilder(context)
             .setTitle(R.string.dialog_auth_title)
             .setView(editView)
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 handler.proceed(usernameEditText.text.toString(), passwordEditText.text.toString())
             }
-            .setNegativeButton(android.R.string.cancel, { _: DialogInterface?, _: Int ->
+            .setNegativeButton(android.R.string.cancel, { _, _ ->
                 handler.cancel()
             })
             .create().show()
@@ -118,7 +117,7 @@ open class VWebViewClient(
         // Handle SSL errors
         if (unsecureURLSet.contains(url)) {
             getSslDialog(unsecureURLErrorSet[unsecureURLSet.indexOf(url)].primaryError)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     run {
                         view.loadUrl(url)
                         vWebView.onSslErrorProceed()
@@ -141,14 +140,14 @@ open class VWebViewClient(
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
         unsecureURLErrorSet.add(error)
         getSslDialog(error.primaryError)
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 run {
                     handler.proceed()
                     vWebView.onSslErrorProceed()
                     unsecureURLSet.add(error.url)
                 }
             }
-            .setNegativeButton(android.R.string.cancel) { _: DialogInterface?, _: Int ->
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
                 handler.cancel()
             }
             .create().show()
