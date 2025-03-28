@@ -11,6 +11,7 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -76,4 +77,12 @@ fun Context.getOnSurfaceColor(): Int {
         intArrayOf(com.google.android.material.R.attr.colorOnSurface)
     )
     return attrs.getColor(0, 0)
+}
+
+@Dimension
+fun Context.getMinTouchTargetSize(): Int {
+    val attrs = theme.obtainStyledAttributes(
+        intArrayOf(com.google.android.material.R.attr.minTouchTargetSize)
+    )
+    return attrs.getDimensionPixelSize(0, 0)
 }
