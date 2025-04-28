@@ -69,10 +69,10 @@
     <string name="ssl_certificate_unknown">An unknown SSL error occurred.</string>
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">Failed to perform SSL handshake. Page load may still be possible by downgrading to HTTP.</string>
-    <!-- WebView: App link detected dialog title -->
-    <string name="dialog_open_external_title">Launchable App Link detected</string>
-    <!-- WebView: App link detected dialog message -->
-    <string name="dialog_open_external_message">Would you like to open this link in an external app?</string>
+    <!-- WebView: Open in external app snackbar message -->
+    <string name="snackbar_open_external_message">External link detected.</string>
+    <!-- WebView: Open in external app snackbar action -->
+    <string name="snackbar_open_external_action">Open</string>
 
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Search or type web address…</string>

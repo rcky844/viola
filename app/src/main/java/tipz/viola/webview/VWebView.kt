@@ -9,7 +9,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -31,7 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -268,14 +267,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
             else Intent(Intent.ACTION_VIEW, Uri.parse(url))
         if (intent.resolveActivity(context.packageManager) != null) {
-            MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.dialog_open_external_title)
-                .setMessage(R.string.dialog_open_external_message)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    context.startActivity(intent)
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
+            Snackbar.make(
+                this,
+                R.string.snackbar_open_external_message,
+                Snackbar.LENGTH_INDEFINITE
+            ).setAction(R.string.snackbar_open_external_action) {
+                context.startActivity(intent)
+            }.show()
             return true
         } else {
             if (!noToast && (loadProgress == 0 || loadProgress == 100)) {
