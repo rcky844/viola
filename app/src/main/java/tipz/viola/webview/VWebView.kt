@@ -30,6 +30,8 @@ import androidx.core.content.ContextCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
+import com.google.android.material.behavior.SwipeDismissBehavior
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -272,7 +274,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 activity.webviewContainer,
                 R.string.snackbar_open_external_message,
                 Snackbar.LENGTH_INDEFINITE
-            ).setAction(R.string.snackbar_open_external_action) {
+            ).setBehavior(BaseTransientBottomBar.Behavior().apply {
+                setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_ANY)
+            }).setAction(R.string.snackbar_open_external_action) {
                 context.startActivity(intent)
             }.apply {
                 show()
