@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
-import java.util.Date
 
 plugins {
     id("com.android.application")
@@ -54,12 +52,8 @@ android {
             "\"${getGitInfo("revision")}\"")
         buildConfigField("String", "VERSION_BUILD_BRANCH",
             "\"${getGitInfo("branch")}\"")
-        buildConfigField("String", "VERSION_BUILD_DATE_MINIMAL",
-            "\"${SimpleDateFormat("yyMMdd").format(Date())}\"")
-        buildConfigField("String", "VERSION_BUILD_TIME_MINIMAL",
-            "\"${SimpleDateFormat("HHmm").format(Date())}\"")
-        buildConfigField("String", "VERSION_BUILD_DATE_TIME",
-            "\"${SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").format(Date())}\"")
+        buildConfigField("long", "VERSION_BUILD_TIMESTAMP",
+            "${System.currentTimeMillis()}")
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")

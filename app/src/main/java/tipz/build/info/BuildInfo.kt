@@ -3,9 +3,12 @@
 
 package tipz.build.info
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.annotation.Size
 import tipz.viola.BuildConfig
+import java.text.SimpleDateFormat
+import java.util.Date
 
 open class BuildInfo {
     private val LOG_TAG = "BuildInfo"
@@ -68,20 +71,6 @@ open class BuildInfo {
     @Size(min=1)
     var productBuildBranch: String? = BuildConfig.VERSION_BUILD_BRANCH
 
-    /* PRODUCT_BUILD_DATE
-     *
-     * Describes the date the build is compiled.
-     */
-    @Size(6)
-    var productBuildDate: String? = BuildConfig.VERSION_BUILD_DATE_MINIMAL
-
-    /* PRODUCT_BUILD_TIME
-     *
-     * Describes the time the build is compiled.
-     */
-    @Size(4)
-    var productBuildTime: String? = BuildConfig.VERSION_BUILD_TIME_MINIMAL
-
     /* PRODUCT_COPYRIGHT_YEAR
      *
      */
@@ -94,6 +83,13 @@ open class BuildInfo {
     @Size(min=1)
     var productLicenseDocument: String? = BuildConfig.PRODUCT_LICENSE_DOCUMENT
 
+    /* VERSION_BUILD_TIMESTAMP
+     *
+     * Unix timestamp when the build was compiled.
+     */
+    var productBuildTimestamp: Long = BuildConfig.VERSION_BUILD_TIMESTAMP
+
+    @SuppressLint("SimpleDateFormat")
     fun getProductBuildTag() : String? {
         val buildTagBuffer = StringBuffer()
 
@@ -128,9 +124,11 @@ open class BuildInfo {
         }
 
         // Product build date & time
-        buildTagBuffer.append(productBuildDate)
-        buildTagBuffer.append("-") // Separator
-        buildTagBuffer.append(productBuildTime)
+        Date(productBuildTimestamp).let {
+            buildTagBuffer.append(SimpleDateFormat("yyMMdd").format(it))
+            buildTagBuffer.append("-") // Separator
+            buildTagBuffer.append(SimpleDateFormat("HHmm").format(it))
+        }
 
         return buildTagBuffer.toString()
     }
