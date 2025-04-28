@@ -11,6 +11,11 @@
         <!-- Status bar & Navigation bar -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <!-- Snackbar -->
+        <item name="snackbarStyle">@style/Theme.App.SnackBarStyle</item>
+        <item name="snackbarTextViewStyle">@style/Theme.App.SnackBarStyle.TextView</item>
+        <item name="snackbarButtonStyle">@style/Theme.App.SnackBarStyle.Button</item>
     </style>
 
     <style name="Theme.App.TranslucentStatus" parent="Theme.App">

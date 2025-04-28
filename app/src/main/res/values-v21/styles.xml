@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Snackbar style -->
+    <style name="Theme.App.SnackBarStyle" parent="Widget.Material3.Snackbar">
+        <item name="android:backgroundTint">?attr/colorSecondaryContainer</item>
+    </style>
+
+    <style name="Theme.App.SnackBarStyle.TextView" parent="Widget.Material3.Snackbar.TextView">
+        <item name="android:textColor">?attr/colorOnSecondaryContainer</item>
+    </style>
+
+    <style name="Theme.App.SnackBarStyle.Button" parent="Widget.Material3.Button.TextButton.Snackbar">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+</resources>
