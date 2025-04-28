@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name" translatable="false">Viola</string>
     <string name="app_name_display" translatable="false">Viola Browser</string>
 
