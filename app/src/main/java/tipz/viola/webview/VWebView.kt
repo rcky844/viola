@@ -68,6 +68,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private val LOG_TAG = "VWebView"
 
     private var activity: VWebViewActivity = context as VWebViewActivity
+    private var activeSnackBar: Snackbar? = null
     val downloadClient: DownloadClient = (context.applicationContext as Application).downloadClient
     val webSettings = this.settings
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
@@ -267,13 +268,15 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
             else Intent(Intent.ACTION_VIEW, Uri.parse(url))
         if (intent.resolveActivity(context.packageManager) != null) {
-            Snackbar.make(
+            activeSnackBar = Snackbar.make(
                 activity.webviewContainer,
                 R.string.snackbar_open_external_message,
                 Snackbar.LENGTH_INDEFINITE
             ).setAction(R.string.snackbar_open_external_action) {
                 context.startActivity(intent)
-            }.show()
+            }.apply {
+                show()
+            }
             return true
         } else {
             if (!noToast && (loadProgress == 0 || loadProgress == 100)) {
@@ -443,6 +446,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 onPageLoadProgressChanged(-1)
                 activity.onFaviconProgressUpdated(true)
                 consoleMessages.clear()
+                activeSnackBar.takeUnless { it == null }?.dismiss()
             }
 
             PageLoadState.PAGE_FINISHED -> {
