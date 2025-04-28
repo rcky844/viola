@@ -268,7 +268,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             else Intent(Intent.ACTION_VIEW, Uri.parse(url))
         if (intent.resolveActivity(context.packageManager) != null) {
             Snackbar.make(
-                this,
+                activity.webviewContainer,
                 R.string.snackbar_open_external_message,
                 Snackbar.LENGTH_INDEFINITE
             ).setAction(R.string.snackbar_open_external_action) {

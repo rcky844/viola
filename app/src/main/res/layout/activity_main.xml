@@ -75,7 +75,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/webviewContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
-    </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <tipz.viola.webview.activity.components.ToolbarView
         android:id="@+id/toolbarView"

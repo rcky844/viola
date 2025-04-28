@@ -7,11 +7,11 @@ import android.app.ActivityManager.TaskDescription
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.widget.FrameLayout
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.CallSuper
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import tipz.viola.Application
@@ -29,7 +29,7 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
     lateinit var webview: VWebView
     lateinit var progressBar: LinearProgressIndicator
     internal lateinit var appbar: AppBarLayout
-    internal lateinit var webviewContainer: FrameLayout
+    internal lateinit var webviewContainer: CoordinatorLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
