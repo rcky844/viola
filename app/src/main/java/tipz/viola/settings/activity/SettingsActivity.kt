@@ -46,6 +46,9 @@ class SettingsActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
+        if (savedInstanceState != null) {
+            supportActionBar?.title = savedInstanceState.getString(BUNDLE_ACTION_BAR_TITLE)
+        }
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         onBackPressedDispatcher.addCallback(this) {
@@ -57,14 +60,22 @@ class SettingsActivity : BaseActivity() {
         ExtPreferenceFragment.needReload = false
 
         // Setup fragments
-        supportFragmentManager.registerFragmentLifecycleCallbacks(TitleUpdater(), false)
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
-                R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
-            .replace(R.id.list_container, MainFragment(), "main")
-            .addToBackStack(null).commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.registerFragmentLifecycleCallbacks(TitleUpdater(), false)
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
+                    R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
+                .replace(R.id.list_container, MainFragment(), "main")
+                .addToBackStack(null).commit()
+        }
     }
+
+    public override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState.putString(BUNDLE_ACTION_BAR_TITLE, supportActionBar?.title.toString())
+    }
+
 
     private fun getPreferenceScreen(@XmlRes screen: Int): ExtPreferenceFragment? =
         when (screen) {
@@ -84,5 +95,9 @@ class SettingsActivity : BaseActivity() {
             .replace(R.id.list_container, fragment)
             .addToBackStack(null).commit()
         return fragment
+    }
+
+    companion object {
+        private const val BUNDLE_ACTION_BAR_TITLE = "action_bar_title"
     }
 }
