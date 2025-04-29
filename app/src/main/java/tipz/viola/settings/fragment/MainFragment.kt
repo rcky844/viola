@@ -13,13 +13,14 @@ import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.activity.SummaryOnOffPreference
 import tipz.viola.utils.UpdateService
 
 class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_main, rootKey)
 
-        findPreference<Preference>(PREF_SCREEN_HOME)?.setOnPreferenceClickListener {
+        findPreference<SummaryOnOffPreference>(PREF_SCREEN_HOME)?.setOnPreferenceClickListener {
             settingsActivity.openScreen(R.xml.preference_settings_home)
             true
         }
@@ -77,6 +78,11 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
             }
             summary = resources.getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        findPreference<SummaryOnOffPreference>(PREF_SCREEN_HOME)?.setOnOffSummary()
     }
 
     companion object {
