@@ -43,6 +43,7 @@ object SettingsKeys {
     const val searchCustomUrl = "searchCustomUrl" /* STRING */
     const val suggestionsName = "suggestionsName" /* STRING */
     const val suggestionsCustomUrl = "suggestionsCustomUrl" /* STRING */
+    const val useHomePage = "useHomePage" /* INTEGER */
     const val useWebHomePage = "useWebHomePage" /* INTEGER */
 
     /* Visuals & Theming */

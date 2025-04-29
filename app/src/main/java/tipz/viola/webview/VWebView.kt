@@ -638,6 +638,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun loadHomepage(useStartPage: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
+        if (!settingsPreference.getIntBool(SettingsKeys.useHomePage)) {
+            activity.onPageLoadProgressChanged(0) // Reset page load progress
+            return
+        }
+
         if (useStartPage) {
             loadRealUrl(ProjectUrls.actualStartUrl)
         } else {
