@@ -6,6 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_basics">
         <androidx.preference.Preference
+            android:key="home"
+            android:title="@string/pref_main_home" />
+        <androidx.preference.Preference
             android:key="search"
             android:title="@string/pref_main_search" />
         <androidx.preference.Preference

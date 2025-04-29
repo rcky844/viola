@@ -2,22 +2,11 @@
 <!-- Copyright (c) 2022-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <androidx.preference.Preference
         android:key="search_engine"
         android:summary=""
         android:title="@string/search_engine" />
-    <androidx.preference.Preference
-        android:key="homepage"
-        android:summary=""
-        android:title="@string/homepage" />
-    <tipz.viola.settings.activity.MaterialSwitchPreference
-        android:key="dont_use_start_page"
-        android:summary="@string/pref_use_web_homepage_summary"
-        android:title="@string/pref_use_web_homepage_title"
-        app:preferenceTag="useWebHomePage"
-        app:needReload="false" />
     <androidx.preference.Preference
         android:key="search_suggestions"
         android:summary=""

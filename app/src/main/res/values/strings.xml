@@ -193,6 +193,8 @@
     <string name="settings_title">Settings</string>
     <!-- Settings: Main: Basics category -->
     <string name="pref_main_category_basics">Basics</string>
+    <!-- Settings: Main: Home title -->
+    <string name="pref_main_home">Home</string>
     <!-- Settings: Main: Search title -->
     <string name="pref_main_search">Search</string>
     <!-- Settings: Main: Privacy and security title -->

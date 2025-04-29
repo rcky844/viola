@@ -38,28 +38,6 @@ class SearchFragment : ExtPreferenceFragment(R.string.pref_main_search) {
             )]
         }
 
-        findPreference<Preference>(PREF_HOMEPAGE)?.run {
-            setOnPreferenceClickListener {
-                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
-                    preference = it
-                    nameList = searchHomePageList
-                    namePreference = SettingsKeys.homePageName
-                    nameToIdFunction = SearchEngineEntries::getIndexByName
-                    stringPreference = SettingsKeys.homePageCustomUrl
-                    dialogTitleResId = R.string.homepage
-                    customIndexEnabled = true
-                    customIndex = SearchEngineEntries.customIndex
-                }
-
-                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
-                    .create().show()
-                true
-            }
-            summary = searchHomePageList[SearchEngineEntries.getIndexByName(
-                settingsPreference.getString(SettingsKeys.homePageName)
-            )]
-        }
-
         findPreference<Preference>(PREF_SEARCH_SUGGESTIONS)?.run {
             setOnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
@@ -86,7 +64,6 @@ class SearchFragment : ExtPreferenceFragment(R.string.pref_main_search) {
 
     companion object {
         private const val PREF_SEARCH_ENGINE = "search_engine"
-        private const val PREF_HOMEPAGE = "homepage"
         private const val PREF_SEARCH_SUGGESTIONS = "search_suggestions"
     }
 }

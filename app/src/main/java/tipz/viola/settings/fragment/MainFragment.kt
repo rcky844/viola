@@ -19,6 +19,10 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_main, rootKey)
 
+        findPreference<Preference>(PREF_SCREEN_HOME)?.setOnPreferenceClickListener {
+            settingsActivity.openScreen(R.xml.preference_settings_home)
+            true
+        }
         findPreference<Preference>(PREF_SCREEN_SEARCH)?.setOnPreferenceClickListener {
             settingsActivity.openScreen(R.xml.preference_settings_search)
             true
@@ -76,6 +80,7 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
     }
 
     companion object {
+        private const val PREF_SCREEN_HOME = "home"
         private const val PREF_SCREEN_SEARCH = "search"
         private const val PREF_SCREEN_PRIVACY_SECURITY = "privacy_security"
         private const val PREF_SCREEN_APPEARANCE = "appearance"

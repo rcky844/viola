@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022-2025 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.preference.Preference
+        android:key="homepage"
+        android:summary=""
+        android:title="@string/homepage" />
+    <tipz.viola.settings.activity.MaterialSwitchPreference
+        android:key="dont_use_start_page"
+        android:summary="@string/pref_use_web_homepage_summary"
+        android:title="@string/pref_use_web_homepage_title"
+        app:preferenceTag="useWebHomePage"
+        app:needReload="false" />
+</androidx.preference.PreferenceScreen>
