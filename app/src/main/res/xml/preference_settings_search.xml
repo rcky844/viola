@@ -2,13 +2,32 @@
 <!-- Copyright (c) 2022-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <androidx.preference.Preference
-        android:key="search_engine"
-        android:summary=""
-        android:title="@string/search_engine" />
-    <androidx.preference.Preference
-        android:key="search_suggestions"
-        android:summary=""
-        android:title="@string/search_suggestions_title" />
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <tipz.viola.settings.activity.LongSummaryPreferenceCategory
+        android:title="@string/pref_search_category_engine_title"
+        android:summary="@string/pref_search_category_engine_summary">
+
+        <androidx.preference.Preference
+            android:key="search_engine"
+            android:summary=""
+            android:title="@string/search_engine" />
+    </tipz.viola.settings.activity.LongSummaryPreferenceCategory>
+
+    <tipz.viola.settings.activity.LongSummaryPreferenceCategory
+        android:title="@string/search_suggestions_title"
+        android:summary="@string/pref_search_category_suggestions_summary">
+
+        <tipz.viola.settings.activity.MaterialSwitchPreference
+            android:key="suggestions_enablement"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off"
+            app:preferenceTag="useSearchSuggestions"
+            app:needReload="false" />
+        <androidx.preference.Preference
+            android:dependency="suggestions_enablement"
+            android:key="search_suggestions"
+            android:summary=""
+            android:title="@string/pref_search_suggestions_provider_title" />
+    </tipz.viola.settings.activity.LongSummaryPreferenceCategory>
 </androidx.preference.PreferenceScreen>

@@ -17,6 +17,7 @@ import android.widget.Filterable
 import android.widget.Space
 import androidx.constraintlayout.widget.ConstraintLayout
 import tipz.viola.databinding.TemplateTextSuggestionsBinding
+import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VWebViewActivity
 import java.util.Locale
 
@@ -76,7 +77,17 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
 
     private inner class ItemFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
+            if (!context.settingsPreference.getIntBool(SettingsKeys.useSearchSuggestions)) {
+                queryText = ""
+                items = listOf()
+                return FilterResults().apply {
+                    count = 0
+                    values = null
+                }
+            }
+
             val filterResults = FilterResults()
+
             constraint?.takeUnless { it.isBlank() }?.let {
                 val provider: SuggestionProvider = provider
                 val query = constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }

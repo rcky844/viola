@@ -45,6 +45,7 @@ object SettingsKeys {
     const val suggestionsCustomUrl = "suggestionsCustomUrl" /* STRING */
     const val useHomePage = "useHomePage" /* INTEGER */
     const val useWebHomePage = "useWebHomePage" /* INTEGER */
+    const val useSearchSuggestions = "useSearchSuggestions" /* INTEGER */
 
     /* Visuals & Theming */
     const val themeId = "themeId" /* INTEGER */

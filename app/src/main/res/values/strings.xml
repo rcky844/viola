@@ -220,10 +220,18 @@
     <!-- Settings: Main: About title -->
     <string name="pref_about_title">About</string>
 
+    <!-- Settings: Search: Default Search Engine category title -->
+    <string name="pref_search_category_engine_title">Default search engine</string>
+    <!-- Settings: Search: Default Search Engine category summary -->
+    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
     <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">Use web-based homepage</string>
     <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">Open a webpage instead of start page as homepage.</string>
+    <!-- Settings: Search: Search Suggestions category summary -->
+    <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
+    <!-- Settings: Search: Search Suggestions Provider title -->
+    <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
 
     <!-- Settings: Privacy and security: Ad blocking category -->
     <string name="pref_ps_category_ad_blocking">Ad blocking</string>
