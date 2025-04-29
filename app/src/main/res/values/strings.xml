@@ -183,51 +183,80 @@
 
     <!-- Settings: Title -->
     <string name="settings_title">Settings</string>
-    <!-- Settings: General category -->
-    <string name="pref_category_general">General</string>
-    <!-- Settings: Use web-based homepage title -->
+    <!-- Settings: Main: Basics category -->
+    <string name="pref_main_category_basics">Basics</string>
+    <!-- Settings: Main: Search title -->
+    <string name="pref_main_search">Search</string>
+    <!-- Settings: Main: Privacy and security title -->
+    <string name="pref_main_privacy_security">Privacy and security</string>
+    <!-- Settings: Main: Appearance title -->
+    <string name="pref_main_appearance">Appearance</string>
+    <!-- Settings: Main: Advanced category -->
+    <string name="pref_main_category_advanced">Advanced</string>
+    <!-- Settings: Main: Software updates category -->
+    <string name="pref_main_category_software_updates">Software updates</string>
+    <!-- Settings: Main: Check for updates title -->
+    <string name="pref_check_for_updates_title">Check for Updates</string>
+    <!-- Settings: Main: Check for updates summary -->
+    <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
+    <!-- Settings: Main: Select update channel title -->
+    <string name="pref_update_channel_title">Select update channel</string>
+    <!-- Settings: Main: Version category -->
+    <string name="pref_main_category_version">Version</string>
+    <!-- Settings: Main: About title -->
+    <string name="pref_about_title">About</string>
+
+    <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">Use web-based homepage</string>
-    <!-- Settings: Use web-based homepage summary -->
+    <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">Open a webpage instead of start page as homepage.</string>
-    <!-- Settings: Data & Privacy category -->
-    <string name="pref_category_data_privacy">Data &amp; Privacy</string>
-    <!-- Settings: Enable ad blocker title -->
+
+    <!-- Settings: Privacy and security: Ad blocking category -->
+    <string name="pref_ps_category_ad_blocking">Ad blocking</string>
+    <!-- Settings: Ad blocking: Enable ad blocker title -->
     <string name="pref_ad_blocker_title">Enable Ad Blocker</string>
-    <!-- Settings: Enable ad blocker summary -->
+    <!-- Settings: Ad blocking: Enable ad blocker summary -->
     <string name="pref_ad_blocker_summary">Stop annoying ads from distracting you.</string>
-    <!-- Settings: Ad Blocklist source title -->
+    <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
-    <!-- Settings: Download ad blocker hosts title -->
+    <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
-    <!-- Settings: Do Not Track title -->
+
+    <!-- Settings: Privacy and security: Privacy category -->
+    <string name="pref_ps_category_privacy">Privacy</string>
+    <!-- Settings: Privacy: Do Not Track title -->
     <string name="pref_do_not_track_title">Do Not Track</string>
-    <!-- Settings: Do Not Track summary -->
+    <!-- Settings: Privacy: Do Not Track summary -->
     <string name="pref_do_not_track_summary">Send a Do Not Track request to websites you visit.</string>
-    <!-- Settings: Send GPC title -->
+    <!-- Settings: Privacy: Send GPC title -->
     <string name="pref_send_sec_gpc_title">Global Privacy Control</string>
-    <!-- Settings: Send GPC summary -->
+    <!-- Settings: Privacy: Send GPC summary -->
     <string name="pref_send_sec_gpc_summary">Enable to consent to the selling or sharing of your personal information on websites you visit with third parties.</string>
-    <!-- Settings: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">Enforce HTTPS</string>
-    <!-- Settings: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Always visit websites using HTTPS for added security. (Experimental)</string>
-    <!-- Settings: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Enable Google\'s Safe Browsing</string>
-    <!-- Settings: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Allow Google\'s Safe Browsing to block websites it deems dangerous.</string>
-    <!-- Settings: Enable history storage title -->
+    <!-- Settings: Privacy: Enable history storage title -->
     <string name="pref_enable_history_title">Use history storage</string>
-    <!-- Settings: Enable history storage summary -->
+    <!-- Settings: Privacy: Enable history storage summary -->
     <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
-    <!-- Settings: Clear browsing data title -->
+    <!-- Settings: Privacy: Clear browsing data title -->
     <string name="pref_clear_browsing_data">Clear browsing data</string>
-    <!-- Settings: Reset to default title -->
+    <!-- Settings: Privacy: Reset to default title -->
     <string name="pref_reset_to_default_title">Reset to default</string>
-    <!-- Settings: Reset to default summary -->
+    <!-- Settings: Privacy: Reset to default summary -->
     <string name="pref_reset_to_default_summary">Clear all browser data.</string>
-    <!-- Settings: Visuals category -->
-    <string name="pref_category_visuals">Visuals</string>
-    <!-- Settings: Theme title -->
+
+    <!-- Settings: Privacy and security: Security category -->
+    <string name="pref_ps_category_security">Security</string>
+    <!-- Settings: Security: Enforce HTTPS title -->
+    <string name="pref_enforce_https_title">Enforce HTTPS</string>
+    <!-- Settings: Security: Enforce HTTPS summary -->
+    <string name="pref_enforce_https_summary">Always visit websites using HTTPS for added security. (Experimental)</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing title -->
+    <string name="pref_google_safe_browsing_title">Enable Google\'s Safe Browsing</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing summary -->
+    <string name="pref_google_safe_browsing_summary">Allow Google\'s Safe Browsing to block websites it deems dangerous.</string>
+
+    <!-- Settings: Appearance: Theming category -->
+    <string name="pref_appearance_theming_category">Theming</string>
+    <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">Theme</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
@@ -237,52 +266,42 @@
     <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Current: %s</string>
-    <!-- Settings: Show favicon title -->
+
+    <!-- Settings: Appearance: User interface category -->
+    <string name="pref_appearance_ui_category">User interface</string>
+    <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">Show favicon</string>
-    <!-- Settings: Show favicon summary -->
+    <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">Show the favicon of the webpage next to the address bar.</string>
-    <!-- Settings: Reach mode title -->
+    <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">Reach mode</string>
-    <!-- Settings: Reach mode summary -->
+    <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Relocate interface elements for easier one-hand usage.</string>
     <!-- Settings: Swipe to Refresh title -->
     <string name="pref_enable_swipe_refresh_title">Enable Pull to Refresh</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
-    <!-- Settings: Update Recents icons and labels title -->
+    <!-- Settings: Appearance: Update Recents icons and labels title -->
     <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
-    <!-- Settings: Update Recents icons and labels summary -->
+    <!-- Settings: Appearance: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
-    <!-- Settings: Advanced category -->
-    <string name="pref_category_advanced">Advanced</string>
-    <!-- Settings: Enable JavaScript title -->
+
+    <!-- Settings: Main - Advanced: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">Enable JavaScript</string>
-    <!-- Settings: Enable JavaScript summary -->
+    <!-- Settings: Main - Advanced: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
-    <!-- Settings: Use Custom Tabs title -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs title -->
     <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
-    <!-- Settings: Use Custom Tabs summary -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Always open external links in Custom Tabs when it is opened from another application.</string>
-    <!-- Settings: Data Saver title -->
+    <!-- Settings: Main - Advanced: Data Saver title -->
     <string name="pref_send_save_data_title">Data Saver</string>
-    <!-- Settings: Data Saver summary -->
+    <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
-    <!-- Settings: Close app after download title -->
+    <!-- Settings: Main - Advanced: Close app after download title -->
     <string name="pref_close_app_after_download_title">Close after downloading external links</string>
-    <!-- Settings: Close app after download summary -->
+    <!-- Settings: Main - Advanced: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Close the current tab after downloading an external link.</string>
-    <!-- Settings: Software updates category -->
-    <string name="pref_category_software_updates">Software updates</string>
-    <!-- Settings: Check for updates title -->
-    <string name="pref_check_for_updates_title">Check for Updates</string>
-    <!-- Settings: Check for updates summary -->
-    <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
-    <!-- Settings: Select update channel title -->
-    <string name="pref_update_channel_title">Select update channel</string>
-    <!-- Settings: Version category -->
-    <string name="pref_category_version">Version</string>
-    <!-- Settings: About title -->
-    <string name="pref_about_title">About</string>
 
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>

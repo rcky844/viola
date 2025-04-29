@@ -11,6 +11,7 @@ import androidx.preference.SwitchPreferenceCompat
 import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.settings.SettingsSharedPreference
+import tipz.viola.settings.fragment.ExtPreferenceFragment
 
 class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
     SwitchPreferenceCompat(context, attrs) {
@@ -32,7 +33,7 @@ class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
         isChecked = settingsPreference.getIntBool(preferenceTag!!)
         onPreferenceClickListener = OnPreferenceClickListener {
             settingsPreference.setIntBool(preferenceTag, isChecked)
-            SettingsMainFragment.needReload = needReload
+            ExtPreferenceFragment.needReload = needReload
             true
         }
         if (requiredApi > Build.VERSION.SDK_INT) this.isEnabled = false

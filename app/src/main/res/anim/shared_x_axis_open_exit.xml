@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <alpha android:fromAlpha="1.0"
+            android:toAlpha="0.0"
+            android:interpolator="@interpolator/m3_sys_motion_easing_standard_accelerate"
+            android:fillEnabled="true"
+            android:fillBefore="true"
+            android:fillAfter="true"
+            android:startOffset="0"
+            android:duration="83" />
+    <translate android:fromXDelta="0"
+            android:toXDelta="-25%"
+            android:fillEnabled="true"
+            android:fillBefore="true"
+            android:fillAfter="true"
+            android:interpolator="@interpolator/m3_sys_motion_easing_emphasized"
+            android:duration="366" />
+</set>

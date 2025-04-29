@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.activity
@@ -6,15 +6,34 @@ package tipz.viola.settings.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.addCallback
+import androidx.annotation.XmlRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import tipz.viola.R
 import tipz.viola.databinding.ActivitySettingsBinding
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.fragment.AppearanceFragment
+import tipz.viola.settings.fragment.ExtPreferenceFragment
+import tipz.viola.settings.fragment.MainFragment
+import tipz.viola.settings.fragment.PrivacySecurityFragment
+import tipz.viola.settings.fragment.SearchFragment
 import tipz.viola.webview.activity.BaseActivity
+
 
 class SettingsActivity : BaseActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private val needLoad = Intent()
-    private lateinit var settingsMainFragment: SettingsMainFragment
+
+    private class TitleUpdater : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+            val settingsFragment = try {
+                f as ExtPreferenceFragment
+            } catch (_: Exception) {
+                return
+            }
+            (f.activity as SettingsActivity).supportActionBar?.title = settingsFragment.getPreferenceTitle()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,20 +44,45 @@ class SettingsActivity : BaseActivity() {
         // Setup toolbar
         val toolbar = binding.materialToolbar
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         onBackPressedDispatcher.addCallback(this) {
-            needLoad.putExtra(SettingsKeys.needReload, SettingsMainFragment.needReload)
+            needLoad.putExtra(SettingsKeys.needReload, ExtPreferenceFragment.needReload)
             setResult(0, needLoad)
-            finish()
+            if (supportFragmentManager.backStackEntryCount <= 1) finish()
+            else supportFragmentManager.popBackStack()
         }
+        ExtPreferenceFragment.needReload = false
 
         // Setup fragments
-        settingsMainFragment = SettingsMainFragment()
+        supportFragmentManager.registerFragmentLifecycleCallbacks(TitleUpdater(), false)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.list_container, settingsMainFragment)
-            .addToBackStack("main").commit()
+            .setCustomAnimations(
+                R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
+                R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
+            .replace(R.id.list_container, MainFragment(), "main")
+            .addToBackStack(null).commit()
+    }
+
+    private fun getPreferenceScreen(@XmlRes screen: Int): ExtPreferenceFragment? =
+        when (screen) {
+            R.xml.preference_settings_search -> SearchFragment()
+            R.xml.preference_settings_privacy_security -> PrivacySecurityFragment()
+            R.xml.preference_settings_appearance -> AppearanceFragment()
+            else -> null
+        }
+
+    fun openScreen(@XmlRes screen: Int): ExtPreferenceFragment? {
+        val fragment = getPreferenceScreen(screen) ?: return null
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
+                R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
+            /* TODO: Add tags to individual fragments for tracking */
+            .replace(R.id.list_container, fragment)
+            .addToBackStack(null).commit()
+        return fragment
     }
 }
