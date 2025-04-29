@@ -192,6 +192,8 @@
     <string name="console_toast_enabled">Console logging has been enabled!</string>
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">Disable</string>
+    <!-- Console: No logs -->
+    <string name="console_logging_none">No logs</string>
 
     <!-- Settings: Title -->
     <string name="settings_title">Settings</string>

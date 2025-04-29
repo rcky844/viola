@@ -7,6 +7,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -24,7 +25,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.webkit.ConsoleMessage
 import android.widget.RelativeLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatEditText
@@ -43,11 +46,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeoutOrNull
 import tipz.viola.LauncherActivity
 import tipz.viola.ListInterfaceActivity
 import tipz.viola.R
@@ -100,6 +99,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var urlEditText: MaterialAutoCompleteTextView
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
+    private var consoleMessageTextView: TextView? = null
     private var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
     private var sslErrorHost: String = ""
@@ -604,20 +604,38 @@ class BrowserActivity : VWebViewActivity() {
                     MaterialAlertDialogBuilder(this).setTitle(R.string.console_dialog_title)
                         .setView(RelativeLayout(this).apply {
                             val textView = AppCompatTextView(this@BrowserActivity).apply {
-                                id = ViewCompat.generateViewId()
                                 layoutParams = RelativeLayout.LayoutParams(
                                     ViewGroup.LayoutParams.MATCH_PARENT,
                                     ViewGroup.LayoutParams.WRAP_CONTENT
                                 )
-                                text = webview.consoleMessages
+                                hint = resources.getString(R.string.console_logging_none)
+                                typeface = Typeface.MONOSPACE
+
+                                // Generate console message
+                                val builder = StringBuilder()
+                                webview.consoleMessages.forEach {
+                                    builder.append("${generateLogEntry(it)}\n")
+                                }
+                                text = builder
                             }
+                            consoleMessageTextView = textView
+
+                            val scrollView = ScrollView(context).apply {
+                                id = ViewCompat.generateViewId()
+                                layoutParams = RelativeLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    context.dpToPx(320)
+                                )
+                                addView(textView)
+                            }
+
                             val editText = AppCompatEditText(this@BrowserActivity)
                             val sendButton = AppCompatImageView(this@BrowserActivity).apply {
                                 id = ViewCompat.generateViewId()
                                 getMinTouchTargetSize().let {
                                     layoutParams = RelativeLayout.LayoutParams(it, it).apply {
                                         setPadding(context.dpToPx(8))
-                                        addRule(RelativeLayout.BELOW, textView.id)
+                                        addRule(RelativeLayout.BELOW, scrollView.id)
                                         addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
                                     }
                                 }
@@ -627,19 +645,6 @@ class BrowserActivity : VWebViewActivity() {
                                     editText.text.toString().takeUnless { it.isBlank() }?.let {
                                         webview.evaluateJavascript(it)
                                     } ?: return@setOnClickListener
-                                    
-                                    // TODO: Improve listener
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        runBlocking {
-                                            withTimeoutOrNull(25000L) {
-                                                val initialLength = textView.length()
-                                                while (initialLength == webview.consoleMessages.length) {
-                                                    delay(1000)
-                                                }
-                                            }
-                                        }
-                                        MainScope().launch { textView.text = webview.consoleMessages }
-                                    }
                                 }
 
                                 val typedValue = TypedValue()
@@ -654,24 +659,47 @@ class BrowserActivity : VWebViewActivity() {
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 getMinTouchTargetSize()
                             ).apply {
-                                addRule(RelativeLayout.BELOW, textView.id)
+                                addRule(RelativeLayout.BELOW, scrollView.id)
                                 addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                                 addRule(RelativeLayout.LEFT_OF, sendButton.id)
                             }
 
-                            addView(textView)
+                            addView(scrollView)
                             addView(editText)
                             addView(sendButton)
                         }, dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
                         .setPositiveButton(android.R.string.ok, null)
                         .setNeutralButton(R.string.clear) { _, _ -> webview.consoleMessages.clear() }
                         .setNegativeButton(R.string.console_logging_disable) { _, _ -> webview.consoleLogging = false }
+                        .setOnDismissListener { consoleMessageTextView = null }
                         .create().show()
                 } else {
                     showMessage(R.string.console_toast_enabled)
                     webview.consoleLogging = true
                 }
             }
+        }
+    }
+
+    // TODO: Replace with colour coding and proper log level display
+    // TODO: Confirm log level mappings
+    private fun generateLogEntry(consoleMessage: ConsoleMessage): String {
+        val logLevel = when (consoleMessage.messageLevel()) {
+            ConsoleMessage.MessageLevel.TIP -> "V"
+            ConsoleMessage.MessageLevel.LOG -> "I"
+            ConsoleMessage.MessageLevel.WARNING -> "W"
+            ConsoleMessage.MessageLevel.ERROR -> "E"
+            ConsoleMessage.MessageLevel.DEBUG -> "D"
+            else -> "U" /* Unknown */
+        }
+        return "$logLevel: ${consoleMessage.message()}"
+    }
+
+    override fun onConsoleMessage(consoleMessage: ConsoleMessage) {
+        if (consoleMessageTextView != null) {
+            val textView = consoleMessageTextView as TextView
+            val newString = textView.text.toString() + generateLogEntry(consoleMessage) + "\n"
+            textView.text = newString
         }
     }
 

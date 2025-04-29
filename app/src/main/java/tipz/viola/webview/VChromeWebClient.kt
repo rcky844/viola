@@ -192,8 +192,10 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
 
     // TODO: Add more comprehensive information to the console
     override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-        if (vWebView.consoleLogging && consoleMessage != null)
-            vWebView.consoleMessages.append(consoleMessage.message()).append("\n")
+        if (vWebView.consoleLogging && consoleMessage != null) {
+            vWebView.consoleMessages.add(consoleMessage)
+            activity.onConsoleMessage(consoleMessage)
+        }
         return super.onConsoleMessage(consoleMessage)
     }
 }

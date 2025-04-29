@@ -19,6 +19,7 @@ import android.provider.Settings
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import android.webkit.WebIconDatabase
@@ -83,7 +84,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     private val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
-    val consoleMessages = StringBuilder()
+    val consoleMessages = mutableListOf<ConsoleMessage>()
 
     // Broha related (history & favorites)
     private lateinit var historyClient: HistoryClient

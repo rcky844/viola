@@ -7,6 +7,7 @@ import android.app.ActivityManager.TaskDescription
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.webkit.ConsoleMessage
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -123,4 +124,6 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
     open fun onPageLoadProgressChanged(progress: Int) {
         progressBar.progress = if (progress == 100) 0 else progress
     }
+
+    open fun onConsoleMessage(consoleMessage: ConsoleMessage) {}
 }
