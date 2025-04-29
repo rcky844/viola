@@ -38,12 +38,12 @@ android {
         minSdk = 14
         targetSdk = 35
         versionCode = 1
-        versionName = "7.2"
+        versionName = "8.0"
 
         /* Extra build info */
         buildConfigField("String", "PRODUCT_LICENSE_DOCUMENT",
             "\"Apache License, Version 2.0\"")
-        buildConfigField("String", "VERSION_CODENAME", "\"Exotic\"")
+        buildConfigField("String", "VERSION_CODENAME", "\"Fernando\"")
         buildConfigField("String", "VERSION_COPYRIGHT_YEAR", "\"2020-2025\"")
         buildConfigField("String", "VERSION_BUILD_EXTRA", "\"\"")
         buildConfigField("String", "VERSION_BUILD_ID", "\"${versionCode}\"")
