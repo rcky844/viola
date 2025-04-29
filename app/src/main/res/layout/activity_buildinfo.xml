@@ -24,9 +24,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/app_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:autoSizeTextType="uniform"
