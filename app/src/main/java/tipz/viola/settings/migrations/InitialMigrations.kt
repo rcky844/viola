@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.migrations
@@ -12,10 +12,14 @@ class InitialMigrations(pref: SettingsSharedPreference) {
     init {
         // Initialize only protocol version 0, as it is defined as uninitialized
         if (pref.getInt(SettingsKeys.protocolVersion) == 0) {
-            // Search
+            // Homepage
+            pref.setInt(SettingsKeys.useHomePage, 1)
             pref.setString(SettingsKeys.homePageName, "brave")
+
+            // Search
             pref.setString(SettingsKeys.searchName, "brave")
             pref.setString(SettingsKeys.suggestionsName, "brave")
+            pref.setInt(SettingsKeys.useSearchSuggestions, 1)
 
             // Updates
             pref.setString(SettingsKeys.updateChannelName, BuildConfig.VERSION_BUILD_TYPE)

@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import tipz.viola.Application
 import tipz.viola.settings.migrations.ExoticMigrations
+import tipz.viola.settings.migrations.FernandoMigrations
 import tipz.viola.settings.migrations.InitialMigrations
 
 class SettingsSharedPreference(context: Context) {
@@ -23,9 +24,11 @@ class SettingsSharedPreference(context: Context) {
         // Migration modules
         InitialMigrations(this)
         ExoticMigrations(this)
+        FernandoMigrations(this)
 
         // Sets CURRENT_PROTOCOL_VERSION, currently 4
         // Must be non-zero, as zero is defined as uninitialized
+        // TODO: Update to version 5 for Fernando
         this.setInt(SettingsKeys.protocolVersion, 4)
     }
 
