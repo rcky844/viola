@@ -84,6 +84,10 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     private val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
+        set(value) {
+            field = value
+            if (!value) consoleMessages.clear()
+        }
     val consoleMessages = mutableListOf<ConsoleMessage>()
 
     // Broha related (history & favorites)
