@@ -394,7 +394,7 @@ class BrowserActivity : VWebViewActivity() {
                 if (webview.title.isNullOrBlank() || webview.url.isBlank()) return false
 
                 // Show dialog for selecting modes
-                val dialog = MaterialAlertDialogBuilder(this)
+                val dialog = PopupMaterialAlertDialogBuilder(this, Gravity.BOTTOM)
                 dialog.setTitle(R.string.toolbar_expandable_app_shortcut)
 
                 // TODO: Export as proper list
@@ -429,6 +429,7 @@ class BrowserActivity : VWebViewActivity() {
                     )
                 }
                 dialog.create().show()
+                return false
             }
 
             R.drawable.settings -> {
