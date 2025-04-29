@@ -22,7 +22,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.webkit.ConsoleMessage
@@ -74,6 +73,7 @@ import tipz.viola.webview.activity.components.ExpandableToolbarView
 import tipz.viola.webview.activity.components.FavIconView
 import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
 import tipz.viola.webview.activity.components.LocalNtpPageView
+import tipz.viola.webview.activity.components.PopupMaterialAlertDialogBuilder
 import tipz.viola.webview.activity.components.ToolbarView
 import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webview.pages.ProjectUrls
@@ -223,21 +223,10 @@ class BrowserActivity : VWebViewActivity() {
             }
             messageView.setPadding(dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
 
-            val dialog = MaterialAlertDialogBuilder(this)
+            PopupMaterialAlertDialogBuilder(this, Gravity.TOP)
                 .setCustomTitle(titleView)
                 .setView(messageView)
-                .create()
-
-            dialog.run {
-                setOnShowListener {
-                    val wlp = window?.attributes ?: return@setOnShowListener
-                    wlp.gravity = Gravity.TOP
-                    wlp.width = WindowManager.LayoutParams.MATCH_PARENT
-                    wlp.flags = wlp.flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
-                    window?.attributes = wlp
-                }
-                show()
-            }
+                .create().show()
         }
 
         // Setup Url EditText box
