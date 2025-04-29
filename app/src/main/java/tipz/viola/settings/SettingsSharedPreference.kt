@@ -33,6 +33,10 @@ class SettingsSharedPreference(context: Context) {
         return preference.getInt(prefName, 0)
     }
 
+    fun getIntOnOff(prefName: String): String {
+        return if (getIntBool(prefName)) "on" else "off"
+    }
+
     fun setInt(prefName: String, value: Int) {
         preference.edit().putInt(prefName, value).apply()
     }

@@ -241,7 +241,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         requestHeaders["Sec-GPC"] = settingsPreference.getInt(SettingsKeys.sendSecGPC).toString()
 
         // Data Saver
-        requestHeaders["Save-Data"] = settingsPreference.getInt(SettingsKeys.sendSaveData).toString()
+        requestHeaders["Save-Data"] = settingsPreference.getIntOnOff(SettingsKeys.sendSaveData)
 
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED) {
