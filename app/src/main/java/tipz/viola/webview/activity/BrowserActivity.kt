@@ -16,10 +16,12 @@ import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.MediaStore
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
@@ -167,7 +169,6 @@ class BrowserActivity : VWebViewActivity() {
         // Setup SSL Lock
         sslLock.setOnClickListener {
             val cert = webview.certificate
-            val dialog = MaterialAlertDialogBuilder(this)
             val binding: DialogHitTestTitleBinding =
                 DialogHitTestTitleBinding.inflate(LayoutInflater.from(this)).apply {
                     title.apply {
@@ -222,10 +223,21 @@ class BrowserActivity : VWebViewActivity() {
             }
             messageView.setPadding(dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
 
-            dialog.setCustomTitle(titleView)
+            val dialog = MaterialAlertDialogBuilder(this)
+                .setCustomTitle(titleView)
                 .setView(messageView)
-                .setPositiveButton(android.R.string.ok, null)
-                .create().show()
+                .create()
+
+            dialog.run {
+                setOnShowListener {
+                    val wlp = window?.attributes ?: return@setOnShowListener
+                    wlp.gravity = Gravity.TOP
+                    wlp.width = WindowManager.LayoutParams.MATCH_PARENT
+                    wlp.flags = wlp.flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
+                    window?.attributes = wlp
+                }
+                show()
+            }
         }
 
         // Setup Url EditText box
