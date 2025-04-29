@@ -208,7 +208,7 @@
     <!-- Settings: Main: Check for updates summary -->
     <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Select update channel</string>
+    <string name="pref_update_channel_title">Update channel</string>
     <!-- Settings: Main: Version category -->
     <string name="pref_main_category_version">Version</string>
     <!-- Settings: Main: About title -->
@@ -277,7 +277,7 @@
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
+    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Current: %s</string>
 
