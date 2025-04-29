@@ -171,7 +171,7 @@ dependencies {
     // For compatibility
     // Modern dependencies
     val modernImplementation by configurations
-    modernImplementation("androidx.core:core-ktx:1.15.0")
+    modernImplementation("androidx.core:core-ktx:1.16.0")
     modernImplementation("androidx.appcompat:appcompat:1.7.0")
     modernImplementation("androidx.coordinatorlayout:coordinatorlayout:1.3.0")
     modernImplementation("com.google.android.material:material:1.12.0")
