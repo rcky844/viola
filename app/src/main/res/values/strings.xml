@@ -222,7 +222,7 @@
     <!-- Settings: Privacy and security: Ad blocking category -->
     <string name="pref_ps_category_ad_blocking">Ad blocking</string>
     <!-- Settings: Ad blocking: Enable ad blocker title -->
-    <string name="pref_ad_blocker_title">Enable Ad Blocker</string>
+    <string name="pref_ad_blocker_title">Ad Blocker</string>
     <!-- Settings: Ad blocking: Enable ad blocker summary -->
     <string name="pref_ad_blocker_summary">Stop annoying ads from distracting you.</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
@@ -258,9 +258,9 @@
     <!-- Settings: Security: Enforce HTTPS summary -->
     <string name="pref_enforce_https_summary">Use HTTPS whenever possible and receive a warning before loading sites that don\'t support it.</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Enable Google\'s Safe Browsing</string>
+    <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Allow Google\'s Safe Browsing to block websites it deems dangerous.</string>
+    <string name="pref_google_safe_browsing_summary">Allow Google Safe Browsing to block harmful websites.</string>
 
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">Theming</string>
@@ -286,7 +286,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Relocate interface elements for easier one-hand usage.</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Enable Pull to Refresh</string>
+    <string name="pref_enable_swipe_refresh_title">Pull to Refresh</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -295,7 +295,7 @@
     <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
 
     <!-- Settings: Main - Advanced: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">Enable JavaScript</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Main - Advanced: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs title -->
