@@ -41,77 +41,9 @@
             </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/list_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="vertical">
+        android:layout_height="wrap_content" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/about_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:textSize="16sp" />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/changelog_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/buildinfo_changelog_button" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/license_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/buildinfo_license_button" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
-
-            <include
-                android:id="@+id/item_website"
-                layout="@layout/item_buildinfo_double"/>
-
-            <include
-                android:id="@+id/item_feedback"
-                layout="@layout/item_buildinfo_double" />
-
-            <include
-                android:id="@+id/item_source_code"
-                layout="@layout/item_buildinfo_double" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp" />
-
-            <include
-                android:id="@+id/item_build_number"
-                layout="@layout/item_buildinfo_double" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
