@@ -31,6 +31,7 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import com.google.android.material.behavior.SwipeDismissBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -74,6 +75,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     val downloadClient: DownloadClient = (context.applicationContext as Application).downloadClient
     val webSettings = this.settings
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+    private var insecureAllow = false
     var loadProgress = 100
     val settingsPreference = (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
@@ -308,6 +310,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             return
         }
 
+        // Reset insecure connection override
+        insecureAllow = false
+
         // Check for view source
         if (url.startsWith(BrowserUrls.viewSourcePrefix)) loadRealUrl(url)
 
@@ -364,6 +369,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
 
             super.loadUrl("${BrowserUrls.chromePrefix}$handlingSuffix")
+
             return
         }
 
@@ -447,6 +453,23 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         when (state) {
             PageLoadState.PAGE_STARTED -> {
                 if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return
+                if (currentUrl.startsWith(UrlUtils.httpPrefix)
+                    && settingsPreference.getIntBool(SettingsKeys.enforceHttps)
+                    && !insecureAllow) {
+                    stopLoading()
+                    MaterialAlertDialogBuilder(context)
+                        .setTitle(R.string.dialog_insecure_connection_title)
+                        .setMessage(resources.getString(
+                            R.string.dialog_insecure_connection_message, Uri.parse(currentUrl).host))
+                        .setPositiveButton(R.string.dialog_insecure_connection_continue_to_site) { _, _ ->
+                            insecureAllow = true
+                            loadRealUrl(currentUrl)
+                        }.setNegativeButton(R.string.dialog_insecure_connection_go_back) { _, _ ->
+                            goBack()
+                        }.show()
+                    return
+                }
+
                 onPageLoadProgressChanged(-1)
                 activity.onFaviconProgressUpdated(true)
                 consoleMessages.clear()
