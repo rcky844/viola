@@ -234,7 +234,7 @@
     <!-- Settings: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">Son Kullanılanlar\'daki sekmelerin simgesini ve etiketini otomatik olarak web sayfasınınkiyle güncelleştirin.</string>
     <!-- Settings: Advanced category -->
-    <string name="pref_category_advanced">Gelişmiş</string>
+    <string name="pref_main_category_advanced">Gelişmiş</string>
     <!-- Settings: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">JavaScript\'i etkinleştir</string>
     <!-- Settings: Enable JavaScript summary -->
@@ -252,7 +252,7 @@
     <!-- Settings: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Uygulama Bağlantısı indirilebilirse her zaman Viola\'yu kapatın.</string>
     <!-- Settings: Software updates category -->
-    <string name="pref_category_software_updates">Yazılım güncellemeleri</string>
+    <string name="pref_main_category_software_updates">Yazılım güncellemeleri</string>
     <!-- Settings: Check for updates title -->
     <string name="pref_check_for_updates_title">Güncellemeleri denetle</string>
     <!-- Settings: Check for updates summary -->
@@ -260,7 +260,7 @@
     <!-- Settings: Select update channel title -->
     <string name="pref_update_channel_title">Güncelleme kanalını seçin</string>
     <!-- Settings: Version category -->
-    <string name="pref_category_version">Sürüm</string>
+    <string name="pref_main_category_version">Sürüm</string>
     <!-- Settings: About title -->
     <string name="pref_about_title">Hakkında</string>
     <!-- Settings - Search: Custom dialog message -->

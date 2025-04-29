@@ -234,7 +234,7 @@
     <!-- Settings: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">Tự động cập nhật biểu tượng và nhãn của các tab trong Gần đây thành biểu tượng và nhãn của trang web.</string>
     <!-- Settings: Advanced category -->
-    <string name="pref_category_advanced">Nâng cao</string>
+    <string name="pref_main_category_advanced">Nâng cao</string>
     <!-- Settings: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">Cho phép JavaScript</string>
     <!-- Settings: Enable JavaScript summary -->
@@ -252,7 +252,7 @@
     <!-- Settings: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Luôn đóng Viola nếu Liên kết ứng dụng có thể tải xuống được.</string>
     <!-- Settings: Software updates category -->
-    <string name="pref_category_software_updates">Cập nhật phần mềm</string>
+    <string name="pref_main_category_software_updates">Cập nhật phần mềm</string>
     <!-- Settings: Check for updates title -->
     <string name="pref_check_for_updates_title">Tìm bản cập nhật mới</string>
     <!-- Settings: Check for updates summary -->
@@ -260,7 +260,7 @@
     <!-- Settings: Select update channel title -->
     <string name="pref_update_channel_title">Chọn kênh cập nhật</string>
     <!-- Settings: Version category -->
-    <string name="pref_category_version">Phiên bản</string>
+    <string name="pref_main_category_version">Phiên bản</string>
     <!-- Settings: About title -->
     <string name="pref_about_title">Giới thiệu</string>
     <!-- Settings - Search: Custom dialog message -->

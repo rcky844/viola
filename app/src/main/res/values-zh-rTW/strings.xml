@@ -234,7 +234,7 @@
     <!-- Settings: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">自動把“最近使用的應用”中選項卡的圖標和標籤更新為網頁的。</string>
     <!-- Settings: Advanced category -->
-    <string name="pref_category_advanced">進階</string>
+    <string name="pref_main_category_advanced">進階</string>
     <!-- Settings: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">啟用 JavaScript</string>
     <!-- Settings: Enable JavaScript summary -->
@@ -252,7 +252,7 @@
     <!-- Settings: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">如果連結可下載，始終關閉 Viola。</string>
     <!-- Settings: Software updates category -->
-    <string name="pref_category_software_updates">軟體更新</string>
+    <string name="pref_main_category_software_updates">軟體更新</string>
     <!-- Settings: Check for updates title -->
     <string name="pref_check_for_updates_title">檢查更新</string>
     <!-- Settings: Check for updates summary -->
@@ -260,7 +260,7 @@
     <!-- Settings: Select update channel title -->
     <string name="pref_update_channel_title">選擇更新頻道</string>
     <!-- Settings: Version category -->
-    <string name="pref_category_version">版本</string>
+    <string name="pref_main_category_version">版本</string>
     <!-- Settings: About title -->
     <string name="pref_about_title">關於</string>
     <!-- Settings - Search: Custom dialog message -->

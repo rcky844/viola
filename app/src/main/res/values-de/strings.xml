@@ -234,7 +234,7 @@
     <!-- Settings: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">Aktualisiere das Symbol und die Bezeichnung der Tabs in \"Letzte Apps\" automatisch auf das der Webseite.</string>
     <!-- Settings: Advanced category -->
-    <string name="pref_category_advanced">Erweitert</string>
+    <string name="pref_main_category_advanced">Erweitert</string>
     <!-- Settings: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">JavaScript aktivieren</string>
     <!-- Settings: Enable JavaScript summary -->
@@ -252,7 +252,7 @@
     <!-- Settings: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Schließen Sie Viola immer, wenn der App-Link herunterladbar ist.</string>
     <!-- Settings: Software updates category -->
-    <string name="pref_category_software_updates">Software-Updates</string>
+    <string name="pref_main_category_software_updates">Software-Updates</string>
     <!-- Settings: Check for updates title -->
     <string name="pref_check_for_updates_title">Auf Updates prüfen</string>
     <!-- Settings: Check for updates summary -->
@@ -260,7 +260,7 @@
     <!-- Settings: Select update channel title -->
     <string name="pref_update_channel_title">Update-Kanal auswählen</string>
     <!-- Settings: Version category -->
-    <string name="pref_category_version">Version</string>
+    <string name="pref_main_category_version">Version</string>
     <!-- Settings: About title -->
     <string name="pref_about_title">Über</string>
     <!-- Settings - Search: Custom dialog message -->
