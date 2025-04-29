@@ -264,6 +264,12 @@
 
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">Theming</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_system_default">Automatic</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_light">Light</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_dark">Dark</string>
     <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">Theme</string>
     <!-- Settings: Use web content force dark title -->
@@ -432,10 +438,5 @@
         <item>Unified hosts</item>
         <item>Eulaurarien First-Party Trackers</item>
         <item>Custom</item>
-    </string-array>
-    <string-array name="themes">
-        <item>System Default</item>
-        <item>Light</item>
-        <item>Dark</item>
     </string-array>
 </resources>

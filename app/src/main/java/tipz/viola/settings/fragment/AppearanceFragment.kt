@@ -15,7 +15,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.preference.Preference
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.activity.ListPickerAlertDialog
+import tipz.viola.settings.activity.ThemePreference
 import tipz.viola.webview.activity.BaseActivity.Companion.performThemeModeChecks
 
 class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) {
@@ -37,24 +37,11 @@ class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_appearance, rootKey)
 
-        val themeList = settingsActivity.resources.getStringArray(R.array.themes)
-        findPreference<Preference>(PREF_THEME_PICKER)?.run {
-            setOnPreferenceClickListener {
-                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
-                    preference = it
-                    nameList = themeList
-                    idPreference = SettingsKeys.themeId
-                    dialogTitleResId = R.string.pref_theme_title
-                    dialogPositivePressed = {
-                        performThemeModeChecks(settingsActivity)
-                    }
-                }
-
-                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
-                    .create().show()
+        findPreference<ThemePreference>(PREF_THEME_PICKER)?.run {
+            setOnPreferenceChangeListener { _, _ ->
+                performThemeModeChecks(settingsActivity)
                 true
             }
-            summary = themeList[settingsPreference.getInt(SettingsKeys.themeId)]
         }
 
         startPageWallpaper = findPreference(PREF_START_PAGE_WALLPAPER)!!

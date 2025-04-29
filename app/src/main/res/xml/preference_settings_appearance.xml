@@ -5,10 +5,8 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.preference.PreferenceCategory android:title="@string/pref_appearance_theming_category">
-        <androidx.preference.Preference
-            android:key="theme"
-            android:summary=""
-            android:title="@string/pref_theme_title" />
+        <tipz.viola.settings.activity.ThemePreference
+            android:key="theme" />
         <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="use_force_dark"
             android:summary="@string/pref_use_force_dark_summary"
