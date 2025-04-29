@@ -82,7 +82,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
 
-    private val requestHeaders = HashMap<String, String>()
+    internal val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
         set(value) {
             field = value

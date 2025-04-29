@@ -8,12 +8,15 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
+import android.os.Build
 import android.view.LayoutInflater
 import android.webkit.HttpAuthHandler
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.SslErrorHandler
+import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -134,6 +137,20 @@ open class VWebViewClient(
         // Handle open in app
         vWebView.loadAppLinkUrl(url)
         return true
+    }
+
+    @Suppress("DEPRECATION")
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        val url = request.url.toString()
+        var shouldOverride = shouldOverrideUrlLoading(view, url)
+        if (shouldOverride) return true
+
+        if (request.isForMainFrame && vWebView.requestHeaders.isNotEmpty()) {
+            vWebView.loadUrl(url)
+            shouldOverride = true
+        }
+        return shouldOverride
     }
 
     @SuppressLint("WebViewClientOnReceivedSslError")
