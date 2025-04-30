@@ -58,6 +58,11 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
                 }
 
                 ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
+                    .setNeutralButton(R.string.reset) { _, _ ->
+                        settingsPreference.setString(
+                            SettingsKeys.updateChannelName, BuildConfig.VERSION_BUILD_TYPE)
+                        setSummary(BuildConfig.VERSION_BUILD_TYPE)
+                    }
                     .create().show()
                 true
             }
