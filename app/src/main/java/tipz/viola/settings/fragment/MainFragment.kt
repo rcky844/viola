@@ -88,6 +88,7 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
     override fun onStart() {
         super.onStart()
         findPreference<SummaryOnOffPreference>(PREF_SCREEN_HOME)?.setOnOffSummary()
+        findPreference<SummaryOnOffPreference>(PREF_SCREEN_DOWNLOADS)?.setOnOffSummary()
     }
 
     companion object {

@@ -21,9 +21,10 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_advanced">
-        <androidx.preference.Preference
+        <tipz.viola.settings.activity.SummaryOnOffPreference
             android:key="downloads"
-            android:title="@string/pref_main_downloads" />
+            android:title="@string/pref_main_downloads"
+            app:preferenceTag="enableDownloads" />
         <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="javascript"
             android:summary="@string/pref_enable_javascript_summary"

@@ -127,6 +127,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 MIME Type: $vMimeType
             """.trimIndent())
 
+            if (!settingsPreference.getIntBool(SettingsKeys.enableDownloads)) {
+                Log.i(LOG_TAG, "Downloads disabled by user, request dropped.")
+                return@setDownloadListener
+            }
+
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
                 ActivityCompat.requestPermissions(activity,
