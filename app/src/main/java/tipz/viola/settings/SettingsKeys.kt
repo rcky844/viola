@@ -26,6 +26,7 @@ object SettingsKeys {
 
     /* Buss */
     const val bussApiUrl = "bussApiUrl" /* STRING */
+    const val enableWebX = "enableWebX" /* INTEGER */
 
     /* Custom Tabs */
     const val useCustomTabs = "useCustomTabs" /* INTEGER */

@@ -12,4 +12,17 @@
         app:preferenceTag="isJavaScriptEnabled"
         app:needReload="true" />
 
+    <tipz.viola.settings.activity.LongSummaryPreferenceCategory
+        android:summary="@string/pref_web_webx_category_summary"
+        android:title="@string/pref_web_webx_category_title">
+
+        <tipz.viola.settings.activity.MaterialSwitchPreference
+            android:key="webx_enablement"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off"
+            app:preferenceTag="enableWebX"
+            app:needReload="false" />
+
+    </tipz.viola.settings.activity.LongSummaryPreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

@@ -344,6 +344,10 @@
     <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
+    <!-- Settings: Web features: Bussin WebX category title -->
+    <string name="pref_web_webx_category_title">Bussin WebX</string>
+    <!-- Settings: Web features: Bussin WebX category summary -->
+    <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
 
     <!-- Settings: Main - Advanced: Development settings title -->
     <string name="pref_main_development_title">Development settings</string>

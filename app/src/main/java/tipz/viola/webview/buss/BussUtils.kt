@@ -23,6 +23,7 @@ object BussUtils {
     private val githubPrefix = "http(s)?://github.com/".toRegex()
 
     fun sendAndRequestResponse(view: VWebView, url: String): Boolean {
+        if (!view.settingsPreference.getIntBool(SettingsKeys.enableWebX)) return false
         if (!url.startsWith(bussPrefix)) return false
         val split = url.replace(bussPrefix, "")
             .replace('.', '/')
