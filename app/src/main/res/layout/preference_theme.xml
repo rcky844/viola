@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:maxHeight="200dp"
+                android:maxHeight="72dp"
                 android:src="@drawable/theme_preview_system" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:maxHeight="200dp"
+                android:maxHeight="72dp"
                 android:src="@drawable/theme_preview_light" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:maxHeight="200dp"
+                android:maxHeight="72dp"
                 android:src="@drawable/theme_preview_dark" />
 
             <androidx.appcompat.widget.AppCompatTextView
