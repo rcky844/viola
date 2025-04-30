@@ -15,6 +15,9 @@
     <androidx.preference.PreferenceCategory
         android:dependency="downloads_enablement">
 
+        <tipz.viola.settings.fragment.DownloadLocationPickerPreference
+            android:key="download_location_default" />
+
         <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="download_confirmation_ask"
             android:summary="@string/pref_download_confirmation_ask_summary"

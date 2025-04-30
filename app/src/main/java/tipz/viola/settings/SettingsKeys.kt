@@ -33,6 +33,7 @@ object SettingsKeys {
     /* Download Manager */
     const val downloadApi = "downloadApi" /* INTEGER */
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
+    const val downloadLocationDefault = "downloadLocationDefault" /* STRING */
     const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
     const val enableDownloads = "enableDownloads" /* INTEGER */
     const val requireDownloadConformation = "requireDownloadConformation" /* INTEGER */

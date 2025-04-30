@@ -17,7 +17,6 @@ import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import tipz.viola.R
 import tipz.viola.download.DownloadCapabilities
-import tipz.viola.download.DownloadClient.Companion.defaultDownloadPath
 import tipz.viola.download.DownloadProvider
 import tipz.viola.download.DownloadUtils
 import tipz.viola.download.database.Droha
@@ -84,7 +83,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
             // Delete file if exists
-            val file = File(defaultDownloadPath, filename!!)
+            val file = File(downloadObject.downloadPath, filename!!)
             if (file.exists()) file.delete()
 
             request.setDestinationUri(file.toUri())

@@ -14,6 +14,14 @@
     <string name="text_on">On</string>
     <!-- Generic: Switch Off -->
     <string name="text_off">Off</string>
+    <!-- Generic: Path -->
+    <string name="path">Path</string>
+    <!-- Generic: Path not found -->
+    <string name="path_not_found">Path not found</string>
+    <!-- Generic: Download location -->
+    <string name="download_location">Download location</string>
+    <!-- Generic: Reset -->
+    <string name="reset">Reset</string>
 
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">Search engine</string>

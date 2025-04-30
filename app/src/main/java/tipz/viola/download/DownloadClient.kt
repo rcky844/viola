@@ -35,6 +35,10 @@ class DownloadClient(private val context: Application) {
     var drohaClient: DrohaClient = DrohaClient(context)
     private var currentTaskId = 0
 
+    fun defaultDownloadPath() = settingsPreference.getString(SettingsKeys.downloadLocationDefault).let {
+        if (File(it).exists()) it else defaultInitialDownloadPath
+    }
+
     /* Private methods */
     private fun isProviderCapable(downloadObject: Droha,
                                   capabilities: List<DownloadCapabilities>) : Boolean {
@@ -71,7 +75,7 @@ class DownloadClient(private val context: Application) {
             // Set-up for download provider
             it.vWebView = vWebView
             if (vWebView != null) it.userAgent = vWebView!!.webSettings.userAgentString
-            if (it.downloadPath == null) it.downloadPath = defaultDownloadPath
+            if (it.downloadPath == null) it.downloadPath = defaultDownloadPath()
             provider.resolveFilename(it)
 
             // Start download
@@ -87,7 +91,7 @@ class DownloadClient(private val context: Application) {
                         .setTitle(string.downloads_dialog_title)
                         .setMessage(Html.fromHtml(context.getString(
                             // Check for duplication
-                            if (File(defaultDownloadPath, it.filename!!).exists())
+                            if (File(defaultDownloadPath(), it.filename!!).exists())
                                 string.downloads_dialog_duplicated_message
                             else string.downloads_dialog_message,
                             "<b>${it.filename}</b>")
@@ -115,7 +119,7 @@ class DownloadClient(private val context: Application) {
     }
 
     companion object {
-        val defaultDownloadPath =
+        val defaultInitialDownloadPath =
             "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/"
     }
 }
