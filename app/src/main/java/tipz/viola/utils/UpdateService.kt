@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.utils
@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import tipz.viola.Application
@@ -69,10 +70,11 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
     private fun showMessage(@StringRes resId: Int) =
         MainScope().launch { if (!silent) context.showMessage(resId) }
 
-    fun checkUpdates() = coroutineScope.launch {
+    private fun getUpdateJson(): JSONObject? {
         // Check for internet access
         if (!context.isOnline()) {
             showMessage(R.string.toast_network_unavailable)
+            return null
         }
 
         // Here we go!
@@ -80,8 +82,13 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
             ProjectUrls.updateJSONUrl,
             R.string.update_download_failed
         )
-        if (!r.successful) return@launch
-        val jObject = JSONObject(String(r.response))
+        return if (!r.successful) null
+        else JSONObject(String(r.response))
+    }
+
+    fun checkUpdates() = coroutineScope.launch {
+        // Get update JSON
+        val jObject = getUpdateJson() ?: return@launch
 
         // Get update channel name
         val updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
@@ -149,5 +156,17 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create().show()
         }
+    }
+
+    fun getAvailableUpdateChannels(): List<String> = runBlocking(coroutineScope.coroutineContext) {
+        // Get update JSON
+        val jObject = getUpdateJson() ?: return@runBlocking listOf()
+        val updateChannelList = mutableListOf<String>()
+
+        // Build list of update channels
+        jObject.keys().forEach {
+            updateChannelList.add(it)
+        }
+        return@runBlocking updateChannelList
     }
 }

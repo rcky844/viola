@@ -3,16 +3,14 @@
 
 package tipz.viola.settings.fragment
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import androidx.preference.Preference
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.build.info.BuildInfoActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
-import tipz.viola.databinding.DialogEdittextBinding
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.activity.ListPickerAlertDialog
 import tipz.viola.settings.activity.SummaryOnOffPreference
 import tipz.viola.utils.UpdateService
 
@@ -47,27 +45,25 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
             true
         }
 
-        // TODO: Load update channels from online JSON
         findPreference<Preference>(PREF_UPDATE_CHANNEL)?.run {
+            val availableUpdateChannels = UpdateService(settingsActivity, false)
+                .getAvailableUpdateChannels().toTypedArray()
+
             setOnPreferenceClickListener {
-                val binding: DialogEdittextBinding = DialogEdittextBinding.inflate(layoutInflater)
-                val view = binding.root
-
-                val editText = binding.edittext
-                editText.setText(settingsPreference.getString(SettingsKeys.updateChannelName))
-
-                MaterialAlertDialogBuilder(settingsActivity)
-                    .setTitle(R.string.pref_update_channel_title)
-                    .setView(view)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        settingsPreference.setString(
-                            SettingsKeys.updateChannelName,
-                            editText.text.toString().trim()
-                        )
-                        it.summary = editText.text.toString().trim()
-                            .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }
+                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
+                    preference = it
+                    nameList = availableUpdateChannels
+                    namePreference = SettingsKeys.updateChannelName
+                    nameToIdFunction = { name ->
+                        availableUpdateChannels.indexOfFirst { i ->
+                            name.takeUnless { it.isEmpty() }?.let { i == it }
+                                ?: (i == BuildConfig.VERSION_BUILD_TYPE)
+                        }
                     }
-                    .setNegativeButton(android.R.string.cancel, null)
+                    dialogTitleResId = R.string.pref_update_channel_title
+                }
+
+                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
                     .create().show()
                 true
             }
@@ -98,6 +94,7 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
         private const val PREF_SCREEN_APPEARANCE = "appearance"
 
         private const val PREF_SCREEN_DOWNLOADS = "downloads"
+        private const val PREF_SCREEN_DEVELOPMENT = "development"
 
         private const val PREF_CHECK_FOR_UPDATES = "check_for_updates"
         private const val PREF_UPDATE_CHANNEL = "update_channel"
