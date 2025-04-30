@@ -356,7 +356,7 @@
     <!-- Settings: Main - Advanced: Development settings title -->
     <string name="pref_main_development_title">Development settings</string>
     <!-- Settings: Main - Advanced: Development settings summary -->
-    <string name="pref_main_development_summary">Advanced features for experts</string>
+    <string name="pref_main_development_summary">Advanced features for experts.</string>
     <!-- Settings: Development: Remote debugging title -->
     <string name="pref_remote_debugging_title">Remote debugging</string>
     <!-- Settings: Development: Remote debugging summary -->
