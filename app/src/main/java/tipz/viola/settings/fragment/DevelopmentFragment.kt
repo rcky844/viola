@@ -31,16 +31,25 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
         }
 
         findPreference<Preference>(PREF_UPDATE_CHANNEL)?.run {
-            val availableUpdateChannels = UpdateService(settingsActivity, false)
-                .getAvailableUpdateChannels().toTypedArray()
+            val identifier = mutableListOf<String>()
+            val display = mutableListOf<String>()
+            UpdateService(settingsActivity, false)
+                .getAvailableUpdateChannels().forEach {
+                    identifier.add(it.identifier)
+                    display.add(
+                        if (it.displayName.isEmpty()) it.identifier
+                        else "${it.displayName} (${it.identifier})"
+                    )
+                }
 
             setOnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
                     preference = it
-                    nameList = availableUpdateChannels
+                    nameList = identifier.toTypedArray()
+                    displayList = display.toTypedArray()
                     namePreference = SettingsKeys.updateChannelName
                     nameToIdFunction = { name ->
-                        availableUpdateChannels.indexOfFirst { i ->
+                        identifier.indexOfFirst { i ->
                             name.takeUnless { it.isEmpty() }?.let { i == it }
                                 ?: (i == BuildConfig.VERSION_BUILD_TYPE)
                         }

@@ -158,14 +158,26 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         }
     }
 
-    fun getAvailableUpdateChannels(): List<String> = runBlocking(coroutineScope.coroutineContext) {
+    class UpdateChannel {
+        var identifier: String = ""
+        var displayName: String = ""
+    }
+
+    fun getAvailableUpdateChannels(): List<UpdateChannel> = runBlocking(coroutineScope.coroutineContext) {
         // Get update JSON
         val jObject = getUpdateJson() ?: return@runBlocking listOf()
-        val updateChannelList = mutableListOf<String>()
+        val updateChannelList = mutableListOf<UpdateChannel>()
 
         // Build list of update channels
         jObject.keys().forEach {
-            updateChannelList.add(it)
+            updateChannelList.add(UpdateChannel().apply {
+                identifier = it
+
+                val channelObj = jObject.getJSONObject(it)
+                if (channelObj.has("channel_name")) {
+                    displayName = channelObj.getString("channel_name")
+                }
+            })
         }
         return@runBlocking updateChannelList
     }
