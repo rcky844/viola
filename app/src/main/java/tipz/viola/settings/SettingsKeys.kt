@@ -35,6 +35,7 @@ object SettingsKeys {
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
     const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
     const val enableDownloads = "enableDownloads" /* INTEGER */
+    const val requireDownloadConformation = "requireDownloadConformation" /* INTEGER */
 
     /* Search & Startpage */
     /* TODO: Remove custom settings when support creating custom EngineObjects */

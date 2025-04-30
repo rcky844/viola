@@ -16,6 +16,13 @@
         android:dependency="downloads_enablement">
 
         <tipz.viola.settings.activity.MaterialSwitchPreference
+            android:key="download_confirmation_ask"
+            android:summary="@string/pref_download_confirmation_ask_summary"
+            android:title="@string/pref_download_confirmation_ask_title"
+            app:preferenceTag="requireDownloadConformation"
+            app:needReload="false" />
+
+        <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="close_app_after_download"
             android:summary="@string/pref_close_app_after_download_summary"
             android:title="@string/pref_close_app_after_download_title"

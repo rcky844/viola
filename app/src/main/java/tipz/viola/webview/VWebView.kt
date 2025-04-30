@@ -142,7 +142,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType
                 requestUrl = getRealUrl()
-                showDialog = true
+                showDialog = settingsPreference.getIntBool(SettingsKeys.requireDownloadConformation)
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!)
