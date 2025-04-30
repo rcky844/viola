@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.databinding.DialogEdittextBinding
-import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsSharedPreference
 
 class ListPickerAlertDialog(context: Context, settingsPreference: SettingsSharedPreference,
@@ -37,7 +36,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
 
                     if (useNamePreference) {
                         this@ListPickerAlertDialog.settingsPreference.setString(namePreference,
-                            SearchEngineEntries.getNameByIndex(checkedItem))
+                            nameList!![checkedItem])
                     } else {
                         this@ListPickerAlertDialog.settingsPreference.setInt(idPreference, checkedItem)
                     }
@@ -75,10 +74,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                             settingsPreference.setString(stringPreference!!,
                                 customInput.text.toString())
                         if (getUseNamePreference()) {
-                            settingsPreference.setString(
-                                namePreference,
-                                SearchEngineEntries.getNameByIndex(checkedItem)
-                            )
+                            settingsPreference.setString(namePreference, nameList!![checkedItem])
                         } else {
                             settingsPreference.setInt(idPreference, checkedItem)
                         }
