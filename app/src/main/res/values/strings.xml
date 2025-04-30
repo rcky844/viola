@@ -365,8 +365,8 @@
     <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
     <!-- Settings: Development: Console logging category -->
     <string name="pref_development_console_logging_category">Console logging</string>
-    <!-- Settings: Development: Always on console logging -->
-    <string name="pref_always_on_logging">Always-on logging</string>
+    <!-- Settings: Development: Persistent console logging -->
+    <string name="pref_always_on_logging">Persistent logging</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">Update channel</string>
 
