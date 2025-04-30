@@ -27,7 +27,9 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
 
             if (dialogTitleResId != 0) setTitle(dialogTitleResId)
             else setTitle(dialogTitle)
-            setSingleChoiceItems(nameList, checkedItem) { _: DialogInterface?, which: Int -> checkedItem = which }
+            setSingleChoiceItems(
+                displayList.takeUnless { it == null } ?: nameList, checkedItem
+            ) { _: DialogInterface?, which: Int -> checkedItem = which }
             setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                 if (customIndexEnabled && checkedItem == customIndex) createCustomDialog(checkedItem)
                 else {
@@ -91,6 +93,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
     class ListPickerObject {
         var preference: Preference? = null // Preference for this dialog
         var nameList: Array<String>? = null // Array list consisting of names of options
+        var displayList: Array<String>? = null // Array list consisting of display names of options
         var idPreference = "" // Preference key for storing IDs
         var namePreference = "" // Preference key for storing names
         var nameToIdFunction: (name: String) -> Int = this::stubNameToIdFunction
