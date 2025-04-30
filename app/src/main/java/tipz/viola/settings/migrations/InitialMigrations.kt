@@ -4,6 +4,7 @@
 package tipz.viola.settings.migrations
 
 import tipz.viola.BuildConfig
+import tipz.viola.download.DownloadClient
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 
@@ -12,6 +13,13 @@ class InitialMigrations(pref: SettingsSharedPreference) {
     init {
         // Initialize only protocol version 0, as it is defined as uninitialized
         if (pref.getInt(SettingsKeys.protocolVersion) == 0) {
+            // Downloads
+            pref.setInt(SettingsKeys.closeAppAfterDownload, 1)
+            pref.setString(SettingsKeys.downloadLocationDefault, DownloadClient.defaultInitialDownloadPath)
+            pref.setInt(SettingsKeys.downloadMgrMode, 0)
+            pref.setInt(SettingsKeys.enableDownloads, 1)
+            pref.setInt(SettingsKeys.requireDownloadConformation, 1)
+
             // Homepage
             pref.setInt(SettingsKeys.useHomePage, 1)
             pref.setString(SettingsKeys.homePageName, "brave")
@@ -26,8 +34,6 @@ class InitialMigrations(pref: SettingsSharedPreference) {
 
             // Miscellaneous
             pref.setInt(SettingsKeys.adServerId, 0)
-            pref.setInt(SettingsKeys.closeAppAfterDownload, 1)
-            pref.setInt(SettingsKeys.downloadMgrMode, 0)
             pref.setInt(SettingsKeys.enableHistoryStorage, 1)
             pref.setInt(SettingsKeys.isJavaScriptEnabled, 1)
             pref.setInt(SettingsKeys.enableAdBlock, 0)

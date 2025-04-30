@@ -3,6 +3,7 @@
 
 package tipz.viola.settings.migrations
 
+import tipz.viola.download.DownloadClient
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 
@@ -14,6 +15,11 @@ class FernandoMigrations(private val pref: SettingsSharedPreference) {
 
             // Search suggestions kill switch defaults
             pref.setInt(SettingsKeys.useSearchSuggestions, 1)
+
+            // Downloads preferences
+            pref.setInt(SettingsKeys.enableDownloads, 1)
+            pref.setInt(SettingsKeys.requireDownloadConformation, 1)
+            pref.setString(SettingsKeys.downloadLocationDefault, DownloadClient.defaultInitialDownloadPath)
         }
     }
 }
