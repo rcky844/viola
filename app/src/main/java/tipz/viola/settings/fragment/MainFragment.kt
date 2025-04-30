@@ -39,6 +39,10 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
             settingsActivity.openScreen(R.xml.preference_settings_downloads)
             true
         }
+        findPreference<Preference>(PREF_SCREEN_DEVELOPMENT)?.setOnPreferenceClickListener {
+            settingsActivity.openScreen(R.xml.preference_settings_development)
+            true
+        }
 
         findPreference<Preference>(PREF_CHECK_FOR_UPDATES)?.setOnPreferenceClickListener {
             UpdateService(settingsActivity, false).checkUpdates()

@@ -15,7 +15,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
-import android.provider.Settings
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -247,8 +246,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         // WebView Debugging
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setWebContentsDebuggingEnabled(Settings.Global.getInt(context.contentResolver,
-                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1)
+            setWebContentsDebuggingEnabled(
+                settingsPreference.getIntBool(SettingsKeys.remoteDebugging))
         }
 
         // Do Not Track request

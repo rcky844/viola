@@ -43,6 +43,10 @@
             android:title="@string/pref_send_save_data_title"
             app:preferenceTag="sendSaveData"
             app:needReload="true" />
+        <androidx.preference.Preference
+            android:key="development"
+            android:summary="@string/pref_main_development_summary"
+            android:title="@string/pref_main_development_title" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_software_updates">

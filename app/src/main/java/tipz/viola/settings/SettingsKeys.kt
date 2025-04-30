@@ -38,6 +38,9 @@ object SettingsKeys {
     const val enableDownloads = "enableDownloads" /* INTEGER */
     const val requireDownloadConformation = "requireDownloadConformation" /* INTEGER */
 
+    /* Development settings */
+    const val remoteDebugging = "remoteDebugging" /* STRING */
+
     /* Search & Startpage */
     /* TODO: Remove custom settings when support creating custom EngineObjects */
     const val homePageName = "homePageName" /* STRING */

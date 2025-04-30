@@ -13,6 +13,7 @@ import tipz.viola.R
 import tipz.viola.databinding.ActivitySettingsBinding
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.fragment.AppearanceFragment
+import tipz.viola.settings.fragment.DevelopmentFragment
 import tipz.viola.settings.fragment.DownloadsFragment
 import tipz.viola.settings.fragment.ExtPreferenceFragment
 import tipz.viola.settings.fragment.HomeFragment
@@ -86,6 +87,7 @@ class SettingsActivity : BaseActivity() {
             R.xml.preference_settings_privacy_security -> PrivacySecurityFragment()
             R.xml.preference_settings_appearance -> AppearanceFragment()
             R.xml.preference_settings_downloads -> DownloadsFragment()
+            R.xml.preference_settings_development -> DevelopmentFragment()
             else -> null
         }
 

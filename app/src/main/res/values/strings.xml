@@ -338,6 +338,7 @@
     <string name="pref_send_save_data_title">Data Saver</string>
     <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
+
     <!-- Settings: Downloads: Show download confirmation dialog title -->
     <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
@@ -346,6 +347,17 @@
     <string name="pref_close_app_after_download_title">Close after downloading external links</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Close the current tab after downloading an external link.</string>
+
+    <!-- Settings: Main - Advanced: Development settings title -->
+    <string name="pref_main_development_title">Development settings</string>
+    <!-- Settings: Main - Advanced: Development settings summary -->
+    <string name="pref_main_development_summary">Advanced features for experts</string>
+    <!-- Settings: Development: Remote debugging title -->
+    <string name="pref_remote_debugging_title">Remote debugging</string>
+    <!-- Settings: Development: Remote debugging summary -->
+    <string name="pref_remote_debugging_summary">To debug in-app WebViews, connect your device to a computer running Chromium browser and navigate to chrome://inspect.</string>
+    <!-- Settings: Development: Remote debugging summary debuggable -->
+    <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
 
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>
