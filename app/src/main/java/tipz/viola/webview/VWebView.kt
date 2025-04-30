@@ -129,12 +129,15 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 mimeType = vMimeType
                 requestUrl = getRealUrl()
                 showDialog = true
+                dialogPositiveButtonClickListener = {
+                    if (!canGoBack() && originalUrl == null
+                        && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
+                        activity.finish()
+                }
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl ?: "")
             onPageLoadProgressChanged(0)
-            if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
-                activity.finish()
         }
 
         // JavaScript interface
