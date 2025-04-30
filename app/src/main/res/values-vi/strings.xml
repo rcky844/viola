@@ -174,7 +174,7 @@
     <!-- Settings: Enable ad blocker title -->
     <string name="pref_ad_blocker_title">Bật chặn quảng cáo</string>
     <!-- Settings: Enable ad blocker summary -->
-    <string name="pref_ad_blocker_summary">Chặn các quảng cáo khó chịu.</string>
+    <string name="pref_ps_category_ad_blocking_summary">Chặn các quảng cáo khó chịu.</string>
     <!-- Settings: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
     <!-- Settings: Download ad blocker hosts title -->

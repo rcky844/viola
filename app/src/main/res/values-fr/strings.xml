@@ -174,7 +174,7 @@
     <!-- Settings: Enable ad blocker title -->
     <string name="pref_ad_blocker_title">Activer le bloqueur de publicités</string>
     <!-- Settings: Enable ad blocker summary -->
-    <string name="pref_ad_blocker_summary">Empêcher les publicités de vous distraire.</string>
+    <string name="pref_ps_category_ad_blocking_summary">Empêcher les publicités de vous distraire.</string>
     <!-- Settings: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
     <!-- Settings: Download ad blocker hosts title -->

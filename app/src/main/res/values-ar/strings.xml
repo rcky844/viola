@@ -174,7 +174,7 @@
     <!-- Settings: Enable ad blocker title -->
     <string name="pref_ad_blocker_title">تفعيل مانع الإعلانات</string>
     <!-- Settings: Enable ad blocker summary -->
-    <string name="pref_ad_blocker_summary">أوقف الإعلانات المزعجة من تشتيتك.</string>
+    <string name="pref_ps_category_ad_blocking_summary">أوقف الإعلانات المزعجة من تشتيتك.</string>
     <!-- Settings: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">مصدر قائمة منع الإعلانات</string>
     <!-- Settings: Download ad blocker hosts title -->

@@ -174,7 +174,7 @@
     <!-- Settings: Enable ad blocker title -->
     <string name="pref_ad_blocker_title">启用广告拦截器</string>
     <!-- Settings: Enable ad blocker summary -->
-    <string name="pref_ad_blocker_summary">拦截分散注意力而且烦人的广告。</string>
+    <string name="pref_ps_category_ad_blocking_summary">拦截分散注意力而且烦人的广告。</string>
     <!-- Settings: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">广告拦截器列表源</string>
     <!-- Settings: Download ad blocker hosts title -->
