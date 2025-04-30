@@ -209,6 +209,8 @@
     <string name="pref_main_appearance">Appearance</string>
     <!-- Settings: Main: Advanced category -->
     <string name="pref_main_category_advanced">Advanced</string>
+    <!-- Expandable toolbar: Downloads -->
+    <string name="pref_main_downloads">Downloads</string>
     <!-- Settings: Main: Software updates category -->
     <string name="pref_main_category_software_updates">Software updates</string>
     <!-- Settings: Main: Check for updates title -->

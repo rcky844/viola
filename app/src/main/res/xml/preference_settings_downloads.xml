@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <tipz.viola.settings.activity.MaterialSwitchPreference
+        android:key="close_app_after_download"
+        android:summary="@string/pref_close_app_after_download_summary"
+        android:title="@string/pref_close_app_after_download_title"
+        app:preferenceTag="closeAppAfterDownload"
+        app:needReload="false" />
+</androidx.preference.PreferenceScreen>

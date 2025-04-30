@@ -37,6 +37,11 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
             true
         }
 
+        findPreference<Preference>(PREF_SCREEN_DOWNLOADS)?.setOnPreferenceClickListener {
+            settingsActivity.openScreen(R.xml.preference_settings_downloads)
+            true
+        }
+
         findPreference<Preference>(PREF_CHECK_FOR_UPDATES)?.setOnPreferenceClickListener {
             UpdateService(settingsActivity, false).checkUpdates()
             true
@@ -90,6 +95,8 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
         private const val PREF_SCREEN_SEARCH = "search"
         private const val PREF_SCREEN_PRIVACY_SECURITY = "privacy_security"
         private const val PREF_SCREEN_APPEARANCE = "appearance"
+
+        private const val PREF_SCREEN_DOWNLOADS = "downloads"
 
         private const val PREF_CHECK_FOR_UPDATES = "check_for_updates"
         private const val PREF_UPDATE_CHANNEL = "update_channel"
