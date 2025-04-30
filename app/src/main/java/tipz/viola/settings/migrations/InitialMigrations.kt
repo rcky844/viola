@@ -7,12 +7,16 @@ import tipz.viola.BuildConfig
 import tipz.viola.download.DownloadClient
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
+import tipz.viola.webview.buss.BussUtils
 
 // For first start
 class InitialMigrations(pref: SettingsSharedPreference) {
     init {
         // Initialize only protocol version 0, as it is defined as uninitialized
         if (pref.getInt(SettingsKeys.protocolVersion) == 0) {
+            // Bussin WebX
+            pref.setString(SettingsKeys.bussApiUrl, BussUtils.defaultApiUrl)
+
             // Downloads
             pref.setInt(SettingsKeys.closeAppAfterDownload, 1)
             pref.setString(SettingsKeys.downloadLocationDefault, DownloadClient.defaultInitialDownloadPath)

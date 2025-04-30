@@ -348,6 +348,8 @@
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
     <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
+    <!-- Settings: Web features: Bussin WebX API Picker title -->
+    <string name="pref_webx_picker_title">Buss API URL</string>
 
     <!-- Settings: Main - Advanced: Development settings title -->
     <string name="pref_main_development_title">Development settings</string>

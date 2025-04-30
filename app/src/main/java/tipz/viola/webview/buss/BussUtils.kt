@@ -19,8 +19,9 @@ object BussUtils {
     const val LOG_TAG = "BussUtils"
 
     private val bussPrefix = "buss://"
-    private val apiUrl = "https://api.buss.lol"
     private val githubPrefix = "http(s)?://github.com/".toRegex()
+
+    const val defaultApiUrl = "https://api.buss.lol"
 
     fun sendAndRequestResponse(view: VWebView, url: String): Boolean {
         if (!view.settingsPreference.getIntBool(SettingsKeys.enableWebX)) return false
@@ -32,7 +33,7 @@ object BussUtils {
 
         CoroutineScope(Dispatchers.IO).launch {
             var apiUrl = view.settingsPreference.getString(SettingsKeys.bussApiUrl)
-            if (apiUrl.trim().isEmpty()) apiUrl = this@BussUtils.apiUrl
+            if (apiUrl.trim().isEmpty()) apiUrl = this@BussUtils.defaultApiUrl
 
             val requestUrl = "$apiUrl/domain/${split}"
             val data = MiniDownloadHelper.startDownload(requestUrl).response
