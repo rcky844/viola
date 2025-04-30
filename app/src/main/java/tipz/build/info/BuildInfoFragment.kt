@@ -37,10 +37,6 @@ class BuildInfoFragment : PreferenceFragmentCompat() {
             needLoad(ProjectUrls.sourceUrl)
             true
         }
-
-        findPreference<Preference>(PREF_BUILD_NUMBER)?.setSummary(
-            BuildInfo().getProductBuildTag() ?: ""
-        )
     }
 
     private fun needLoad(url: String) {
@@ -54,6 +50,5 @@ class BuildInfoFragment : PreferenceFragmentCompat() {
         private const val PREF_WEBSITE = "website"
         private const val PREF_FEEDBACK = "feedback"
         private const val PREF_SOURCE_CODE = "source_code"
-        private const val PREF_BUILD_NUMBER = "build_number"
     }
 }

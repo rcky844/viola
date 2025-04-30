@@ -5,6 +5,7 @@ package tipz.viola.settings.fragment
 
 import android.os.Bundle
 import androidx.preference.Preference
+import tipz.build.info.BuildInfo
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
@@ -50,10 +51,15 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
             summary = settingsPreference.getString(SettingsKeys.updateChannelName)
                 .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }
         }
+
+        findPreference<Preference>(PREF_BUILD_NUMBER)?.setSummary(
+            BuildInfo().getProductBuildTag() ?: ""
+        )
     }
 
     companion object {
         private const val PREF_REMOTE_DEBUGGING = "remote_debugging"
         private const val PREF_UPDATE_CHANNEL = "update_channel"
+        private const val PREF_BUILD_NUMBER = "build_number"
     }
 }

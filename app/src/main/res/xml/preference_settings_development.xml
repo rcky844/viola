@@ -34,5 +34,8 @@
             android:key="update_channel"
             android:summary=""
             android:title="@string/pref_update_channel_title" />
+        <androidx.preference.Preference
+            android:key="build_number"
+            android:title="@string/buildinfo_pref_build_number_title" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>
