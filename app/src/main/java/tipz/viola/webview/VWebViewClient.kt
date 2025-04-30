@@ -4,7 +4,6 @@
 package tipz.viola.webview
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
@@ -25,10 +24,11 @@ import tipz.viola.databinding.DialogAuthBinding
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView.PageLoadState
+import tipz.viola.webview.activity.BrowserActivity
 import java.io.ByteArrayInputStream
 
 open class VWebViewClient(
-    private val context: Context, private val vWebView: VWebView,
+    private val activity: VWebViewActivity, private val vWebView: VWebView,
     private val adServersHandler: AdServersClient
 ) : WebViewClientCompat() {
     private val LOG_TAG = "VWebViewClient"
@@ -40,7 +40,7 @@ open class VWebViewClient(
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         vWebView.onPageInformationUpdated(PageLoadState.PAGE_STARTED, url)
-        vWebView.checkHomePageVisibility()
+        if (activity is BrowserActivity) activity.checkHomePageVisibility()
     }
 
     override fun onPageFinished(view: WebView, url: String) {
@@ -73,14 +73,14 @@ open class VWebViewClient(
         view: WebView, handler: HttpAuthHandler,
         host: String, realm: String
     ) {
-        val binding: DialogAuthBinding = DialogAuthBinding.inflate(LayoutInflater.from(context))
+        val binding: DialogAuthBinding = DialogAuthBinding.inflate(LayoutInflater.from(activity))
         val editView = binding.root
 
         val usernameEditText = binding.usernameEditText
         val passwordEditText = binding.passwordEditText
-        binding.message.text = context.getString(R.string.dialog_auth_message, vWebView.url)
+        binding.message.text = activity.getString(R.string.dialog_auth_message, vWebView.url)
 
-        MaterialAlertDialogBuilder(context)
+        MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.dialog_auth_title)
             .setView(editView)
             .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -93,7 +93,7 @@ open class VWebViewClient(
     }
 
     private fun getSslDialog(error: Int): MaterialAlertDialogBuilder {
-        val dialog = MaterialAlertDialogBuilder(context)
+        val dialog = MaterialAlertDialogBuilder(activity)
         @StringRes val stringResId = when (error) {
             SslError.SSL_DATE_INVALID -> R.string.ssl_certificate_date_invalid
             SslError.SSL_INVALID -> R.string.ssl_certificate_invalid
@@ -107,9 +107,9 @@ open class VWebViewClient(
 
         dialog.setTitle(R.string.ssl_certificate_error_dialog_title)
             .setMessage(
-                context.resources.getString(
+                activity.resources.getString(
                     R.string.ssl_certificate_error_dialog_message,
-                    context.resources.getString(stringResId)
+                    activity.resources.getString(stringResId)
                 )
             )
         return dialog
