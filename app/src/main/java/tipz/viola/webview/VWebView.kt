@@ -145,7 +145,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 showDialog = settingsPreference.getIntBool(SettingsKeys.requireDownloadConformation)
             })
 
-            onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!)
+            onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl ?: "")
             onPageLoadProgressChanged(0)
             if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                 activity.finish()
