@@ -35,7 +35,10 @@
             android:summary=""
             android:title="@string/pref_update_channel_title" />
         <androidx.preference.Preference
-            android:key="build_number"
-            android:title="@string/buildinfo_pref_build_number_title" />
+            android:key="build_info"
+            android:title="@string/buildinfo_pref_build_info_title" />
+        <androidx.preference.Preference
+            android:key="protocol_info"
+            android:title="@string/buildinfo_pref_protocol_info_title" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

@@ -3,6 +3,7 @@
 
 package tipz.viola.settings.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.preference.Preference
 import tipz.build.info.BuildInfo
@@ -12,8 +13,11 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.activity.ListPickerAlertDialog
 import tipz.viola.settings.activity.MaterialSwitchPreference
 import tipz.viola.utils.UpdateService
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development_title) {
+    @SuppressLint("SimpleDateFormat")
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_development, rootKey)
 
@@ -52,14 +56,31 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
                 .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }
         }
 
-        findPreference<Preference>(PREF_BUILD_NUMBER)?.setSummary(
-            BuildInfo().getProductBuildTag() ?: ""
+        findPreference<Preference>(PREF_BUILD_INFO)?.setSummary(
+            BuildInfo().run {
+                resources.getString(R.string.buildinfo_pref_build_info_summary,
+                    getProductBuildTag() ?: "",
+                        productBuildBranch, productBuildGitRevision,
+                    SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").format(Date(productBuildTimestamp))
+                )
+            }
+        )
+
+        findPreference<Preference>(PREF_PROTOCOL_INFO)?.setSummary(
+            settingsPreference.run {
+                resources.getString(R.string.buildinfo_pref_protocol_info_summary,
+                    getInt(SettingsKeys.protocolVersion),
+                    getInt(SettingsKeys.favApi),
+                    getInt(SettingsKeys.historyApi)
+                )
+            }
         )
     }
 
     companion object {
         private const val PREF_REMOTE_DEBUGGING = "remote_debugging"
         private const val PREF_UPDATE_CHANNEL = "update_channel"
-        private const val PREF_BUILD_NUMBER = "build_number"
+        private const val PREF_BUILD_INFO = "build_info"
+        private const val PREF_PROTOCOL_INFO = "protocol_info"
     }
 }
