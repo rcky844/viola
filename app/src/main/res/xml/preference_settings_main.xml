@@ -25,12 +25,9 @@
             android:key="downloads"
             android:title="@string/pref_main_downloads"
             app:preferenceTag="enableDownloads" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
-            android:key="javascript"
-            android:summary="@string/pref_enable_javascript_summary"
-            android:title="@string/pref_enable_javascript_title"
-            app:preferenceTag="isJavaScriptEnabled"
-            app:needReload="true" />
+        <androidx.preference.Preference
+            android:key="web_features"
+            android:title="@string/pref_main_web_features" />
         <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="use_custom_tabs"
             android:summary="@string/pref_use_custom_tabs_summary"

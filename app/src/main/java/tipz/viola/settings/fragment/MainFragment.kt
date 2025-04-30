@@ -37,6 +37,10 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
             settingsActivity.openScreen(R.xml.preference_settings_downloads)
             true
         }
+        findPreference<Preference>(PREF_SCREEN_WEB_FEATURES)?.setOnPreferenceClickListener {
+            settingsActivity.openScreen(R.xml.preference_settings_web_features)
+            true
+        }
         findPreference<Preference>(PREF_SCREEN_DEVELOPMENT)?.setOnPreferenceClickListener {
             settingsActivity.openScreen(R.xml.preference_settings_development)
             true
@@ -70,6 +74,7 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
         private const val PREF_SCREEN_APPEARANCE = "appearance"
 
         private const val PREF_SCREEN_DOWNLOADS = "downloads"
+        private const val PREF_SCREEN_WEB_FEATURES = "web_features"
         private const val PREF_SCREEN_DEVELOPMENT = "development"
 
         private const val PREF_CHECK_FOR_UPDATES = "check_for_updates"
