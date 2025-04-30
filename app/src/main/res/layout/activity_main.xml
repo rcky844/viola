@@ -75,6 +75,19 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <tipz.viola.webview.activity.components.FindInPageView
+        android:id="@+id/findInPageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:elevation="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar" />
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/webviewContainer"
         android:layout_width="0dp"

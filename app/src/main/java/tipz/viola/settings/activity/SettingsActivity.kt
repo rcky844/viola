@@ -13,11 +13,14 @@ import tipz.viola.R
 import tipz.viola.databinding.ActivitySettingsBinding
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.fragment.AppearanceFragment
+import tipz.viola.settings.fragment.DevelopmentFragment
+import tipz.viola.settings.fragment.DownloadsFragment
 import tipz.viola.settings.fragment.ExtPreferenceFragment
 import tipz.viola.settings.fragment.HomeFragment
 import tipz.viola.settings.fragment.MainFragment
 import tipz.viola.settings.fragment.PrivacySecurityFragment
 import tipz.viola.settings.fragment.SearchFragment
+import tipz.viola.settings.fragment.WebFeaturesFragment
 import tipz.viola.webview.activity.BaseActivity
 
 
@@ -84,6 +87,9 @@ class SettingsActivity : BaseActivity() {
             R.xml.preference_settings_search -> SearchFragment()
             R.xml.preference_settings_privacy_security -> PrivacySecurityFragment()
             R.xml.preference_settings_appearance -> AppearanceFragment()
+            R.xml.preference_settings_downloads -> DownloadsFragment()
+            R.xml.preference_settings_web_features -> WebFeaturesFragment()
+            R.xml.preference_settings_development -> DevelopmentFragment()
             else -> null
         }
 

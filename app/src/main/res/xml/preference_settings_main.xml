@@ -21,12 +21,13 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_advanced">
-        <tipz.viola.settings.activity.MaterialSwitchPreference
-            android:key="javascript"
-            android:summary="@string/pref_enable_javascript_summary"
-            android:title="@string/pref_enable_javascript_title"
-            app:preferenceTag="isJavaScriptEnabled"
-            app:needReload="true" />
+        <tipz.viola.settings.activity.SummaryOnOffPreference
+            android:key="downloads"
+            android:title="@string/pref_main_downloads"
+            app:preferenceTag="enableDownloads" />
+        <androidx.preference.Preference
+            android:key="web_features"
+            android:title="@string/pref_main_web_features" />
         <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="use_custom_tabs"
             android:summary="@string/pref_use_custom_tabs_summary"
@@ -39,26 +40,17 @@
             android:title="@string/pref_send_save_data_title"
             app:preferenceTag="sendSaveData"
             app:needReload="true" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
-            android:key="close_app_after_download"
-            android:summary="@string/pref_close_app_after_download_summary"
-            android:title="@string/pref_close_app_after_download_title"
-            app:preferenceTag="closeAppAfterDownload"
-            app:needReload="false" />
+        <androidx.preference.Preference
+            android:key="development"
+            android:summary="@string/pref_main_development_summary"
+            android:title="@string/pref_main_development_title" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_software_updates">
+    <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_updates_version">
         <androidx.preference.Preference
             android:key="check_for_updates"
             android:summary="@string/pref_check_for_updates_summary"
             android:title="@string/pref_check_for_updates_title" />
-        <androidx.preference.Preference
-            android:key="update_channel"
-            android:summary=""
-            android:title="@string/pref_update_channel_title" />
-    </androidx.preference.PreferenceCategory>
-
-    <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_version">
         <androidx.preference.Preference
             android:key="about"
             android:summary=""

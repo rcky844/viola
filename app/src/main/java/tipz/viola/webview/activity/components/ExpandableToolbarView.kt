@@ -175,6 +175,8 @@ class ExpandableToolbarView(
             ToolBarItem(R.string.toolbar_expandable_favorites, R.drawable.favorites),
             ToolBarItem(R.string.toolbar_expandable_history, R.drawable.history),
             ToolBarItem(R.string.toolbar_expandable_viewport, R.drawable.smartphone),
+            ToolBarItem(R.string.toolbar_expandable_find, R.drawable.search,
+                minApi = Build.VERSION_CODES.JELLY_BEAN),
             ToolBarItem(R.string.toolbar_expandable_favorites_add, R.drawable.favorites_add),
             ToolBarItem(R.string.toolbar_expandable_downloads, R.drawable.download),
             ToolBarItem(R.string.toolbar_expandable_translate, R.drawable.translate),

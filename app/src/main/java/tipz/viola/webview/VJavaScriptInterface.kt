@@ -13,8 +13,8 @@ class VJavaScriptInterface(private val activity: VWebViewActivity) {
 
     // Internal DownloadProvider
     @JavascriptInterface
-    fun getBase64FromBlobData(uriString: String, mimeType: String) =
-        InternalDownloadProvider.getBase64FromBlobData(activity, uriString, mimeType)
+    fun getBase64FromBlobData(downloadPath: String, uriString: String, mimeType: String) =
+        InternalDownloadProvider.getBase64FromBlobData(activity, downloadPath, uriString, mimeType)
 
     companion object {
         val LOG_TAG = "VJavaScriptInterface"

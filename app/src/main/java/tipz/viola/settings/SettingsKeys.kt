@@ -26,6 +26,7 @@ object SettingsKeys {
 
     /* Buss */
     const val bussApiUrl = "bussApiUrl" /* STRING */
+    const val enableWebX = "enableWebX" /* INTEGER */
 
     /* Custom Tabs */
     const val useCustomTabs = "useCustomTabs" /* INTEGER */
@@ -33,7 +34,14 @@ object SettingsKeys {
     /* Download Manager */
     const val downloadApi = "downloadApi" /* INTEGER */
     const val closeAppAfterDownload = "closeAppAfterDownload" /* INTEGER */
+    const val downloadLocationDefault = "downloadLocationDefault" /* STRING */
     const val downloadMgrMode = "downloadMgrMode" /* INTEGER */
+    const val enableDownloads = "enableDownloads" /* INTEGER */
+    const val requireDownloadConformation = "requireDownloadConformation" /* INTEGER */
+
+    /* Development settings */
+    const val remoteDebugging = "remoteDebugging" /* STRING */
+    const val alwaysOnLogging = "alwaysOnLogging" /* INTEGER */
 
     /* Search & Startpage */
     /* TODO: Remove custom settings when support creating custom EngineObjects */

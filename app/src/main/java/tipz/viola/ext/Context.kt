@@ -3,6 +3,7 @@
 
 package tipz.viola.ext
 
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -86,3 +87,7 @@ fun Context.getMinTouchTargetSize(): Int {
     )
     return attrs.getDimensionPixelSize(0, 0)
 }
+
+@SuppressLint("DiscouragedApi")
+fun Context.getFrameworkIdentifier(name: String): Int =
+    resources.getIdentifier(name, "string", "android")

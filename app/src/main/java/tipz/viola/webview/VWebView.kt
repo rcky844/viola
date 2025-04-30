@@ -15,7 +15,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
-import android.provider.Settings
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -127,6 +126,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 MIME Type: $vMimeType
             """.trimIndent())
 
+            if (!settingsPreference.getIntBool(SettingsKeys.enableDownloads)) {
+                Log.i(LOG_TAG, "Downloads disabled by user, request dropped.")
+                return@setDownloadListener
+            }
+
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
                 ActivityCompat.requestPermissions(activity,
@@ -137,13 +141,16 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 contentDisposition = vContentDisposition
                 mimeType = vMimeType
                 requestUrl = getRealUrl()
-                showDialog = true
+                showDialog = settingsPreference.getIntBool(SettingsKeys.requireDownloadConformation)
+                dialogPositiveButtonClickListener = {
+                    if (!canGoBack() && originalUrl == null
+                        && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
+                        activity.finish()
+                }
             })
 
-            onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl!!)
+            onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl ?: "")
             onPageLoadProgressChanged(0)
-            if (!canGoBack() && originalUrl == null && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
-                activity.finish()
         }
 
         // JavaScript interface
@@ -183,7 +190,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Ad Server Hosts
         adServersHandler = AdServersClient(context, settingsPreference)
 
-        this.webViewClient = VWebViewClient(context, this, adServersHandler)
+        this.webViewClient = VWebViewClient(activity, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(activity, this)
         if (WebkitCompat.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE)) {
             WebViewCompat.setWebViewRenderProcessClient(
@@ -239,8 +246,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         // WebView Debugging
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setWebContentsDebuggingEnabled(Settings.Global.getInt(context.contentResolver,
-                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1)
+            setWebContentsDebuggingEnabled(
+                settingsPreference.getIntBool(SettingsKeys.remoteDebugging))
         }
 
         // Do Not Track request
@@ -251,6 +258,12 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         // Data Saver
         requestHeaders["Save-Data"] = settingsPreference.getIntOnOff(SettingsKeys.sendSaveData)
+
+        // Always-on logging
+        val alwaysOnLogging = settingsPreference.getIntBool(SettingsKeys.alwaysOnLogging)
+        if (!(consoleLogging && !alwaysOnLogging)) {
+            consoleLogging = alwaysOnLogging
+        }
 
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED) {
@@ -632,14 +645,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         var iconView: AppCompatImageView? = null
         var enableDesktop = false // Defaults to true with UserAgentMode.DESKTOP
         var noReload = false
-    }
-
-    fun checkHomePageVisibility() {
-        if (activity is BrowserActivity) {
-            return (activity as BrowserActivity).checkHomePageVisibility()
-        } else {
-            return
-        }
     }
 
     fun loadHomepage(useStartPage: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {

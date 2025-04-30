@@ -6,7 +6,9 @@ package tipz.viola.download
 import android.content.DialogInterface
 import android.os.Environment
 import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.util.Log
+import android.widget.TextView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,10 @@ class DownloadClient(private val context: Application) {
     private val downloadScope = CoroutineScope(Dispatchers.IO)
     var drohaClient: DrohaClient = DrohaClient(context)
     private var currentTaskId = 0
+
+    fun defaultDownloadPath() = settingsPreference.getString(SettingsKeys.downloadLocationDefault).let {
+        if (File(it).exists()) it else defaultInitialDownloadPath
+    }
 
     /* Private methods */
     private fun isProviderCapable(downloadObject: Droha,
@@ -71,7 +77,7 @@ class DownloadClient(private val context: Application) {
             // Set-up for download provider
             it.vWebView = vWebView
             if (vWebView != null) it.userAgent = vWebView!!.webSettings.userAgentString
-            if (it.downloadPath == null) it.downloadPath = defaultDownloadPath
+            if (it.downloadPath == null) it.downloadPath = defaultDownloadPath()
             provider.resolveFilename(it)
 
             // Start download
@@ -81,24 +87,36 @@ class DownloadClient(private val context: Application) {
                 commitToDroha(it) // Commit to Droha
             }
 
-            if (it.showDialog)
+            if (it.showDialog) {
+                val supportExternalDownload =
+                    provider.javaClass == AndroidDownloadProvider::class.java
                 withContext(Dispatchers.Main) {
-                    MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
+                    val dialog = MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
                         .setTitle(string.downloads_dialog_title)
                         .setMessage(Html.fromHtml(context.getString(
                             // Check for duplication
-                            if (File(defaultDownloadPath, it.filename!!).exists())
+                            if (File(defaultDownloadPath(), it.filename!!).exists())
                                 string.downloads_dialog_duplicated_message
                             else string.downloads_dialog_message,
-                            "<b>${it.filename}</b>")
-                        ))
+                            if (supportExternalDownload)
+                                "<b><a href=\"${it.uriString}\">${it.filename}</a></b>"
+                            else "<b>${it.filename}</b>"
+                        )))
                         .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                             downloadActions()
+                            it.dialogPositiveButtonClickListener()
                         }
                         .setNegativeButton(android.R.string.cancel, null)
-                        .create().show()
+                        .create()
+                    dialog.show()
+                    dialog.findViewById<TextView>(android.R.id.message)!!.run {
+                        isClickable = true
+                        movementMethod = LinkMovementMethod.getInstance()
+                    }
                 }
-            else downloadActions()
+            } else {
+                downloadActions()
+            }
         }
     }
 
@@ -115,7 +133,7 @@ class DownloadClient(private val context: Application) {
     }
 
     companion object {
-        val defaultDownloadPath =
+        val defaultInitialDownloadPath =
             "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)}/"
     }
 }
