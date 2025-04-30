@@ -151,6 +151,8 @@
     <string name="toolbar_expandable_history">History</string>
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">Viewing mode</string>
+    <!-- Expandable toolbar: Find in page -->
+    <string name="toolbar_expandable_find">Find in page</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">Add to favorites</string>
     <!-- Expandable toolbar: Translate -->

@@ -71,6 +71,7 @@ import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.activity.components.AddressBarView
 import tipz.viola.webview.activity.components.ExpandableToolbarView
 import tipz.viola.webview.activity.components.FavIconView
+import tipz.viola.webview.activity.components.FindInPageView
 import tipz.viola.webview.activity.components.FullscreenFloatingActionButton
 import tipz.viola.webview.activity.components.LocalNtpPageView
 import tipz.viola.webview.activity.components.PopupMaterialAlertDialogBuilder
@@ -93,6 +94,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var iconHashClient: IconHashClient
     private lateinit var localNtpPageView: LocalNtpPageView
     private lateinit var toolbarView: ToolbarView
+    private lateinit var findInPageView: FindInPageView
     private lateinit var expandableToolbarView: ExpandableToolbarView
     private lateinit var favicon: FavIconView
     private lateinit var addressBar: AddressBarView
@@ -122,6 +124,7 @@ class BrowserActivity : VWebViewActivity() {
         webviewContainer = binding.webviewContainer
         localNtpPageView = binding.localNtpPage
         toolbarView = binding.toolbarView
+        findInPageView = binding.findInPageView
         upRightFab = binding.upRightFab
         addressBar = binding.addressBar
         favicon = binding.favicon
@@ -266,6 +269,16 @@ class BrowserActivity : VWebViewActivity() {
         upRightFab.setOnClickListener {
             if (progressBar.progress > 0) webview.stopLoading()
             if (progressBar.progress == 0) webview.reload()
+        }
+
+        // Setup find in page
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            webview.setFindListener { activeMatchOrdinal, numberOfMatches, _ ->
+                findInPageView.searchPositionInfo = Pair(activeMatchOrdinal, numberOfMatches)
+            }
+            findInPageView.onStartSearchCallback = { webview.findAllAsync(it) }
+            findInPageView.onClearSearchCallback = { webview.clearMatches() }
+            findInPageView.onSearchPositionChangeCallback = { webview.findNext(it) }
         }
 
         // For legacy compatibility
@@ -545,6 +558,10 @@ class BrowserActivity : VWebViewActivity() {
                     }
                     .setNegativeButton(android.R.string.cancel, null)
                     .create().show()
+            }
+
+            R.drawable.search -> {
+                findInPageView.expand(false)
             }
         }
         return true // Close ToolBar if not interrupted
