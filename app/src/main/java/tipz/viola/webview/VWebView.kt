@@ -259,6 +259,12 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Data Saver
         requestHeaders["Save-Data"] = settingsPreference.getIntOnOff(SettingsKeys.sendSaveData)
 
+        // Always-on logging
+        val alwaysOnLogging = settingsPreference.getIntBool(SettingsKeys.alwaysOnLogging)
+        if (!(consoleLogging && !alwaysOnLogging)) {
+            consoleLogging = alwaysOnLogging
+        }
+
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED) {
             historyClient = HistoryClient(context)

@@ -40,6 +40,7 @@ object SettingsKeys {
 
     /* Development settings */
     const val remoteDebugging = "remoteDebugging" /* STRING */
+    const val alwaysOnLogging = "alwaysOnLogging" /* INTEGER */
 
     /* Search & Startpage */
     /* TODO: Remove custom settings when support creating custom EngineObjects */
