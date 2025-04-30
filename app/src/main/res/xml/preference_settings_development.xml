@@ -26,4 +26,13 @@
             android:summaryOff="@string/text_off"
             app:preferenceTag="alwaysOnLogging" />
     </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/pref_main_category_updates_version">
+
+        <androidx.preference.Preference
+            android:key="update_channel"
+            android:summary=""
+            android:title="@string/pref_update_channel_title" />
+    </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

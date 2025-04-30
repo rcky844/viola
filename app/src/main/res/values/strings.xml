@@ -219,16 +219,12 @@
     <string name="pref_main_category_advanced">Advanced</string>
     <!-- Expandable toolbar: Downloads -->
     <string name="pref_main_downloads">Downloads</string>
-    <!-- Settings: Main: Software updates category -->
-    <string name="pref_main_category_software_updates">Software updates</string>
+    <!-- Settings: Main: Updates and version category -->
+    <string name="pref_main_category_updates_version">Updates and version</string>
     <!-- Settings: Main: Check for updates title -->
     <string name="pref_check_for_updates_title">Check for Updates</string>
     <!-- Settings: Main: Check for updates summary -->
     <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
-    <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Update channel</string>
-    <!-- Settings: Main: Version category -->
-    <string name="pref_main_category_version">Version</string>
     <!-- Settings: Main: About title -->
     <string name="pref_about_title">About</string>
 
@@ -362,6 +358,8 @@
     <string name="pref_development_console_logging_category">Console logging</string>
     <!-- Settings: Development: Always on console logging -->
     <string name="pref_always_on_logging">Always-on logging</string>
+    <!-- Settings: Main: Select update channel title -->
+    <string name="pref_update_channel_title">Update channel</string>
 
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>

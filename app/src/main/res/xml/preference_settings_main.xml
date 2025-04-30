@@ -49,18 +49,11 @@
             android:title="@string/pref_main_development_title" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_software_updates">
+    <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_updates_version">
         <androidx.preference.Preference
             android:key="check_for_updates"
             android:summary="@string/pref_check_for_updates_summary"
             android:title="@string/pref_check_for_updates_title" />
-        <androidx.preference.Preference
-            android:key="update_channel"
-            android:summary=""
-            android:title="@string/pref_update_channel_title" />
-    </androidx.preference.PreferenceCategory>
-
-    <androidx.preference.PreferenceCategory android:title="@string/pref_main_category_version">
         <androidx.preference.Preference
             android:key="about"
             android:summary=""

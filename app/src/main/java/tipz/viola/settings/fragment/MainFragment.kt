@@ -9,8 +9,6 @@ import androidx.preference.Preference
 import tipz.build.info.BuildInfoActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
-import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.activity.ListPickerAlertDialog
 import tipz.viola.settings.activity.SummaryOnOffPreference
 import tipz.viola.utils.UpdateService
 
@@ -49,32 +47,6 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
             true
         }
 
-        findPreference<Preference>(PREF_UPDATE_CHANNEL)?.run {
-            val availableUpdateChannels = UpdateService(settingsActivity, false)
-                .getAvailableUpdateChannels().toTypedArray()
-
-            setOnPreferenceClickListener {
-                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
-                    preference = it
-                    nameList = availableUpdateChannels
-                    namePreference = SettingsKeys.updateChannelName
-                    nameToIdFunction = { name ->
-                        availableUpdateChannels.indexOfFirst { i ->
-                            name.takeUnless { it.isEmpty() }?.let { i == it }
-                                ?: (i == BuildConfig.VERSION_BUILD_TYPE)
-                        }
-                    }
-                    dialogTitleResId = R.string.pref_update_channel_title
-                }
-
-                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
-                    .create().show()
-                true
-            }
-            summary = settingsPreference.getString(SettingsKeys.updateChannelName)
-                .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }
-        }
-
         findPreference<Preference>(PREF_ABOUT)?.run {
             setOnPreferenceClickListener {
                 val intent = Intent(context, BuildInfoActivity::class.java)
@@ -101,7 +73,6 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
         private const val PREF_SCREEN_DEVELOPMENT = "development"
 
         private const val PREF_CHECK_FOR_UPDATES = "check_for_updates"
-        private const val PREF_UPDATE_CHANNEL = "update_channel"
         private const val PREF_ABOUT = "about"
     }
 }
