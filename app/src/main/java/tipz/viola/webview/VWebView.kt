@@ -174,7 +174,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Ad Server Hosts
         adServersHandler = AdServersClient(context, settingsPreference)
 
-        this.webViewClient = VWebViewClient(context, this, adServersHandler)
+        this.webViewClient = VWebViewClient(activity, this, adServersHandler)
         this.webChromeClient = VChromeWebClient(activity, this)
         if (WebkitCompat.isFeatureSupported(WebViewFeature.WEB_VIEW_RENDERER_CLIENT_BASIC_USAGE)) {
             WebViewCompat.setWebViewRenderProcessClient(
@@ -598,14 +598,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         var iconView: AppCompatImageView? = null
         var enableDesktop = false // Defaults to true with UserAgentMode.DESKTOP
         var noReload = false
-    }
-
-    fun checkHomePageVisibility() {
-        if (activity is BrowserActivity) {
-            return (activity as BrowserActivity).checkHomePageVisibility()
-        } else {
-            return
-        }
     }
 
     fun loadHomepage(useStartPage: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
