@@ -4,11 +4,14 @@
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.preference.PreferenceCategory android:title="@string/pref_ps_category_ad_blocking">
+    <androidx.preference.PreferenceCategory
+        android:summary="@string/pref_ps_category_ad_blocking_summary"
+        android:title="@string/pref_ps_category_ad_blocking_title">
+
         <tipz.viola.settings.activity.MaterialSwitchPreference
             android:key="adBlocker"
-            android:summary="@string/pref_ad_blocker_summary"
-            android:title="@string/pref_ad_blocker_title"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off"
             app:preferenceTag="enableAdBlock"
             app:needReload="true" />
         <androidx.preference.Preference
