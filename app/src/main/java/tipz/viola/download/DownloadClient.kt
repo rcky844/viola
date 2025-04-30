@@ -104,6 +104,7 @@ class DownloadClient(private val context: Application) {
                         )))
                         .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                             downloadActions()
+                            it.dialogPositiveButtonClickListener()
                         }
                         .setNegativeButton(android.R.string.cancel, null)
                         .create()

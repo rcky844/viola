@@ -26,6 +26,9 @@ class Droha {
     @Ignore
     internal var vWebView: VWebView? = null
 
+    @Ignore
+    internal var dialogPositiveButtonClickListener: () -> Unit = {}
+
     /* Download task specifics / Database */
     @PrimaryKey(autoGenerate = true)
     var id = 0
