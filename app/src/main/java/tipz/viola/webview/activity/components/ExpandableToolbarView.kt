@@ -46,6 +46,7 @@ class ExpandableToolbarView(
 ) : LinearLayoutCompat(context, attrs) {
     private val activity = context as BrowserActivity
     private val recyclerView = RecyclerView(context)
+    private val viewsList = mutableMapOf<Int, ToolbarItemsView>()
 
     data class ToolBarItem(@StringRes val name: Int, @DrawableRes val drawable: Int,
                            val minApi: Int = 1, val enabled: Boolean = true)
@@ -109,6 +110,11 @@ class ExpandableToolbarView(
         recyclerView.adapter = ToolbarItemsAdapter(this, toolsBarExpandableItemList)
     }
 
+    fun setItemEnabled(@DrawableRes drawable: Int, enabled: Boolean) {
+        val index = toolsBarExpandableItemList.indexOfFirst { drawable == it.drawable }
+        viewsList[index]?.setItemEnabled(enabled)
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -145,7 +151,7 @@ class ExpandableToolbarView(
 
         class ViewHolder(binding: TemplateIconDescriptionItemBinding)
             : RecyclerView.ViewHolder(binding.root) {
-            val itemBox: LinearLayoutCompat = binding.root
+            val itemBox: ToolbarItemsView = binding.root
             val imageView: AppCompatImageView = binding.imageView
             val textView: AppCompatTextView = binding.textView
         }
@@ -178,6 +184,9 @@ class ExpandableToolbarView(
                 holder.itemBox.setOnLongClickListener { true }
                 ImageViewCompat.setImageTintList(holder.imageView, ColorStateList.valueOf(Color.LTGRAY))
             }
+
+            expandableToolbarView.viewsList[position] = holder.itemBox
+            expandableToolbarView.activity.doExpandableToolbarStateCheck(itemsList[position].drawable)
         }
 
         override fun getItemViewType(position: Int): Int {

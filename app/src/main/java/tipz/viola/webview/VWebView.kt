@@ -517,6 +517,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
             PageLoadState.PAGE_FINISHED -> {
                 onPageLoadProgressChanged(0)
+                activity.onPageFinished()
                 activity.onFaviconProgressUpdated(false)
                 activity.onSslCertificateUpdated()
                 activity.swipeRefreshLayout.setRefreshing(false)
