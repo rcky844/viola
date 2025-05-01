@@ -26,6 +26,6 @@ class HistoryClient(context: Context) : BrohaClient(context, "history") {
     }
 
     companion object {
-        private const val LATEST_API = 1
+        private const val LATEST_API = 2
     }
 }

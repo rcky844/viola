@@ -216,7 +216,7 @@ class ListInterfaceActivity : BaseActivity() {
                 holder.url.text = Uri.parse(url ?: "").host
                 if (activityMode == mode_history) {
                     val date = Calendar.getInstance()
-                    date.timeInMillis = data.timestamp * 1000L
+                    date.timeInMillis = data.timestamp
                     holder.time.text = SimpleDateFormat("dd/MM\nHH:ss").format(date.time)
                 }
                 holder.back.setOnClickListener {
