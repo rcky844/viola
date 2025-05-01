@@ -102,7 +102,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var consoleMessageTextView: TextView? = null
-    private var viewMode: Int = 0
+    var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
     private var sslErrorHost: String = ""
     private var setFabHiddenViews = false
@@ -273,6 +273,7 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup find in page
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            findInPageView.activity = this
             webview.setFindListener { activeMatchOrdinal, numberOfMatches, _ ->
                 findInPageView.searchPositionInfo = Pair(activeMatchOrdinal, numberOfMatches)
             }
@@ -333,6 +334,16 @@ class BrowserActivity : VWebViewActivity() {
                 }
                 topToTop = when (reverseAddressBar) {
                     0 -> ConstraintSet.PARENT_ID
+                    else -> ConstraintSet.UNSET
+                }
+            }
+            findInPageView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomToTop = when (reverseAddressBar) {
+                    1 -> R.id.toolbarView
+                    else -> ConstraintSet.UNSET
+                }
+                topToBottom = when (reverseAddressBar) {
+                    0 -> R.id.appbar
                     else -> ConstraintSet.UNSET
                 }
             }

@@ -221,7 +221,11 @@ class FindInPageView(
     fun expand(viewVisible: Boolean = visibility == View.VISIBLE) {
         val transitionSet = TransitionSet()
             .addTransition(
-                Slide(Gravity.TOP)
+                Slide(when (activity.viewMode) {
+                    0 -> Gravity.TOP
+                    1 -> Gravity.BOTTOM
+                    else -> Gravity.BOTTOM
+                })
                 .addTarget(this)
                 .setDuration(resources.getInteger(R.integer.anim_toolbar_expand_slide_speed).toLong())
             )
