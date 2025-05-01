@@ -80,6 +80,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     val settingsPreference = (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
+    private var pageError = false
 
     internal val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
@@ -415,6 +416,15 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     override fun reload() {
         if (getRealUrl() == getRealUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
+
+        // Handling for page error conditions
+        // TODO: Replace with other solutions
+        if (pageError) {
+            super.goBack()
+            pageError = false
+            return
+        }
+
         loadUrl(getUrl())
     }
 
@@ -437,6 +447,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     override fun goBack() {
         activity.onDropDownDismissed()
         super.goBack()
+
+        // Apply go back twice of error
+        // TODO: Replace with other solutions
+        if (pageError) {
+            super.goBack()
+            pageError = false
+        }
     }
 
     override fun goForward() {
@@ -502,6 +519,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
 
             PageLoadState.PAGE_ERROR -> {
+                pageError = true
+
                 var errorContent = template
                 for (i in 0..5) errorContent = errorContent.replace(
                     "$$i",
