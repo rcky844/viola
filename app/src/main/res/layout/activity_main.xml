@@ -78,7 +78,7 @@
     <tipz.viola.webview.activity.components.FindInPageView
         android:id="@+id/findInPageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/actionbar_view_height"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
