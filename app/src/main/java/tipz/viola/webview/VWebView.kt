@@ -414,7 +414,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun reload() {
-        if (getRealUrl() == getRealUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
+        if (historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
 
         // Handling for page error conditions
