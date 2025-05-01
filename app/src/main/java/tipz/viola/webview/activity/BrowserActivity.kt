@@ -152,8 +152,6 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
-        expandableToolbarView.activity = this
-        expandableToolbarView.init()
 
         // Layout HitBox
         webview.setOnTouchListener { _, _ ->
