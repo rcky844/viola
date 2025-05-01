@@ -24,6 +24,9 @@ class FernandoMigrations(private val pref: SettingsSharedPreference) {
 
             // Bussin WebX
             pref.setString(SettingsKeys.bussApiUrl, BussUtils.defaultApiUrl)
+
+            // Cookies
+            pref.setInt(SettingsKeys.isCookiesEnabled, 1)
         }
     }
 }

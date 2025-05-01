@@ -39,6 +39,7 @@ class InitialMigrations(pref: SettingsSharedPreference) {
             // Miscellaneous
             pref.setInt(SettingsKeys.adServerId, 0)
             pref.setInt(SettingsKeys.enableHistoryStorage, 1)
+            pref.setInt(SettingsKeys.isCookiesEnabled, 1)
             pref.setInt(SettingsKeys.isJavaScriptEnabled, 1)
             pref.setInt(SettingsKeys.enableAdBlock, 0)
             pref.setInt(SettingsKeys.enableGoogleSafeBrowse, 0)

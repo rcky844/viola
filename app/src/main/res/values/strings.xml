@@ -346,6 +346,10 @@
     <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
+    <!-- Settings: Web features: Enable Cookies title -->
+    <string name="pref_enable_cookies_title">Cookies</string>
+    <!-- Settings: Web features: Enable Cookies summary -->
+    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->

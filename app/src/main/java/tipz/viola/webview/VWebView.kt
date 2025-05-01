@@ -224,11 +224,15 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             else WebSettingsCompat.FORCE_DARK_OFF
         }
 
+        // Cookies
+        CookieManager.getInstance().setAcceptCookie(
+            settingsPreference.getIntBool(SettingsKeys.isCookiesEnabled)
+        )
+
         // Javascript
         settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled).apply {
             webSettings.javaScriptEnabled = this
             webSettings.javaScriptCanOpenWindowsAutomatically = this
-
         }
 
         // HTTPS enforce setting
