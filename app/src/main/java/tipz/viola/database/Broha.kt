@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.database
@@ -7,6 +7,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import java.util.Calendar
 
 @Entity
 class Broha {
@@ -39,6 +40,6 @@ class Broha {
         this.iconHash = iconHash
         this.title = title
         this.url = url
-        timestamp = System.currentTimeMillis() / 1000L
+        timestamp = Calendar.getInstance().time.time
     }
 }

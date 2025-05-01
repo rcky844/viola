@@ -103,6 +103,8 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
         }
     }
 
+    open fun onPageFinished() {}
+
     open fun onDropDownDismissed() {}
 
     open fun onSslCertificateUpdated() {}

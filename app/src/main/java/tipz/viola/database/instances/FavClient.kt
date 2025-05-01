@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.database.instances
@@ -17,6 +17,6 @@ class FavClient(context: Context) : BrohaClient(context, "bookmarks") {
     }
 
     companion object {
-        private const val LATEST_API = 0
+        private const val LATEST_API = 1
     }
 }

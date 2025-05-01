@@ -28,7 +28,8 @@
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/favUrlEditText"
@@ -37,4 +38,9 @@
             android:hint="@string/favorites_dialog_link" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <tipz.viola.widget.PropertyDisplayView
+        android:id="@+id/propertyDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -71,6 +71,7 @@ object SettingsKeys {
     const val enableGoogleSafeBrowse = "enableGoogleSafeBrowse" /* INTEGER */
     const val enableSwipeRefresh = "enableSwipeRefresh" /* INTEGER */
     const val enforceHttps = "enforceHttps" /* INTEGER */
+    const val isCookiesEnabled = "isCookiesEnabled" /* INTEGER */
     const val isJavaScriptEnabled = "isJavaScriptEnabled" /* INTEGER */
     const val sendDNT = "sendDNT" /* INTEGER */
     const val sendSaveData = "sendSaveData" /* INTEGER */

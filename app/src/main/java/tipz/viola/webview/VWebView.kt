@@ -51,12 +51,13 @@ import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.database.Droha
-import tipz.viola.ext.equalsWithIgnore
+import tipz.viola.ext.Matcher
+import tipz.viola.ext.isDarkMode
+import tipz.viola.ext.matchAndExec
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
-import tipz.viola.webview.activity.BaseActivity
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.buss.BussUtils
 import tipz.viola.webview.pages.BrowserUrls
@@ -80,6 +81,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     val settingsPreference = (context.applicationContext as Application).settingsPreference
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
+    private var pageError = false
 
     internal val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
@@ -213,7 +215,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     @Suppress("deprecation")
     fun doSettingsCheck() {
         // Dark mode
-        val darkMode = BaseActivity.isDarkMode(context)
+        val darkMode = context.isDarkMode()
         val forceDark = settingsPreference.getIntBool(SettingsKeys.useForceDark)
         if (WebkitCompat.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode && forceDark)
@@ -222,11 +224,15 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             else WebSettingsCompat.FORCE_DARK_OFF
         }
 
+        // Cookies
+        CookieManager.getInstance().setAcceptCookie(
+            settingsPreference.getIntBool(SettingsKeys.isCookiesEnabled)
+        )
+
         // Javascript
         settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled).apply {
             webSettings.javaScriptEnabled = this
             webSettings.javaScriptCanOpenWindowsAutomatically = this
-
         }
 
         // HTTPS enforce setting
@@ -343,50 +349,49 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             val handlingSuffix = url
                 .replaceFirst(BrowserUrls.violaPrefix, "", true)
                 .replaceFirst(BrowserUrls.chromePrefix, "", true)
+                .substringBefore('/')
 
             // Browser mode specific URLs
-            activity.takeIf { it is BrowserActivity }?.let { it as BrowserActivity
-                // Bookmarks / Favorites
+            val act = activity as BrowserActivity?
+            val match = handlingSuffix.matchAndExec(listOf(
+                // Bookmarks
+                Matcher(BrowserUrls.bookmarksChromeSuffix, {
+                    act?.itemSelected(null, R.drawable.favorites)
+                }),
+
+                // Favorites
                 // "favorites" does not exist as "chrome://" prefix,
                 // so limit to "viola://" prefix.
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.bookmarksChromeSuffix)
-                    || (isViolaUrl && handlingSuffix.startsWith(BrowserUrls.favouritesViolaSuffix))) {
-                    it.itemSelected(null, R.drawable.favorites)
-                    return
-                }
+                Matcher(BrowserUrls.favouritesViolaSuffix, {
+                    if (isViolaUrl) act?.itemSelected(null, R.drawable.favorites)
+                }),
 
                 // History
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.historyChromeSuffix)) {
-                    it.itemSelected(null, R.drawable.history)
-                    return
-                }
+                Matcher(BrowserUrls.historyChromeSuffix, {
+                    act?.itemSelected(null, R.drawable.history)
+                }),
 
                 // New Tab
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabChromeSuffix)) {
+                Matcher(BrowserUrls.newTabChromeSuffix, {
                     loadHomepage()
-                    return
-                }
+                }),
 
                 // New Tab Page
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabPageChromeSuffix)) {
+                Matcher(BrowserUrls.newTabPageChromeSuffix, {
                     loadHomepage(true)
-                    return
-                }
+                }),
 
                 // New Tab Page (Third party)
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabPageThirdPartyChromeSuffix)) {
+                Matcher(BrowserUrls.newTabPageChromeSuffix, {
                     loadHomepage(false)
-                    return
-                }
-            }
+                }),
 
-            // Quit
-            if (handlingSuffix.equalsWithIgnore(BrowserUrls.quitChromeSuffix)) {
-                activity.finish()
-                return
-            }
-
-            super.loadUrl("${BrowserUrls.chromePrefix}$handlingSuffix")
+                // Quit
+                Matcher(BrowserUrls.quitChromeSuffix, {
+                    act?.finish()
+                }),
+            ))
+            if (!match) super.loadUrl("${BrowserUrls.chromePrefix}$handlingSuffix")
 
             return
         }
@@ -413,8 +418,17 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     override fun reload() {
-        if (getRealUrl() == getRealUrl() && historyState != UpdateHistoryState.STATE_DISABLED)
+        if (historyState != UpdateHistoryState.STATE_DISABLED)
             historyState = UpdateHistoryState.STATE_DISABLED_DUPLICATED // Prevent duplicate entries
+
+        // Handling for page error conditions
+        // TODO: Replace with other solutions
+        if (pageError) {
+            super.goBack()
+            pageError = false
+            return
+        }
+
         loadUrl(getUrl())
     }
 
@@ -437,6 +451,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     override fun goBack() {
         activity.onDropDownDismissed()
         super.goBack()
+
+        // Apply go back twice of error
+        // TODO: Replace with other solutions
+        if (pageError) {
+            super.goBack()
+            pageError = false
+        }
     }
 
     override fun goForward() {
@@ -496,12 +517,15 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
             PageLoadState.PAGE_FINISHED -> {
                 onPageLoadProgressChanged(0)
+                activity.onPageFinished()
                 activity.onFaviconProgressUpdated(false)
                 activity.onSslCertificateUpdated()
                 activity.swipeRefreshLayout.setRefreshing(false)
             }
 
             PageLoadState.PAGE_ERROR -> {
+                pageError = true
+
                 var errorContent = template
                 for (i in 0..5) errorContent = errorContent.replace(
                     "$$i",

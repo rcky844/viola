@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -61,6 +62,13 @@ class FindInPageView(
     var onClearSearchCallback: (() -> Unit)? = null
 
     init {
+        ContextCompat.getDrawable(context, R.drawable.toolbar_expandable_background).let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                background = it
+            } else {
+                @Suppress("DEPRECATION") setBackgroundDrawable(it)
+            }
+        }
         visibility = View.GONE
 
         // Set-up close button
@@ -68,6 +76,7 @@ class FindInPageView(
         closeButton.run {
             updateLayoutParams<LayoutParams> {
                 topToTop = ConstraintSet.PARENT_ID
+                bottomToBottom = ConstraintSet.PARENT_ID
                 startToStart = ConstraintSet.PARENT_ID
                 leftMargin = context.dpToPx(8)
             }
@@ -84,6 +93,7 @@ class FindInPageView(
         nextTermButton.run {
             updateLayoutParams<LayoutParams> {
                 topToTop = ConstraintSet.PARENT_ID
+                bottomToBottom = ConstraintSet.PARENT_ID
                 endToEnd = ConstraintSet.PARENT_ID
                 rightMargin = context.dpToPx(8)
             }
@@ -100,6 +110,7 @@ class FindInPageView(
         previousTermButton.run {
             updateLayoutParams<LayoutParams> {
                 topToTop = ConstraintSet.PARENT_ID
+                bottomToBottom = ConstraintSet.PARENT_ID
                 endToStart = nextTermButton.id
             }
             setImageResource(R.drawable.arrow_up)
@@ -111,14 +122,10 @@ class FindInPageView(
 
         // Set-up search edit text
         searchQueryEditText.apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, actionBarHeight).apply {
-                //setMargins(
-                //    context.dpToPx(4), 0,
-                //    context.dpToPx(4), 0
-                //)
+            layoutParams = LayoutParams(0, actionBarHeight).apply {
                 setPadding(
-                    context.dpToPx(52), 0,
-                    context.dpToPx(104), 0
+                    context.dpToPx(16), 0,
+                    context.dpToPx(16), 0
                 )
             }
             setBackgroundDrawable(
@@ -161,6 +168,7 @@ class FindInPageView(
         searchClearButton.apply {
             updateLayoutParams<LayoutParams> {
                 topToTop = ConstraintSet.PARENT_ID
+                bottomToBottom = ConstraintSet.PARENT_ID
                 endToEnd = ConstraintSet.PARENT_ID
                 endToStart = previousTermButton.id
                 rightMargin = context.dpToPx(8)
@@ -210,7 +218,11 @@ class FindInPageView(
     fun expand(viewVisible: Boolean = visibility == View.VISIBLE) {
         val transitionSet = TransitionSet()
             .addTransition(
-                Slide(Gravity.TOP)
+                Slide(when (activity.viewMode) {
+                    0 -> Gravity.TOP
+                    1 -> Gravity.BOTTOM
+                    else -> Gravity.BOTTOM
+                })
                 .addTarget(this)
                 .setDuration(resources.getInteger(R.integer.anim_toolbar_expand_slide_speed).toLong())
             )

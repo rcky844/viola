@@ -12,6 +12,13 @@
         app:preferenceTag="isJavaScriptEnabled"
         app:needReload="true" />
 
+    <tipz.viola.settings.activity.MaterialSwitchPreference
+        android:key="cookies"
+        android:summary="@string/pref_enable_cookies_summary"
+        android:title="@string/pref_enable_cookies_title"
+        app:preferenceTag="isCookiesEnabled"
+        app:needReload="true" />
+
     <tipz.viola.settings.activity.LongSummaryPreferenceCategory
         android:summary="@string/pref_web_webx_category_summary"
         android:title="@string/pref_web_webx_category_title">

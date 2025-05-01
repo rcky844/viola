@@ -346,6 +346,10 @@
     <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
+    <!-- Settings: Web features: Enable Cookies title -->
+    <string name="pref_enable_cookies_title">Cookies</string>
+    <!-- Settings: Web features: Enable Cookies summary -->
+    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
@@ -356,7 +360,7 @@
     <!-- Settings: Main - Advanced: Development settings title -->
     <string name="pref_main_development_title">Development settings</string>
     <!-- Settings: Main - Advanced: Development settings summary -->
-    <string name="pref_main_development_summary">Advanced features for experts</string>
+    <string name="pref_main_development_summary">Advanced features for experts.</string>
     <!-- Settings: Development: Remote debugging title -->
     <string name="pref_remote_debugging_title">Remote debugging</string>
     <!-- Settings: Development: Remote debugging summary -->
@@ -365,8 +369,8 @@
     <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
     <!-- Settings: Development: Console logging category -->
     <string name="pref_development_console_logging_category">Console logging</string>
-    <!-- Settings: Development: Always on console logging -->
-    <string name="pref_always_on_logging">Always-on logging</string>
+    <!-- Settings: Development: Persistent console logging -->
+    <string name="pref_always_on_logging">Persistent logging</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">Update channel</string>
 
@@ -425,6 +429,8 @@
     <string name="favorites_dialog_title">Title</string>
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">Link</string>
+    <!-- Favorites: Edit dialog added on detail -->
+    <string name="favorites_dialog_added_on">Added on</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">You are about to delete all favorites entries, are you sure about this?</string>
 

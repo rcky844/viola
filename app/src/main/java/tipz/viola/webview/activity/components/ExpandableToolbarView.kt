@@ -44,8 +44,33 @@ import tipz.viola.webview.activity.BrowserActivity
 class ExpandableToolbarView(
     context: Context, attrs: AttributeSet?
 ) : LinearLayoutCompat(context, attrs) {
-    lateinit var activity: BrowserActivity
+    private val activity = context as BrowserActivity
     private val recyclerView = RecyclerView(context)
+    private val viewsList = mutableMapOf<Int, ToolbarItemsView>()
+
+    data class ToolBarItem(@StringRes val name: Int, @DrawableRes val drawable: Int,
+                           val minApi: Int = 1, val enabled: Boolean = true)
+    private val toolsBarExpandableItemList: ArrayList<ToolBarItem> =
+        arrayListOf(
+            ToolBarItem(R.string.toolbar_expandable_new_tab, R.drawable.new_tab),
+            ToolBarItem(R.string.toolbar_expandable_favorites, R.drawable.favorites),
+            ToolBarItem(R.string.toolbar_expandable_history, R.drawable.history),
+            ToolBarItem(R.string.toolbar_expandable_viewport, R.drawable.smartphone),
+            ToolBarItem(R.string.toolbar_expandable_find, R.drawable.search,
+                minApi = Build.VERSION_CODES.JELLY_BEAN),
+            ToolBarItem(R.string.toolbar_expandable_favorites_add, R.drawable.favorites_add),
+            ToolBarItem(R.string.toolbar_expandable_downloads, R.drawable.download),
+            ToolBarItem(R.string.toolbar_expandable_translate, R.drawable.translate),
+            ToolBarItem(R.string.toolbar_expandable_fullscreen, R.drawable.fullscreen),
+            ToolBarItem(R.string.toolbar_expandable_app_shortcut, R.drawable.app_shortcut,
+                enabled = ShortcutManagerCompat.isRequestPinShortcutSupported(context)),
+            ToolBarItem(R.string.toolbar_expandable_settings, R.drawable.settings),
+            ToolBarItem(R.string.toolbar_expandable_view_page_source, R.drawable.code,
+                minApi = Build.VERSION_CODES.KITKAT),
+            ToolBarItem(R.string.toolbar_expandable_print, R.drawable.print,
+                minApi = Build.VERSION_CODES.KITKAT),
+            ToolBarItem(R.string.toolbar_expandable_close, R.drawable.close),
+        )
 
     init {
         /* Set-up LinearLayoutCompat */
@@ -80,6 +105,14 @@ class ExpandableToolbarView(
             flexWrap = FlexWrap.WRAP
         }
         addView(recyclerView)
+
+        /* Initialize RecyclerView */
+        recyclerView.adapter = ToolbarItemsAdapter(this, toolsBarExpandableItemList)
+    }
+
+    fun setItemEnabled(@DrawableRes drawable: Int, enabled: Boolean) {
+        val index = toolsBarExpandableItemList.indexOfFirst { drawable == it.drawable }
+        viewsList[index]?.setItemEnabled(enabled)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -93,11 +126,6 @@ class ExpandableToolbarView(
             params.matchConstraintMaxWidth =
                 resources.getDimension(R.dimen.toolbar_extendable_max_width).toInt()
         }
-    }
-
-    fun init() {
-        /* Initialize RecyclerView */
-        recyclerView.adapter = ToolbarItemsAdapter(this, toolsBarExpandableItemList)
     }
 
     fun expandToolBar() {
@@ -123,7 +151,7 @@ class ExpandableToolbarView(
 
         class ViewHolder(binding: TemplateIconDescriptionItemBinding)
             : RecyclerView.ViewHolder(binding.root) {
-            val itemBox: LinearLayoutCompat = binding.root
+            val itemBox: ToolbarItemsView = binding.root
             val imageView: AppCompatImageView = binding.imageView
             val textView: AppCompatTextView = binding.textView
         }
@@ -156,6 +184,9 @@ class ExpandableToolbarView(
                 holder.itemBox.setOnLongClickListener { true }
                 ImageViewCompat.setImageTintList(holder.imageView, ColorStateList.valueOf(Color.LTGRAY))
             }
+
+            expandableToolbarView.viewsList[position] = holder.itemBox
+            expandableToolbarView.activity.doExpandableToolbarStateCheck(itemsList[position].drawable)
         }
 
         override fun getItemViewType(position: Int): Int {
@@ -166,28 +197,4 @@ class ExpandableToolbarView(
             return itemsList.size
         }
     }
-
-    data class ToolBarItem(@StringRes val name: Int, @DrawableRes val drawable: Int,
-                           val minApi: Int = 1, val enabled: Boolean = true)
-    private val toolsBarExpandableItemList: ArrayList<ToolBarItem> =
-        arrayListOf(
-            ToolBarItem(R.string.toolbar_expandable_new_tab, R.drawable.new_tab),
-            ToolBarItem(R.string.toolbar_expandable_favorites, R.drawable.favorites),
-            ToolBarItem(R.string.toolbar_expandable_history, R.drawable.history),
-            ToolBarItem(R.string.toolbar_expandable_viewport, R.drawable.smartphone),
-            ToolBarItem(R.string.toolbar_expandable_find, R.drawable.search,
-                minApi = Build.VERSION_CODES.JELLY_BEAN),
-            ToolBarItem(R.string.toolbar_expandable_favorites_add, R.drawable.favorites_add),
-            ToolBarItem(R.string.toolbar_expandable_downloads, R.drawable.download),
-            ToolBarItem(R.string.toolbar_expandable_translate, R.drawable.translate),
-            ToolBarItem(R.string.toolbar_expandable_fullscreen, R.drawable.fullscreen),
-            ToolBarItem(R.string.toolbar_expandable_app_shortcut, R.drawable.app_shortcut,
-                enabled = ShortcutManagerCompat.isRequestPinShortcutSupported(context)),
-            ToolBarItem(R.string.toolbar_expandable_settings, R.drawable.settings),
-            ToolBarItem(R.string.toolbar_expandable_view_page_source, R.drawable.code,
-                minApi = Build.VERSION_CODES.KITKAT),
-            ToolBarItem(R.string.toolbar_expandable_print, R.drawable.print,
-                minApi = Build.VERSION_CODES.KITKAT),
-            ToolBarItem(R.string.toolbar_expandable_close, R.drawable.close),
-        )
 }

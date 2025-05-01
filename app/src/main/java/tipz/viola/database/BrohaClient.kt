@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.database
@@ -12,7 +12,8 @@ import androidx.room.Update
 
 open class BrohaClient(context: Context?, dbName: String?) {
     private val appDatabase: BrohaDatabase =
-        databaseBuilder(context!!, BrohaDatabase::class.java, dbName).build()
+        databaseBuilder(context!!, BrohaDatabase::class.java, dbName)
+            .addMigrations(BrohaDatabase.MIGRATION_1_2).build()
 
     val dao: BrohaDao?
         get() = appDatabase.brohaDao()

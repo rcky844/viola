@@ -102,7 +102,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var consoleMessageTextView: TextView? = null
-    private var viewMode: Int = 0
+    var viewMode: Int = 0
     private var sslState: SslState = SslState.NONE
     private var sslErrorHost: String = ""
     private var setFabHiddenViews = false
@@ -152,8 +152,6 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
-        expandableToolbarView.activity = this
-        expandableToolbarView.init()
 
         // Layout HitBox
         webview.setOnTouchListener { _, _ ->
@@ -273,6 +271,7 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup find in page
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            findInPageView.activity = this
             webview.setFindListener { activeMatchOrdinal, numberOfMatches, _ ->
                 findInPageView.searchPositionInfo = Pair(activeMatchOrdinal, numberOfMatches)
             }
@@ -336,6 +335,16 @@ class BrowserActivity : VWebViewActivity() {
                     else -> ConstraintSet.UNSET
                 }
             }
+            findInPageView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                bottomToTop = when (reverseAddressBar) {
+                    1 -> R.id.toolbarView
+                    else -> ConstraintSet.UNSET
+                }
+                topToBottom = when (reverseAddressBar) {
+                    0 -> R.id.appbar
+                    else -> ConstraintSet.UNSET
+                }
+            }
             webviewContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
                 topToTop = when (reverseAddressBar) {
                     1 -> ConstraintSet.PARENT_ID
@@ -375,6 +384,22 @@ class BrowserActivity : VWebViewActivity() {
         } ?: run {
             localNtpPageView.setBackgroundResource(0)
         }
+
+        // History access
+        doExpandableToolbarStateCheck(R.drawable.history)
+    }
+
+    internal fun doExpandableToolbarStateCheck(@DrawableRes res: Int) {
+        when (res) {
+            R.drawable.history -> expandableToolbarView.setItemEnabled(res,
+                settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage))
+            R.drawable.app_shortcut -> expandableToolbarView.setItemEnabled(res,
+                !(webview.title.isNullOrBlank() || webview.url.isBlank()))
+            R.drawable.favorites_add -> expandableToolbarView.setItemEnabled(res,
+                !webview.url.let { it.isBlank() || PrivilegedPages.isPrivilegedPage(it) })
+            R.drawable.translate -> expandableToolbarView.setItemEnabled(res,
+                !(webview.url.isBlank() || PrivilegedPages.isPrivilegedPage(webview.url)))
+        }
     }
 
     // This function returns true to close ToolBar, and vice versa.
@@ -403,9 +428,6 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.share -> shareUrl(webview.url)
             R.drawable.app_shortcut -> { // FIXME: Shortcuts pointing to the same URL does not behave as expected
-                // Bail out for certain URLs
-                if (webview.title.isNullOrBlank() || webview.url.isBlank()) return false
-
                 // Show dialog for selecting modes
                 val dialog = PopupMaterialAlertDialogBuilder(this, Gravity.BOTTOM)
                 dialog.setTitle(R.string.toolbar_expandable_app_shortcut)
@@ -451,9 +473,6 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.history -> {
-                if (!settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage))
-                    return false
-
                 val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
                 intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_history)
                 mGetNeedLoad.launch(intent)
@@ -466,15 +485,12 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.favorites_add -> {
-                val url = webview.url
-                if (url.isBlank() || PrivilegedPages.isPrivilegedPage(url)) return false
-
                 val icon = favicon.imageView.drawable
                 val title = webview.title
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
-                    favClient.insert(Broha(iconHash, title, url))
+                    favClient.insert(Broha(iconHash, title, webview.url))
                 }
                 showMessage(R.string.save_successful)
             }
@@ -531,9 +547,6 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.translate -> {
-                if (webview.url.isBlank() || PrivilegedPages.isPrivilegedPage(webview.url))
-                    return false
-
                 val binding: DialogTranslateBinding =
                     DialogTranslateBinding.inflate(layoutInflater)
                 val editView = binding.root
@@ -730,6 +743,12 @@ class BrowserActivity : VWebViewActivity() {
     override fun onUrlUpdated(url: String?, position: Int) {
         urlEditText.setText(url)
         urlEditText.setSelection(position)
+    }
+
+    override fun onPageFinished() {
+        doExpandableToolbarStateCheck(R.drawable.app_shortcut)
+        doExpandableToolbarStateCheck(R.drawable.favorites_add)
+        doExpandableToolbarStateCheck(R.drawable.translate)
     }
 
     override fun onDropDownDismissed() {

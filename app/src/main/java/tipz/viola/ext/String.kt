@@ -3,8 +3,13 @@
 
 package tipz.viola.ext
 
-fun String.equalsWithIgnore(other: String, ignoreStartIndex: Int = length): Boolean {
-    val b = substring(0, ignoreStartIndex - 1) == other
-    return if (b) true
-    else this == other
+data class Matcher(val name: String, val action: () -> Unit)
+fun String.matchAndExec(c: List<Matcher>): Boolean {
+    c.forEach {
+        if (this == it.name) {
+            it.action()
+            return true
+        }
+    }
+    return false
 }
