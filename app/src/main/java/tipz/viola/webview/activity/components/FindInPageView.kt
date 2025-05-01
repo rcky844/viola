@@ -70,9 +70,6 @@ class FindInPageView(
             }
         }
         visibility = View.GONE
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            translationZ = context.dpToPx(4).toFloat()
-        }
 
         // Set-up close button
         createButtons(closeButton)
