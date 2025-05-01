@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.widget.ImageViewCompat
 import tipz.viola.R
+import tipz.viola.ext.isDarkMode
 
 class ToolbarItemsView(
     context: Context, attrs: AttributeSet?
@@ -39,7 +40,8 @@ class ToolbarItemsView(
             super.setOnLongClickListener(realOnLongClickListener)
         } else {
             setBackgroundResource(0)
-            ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(Color.LTGRAY))
+            ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(
+                if (context.isDarkMode()) Color.DKGRAY else Color.LTGRAY))
             super.setOnClickListener { }
             super.setOnLongClickListener { true }
         }
