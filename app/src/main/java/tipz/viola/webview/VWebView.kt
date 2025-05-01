@@ -51,7 +51,8 @@ import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.database.Droha
-import tipz.viola.ext.equalsWithIgnore
+import tipz.viola.ext.Matcher
+import tipz.viola.ext.matchAndExec
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
@@ -344,50 +345,49 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             val handlingSuffix = url
                 .replaceFirst(BrowserUrls.violaPrefix, "", true)
                 .replaceFirst(BrowserUrls.chromePrefix, "", true)
+                .substringBefore('/')
 
             // Browser mode specific URLs
-            activity.takeIf { it is BrowserActivity }?.let { it as BrowserActivity
-                // Bookmarks / Favorites
+            val act = activity as BrowserActivity?
+            val match = handlingSuffix.matchAndExec(listOf(
+                // Bookmarks
+                Matcher(BrowserUrls.bookmarksChromeSuffix, {
+                    act?.itemSelected(null, R.drawable.favorites)
+                }),
+
+                // Favorites
                 // "favorites" does not exist as "chrome://" prefix,
                 // so limit to "viola://" prefix.
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.bookmarksChromeSuffix)
-                    || (isViolaUrl && handlingSuffix.startsWith(BrowserUrls.favouritesViolaSuffix))) {
-                    it.itemSelected(null, R.drawable.favorites)
-                    return
-                }
+                Matcher(BrowserUrls.favouritesViolaSuffix, {
+                    if (isViolaUrl) act?.itemSelected(null, R.drawable.favorites)
+                }),
 
                 // History
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.historyChromeSuffix)) {
-                    it.itemSelected(null, R.drawable.history)
-                    return
-                }
+                Matcher(BrowserUrls.historyChromeSuffix, {
+                    act?.itemSelected(null, R.drawable.history)
+                }),
 
                 // New Tab
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabChromeSuffix)) {
+                Matcher(BrowserUrls.newTabChromeSuffix, {
                     loadHomepage()
-                    return
-                }
+                }),
 
                 // New Tab Page
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabPageChromeSuffix)) {
+                Matcher(BrowserUrls.newTabPageChromeSuffix, {
                     loadHomepage(true)
-                    return
-                }
+                }),
 
                 // New Tab Page (Third party)
-                if (handlingSuffix.equalsWithIgnore(BrowserUrls.newTabPageThirdPartyChromeSuffix)) {
+                Matcher(BrowserUrls.newTabPageChromeSuffix, {
                     loadHomepage(false)
-                    return
-                }
-            }
+                }),
 
-            // Quit
-            if (handlingSuffix.equalsWithIgnore(BrowserUrls.quitChromeSuffix)) {
-                activity.finish()
-                return
-            }
-
-            super.loadUrl("${BrowserUrls.chromePrefix}$handlingSuffix")
+                // Quit
+                Matcher(BrowserUrls.quitChromeSuffix, {
+                    act?.finish()
+                }),
+            ))
+            if (!match) super.loadUrl("${BrowserUrls.chromePrefix}$handlingSuffix")
 
             return
         }
