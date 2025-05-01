@@ -425,6 +425,8 @@
     <string name="favorites_dialog_title">Title</string>
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">Link</string>
+    <!-- Favorites: Edit dialog added on detail -->
+    <string name="favorites_dialog_added_on">Added on</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">You are about to delete all favorites entries, are you sure about this?</string>
 

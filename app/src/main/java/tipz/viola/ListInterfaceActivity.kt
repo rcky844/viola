@@ -46,6 +46,7 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BaseActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 
 class ListInterfaceActivity : BaseActivity() {
     private lateinit var binding: ActivityRecyclerDataListBinding
@@ -259,8 +260,16 @@ class ListInterfaceActivity : BaseActivity() {
 
                                 val titleEditText = binding.titleEditText
                                 val urlEditText = binding.favUrlEditText
+                                val propertyDisplay = binding.propertyDisplay
                                 titleEditText.setText(title)
                                 urlEditText.setText(url)
+                                propertyDisplay.property = arrayListOf(
+                                    arrayOf(R.string.favorites_dialog_added_on,
+                                        SimpleDateFormat("E MMM dd HH:mm:ss z yyyy")
+                                            .format(Date(data.timestamp))
+                                    )
+                                )
+
                                 MaterialAlertDialogBuilder(activity)
                                     .setTitle(R.string.favorites_menu_edit)
                                     .setView(editView)
