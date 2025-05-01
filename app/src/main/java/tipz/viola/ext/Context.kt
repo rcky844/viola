@@ -8,6 +8,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Build
 import android.widget.Toast
@@ -91,3 +92,8 @@ fun Context.getMinTouchTargetSize(): Int {
 @SuppressLint("DiscouragedApi")
 fun Context.getFrameworkIdentifier(name: String): Int =
     resources.getIdentifier(name, "string", "android")
+
+fun Context.isDarkMode(): Boolean {
+    return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
+            Configuration.UI_MODE_NIGHT_YES
+}

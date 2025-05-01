@@ -52,12 +52,12 @@ import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.database.Droha
 import tipz.viola.ext.Matcher
+import tipz.viola.ext.isDarkMode
 import tipz.viola.ext.matchAndExec
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.UrlUtils
-import tipz.viola.webview.activity.BaseActivity
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.buss.BussUtils
 import tipz.viola.webview.pages.BrowserUrls
@@ -215,7 +215,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     @Suppress("deprecation")
     fun doSettingsCheck() {
         // Dark mode
-        val darkMode = BaseActivity.isDarkMode(context)
+        val darkMode = context.isDarkMode()
         val forceDark = settingsPreference.getIntBool(SettingsKeys.useForceDark)
         if (WebkitCompat.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(webSettings, darkMode && forceDark)

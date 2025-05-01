@@ -4,7 +4,6 @@
 package tipz.viola.webview.activity
 
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import tipz.viola.Application
+import tipz.viola.ext.isDarkMode
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 
@@ -62,13 +62,8 @@ open class BaseActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(mode)
 
 
-            windowInsetsController.isAppearanceLightStatusBars = !isDarkMode(context)
-            windowInsetsController.isAppearanceLightNavigationBars = !isDarkMode(context)
-        }
-
-        fun isDarkMode(context: Context): Boolean {
-            return context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
-                    Configuration.UI_MODE_NIGHT_YES
+            windowInsetsController.isAppearanceLightStatusBars = !context.isDarkMode()
+            windowInsetsController.isAppearanceLightNavigationBars = !context.isDarkMode()
         }
     }
 }
