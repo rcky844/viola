@@ -8,6 +8,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.widget.ImageViewCompat
@@ -18,14 +19,21 @@ class ToolbarItemsView(
     context: Context, attrs: AttributeSet?
 ) : LinearLayoutCompat(context, attrs) {
 
+    private var realImageTint: ColorStateList? = null
     private lateinit var realOnClickListener: OnClickListener
     private lateinit var realOnLongClickListener: OnLongClickListener
 
+    private lateinit var imageView: AppCompatImageView
+
     private var isItemEnabled = true
 
-    fun setItemEnabled(enabled: Boolean) {
-        val imageView : AppCompatImageView = findViewById(R.id.imageView)
+    override fun onViewAdded(child: View?) {
+        super.onViewAdded(child)
+        imageView = findViewById(R.id.imageView)
+        realImageTint = ImageViewCompat.getImageTintList(imageView)
+    }
 
+    fun setItemEnabled(enabled: Boolean) {
         isItemEnabled = enabled
         if (enabled) {
             val typedValue = TypedValue()
@@ -35,7 +43,7 @@ class ToolbarItemsView(
                 true
             )
             setBackgroundResource(typedValue.resourceId)
-            ImageViewCompat.setImageTintList(imageView, null)
+            ImageViewCompat.setImageTintList(imageView, realImageTint)
             super.setOnClickListener(realOnClickListener)
             super.setOnLongClickListener(realOnLongClickListener)
         } else {
