@@ -2,11 +2,23 @@
 <!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Generic: Clear -->
     <string name="clear">清除</string>
     <!-- Generic: Do not show again -->
     <string name="do_not_show_again">不再提示</string>
+    <!-- Generic: Switch On -->
+    <string name="text_on">On</string>
+    <!-- Generic: Switch Off -->
+    <string name="text_off">Off</string>
+    <!-- Generic: Path -->
+    <string name="path">Path</string>
+    <!-- Generic: Path not found -->
+    <string name="path_not_found">Path not found</string>
+    <!-- Generic: Download location -->
+    <string name="download_location">Download location</string>
+    <!-- Generic: Reset -->
+    <string name="reset">Reset</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">搜尋引擎</string>
     <!-- Generic - Defaults: Homepage -->
@@ -61,10 +73,18 @@
     <string name="ssl_certificate_unknown">發生未知SSL錯誤。</string>
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">無法進行SSL握手，惟降級到HTTP有可能可以載入頁面。</string>
-    <!-- WebView: App link detected dialog title -->
-    <string name="dialog_open_external_title">檢測到可啟動的 App Link</string>
-    <!-- WebView: App link detected dialog message -->
-    <string name="dialog_open_external_message">您想在外部應用程式中開啟此 App Link 嗎？</string>
+    <!-- WebView: Insecure HTTP connection dialog title -->
+    <string name="dialog_insecure_connection_title">Insecure connection</string>
+    <!-- WebView: Insecure HTTP connection dialog message -->
+    <string name="dialog_insecure_connection_message">You are seeing this warning because the site %s does not support HTTPS.</string>
+    <!-- WebView: Insecure HTTP connection dialog - Go back -->
+    <string name="dialog_insecure_connection_go_back">Go back</string>
+    <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
+    <string name="dialog_insecure_connection_continue_to_site">Continue to site</string>
+    <!-- WebView: Open in external app snackbar message -->
+    <string name="snackbar_open_external_message">External link detected.</string>
+    <!-- WebView: Open in external app snackbar action -->
+    <string name="snackbar_open_external_action">Open</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">搜尋或輸入網址…</string>
     <!-- Hit Test Dialog: Copy link text -->
@@ -117,6 +137,8 @@
     <string name="toolbar_expandable_history">歷史記錄</string>
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">瀏覽模式</string>
+    <!-- Expandable toolbar: Find in page -->
+    <string name="toolbar_expandable_find">Find in page</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">添加到書籤夾</string>
     <!-- Expandable toolbar: Translate -->
@@ -161,53 +183,93 @@
     <string name="console_toast_enabled">控制台日誌已啟用！</string>
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">停用</string>
+    <!-- Console: No logs -->
+    <string name="console_logging_none">No logs</string>
     <!-- Settings: Title -->
     <string name="settings_title">設定</string>
-    <!-- Settings: General category -->
-    <string name="pref_category_general">常用</string>
-    <!-- Settings: Use web-based homepage title -->
+    <!-- Settings: Main: Basics category -->
+    <string name="pref_main_category_basics">Basics</string>
+    <!-- Settings: Main: Home title -->
+    <string name="pref_main_home">Home</string>
+    <!-- Settings: Main: Search title -->
+    <string name="pref_main_search">Search</string>
+    <!-- Settings: Main: Privacy and security title -->
+    <string name="pref_main_privacy_security">Privacy and security</string>
+    <!-- Settings: Main: Appearance title -->
+    <string name="pref_main_appearance">Appearance</string>
+    <!-- Settings: Main: Advanced category -->
+    <string name="pref_main_category_advanced">進階</string>
+    <!-- Expandable toolbar: Downloads -->
+    <string name="pref_main_downloads">Downloads</string>
+    <!-- Expandable toolbar: Web features -->
+    <string name="pref_main_web_features">Web features</string>
+    <!-- Settings: Main: Updates and version category -->
+    <string name="pref_main_category_updates_version">Updates and version</string>
+    <!-- Settings: Main: Check for updates title -->
+    <string name="pref_check_for_updates_title">檢查更新</string>
+    <!-- Settings: Main: Check for updates summary -->
+    <string name="pref_check_for_updates_summary">檢查是否有新更新，如果有可用則下載。</string>
+    <!-- Settings: Main: About title -->
+    <string name="pref_about_title">關於</string>
+    <!-- Settings: Search: Default Search Engine category title -->
+    <string name="pref_search_category_engine_title">Default search engine</string>
+    <!-- Settings: Search: Default Search Engine category summary -->
+    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
+    <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">使用網路主頁</string>
-    <!-- Settings: Use web-based homepage summary -->
+    <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">開啟網頁而非內建起始頁作為首頁。</string>
-    <!-- Settings: Data & Privacy category -->
-    <string name="pref_category_data_privacy">數據 &amp; 隱私</string>
-    <!-- Settings: Enable ad blocker title -->
-    <string name="pref_ad_blocker_title">啟用廣告阻擋器</string>
-    <!-- Settings: Enable ad blocker summary -->
+    <!-- Settings: Search: Search Suggestions category summary -->
+    <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
+    <!-- Settings: Search: Search Suggestions Provider title -->
+    <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
+    <!-- Settings: Privacy and security: Ad blocking category title -->
+    <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
+    <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">阻擋分散注意力而且煩人的廣告</string>
-    <!-- Settings: Ad Blocklist source title -->
+    <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">廣告攔截器列表來源</string>
-    <!-- Settings: Download ad blocker hosts title -->
+    <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器列表</string>
-    <!-- Settings: Do Not Track title -->
+    <!-- Settings: Privacy and security: Privacy category -->
+    <string name="pref_ps_category_privacy">Privacy</string>
+    <!-- Settings: Privacy: Do Not Track title -->
     <string name="pref_do_not_track_title">不追蹤</string>
-    <!-- Settings: Do Not Track summary -->
+    <!-- Settings: Privacy: Do Not Track summary -->
     <string name="pref_do_not_track_summary">傳送「不追蹤」請求至您瀏覽的網站。</string>
-    <!-- Settings: Send GPC title -->
+    <!-- Settings: Privacy: Send GPC title -->
     <string name="pref_send_sec_gpc_title">全域隱私控制</string>
-    <!-- Settings: Send GPC summary -->
+    <!-- Settings: Privacy: Send GPC summary -->
     <string name="pref_send_sec_gpc_summary">允許在您造訪的網站上與第三方出售或分享您的個人資訊。</string>
-    <!-- Settings: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">強制 HTTPS</string>
-    <!-- Settings: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">始終使用 HTTPS 訪問網站以增加安全性 (實驗性)</string>
-    <!-- Settings: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">啟用 Google 安全流覽</string>
-    <!-- Settings: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">允許 Google 安全流覽功能遮罩其認為危險的網站。</string>
-    <!-- Settings: Enable history storage title -->
+    <!-- Settings: Privacy: Enable history storage title -->
     <string name="pref_enable_history_title">存儲歷史記錄</string>
-    <!-- Settings: Enable history storage summary -->
+    <!-- Settings: Privacy: Enable history storage summary -->
     <string name="pref_enable_history_summary">保留造訪過的網頁的歷史記錄。</string>
-    <!-- Settings: Clear browsing data title -->
+    <!-- Settings: Privacy: Clear browsing data title -->
     <string name="pref_clear_browsing_data">刪除瀏覽數據</string>
-    <!-- Settings: Reset to default title -->
+    <!-- Settings: Privacy: Reset to default title -->
     <string name="pref_reset_to_default_title">還原至預設設定</string>
-    <!-- Settings: Reset to default summary -->
+    <!-- Settings: Privacy: Reset to default summary -->
     <string name="pref_reset_to_default_summary">清除全部瀏覽器數據。</string>
-    <!-- Settings: Visuals category -->
-    <string name="pref_category_visuals">顯示</string>
-    <!-- Settings: Theme title -->
+    <!-- Settings: Privacy and security: Security category -->
+    <string name="pref_ps_category_security">Security</string>
+    <!-- Settings: Security: Enforce HTTPS title -->
+    <string name="pref_enforce_https_title">強制 HTTPS</string>
+    <!-- Settings: Security: Enforce HTTPS summary -->
+    <string name="pref_enforce_https_summary">始終使用 HTTPS 訪問網站以增加安全性 (實驗性)</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing title -->
+    <string name="pref_google_safe_browsing_title">啟用 Google 安全流覽</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing summary -->
+    <string name="pref_google_safe_browsing_summary">允許 Google 安全流覽功能遮罩其認為危險的網站。</string>
+    <!-- Settings: Appearance: Theming category -->
+    <string name="pref_appearance_theming_category">Theming</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_system_default">Automatic</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_light">淺色</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_dark">深色</string>
+    <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">主題</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">允許強制黑暗網頁內容</string>
@@ -217,52 +279,74 @@
     <string name="pref_start_page_wallpaper_title">選擇起始頁桌布</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">目前：%s</string>
-    <!-- Settings: Show favicon title -->
+    <!-- Settings: Appearance: User interface category -->
+    <string name="pref_appearance_ui_category">User interface</string>
+    <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">顯示網站圖示</string>
-    <!-- Settings: Show favicon summary -->
+    <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">在網址列旁邊顯示網站的圖示。</string>
-    <!-- Settings: Reach mode title -->
+    <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">單手模式</string>
-    <!-- Settings: Reach mode summary -->
+    <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">重新定位介面元素以方便單手使用。</string>
     <!-- Settings: Swipe to Refresh title -->
     <string name="pref_enable_swipe_refresh_title">啟用滑動刷新</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">啟用由垂直過度滾動內容觸發的頁面重新加載。</string>
-    <!-- Settings: Update Recents icons and labels title -->
+    <!-- Settings: Appearance: Update Recents icons and labels title -->
     <string name="pref_update_recents_icon_title">更新最近使用的應用中的圖示和標籤</string>
-    <!-- Settings: Update Recents icons and labels summary -->
+    <!-- Settings: Appearance: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">自動把“最近使用的應用”中選項卡的圖標和標籤更新為網頁的。</string>
-    <!-- Settings: Advanced category -->
-    <string name="pref_main_category_advanced">進階</string>
-    <!-- Settings: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">啟用 JavaScript</string>
-    <!-- Settings: Enable JavaScript summary -->
-    <string name="pref_enable_javascript_summary">啟用將允許加載 JavaScript 內容。</string>
-    <!-- Settings: Use Custom Tabs title -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs title -->
     <string name="pref_use_custom_tabs_title">使用小分页</string>
-    <!-- Settings: Use Custom Tabs summary -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">從其他應用程式打開連結時，始終打開小分页。</string>
-    <!-- Settings: Data Saver title -->
+    <!-- Settings: Main - Advanced: Data Saver title -->
     <string name="pref_send_save_data_title">流量節省</string>
-    <!-- Settings: Data Saver summary -->
+    <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">向支援的網站發送流量節省請求。</string>
-    <!-- Settings: Close app after download title -->
+    <!-- Settings: Downloads: Show download confirmation dialog title -->
+    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <!-- Settings: Downloads: Show download confirmation dialog summary -->
+    <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
+    <!-- Settings: Main - Advanced: Close app after download title -->
     <string name="pref_close_app_after_download_title">僅下載連結後關閉</string>
-    <!-- Settings: Close app after download summary -->
+    <!-- Settings: Main - Advanced: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">如果連結可下載，始終關閉 Viola。</string>
-    <!-- Settings: Software updates category -->
-    <string name="pref_main_category_software_updates">軟體更新</string>
-    <!-- Settings: Check for updates title -->
-    <string name="pref_check_for_updates_title">檢查更新</string>
-    <!-- Settings: Check for updates summary -->
-    <string name="pref_check_for_updates_summary">檢查是否有新更新，如果有可用則下載。</string>
-    <!-- Settings: Select update channel title -->
+    <!-- Settings: Web features: Enable JavaScript title -->
+    <string name="pref_enable_javascript_title">啟用 JavaScript</string>
+    <!-- Settings: Web features: Enable JavaScript summary -->
+    <string name="pref_enable_javascript_summary">啟用將允許加載 JavaScript 內容。</string>
+    <!-- Settings: Web features: Enable Cookies title -->
+    <string name="pref_enable_cookies_title">Cookies</string>
+    <!-- Settings: Web features: Enable Cookies summary -->
+    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <!-- Settings: Web features: Bussin WebX category title -->
+    <string name="pref_web_webx_category_title">Bussin WebX</string>
+    <!-- Settings: Web features: Bussin WebX category summary -->
+    <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
+    <!-- Settings: Web features: Bussin WebX API Picker title -->
+    <string name="pref_webx_picker_title">Buss API URL</string>
+    <!-- Settings: Main - Advanced: Development settings title -->
+    <string name="pref_main_development_title">Development settings</string>
+    <!-- Settings: Main - Advanced: Development settings summary -->
+    <string name="pref_main_development_summary">Advanced features for experts.</string>
+    <!-- Settings: Development: Remote debugging title -->
+    <string name="pref_remote_debugging_title">Remote debugging</string>
+    <!-- Settings: Development: Remote debugging summary -->
+    <string name="pref_remote_debugging_summary">To debug in-app WebViews, connect your device to a computer running Chromium browser and navigate to chrome://inspect.</string>
+    <!-- Settings: Development: Remote debugging summary debuggable -->
+    <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
+    <!-- Settings: Development: Console logging category -->
+    <string name="pref_development_console_logging_category">Console logging</string>
+    <!-- Settings: Development: Persistent console logging -->
+    <string name="pref_always_on_logging">Persistent logging</string>
+    <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">選擇更新頻道</string>
-    <!-- Settings: Version category -->
-    <string name="pref_main_category_version">版本</string>
-    <!-- Settings: About title -->
-    <string name="pref_about_title">關於</string>
+    <!-- Build Info: Protocol information (optional) title -->
+    <string name="buildinfo_pref_protocol_info_title">Protocol information</string>
+    <!-- Build Info: Protocol information (optional) summary -->
+    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">格式：\n{query}: 搜索內容\n{language}：語言</string>
     <!-- Settings - Wallpaper: Default -->
@@ -307,6 +391,8 @@
     <string name="favorites_dialog_title">標題</string>
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">鏈接</string>
+    <!-- Favorites: Edit dialog added on detail -->
+    <string name="favorites_dialog_added_on">Added on</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">您确定要删除所有書籤条目吗？</string>
     <!-- Downloads: Toast failed -->
@@ -375,10 +461,5 @@
         <item>Unified hosts</item>
         <item>Eulaurarien 主方追蹤器</item>
         <item>自訂</item>
-    </string-array>
-    <string-array name="themes">
-        <item>系統預設</item>
-        <item>淺色</item>
-        <item>深色</item>
     </string-array>
 </resources>
