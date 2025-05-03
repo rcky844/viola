@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 Tipz Team
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!--
+        Build Info: Version information
+        {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
+        Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
+    -->
+    <string name="buildinfo_version">%1$s (%2$s)\nVersion %3$s (Build %4$s%5$s)\n\n</string>
+    <!--
+        Build Info: Copyright information
+        Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team
+    -->
+    <string name="buildinfo_copyright">Copyright © %s Tipz Team\n</string>
+    <!--
+        Build Info: License information
+        This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
+    -->
+    <string name="buildinfo_license">This product is licensed under the %s.</string>
+    <!-- Build Info: License button -->
+    <string name="buildinfo_license_button">License</string>
+    <!-- Build Info: Changelog button -->
+    <string name="buildinfo_changelog_button">Read ChangeLogs</string>
+    <!-- Build Info: Website title -->
+    <string name="pref_website_title">Website</string>
+    <!-- Build Info: Website summary -->
+    <string name="pref_website_summary">Check out the project\'s website.</string>
+    <!-- Build Info: Feedback title -->
+    <string name="pref_feedback_title">Feedback</string>
+    <!-- Build Info: Feedback summary -->
+    <string name="pref_feedback_summary">"Report bugs or request new features."</string>
+    <!-- Build Info: Source code title -->
+    <string name="pref_source_code_title">"Source code"</string>
+    <!-- Build Info: Source code summary -->
+    <string name="pref_source_code_summary">"View Viola's source code."</string>
+    <!-- Build Info: Build information title -->
+    <string name="buildinfo_pref_build_info_title">Build information</string>
+    <!-- Build Info: Build information summary -->
+    <string name="buildinfo_pref_build_info_summary">Tag: %1$s\nBranch (revision): %2$s (%3$s)\nTimestamp: %4$s</string>
+</resources>
