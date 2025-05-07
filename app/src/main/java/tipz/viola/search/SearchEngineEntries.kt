@@ -81,7 +81,7 @@ object SearchEngineEntries {
     val customIndex = engines.size - 1
 
     // TODO: Improvements needed
-    fun getNameByIndex(index: Int): String = engines[index].name
+    fun getNameByIndex(index: Int = defaultEngine): String = engines[index].name
     fun getIndexByName(name: String): Int = engines.indexOfFirst { it.name == name }
         .takeUnless { it < 0 || it >= engines.size } ?: defaultEngine
 
