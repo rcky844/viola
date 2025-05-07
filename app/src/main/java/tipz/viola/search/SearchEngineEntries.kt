@@ -77,11 +77,13 @@ object SearchEngineEntries {
         EngineItem(name = "") /* The object for custom URL */
     )
 
+    private const val defaultEngine = 7
     val customIndex = engines.size - 1
 
     // TODO: Improvements needed
     fun getNameByIndex(index: Int): String = engines[index].name
     fun getIndexByName(name: String): Int = engines.indexOfFirst { it.name == name }
+        .takeUnless { it < 0 || it >= engines.size } ?: defaultEngine
 
     private fun findByName(name: String): EngineItem? = engines.find { it.name == name }
 
