@@ -42,7 +42,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                         this@ListPickerAlertDialog.settingsPreference.setInt(idPreference, checkedItem)
                     }
 
-                    preference?.summary = nameList!![checkedItem]
+                    preference?.summary = (displayList ?: nameList)!![checkedItem]
                 }
                 dialogPositivePressed()
             }
@@ -80,7 +80,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                             settingsPreference.setInt(idPreference, checkedItem)
                         }
 
-                        preference?.summary = nameList!![checkedItem]
+                        preference?.summary = (displayList ?: nameList)!![checkedItem]
                     }
                     dialogPositivePressed()
                 }
