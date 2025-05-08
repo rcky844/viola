@@ -1,4 +1,7 @@
-package tipz.viola.webview.activity.components;
+// Copyright (c) 2025 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
+package tipz.viola.webview.activity.components
 
 import android.annotation.SuppressLint
 import android.content.Context
