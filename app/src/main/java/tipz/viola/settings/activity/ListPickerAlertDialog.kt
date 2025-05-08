@@ -37,8 +37,7 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
                         this@ListPickerAlertDialog.settingsPreference.setString(stringPreference!!, "")
 
                     if (useNamePreference) {
-                        this@ListPickerAlertDialog.settingsPreference.setString(namePreference,
-                            getItemResult(checkedItem))
+                        this@ListPickerAlertDialog.settingsPreference.setString(namePreference, nameList!![checkedItem])
                     } else {
                         this@ListPickerAlertDialog.settingsPreference.setInt(idPreference, checkedItem)
                     }
@@ -97,7 +96,6 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         var idPreference = "" // Preference key for storing IDs
         var namePreference = "" // Preference key for storing names
         var nameToIdFunction: (name: String) -> Int = this::stubNameToIdFunction
-        var idToNameFunction: (index: Int) -> String = this::stubIdToNameFunction
         var stringPreference: String? = null // Preference key for storing strings
         var dialogTitle: String? = null // Dialog title
         var dialogTitleResId = 0 // Dialog title resource ID
@@ -113,24 +111,12 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         } else {
             pref.getInt(idPreference)
         }
-        fun getItemResult(index: Int) = if (idToNameFunction != this::stubIdToNameFunction) {
-            idToNameFunction(index)
-        } else {
-            nameList!![index]
-        }
 
         fun stubNameToIdFunction(name: String) : Int {
             Log.w(
                 LOG_TAG, "stubNameToIdFunction(): " +
                     "$name using namePreference without any means to convert to index!")
             return 0
-        }
-
-        fun stubIdToNameFunction(index: Int) : String {
-            Log.w(
-                LOG_TAG, "stubIdToNameFunction(): " +
-                        "$index using namePreference without any means to convert to name!")
-            return ""
         }
     }
 

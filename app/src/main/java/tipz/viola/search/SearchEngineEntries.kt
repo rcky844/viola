@@ -94,6 +94,12 @@ object SearchEngineEntries {
     private fun findByName(name: String): EngineItem? = engines.find { it.name == name }
     private fun getHostUrl(index: Int): String? = engines[index].search?.toUri()?.host
 
+    fun getEngineNameList(): Array<String> {
+        val array = mutableListOf<String>()
+        engines.forEach { array.add(it.name) }
+        return array.toTypedArray()
+    }
+
     fun getEngineDisplayList(context: Context): Array<String> {
         val engineList = context.resources.getStringArray(R.array.search_entries)
         engineList.forEachIndexed { i, it ->
