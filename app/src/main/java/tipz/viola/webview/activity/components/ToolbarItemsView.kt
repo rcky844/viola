@@ -7,12 +7,12 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.widget.ImageViewCompat
 import tipz.viola.R
+import tipz.viola.ext.getSelectableItemBackground
 import tipz.viola.ext.isDarkMode
 
 class ToolbarItemsView(
@@ -36,13 +36,7 @@ class ToolbarItemsView(
     fun setItemEnabled(enabled: Boolean) {
         isItemEnabled = enabled
         if (enabled) {
-            val typedValue = TypedValue()
-            context.theme.resolveAttribute(
-                android.R.attr.selectableItemBackground,
-                typedValue,
-                true
-            )
-            setBackgroundResource(typedValue.resourceId)
+            setBackgroundResource(context.getSelectableItemBackground())
             ImageViewCompat.setImageTintList(imageView, realImageTint)
             super.setOnClickListener(realOnClickListener)
             super.setOnLongClickListener(realOnLongClickListener)

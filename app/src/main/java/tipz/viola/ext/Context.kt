@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Build
+import android.util.TypedValue
 import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
@@ -87,6 +88,12 @@ fun Context.getMinTouchTargetSize(): Int {
         intArrayOf(com.google.android.material.R.attr.minTouchTargetSize)
     )
     return attrs.getDimensionPixelSize(0, 0)
+}
+
+fun Context.getSelectableItemBackground(): Int {
+    val typedValue = TypedValue()
+    theme.resolveAttribute(android.R.attr.selectableItemBackground, typedValue, true)
+    return typedValue.resourceId
 }
 
 @SuppressLint("DiscouragedApi")
