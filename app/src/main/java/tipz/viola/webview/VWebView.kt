@@ -510,15 +510,14 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 }
 
                 onPageLoadProgressChanged(-1)
-                activity.onFaviconProgressUpdated(true)
+                activity.onPageStateChanged(true)
                 consoleMessages.clear()
                 activeSnackBar.takeUnless { it == null }?.dismiss()
             }
 
             PageLoadState.PAGE_FINISHED -> {
                 onPageLoadProgressChanged(0)
-                activity.onPageFinished()
-                activity.onFaviconProgressUpdated(false)
+                activity.onPageStateChanged(false)
                 activity.onSslCertificateUpdated()
                 activity.swipeRefreshLayout.setRefreshing(false)
             }

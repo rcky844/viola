@@ -745,12 +745,6 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setSelection(position)
     }
 
-    override fun onPageFinished() {
-        doExpandableToolbarStateCheck(R.drawable.app_shortcut)
-        doExpandableToolbarStateCheck(R.drawable.favorites_add)
-        doExpandableToolbarStateCheck(R.drawable.translate)
-    }
-
     override fun onDropDownDismissed() {
         urlEditText.dismissDropDown()
     }
@@ -789,8 +783,13 @@ class BrowserActivity : VWebViewActivity() {
         else favicon.setImageBitmap(icon)
     }
 
-    override fun onFaviconProgressUpdated(isLoading: Boolean) {
+    override fun onPageStateChanged(isLoading: Boolean) {
         favicon.isLoading = isLoading
+        if (!isLoading) { /* PAGE_FINISHED */
+            doExpandableToolbarStateCheck(R.drawable.app_shortcut)
+            doExpandableToolbarStateCheck(R.drawable.favorites_add)
+            doExpandableToolbarStateCheck(R.drawable.translate)
+        }
     }
 
     fun checkHomePageVisibility() {

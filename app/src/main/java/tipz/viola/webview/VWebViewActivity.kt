@@ -103,8 +103,6 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
         }
     }
 
-    open fun onPageFinished() {}
-
     open fun onDropDownDismissed() {}
 
     open fun onSslCertificateUpdated() {}
@@ -120,7 +118,7 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
         }
     }
 
-    open fun onFaviconProgressUpdated(isLoading: Boolean) {}
+    open fun onPageStateChanged(isLoading: Boolean) {}
 
     @CallSuper
     open fun onPageLoadProgressChanged(progress: Int) {
