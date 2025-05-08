@@ -16,7 +16,6 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.MediaStore
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -61,6 +60,7 @@ import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.dpToPx
 import tipz.viola.ext.getMinTouchTargetSize
 import tipz.viola.ext.getOnSurfaceColor
+import tipz.viola.ext.getSelectableItemBackground
 import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
@@ -666,14 +666,7 @@ class BrowserActivity : VWebViewActivity() {
                                         webview.evaluateJavascript(it)
                                     } ?: return@setOnClickListener
                                 }
-
-                                val typedValue = TypedValue()
-                                context.theme.resolveAttribute(
-                                    android.R.attr.selectableItemBackground,
-                                    typedValue,
-                                    true
-                                )
-                                setBackgroundResource(typedValue.resourceId)
+                                setBackgroundResource(getSelectableItemBackground())
                             }
                             editText.layoutParams = RelativeLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -745,12 +738,6 @@ class BrowserActivity : VWebViewActivity() {
         urlEditText.setSelection(position)
     }
 
-    override fun onPageFinished() {
-        doExpandableToolbarStateCheck(R.drawable.app_shortcut)
-        doExpandableToolbarStateCheck(R.drawable.favorites_add)
-        doExpandableToolbarStateCheck(R.drawable.translate)
-    }
-
     override fun onDropDownDismissed() {
         urlEditText.dismissDropDown()
     }
@@ -789,8 +776,13 @@ class BrowserActivity : VWebViewActivity() {
         else favicon.setImageBitmap(icon)
     }
 
-    override fun onFaviconProgressUpdated(isLoading: Boolean) {
+    override fun onPageStateChanged(isLoading: Boolean) {
         favicon.isLoading = isLoading
+        if (!isLoading) { /* PAGE_FINISHED */
+            doExpandableToolbarStateCheck(R.drawable.app_shortcut)
+            doExpandableToolbarStateCheck(R.drawable.favorites_add)
+            doExpandableToolbarStateCheck(R.drawable.translate)
+        }
     }
 
     fun checkHomePageVisibility() {

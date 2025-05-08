@@ -1,4 +1,7 @@
-package tipz.viola.webview.activity.components;
+// Copyright (c) 2025 Tipz Team
+// SPDX-License-Identifier: Apache-2.0
+
+package tipz.viola.webview.activity.components
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -26,6 +29,7 @@ import androidx.transition.TransitionSet
 import tipz.viola.R
 import tipz.viola.ext.dpToPx
 import tipz.viola.ext.getOnSurfaceColor
+import tipz.viola.ext.getSelectableItemBackground
 import tipz.viola.webview.activity.BrowserActivity
 
 class FindInPageView(
@@ -199,14 +203,7 @@ class FindInPageView(
             setPadding(context.dpToPx(12))
         }
         setColorFilter(context.getOnSurfaceColor())
-
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(
-            android.R.attr.selectableItemBackground,
-            typedValue,
-            true
-        )
-        setBackgroundResource(typedValue.resourceId)
+        setBackgroundResource(context.getSelectableItemBackground())
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             translationZ = context.dpToPx(2).toFloat()

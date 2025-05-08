@@ -22,6 +22,7 @@ class SearchFragment : ExtPreferenceFragment(R.string.pref_main_search) {
                     nameList = searchHomePageList
                     namePreference = SettingsKeys.searchName
                     nameToIdFunction = SearchEngineEntries::getIndexByName
+                    idToNameFunction = SearchEngineEntries::getNameByIndex
                     stringPreference = SettingsKeys.searchCustomUrl
                     dialogTitleResId = R.string.search_engine
                     dialogCustomMessageResId = R.string.search_dialog_custom_message
@@ -45,6 +46,7 @@ class SearchFragment : ExtPreferenceFragment(R.string.pref_main_search) {
                     nameList = searchHomePageList
                     namePreference = SettingsKeys.suggestionsName
                     nameToIdFunction = SearchEngineEntries::getIndexByName
+                    idToNameFunction = SearchEngineEntries::getNameByIndex
                     stringPreference = SettingsKeys.suggestionsCustomUrl
                     dialogTitleResId = R.string.search_suggestions_title
                     dialogCustomMessageResId = R.string.search_dialog_custom_message

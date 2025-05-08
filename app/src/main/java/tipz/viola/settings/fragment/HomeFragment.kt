@@ -22,6 +22,7 @@ class HomeFragment : ExtPreferenceFragment(R.string.pref_main_home) {
                     nameList = searchHomePageList
                     namePreference = SettingsKeys.homePageName
                     nameToIdFunction = SearchEngineEntries::getIndexByName
+                    idToNameFunction = SearchEngineEntries::getNameByIndex
                     stringPreference = SettingsKeys.homePageCustomUrl
                     dialogTitleResId = R.string.homepage
                     customIndexEnabled = true

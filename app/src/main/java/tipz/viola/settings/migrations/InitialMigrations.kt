@@ -5,6 +5,7 @@ package tipz.viola.settings.migrations
 
 import tipz.viola.BuildConfig
 import tipz.viola.download.DownloadClient
+import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.buss.BussUtils
@@ -26,11 +27,11 @@ class InitialMigrations(pref: SettingsSharedPreference) {
 
             // Homepage
             pref.setInt(SettingsKeys.useHomePage, 1)
-            pref.setString(SettingsKeys.homePageName, "brave")
+            pref.setString(SettingsKeys.homePageName, SearchEngineEntries.getNameByIndex())
 
             // Search
-            pref.setString(SettingsKeys.searchName, "brave")
-            pref.setString(SettingsKeys.suggestionsName, "brave")
+            pref.setString(SettingsKeys.searchName, SearchEngineEntries.getNameByIndex())
+            pref.setString(SettingsKeys.suggestionsName, SearchEngineEntries.getNameByIndex())
             pref.setInt(SettingsKeys.useSearchSuggestions, 1)
 
             // Updates
