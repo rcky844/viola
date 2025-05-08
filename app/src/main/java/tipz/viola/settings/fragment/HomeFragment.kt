@@ -14,7 +14,7 @@ class HomeFragment : ExtPreferenceFragment(R.string.pref_main_home) {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_home, rootKey)
 
-        val searchHomePageList = resources.getStringArray(R.array.search_entries)
+        val searchHomePageList = SearchEngineEntries.getEngineDisplayList(requireContext())
         findPreference<Preference>(PREF_HOMEPAGE)?.run {
             setOnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
