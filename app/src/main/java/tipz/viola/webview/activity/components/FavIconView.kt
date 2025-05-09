@@ -11,15 +11,15 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.setPadding
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.ext.dpToPx
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 
 class FavIconView(
     context: Context, attributeSet: AttributeSet
 ) : CoordinatorLayout(context, attributeSet) {
-    private val settingsPreference = (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = SettingsSharedPreference.instance
 
     val imageView = AppCompatImageView(context)
     val progressBar = CircularProgressIndicator(context)

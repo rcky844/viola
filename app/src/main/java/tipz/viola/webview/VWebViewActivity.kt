@@ -15,17 +15,14 @@ import androidx.annotation.CallSuper
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.ext.finishAndRemoveTaskExt
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.activity.BaseActivity
 
 
 open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivity() {
-    lateinit var settingsPreference: SettingsSharedPreference
     lateinit var swipeRefreshLayout: VSwipeRefreshLayout
     lateinit var webview: VWebView
     lateinit var progressBar: LinearProgressIndicator
@@ -34,7 +31,6 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settingsPreference = (applicationContext as Application).settingsPreference
 
         onBackPressedDispatcher.addCallback(this) {
             if (webview.canGoBack()) webview.goBack()

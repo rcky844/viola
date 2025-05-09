@@ -6,11 +6,11 @@ package tipz.viola.settings
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import tipz.viola.Application
 import tipz.viola.settings.migrations.ExoticMigrations
 import tipz.viola.settings.migrations.FernandoMigrations
 import tipz.viola.settings.migrations.InitialMigrations
-import androidx.core.content.edit
 
 /* TODO: Migrate to something newer? */
 class SettingsSharedPreference(context: Context) {
@@ -67,6 +67,7 @@ class SettingsSharedPreference(context: Context) {
     }
 
     companion object {
+        lateinit var instance: SettingsSharedPreference
         private const val CONFIG_DATA_STORE_NAME = "config" /* Pref file name */
     }
 }

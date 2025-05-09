@@ -13,8 +13,7 @@ import tipz.viola.settings.SettingsSharedPreference
 
 class SummaryOnOffPreference(context: Context,
                              private val attrs: AttributeSet?) : Preference(context, attrs) {
-    private val settingsPreference: SettingsSharedPreference =
-        (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = SettingsSharedPreference.instance
     private val preferenceTag: String?
 
     init {

@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.download.MiniDownloadHelper
@@ -32,8 +31,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class UpdateService(private val context: Context, private val silent: Boolean) {
-    private var settingsPreference: SettingsSharedPreference =
-        (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = SettingsSharedPreference.instance
     private val dirFile = File(context.filesDir.path + "/updates")
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 

@@ -7,13 +7,11 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import androidx.preference.Preference
-import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.settings.SettingsSharedPreference
 
 open class MaterialPreference(context: Context, attrs: AttributeSet?) : Preference(context, attrs) {
-    private val settingsPreference: SettingsSharedPreference =
-        (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = SettingsSharedPreference.instance
     private val mRequiredApi: Int
 
     init {

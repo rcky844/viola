@@ -10,8 +10,8 @@ import android.util.Log
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import tipz.viola.Application
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 
 class VSwipeRefreshLayout(
     context: Context, attrs: AttributeSet?
@@ -27,8 +27,8 @@ class VSwipeRefreshLayout(
         doSettingsCheck()
     }
 
-    private fun settingEnabled() = (context.applicationContext as Application)
-        .settingsPreference.getIntBool(SettingsKeys.enableSwipeRefresh)
+    private fun settingEnabled() = SettingsSharedPreference.instance
+        .getIntBool(SettingsKeys.enableSwipeRefresh)
 
     private fun doSettingsCheck() {
         if (layoutEnabled)

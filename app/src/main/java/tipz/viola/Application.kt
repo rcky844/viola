@@ -13,12 +13,11 @@ import tipz.viola.download.DownloadClient
 import tipz.viola.settings.SettingsSharedPreference
 
 class Application : Application() {
-    lateinit var settingsPreference: SettingsSharedPreference
     lateinit var downloadClient: DownloadClient
 
     override fun onCreate() {
         super.onCreate()
-        settingsPreference = SettingsSharedPreference(this)
+        SettingsSharedPreference.instance = SettingsSharedPreference(this)
         downloadClient = DownloadClient(this)
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {

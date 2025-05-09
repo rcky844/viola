@@ -7,8 +7,8 @@ package tipz.viola.search
 import android.content.Context
 import android.util.Log
 import org.json.JSONArray
-import tipz.viola.Application
 import tipz.viola.ext.getCharset
+import tipz.viola.settings.SettingsSharedPreference
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
@@ -26,7 +26,7 @@ open class SuggestionProvider(private val mContext: Context) {
     private fun createQueryUrl(
         query: String
     ): String {
-        val settingsPreference = (mContext.applicationContext as Application).settingsPreference
+        val settingsPreference = SettingsSharedPreference.instance
         return SearchEngineEntries.getPreferredSuggestionsUrl(settingsPreference, query)
     }
 

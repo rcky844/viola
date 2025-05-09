@@ -12,12 +12,10 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
-import android.view.View
 import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
@@ -27,6 +25,8 @@ import android.webkit.WebView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.core.view.isGone
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
@@ -57,6 +57,7 @@ import tipz.viola.ext.matchAndExec
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.buss.BussUtils
@@ -64,8 +65,6 @@ import tipz.viola.webview.pages.BrowserUrls
 import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webview.pages.ProjectUrls
 import java.util.regex.Pattern
-import androidx.core.net.toUri
-import androidx.core.view.isGone
 
 @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface", "RequiresFeature")
 class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
@@ -80,7 +79,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     private var insecureAllow = false
     var loadProgress = 100
-    val settingsPreference = (context.applicationContext as Application).settingsPreference
+    val settingsPreference = SettingsSharedPreference.instance
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
     private var pageError = false

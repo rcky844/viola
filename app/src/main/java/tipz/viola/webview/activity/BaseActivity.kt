@@ -12,17 +12,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import tipz.viola.Application
 import tipz.viola.ext.isDarkMode
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 
 
 open class BaseActivity : AppCompatActivity() {
+    val settingsPreference = SettingsSharedPreference.instance
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        settingsPreference = (applicationContext as Application).settingsPreference
         windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
     }
 
@@ -46,11 +46,10 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     companion object {
-        lateinit var settingsPreference: SettingsSharedPreference
         lateinit var windowInsetsController: WindowInsetsControllerCompat
 
         fun performThemeModeChecks(context: Context) {
-            val mode = when (settingsPreference.getInt(SettingsKeys.themeId)) {
+            val mode = when (SettingsSharedPreference.instance.getInt(SettingsKeys.themeId)) {
                 1 -> AppCompatDelegate.MODE_NIGHT_NO
                 2 -> AppCompatDelegate.MODE_NIGHT_YES
                 else -> {

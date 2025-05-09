@@ -9,6 +9,7 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.webkit.CookieManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
@@ -17,14 +18,12 @@ import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.activity.CustomTabsActivity
 import kotlin.system.exitProcess
-import androidx.core.net.toUri
 
 class LauncherActivity : AppCompatActivity() {
-    lateinit var settingsPreference: SettingsSharedPreference
+    val settingsPreference = SettingsSharedPreference.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settingsPreference = (applicationContext as Application).settingsPreference
 
         // Disable app if device has no WebView
         if (!webViewEnabled()) {

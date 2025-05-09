@@ -22,6 +22,7 @@ import tipz.viola.download.database.DrohaClient
 import tipz.viola.download.providers.AndroidDownloadProvider
 import tipz.viola.download.providers.InternalDownloadProvider
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.VWebView
 import java.io.File
 import java.net.URLDecoder
@@ -29,7 +30,7 @@ import java.net.URLDecoder
 class DownloadClient(private val context: Application) {
     private val LOG_TAG = "DownloadClient"
 
-    private var settingsPreference = (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = SettingsSharedPreference.instance
     private var clientMode = settingsPreference.getInt(SettingsKeys.downloadMgrMode)
 
     private var vWebView: VWebView? = null
