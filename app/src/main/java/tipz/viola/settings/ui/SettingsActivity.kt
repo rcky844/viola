@@ -1,7 +1,7 @@
 // Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.activity
+package tipz.viola.settings.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,15 +12,15 @@ import androidx.fragment.app.FragmentManager
 import tipz.viola.R
 import tipz.viola.databinding.ActivitySettingsBinding
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.fragment.AppearanceFragment
-import tipz.viola.settings.fragment.DevelopmentFragment
-import tipz.viola.settings.fragment.DownloadsFragment
-import tipz.viola.settings.fragment.ExtPreferenceFragment
-import tipz.viola.settings.fragment.HomeFragment
-import tipz.viola.settings.fragment.MainFragment
-import tipz.viola.settings.fragment.PrivacySecurityFragment
-import tipz.viola.settings.fragment.SearchFragment
-import tipz.viola.settings.fragment.WebFeaturesFragment
+import tipz.viola.settings.ui.fragment.AppearanceFragment
+import tipz.viola.settings.ui.fragment.DevelopmentFragment
+import tipz.viola.settings.ui.fragment.DownloadsFragment
+import tipz.viola.settings.ui.fragment.ExtPreferenceFragment
+import tipz.viola.settings.ui.fragment.HomeFragment
+import tipz.viola.settings.ui.fragment.MainFragment
+import tipz.viola.settings.ui.fragment.PrivacySecurityFragment
+import tipz.viola.settings.ui.fragment.SearchFragment
+import tipz.viola.settings.ui.fragment.WebFeaturesFragment
 import tipz.viola.webview.activity.BaseActivity
 
 

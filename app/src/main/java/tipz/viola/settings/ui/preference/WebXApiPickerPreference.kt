@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.preference
 
 import android.content.Context
 import android.util.AttributeSet
@@ -12,22 +12,21 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.jetbrains.annotations.MustBeInvokedByOverriders
 import tipz.viola.R
 import tipz.viola.databinding.DialogDownloadLocationPickerBinding
-import tipz.viola.download.DownloadClient
 import tipz.viola.ext.getFrameworkIdentifier
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import java.io.File
+import tipz.viola.webview.buss.BussUtils
 
-class DownloadLocationPickerPreference(
+class WebXApiPickerPreference(
     private val context: Context,
     attrs: AttributeSet
 ) : Preference(context, attrs) {
     private val settingsPreference = SettingsSharedPreference(context)
-    private fun getPath() = settingsPreference.getString(SettingsKeys.downloadLocationDefault)
+    private fun getUrl() = settingsPreference.getString(SettingsKeys.bussApiUrl)
 
     init {
-        setTitle(R.string.download_location)
-        setPathSummary()
+        setTitle(R.string.pref_webx_picker_title)
+        setUrlSummary()
         setOnPreferenceClickListener {
             createPickerDialog()
             true
@@ -35,18 +34,18 @@ class DownloadLocationPickerPreference(
     }
 
     @MustBeInvokedByOverriders
-    fun setPathSummary() {
-        setSummary(getPath())
+    fun setUrlSummary() {
+        setSummary(getUrl())
     }
 
     private fun createPickerDialog() {
         val binding = DialogDownloadLocationPickerBinding.inflate(LayoutInflater.from(context))
         val textView = binding.pathEditText.apply {
-            setText(getPath())
+            setText(getUrl())
         }
 
         val dialog = MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.download_location)
+            .setTitle(R.string.pref_webx_picker_title)
             .setView(binding.root)
             .setPositiveButton(context.resources.getString(
                 context.getFrameworkIdentifier("date_time_set")), null)
@@ -57,25 +56,15 @@ class DownloadLocationPickerPreference(
         dialog.run {
             setOnShowListener {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    textView.text.toString().takeUnless { it.isEmpty() }?.let {
-                        if (File(it).exists()) {
-                            settingsPreference.setString(SettingsKeys.downloadLocationDefault, it)
-                            setPathSummary()
-                            dialog.dismiss()
-                        } else {
-                            textView.error = context.resources.getString(R.string.path_not_found)
-                        }
-                    }
+                    settingsPreference.setString(SettingsKeys.bussApiUrl, textView.text.toString())
+                    setUrlSummary()
+                    dialog.dismiss()
                 }
                 dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
-                    textView.setText(DownloadClient.defaultInitialDownloadPath)
+                    textView.setText(BussUtils.defaultApiUrl)
                 }
             }
             show()
         }
-    }
-
-    companion object {
-        private const val REQUEST_CODE_PICKER = 1000
     }
 }

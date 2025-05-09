@@ -1,7 +1,7 @@
 // Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.app.ActivityManager
 import android.content.Intent
@@ -13,9 +13,9 @@ import tipz.viola.R
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.activity.ListPickerAlertDialog
-import tipz.viola.settings.activity.MaterialDialogPreference
-import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
+import tipz.viola.settings.ui.preference.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
+import tipz.viola.settings.ui.preference.ListPickerAlertDialog
+import tipz.viola.settings.ui.preference.MaterialDialogPreference
 import tipz.viola.webview.VWebStorage
 import java.io.IOException
 

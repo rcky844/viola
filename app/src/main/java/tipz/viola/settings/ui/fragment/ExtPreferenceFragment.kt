@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -16,9 +16,9 @@ import androidx.preference.PreferenceFragmentCompat
 import tipz.viola.Application
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.settings.activity.MaterialDialogPreference
-import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
-import tipz.viola.settings.activity.SettingsActivity
+import tipz.viola.settings.ui.preference.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
+import tipz.viola.settings.ui.SettingsActivity
+import tipz.viola.settings.ui.preference.MaterialDialogPreference
 
 open class ExtPreferenceFragment(@StringRes private val titleResId: Int) : PreferenceFragmentCompat() {
     internal lateinit var settingsActivity: SettingsActivity

@@ -6,9 +6,7 @@ package tipz.viola.download
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -31,7 +29,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tipz.viola.Application
-import tipz.viola.LauncherActivity
 import tipz.viola.R
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.TemplateEmptyBinding
@@ -41,7 +38,7 @@ import tipz.viola.download.database.DrohaClient
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
-import tipz.viola.settings.activity.SettingsActivity
+import tipz.viola.settings.ui.SettingsActivity
 import tipz.viola.webview.activity.BaseActivity
 import java.io.File
 

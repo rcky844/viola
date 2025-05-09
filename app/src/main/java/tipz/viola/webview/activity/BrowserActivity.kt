@@ -69,7 +69,7 @@ import tipz.viola.ext.getSelectableItemBackground
 import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.activity.SettingsActivity
+import tipz.viola.settings.ui.SettingsActivity
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity

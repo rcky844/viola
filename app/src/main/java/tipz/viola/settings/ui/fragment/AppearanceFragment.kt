@@ -1,10 +1,9 @@
 // Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -15,9 +14,9 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.preference.Preference
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.activity.ThemePreference
 import tipz.viola.webview.activity.BaseActivity.Companion.performThemeModeChecks
 import androidx.core.net.toUri
+import tipz.viola.settings.ui.preference.ThemePreference
 
 class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) {
     private lateinit var startPageWallpaper: Preference

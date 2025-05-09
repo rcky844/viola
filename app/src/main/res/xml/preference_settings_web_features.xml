@@ -30,7 +30,7 @@
             app:preferenceTag="enableWebX"
             app:needReload="false" />
 
-        <tipz.viola.settings.fragment.WebXApiPickerPreference
+        <tipz.viola.settings.ui.fragment.WebXApiPickerPreference
             android:dependency="webx_enablement"
             android:key="webx_api" />
 

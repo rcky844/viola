@@ -13,7 +13,7 @@
         app:preferenceTag="enableDownloads"
         app:needReload="false" />
 
-    <tipz.viola.settings.fragment.DownloadLocationPickerPreference
+    <tipz.viola.settings.ui.fragment.DownloadLocationPickerPreference
         android:dependency="downloads_enablement"
         android:key="download_location_default"
         app:allowDividerAbove="true" />
