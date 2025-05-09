@@ -17,13 +17,20 @@
         android:layout_height="wrap_content"
         android:paddingBottom="8dp" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edittext"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:minHeight="48dp"
-        android:singleLine="true" />
+        android:paddingBottom="8dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:minHeight="48dp"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/deskMode"
