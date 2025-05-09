@@ -40,6 +40,7 @@ import tipz.viola.R
 import tipz.viola.databinding.TemplateIconDescriptionItemBinding
 import tipz.viola.ext.dpToPx
 import tipz.viola.webview.activity.BrowserActivity
+import androidx.core.view.isVisible
 
 class ExpandableToolbarView(
     context: Context, attrs: AttributeSet?
@@ -129,7 +130,7 @@ class ExpandableToolbarView(
     }
 
     fun expandToolBar() {
-        val viewVisible: Boolean = visibility == View.VISIBLE
+        val viewVisible: Boolean = isVisible
         val transitionSet = TransitionSet()
             .addTransition(Slide()
                 .addTarget(this)

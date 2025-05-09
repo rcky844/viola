@@ -13,6 +13,7 @@ import tipz.viola.databinding.ActivityCustomTabBinding
 import tipz.viola.ext.finishAndRemoveTaskExt
 import tipz.viola.ext.shareUrl
 import tipz.viola.webview.VWebViewActivity
+import androidx.core.net.toUri
 
 class CustomTabsActivity : VWebViewActivity(true) {
     private lateinit var binding: ActivityCustomTabBinding
@@ -46,7 +47,7 @@ class CustomTabsActivity : VWebViewActivity(true) {
         openBrowser.setOnClickListener {
             val url = webview.url
             val intent = Intent(this, BrowserActivity::class.java)
-            intent.data = Uri.parse(url)
+            intent.data = url.toUri()
             startActivity(intent)
             finishAndRemoveTaskExt()
         }
@@ -72,7 +73,7 @@ class CustomTabsActivity : VWebViewActivity(true) {
     }
 
     override fun onUrlUpdated(url: String?) {
-        host.text = Uri.parse(url!!).host
+        host.text = url!!.toUri().host
     }
 
     override fun onTitleUpdated(title: String?) {

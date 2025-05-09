@@ -17,6 +17,7 @@ import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.activity.ThemePreference
 import tipz.viola.webview.activity.BaseActivity.Companion.performThemeModeChecks
+import androidx.core.net.toUri
 
 class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) {
     private lateinit var startPageWallpaper: Preference
@@ -69,7 +70,7 @@ class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) 
                 } else {
                     DocumentFile.fromSingleUri(
                         settingsActivity,
-                        Uri.parse(settingsPreference.getString(SettingsKeys.startPageWallpaper))
+                        settingsPreference.getString(SettingsKeys.startPageWallpaper).toUri()
                     )?.name
                 }
             )

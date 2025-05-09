@@ -212,7 +212,7 @@ class FindInPageView(
         }
     }
 
-    fun expand(viewVisible: Boolean = visibility == View.VISIBLE) {
+    fun expand(viewVisible: Boolean = isVisible) {
         val transitionSet = TransitionSet()
             .addTransition(
                 Slide(when (activity.viewMode) {

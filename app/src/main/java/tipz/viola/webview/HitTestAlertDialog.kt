@@ -25,6 +25,7 @@ import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.shareUrl
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.widget.StringResAdapter
+import androidx.core.net.toUri
 
 open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(context) {
     private var arrayAdapter = StringResAdapter(context)
@@ -118,7 +119,7 @@ open class HitTestAlertDialog(context: Context) : MaterialAlertDialogBuilder(con
 
                 R.string.hit_test_open_in_new_tab -> {
                     val intent = Intent(context, BrowserActivity::class.java)
-                    intent.data = Uri.parse(url)
+                    intent.data = url.toUri()
                     context.startActivity(intent)
                 }
 

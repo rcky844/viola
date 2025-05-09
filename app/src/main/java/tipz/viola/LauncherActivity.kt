@@ -17,6 +17,7 @@ import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.activity.CustomTabsActivity
 import kotlin.system.exitProcess
+import androidx.core.net.toUri
 
 class LauncherActivity : AppCompatActivity() {
     lateinit var settingsPreference: SettingsSharedPreference
@@ -57,7 +58,7 @@ class LauncherActivity : AppCompatActivity() {
             Intent.ACTION_SEND, NfcAdapter.ACTION_NDEF_DISCOVERED -> { /* Sharing + NFC */
                 if (type != null && type == "text/plain") {
                     val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
-                    uri = if (sharedText.isNullOrBlank()) Uri.EMPTY else Uri.parse(sharedText)
+                    uri = if (sharedText.isNullOrBlank()) Uri.EMPTY else sharedText.toUri()
                 }
             }
 

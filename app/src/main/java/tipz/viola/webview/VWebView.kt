@@ -64,6 +64,8 @@ import tipz.viola.webview.pages.BrowserUrls
 import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webview.pages.ProjectUrls
 import java.util.regex.Pattern
+import androidx.core.net.toUri
+import androidx.core.view.isGone
 
 @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface", "RequiresFeature")
 class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
@@ -294,7 +296,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         Log.i(LOG_TAG, "Checking for possible App Link, url=$url")
         val intent =
             if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-            else Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            else Intent(Intent.ACTION_VIEW, url.toUri())
         if (intent.resolveActivity(context.packageManager) != null) {
             activeSnackBar = Snackbar.make(
                 activity.webviewContainer,
@@ -499,7 +501,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     MaterialAlertDialogBuilder(context)
                         .setTitle(R.string.dialog_insecure_connection_title)
                         .setMessage(resources.getString(
-                            R.string.dialog_insecure_connection_message, Uri.parse(currentUrl).host))
+                            R.string.dialog_insecure_connection_message, currentUrl.toUri().host))
                         .setPositiveButton(R.string.dialog_insecure_connection_continue_to_site) { _, _ ->
                             insecureAllow = true
                             loadRealUrl(currentUrl)
@@ -574,7 +576,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.UPDATE_TITLE -> {
                 if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 activity.onTitleUpdated(
-                    if (this.visibility == View.GONE) resources.getString(R.string.start_page)
+                    if (isGone) resources.getString(R.string.start_page)
                     else title?.trim()
                 )
                 activity.swipeRefreshLayout.setRefreshing(false)

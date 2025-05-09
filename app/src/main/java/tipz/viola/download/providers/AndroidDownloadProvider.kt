@@ -64,7 +64,7 @@ class AndroidDownloadProvider(override val context: Context) : DownloadProvider 
                 return
             }
 
-            val request = DownloadManager.Request(Uri.parse(uriString))
+            val request = DownloadManager.Request(uriString.toUri())
 
             Log.i(LOG_TAG, "startDownload(): uriString=${uriString}")
 

@@ -10,6 +10,7 @@ import tipz.viola.Application
 import tipz.viola.settings.migrations.ExoticMigrations
 import tipz.viola.settings.migrations.FernandoMigrations
 import tipz.viola.settings.migrations.InitialMigrations
+import androidx.core.content.edit
 
 class SettingsSharedPreference(context: Context) {
     private var preference: SharedPreferences
@@ -41,7 +42,7 @@ class SettingsSharedPreference(context: Context) {
     }
 
     fun setInt(prefName: String, value: Int) {
-        preference.edit().putInt(prefName, value).apply()
+        preference.edit { putInt(prefName, value) }
     }
 
     fun getString(prefName: String): String {
@@ -49,7 +50,7 @@ class SettingsSharedPreference(context: Context) {
     }
 
     fun setString(prefName: String, value: String) {
-        preference.edit().putString(prefName, value).apply()
+        preference.edit { putString(prefName, value) }
     }
 
     fun getIntBool(prefName: String): Boolean {
@@ -61,6 +62,6 @@ class SettingsSharedPreference(context: Context) {
     }
 
     fun remove(prefName: String) {
-        preference.edit().remove(prefName).apply()
+        preference.edit { remove(prefName) }
     }
 }
