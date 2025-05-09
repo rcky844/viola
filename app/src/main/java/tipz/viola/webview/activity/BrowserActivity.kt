@@ -28,9 +28,11 @@ import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.pm.ShortcutInfoCompat
@@ -52,9 +54,9 @@ import tipz.viola.database.Broha
 import tipz.viola.database.instances.FavClient
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
+import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogTranslateBinding
-import tipz.viola.databinding.DialogUaEditBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.dpToPx
@@ -584,11 +586,28 @@ class BrowserActivity : VWebViewActivity() {
     fun itemLongSelected(view: AppCompatImageView?, @DrawableRes item: Int) {
         when (item) {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
-                val binding: DialogUaEditBinding = DialogUaEditBinding.inflate(layoutInflater)
-                val mView = binding.root
-                val message = binding.message
+                // Layout
+                val binding: DialogEditTextBinding = DialogEditTextBinding.inflate(layoutInflater)
+                val uaEditView = binding.root
+
+                // Views
                 val customUserAgent = binding.edittext
-                val deskMode = binding.deskMode
+                val message = PropertyDisplayView(this).apply {
+                    setPadding(0, 0, 0, dpToPx(8))
+                }
+                val deskMode = AppCompatCheckBox(this).apply {
+                    layoutParams = LinearLayoutCompat.LayoutParams(
+                        LinearLayoutCompat.LayoutParams.MATCH_PARENT,
+                        LinearLayoutCompat.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        topMargin = dpToPx(8)
+                    }
+                    isSingleLine = true
+                    minHeight = dpToPx(48)
+                    text = resources.getString(R.string.viewing_mode_wide_viewport_mode)
+                }
+                uaEditView.addView(message, 0)
+                uaEditView.addView(deskMode)
 
                 message.property = arrayListOf(
                     arrayOf(R.string.viewing_mode_current_user_agent, webview.webSettings.userAgentString)
@@ -596,7 +615,7 @@ class BrowserActivity : VWebViewActivity() {
                 deskMode.isChecked = currentCustomUAWideView
                 val dialog = MaterialAlertDialogBuilder(this)
                 dialog.setTitle(R.string.viewing_mode_custom_user_agent)
-                    .setView(mView)
+                    .setView(uaEditView)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
                         val dataBundle = VWebView.UserAgentBundle()
                         dataBundle.userAgentString = customUserAgent.text.toString()
