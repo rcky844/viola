@@ -28,11 +28,11 @@ import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.pm.ShortcutInfoCompat
@@ -42,7 +42,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
+import androidx.core.widget.TextViewCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -595,7 +597,7 @@ class BrowserActivity : VWebViewActivity() {
                 val message = PropertyDisplayView(this).apply {
                     setPadding(0, 0, 0, dpToPx(8))
                 }
-                val deskMode = AppCompatCheckBox(this).apply {
+                val deskMode = MaterialSwitch(this).apply {
                     layoutParams = LinearLayoutCompat.LayoutParams(
                         LinearLayoutCompat.LayoutParams.MATCH_PARENT,
                         LinearLayoutCompat.LayoutParams.WRAP_CONTENT
