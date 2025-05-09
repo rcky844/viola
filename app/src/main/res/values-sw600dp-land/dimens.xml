@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2024 Tipz Team
+<!-- Copyright (c) 2024-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
-    <dimen name="toolbar_extendable_height">210dp</dimen> <!-- @dimen/toolbar_extendable_holder_size * 2 + 10dp -->
-    <dimen name="toolbar_extendable_max_width">310dp</dimen> <!-- @dimen/toolbar_extendable_holder_size * 3 + 10dp -->
+    <dimen name="toolbar_extendable_height">320dp</dimen> <!-- @dimen/toolbar_extendable_holder_size * 3 + 20dp -->
+    <dimen name="toolbar_extendable_max_width">320dp</dimen> <!-- @dimen/toolbar_extendable_holder_size * 3 + 20dp -->
 </resources>
