@@ -384,7 +384,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 }),
 
                 // New Tab Page (Third party)
-                Matcher(BrowserUrls.newTabPageChromeSuffix, {
+                Matcher(BrowserUrls.newTabPageThirdPartyChromeSuffix, {
                     loadHomepage(false)
                 }),
 
