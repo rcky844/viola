@@ -12,12 +12,13 @@ import tipz.viola.settings.migrations.FernandoMigrations
 import tipz.viola.settings.migrations.InitialMigrations
 import androidx.core.content.edit
 
+/* TODO: Migrate to something newer? */
 class SettingsSharedPreference(context: Context) {
     private var preference: SharedPreferences
 
     init {
         preference =
-            context.getSharedPreferences(SettingsKeys.configDataStore, Activity.MODE_PRIVATE)!!
+            context.getSharedPreferences(CONFIG_DATA_STORE_NAME, Activity.MODE_PRIVATE)!!
         if (context is Application) settingsInit()
     }
 
@@ -63,5 +64,9 @@ class SettingsSharedPreference(context: Context) {
 
     fun remove(prefName: String) {
         preference.edit { remove(prefName) }
+    }
+
+    companion object {
+        private const val CONFIG_DATA_STORE_NAME = "config" /* Pref file name */
     }
 }

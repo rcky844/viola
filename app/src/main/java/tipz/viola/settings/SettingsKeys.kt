@@ -11,7 +11,6 @@ object SettingsKeys {
      * Includes all possibly used keys. Comment next to the definition
      * indicates data type.
      */
-    const val configDataStore = "config" /* Pref file name */ /* TODO: Migrate to something newer? */
     const val protocolVersion = "protocolVersion" /* INTEGER */ /* Protocol of settings config */
 
     /* Ad blocker */
