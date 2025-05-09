@@ -8,7 +8,7 @@
         android:summary="@string/pref_ps_category_ad_blocking_summary"
         android:title="@string/pref_ps_category_ad_blocking_title">
 
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="adBlocker"
             android:summaryOn="@string/text_on"
             android:summaryOff="@string/text_off"
@@ -26,31 +26,31 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/pref_ps_category_privacy">
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="do_not_track"
             android:summary="@string/pref_do_not_track_summary"
             android:title="@string/pref_do_not_track_title"
             app:preferenceTag="sendDNT"
             app:needReload="true" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="send_sec_gpc"
             android:summary="@string/pref_send_sec_gpc_summary"
             android:title="@string/pref_send_sec_gpc_title"
             app:preferenceTag="sendSecGPC"
             app:needReload="true" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="enable_history"
             android:summary="@string/pref_enable_history_summary"
             android:title="@string/pref_enable_history_title"
             app:preferenceTag="enableHistoryStorage"
             app:needReload="false" />
-        <tipz.viola.settings.activity.MaterialDialogPreference
+        <tipz.viola.settings.ui.preference.MaterialDialogPreference
             android:key="clear_browsing_data"
             android:title="@string/pref_clear_browsing_data"
             android:dialogTitle="@string/pref_clear_browsing_data"
             android:dialogMessage="@string/dialog_continue_prompt_message"
             android:positiveButtonText="@string/clear" />
-        <tipz.viola.settings.activity.MaterialDialogPreference
+        <tipz.viola.settings.ui.preference.MaterialDialogPreference
             android:key="reset_to_default"
             android:summary="@string/pref_reset_to_default_summary"
             android:title="@string/pref_reset_to_default_title"
@@ -59,13 +59,13 @@
             android:positiveButtonText="@string/clear" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory android:title="@string/pref_ps_category_security">
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="enforce_https"
             android:summary="@string/pref_enforce_https_summary"
             android:title="@string/pref_enforce_https_title"
             app:preferenceTag="enforceHttps"
             app:needReload="false" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="google_safe_browsing"
             android:summary="@string/pref_google_safe_browsing_summary"
             android:title="@string/pref_google_safe_browsing_title"

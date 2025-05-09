@@ -5,7 +5,7 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <tipz.viola.settings.activity.MaterialSwitchPreference
+    <tipz.viola.settings.ui.preference.MaterialSwitchPreference
         android:key="downloads_enablement"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off"
@@ -13,12 +13,12 @@
         app:preferenceTag="enableDownloads"
         app:needReload="false" />
 
-    <tipz.viola.settings.ui.fragment.DownloadLocationPickerPreference
+    <tipz.viola.settings.ui.preference.DownloadLocationPickerPreference
         android:dependency="downloads_enablement"
         android:key="download_location_default"
         app:allowDividerAbove="true" />
 
-    <tipz.viola.settings.activity.MaterialSwitchPreference
+    <tipz.viola.settings.ui.preference.MaterialSwitchPreference
         android:dependency="downloads_enablement"
         android:key="download_confirmation_ask"
         android:summary="@string/pref_download_confirmation_ask_summary"
@@ -26,7 +26,7 @@
         app:preferenceTag="requireDownloadConformation"
         app:needReload="false" />
 
-    <tipz.viola.settings.activity.MaterialSwitchPreference
+    <tipz.viola.settings.ui.preference.MaterialSwitchPreference
         android:dependency="downloads_enablement"
         android:key="close_app_after_download"
         android:summary="@string/pref_close_app_after_download_summary"

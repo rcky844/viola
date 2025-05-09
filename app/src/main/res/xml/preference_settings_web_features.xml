@@ -5,35 +5,35 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <tipz.viola.settings.activity.MaterialSwitchPreference
+    <tipz.viola.settings.ui.preference.MaterialSwitchPreference
         android:key="javascript"
         android:summary="@string/pref_enable_javascript_summary"
         android:title="@string/pref_enable_javascript_title"
         app:preferenceTag="isJavaScriptEnabled"
         app:needReload="true" />
 
-    <tipz.viola.settings.activity.MaterialSwitchPreference
+    <tipz.viola.settings.ui.preference.MaterialSwitchPreference
         android:key="cookies"
         android:summary="@string/pref_enable_cookies_summary"
         android:title="@string/pref_enable_cookies_title"
         app:preferenceTag="isCookiesEnabled"
         app:needReload="true" />
 
-    <tipz.viola.settings.activity.LongSummaryPreferenceCategory
+    <tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory
         android:summary="@string/pref_web_webx_category_summary"
         android:title="@string/pref_web_webx_category_title">
 
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="webx_enablement"
             android:summaryOn="@string/text_on"
             android:summaryOff="@string/text_off"
             app:preferenceTag="enableWebX"
             app:needReload="false" />
 
-        <tipz.viola.settings.ui.fragment.WebXApiPickerPreference
+        <tipz.viola.settings.ui.preference.WebXApiPickerPreference
             android:dependency="webx_enablement"
             android:key="webx_api" />
 
-    </tipz.viola.settings.activity.LongSummaryPreferenceCategory>
+    </tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

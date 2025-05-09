@@ -5,14 +5,14 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.preference.PreferenceCategory android:title="@string/pref_appearance_theming_category">
-        <tipz.viola.settings.activity.ThemePreference
+        <tipz.viola.settings.ui.preference.ThemePreference
             android:key="theme" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="use_force_dark"
             android:summary="@string/pref_use_force_dark_summary"
             android:title="@string/pref_use_force_dark_title"
             app:preferenceTag="useForceDark" />
-        <tipz.viola.settings.activity.MaterialPreference
+        <tipz.viola.settings.ui.preference.MaterialPreference
             android:key="start_page_wallpaper"
             android:summary=""
             android:title="@string/pref_start_page_wallpaper_title"
@@ -20,25 +20,25 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/pref_appearance_ui_category">
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="show_favicon"
             android:summary="@string/pref_show_favicon_summary"
             android:title="@string/pref_show_favicon"
             app:preferenceTag="showFavicon"
             app:needReload="false" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="reverse_address_bar"
             android:summary="@string/pref_reverse_address_bar_summary"
             android:title="@string/pref_reverse_address_bar_title"
             app:preferenceTag="reverseAddressBar"
             app:needReload="false" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="enable_swipe_refresh"
             android:summary="@string/pref_enable_swipe_refresh_summary"
             android:title="@string/pref_enable_swipe_refresh_title"
             app:preferenceTag="enableSwipeRefresh"
             app:needReload="false" />
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="update_recents_icon"
             android:summary="@string/pref_update_recents_icon_summary"
             android:title="@string/pref_update_recents_icon_title"
