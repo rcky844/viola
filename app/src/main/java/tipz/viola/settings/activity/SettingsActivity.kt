@@ -73,7 +73,7 @@ class SettingsActivity : BaseActivity() {
                 .setCustomAnimations(
                     R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
                     R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
-                .replace(R.id.list_container, fragment, "main")
+                .replace(R.id.list_container, fragment)
                 .addToBackStack(null).commit()
         }
     }
@@ -103,7 +103,6 @@ class SettingsActivity : BaseActivity() {
             .setCustomAnimations(
                 R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
                 R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
-            /* TODO: Add tags to individual fragments for tracking */
             .replace(R.id.list_container, fragment)
             .addToBackStack(null).commit()
         return fragment
