@@ -32,9 +32,11 @@ class ToolbarView(
         orientation = VERTICAL
 
         /* Create divider */
-        addView(MaterialDivider(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        })
+        if (tag != "hideDivider") {
+            addView(MaterialDivider(context).apply {
+                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            })
+        }
 
         /* Create RecyclerView */
         val recyclerViewParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
