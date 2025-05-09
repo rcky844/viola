@@ -65,12 +65,15 @@ class SettingsActivity : BaseActivity() {
 
         // Setup fragments
         if (savedInstanceState == null) {
+            val fragment = getPreferenceScreen(
+                intent.getIntExtra(EXTRA_INITIAL_PREF_SCREEN, R.xml.preference_settings_main)
+            ) ?: MainFragment()
             supportFragmentManager.registerFragmentLifecycleCallbacks(TitleUpdater(), false)
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
                     R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
-                .replace(R.id.list_container, MainFragment(), "main")
+                .replace(R.id.list_container, fragment, "main")
                 .addToBackStack(null).commit()
         }
     }
@@ -83,6 +86,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun getPreferenceScreen(@XmlRes screen: Int): ExtPreferenceFragment? =
         when (screen) {
+            R.xml.preference_settings_main -> MainFragment()
             R.xml.preference_settings_home -> HomeFragment()
             R.xml.preference_settings_search -> SearchFragment()
             R.xml.preference_settings_privacy_security -> PrivacySecurityFragment()
@@ -106,6 +110,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     companion object {
+        const val EXTRA_INITIAL_PREF_SCREEN = "initial_pref_screen"
         private const val BUNDLE_ACTION_BAR_TITLE = "action_bar_title"
     }
 }
