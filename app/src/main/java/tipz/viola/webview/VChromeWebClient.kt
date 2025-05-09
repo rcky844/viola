@@ -24,7 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
-import tipz.viola.databinding.DialogEdittextBinding
+import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.ext.askForPermission
 import tipz.viola.ext.setImmersiveMode
 import java.util.Objects
@@ -128,8 +128,8 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
         result: JsResult,
         titleResId: Int
     ) {
-        val binding: DialogEdittextBinding =
-            DialogEdittextBinding.inflate(LayoutInflater.from(activity))
+        val binding: DialogEditTextBinding =
+            DialogEditTextBinding.inflate(LayoutInflater.from(activity))
         val view = binding.root
 
         val jsMessage = binding.edittext

@@ -8,7 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import tipz.viola.databinding.DialogEdittextBinding
+import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.settings.SettingsSharedPreference
 
 class ListPickerAlertDialog(context: Context,
@@ -51,8 +51,8 @@ class ListPickerAlertDialog(context: Context,
     }
 
     private fun createCustomDialog(checkedItem: Int) {
-        val binding: DialogEdittextBinding =
-            DialogEdittextBinding.inflate(LayoutInflater.from(context))
+        val binding: DialogEditTextBinding =
+            DialogEditTextBinding.inflate(LayoutInflater.from(context))
         val view = binding.root
         val customInput = binding.edittext
 
