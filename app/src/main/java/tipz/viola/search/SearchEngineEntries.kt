@@ -18,28 +18,28 @@ object SearchEngineEntries {
     data class EngineItem(val name: String, val homePage: String? = null,
                            val search: String? = null, val suggestion: String? = null)
     private val engines = arrayOf(
-        EngineItem(name = "google", homePage = "https://www.google.com",
-            search = "https://www.google.com/search?q=$queryPlaceholder",
-            suggestion = "https://www.google.com/complete/search?client=android&oe=utf8&ie=utf8&cp=4&xssi=t&gs_pcrt=undefined&hl=$languagePlaceholder&q=$queryPlaceholder"
+        EngineItem(name = "google", homePage = "https://google.com",
+            search = "https://google.com/search?q=$queryPlaceholder",
+            suggestion = "https://google.com/complete/search?client=android&oe=utf8&ie=utf8&cp=4&xssi=t&gs_pcrt=undefined&hl=$languagePlaceholder&q=$queryPlaceholder"
         ),
-        EngineItem(name = "baidu", homePage = "https://www.baidu.com",
-            search = "https://www.baidu.com/s?wd=$queryPlaceholder",
+        EngineItem(name = "baidu", homePage = "https://baidu.com",
+            search = "https://baidu.com/s?wd=$queryPlaceholder",
             suggestion = "https://suggestion.baidu.com/su?ie=UTF-8&wd=$queryPlaceholder&action=opensearch"
         ),
-        EngineItem(name = "duckduckgo", homePage = "https://www.duckduckgo.com",
-            search = "https://www.duckduckgo.com/?q=$queryPlaceholder",
-            suggestion = "https://www.duckduckgo.com/ac/?q=$queryPlaceholder&type=list"
+        EngineItem(name = "duckduckgo", homePage = "https://duckduckgo.com",
+            search = "https://duckduckgo.com/?q=$queryPlaceholder",
+            suggestion = "https://duckduckgo.com/ac/?q=$queryPlaceholder&type=list"
         ),
-        EngineItem(name = "bing", homePage = "https://www.bing.com",
-            search = "https://www.bing.com/search?q=$queryPlaceholder",
+        EngineItem(name = "bing", homePage = "https://bing.com",
+            search = "https://bing.com/search?q=$queryPlaceholder",
             suggestion = "https://api.bing.com/osjson.aspx?query=$queryPlaceholder&language=$languagePlaceholder"
         ),
         EngineItem(name = "yahoo", homePage = "https://search.yahoo.com",
             search = "https://search.yahoo.com/search?p=$queryPlaceholder",
             suggestion = "https://sugg.search.yahoo.net/sg/?output=fxjson&command=$queryPlaceholder"
         ),
-        EngineItem(name = "ecosia", homePage = "https://www.ecosia.org",
-            search = "https://www.ecosia.org/search?q=$queryPlaceholder",
+        EngineItem(name = "ecosia", homePage = "https://ecosia.org",
+            search = "https://ecosia.org/search?q=$queryPlaceholder",
             suggestion = "https://ac.ecosia.org/autocomplete?q=$queryPlaceholder&type=list"
         ),
         EngineItem(name = "yandex", homePage = "https://yandex.com",
@@ -50,9 +50,9 @@ object SearchEngineEntries {
             search = "https://search.brave.com/search?q=$queryPlaceholder",
             suggestion = "https://search.brave.com/api/suggest?q=$queryPlaceholder"
         ),
-        EngineItem(name = "startpage", homePage = "https://www.startpage.com",
-            search = "https://www.startpage.com/do/search?query=$queryPlaceholder",
-            suggestion = "https://www.startpage.com/suggestions?q=$queryPlaceholder"
+        EngineItem(name = "startpage", homePage = "https://startpage.com",
+            search = "https://startpage.com/do/search?query=$queryPlaceholder",
+            suggestion = "https://startpage.com/suggestions?q=$queryPlaceholder"
         ),
         EngineItem(
             name = "whoogle", homePage = "https://whoogle.io",
@@ -63,16 +63,16 @@ object SearchEngineEntries {
             search = "https://swisscows.com/web?query=$queryPlaceholder",
             suggestion = "https://api.swisscows.com/suggest?query=$queryPlaceholder"
         ),
-        EngineItem(name = "qwant", homePage = "https://www.qwant.com",
-            search = "https://www.qwant.com/?q=$queryPlaceholder",
-            suggestion = "https://api.qwant.com/v3/suggest?q=$queryPlaceholder"
+        EngineItem(name = "qwant", homePage = "https://qwant.com",
+            search = "https://qwant.com/?q=$queryPlaceholder",
+            suggestion = "https://qwant.com/v3/suggest?q=$queryPlaceholder"
         ),
-        EngineItem(name = "sogou", homePage = "https://www.sogou.com",
-            search = "https://www.sogou.com/web?query=$queryPlaceholder",
+        EngineItem(name = "sogou", homePage = "https://sogou.com",
+            search = "https://sogou.com/web?query=$queryPlaceholder",
             suggestion = "https://sor.html5.qq.com/api/getsug?key=$queryPlaceholder"
         ),
-        EngineItem(name = "so360", homePage = "https://www.so.com",
-            search = "https://www.so.com/s?q=$queryPlaceholder",
+        EngineItem(name = "so360", homePage = "https://so.com",
+            search = "https://so.com/s?q=$queryPlaceholder",
             suggestion = "https://sug.so.360.cn/suggest?word=$queryPlaceholder"
         ),
         EngineItem(
