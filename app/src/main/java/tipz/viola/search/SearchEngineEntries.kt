@@ -4,13 +4,12 @@
 package tipz.viola.search
 
 import android.content.Context
-import android.net.Uri
 import android.text.TextUtils
+import androidx.core.net.toUri
+import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import java.util.Locale
-import androidx.core.net.toUri
-import tipz.viola.R
 
 object SearchEngineEntries {
     private const val queryPlaceholder = "{query}"
@@ -82,31 +81,41 @@ object SearchEngineEntries {
         ),
         EngineItem(name = "") /* The object for custom URL */
     )
-
     private const val defaultEngine = 7
-    val customIndex = engines.size - 1
+
+    enum class EngineInfoType {
+        HOMEPAGE, SEARCH, SUGGESTION
+    }
 
     // TODO: Improvements needed
     fun getNameByIndex(index: Int = defaultEngine): String = engines[index].name
-    fun getIndexByName(name: String): Int = engines.indexOfFirst { it.name == name }
-        .takeUnless { it < 0 || it >= engines.size } ?: defaultEngine
 
     private fun findByName(name: String): EngineItem? = engines.find { it.name == name }
-    private fun getHostUrl(index: Int): String? = engines[index].search?.toUri()?.host
+    private fun getHostUrl(item: EngineItem): String? = item.search?.toUri()?.host
+    private fun checkEngineInfoType(item: EngineItem, type: EngineInfoType): Boolean =
+        when (type) {
+            EngineInfoType.HOMEPAGE -> item.homePage
+            EngineInfoType.SEARCH -> item.search
+            EngineInfoType.SUGGESTION -> item.suggestion
+        } != null || item.name == ""
 
-    fun getEngineNameList(): Array<String> {
+    fun getEngineNameList(type: EngineInfoType): Array<String> {
         val array = mutableListOf<String>()
-        engines.forEach { array.add(it.name) }
+        engines.forEach { if (checkEngineInfoType(it, type)) array.add(it.name) }
         return array.toTypedArray()
     }
 
-    fun getEngineDisplayList(context: Context): Array<String> {
-        val engineList = context.resources.getStringArray(R.array.search_entries)
-        engineList.forEachIndexed { i, it ->
-            val hostUrl = getHostUrl(i)
-            engineList[i] = if (hostUrl.isNullOrEmpty()) it else "$it ($hostUrl)"
+    fun getEngineDisplayList(context: Context, type: EngineInfoType): Array<String> {
+        val displayList = context.resources.getStringArray(R.array.search_entries)
+        val array = mutableListOf<String>()
+        engines.forEachIndexed { i, it ->
+            if (checkEngineInfoType(engines[i], type)) {
+                val hostUrl = getHostUrl(it)
+                val display = displayList[i]
+                array.add(if (hostUrl.isNullOrEmpty()) display else "$display ($hostUrl)")
+            }
         }
-        return engineList
+        return array.toTypedArray()
     }
 
     fun getPreferredHomePageUrl(pref: SettingsSharedPreference): String =
