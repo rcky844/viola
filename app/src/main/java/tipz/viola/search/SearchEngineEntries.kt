@@ -34,7 +34,7 @@ object SearchEngineEntries {
             search = "https://bing.com/search?q=$queryPlaceholder",
             suggestion = "https://api.bing.com/osjson.aspx?query=$queryPlaceholder&language=$languagePlaceholder"
         ),
-        EngineItem(name = "yahoo", homePage = "https://search.yahoo.com",
+        EngineItem(name = "yahoo", homePage = "https://yahoo.com",
             search = "https://search.yahoo.com/search?p=$queryPlaceholder",
             suggestion = "https://sugg.search.yahoo.net/sg/?output=fxjson&command=$queryPlaceholder"
         ),
