@@ -34,6 +34,14 @@ class FernandoMigrations(private val pref: SettingsSharedPreference) {
             // default.
             if (pref.getString(SettingsKeys.suggestionsName) == "frogfind")
                 pref.setString(SettingsKeys.suggestionsName, "brave")
+
+            // Migrate Whoogle users to the default
+            if (pref.getString(SettingsKeys.searchName) == "whoogle")
+                pref.setString(SettingsKeys.searchName, "brave")
+            if (pref.getString(SettingsKeys.homePageName) == "whoogle")
+                pref.setString(SettingsKeys.homePageName, "brave")
+            if (pref.getString(SettingsKeys.suggestionsName) == "whoogle")
+                pref.setString(SettingsKeys.suggestionsName, "brave")
         }
     }
 }

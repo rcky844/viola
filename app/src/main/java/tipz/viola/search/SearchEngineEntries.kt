@@ -54,11 +54,6 @@ object SearchEngineEntries {
             search = "https://startpage.com/do/search?query=$queryPlaceholder",
             suggestion = "https://startpage.com/suggestions?q=$queryPlaceholder"
         ),
-        EngineItem(
-            name = "whoogle", homePage = "https://whoogle.io",
-            search = "https://whoogle.io/search?q=$queryPlaceholder",
-            suggestion = "https://whoogle.io/autocomplete?q=$queryPlaceholder",
-        ),
         EngineItem(name = "swisscows", homePage = "https://swisscows.com",
             search = "https://swisscows.com/web?query=$queryPlaceholder",
             suggestion = "https://api.swisscows.com/suggest?query=$queryPlaceholder"
