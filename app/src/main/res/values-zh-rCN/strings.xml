@@ -369,6 +369,8 @@
     <string name="dialog_update_available_release_date_message">发布日期：%s</string>
     <!-- Updates: Update failed message -->
     <string name="update_download_failed">更新下载失败！</string>
+    <!-- Updates: Downloading update message -->
+    <string name="update_downloading">Downloading update…</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">刪除所有收藏</string>
     <!-- Lists: Delete menu option -->
