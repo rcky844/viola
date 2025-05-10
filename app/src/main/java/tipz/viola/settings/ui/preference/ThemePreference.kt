@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.activity
+package tipz.viola.settings.ui.preference
 
 import android.content.Context
 import android.util.AttributeSet
@@ -12,10 +12,11 @@ import com.google.android.material.elevation.SurfaceColors
 import tipz.viola.R
 import tipz.viola.databinding.PreferenceThemeBinding
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.webview.activity.BaseActivity.Companion.settingsPreference
+import tipz.viola.settings.SettingsSharedPreference
 
 class ThemePreference(context: Context, attrs: AttributeSet) : Preference(context, attrs) {
     private lateinit var binding: PreferenceThemeBinding
+    private val settingsPreference = SettingsSharedPreference.instance
 
     init {
         layoutResource = R.layout.preference_theme

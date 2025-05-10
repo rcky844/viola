@@ -17,19 +17,19 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.ext.dpToPx
 import tipz.viola.ext.getOnSurfaceColor
 import tipz.viola.ext.getSelectableItemBackground
 import tipz.viola.search.SuggestionAdapter
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.VWebViewActivity
 
 class AddressBarView(
     context: Context, attrs: AttributeSet?
 ): ConstraintLayout(context, attrs) {
-    val settingsPreference = (context.applicationContext as Application).settingsPreference
+    val settingsPreference = SettingsSharedPreference.instance
     val sslLock = AppCompatImageView(context)
     val textView = MaterialAutoCompleteTextView(context)
 

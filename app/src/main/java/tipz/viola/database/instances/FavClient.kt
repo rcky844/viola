@@ -4,13 +4,13 @@
 package tipz.viola.database.instances
 
 import android.content.Context
-import tipz.viola.Application
 import tipz.viola.database.BrohaClient
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 
 class FavClient(context: Context) : BrohaClient(context, "bookmarks") {
     init {
-        val settingsPreference = (context.applicationContext as Application).settingsPreference
+        val settingsPreference = SettingsSharedPreference.instance
         val favApiVer = settingsPreference.getInt(SettingsKeys.favApi)
         if (favApiVer > LATEST_API || favApiVer <= -1) throw RuntimeException()
         settingsPreference.setInt(SettingsKeys.favApi, LATEST_API)

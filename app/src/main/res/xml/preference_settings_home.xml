@@ -4,7 +4,7 @@
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <tipz.viola.settings.activity.MaterialSwitchPreference
+    <tipz.viola.settings.ui.preference.MaterialSwitchPreference
         android:key="homepage_enablement"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off"
@@ -16,7 +16,7 @@
         android:key="homepage"
         android:title="@string/homepage"
         app:allowDividerAbove="true" />
-    <tipz.viola.settings.activity.MaterialSwitchPreference
+    <tipz.viola.settings.ui.preference.MaterialSwitchPreference
         android:dependency="homepage_enablement"
         android:key="dont_use_start_page"
         android:summary="@string/pref_use_web_homepage_summary"

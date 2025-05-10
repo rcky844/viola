@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.print.PrintAttributes
@@ -31,16 +30,22 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.NestedScrollView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,9 +57,9 @@ import tipz.viola.database.Broha
 import tipz.viola.database.instances.FavClient
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
+import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogTranslateBinding
-import tipz.viola.databinding.DialogUaEditBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.dpToPx
@@ -64,7 +69,7 @@ import tipz.viola.ext.getSelectableItemBackground
 import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.activity.SettingsActivity
+import tipz.viola.settings.ui.SettingsActivity
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
@@ -155,8 +160,7 @@ class BrowserActivity : VWebViewActivity() {
 
         // Layout HitBox
         webview.setOnTouchListener { _, _ ->
-            if (expandableToolbarView.visibility == View.VISIBLE)
-                expandableToolbarView.expandToolBar()
+            if (expandableToolbarView.isVisible) expandableToolbarView.expandToolBar()
             if (urlEditText.hasFocus() && imm.isAcceptingText) closeKeyboard()
             false
         }
@@ -179,7 +183,7 @@ class BrowserActivity : VWebViewActivity() {
                             true
                         }
                     }
-                    url.text = Uri.parse(webview.url).host
+                    url.text = webview.url.toUri().host
                     this.icon.apply {
                         webview.faviconExt.takeUnless { it == null }?.let {
                             setImageBitmap(it)
@@ -253,7 +257,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             setOnClickListener {
-                if (expandableToolbarView.visibility == View.VISIBLE)
+                if (expandableToolbarView.isVisible)
                     expandableToolbarView.expandToolBar()
             }
 
@@ -372,10 +376,8 @@ class BrowserActivity : VWebViewActivity() {
         settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
             try {
                 localNtpPageView.setBackgroundDrawable(
-                    BitmapDrawable(
-                        resources,
-                        MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.parse(it))
-                    )
+                    MediaStore.Images.Media.getBitmap(this.contentResolver, it.toUri())
+                        .toDrawable(resources)
                 )
             } catch (_: SecurityException) {
                 localNtpPageView.setBackgroundResource(0)
@@ -439,17 +441,13 @@ class BrowserActivity : VWebViewActivity() {
                 arrayAdapter.add(R.string.shortcuts_menu_webapp)
                 dialog.setAdapter(arrayAdapter) { _, which ->
                     val launchIntent = Intent(this, LauncherActivity::class.java)
-                        .setData(Uri.parse(webview.url))
+                        .setData(webview.url.toUri())
                         .setAction(Intent.ACTION_VIEW)
                         .putExtra(LauncherActivity.EXTRA_SHORTCUT_TYPE, which)
 
                     val drawable = favicon.imageView.drawable
 
-                    val icon = Bitmap.createBitmap(
-                        drawable.intrinsicWidth,
-                        drawable.intrinsicHeight,
-                        Bitmap.Config.ARGB_8888
-                    )
+                    val icon = createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
 
                     val canvas = Canvas(icon)
                     drawable.setBounds(0, 0, canvas.width, canvas.height)
@@ -584,11 +582,28 @@ class BrowserActivity : VWebViewActivity() {
     fun itemLongSelected(view: AppCompatImageView?, @DrawableRes item: Int) {
         when (item) {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
-                val binding: DialogUaEditBinding = DialogUaEditBinding.inflate(layoutInflater)
-                val mView = binding.root
-                val message = binding.message
+                // Layout
+                val binding: DialogEditTextBinding = DialogEditTextBinding.inflate(layoutInflater)
+                val uaEditView = binding.root
+
+                // Views
                 val customUserAgent = binding.edittext
-                val deskMode = binding.deskMode
+                val message = PropertyDisplayView(this).apply {
+                    setPadding(0, 0, 0, dpToPx(8))
+                }
+                val deskMode = MaterialSwitch(this).apply {
+                    layoutParams = LinearLayoutCompat.LayoutParams(
+                        LinearLayoutCompat.LayoutParams.MATCH_PARENT,
+                        LinearLayoutCompat.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        topMargin = dpToPx(8)
+                    }
+                    isSingleLine = true
+                    minHeight = dpToPx(48)
+                    text = resources.getString(R.string.viewing_mode_wide_viewport_mode)
+                }
+                uaEditView.addView(message, 0)
+                uaEditView.addView(deskMode)
 
                 message.property = arrayListOf(
                     arrayOf(R.string.viewing_mode_current_user_agent, webview.webSettings.userAgentString)
@@ -596,7 +611,7 @@ class BrowserActivity : VWebViewActivity() {
                 deskMode.isChecked = currentCustomUAWideView
                 val dialog = MaterialAlertDialogBuilder(this)
                 dialog.setTitle(R.string.viewing_mode_custom_user_agent)
-                    .setView(mView)
+                    .setView(uaEditView)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
                         val dataBundle = VWebView.UserAgentBundle()
                         dataBundle.userAgentString = customUserAgent.text.toString()
@@ -755,7 +770,7 @@ class BrowserActivity : VWebViewActivity() {
             sslState = SslState.NONE
             sslLock.setImageResource(R.drawable.warning)
         } else if (sslState == SslState.ERROR) { // State error is set before SECURE
-            sslErrorHost = Uri.parse(webview.url).host!!
+            sslErrorHost = webview.url.toUri().host!!
             sslState = SslState.NONE
         } else {
             sslState = SslState.SECURE

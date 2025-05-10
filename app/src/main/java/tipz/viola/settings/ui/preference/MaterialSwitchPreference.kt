@@ -1,22 +1,20 @@
 // Copyright (c) 2023-2024 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.activity
+package tipz.viola.settings.ui.preference
 
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.SwitchPreferenceCompat
-import tipz.viola.Application
 import tipz.viola.R
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.settings.fragment.ExtPreferenceFragment
+import tipz.viola.settings.ui.fragment.ExtPreferenceFragment
 
 class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
     SwitchPreferenceCompat(context, attrs) {
-    private val settingsPreference: SettingsSharedPreference =
-        (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = SettingsSharedPreference.instance
     private val preferenceTag: String?
     private val needReload: Boolean
     private val requiredApi: Int

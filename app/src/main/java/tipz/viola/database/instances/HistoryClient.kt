@@ -4,16 +4,16 @@
 package tipz.viola.database.instances
 
 import android.content.Context
-import tipz.viola.Application
 import tipz.viola.database.BrohaClient
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 
 class HistoryClient(context: Context) : BrohaClient(context, "history") {
     enum class UpdateHistoryState {
         STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK
     }
 
-    val settingsPreference = (context.applicationContext as Application).settingsPreference
+    val settingsPreference = SettingsSharedPreference.instance
 
     init {
         val historyApiVer = settingsPreference.getInt(SettingsKeys.historyApi)

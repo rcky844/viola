@@ -1,7 +1,7 @@
 // Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.activity
+package tipz.viola.settings.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,15 +12,15 @@ import androidx.fragment.app.FragmentManager
 import tipz.viola.R
 import tipz.viola.databinding.ActivitySettingsBinding
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.fragment.AppearanceFragment
-import tipz.viola.settings.fragment.DevelopmentFragment
-import tipz.viola.settings.fragment.DownloadsFragment
-import tipz.viola.settings.fragment.ExtPreferenceFragment
-import tipz.viola.settings.fragment.HomeFragment
-import tipz.viola.settings.fragment.MainFragment
-import tipz.viola.settings.fragment.PrivacySecurityFragment
-import tipz.viola.settings.fragment.SearchFragment
-import tipz.viola.settings.fragment.WebFeaturesFragment
+import tipz.viola.settings.ui.fragment.AppearanceFragment
+import tipz.viola.settings.ui.fragment.DevelopmentFragment
+import tipz.viola.settings.ui.fragment.DownloadsFragment
+import tipz.viola.settings.ui.fragment.ExtPreferenceFragment
+import tipz.viola.settings.ui.fragment.HomeFragment
+import tipz.viola.settings.ui.fragment.MainFragment
+import tipz.viola.settings.ui.fragment.PrivacySecurityFragment
+import tipz.viola.settings.ui.fragment.SearchFragment
+import tipz.viola.settings.ui.fragment.WebFeaturesFragment
 import tipz.viola.webview.activity.BaseActivity
 
 
@@ -65,12 +65,15 @@ class SettingsActivity : BaseActivity() {
 
         // Setup fragments
         if (savedInstanceState == null) {
+            val fragment = getPreferenceScreen(
+                intent.getIntExtra(EXTRA_INITIAL_PREF_SCREEN, R.xml.preference_settings_main)
+            ) ?: MainFragment()
             supportFragmentManager.registerFragmentLifecycleCallbacks(TitleUpdater(), false)
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
                     R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
-                .replace(R.id.list_container, MainFragment(), "main")
+                .replace(R.id.list_container, fragment)
                 .addToBackStack(null).commit()
         }
     }
@@ -83,6 +86,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun getPreferenceScreen(@XmlRes screen: Int): ExtPreferenceFragment? =
         when (screen) {
+            R.xml.preference_settings_main -> MainFragment()
             R.xml.preference_settings_home -> HomeFragment()
             R.xml.preference_settings_search -> SearchFragment()
             R.xml.preference_settings_privacy_security -> PrivacySecurityFragment()
@@ -99,13 +103,13 @@ class SettingsActivity : BaseActivity() {
             .setCustomAnimations(
                 R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
                 R.anim.shared_x_axis_close_enter, R.anim.shared_x_axis_close_exit)
-            /* TODO: Add tags to individual fragments for tracking */
             .replace(R.id.list_container, fragment)
             .addToBackStack(null).commit()
         return fragment
     }
 
     companion object {
+        const val EXTRA_INITIAL_PREF_SCREEN = "initial_pref_screen"
         private const val BUNDLE_ACTION_BAR_TITLE = "action_bar_title"
     }
 }

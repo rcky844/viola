@@ -1,10 +1,11 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.os.Bundle
 import tipz.viola.R
+import tipz.viola.settings.ui.preference.DownloadLocationPickerPreference
 
 class DownloadsFragment : ExtPreferenceFragment(R.string.pref_main_downloads) {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

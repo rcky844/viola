@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.preference.Preference
 import tipz.build.info.BuildInfoActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
-import tipz.viola.settings.activity.SummaryOnOffPreference
+import tipz.viola.settings.ui.preference.SummaryOnOffPreference
 import tipz.viola.utils.UpdateService
 
 class MainFragment : ExtPreferenceFragment(R.string.settings_title) {

@@ -1,49 +1,36 @@
 // Copyright (c) 2023-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.activity
+package tipz.viola.settings.ui.preference
 
 import android.content.Context
-import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import tipz.viola.databinding.DialogEdittextBinding
+import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.settings.SettingsSharedPreference
 
-class ListPickerAlertDialog(context: Context, settingsPreference: SettingsSharedPreference,
+class ListPickerAlertDialog(context: Context,
+                            private var settingsPreference: SettingsSharedPreference,
                             private val listPickerObject: ListPickerObject
-) :
-    MaterialAlertDialogBuilder(context) {
-    private var settingsPreference: SettingsSharedPreference = settingsPreference
+) : MaterialAlertDialogBuilder(context) {
 
     init {
         listPickerObject.apply {
-            val useNamePreference = namePreference != ""
-
             // Set checked item to current settings
-            var checkedItem = getCheckedItem(this@ListPickerAlertDialog.settingsPreference)
+            var checkedItem = getCheckedItem(settingsPreference)
 
             if (dialogTitleResId != 0) setTitle(dialogTitleResId)
             else setTitle(dialogTitle)
             setSingleChoiceItems(
                 displayList.takeUnless { it == null } ?: nameList, checkedItem
-            ) { _: DialogInterface?, which: Int -> checkedItem = which }
-            setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+            ) { _, which -> checkedItem = which }
+            setPositiveButton(android.R.string.ok) { _, _ ->
                 if (customIndexEnabled && checkedItem == customIndex) createCustomDialog(checkedItem)
                 else {
-                    if (!stringPreference.isNullOrBlank())
-                        this@ListPickerAlertDialog.settingsPreference.setString(stringPreference!!, "")
-
-                    if (useNamePreference) {
-                        this@ListPickerAlertDialog.settingsPreference.setString(namePreference,
-                            getItemResult(checkedItem))
-                    } else {
-                        this@ListPickerAlertDialog.settingsPreference.setInt(idPreference, checkedItem)
-                    }
-
-                    preference?.summary = nameList!![checkedItem]
+                    if (!stringPreference.isNullOrBlank()) settingsPreference.setString(stringPreference!!, "")
+                    setValue(checkedItem)
                 }
                 dialogPositivePressed()
             }
@@ -51,37 +38,43 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         }
     }
 
+    private fun setValue(checkedItem: Int) {
+        listPickerObject.apply {
+            if (getUseNamePreference()) {
+                settingsPreference.setString(namePreference, nameList!![checkedItem])
+            } else {
+                settingsPreference.setInt(idPreference, checkedItem)
+            }
+
+            preference?.summary = (displayList ?: nameList)!![checkedItem]
+        }
+    }
+
     private fun createCustomDialog(checkedItem: Int) {
-        val binding: DialogEdittextBinding =
-            DialogEdittextBinding.inflate(LayoutInflater.from(context))
+        val binding: DialogEditTextBinding =
+            DialogEditTextBinding.inflate(LayoutInflater.from(context))
         val view = binding.root
         val customInput = binding.edittext
 
         // TODO: Improve implementation?
         val dialog = MaterialAlertDialogBuilder(context)
         listPickerObject.apply {
-            if (dialogTitleResId != 0)
-                dialog.setTitle(dialogTitleResId)
+            if (dialogTitleResId != 0) dialog.setTitle(dialogTitleResId)
             else dialog.setTitle(dialogTitle)
 
-            if (dialogCustomMessageResId == 0) {
-                if (!dialogCustomMessage.isNullOrBlank())
+            if (dialogCustomMessageResId == 0)
+                dialogCustomMessage.takeUnless { dialogCustomMessage.isNullOrBlank() }?.let {
                     dialog.setMessage(dialogCustomMessage)
-            } else dialog.setMessage(dialogCustomMessageResId)
+                }
+            else dialog.setMessage(dialogCustomMessageResId)
 
             dialog.setView(view)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     if (customInput.text?.trim().toString().isNotEmpty()) {
                         if (!stringPreference.isNullOrBlank())
                             settingsPreference.setString(stringPreference!!,
                                 customInput.text.toString())
-                        if (getUseNamePreference()) {
-                            settingsPreference.setString(namePreference, nameList!![checkedItem])
-                        } else {
-                            settingsPreference.setInt(idPreference, checkedItem)
-                        }
-
-                        preference?.summary = nameList!![checkedItem]
+                        setValue(checkedItem)
                     }
                     dialogPositivePressed()
                 }
@@ -97,7 +90,6 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         var idPreference = "" // Preference key for storing IDs
         var namePreference = "" // Preference key for storing names
         var nameToIdFunction: (name: String) -> Int = this::stubNameToIdFunction
-        var idToNameFunction: (index: Int) -> String = this::stubIdToNameFunction
         var stringPreference: String? = null // Preference key for storing strings
         var dialogTitle: String? = null // Dialog title
         var dialogTitleResId = 0 // Dialog title resource ID
@@ -113,24 +105,12 @@ class ListPickerAlertDialog(context: Context, settingsPreference: SettingsShared
         } else {
             pref.getInt(idPreference)
         }
-        fun getItemResult(index: Int) = if (idToNameFunction != this::stubIdToNameFunction) {
-            idToNameFunction(index)
-        } else {
-            nameList!![index]
-        }
 
         fun stubNameToIdFunction(name: String) : Int {
             Log.w(
                 LOG_TAG, "stubNameToIdFunction(): " +
                     "$name using namePreference without any means to convert to index!")
             return 0
-        }
-
-        fun stubIdToNameFunction(index: Int) : String {
-            Log.w(
-                LOG_TAG, "stubIdToNameFunction(): " +
-                        "$index using namePreference without any means to convert to name!")
-            return ""
         }
     }
 

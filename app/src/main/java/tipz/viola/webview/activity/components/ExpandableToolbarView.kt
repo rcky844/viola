@@ -22,6 +22,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.view.isVisible
 import androidx.core.view.setMargins
 import androidx.core.view.setPadding
 import androidx.core.widget.ImageViewCompat
@@ -81,6 +82,7 @@ class ExpandableToolbarView(
                 @Suppress("DEPRECATION") setBackgroundDrawable(it)
             }
         }
+        setOnClickListener { expandToolBar() }
         orientation = VERTICAL
         gravity = Gravity.CENTER_HORIZONTAL
         visibility = View.GONE
@@ -92,6 +94,7 @@ class ExpandableToolbarView(
         hint.layoutParams = hintParams
         hint.setPadding(context.dpToPx(6))
         hint.setImageResource(R.drawable.toolbar_expandable_hint)
+        hint.setOnClickListener { expandToolBar() }
         addView(hint)
 
         /* Create RecyclerView */
@@ -129,7 +132,7 @@ class ExpandableToolbarView(
     }
 
     fun expandToolBar() {
-        val viewVisible: Boolean = visibility == View.VISIBLE
+        val viewVisible: Boolean = isVisible
         val transitionSet = TransitionSet()
             .addTransition(Slide()
                 .addTarget(this)

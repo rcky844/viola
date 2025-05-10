@@ -1,7 +1,7 @@
 // Copyright (c) 2023-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.activity
+package tipz.viola.settings.ui.preference
 
 import android.app.Dialog
 import android.content.DialogInterface

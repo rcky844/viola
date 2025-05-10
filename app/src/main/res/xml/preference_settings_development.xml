@@ -4,22 +4,22 @@
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <tipz.viola.settings.activity.LongSummaryPreferenceCategory
+    <tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory
         android:summary="@string/pref_remote_debugging_summary"
         android:title="@string/pref_remote_debugging_title">
 
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="remote_debugging"
             android:summaryOn="@string/text_on"
             android:summaryOff="@string/text_off"
             app:requiredApi="19"
             app:preferenceTag="remoteDebugging" />
-    </tipz.viola.settings.activity.LongSummaryPreferenceCategory>
+    </tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory>
 
     <androidx.preference.PreferenceCategory
         android:title="@string/pref_development_console_logging_category">
 
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="always_on_logging"
             android:title="@string/pref_always_on_logging"
             android:summaryOn="@string/text_on"

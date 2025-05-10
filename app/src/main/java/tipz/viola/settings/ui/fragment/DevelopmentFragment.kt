@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,8 +10,8 @@ import tipz.build.info.BuildInfo
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.activity.ListPickerAlertDialog
-import tipz.viola.settings.activity.MaterialSwitchPreference
+import tipz.viola.settings.ui.preference.ListPickerAlertDialog
+import tipz.viola.settings.ui.preference.MaterialSwitchPreference
 import tipz.viola.utils.UpdateService
 import java.text.SimpleDateFormat
 import java.util.Date

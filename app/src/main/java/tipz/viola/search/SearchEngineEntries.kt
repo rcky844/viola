@@ -1,12 +1,16 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.search
 
+import android.content.Context
+import android.net.Uri
 import android.text.TextUtils
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import java.util.Locale
+import androidx.core.net.toUri
+import tipz.viola.R
 
 object SearchEngineEntries {
     private const val queryPlaceholder = "{query}"
@@ -51,7 +55,8 @@ object SearchEngineEntries {
             search = "https://www.startpage.com/do/search?query=$queryPlaceholder",
             suggestion = "https://www.startpage.com/suggestions?q=$queryPlaceholder"
         ),
-        EngineItem(name = "whoogle", homePage = "https://whoogle.io",
+        EngineItem(
+            name = "whoogle", homePage = "https://whoogle.io",
             search = "https://whoogle.io/search?q=$queryPlaceholder",
             suggestion = "https://whoogle.io/autocomplete?q=$queryPlaceholder",
         ),
@@ -71,7 +76,8 @@ object SearchEngineEntries {
             search = "https://www.so.com/s?q=$queryPlaceholder",
             suggestion = "https://sug.so.360.cn/suggest?word=$queryPlaceholder"
         ),
-        EngineItem(name = "frogfind", homePage = "http://frogfind.com",
+        EngineItem(
+            name = "frogfind", homePage = "http://frogfind.com",
             search = "http://frogfind.com/?q=$queryPlaceholder",
         ),
         EngineItem(name = "") /* The object for custom URL */
@@ -86,6 +92,22 @@ object SearchEngineEntries {
         .takeUnless { it < 0 || it >= engines.size } ?: defaultEngine
 
     private fun findByName(name: String): EngineItem? = engines.find { it.name == name }
+    private fun getHostUrl(index: Int): String? = engines[index].search?.toUri()?.host
+
+    fun getEngineNameList(): Array<String> {
+        val array = mutableListOf<String>()
+        engines.forEach { array.add(it.name) }
+        return array.toTypedArray()
+    }
+
+    fun getEngineDisplayList(context: Context): Array<String> {
+        val engineList = context.resources.getStringArray(R.array.search_entries)
+        engineList.forEachIndexed { i, it ->
+            val hostUrl = getHostUrl(i)
+            engineList[i] = if (hostUrl.isNullOrEmpty()) it else "$it ($hostUrl)"
+        }
+        return engineList
+    }
 
     fun getPreferredHomePageUrl(pref: SettingsSharedPreference): String =
         pref.getString(SettingsKeys.homePageName).takeUnless { it.isEmpty() }?.let {

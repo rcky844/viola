@@ -1,28 +1,28 @@
 // Copyright (c) 2022-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.os.Bundle
 import androidx.preference.Preference
 import tipz.viola.R
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.activity.ListPickerAlertDialog
+import tipz.viola.settings.ui.preference.ListPickerAlertDialog
 
 class SearchFragment : ExtPreferenceFragment(R.string.pref_main_search) {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_search, rootKey)
 
-        val searchHomePageList = resources.getStringArray(R.array.search_entries)
+        val searchHomePageList = SearchEngineEntries.getEngineDisplayList(requireContext())
         findPreference<Preference>(PREF_SEARCH_ENGINE)?.run {
             setOnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
                     preference = it
-                    nameList = searchHomePageList
+                    nameList = SearchEngineEntries.getEngineNameList()
+                    displayList = searchHomePageList
                     namePreference = SettingsKeys.searchName
                     nameToIdFunction = SearchEngineEntries::getIndexByName
-                    idToNameFunction = SearchEngineEntries::getNameByIndex
                     stringPreference = SettingsKeys.searchCustomUrl
                     dialogTitleResId = R.string.search_engine
                     dialogCustomMessageResId = R.string.search_dialog_custom_message
@@ -43,10 +43,10 @@ class SearchFragment : ExtPreferenceFragment(R.string.pref_main_search) {
             setOnPreferenceClickListener {
                 val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
                     preference = it
-                    nameList = searchHomePageList
+                    nameList = SearchEngineEntries.getEngineNameList()
+                    displayList = searchHomePageList
                     namePreference = SettingsKeys.suggestionsName
                     nameToIdFunction = SearchEngineEntries::getIndexByName
-                    idToNameFunction = SearchEngineEntries::getNameByIndex
                     stringPreference = SettingsKeys.suggestionsCustomUrl
                     dialogTitleResId = R.string.search_suggestions_title
                     dialogCustomMessageResId = R.string.search_dialog_custom_message

@@ -9,6 +9,7 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.webkit.CookieManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
@@ -19,11 +20,10 @@ import tipz.viola.webview.activity.CustomTabsActivity
 import kotlin.system.exitProcess
 
 class LauncherActivity : AppCompatActivity() {
-    lateinit var settingsPreference: SettingsSharedPreference
+    val settingsPreference = SettingsSharedPreference.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settingsPreference = (applicationContext as Application).settingsPreference
 
         // Disable app if device has no WebView
         if (!webViewEnabled()) {
@@ -57,7 +57,7 @@ class LauncherActivity : AppCompatActivity() {
             Intent.ACTION_SEND, NfcAdapter.ACTION_NDEF_DISCOVERED -> { /* Sharing + NFC */
                 if (type != null && type == "text/plain") {
                     val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
-                    uri = if (sharedText.isNullOrBlank()) Uri.EMPTY else Uri.parse(sharedText)
+                    uri = if (sharedText.isNullOrBlank()) Uri.EMPTY else sharedText.toUri()
                 }
             }
 

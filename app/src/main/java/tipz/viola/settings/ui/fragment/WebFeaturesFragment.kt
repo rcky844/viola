@@ -1,10 +1,11 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.os.Bundle
 import tipz.viola.R
+import tipz.viola.settings.ui.preference.WebXApiPickerPreference
 
 class WebFeaturesFragment : ExtPreferenceFragment(R.string.pref_main_web_features) {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

@@ -9,8 +9,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Room.databaseBuilder
 import androidx.room.Update
-import tipz.viola.Application
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 
 open class DrohaClient(context: Context) {
     private val appDatabase: DrohaDatabase =
@@ -20,7 +20,7 @@ open class DrohaClient(context: Context) {
         get() = appDatabase.drohaDao()
 
     init {
-        val settingsPreference = (context.applicationContext as Application).settingsPreference
+        val settingsPreference = SettingsSharedPreference.instance
         val downloadApiVer = settingsPreference.getInt(SettingsKeys.downloadApi)
         if (downloadApiVer > LATEST_API || downloadApiVer <= -1) throw RuntimeException()
         settingsPreference.setInt(SettingsKeys.downloadApi, LATEST_API)

@@ -3,15 +3,21 @@
 
 package tipz.viola.utils
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.view.Gravity
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.updatePadding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -19,10 +25,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
 import tipz.viola.download.MiniDownloadHelper
+import tipz.viola.ext.dpToPx
 import tipz.viola.ext.isOnline
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
@@ -32,8 +38,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class UpdateService(private val context: Context, private val silent: Boolean) {
-    private var settingsPreference: SettingsSharedPreference =
-        (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = SettingsSharedPreference.instance
     private val dirFile = File(context.filesDir.path + "/updates")
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
@@ -86,6 +91,8 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         else JSONObject(String(r.response))
     }
 
+    @Suppress("DEPRECATION")
+    @SuppressLint("RestrictedApi")
     fun checkUpdates() = coroutineScope.launch {
         // Get update JSON
         val jObject = getUpdateJson() ?: return@launch
@@ -134,6 +141,23 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                                 jChannelUpdateObject.getString("date"))
                 )
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                    // Show indeterminate progress bar dialog
+                    val progressDialog = MaterialAlertDialogBuilder(context).apply {
+                        setView(LinearLayoutCompat(context).apply {
+                            gravity = Gravity.CENTER_VERTICAL
+                            addView(CircularProgressIndicator(context).apply {
+                                isIndeterminate = true
+                            })
+                            addView(AppCompatTextView(context).apply {
+                                setText(R.string.update_downloading)
+                                updatePadding(left = context.dpToPx(20))
+                            })
+                        }, context.dpToPx(20), context.dpToPx(16), context.dpToPx(20), context.dpToPx(12))
+                        setCancelable(false)
+                    }.create()
+                    progressDialog.show()
+
+                    // Download update
                     val filename = jChannelUpdateObject.getString("download_url")
                         .substringAfterLast('/')
                     val dirFile = File(context.filesDir.path + "/updates")
@@ -149,6 +173,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                             val fos = FileOutputStream(apkFile)
                             fos.write(ar.response)
                             fos.close()
+                            progressDialog.dismiss()
                             installApplication(apkFile)
                         }
                     }

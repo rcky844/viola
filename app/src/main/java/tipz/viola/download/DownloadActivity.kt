@@ -38,6 +38,7 @@ import tipz.viola.download.database.DrohaClient
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
+import tipz.viola.settings.ui.SettingsActivity
 import tipz.viola.webview.activity.BaseActivity
 import java.io.File
 
@@ -72,6 +73,7 @@ class DownloadActivity : BaseActivity() {
         downloadClient = (applicationContext as Application).downloadClient
         drohaClient = downloadClient.drohaClient
 
+        // Set-up toolbar
         setTitle(R.string.toolbar_expandable_downloads)
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
@@ -130,6 +132,26 @@ class DownloadActivity : BaseActivity() {
             listData = mutableListOf() // Reset
             listData.addAll(drohaClient.getAll())
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_download, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> {
+                startActivity(
+                    Intent(this, SettingsActivity::class.java)
+                        .putExtra(
+                            SettingsActivity.EXTRA_INITIAL_PREF_SCREEN,
+                            R.xml.preference_settings_downloads
+                        )
+                )
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     class ItemsAdapter(

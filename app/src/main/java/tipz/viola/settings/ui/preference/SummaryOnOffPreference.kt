@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.activity
+package tipz.viola.settings.ui.preference
 
 import android.content.Context
 import android.util.AttributeSet
@@ -13,8 +13,7 @@ import tipz.viola.settings.SettingsSharedPreference
 
 class SummaryOnOffPreference(context: Context,
                              private val attrs: AttributeSet?) : Preference(context, attrs) {
-    private val settingsPreference: SettingsSharedPreference =
-        (context.applicationContext as Application).settingsPreference
+    private val settingsPreference = SettingsSharedPreference.instance
     private val preferenceTag: String?
 
     init {

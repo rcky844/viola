@@ -4,7 +4,7 @@
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <tipz.viola.settings.activity.LongSummaryPreferenceCategory
+    <tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory
         android:title="@string/pref_search_category_engine_title"
         android:summary="@string/pref_search_category_engine_summary">
 
@@ -12,13 +12,13 @@
             android:key="search_engine"
             android:summary=""
             android:title="@string/search_engine" />
-    </tipz.viola.settings.activity.LongSummaryPreferenceCategory>
+    </tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory>
 
-    <tipz.viola.settings.activity.LongSummaryPreferenceCategory
+    <tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory
         android:title="@string/search_suggestions_title"
         android:summary="@string/pref_search_category_suggestions_summary">
 
-        <tipz.viola.settings.activity.MaterialSwitchPreference
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="suggestions_enablement"
             android:summaryOn="@string/text_on"
             android:summaryOff="@string/text_off"
@@ -29,5 +29,5 @@
             android:key="search_suggestions"
             android:summary=""
             android:title="@string/pref_search_suggestions_provider_title" />
-    </tipz.viola.settings.activity.LongSummaryPreferenceCategory>
+    </tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory>
 </androidx.preference.PreferenceScreen>

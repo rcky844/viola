@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2023-2024 Tipz Team
+<!-- Copyright (c) 2023-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
@@ -8,7 +8,7 @@
     <dimen name="actionbar_widget_height">48dp</dimen> <!-- @dimen/actionbar_content_height - 12dp -->
     <dimen name="progressbar_height">2dp</dimen>
     <dimen name="toolbar_icon_size">52dp</dimen>
-    <dimen name="toolbar_extendable_height">300dp</dimen>
+    <dimen name="toolbar_extendable_height">300dp</dimen> <!-- @dimen/toolbar_extendable_holder_size * 3 -->
     <dimen name="toolbar_extendable_max_width">0dp</dimen> <!-- MATCH_PARENT -->
     <dimen name="toolbar_extendable_item_size">48dp</dimen>
     <dimen name="toolbar_extendable_holder_size">100dp</dimen>

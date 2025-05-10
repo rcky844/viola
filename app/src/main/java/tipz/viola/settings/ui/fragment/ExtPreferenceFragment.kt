@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.settings.fragment
+package tipz.viola.settings.ui.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -13,16 +13,15 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import tipz.viola.Application
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.settings.activity.MaterialDialogPreference
-import tipz.viola.settings.activity.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
-import tipz.viola.settings.activity.SettingsActivity
+import tipz.viola.settings.ui.SettingsActivity
+import tipz.viola.settings.ui.preference.MaterialDialogPreference
+import tipz.viola.settings.ui.preference.MaterialPreferenceDialogFragmentCompat.Companion.newInstance
 
 open class ExtPreferenceFragment(@StringRes private val titleResId: Int) : PreferenceFragmentCompat() {
     internal lateinit var settingsActivity: SettingsActivity
-    internal lateinit var settingsPreference: SettingsSharedPreference
+    internal val settingsPreference = SettingsSharedPreference.instance
 
     constructor() : this(ResourcesCompat.ID_NULL)
 
@@ -34,8 +33,6 @@ open class ExtPreferenceFragment(@StringRes private val titleResId: Int) : Prefe
     override fun onAttach(context: Context) {
         super.onAttach(context)
         this.settingsActivity = context as SettingsActivity
-        this.settingsPreference =
-            (settingsActivity.applicationContext as Application).settingsPreference
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

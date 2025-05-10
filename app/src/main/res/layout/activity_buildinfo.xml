@@ -29,7 +29,6 @@
                     android:gravity="center"
                     android:autoSizeTextType="uniform"
                     android:text="@string/app_name_display"
-                    android:textColor="@android:color/white"
                     android:textSize="24sp"
                     android:typeface="sans"
                     android:drawableStart="@drawable/app_logo"

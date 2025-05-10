@@ -93,7 +93,7 @@
         android:id="@+id/webviewContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/toolbarView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar">
@@ -115,11 +115,17 @@
         android:id="@+id/toolbarView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:elevation="12dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/toolbar_expandable_background"
+        android:gravity="end"
+        android:tag="hideDivider"
+        android:translationZ="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/webviewContainer" />
+        app:layout_constraintWidth_max="384dp" /> <!-- @dimen/toolbar_extendable_item_size * 8 -->
 
     <tipz.viola.webview.activity.components.ExpandableToolbarView
         android:id="@+id/expandableToolbarView"

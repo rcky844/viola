@@ -12,12 +12,10 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
-import android.view.View
 import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
@@ -27,6 +25,8 @@ import android.webkit.WebView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.core.view.isGone
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
@@ -57,6 +57,7 @@ import tipz.viola.ext.matchAndExec
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.webview.buss.BussUtils
@@ -78,7 +79,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     private var insecureAllow = false
     var loadProgress = 100
-    val settingsPreference = (context.applicationContext as Application).settingsPreference
+    val settingsPreference = SettingsSharedPreference.instance
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
     private var pageError = false
@@ -294,7 +295,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         Log.i(LOG_TAG, "Checking for possible App Link, url=$url")
         val intent =
             if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-            else Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            else Intent(Intent.ACTION_VIEW, url.toUri())
         if (intent.resolveActivity(context.packageManager) != null) {
             activeSnackBar = Snackbar.make(
                 activity.webviewContainer,
@@ -382,7 +383,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 }),
 
                 // New Tab Page (Third party)
-                Matcher(BrowserUrls.newTabPageChromeSuffix, {
+                Matcher(BrowserUrls.newTabPageThirdPartyChromeSuffix, {
                     loadHomepage(false)
                 }),
 
@@ -499,7 +500,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     MaterialAlertDialogBuilder(context)
                         .setTitle(R.string.dialog_insecure_connection_title)
                         .setMessage(resources.getString(
-                            R.string.dialog_insecure_connection_message, Uri.parse(currentUrl).host))
+                            R.string.dialog_insecure_connection_message, currentUrl.toUri().host))
                         .setPositiveButton(R.string.dialog_insecure_connection_continue_to_site) { _, _ ->
                             insecureAllow = true
                             loadRealUrl(currentUrl)
@@ -574,7 +575,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.UPDATE_TITLE -> {
                 if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
                 activity.onTitleUpdated(
-                    if (this.visibility == View.GONE) resources.getString(R.string.start_page)
+                    if (isGone) resources.getString(R.string.start_page)
                     else title?.trim()
                 )
                 activity.swipeRefreshLayout.setRefreshing(false)
