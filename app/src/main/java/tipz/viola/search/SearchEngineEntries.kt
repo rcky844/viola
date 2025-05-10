@@ -58,6 +58,10 @@ object SearchEngineEntries {
             search = "https://startpage.com/do/search?query=$queryPlaceholder",
             suggestion = "https://startpage.com/suggestions?q=$queryPlaceholder"
         ),
+        EngineItem(name = "presearch", homePage = "https://presearch.com",
+            search = "https://presearch.com/search?q=$queryPlaceholder",
+            suggestion = "https://rt53.literallysafe.com/getSuggestions?q=$queryPlaceholder"
+        ),
         EngineItem(name = "swisscows", homePage = "https://swisscows.com",
             search = "https://swisscows.com/web?query=$queryPlaceholder",
             suggestion = "https://api.swisscows.com/suggest?query=$queryPlaceholder"
