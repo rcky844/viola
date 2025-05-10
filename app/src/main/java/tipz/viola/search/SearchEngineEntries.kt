@@ -91,7 +91,7 @@ object SearchEngineEntries {
     fun getNameByIndex(index: Int = defaultEngine): String = engines[index].name
 
     private fun findByName(name: String): EngineItem? = engines.find { it.name == name }
-    private fun getHostUrl(item: EngineItem): String? = item.search?.toUri()?.host
+    private fun getHostUrl(item: EngineItem): String? = item.homePage?.toUri()?.host
     private fun checkEngineInfoType(item: EngineItem, type: EngineInfoType): Boolean =
         when (type) {
             EngineInfoType.HOMEPAGE -> item.homePage
