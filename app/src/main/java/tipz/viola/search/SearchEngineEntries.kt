@@ -38,6 +38,10 @@ object SearchEngineEntries {
             search = "https://search.yahoo.com/search?p=$queryPlaceholder",
             suggestion = "https://sugg.search.yahoo.net/sg/?output=fxjson&command=$queryPlaceholder"
         ),
+        EngineItem(name = "aol", homePage = "https://aol.com",
+            search = "https://search.aol.com/search?q=$queryPlaceholder",
+            suggestion = "https://search.aol.com/sugg/gossip/gossip-us-ura/?output=fxjson&command=$queryPlaceholder"
+        ),
         EngineItem(name = "ecosia", homePage = "https://ecosia.org",
             search = "https://ecosia.org/search?q=$queryPlaceholder",
             suggestion = "https://ac.ecosia.org/autocomplete?q=$queryPlaceholder&type=list"
