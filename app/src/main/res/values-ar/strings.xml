@@ -369,6 +369,8 @@
     <string name="dialog_update_available_release_date_message">Release date: %s</string>
     <!-- Updates: Update failed message -->
     <string name="update_download_failed">Update failed to download!</string>
+    <!-- Updates: Downloading update message -->
+    <string name="update_downloading">Downloading update…</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">Delete all entries</string>
     <!-- Lists: Delete menu option -->
