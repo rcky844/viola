@@ -274,7 +274,7 @@
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <!-- Settings: Use web content force dark summary -->
-    <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
+    <string name="pref_use_force_dark_summary">Match the colour scheme of webpages with the browser\'s theme.</string>
     <!-- Settings: Start page wallpaper title -->
     <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
     <!-- Settings: Start page wallpaper summary -->
