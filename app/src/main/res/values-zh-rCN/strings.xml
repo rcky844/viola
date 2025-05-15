@@ -12,13 +12,13 @@
     <!-- Generic: Switch Off -->
     <string name="text_off">关闭</string>
     <!-- Generic: Path -->
-    <string name="path">Path</string>
+    <string name="path">路径</string>
     <!-- Generic: Path not found -->
-    <string name="path_not_found">Path not found</string>
+    <string name="path_not_found">路径不存在</string>
     <!-- Generic: Download location -->
-    <string name="download_location">Download location</string>
+    <string name="download_location">下载位置</string>
     <!-- Generic: Reset -->
-    <string name="reset">Reset</string>
+    <string name="reset">重置</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">搜索引擎</string>
     <!-- Generic - Defaults: Homepage -->
@@ -138,7 +138,7 @@
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">浏览模式</string>
     <!-- Expandable toolbar: Find in page -->
-    <string name="toolbar_expandable_find">Find in page</string>
+    <string name="toolbar_expandable_find">查找页面</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">添加到收藏夹</string>
     <!-- Expandable toolbar: Translate -->
@@ -200,11 +200,11 @@
     <!-- Settings: Main: Advanced category -->
     <string name="pref_main_category_advanced">进阶</string>
     <!-- Expandable toolbar: Downloads -->
-    <string name="pref_main_downloads">Downloads</string>
+    <string name="pref_main_downloads">下载</string>
     <!-- Expandable toolbar: Web features -->
-    <string name="pref_main_web_features">Web features</string>
+    <string name="pref_main_web_features">网页功能</string>
     <!-- Settings: Main: Updates and version category -->
-    <string name="pref_main_category_updates_version">Updates and version</string>
+    <string name="pref_main_category_updates_version">更新与版本</string>
     <!-- Settings: Main: Check for updates title -->
     <string name="pref_check_for_updates_title">检查更新</string>
     <!-- Settings: Main: Check for updates summary -->
@@ -212,19 +212,19 @@
     <!-- Settings: Main: About title -->
     <string name="pref_about_title">关于</string>
     <!-- Settings: Search: Default Search Engine category title -->
-    <string name="pref_search_category_engine_title">Default search engine</string>
+    <string name="pref_search_category_engine_title">默认搜索引擎</string>
     <!-- Settings: Search: Default Search Engine category summary -->
-    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
+    <string name="pref_search_category_engine_summary">这是您在地址栏中的默认搜索引擎。您可以随时切换它。</string>
     <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">使用网络主页</string>
     <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">开启网页而非内建起始页作为首页。</string>
     <!-- Settings: Search: Search Suggestions category summary -->
-    <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
+    <string name="pref_search_category_suggestions_summary">选择搜索引擎建议的显示方式。</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
-    <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
+    <string name="pref_search_suggestions_provider_title">建议提供者</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
-    <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
+    <string name="pref_ps_category_ad_blocking_title">广告过滤</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">拦截分散注意力而且烦人的广告。</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
@@ -232,7 +232,7 @@
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">下载广告拦截器列表文件</string>
     <!-- Settings: Privacy and security: Privacy category -->
-    <string name="pref_ps_category_privacy">Privacy</string>
+    <string name="pref_ps_category_privacy">隐私</string>
     <!-- Settings: Privacy: Do Not Track title -->
     <string name="pref_do_not_track_title">不跟踪</string>
     <!-- Settings: Privacy: Do Not Track summary -->
@@ -252,7 +252,7 @@
     <!-- Settings: Privacy: Reset to default summary -->
     <string name="pref_reset_to_default_summary">清除全部浏览器数据。</string>
     <!-- Settings: Privacy and security: Security category -->
-    <string name="pref_ps_category_security">Security</string>
+    <string name="pref_ps_category_security">安全</string>
     <!-- Settings: Security: Enforce HTTPS title -->
     <string name="pref_enforce_https_title">强制 HTTPS</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
@@ -262,9 +262,9 @@
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
     <string name="pref_google_safe_browsing_summary">允许谷歌安全浏览功能屏蔽其认为危险的网站。</string>
     <!-- Settings: Appearance: Theming category -->
-    <string name="pref_appearance_theming_category">Theming</string>
+    <string name="pref_appearance_theming_category">主题</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_system_default">Automatic</string>
+    <string name="pref_theme_system_default">系统默认</string>
     <!-- Settings: Appearance: System default -->
     <string name="pref_theme_light">浅色</string>
     <!-- Settings: Appearance: System default -->
@@ -280,7 +280,7 @@
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">当前：%s</string>
     <!-- Settings: Appearance: User interface category -->
-    <string name="pref_appearance_ui_category">User interface</string>
+    <string name="pref_appearance_ui_category">用户界面</string>
     <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">显示网站图标</string>
     <!-- Settings: Appearance: Show favicon summary -->
@@ -306,9 +306,9 @@
     <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">向支持的网站发送流量节省请求。</string>
     <!-- Settings: Downloads: Show download confirmation dialog title -->
-    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <string name="pref_download_confirmation_ask_title">显示确认对话框</string>
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
-    <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
+    <string name="pref_download_confirmation_ask_summary">每次询问是否下载文件。</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
     <string name="pref_close_app_after_download_title">仅下载链接后关闭</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
@@ -320,27 +320,27 @@
     <!-- Settings: Web features: Enable Cookies title -->
     <string name="pref_enable_cookies_title">Cookies</string>
     <!-- Settings: Web features: Enable Cookies summary -->
-    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <string name="pref_enable_cookies_summary">接受来自所有网站的 Cookies。</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
-    <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
+    <string name="pref_web_webx_category_summary">这设置控制一个已倒閉的互维网替代方案。您可以继续以自行托管的服务器使用此功能。</string>
     <!-- Settings: Web features: Bussin WebX API Picker title -->
-    <string name="pref_webx_picker_title">Buss API URL</string>
+    <string name="pref_webx_picker_title">Buss API 网址</string>
     <!-- Settings: Main - Advanced: Development settings title -->
-    <string name="pref_main_development_title">Development settings</string>
+    <string name="pref_main_development_title">开发者设置</string>
     <!-- Settings: Main - Advanced: Development settings summary -->
-    <string name="pref_main_development_summary">Advanced features for experts.</string>
+    <string name="pref_main_development_summary">对于极客的高级功能。</string>
     <!-- Settings: Development: Remote debugging title -->
-    <string name="pref_remote_debugging_title">Remote debugging</string>
+    <string name="pref_remote_debugging_title">远程调试</string>
     <!-- Settings: Development: Remote debugging summary -->
-    <string name="pref_remote_debugging_summary">To debug in-app WebViews, connect your device to a computer running Chromium browser and navigate to chrome://inspect.</string>
+    <string name="pref_remote_debugging_summary">若要调试应用内的 WebView，请将您的设备连接到运行 Chromium 浏览器的计算机并前往 chrome://chrome。</string>
     <!-- Settings: Development: Remote debugging summary debuggable -->
     <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
     <!-- Settings: Development: Console logging category -->
-    <string name="pref_development_console_logging_category">Console logging</string>
+    <string name="pref_development_console_logging_category">控制台日志</string>
     <!-- Settings: Development: Persistent console logging -->
-    <string name="pref_always_on_logging">Persistent logging</string>
+    <string name="pref_always_on_logging">持续记录日志</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">选择更新频道</string>
     <!-- Build Info: Protocol information (optional) title -->
