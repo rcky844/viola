@@ -74,9 +74,9 @@
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">无法进行SSL握手，惟降级到HTTP有可能可以载入页面。</string>
     <!-- WebView: Insecure HTTP connection dialog title -->
-    <string name="dialog_insecure_connection_title">不安全的连接</string>
+    <string name="dialog_insecure_connection_title">连接不安全</string>
     <!-- WebView: Insecure HTTP connection dialog message -->
-    <string name="dialog_insecure_connection_message">您看到此警告是因为网站 %s 不支持 HTTPS。</string>
+    <string name="dialog_insecure_connection_message">您看到此警告是因为 %s 不支持 HTTPS。</string>
     <!-- WebView: Insecure HTTP connection dialog - Go back -->
     <string name="dialog_insecure_connection_go_back">返回</string>
     <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
@@ -184,7 +184,7 @@
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">停用</string>
     <!-- Console: No logs -->
-    <string name="console_logging_none">无日志</string>
+    <string name="console_logging_none">没有日志</string>
     <!-- Settings: Title -->
     <string name="settings_title">设置</string>
     <!-- Settings: Main: Basics category -->
@@ -254,9 +254,9 @@
     <!-- Settings: Privacy and security: Security category -->
     <string name="pref_ps_category_security">安全</string>
     <!-- Settings: Security: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">强制 HTTPS</string>
+    <string name="pref_enforce_https_title">总是使用安全连接</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">始终使用HTTPS访问网站以增加安全性 (实验性)</string>
+    <string name="pref_enforce_https_summary">尽可能使用 HTTPS 并在加载不支持它的站点之前收到警告。</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
     <string name="pref_google_safe_browsing_title">启用谷歌安全浏览</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
@@ -290,7 +290,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">重新排列界面元素以便于单手操作。</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">启用滑动刷新</string>
+    <string name="pref_enable_swipe_refresh_title">滑动刷新</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">启用由垂直过度滚动内容触发的页面重新加载。</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -310,11 +310,11 @@
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
     <string name="pref_download_confirmation_ask_summary">每次询问是否下载文件。</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
-    <string name="pref_close_app_after_download_title">仅下载链接后关闭</string>
+    <string name="pref_close_app_after_download_title">下载外部链接后关闭</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">如果链接可下载，总是关闭 Viola。</string>
+    <string name="pref_close_app_after_download_summary">下载外部链接后关闭当前标签页。</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">启用 JavaScript</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">启用將允許加載 JavaScript 內容。</string>
     <!-- Settings: Web features: Enable Cookies title -->
@@ -342,7 +342,7 @@
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">持续记录日志</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">选择更新频道</string>
+    <string name="pref_update_channel_title">更新频道</string>
     <!-- Build Info: Protocol information (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protocol information</string>
     <!-- Build Info: Protocol information (optional) summary -->
