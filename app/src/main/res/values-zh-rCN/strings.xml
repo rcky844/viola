@@ -370,7 +370,7 @@
     <!-- Updates: Update failed message -->
     <string name="update_download_failed">更新下载失败！</string>
     <!-- Updates: Downloading update message -->
-    <string name="update_downloading">Downloading update…</string>
+    <string name="update_downloading">正在下载更新…</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">刪除所有收藏</string>
     <!-- Lists: Delete menu option -->
@@ -394,7 +394,7 @@
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">链接</string>
     <!-- Favorites: Edit dialog added on detail -->
-    <string name="favorites_dialog_added_on">Added on</string>
+    <string name="favorites_dialog_added_on">添加于</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">您确定要删除所有收藏条目吗？</string>
     <!-- Downloads: Toast failed -->
@@ -448,13 +448,13 @@
         <item>AOL.com</item>
         <item>Ecosia</item>
         <item>Yandex</item>
-        <item>Brave Search</item>
+        <item>Brave 搜索</item>
         <item>Startpage</item>
         <item>Presearch</item>
         <item>Swisscows</item>
         <item>Qwant</item>
-        <item>Sogou</item>
-        <item>360 Search</item>
+        <item>搜狗</item>
+        <item>360 搜索</item>
         <item>FrogFind</item>
         <item>Custom</item>
     </string-array>
