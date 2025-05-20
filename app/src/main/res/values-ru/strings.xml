@@ -8,17 +8,17 @@
     <!-- Generic: Do not show again -->
     <string name="do_not_show_again">Не показывать снова</string>
     <!-- Generic: Switch On -->
-    <string name="text_on">On</string>
+    <string name="text_on">Вкл.</string>
     <!-- Generic: Switch Off -->
-    <string name="text_off">Off</string>
+    <string name="text_off">Выкл.</string>
     <!-- Generic: Path -->
-    <string name="path">Path</string>
+    <string name="path">Путь</string>
     <!-- Generic: Path not found -->
-    <string name="path_not_found">Path not found</string>
+    <string name="path_not_found">Путь не найден</string>
     <!-- Generic: Download location -->
-    <string name="download_location">Download location</string>
+    <string name="download_location">Место загрузки</string>
     <!-- Generic: Reset -->
-    <string name="reset">Reset</string>
+    <string name="reset">Сброс</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">Система поиска</string>
     <!-- Generic - Defaults: Homepage -->
@@ -48,7 +48,7 @@
     <!-- WebView: JavaScript page unresponsive title -->
     <string name="dialog_page_unresponsive_title">Страница не отвечает</string>
     <!-- WebView: JavaScript page unresponsive message -->
-    <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
+    <string name="dialog_page_unresponsive_message">Вы можете подождать, пока страница станет отзывчивой или закрыть эту вкладку.</string>
     <!-- WebView: JavaScript page unresponsive wait -->
     <string name="dialog_page_unresponsive_wait">Подождать</string>
     <!-- WebView: JavaScript page unresponsive terminate -->
@@ -74,95 +74,95 @@
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">Не удалось выполнить SSL рукопожатие. Страница может быть загружена сменой на HTTP.</string>
     <!-- WebView: Insecure HTTP connection dialog title -->
-    <string name="dialog_insecure_connection_title">Insecure connection</string>
+    <string name="dialog_insecure_connection_title">Небезопасное соединение</string>
     <!-- WebView: Insecure HTTP connection dialog message -->
-    <string name="dialog_insecure_connection_message">You are seeing this warning because the site %s does not support HTTPS.</string>
+    <string name="dialog_insecure_connection_message">Вы видите это предупреждение, потому что сайт %s не поддерживает HTTPS.</string>
     <!-- WebView: Insecure HTTP connection dialog - Go back -->
-    <string name="dialog_insecure_connection_go_back">Go back</string>
+    <string name="dialog_insecure_connection_go_back">Назад</string>
     <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
-    <string name="dialog_insecure_connection_continue_to_site">Continue to site</string>
+    <string name="dialog_insecure_connection_continue_to_site">Перейти к сайту</string>
     <!-- WebView: Open in external app snackbar message -->
-    <string name="snackbar_open_external_message">External link detected.</string>
+    <string name="snackbar_open_external_message">Обнаружена внешняя ссылка.</string>
     <!-- WebView: Open in external app snackbar action -->
-    <string name="snackbar_open_external_action">Open</string>
+    <string name="snackbar_open_external_action">Открыть</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Введите запрос или ссылку…</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">Скопировать текст ссылки</string>
     <!-- Hit Test Dialog: Download link -->
-    <string name="hit_test_download_link">Download link</string>
+    <string name="hit_test_download_link">Скачать ссылку</string>
     <!-- Hit Test Dialog: Download image -->
-    <string name="hit_test_download_image">Download image</string>
+    <string name="hit_test_download_image">Скачать изображение</string>
     <!-- Hit Test Dialog: Copy image link -->
-    <string name="hit_test_copy_image_link">Copy image link</string>
+    <string name="hit_test_copy_image_link">Копировать ссылку на изображение</string>
     <!-- Hit Test Dialog: Search for similar images -->
-    <string name="hit_test_search_image">Search for similar images</string>
+    <string name="hit_test_search_image">Поиск похожих изображений</string>
     <!-- Hit Test Dialog: Open in new tab -->
-    <string name="hit_test_open_in_new_tab">Open in new tab</string>
+    <string name="hit_test_open_in_new_tab">Открыть в новой вкладке</string>
     <!-- Hit Test Dialog: Share link -->
-    <string name="hit_test_share_link">Share link</string>
+    <string name="hit_test_share_link">Поделиться ссылкой</string>
     <!-- SSL Lock Dialog: Issued to -->
-    <string name="ssl_info_dialog_issued_to">Issued To:</string>
+    <string name="ssl_info_dialog_issued_to">Выдано:</string>
     <!-- SSL Lock Dialog: Issued by -->
-    <string name="ssl_info_dialog_issued_by">Issued By:</string>
+    <string name="ssl_info_dialog_issued_by">Кем выдан:</string>
     <!-- SSL Lock Dialog: Validity Period -->
-    <string name="ssl_info_dialog_validity_period">Validity Period:</string>
+    <string name="ssl_info_dialog_validity_period">Срок действия:</string>
     <!-- SSL Lock Dialog: Common Name -->
-    <string name="ssl_info_dialog_common_name">Common Name (CN)</string>
+    <string name="ssl_info_dialog_common_name">Общее имя (CN)</string>
     <!-- SSL Lock Dialog: Organization -->
-    <string name="ssl_info_dialog_organization">Organization (O)</string>
+    <string name="ssl_info_dialog_organization">Организация (O)</string>
     <!-- SSL Lock Dialog: Organizational Unit -->
-    <string name="ssl_info_dialog_organization_unit">Organizational Unit (OU)</string>
+    <string name="ssl_info_dialog_organization_unit">Организационное подразделение (OU)</string>
     <!-- SSL Lock Dialog: Issued On -->
-    <string name="ssl_info_dialog_issued_on">Issued On</string>
+    <string name="ssl_info_dialog_issued_on">Дата выдачи</string>
     <!-- SSL Lock Dialog: Expires On -->
-    <string name="ssl_info_dialog_expires_on">Expires On</string>
+    <string name="ssl_info_dialog_expires_on">Истекает</string>
     <!-- SSL Lock Dialog: No certificate message -->
-    <string name="ssl_info_dialog_content_nocert">This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards).</string>
+    <string name="ssl_info_dialog_content_nocert">Похоже, что этот сайт не содержит SSL-сертификата. Не используйте запросы на получение конфиденциальной информации (например, пароли или кредитные карты).</string>
     <!-- HTTP Authentication Dialog: Title -->
-    <string name="dialog_auth_title">Authentication required</string>
+    <string name="dialog_auth_title">Необходима проверка подлинности</string>
     <!-- HTTP Authentication Dialog: Message -->
-    <string name="dialog_auth_message">%s requires a username and password.</string>
+    <string name="dialog_auth_message">%s требует имя пользователя и пароль.</string>
     <!-- HTTP Authentication Dialog: Username -->
-    <string name="dialog_auth_username">Username</string>
+    <string name="dialog_auth_username">Имя пользователя</string>
     <!-- HTTP Authentication Dialog: Password -->
-    <string name="dialog_auth_password">Password</string>
+    <string name="dialog_auth_password">Пароль</string>
     <!-- Toolbar: Share dialog title -->
-    <string name="dialog_share_title">Share URL using</string>
+    <string name="dialog_share_title">Поделиться URL, используя</string>
     <!-- Expandable toolbar: New Tab -->
-    <string name="toolbar_expandable_new_tab">New Tab</string>
+    <string name="toolbar_expandable_new_tab">Новая вкладка</string>
     <!-- Expandable toolbar: Favorites -->
-    <string name="toolbar_expandable_favorites">Favorites</string>
+    <string name="toolbar_expandable_favorites">Избранное</string>
     <!-- Expandable toolbar: History -->
-    <string name="toolbar_expandable_history">History</string>
+    <string name="toolbar_expandable_history">История</string>
     <!-- Expandable toolbar: Viewing Mode -->
-    <string name="toolbar_expandable_viewport">Viewing mode</string>
+    <string name="toolbar_expandable_viewport">Режим просмотра</string>
     <!-- Expandable toolbar: Find in page -->
-    <string name="toolbar_expandable_find">Find in page</string>
+    <string name="toolbar_expandable_find">Найти на странице</string>
     <!-- Expandable toolbar: Add to favorites -->
-    <string name="toolbar_expandable_favorites_add">Add to favorites</string>
+    <string name="toolbar_expandable_favorites_add">Добавить в избранное</string>
     <!-- Expandable toolbar: Translate -->
-    <string name="toolbar_expandable_translate">Translate</string>
+    <string name="toolbar_expandable_translate">Перевести</string>
     <!-- Expandable toolbar: Downloads -->
-    <string name="toolbar_expandable_downloads">Downloads</string>
+    <string name="toolbar_expandable_downloads">Загрузки</string>
     <!-- Expandable toolbar: Enter full screen -->
-    <string name="toolbar_expandable_fullscreen">Enter full screen</string>
+    <string name="toolbar_expandable_fullscreen">Войти в полный экран</string>
     <!-- Expandable toolbar: Create shortcut -->
-    <string name="toolbar_expandable_app_shortcut">Create shortcut</string>
+    <string name="toolbar_expandable_app_shortcut">Создать ярлык</string>
     <!-- Expandable toolbar: Settings -->
-    <string name="toolbar_expandable_settings">Settings</string>
+    <string name="toolbar_expandable_settings">Параметры</string>
     <!-- Expandable toolbar: View Page Source -->
-    <string name="toolbar_expandable_view_page_source">View Page Source</string>
+    <string name="toolbar_expandable_view_page_source">Исходный код страницы</string>
     <!-- Expandable toolbar: Print -->
-    <string name="toolbar_expandable_print">Print</string>
+    <string name="toolbar_expandable_print">Печать</string>
     <!-- Expandable toolbar: Close app -->
-    <string name="toolbar_expandable_close">Close app</string>
+    <string name="toolbar_expandable_close">Закрыть приложение</string>
     <!-- Viewing mode: Custom user agent dialog title -->
-    <string name="viewing_mode_custom_user_agent">Custom User Agent</string>
+    <string name="viewing_mode_custom_user_agent">Пользовательский User Agent</string>
     <!-- Viewing mode: Current user agent property -->
-    <string name="viewing_mode_current_user_agent">Current user agent</string>
+    <string name="viewing_mode_current_user_agent">Текущий User Agent</string>
     <!-- Viewing mode: Wide viewport mode -->
-    <string name="viewing_mode_wide_viewport_mode">Enable wide viewport mode</string>
+    <string name="viewing_mode_wide_viewport_mode">Включить режим широкого просмотра</string>
     <!-- Translate: Page language -->
     <string name="dialog_translate_page_lang">Page Language (e.g. zh-TW)</string>
     <!-- Translate: Target language -->
@@ -272,43 +272,43 @@
     <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">Theme</string>
     <!-- Settings: Use web content force dark title -->
-    <string name="pref_use_force_dark_title">Allow web content force dark</string>
+    <string name="pref_use_force_dark_title">Разрешить веб-контенту работать в тёмном режиме</string>
     <!-- Settings: Use web content force dark summary -->
-    <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
+    <string name="pref_use_force_dark_summary">Сопоставьте цветовую схему веб-страниц с темой браузера.</string>
     <!-- Settings: Start page wallpaper title -->
     <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
     <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">Current: %s</string>
+    <string name="pref_start_page_wallpaper_summary">Текущая: %s</string>
     <!-- Settings: Appearance: User interface category -->
-    <string name="pref_appearance_ui_category">User interface</string>
+    <string name="pref_appearance_ui_category">Пользовательский интерфейс</string>
     <!-- Settings: Appearance: Show favicon title -->
-    <string name="pref_show_favicon">Show favicon</string>
+    <string name="pref_show_favicon">Показать значок</string>
     <!-- Settings: Appearance: Show favicon summary -->
-    <string name="pref_show_favicon_summary">Show the favicon of the webpage next to the address bar.</string>
+    <string name="pref_show_favicon_summary">Показывать значок веб-страницы рядом с адресной строкой.</string>
     <!-- Settings: Appearance: Reach mode title -->
-    <string name="pref_reverse_address_bar_title">Reach mode</string>
+    <string name="pref_reverse_address_bar_title">Режим доступа</string>
     <!-- Settings: Appearance: Reach mode summary -->
-    <string name="pref_reverse_address_bar_summary">Relocate interface elements for easier one-hand usage.</string>
+    <string name="pref_reverse_address_bar_summary">Переместите элементы интерфейса для более лёгкого одноручного использования.</string>
     <!-- Settings: Swipe to Refresh title -->
     <string name="pref_enable_swipe_refresh_title">Enable Pull to Refresh</string>
     <!-- Settings: Swipe to Refresh summary -->
-    <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
+    <string name="pref_enable_swipe_refresh_summary">Включить перезагрузку страниц, вызванную вертикальной прокруткой.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
-    <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
+    <string name="pref_update_recents_icon_title">Обновить значок и ярлык вкладок в Недавних</string>
     <!-- Settings: Appearance: Update Recents icons and labels summary -->
-    <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
+    <string name="pref_update_recents_icon_summary">Автоматическое обновление значка и ярлыка вкладок в Недавних в соответствии со значком и ярлыком веб-страницы.</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs title -->
-    <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
+    <string name="pref_use_custom_tabs_title">Использовать пользовательские вкладки</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
     <!-- Settings: Main - Advanced: Data Saver title -->
-    <string name="pref_send_save_data_title">Data Saver</string>
+    <string name="pref_send_save_data_title">Сохранение данных</string>
     <!-- Settings: Main - Advanced: Data Saver summary -->
-    <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
+    <string name="pref_send_save_data_summary">Отправить запрос на сохранение данных на поддерживаемые сайты.</string>
     <!-- Settings: Downloads: Show download confirmation dialog title -->
-    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <string name="pref_download_confirmation_ask_title">Показать окно подтверждения</string>
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
-    <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
+    <string name="pref_download_confirmation_ask_summary">Спрашивать подтверждение каждый раз, загружать ли файл.</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
     <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
@@ -316,7 +316,7 @@
     <!-- Settings: Web features: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">Enable JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
-    <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
+    <string name="pref_enable_javascript_summary">Включение этого позволит загрузить веб-контент JavaScript.</string>
     <!-- Settings: Web features: Enable Cookies title -->
     <string name="pref_enable_cookies_title">Cookies</string>
     <!-- Settings: Web features: Enable Cookies summary -->
