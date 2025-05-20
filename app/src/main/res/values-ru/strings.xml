@@ -164,95 +164,95 @@
     <!-- Viewing mode: Wide viewport mode -->
     <string name="viewing_mode_wide_viewport_mode">Включить режим широкого просмотра</string>
     <!-- Translate: Page language -->
-    <string name="dialog_translate_page_lang">Page Language (e.g. zh-TW)</string>
+    <string name="dialog_translate_page_lang">Язык страницы (например, zh-TW)</string>
     <!-- Translate: Target language -->
-    <string name="dialog_translate_target_lang">Target Language (e.g. en)</string>
+    <string name="dialog_translate_target_lang">Целевой язык (например, en)</string>
     <!-- Fullscreen: Warning dialog title -->
-    <string name="dialog_fullscreen_title">Fullscreen mode</string>
+    <string name="dialog_fullscreen_title">Полноэкранный режим</string>
     <!-- Fullscreen: Warning dialog message -->
-    <string name="dialog_fullscreen_message">You have entered fullscreen mode. Exit by double tapping the button at the right bottom corner of your screen.</string>
+    <string name="dialog_fullscreen_message">Вы вошли в полноэкранный режим. Выйдите дважды нажав кнопку в правом нижнем углу экрана.</string>
     <!-- Shortcuts: Browser Access -->
-    <string name="shortcuts_menu_browser">Browser Access</string>
+    <string name="shortcuts_menu_browser">Доступ браузера</string>
     <!-- Shortcuts: Custom Tabs -->
-    <string name="shortcuts_menu_custom_tabs">Custom Tabs</string>
+    <string name="shortcuts_menu_custom_tabs">Пользовательские вкладки</string>
     <!-- Shortcuts: Web App -->
-    <string name="shortcuts_menu_webapp">Web App</string>
+    <string name="shortcuts_menu_webapp">Веб-приложение</string>
     <!-- Console: Dialog title -->
-    <string name="console_dialog_title">Console</string>
+    <string name="console_dialog_title">Консоль</string>
     <!-- Console: Enabled toast -->
-    <string name="console_toast_enabled">Console logging has been enabled!</string>
+    <string name="console_toast_enabled">Журнал консоли включён!</string>
     <!-- Console: Disable logging -->
-    <string name="console_logging_disable">Disable</string>
+    <string name="console_logging_disable">Отключить</string>
     <!-- Console: No logs -->
-    <string name="console_logging_none">No logs</string>
+    <string name="console_logging_none">Нет журналов</string>
     <!-- Settings: Title -->
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">Параметры</string>
     <!-- Settings: Main: Basics category -->
-    <string name="pref_main_category_basics">Basics</string>
+    <string name="pref_main_category_basics">Основы</string>
     <!-- Settings: Main: Home title -->
-    <string name="pref_main_home">Home</string>
+    <string name="pref_main_home">Главная</string>
     <!-- Settings: Main: Search title -->
-    <string name="pref_main_search">Search</string>
+    <string name="pref_main_search">Поиск</string>
     <!-- Settings: Main: Privacy and security title -->
-    <string name="pref_main_privacy_security">Privacy and security</string>
+    <string name="pref_main_privacy_security">Конфиденциальность и безопасность</string>
     <!-- Settings: Main: Appearance title -->
-    <string name="pref_main_appearance">Appearance</string>
+    <string name="pref_main_appearance">Внешний вид</string>
     <!-- Settings: Main: Advanced category -->
-    <string name="pref_main_category_advanced">Advanced</string>
+    <string name="pref_main_category_advanced">Расширенные</string>
     <!-- Expandable toolbar: Downloads -->
-    <string name="pref_main_downloads">Downloads</string>
+    <string name="pref_main_downloads">Загрузки</string>
     <!-- Expandable toolbar: Web features -->
-    <string name="pref_main_web_features">Web features</string>
+    <string name="pref_main_web_features">Веб-функции</string>
     <!-- Settings: Main: Updates and version category -->
-    <string name="pref_main_category_updates_version">Updates and version</string>
+    <string name="pref_main_category_updates_version">Обновления и версии</string>
     <!-- Settings: Main: Check for updates title -->
-    <string name="pref_check_for_updates_title">Check for Updates</string>
+    <string name="pref_check_for_updates_title">Проверить обновления</string>
     <!-- Settings: Main: Check for updates summary -->
-    <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
+    <string name="pref_check_for_updates_summary">Проверить наличие нового обновления и позволить вам его загрузить, если оно доступно.</string>
     <!-- Settings: Main: About title -->
-    <string name="pref_about_title">About</string>
+    <string name="pref_about_title">Информация</string>
     <!-- Settings: Search: Default Search Engine category title -->
-    <string name="pref_search_category_engine_title">Default search engine</string>
+    <string name="pref_search_category_engine_title">Поисковая система по умолчанию</string>
     <!-- Settings: Search: Default Search Engine category summary -->
-    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
+    <string name="pref_search_category_engine_summary">Это ваш поисковик по умолчанию в адресной строке. Вы можете переключить его в любое время.</string>
     <!-- Settings: Search: Use web-based homepage title -->
-    <string name="pref_use_web_homepage_title">Use web-based homepage</string>
+    <string name="pref_use_web_homepage_title">Использовать домашнюю веб-страницу</string>
     <!-- Settings: Search: Use web-based homepage summary -->
-    <string name="pref_use_web_homepage_summary">Open a webpage instead of start page as homepage.</string>
+    <string name="pref_use_web_homepage_summary">Открыть веб-страницу вместо начальной страницы как домашнюю страницу.</string>
     <!-- Settings: Search: Search Suggestions category summary -->
-    <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
+    <string name="pref_search_category_suggestions_summary">Выберите, как появляются предложения из поисковых систем.</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
-    <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
+    <string name="pref_search_suggestions_provider_title">Поставщик предложений</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
-    <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
+    <string name="pref_ps_category_ad_blocking_title">Блокировка рекламы</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
-    <string name="pref_ps_category_ad_blocking_summary">Stop annoying ads from distracting you.</string>
+    <string name="pref_ps_category_ad_blocking_summary">Не позволяйте назойливой рекламе отвлекать вас.</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
-    <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
+    <string name="pref_ad_blocker_source_title">Источник Ad Blocklist</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
-    <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
+    <string name="pref_ad_blocker_download_hosts_title">Скачать Ad Blocklist</string>
     <!-- Settings: Privacy and security: Privacy category -->
-    <string name="pref_ps_category_privacy">Privacy</string>
+    <string name="pref_ps_category_privacy">Конфиденциальность</string>
     <!-- Settings: Privacy: Do Not Track title -->
-    <string name="pref_do_not_track_title">Do Not Track</string>
+    <string name="pref_do_not_track_title">Не отслеживать</string>
     <!-- Settings: Privacy: Do Not Track summary -->
-    <string name="pref_do_not_track_summary">Send a Do Not Track request to websites you visit.</string>
+    <string name="pref_do_not_track_summary">Отправлять запрос \"Не отслеживать\" веб-сайтам, которые вы посещаете.</string>
     <!-- Settings: Privacy: Send GPC title -->
-    <string name="pref_send_sec_gpc_title">Global Privacy Control</string>
+    <string name="pref_send_sec_gpc_title">Глобальной контроль конфиденциальности</string>
     <!-- Settings: Privacy: Send GPC summary -->
-    <string name="pref_send_sec_gpc_summary">Enable to consent to the selling or sharing of your personal information on websites you visit with third parties.</string>
+    <string name="pref_send_sec_gpc_summary">Дайте согласие на продажу или передачу вашей личной информации на посещаемых вами сайтах третьим лицам.</string>
     <!-- Settings: Privacy: Enable history storage title -->
-    <string name="pref_enable_history_title">Use history storage</string>
+    <string name="pref_enable_history_title">Использовать хранение истории</string>
     <!-- Settings: Privacy: Enable history storage summary -->
-    <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
+    <string name="pref_enable_history_summary">Сохранять историю посещённых веб-страниц.</string>
     <!-- Settings: Privacy: Clear browsing data title -->
-    <string name="pref_clear_browsing_data">Clear browsing data</string>
+    <string name="pref_clear_browsing_data">Очистить данные браузера</string>
     <!-- Settings: Privacy: Reset to default title -->
-    <string name="pref_reset_to_default_title">Reset to default</string>
+    <string name="pref_reset_to_default_title">Сброс по умолчанию</string>
     <!-- Settings: Privacy: Reset to default summary -->
-    <string name="pref_reset_to_default_summary">Clear all browser data.</string>
+    <string name="pref_reset_to_default_summary">Очистить все данные браузера.</string>
     <!-- Settings: Privacy and security: Security category -->
-    <string name="pref_ps_category_security">Security</string>
+    <string name="pref_ps_category_security">Безопасность</string>
     <!-- Settings: Security: Enforce HTTPS title -->
     <string name="pref_enforce_https_title">Enforce HTTPS</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
@@ -262,15 +262,15 @@
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
     <string name="pref_google_safe_browsing_summary">Allow Google\'s Safe Browsing to block websites it deems dangerous.</string>
     <!-- Settings: Appearance: Theming category -->
-    <string name="pref_appearance_theming_category">Theming</string>
+    <string name="pref_appearance_theming_category">Темы</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_system_default">Automatic</string>
+    <string name="pref_theme_system_default">Авто</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_light">Light</string>
+    <string name="pref_theme_light">Светлая</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_dark">Dark</string>
+    <string name="pref_theme_dark">Тёмная</string>
     <!-- Settings: Appearance: Theme title -->
-    <string name="pref_theme_title">Theme</string>
+    <string name="pref_theme_title">Тема</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Разрешить веб-контенту работать в тёмном режиме</string>
     <!-- Settings: Use web content force dark summary -->
@@ -318,126 +318,126 @@
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Включение этого позволит загрузить веб-контент JavaScript.</string>
     <!-- Settings: Web features: Enable Cookies title -->
-    <string name="pref_enable_cookies_title">Cookies</string>
+    <string name="pref_enable_cookies_title">Файлы Cookie</string>
     <!-- Settings: Web features: Enable Cookies summary -->
-    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <string name="pref_enable_cookies_summary">Принимать все Cookies с веб-сайтов.</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
-    <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
+    <string name="pref_web_webx_category_summary">Этот параметр регулирует использование нефункциональной альтернативы World Wide Web. Вы можете продолжать использовать эту функцию в собственных решениях.</string>
     <!-- Settings: Web features: Bussin WebX API Picker title -->
     <string name="pref_webx_picker_title">Buss API URL</string>
     <!-- Settings: Main - Advanced: Development settings title -->
-    <string name="pref_main_development_title">Development settings</string>
+    <string name="pref_main_development_title">Настройки разработки</string>
     <!-- Settings: Main - Advanced: Development settings summary -->
-    <string name="pref_main_development_summary">Advanced features for experts.</string>
+    <string name="pref_main_development_summary">Расширенные возможности для специалистов.</string>
     <!-- Settings: Development: Remote debugging title -->
-    <string name="pref_remote_debugging_title">Remote debugging</string>
+    <string name="pref_remote_debugging_title">Удалённая отладка</string>
     <!-- Settings: Development: Remote debugging summary -->
-    <string name="pref_remote_debugging_summary">To debug in-app WebViews, connect your device to a computer running Chromium browser and navigate to chrome://inspect.</string>
+    <string name="pref_remote_debugging_summary">Чтобы отладить WebView, подключите устройство к компьютеру с запущенным браузером Chromium и перейдите к chrome://inspect.</string>
     <!-- Settings: Development: Remote debugging summary debuggable -->
-    <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
+    <string name="pref_remote_debugging_summary_debuggable">Уже включено, так как приложение отлаживается.</string>
     <!-- Settings: Development: Console logging category -->
-    <string name="pref_development_console_logging_category">Console logging</string>
+    <string name="pref_development_console_logging_category">Журнал консоли</string>
     <!-- Settings: Development: Persistent console logging -->
-    <string name="pref_always_on_logging">Persistent logging</string>
+    <string name="pref_always_on_logging">Постоянное ведение журнала</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">Select update channel</string>
     <!-- Build Info: Protocol information (optional) title -->
-    <string name="buildinfo_pref_protocol_info_title">Protocol information</string>
+    <string name="buildinfo_pref_protocol_info_title">Информация протокола</string>
     <!-- Build Info: Protocol information (optional) summary -->
-    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
+    <string name="buildinfo_pref_protocol_info_summary">Общие настройки: %1$d\nИзбранное: %2$d\nИстория: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>
+    <string name="search_dialog_custom_message">Формат:\n{query}: Запрос\n{language}: Язык</string>
     <!-- Settings - Wallpaper: Default -->
-    <string name="default_res">Default</string>
+    <string name="default_res">По умолчанию</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
-    <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
+    <string name="toast_ad_servers_finished">Завершена загрузка ad blocklist!</string>
     <!-- Settings - Reset to Default: Dialog message -->
-    <string name="dialog_settings_reset_to_default_message">This will clear all browser data\nAre you sure you want to continue?</string>
+    <string name="dialog_settings_reset_to_default_message">Это удалит все данные браузера\nВы уверены, что хотите продолжить?</string>
     <!-- Settings - Reset to Default: Toast message -->
-    <string name="toast_reset_complete">Reset completed successfully.</string>
+    <string name="toast_reset_complete">Сброс успешно завершён.</string>
     <!-- Updates: Latest version toast -->
-    <string name="toast_version_latest">You are currently running the latest version of Viola.</string>
+    <string name="toast_version_latest">На данный момент вы используете последнюю версию Viola.</string>
     <!-- Updates: Network unavailable toast -->
-    <string name="toast_network_unavailable">Network is unavailable.</string>
+    <string name="toast_network_unavailable">Сеть недоступна.</string>
     <!-- Updates: Update available dialog title -->
-    <string name="dialog_update_available_title">Update available</string>
+    <string name="dialog_update_available_title">Доступно обновление</string>
     <!-- Updates: Update available dialog message -->
-    <string name="dialog_update_available_message">Viola %1$s (%2$s) is available, do you want to install it?</string>
+    <string name="dialog_update_available_message">Доступна Viola %1$s (%2$s), хотите установить?</string>
     <!-- Updates: Update available dialog release date message -->
-    <string name="dialog_update_available_release_date_message">Release date: %s</string>
+    <string name="dialog_update_available_release_date_message">Дата выпуска: %s</string>
     <!-- Updates: Update failed message -->
-    <string name="update_download_failed">Update failed to download!</string>
+    <string name="update_download_failed">Не удалось загрузить обновление!</string>
     <!-- Updates: Downloading update message -->
-    <string name="update_downloading">Downloading update…</string>
+    <string name="update_downloading">Загрузка обновления…</string>
     <!-- Lists: Delete all entries dialog title -->
-    <string name="dialog_delete_all_entries_title">Delete all entries</string>
+    <string name="dialog_delete_all_entries_title">Удалить все записи</string>
     <!-- Lists: Delete menu option -->
-    <string name="delete">Delete</string>
+    <string name="delete">Удалить</string>
     <!-- History: Title -->
-    <string name="history_title">History</string>
+    <string name="history_title">История</string>
     <!-- History: Empty message -->
-    <string name="history_empty_message">History is empty!</string>
+    <string name="history_empty_message">История пуста!</string>
     <!-- History: Save to favorites menu option -->
-    <string name="menu_save_to_favorites">Save to favorites</string>
+    <string name="menu_save_to_favorites">Сохранить в избранное</string>
     <!-- History: Delete all entries dialog message -->
-    <string name="dialog_delete_all_entries_history_message">You are about to delete all history entries, are you sure about this?</string>
+    <string name="dialog_delete_all_entries_history_message">Вы собираетесь удалить все записи истории, вы уверены?</string>
     <!-- Favorites: Title -->
-    <string name="favorites_title">Favorites</string>
+    <string name="favorites_title">Избранное</string>
     <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">There are no favorites saved.</string>
+    <string name="favorites_empty_message">Избранных нет.</string>
     <!-- Favorites: Menu edit option -->
-    <string name="favorites_menu_edit">Edit</string>
+    <string name="favorites_menu_edit">Редактировать</string>
     <!-- Favorites: Edit dialog title option -->
-    <string name="favorites_dialog_title">Title</string>
+    <string name="favorites_dialog_title">Заголовок</string>
     <!-- Favorites: Edit dialog link option -->
-    <string name="favorites_dialog_link">Link</string>
+    <string name="favorites_dialog_link">Ссылка</string>
     <!-- Favorites: Edit dialog added on detail -->
-    <string name="favorites_dialog_added_on">Added on</string>
+    <string name="favorites_dialog_added_on">Добавлено</string>
     <!-- Favorites: Delete all entries dialog message -->
-    <string name="dialog_delete_all_entries_favorites_message">You are about to delete all favorites entries, are you sure about this?</string>
+    <string name="dialog_delete_all_entries_favorites_message">Вы собираетесь удалить всё избранное, вы уверены, что хотите это сделать?</string>
     <!-- Downloads: Toast failed -->
-    <string name="downloads_toast_failed">Download failed!</string>
+    <string name="downloads_toast_failed">Не удалось загрузить!</string>
     <!-- Downloads: Toast success -->
-    <string name="downloads_toast_success">%s downloaded successfully.</string>
+    <string name="downloads_toast_success">%s успешно загружен.</string>
     <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">No downloads</string>
+    <string name="downloads_empty_message">Нет загрузок</string>
     <!-- Downloads: Confirmation dialog title -->
-    <string name="downloads_dialog_title">Download file?</string>
+    <string name="downloads_dialog_title">Загрузить файл?</string>
     <!-- Downloads: Confirmation dialog message -->
-    <string name="downloads_dialog_message">Do you want to download %s?</string>
+    <string name="downloads_dialog_message">Вы хотите загрузить %s?</string>
     <!-- Downloads: Error details dialog title -->
-    <string name="downloads_dialog_error_details_title">Download failure details</string>
+    <string name="downloads_dialog_error_details_title">Сведения об ошибке загрузки</string>
     <!-- Downloads: Confirmation dialog duplicated message -->
-    <string name="downloads_dialog_duplicated_message">File already present in your download directory, do you want to re-download %s?</string>
+    <string name="downloads_dialog_duplicated_message">Файл уже присутствует в папке загрузки, вы хотите повторно загрузить %s?</string>
     <!-- Downloads: Menu re-download option -->
-    <string name="downloads_menu_re_download">Download again</string>
+    <string name="downloads_menu_re_download">Скачать снова</string>
     <!-- Crash Activity: Generic error explanation -->
-    <string name="customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">Произошла непредвиденная ошибка. Извините за неудобства.</string>
     <!-- Crash Activity: Restart app button -->
-    <string name="customactivityoncrash_error_activity_restart_app">Restart app</string>
+    <string name="customactivityoncrash_error_activity_restart_app">Перезапустить приложение</string>
     <!-- Crash Activity: Close app button -->
-    <string name="customactivityoncrash_error_activity_close_app">Close app</string>
+    <string name="customactivityoncrash_error_activity_close_app">Закрыть приложение</string>
     <!-- Crash Activity: Error details app button -->
-    <string name="customactivityoncrash_error_activity_error_details">Error details</string>
+    <string name="customactivityoncrash_error_activity_error_details">Подробные сведения об ошибке</string>
     <!-- Crash Activity: Error details dialog title -->
-    <string name="customactivityoncrash_error_activity_error_details_title">Error details</string>
+    <string name="customactivityoncrash_error_activity_error_details_title">Подробные сведения об ошибке</string>
     <!-- Crash Activity: Error details dialog close button -->
-    <string name="customactivityoncrash_error_activity_error_details_close">Close</string>
+    <string name="customactivityoncrash_error_activity_error_details_close">Закрыть</string>
     <!-- Crash Activity: Error details dialog copy button -->
-    <string name="customactivityoncrash_error_activity_error_details_copy">Copy to clipboard</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy">Копировать в буфер обмена</string>
     <!-- Crash Activity: Error details dialog copy toast -->
     <string name="customactivityoncrash_error_activity_error_details_copied">Скопировано в буфер обмена</string>
     <!-- Crash Activity: Error details clipboard label -->
-    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">Error information</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">Информация об ошибке</string>
     <string-array name="errMsg">
-        <item>Error!</item>
-        <item>Can\'t open this page</item>
-        <item>Viola failed to open your webpage.</item>
-        <item>Try:</item>
-        <item>Checking your internet connection</item>
-        <item>Reloading the webpage</item>
+        <item>Ошибка!</item>
+        <item>Не удаётся открыть эту страницу</item>
+        <item>Viola не удалось открыть вашу веб-страницу.</item>
+        <item>Попробуйте:</item>
+        <item>Проверить подключение к Интернету</item>
+        <item>Перезагрузить веб-страницу</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>
@@ -456,13 +456,13 @@
         <item>Sogou</item>
         <item>360 Search</item>
         <item>FrogFind</item>
-        <item>Custom</item>
+        <item>Пользовательский</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">
         <item>AdAway</item>
         <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien First-Party Trackers</item>
-        <item>Custom</item>
+        <item>Унифицированные хосты</item>
+        <item>Отслеживающие устройства первой стороны Eulaurarien</item>
+        <item>Пользовательский</item>
     </string-array>
 </resources>
