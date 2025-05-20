@@ -226,7 +226,7 @@
     <!-- Settings: Privacy and security: Ad blocking category title -->
     <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
-    <string name="pref_ps_category_ad_blocking_summary">阻擋分散注意力而且煩人的廣告</string>
+    <string name="pref_ps_category_ad_blocking_summary">阻擋分散注意力而且煩人的廣告。</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">廣告攔截器列表來源</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
@@ -258,9 +258,9 @@
     <!-- Settings: Security: Enforce HTTPS summary -->
     <string name="pref_enforce_https_summary">始終使用 HTTPS 訪問網站以增加安全性 (實驗性)</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">啟用 Google 安全流覽</string>
+    <string name="pref_google_safe_browsing_title">啟用 Google 安全瀏覽</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">允許 Google 安全流覽功能遮罩其認為危險的網站。</string>
+    <string name="pref_google_safe_browsing_summary">允許 Google 安全瀏覽功能遮罩其認為危險的網站。</string>
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">主題</string>
     <!-- Settings: Appearance: System default -->
