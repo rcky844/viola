@@ -36,7 +36,7 @@
     <!-- Build Info: Source code summary -->
     <string name="pref_source_code_summary">"Просмотреть исходный код браузера."</string>
     <!-- Build Info: Build information title -->
-    <string name="buildinfo_pref_build_info_title">Build information</string>
+    <string name="buildinfo_pref_build_info_title">Информация о сборке</string>
     <!-- Build Info: Build information summary -->
-    <string name="buildinfo_pref_build_info_summary">Tag: %1$s\nBranch (revision): %2$s (%3$s)\nTimestamp: %4$s</string>
+    <string name="buildinfo_pref_build_info_summary">Тег: %1$s\nВетвь (ревизия): %2$s (%3$s)\nВременная метка: %4$s</string>
 </resources>
