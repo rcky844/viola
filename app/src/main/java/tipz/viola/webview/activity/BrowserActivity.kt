@@ -15,6 +15,7 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -758,30 +759,31 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     override fun onSslCertificateUpdated() {
-        // Startpage
-        if (webview.getRealUrl() == ProjectUrls.actualStartUrl) {
+        // Handle special cases
+        if (webview.getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
             sslState = SslState.SEARCH
-            sslLock.setImageResource(R.drawable.search)
-            return
-        }
-
-        // All the other pages
-        if (webview.certificate == null) {
+        else if (webview.certificate == null) // Mo certificates (HTTP)
             sslState = SslState.NONE
-            sslLock.setImageResource(R.drawable.warning)
-        } else if (sslState == SslState.ERROR) { // State error is set before SECURE
-            sslErrorHost = webview.url.toUri().host!!
-            sslState = SslState.NONE
-        } else {
+        else if (sslState != SslState.ERROR)
             sslState = SslState.SECURE
-            sslLock.setImageResource(R.drawable.lock)
+
+        // Handle individual SSL states
+        when (sslState) {
+            SslState.NONE -> sslLock.setImageResource(R.drawable.warning)
+            SslState.SECURE -> sslLock.setImageResource(R.drawable.lock)
+            SslState.ERROR -> {
+                sslLock.setImageResource(R.drawable.warning)
+                sslErrorHost = webview.url.toUri().host!!
+            }
+            SslState.SEARCH -> sslLock.setImageResource(R.drawable.search)
+            else -> {
+                Log.w(LOG_TAG, "onSslCertificateUpdated(): Unsupported SslState $sslState")
+            }
         }
     }
 
     override fun onSslErrorProceed() {
         sslState = SslState.ERROR
-        sslLock.setImageResource(R.drawable.warning)
-        sslLock.isClickable = true
     }
 
     override fun onFaviconUpdated(icon: Bitmap?) {
@@ -810,5 +812,9 @@ class BrowserActivity : VWebViewActivity() {
     class ViewVisibility {
         lateinit var view: View
         var isEnabledCallback: () -> Boolean = { true }
+    }
+
+    companion object {
+        const val LOG_TAG = "BrowserActivity"
     }
 }
