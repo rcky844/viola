@@ -84,7 +84,7 @@ object SearchEngineEntries {
         ),
         EngineItem(name = "") /* The object for custom URL */
     )
-    private const val defaultEngine = 7
+    private const val defaultEngine = 8
 
     enum class EngineInfoType {
         HOMEPAGE, SEARCH, SUGGESTION
