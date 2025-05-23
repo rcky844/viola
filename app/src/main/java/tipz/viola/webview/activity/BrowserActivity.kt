@@ -51,6 +51,8 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import tipz.viola.LauncherActivity
 import tipz.viola.ListInterfaceActivity
 import tipz.viola.R
@@ -489,7 +491,11 @@ class BrowserActivity : VWebViewActivity() {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
-                    favClient.insert(Broha(iconHash, title, webview.url))
+                    val url = runBlocking {
+                        withContext(Dispatchers.Main) { webview.url }
+                    }
+
+                    favClient.insert(Broha(iconHash, title, url))
                 }
                 showMessage(R.string.save_successful)
             }
