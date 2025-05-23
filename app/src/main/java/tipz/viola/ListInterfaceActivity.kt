@@ -47,6 +47,7 @@ import tipz.viola.webview.activity.BaseActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import androidx.core.net.toUri
 
 class ListInterfaceActivity : BaseActivity() {
     private lateinit var binding: ActivityRecyclerDataListBinding
@@ -214,7 +215,7 @@ class ListInterfaceActivity : BaseActivity() {
                 }
 
                 holder.title.text = title ?: url
-                holder.url.text = Uri.parse(url ?: "").host
+                holder.url.text = url.takeUnless { it == null }?.toUri()?.host ?: ""
                 if (activityMode == mode_history) {
                     val date = Calendar.getInstance()
                     date.timeInMillis = data.timestamp
