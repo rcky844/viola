@@ -37,7 +37,6 @@ import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
-import tipz.viola.download.DownloadActivity.ItemsAdapter.EmptyViewHolder
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
