@@ -336,17 +336,17 @@
     <!-- Settings: Development: Remote debugging summary -->
     <string name="pref_remote_debugging_summary">若要调试应用内的 WebView，请将您的设备连接到运行 Chromium 浏览器的计算机并前往 chrome://chrome。</string>
     <!-- Settings: Development: Remote debugging summary debuggable -->
-    <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
+    <string name="pref_remote_debugging_summary_debuggable">应用是可调试的，此选项强制启用。</string>
     <!-- Settings: Development: Console logging category -->
     <string name="pref_development_console_logging_category">控制台日志</string>
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">持续记录日志</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">更新频道</string>
-    <!-- Build Info: Protocol information (optional) title -->
-    <string name="buildinfo_pref_protocol_info_title">Protocol information</string>
-    <!-- Build Info: Protocol information (optional) summary -->
-    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
+    <!-- Build Info: Protocol version (optional) title -->
+    <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
+    <!-- Build Info: Protocol version (optional) summary -->
+    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\n收藏: %2$d\n历史: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">格式：\n{query}: 搜索内容\n{language}：语言</string>
     <!-- Settings - Wallpaper: Default -->
@@ -456,7 +456,7 @@
         <item>搜狗</item>
         <item>360 搜索</item>
         <item>FrogFind</item>
-        <item>Custom</item>
+        <item>自定义</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">
         <item>AdAway</item>
