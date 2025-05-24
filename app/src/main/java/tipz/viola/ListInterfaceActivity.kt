@@ -279,8 +279,7 @@ class ListInterfaceActivity : BaseActivity() {
                                     data.url = sUrl
                                     activity.ioScope.launch {
                                         activity.favClient.update(data)
-                                        // FIXME: Update list dynamically to save system resources
-                                        listData = activity.favClient.getAll().toMutableList()
+                                        listData[position] = activity.favClient.getById(data.id)!!
                                         MainScope().launch {
                                             notifyItemRangeRemoved(position, 1)
                                         }
