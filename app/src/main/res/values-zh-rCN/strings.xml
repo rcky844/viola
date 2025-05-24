@@ -256,7 +256,7 @@
     <!-- Settings: Security: Enforce HTTPS title -->
     <string name="pref_enforce_https_title">总是使用安全连接</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">尽可能使用 HTTPS 并在加载不支持它的站点之前收到警告。</string>
+    <string name="pref_enforce_https_summary">尽可能使用 HTTPS 并在加载不支持的站点之前收到警告。</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
     <string name="pref_google_safe_browsing_title">启用谷歌安全浏览</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
@@ -344,7 +344,7 @@
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">更新频道</string>
     <!-- Build Info: Protocol version (optional) title -->
-    <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
+    <string name="buildinfo_pref_protocol_info_title">协议版本</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\n收藏: %2$d\n历史: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
