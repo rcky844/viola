@@ -104,7 +104,8 @@ object UrlUtils {
                     }
                     2 -> {
                         // If run 0 failed, make it a search url
-                        checkedUrl = SearchEngineEntries.getPreferredSearchUrl(pref, input)
+                        checkedUrl = SearchEngineEntries.getPreferredUrl(
+                            pref, SearchEngineEntries.EngineInfoType.SEARCH, input)
                         isSearch = true
                     }
                     else -> {

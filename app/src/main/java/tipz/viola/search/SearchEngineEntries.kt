@@ -121,26 +121,36 @@ object SearchEngineEntries {
         return array.toTypedArray()
     }
 
-    fun getPreferredHomePageUrl(pref: SettingsSharedPreference): String =
-        pref.getString(SettingsKeys.homePageName).takeUnless { it.isEmpty() }?.let {
-            findByName(it)!!.homePage.takeUnless { url -> url.isNullOrBlank() } ?: ""
-        } ?: pref.getString(SettingsKeys.homePageCustomUrl)
+    fun getPreferredUrl(pref: SettingsSharedPreference,
+                        type: EngineInfoType,
+                        query: String = ""): String {
+        if (type != EngineInfoType.HOMEPAGE && query.isEmpty()) return ""
 
-    fun getPreferredSearchUrl(pref: SettingsSharedPreference, query: String): String =
-        query.takeUnless { it.isEmpty() }?.let {
-            (pref.getString(SettingsKeys.searchName).takeUnless { it.isEmpty() }?.let {
-                findByName(it)!!.search.takeUnless { url -> url.isNullOrBlank() } ?: ""
-            } ?: pref.getString(SettingsKeys.searchCustomUrl))
-                .replace(queryPlaceholder, query).replace(languagePlaceholder, language)
-        } ?: ""
+        val namePref = when (type) {
+            EngineInfoType.HOMEPAGE -> SettingsKeys.homePageName
+            EngineInfoType.SEARCH -> SettingsKeys.searchName
+            EngineInfoType.SUGGESTION -> SettingsKeys.suggestionsName
+        }
 
-    fun getPreferredSuggestionsUrl(pref: SettingsSharedPreference, query: String): String =
-        query.takeUnless { it.isEmpty() }?.let {
-            (pref.getString(SettingsKeys.suggestionsName).takeUnless { it.isEmpty() }?.let {
-                findByName(it)!!.suggestion.takeUnless { url -> url.isNullOrBlank() } ?: ""
-            } ?: pref.getString(SettingsKeys.suggestionsCustomUrl))
-                .replace(queryPlaceholder, query).replace(languagePlaceholder, language)
-        } ?: ""
+        val customPref = when (type) {
+            EngineInfoType.HOMEPAGE -> SettingsKeys.homePageCustomUrl
+            EngineInfoType.SEARCH -> SettingsKeys.searchCustomUrl
+            EngineInfoType.SUGGESTION -> SettingsKeys.suggestionsCustomUrl
+        }
+
+        val url = pref.getString(namePref).takeUnless { it.isEmpty() }?.let {
+            findByName(it)!!.let {
+                when (type) {
+                    EngineInfoType.HOMEPAGE -> it.homePage
+                    EngineInfoType.SEARCH -> it.search
+                    EngineInfoType.SUGGESTION -> it.suggestion
+                }
+            }.takeUnless { url -> url.isNullOrBlank() } ?: ""
+        } ?: pref.getString(customPref)
+
+        return if (type == EngineInfoType.HOMEPAGE) url
+        else url.replace(queryPlaceholder, query).replace(languagePlaceholder, language)
+    }
 
     // Language
     private const val DEFAULT_LANGUAGE = "en-US"
