@@ -3,10 +3,8 @@
 
 package tipz.viola
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -18,6 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -43,11 +42,8 @@ import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.utils.TimeUtils
 import tipz.viola.webview.activity.BaseActivity
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import androidx.core.net.toUri
 
 class ListInterfaceActivity : BaseActivity() {
     private lateinit var binding: ActivityRecyclerDataListBinding
@@ -187,7 +183,6 @@ class ListInterfaceActivity : BaseActivity() {
                     LayoutInflater.from(parent.context), parent, false))
             }
 
-        @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (listData.isEmpty()) {
                 if (holder is EmptyViewHolder) holder.text.setText(
@@ -217,9 +212,10 @@ class ListInterfaceActivity : BaseActivity() {
                 holder.title.text = title ?: url
                 holder.url.text = url.takeUnless { it == null }?.toUri()?.host ?: ""
                 if (activityMode == mode_history) {
-                    val date = Calendar.getInstance()
-                    date.timeInMillis = data.timestamp
-                    holder.time.text = SimpleDateFormat("dd/MM\nHH:ss").format(date.time)
+                    holder.time.text = TimeUtils.formatEpochMillis(
+                        epochMillis = data.timestamp,
+                        formatStyle = "dd/MM\nHH:ss"
+                    )
                 }
                 holder.back.setOnClickListener {
                     val needLoad = Intent()
@@ -266,8 +262,7 @@ class ListInterfaceActivity : BaseActivity() {
                                 urlEditText.setText(url)
                                 propertyDisplay.property = arrayListOf(
                                     arrayOf(R.string.favorites_dialog_added_on,
-                                        SimpleDateFormat("E MMM dd HH:mm:ss z yyyy")
-                                            .format(Date(data.timestamp))
+                                        TimeUtils.formatEpochMillis(data.timestamp)
                                     )
                                 )
 
