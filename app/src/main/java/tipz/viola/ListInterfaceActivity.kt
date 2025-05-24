@@ -45,6 +45,8 @@ import tipz.viola.utils.TimeUtils
 import tipz.viola.webview.activity.BaseActivity
 
 class ListInterfaceActivity : BaseActivity() {
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+
     private lateinit var binding: ActivityRecyclerDataListBinding
 
     lateinit var favClient: FavClient
@@ -53,7 +55,7 @@ class ListInterfaceActivity : BaseActivity() {
     lateinit var fab: FloatingActionButton
 
     fun updateListData(callback: () -> Any) {
-        CoroutineScope(Dispatchers.IO).launch {
+        ioScope.launch {
             listData =
                 (if (activityMode == mode_history) historyClient.getAll()
                 else favClient.getAll()).toMutableList()
@@ -115,7 +117,7 @@ class ListInterfaceActivity : BaseActivity() {
                     else R.string.dialog_delete_all_entries_favorites_message
                 )
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    CoroutineScope(Dispatchers.IO).launch {
+                    ioScope.launch {
                         if (activityMode == mode_history) historyClient.deleteAll()
                         else if (activityMode == mode_favorites) favClient.deleteAll()
                     }
@@ -199,7 +201,7 @@ class ListInterfaceActivity : BaseActivity() {
                 var icon: Bitmap?
 
                 if (data.iconHash != null) {
-                    CoroutineScope(Dispatchers.IO).launch {
+                    activity.ioScope.launch {
                         icon = iconHashClient.read(data.iconHash)
                         if (icon != null)
                             MainScope().launch { holder.icon.setImageBitmap(icon) }
@@ -239,7 +241,7 @@ class ListInterfaceActivity : BaseActivity() {
                     popup.setOnMenuItemClickListener { item: MenuItem ->
                         when (item.itemId) {
                             PopupMenuMap.DELETE.itemId -> {
-                                CoroutineScope(Dispatchers.IO).launch {
+                                activity.ioScope.launch {
                                     if (activityMode == mode_history)
                                         activity.historyClient.deleteById(data.id)
                                     else if (activityMode == mode_favorites)
@@ -274,7 +276,7 @@ class ListInterfaceActivity : BaseActivity() {
                                         if (sTitle != title || sUrl != url) {
                                             data.title = sTitle
                                             data.url = sUrl
-                                            CoroutineScope(Dispatchers.IO).launch {
+                                            activity.ioScope.launch {
                                                 activity.favClient.update(data)
                                                 // FIXME: Update list dynamically to save system resources
                                                 listData = activity.favClient.getAll().toMutableList()
@@ -292,7 +294,7 @@ class ListInterfaceActivity : BaseActivity() {
                                 activity.copyClipboard(url)
                             }
                             PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
-                                CoroutineScope(Dispatchers.IO).launch {
+                                activity.ioScope.launch {
                                     activity.favClient.insert(
                                         Broha(data.iconHash, title, url!!)
                                     )
