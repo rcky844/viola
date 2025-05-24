@@ -59,6 +59,7 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
 
+        multiDexEnabled = true
         resourceConfigurations += listOf("ar", "bn", "de", "en-rGB", "es-rES", "fr", "hi",
             "pt-rBR", "ru", "tr", "vi", "zh-rCN", "zh-rTW")
     }
@@ -89,7 +90,6 @@ android {
         // Debug internal
         getByName("debug") {
             applicationIdSuffix = ".debug"
-            multiDexEnabled = true
 
             buildConfigField("String", "VERSION_BUILD_TYPE", "\"debug\"")
             buildConfigField("String", "VERSION_BUILD_ID", "null")
