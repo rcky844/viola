@@ -76,13 +76,13 @@
     <!-- WebView: Insecure HTTP connection dialog title -->
     <string name="dialog_insecure_connection_title">連線不安全</string>
     <!-- WebView: Insecure HTTP connection dialog message -->
-    <string name="dialog_insecure_connection_message">You are seeing this warning because the site %s does not support HTTPS.</string>
+    <string name="dialog_insecure_connection_message">您看到此警告是因為 %s 不支援 HTTPS。</string>
     <!-- WebView: Insecure HTTP connection dialog - Go back -->
     <string name="dialog_insecure_connection_go_back">返回</string>
     <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
-    <string name="dialog_insecure_connection_continue_to_site">Continue to site</string>
+    <string name="dialog_insecure_connection_continue_to_site">繼續訪問網站</string>
     <!-- WebView: Open in external app snackbar message -->
-    <string name="snackbar_open_external_message">External link detected.</string>
+    <string name="snackbar_open_external_message">偵測到外部連結</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">打開</string>
     <!-- Address bar: Hint -->
@@ -184,11 +184,11 @@
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">停用</string>
     <!-- Console: No logs -->
-    <string name="console_logging_none">No logs</string>
+    <string name="console_logging_none">沒有日誌</string>
     <!-- Settings: Title -->
     <string name="settings_title">設定</string>
     <!-- Settings: Main: Basics category -->
-    <string name="pref_main_category_basics">Basics</string>
+    <string name="pref_main_category_basics">基礎</string>
     <!-- Settings: Main: Home title -->
     <string name="pref_main_home">首頁</string>
     <!-- Settings: Main: Search title -->
@@ -196,15 +196,15 @@
     <!-- Settings: Main: Privacy and security title -->
     <string name="pref_main_privacy_security">隱私及安全</string>
     <!-- Settings: Main: Appearance title -->
-    <string name="pref_main_appearance">Appearance</string>
+    <string name="pref_main_appearance">介面</string>
     <!-- Settings: Main: Advanced category -->
     <string name="pref_main_category_advanced">進階</string>
     <!-- Expandable toolbar: Downloads -->
     <string name="pref_main_downloads">下載</string>
     <!-- Expandable toolbar: Web features -->
-    <string name="pref_main_web_features">Web features</string>
+    <string name="pref_main_web_features">網頁功能</string>
     <!-- Settings: Main: Updates and version category -->
-    <string name="pref_main_category_updates_version">Updates and version</string>
+    <string name="pref_main_category_updates_version">更新與版本</string>
     <!-- Settings: Main: Check for updates title -->
     <string name="pref_check_for_updates_title">檢查更新</string>
     <!-- Settings: Main: Check for updates summary -->
@@ -254,9 +254,9 @@
     <!-- Settings: Privacy and security: Security category -->
     <string name="pref_ps_category_security">安全</string>
     <!-- Settings: Security: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">強制 HTTPS</string>
+    <string name="pref_enforce_https_title">總是使用安全連接</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">始終使用 HTTPS 訪問網站以增加安全性 (實驗性)</string>
+    <string name="pref_enforce_https_summary">盡可能使用 HTTPS 並在載入不支援的網站之前收到警告。</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
     <string name="pref_google_safe_browsing_title">啟用 Google 安全瀏覽</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
@@ -300,7 +300,7 @@
     <!-- Settings: Main - Advanced: Use Custom Tabs title -->
     <string name="pref_use_custom_tabs_title">使用小分页</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
-    <string name="pref_use_custom_tabs_summary">從其他應用程式打開連結時，始終打開小分页。</string>
+    <string name="pref_use_custom_tabs_summary">從其他應用程式開啟的連結時，始終開啟小分頁。</string>
     <!-- Settings: Main - Advanced: Data Saver title -->
     <string name="pref_send_save_data_title">流量節省</string>
     <!-- Settings: Main - Advanced: Data Saver summary -->
