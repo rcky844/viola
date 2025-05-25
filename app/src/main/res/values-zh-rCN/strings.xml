@@ -330,7 +330,7 @@
     <!-- Settings: Main - Advanced: Development settings title -->
     <string name="pref_main_development_title">开发者设置</string>
     <!-- Settings: Main - Advanced: Development settings summary -->
-    <string name="pref_main_development_summary">对于极客的高级功能。</string>
+    <string name="pref_main_development_summary">给于极客的高级功能。</string>
     <!-- Settings: Development: Remote debugging title -->
     <string name="pref_remote_debugging_title">远程调试</string>
     <!-- Settings: Development: Remote debugging summary -->
