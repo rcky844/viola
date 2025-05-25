@@ -220,7 +220,7 @@
     <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">开启网页而非内建起始页作为首页。</string>
     <!-- Settings: Search: Search Suggestions category summary -->
-    <string name="pref_search_category_suggestions_summary">选择搜索引擎建议的显示方式。</string>
+    <string name="pref_search_category_suggestions_summary">选择搜索建议的显示方式。</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
     <string name="pref_search_suggestions_provider_title">建议提供者</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
@@ -324,7 +324,7 @@
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
-    <string name="pref_web_webx_category_summary">这设置控制一个已倒閉的互维网替代方案。您可以继续以自行托管的服务器使用此功能。</string>
+    <string name="pref_web_webx_category_summary">此设置控制一个已倒閉的互维网替代方案。您可以继续以自行托管的服务器使用此功能。</string>
     <!-- Settings: Web features: Bussin WebX API Picker title -->
     <string name="pref_webx_picker_title">Buss API 网址</string>
     <!-- Settings: Main - Advanced: Development settings title -->
@@ -334,9 +334,9 @@
     <!-- Settings: Development: Remote debugging title -->
     <string name="pref_remote_debugging_title">远程调试</string>
     <!-- Settings: Development: Remote debugging summary -->
-    <string name="pref_remote_debugging_summary">若要调试应用内的 WebView，请将您的设备连接到运行 Chromium 浏览器的计算机并前往 chrome://chrome。</string>
+    <string name="pref_remote_debugging_summary">若要调试应用内的 WebView，请将您的设备连接到运行 Chromium 浏览器的计算机并前往 chrome://inspect。</string>
     <!-- Settings: Development: Remote debugging summary debuggable -->
-    <string name="pref_remote_debugging_summary_debuggable">应用是可调试的，此选项强制启用。</string>
+    <string name="pref_remote_debugging_summary_debuggable">应用可调试，此选项强制启用。</string>
     <!-- Settings: Development: Console logging category -->
     <string name="pref_development_console_logging_category">控制台日志</string>
     <!-- Settings: Development: Persistent console logging -->
