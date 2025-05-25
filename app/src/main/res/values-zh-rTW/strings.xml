@@ -212,9 +212,9 @@
     <!-- Settings: Main: About title -->
     <string name="pref_about_title">關於</string>
     <!-- Settings: Search: Default Search Engine category title -->
-    <string name="pref_search_category_engine_title">Default search engine</string>
+    <string name="pref_search_category_engine_title">預設搜尋引擎</string>
     <!-- Settings: Search: Default Search Engine category summary -->
-    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
+    <string name="pref_search_category_engine_summary">這是您在網址列中的預設搜尋引擎。您可以隨時切換它。</string>
     <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">使用網路主頁</string>
     <!-- Settings: Search: Use web-based homepage summary -->
@@ -224,7 +224,7 @@
     <!-- Settings: Search: Search Suggestions Provider title -->
     <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
-    <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
+    <string name="pref_ps_category_ad_blocking_title">廣告過濾</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">阻擋分散注意力而且煩人的廣告。</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
@@ -264,7 +264,7 @@
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">主題</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_system_default">Automatic</string>
+    <string name="pref_theme_system_default">系統預設</string>
     <!-- Settings: Appearance: System default -->
     <string name="pref_theme_light">淺色</string>
     <!-- Settings: Appearance: System default -->
@@ -280,7 +280,7 @@
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">目前：%s</string>
     <!-- Settings: Appearance: User interface category -->
-    <string name="pref_appearance_ui_category">User interface</string>
+    <string name="pref_appearance_ui_category">使用者介面</string>
     <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">顯示網站圖示</string>
     <!-- Settings: Appearance: Show favicon summary -->
@@ -290,7 +290,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">重新定位介面元素以方便單手使用。</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">啟用滑動刷新</string>
+    <string name="pref_enable_swipe_refresh_title">滑動刷新</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">啟用由垂直過度滾動內容觸發的頁面重新加載。</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -306,31 +306,31 @@
     <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">向支援的網站發送流量節省請求。</string>
     <!-- Settings: Downloads: Show download confirmation dialog title -->
-    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <string name="pref_download_confirmation_ask_title">顯示確認對話框</string>
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
-    <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
+    <string name="pref_download_confirmation_ask_summary">每次詢問是否下載文件。</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
-    <string name="pref_close_app_after_download_title">僅下載連結後關閉</string>
+    <string name="pref_close_app_after_download_title">下載外部連結後關閉</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">如果連結可下載，始終關閉 Viola。</string>
+    <string name="pref_close_app_after_download_summary">下載外部連結後關閉目前標籤頁。</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">啟用 JavaScript</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">啟用將允許加載 JavaScript 內容。</string>
     <!-- Settings: Web features: Enable Cookies title -->
     <string name="pref_enable_cookies_title">Cookies</string>
     <!-- Settings: Web features: Enable Cookies summary -->
-    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <string name="pref_enable_cookies_summary">接受來自所有網站的 Cookies。</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
     <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
     <!-- Settings: Web features: Bussin WebX API Picker title -->
-    <string name="pref_webx_picker_title">Buss API URL</string>
+    <string name="pref_webx_picker_title">Buss API 網址</string>
     <!-- Settings: Main - Advanced: Development settings title -->
-    <string name="pref_main_development_title">Development settings</string>
+    <string name="pref_main_development_title">開發者設定</string>
     <!-- Settings: Main - Advanced: Development settings summary -->
-    <string name="pref_main_development_summary">Advanced features for experts.</string>
+    <string name="pref_main_development_summary">給於極客的高級功能。</string>
     <!-- Settings: Development: Remote debugging title -->
     <string name="pref_remote_debugging_title">Remote debugging</string>
     <!-- Settings: Development: Remote debugging summary -->
@@ -342,7 +342,7 @@
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">Persistent logging</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">選擇更新頻道</string>
+    <string name="pref_update_channel_title">更新頻道</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
     <!-- Build Info: Protocol version (optional) summary -->
@@ -370,7 +370,7 @@
     <!-- Updates: Update failed message -->
     <string name="update_download_failed">更新下載失敗！</string>
     <!-- Updates: Downloading update message -->
-    <string name="update_downloading">Downloading update…</string>
+    <string name="update_downloading">正在下載更新…</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">刪除全部書籤</string>
     <!-- Lists: Delete menu option -->
@@ -394,7 +394,7 @@
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">鏈接</string>
     <!-- Favorites: Edit dialog added on detail -->
-    <string name="favorites_dialog_added_on">Added on</string>
+    <string name="favorites_dialog_added_on">增加於</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">您确定要删除所有書籤条目吗？</string>
     <!-- Downloads: Toast failed -->
@@ -448,15 +448,15 @@
         <item>AOL.com</item>
         <item>Ecosia</item>
         <item>Yandex</item>
-        <item>Brave Search</item>
+        <item>Brave 搜尋</item>
         <item>Startpage</item>
         <item>Presearch</item>
         <item>Swisscows</item>
         <item>Qwant</item>
-        <item>Sogou</item>
-        <item>360 Search</item>
+        <item>搜狗</item>
+        <item>360 搜索</item>
         <item>FrogFind</item>
-        <item>Custom</item>
+        <item>自訂</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">
         <item>AdAway</item>
