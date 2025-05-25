@@ -6,19 +6,19 @@
     <!-- Generic: Clear -->
     <string name="clear">Limpar</string>
     <!-- Generic: Do not show again -->
-    <string name="do_not_show_again">Do not show again</string>
+    <string name="do_not_show_again">Não exibir novamente</string>
     <!-- Generic: Switch On -->
-    <string name="text_on">On</string>
+    <string name="text_on">Ativado</string>
     <!-- Generic: Switch Off -->
-    <string name="text_off">Off</string>
+    <string name="text_off">Desativado</string>
     <!-- Generic: Path -->
-    <string name="path">Path</string>
+    <string name="path">Caminho</string>
     <!-- Generic: Path not found -->
-    <string name="path_not_found">Path not found</string>
+    <string name="path_not_found">Caminho não encontrado.</string>
     <!-- Generic: Download location -->
-    <string name="download_location">Download location</string>
+    <string name="download_location">Baixar localização</string>
     <!-- Generic: Reset -->
-    <string name="reset">Reset</string>
+    <string name="reset">Redefinir</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">Mecanismo de Busca</string>
     <!-- Generic - Defaults: Homepage -->
@@ -74,13 +74,13 @@
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">Falha ao realizar o handshake SSL. O carregamento da página ainda pode ser possível ao trocar para HTTP.</string>
     <!-- WebView: Insecure HTTP connection dialog title -->
-    <string name="dialog_insecure_connection_title">Insecure connection</string>
+    <string name="dialog_insecure_connection_title">Conexão insegura</string>
     <!-- WebView: Insecure HTTP connection dialog message -->
-    <string name="dialog_insecure_connection_message">You are seeing this warning because the site %s does not support HTTPS.</string>
+    <string name="dialog_insecure_connection_message">Você está vendo este aviso devido ao site %s não suportar HTTPS.</string>
     <!-- WebView: Insecure HTTP connection dialog - Go back -->
-    <string name="dialog_insecure_connection_go_back">Go back</string>
+    <string name="dialog_insecure_connection_go_back">Voltar</string>
     <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
-    <string name="dialog_insecure_connection_continue_to_site">Continue to site</string>
+    <string name="dialog_insecure_connection_continue_to_site">Continuar ao site</string>
     <!-- WebView: Open in external app snackbar message -->
     <string name="snackbar_open_external_message">External link detected.</string>
     <!-- WebView: Open in external app snackbar action -->
