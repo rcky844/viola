@@ -284,7 +284,7 @@
     <!-- Settings: Appearance: User interface category -->
     <string name="pref_appearance_ui_category">उपयोगकर्ता इंटरफ़ेस</string>
     <!-- Settings: Appearance: Show favicon title -->
-    <string name="pref_show_favicon">फैविकॉन दिखाएँ।</string>
+    <string name="pref_show_favicon">फैविकॉन दिखाएँ</string>
     <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">एड्रेस बार के बगल में वेबपेज का फैविकॉन दिखाएँ।</string>
     <!-- Settings: Appearance: Reach mode title -->
@@ -296,7 +296,7 @@
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">लंबवत रूप से अत्यधिक स्क्रॉल करने पर ट्रिगर होने वाले पेज रीलोड सक्षम करें।</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
-    <string name="pref_update_recents_icon_title">हाल के टैब में आइकन और लेबल अपडेट करें।</string>
+    <string name="pref_update_recents_icon_title">हाल के टैब में आइकन और लेबल अपडेट करें</string>
     <!-- Settings: Appearance: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">हाल के टैब में टैब के आइकन और लेबल को वेबपेज के अनुसार स्वचालित रूप से अपडेट करें।</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs title -->
@@ -442,8 +442,8 @@
         <item>यह पेज नहीं खोला जा सकता</item>
         <item>वियोला आपका वेबपेज खोलने में विफल रहा।</item>
         <item>प्रयास करें:</item>
-        <item>आपके इंटरनेट कनेक्शन की जाँच हो रही है।</item>
-        <item>वेबपेज फिर से लोड हो रहा है।</item>
+        <item>आपके इंटरनेट कनेक्शन की जाँच हो रही है</item>
+        <item>वेबपेज फिर से लोड हो रहा है</item>
     </string-array>
     <string-array name="search_entries">
         <item>गूगल</item>
