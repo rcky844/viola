@@ -254,13 +254,13 @@
     <!-- Settings: Privacy and security: Security category -->
     <string name="pref_ps_category_security">Безопасность</string>
     <!-- Settings: Security: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">Always use secure connections</string>
+    <string name="pref_enforce_https_title">Всегда использовать безопасные соединения</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Use HTTPS whenever possible and receive a warning before loading sites that don\'t support it.</string>
+    <string name="pref_enforce_https_summary">Использовать HTTPS когда это возможно, и получать предупреждение перед загрузкой сайтов, которые не поддерживают его.</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
+    <string name="pref_google_safe_browsing_title">Безопасный просмотр Google</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Allow Google Safe Browsing to block harmful websites.</string>
+    <string name="pref_google_safe_browsing_summary">Разрешить безопасный просмотр Google блокировать опасные веб-сайты.</string>
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">Темы</string>
     <!-- Settings: Appearance: System default -->
@@ -276,7 +276,7 @@
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Сопоставьте цветовую схему веб-страниц с темой браузера.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
+    <string name="pref_start_page_wallpaper_title">Обои для начальной страницы</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Текущая: %s</string>
     <!-- Settings: Appearance: User interface category -->
@@ -290,7 +290,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Переместите элементы интерфейса для более лёгкого одноручного использования.</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Pull to Refresh</string>
+    <string name="pref_enable_swipe_refresh_title">Потяните для обновления</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Включить перезагрузку страниц, вызванную вертикальной прокруткой.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -310,9 +310,9 @@
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
     <string name="pref_download_confirmation_ask_summary">Спрашивать подтверждение каждый раз, загружать ли файл.</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
-    <string name="pref_close_app_after_download_title">Close after downloading external links</string>
+    <string name="pref_close_app_after_download_title">Закрыть после загрузки внешних ссылок</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">Close the current tab after downloading an external link.</string>
+    <string name="pref_close_app_after_download_summary">Закрыть текущую вкладку после загрузки внешней ссылки.</string>
     <!-- Settings: Web features: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
@@ -342,9 +342,9 @@
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">Постоянное ведение журнала</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Update channel</string>
+    <string name="pref_update_channel_title">Обновление канала</string>
     <!-- Build Info: Protocol version (optional) title -->
-    <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
+    <string name="buildinfo_pref_protocol_info_title">Версия протокола</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">Общие настройки: %1$d\nИзбранное: %2$d\nИстория: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
