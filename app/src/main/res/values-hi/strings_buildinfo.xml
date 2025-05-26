@@ -8,35 +8,35 @@
         {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
         Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
     -->
-    <string name="buildinfo_version">%1$s (%2$s)\nVersion %3$s (Build %4$s%5$s)\n\n</string>
+    <string name="buildinfo_version">%1$s (%2$s)\nवर्शन %3$s (बिल्ड %4$s%5$s)\n\n</string>
     <!--
         Build Info: Copyright information
         Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team
     -->
-    <string name="buildinfo_copyright">Copyright © %s Tipz Team\n</string>
+    <string name="buildinfo_copyright">कॉपीराइट © %s Tipz Team\n</string>
     <!--
         Build Info: License information
         This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
     -->
-    <string name="buildinfo_license">This product is licensed under the %s.</string>
+    <string name="buildinfo_license">यह उत्पाद %s के तहत लाइसेंस प्राप्त है।</string>
     <!-- Build Info: License button -->
-    <string name="buildinfo_license_button">License</string>
+    <string name="buildinfo_license_button">लाइसेंस</string>
     <!-- Build Info: Changelog button -->
-    <string name="buildinfo_changelog_button">Read ChangeLogs</string>
+    <string name="buildinfo_changelog_button">बदलें लॉग पढ़ें</string>
     <!-- Build Info: Website title -->
-    <string name="pref_website_title">Website</string>
+    <string name="pref_website_title">वेबसाइट</string>
     <!-- Build Info: Website summary -->
-    <string name="pref_website_summary">Check out the project\'s website.</string>
+    <string name="pref_website_summary">प्रोजेक्ट की वेबसाइट देखें।</string>
     <!-- Build Info: Feedback title -->
-    <string name="pref_feedback_title">Feedback</string>
+    <string name="pref_feedback_title">जानकारी देना/प्रतिपुष्टि</string>
     <!-- Build Info: Feedback summary -->
-    <string name="pref_feedback_summary">"Report bugs or request new features."</string>
+    <string name="pref_feedback_summary">"बग रिपोर्ट करें या नई सुविधाओं का अनुरोध करें।"</string>
     <!-- Build Info: Source code title -->
-    <string name="pref_source_code_title">"Source code"</string>
+    <string name="pref_source_code_title">"सोर्स कोड"</string>
     <!-- Build Info: Source code summary -->
-    <string name="pref_source_code_summary">"View Viola's source code."</string>
+    <string name="pref_source_code_summary">"वियोला का सोर्स कोड देखें।"</string>
     <!-- Build Info: Build information title -->
-    <string name="buildinfo_pref_build_info_title">Build information</string>
+    <string name="buildinfo_pref_build_info_title">बिल्ड जानकारी</string>
     <!-- Build Info: Build information summary -->
-    <string name="buildinfo_pref_build_info_summary">Tag: %1$s\nBranch (revision): %2$s (%3$s)\nTimestamp: %4$s</string>
+    <string name="buildinfo_pref_build_info_summary">टैग: %1$s\nशाखा (संशोधन): %2$s (%3$s)\nटाइमस्टैम्प: %4$s</string>
 </resources>
