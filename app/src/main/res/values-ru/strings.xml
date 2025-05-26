@@ -310,15 +310,15 @@
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
     <string name="pref_download_confirmation_ask_summary">Спрашивать подтверждение каждый раз, загружать ли файл.</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
-    <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
+    <string name="pref_close_app_after_download_title">Close after downloading external links</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">Always close Viola if the App Link is downloadable.</string>
+    <string name="pref_close_app_after_download_summary">Close the current tab after downloading an external link.</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">Enable JavaScript</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Включение этого позволит загрузить веб-контент JavaScript.</string>
     <!-- Settings: Web features: Enable Cookies title -->
-    <string name="pref_enable_cookies_title">Файлы Cookie</string>
+    <string name="pref_enable_cookies_title">Cookies</string>
     <!-- Settings: Web features: Enable Cookies summary -->
     <string name="pref_enable_cookies_summary">Принимать все Cookies с веб-сайтов.</string>
     <!-- Settings: Web features: Bussin WebX category title -->
@@ -342,7 +342,7 @@
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">Постоянное ведение журнала</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Select update channel</string>
+    <string name="pref_update_channel_title">Update channel</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
     <!-- Build Info: Protocol version (optional) summary -->
