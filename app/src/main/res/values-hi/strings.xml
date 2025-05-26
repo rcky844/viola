@@ -8,9 +8,9 @@
     <!-- Generic: Do not show again -->
     <string name="do_not_show_again">दोबारा मत दिखाएं</string>
     <!-- Generic: Switch On -->
-    <string name="text_on">On</string>
+    <string name="text_on">चालू</string>
     <!-- Generic: Switch Off -->
-    <string name="text_off">Off</string>
+    <string name="text_off">बंद</string>
     <!-- Generic: Path -->
     <string name="path">Path</string>
     <!-- Generic: Path not found -->
