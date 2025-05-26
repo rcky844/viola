@@ -12,211 +12,211 @@
     <!-- Generic: Switch Off -->
     <string name="text_off">बंद</string>
     <!-- Generic: Path -->
-    <string name="path">Path</string>
+    <string name="path">पथ</string>
     <!-- Generic: Path not found -->
-    <string name="path_not_found">Path not found</string>
+    <string name="path_not_found">पाथ नहीं मिला</string>
     <!-- Generic: Download location -->
-    <string name="download_location">Download location</string>
+    <string name="download_location">डाउनलोड स्थान</string>
     <!-- Generic: Reset -->
-    <string name="reset">Reset</string>
+    <string name="reset">रीसेट</string>
     <!-- Generic - Defaults: Search engine -->
-    <string name="search_engine">Search engine</string>
+    <string name="search_engine">खोज इंजन</string>
     <!-- Generic - Defaults: Homepage -->
     <string name="homepage">होमपेज</string>
     <!-- Generic - Defaults: Search Suggestions -->
     <string name="search_suggestions_title">खोज के ससुझाव</string>
     <!-- Toasts: No WebView -->
-    <string name="toast_no_webview">WebView is required but not installed.</string>
+    <string name="toast_no_webview">वेबव्यू आवश्यक है लेकिन स्थापित नहीं है।</string>
     <!-- Toasts: Cleared -->
-    <string name="toast_cleared">Cleared successfully!</string>
+    <string name="toast_cleared">सफलतापूर्वक साफ़ किया गया!</string>
     <!-- Toasts: Copied to clipboard -->
-    <string name="toast_copied_clipboard">Copied to clipboard!</string>
+    <string name="toast_copied_clipboard">क्लिपबोर्ड पर कॉपी बनाई गई!</string>
     <!-- Toasts: Saved -->
-    <string name="save_successful">Saved successfully!</string>
+    <string name="save_successful">सफलतापूर्वक रक्षित कर लिया गया!</string>
     <!-- Dialogs: Continue prompt message -->
-    <string name="dialog_continue_prompt_message">Are you sure you want to continue?</string>
+    <string name="dialog_continue_prompt_message">क्या आप वाकई जारी रखना चाहते हैं?</string>
     <!-- Menus: Copy link -->
-    <string name="menu_copy_link">Copy link</string>
+    <string name="menu_copy_link">लिंक कॉपी करें</string>
     <!-- WebView: Start page -->
-    <string name="start_page">Start Page</string>
+    <string name="start_page">पहला पृष्ठ</string>
     <!-- WebView: No app to handle action -->
-    <string name="toast_no_app_to_handle">No application can handle this action.</string>
+    <string name="toast_no_app_to_handle">कोई भी एप्लिकेशन इस कार्रवाई को संभाल नहीं सकता है।</string>
     <!-- WebView: JavaScript dialog title -->
-    <string name="dialog_js_title">%s says</string>
+    <string name="dialog_js_title">%s कहता है</string>
     <!-- WebView: JavaScript leave page dialog title -->
-    <string name="dialog_js_leave_page_title">%s says, do you want to leave this page?</string>
+    <string name="dialog_js_leave_page_title">%s कहता है, क्या आप इस पृष्ठ को छोड़ना चाहते हैं?</string>
     <!-- WebView: JavaScript page unresponsive title -->
-    <string name="dialog_page_unresponsive_title">Page Unresponsive</string>
+    <string name="dialog_page_unresponsive_title">पृष्ठ अनुत्तरदायी</string>
     <!-- WebView: JavaScript page unresponsive message -->
-    <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
+    <string name="dialog_page_unresponsive_message">आप इसके प्रतिक्रियाशील होने की प्रतीक्षा कर सकते हैं या इस टैब को समाप्त कर सकते हैं।</string>
     <!-- WebView: JavaScript page unresponsive wait -->
-    <string name="dialog_page_unresponsive_wait">Wait</string>
+    <string name="dialog_page_unresponsive_wait">प्रतीक्षा करें</string>
     <!-- WebView: JavaScript page unresponsive terminate -->
-    <string name="dialog_page_unresponsive_terminate">Terminate</string>
+    <string name="dialog_page_unresponsive_terminate">समाप्त करें</string>
     <!-- WebView: SSL certification error dialog title -->
-    <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>
+    <string name="ssl_certificate_error_dialog_title">एसएसएल प्रमाणपत्र त्रुटि</string>
     <!-- WebView: SSL certification error dialog message -->
-    <string name="ssl_certificate_error_dialog_message">%s Do you want to continue anyway?</string>
+    <string name="ssl_certificate_error_dialog_message">%s क्या आप वैसे भी जारी रखना चाहते हैं?</string>
     <!-- WebView: SSL certificate date invalid -->
-    <string name="ssl_certificate_date_invalid">The date of the certificate is invalid.</string>
+    <string name="ssl_certificate_date_invalid">प्रमाणपत्र की तारीख अमान्य है।</string>
     <!-- WebView: SSL certificate invalid -->
-    <string name="ssl_certificate_invalid">A generic SSL error occurred.</string>
+    <string name="ssl_certificate_invalid">एक सामान्य SSL त्रुटि हुई।</string>
     <!-- WebView: SSL certificate expired -->
-    <string name="ssl_certificate_expired">The certificate has expired.</string>
+    <string name="ssl_certificate_expired">इस प्रमाणपत्र की समय सीमा समाप्त हो गई है।</string>
     <!-- WebView: SSL certificate hostname mismatch -->
-    <string name="ssl_certificate_idmismatch">The certificate hostname mismatch.</string>
+    <string name="ssl_certificate_idmismatch">प्रमाणपत्र का होस्टनाम बेमेल है।</string>
     <!-- WebView: SSL certificate not yet valid -->
-    <string name="ssl_certificate_notyetvalid">The certificate is not yet valid.</string>
+    <string name="ssl_certificate_notyetvalid">प्रमाणपत्र अभी तक मान्य नहीं है।</string>
     <!-- WebView: SSL certificate authority not trusted -->
-    <string name="ssl_certificate_untrusted">The certificate authority is not trusted.</string>
+    <string name="ssl_certificate_untrusted">प्रमाणपत्र जारी करने वाली संस्था पर भरोसा नहीं किया जाता है।</string>
     <!-- WebView: SSL certificate unknown -->
-    <string name="ssl_certificate_unknown">An unknown SSL error occurred.</string>
+    <string name="ssl_certificate_unknown">एक सामान्य SSL त्रुटि हुई।</string>
     <!-- WebView: SSL handshake failed dialog title -->
-    <string name="dialog_ssl_failed_handshake_title">Failed to perform SSL handshake. Page load may still be possible by downgrading to HTTP.</string>
+    <string name="dialog_ssl_failed_handshake_title">एसएसएल हैंडशेक करने में विफल। HTTP पर डाउनग्रेड करके पेज लोड अभी भी संभव हो सकता है।</string>
     <!-- WebView: Insecure HTTP connection dialog title -->
-    <string name="dialog_insecure_connection_title">Insecure connection</string>
+    <string name="dialog_insecure_connection_title">असुरक्षित कनेक्शन</string>
     <!-- WebView: Insecure HTTP connection dialog message -->
-    <string name="dialog_insecure_connection_message">You are seeing this warning because the site %s does not support HTTPS.</string>
+    <string name="dialog_insecure_connection_message">आप यह चेतावनी इसलिए देख रहे हैं क्योंकि साइट %s HTTPS का समर्थन नहीं करती है।</string>
     <!-- WebView: Insecure HTTP connection dialog - Go back -->
-    <string name="dialog_insecure_connection_go_back">Go back</string>
+    <string name="dialog_insecure_connection_go_back">पीछे जाएं</string>
     <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
-    <string name="dialog_insecure_connection_continue_to_site">Continue to site</string>
+    <string name="dialog_insecure_connection_continue_to_site">साइट पर जारी रखें</string>
     <!-- WebView: Open in external app snackbar message -->
-    <string name="snackbar_open_external_message">External link detected.</string>
+    <string name="snackbar_open_external_message">बाहरी लिंक का पता चला।</string>
     <!-- WebView: Open in external app snackbar action -->
-    <string name="snackbar_open_external_action">Open</string>
+    <string name="snackbar_open_external_action">खोलें</string>
     <!-- Address bar: Hint -->
-    <string name="address_bar_hint">Search or type web address…</string>
+    <string name="address_bar_hint">खोजें या वेब पता लिखें…</string>
     <!-- Hit Test Dialog: Copy link text -->
-    <string name="hit_test_copy_link_text">Copy link text</string>
+    <string name="hit_test_copy_link_text">लिंक टेक्स्ट कॉपी करें</string>
     <!-- Hit Test Dialog: Download link -->
-    <string name="hit_test_download_link">Download link</string>
+    <string name="hit_test_download_link">डाउनलोड लिंक</string>
     <!-- Hit Test Dialog: Download image -->
-    <string name="hit_test_download_image">Download image</string>
+    <string name="hit_test_download_image">चित्र को डाउनलोड करें</string>
     <!-- Hit Test Dialog: Copy image link -->
-    <string name="hit_test_copy_image_link">Copy image link</string>
+    <string name="hit_test_copy_image_link">इमेज लिंक कॉपी करें</string>
     <!-- Hit Test Dialog: Search for similar images -->
-    <string name="hit_test_search_image">Search for similar images</string>
+    <string name="hit_test_search_image">समान छवियों के लिए खोजें</string>
     <!-- Hit Test Dialog: Open in new tab -->
-    <string name="hit_test_open_in_new_tab">Open in new tab</string>
+    <string name="hit_test_open_in_new_tab">नए टैब में खोलें</string>
     <!-- Hit Test Dialog: Share link -->
-    <string name="hit_test_share_link">Share link</string>
+    <string name="hit_test_share_link">लिंक साझा करें</string>
     <!-- SSL Lock Dialog: Issued to -->
-    <string name="ssl_info_dialog_issued_to">Issued To:</string>
+    <string name="ssl_info_dialog_issued_to">इन्हें जारी किया गया:</string>
     <!-- SSL Lock Dialog: Issued by -->
-    <string name="ssl_info_dialog_issued_by">Issued By:</string>
+    <string name="ssl_info_dialog_issued_by">जारीकर्ता:</string>
     <!-- SSL Lock Dialog: Validity Period -->
-    <string name="ssl_info_dialog_validity_period">Validity Period:</string>
+    <string name="ssl_info_dialog_validity_period">वैधता अवधि:</string>
     <!-- SSL Lock Dialog: Common Name -->
-    <string name="ssl_info_dialog_common_name">Common Name (CN)</string>
+    <string name="ssl_info_dialog_common_name">सामान्य नाम (CN)</string>
     <!-- SSL Lock Dialog: Organization -->
-    <string name="ssl_info_dialog_organization">Organization (O)</string>
+    <string name="ssl_info_dialog_organization">संगठन (O)</string>
     <!-- SSL Lock Dialog: Organizational Unit -->
-    <string name="ssl_info_dialog_organization_unit">Organizational Unit (OU)</string>
+    <string name="ssl_info_dialog_organization_unit">सांगठनिक ईकाई (OU)</string>
     <!-- SSL Lock Dialog: Issued On -->
-    <string name="ssl_info_dialog_issued_on">Issued On</string>
+    <string name="ssl_info_dialog_issued_on">जारीकर्ता</string>
     <!-- SSL Lock Dialog: Expires On -->
-    <string name="ssl_info_dialog_expires_on">Expires On</string>
+    <string name="ssl_info_dialog_expires_on">इसपर समाप्त</string>
     <!-- SSL Lock Dialog: No certificate message -->
-    <string name="ssl_info_dialog_content_nocert">This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards).</string>
+    <string name="ssl_info_dialog_content_nocert">यह वेबसाइट एक SSL प्रमाणपत्र प्रदान नहीं करती है। संवेदनशील जानकारी (जैसे पासवर्ड या क्रेडिट कार्ड) के लिए अनुरोधों का मनोरंजन न करें।</string>
     <!-- HTTP Authentication Dialog: Title -->
-    <string name="dialog_auth_title">Authentication required</string>
+    <string name="dialog_auth_title">सत्यापन अपेक्षित</string>
     <!-- HTTP Authentication Dialog: Message -->
-    <string name="dialog_auth_message">%s requires a username and password.</string>
+    <string name="dialog_auth_message">%s को एक उपयोगकर्ता नाम और पासवर्ड की आवश्यकता है।</string>
     <!-- HTTP Authentication Dialog: Username -->
-    <string name="dialog_auth_username">Username</string>
+    <string name="dialog_auth_username">उपयोक्तानाम</string>
     <!-- HTTP Authentication Dialog: Password -->
-    <string name="dialog_auth_password">Password</string>
+    <string name="dialog_auth_password">पासवर्ड</string>
     <!-- Toolbar: Share dialog title -->
-    <string name="dialog_share_title">Share URL using</string>
+    <string name="dialog_share_title">का उपयोग करके URL साझा करें</string>
     <!-- Expandable toolbar: New Tab -->
-    <string name="toolbar_expandable_new_tab">New Tab</string>
+    <string name="toolbar_expandable_new_tab">नया टैब</string>
     <!-- Expandable toolbar: Favorites -->
-    <string name="toolbar_expandable_favorites">Favorites</string>
+    <string name="toolbar_expandable_favorites">पसंदीदा</string>
     <!-- Expandable toolbar: History -->
-    <string name="toolbar_expandable_history">History</string>
+    <string name="toolbar_expandable_history">इतिहास</string>
     <!-- Expandable toolbar: Viewing Mode -->
-    <string name="toolbar_expandable_viewport">Viewing mode</string>
+    <string name="toolbar_expandable_viewport">देखने का मोड</string>
     <!-- Expandable toolbar: Find in page -->
-    <string name="toolbar_expandable_find">Find in page</string>
+    <string name="toolbar_expandable_find">पृष्ठ पर ढूंढें</string>
     <!-- Expandable toolbar: Add to favorites -->
-    <string name="toolbar_expandable_favorites_add">Add to favorites</string>
+    <string name="toolbar_expandable_favorites_add">पसंदीदा में सम्मिलित करें</string>
     <!-- Expandable toolbar: Translate -->
-    <string name="toolbar_expandable_translate">Translate</string>
+    <string name="toolbar_expandable_translate">अनुवाद</string>
     <!-- Expandable toolbar: Downloads -->
-    <string name="toolbar_expandable_downloads">Downloads</string>
+    <string name="toolbar_expandable_downloads">डाउनलोड्स</string>
     <!-- Expandable toolbar: Enter full screen -->
-    <string name="toolbar_expandable_fullscreen">Enter full screen</string>
+    <string name="toolbar_expandable_fullscreen">फ़ुल स्क्रीन में प्रवेश करें</string>
     <!-- Expandable toolbar: Create shortcut -->
-    <string name="toolbar_expandable_app_shortcut">Create shortcut</string>
+    <string name="toolbar_expandable_app_shortcut">शॉर्टकट बनाएँ</string>
     <!-- Expandable toolbar: Settings -->
-    <string name="toolbar_expandable_settings">Settings</string>
+    <string name="toolbar_expandable_settings">सेटिंग्स</string>
     <!-- Expandable toolbar: View Page Source -->
-    <string name="toolbar_expandable_view_page_source">View Page Source</string>
+    <string name="toolbar_expandable_view_page_source">पृष्ठ स्रोत देखें</string>
     <!-- Expandable toolbar: Print -->
-    <string name="toolbar_expandable_print">Print</string>
+    <string name="toolbar_expandable_print">प्रिंट करें</string>
     <!-- Expandable toolbar: Close app -->
-    <string name="toolbar_expandable_close">Close app</string>
+    <string name="toolbar_expandable_close">ऐप बंद करे</string>
     <!-- Viewing mode: Custom user agent dialog title -->
-    <string name="viewing_mode_custom_user_agent">Custom User Agent</string>
+    <string name="viewing_mode_custom_user_agent">कस्टम यूज़र एजेंट</string>
     <!-- Viewing mode: Current user agent property -->
-    <string name="viewing_mode_current_user_agent">Current user agent</string>
+    <string name="viewing_mode_current_user_agent">वर्तमान यूज़र एजेंट</string>
     <!-- Viewing mode: Wide viewport mode -->
-    <string name="viewing_mode_wide_viewport_mode">Enable wide viewport mode</string>
+    <string name="viewing_mode_wide_viewport_mode">वाइड व्यू पोर्ट मोड सक्षम करें</string>
     <!-- Translate: Page language -->
-    <string name="dialog_translate_page_lang">Page Language (e.g. zh-TW)</string>
+    <string name="dialog_translate_page_lang">पृष्ठ भाषा (उदा. zh-TW)</string>
     <!-- Translate: Target language -->
-    <string name="dialog_translate_target_lang">Target Language (e.g. en)</string>
+    <string name="dialog_translate_target_lang">लक्ष्य भाषा (उदा. en)</string>
     <!-- Fullscreen: Warning dialog title -->
-    <string name="dialog_fullscreen_title">Fullscreen mode</string>
+    <string name="dialog_fullscreen_title">फ़ुलस्क्रीन मोड</string>
     <!-- Fullscreen: Warning dialog message -->
-    <string name="dialog_fullscreen_message">You have entered fullscreen mode. Exit by double tapping the button at the right bottom corner of your screen.</string>
+    <string name="dialog_fullscreen_message">आपने फ़ुलस्क्रीन मोड में प्रवेश कर लिया है। अपनी स्क्रीन के निचले दाएं कोने पर बटन को दो बार टैप करके बाहर निकलें।</string>
     <!-- Shortcuts: Browser Access -->
-    <string name="shortcuts_menu_browser">Browser Access</string>
+    <string name="shortcuts_menu_browser">ब्राउज़र एक्सेस</string>
     <!-- Shortcuts: Custom Tabs -->
-    <string name="shortcuts_menu_custom_tabs">Custom Tabs</string>
+    <string name="shortcuts_menu_custom_tabs">कस्टम टैब</string>
     <!-- Shortcuts: Web App -->
-    <string name="shortcuts_menu_webapp">Web App</string>
+    <string name="shortcuts_menu_webapp">वेब अनुप्रयोग</string>
     <!-- Console: Dialog title -->
-    <string name="console_dialog_title">Console</string>
+    <string name="console_dialog_title">कंसोल</string>
     <!-- Console: Enabled toast -->
-    <string name="console_toast_enabled">Console logging has been enabled!</string>
+    <string name="console_toast_enabled">कंसोल लॉगिंग सक्षम कर दी गई है!</string>
     <!-- Console: Disable logging -->
-    <string name="console_logging_disable">Disable</string>
+    <string name="console_logging_disable">निष्क्रिय</string>
     <!-- Console: No logs -->
-    <string name="console_logging_none">No logs</string>
+    <string name="console_logging_none">कोई लॉग नहीं</string>
     <!-- Settings: Title -->
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">सेटिंग्स</string>
     <!-- Settings: Main: Basics category -->
-    <string name="pref_main_category_basics">Basics</string>
+    <string name="pref_main_category_basics">सामान्य जानकारी</string>
     <!-- Settings: Main: Home title -->
-    <string name="pref_main_home">Home</string>
+    <string name="pref_main_home">गृह</string>
     <!-- Settings: Main: Search title -->
-    <string name="pref_main_search">Search</string>
+    <string name="pref_main_search">खोजें</string>
     <!-- Settings: Main: Privacy and security title -->
-    <string name="pref_main_privacy_security">Privacy and security</string>
+    <string name="pref_main_privacy_security">गोपनीयता और सुरक्षा</string>
     <!-- Settings: Main: Appearance title -->
-    <string name="pref_main_appearance">Appearance</string>
+    <string name="pref_main_appearance">रूप</string>
     <!-- Settings: Main: Advanced category -->
-    <string name="pref_main_category_advanced">Advanced</string>
+    <string name="pref_main_category_advanced">उन्नत</string>
     <!-- Expandable toolbar: Downloads -->
-    <string name="pref_main_downloads">Downloads</string>
+    <string name="pref_main_downloads">डाउनलोड्स</string>
     <!-- Expandable toolbar: Web features -->
-    <string name="pref_main_web_features">Web features</string>
+    <string name="pref_main_web_features">वेब सुविधाएँ</string>
     <!-- Settings: Main: Updates and version category -->
-    <string name="pref_main_category_updates_version">Updates and version</string>
+    <string name="pref_main_category_updates_version">अपडेट और वर्शन</string>
     <!-- Settings: Main: Check for updates title -->
-    <string name="pref_check_for_updates_title">Check for Updates</string>
+    <string name="pref_check_for_updates_title">अद्यतनों के लिए जाँचें</string>
     <!-- Settings: Main: Check for updates summary -->
-    <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
+    <string name="pref_check_for_updates_summary">नए अपडेट के लिए जाँच करें और यदि कोई उपलब्ध हो तो उसे डाउनलोड करने की अनुमति दें।</string>
     <!-- Settings: Main: About title -->
-    <string name="pref_about_title">About</string>
+    <string name="pref_about_title">जानकारी</string>
     <!-- Settings: Search: Default Search Engine category title -->
-    <string name="pref_search_category_engine_title">Default search engine</string>
+    <string name="pref_search_category_engine_title">डिफ़ॉल्ट सर्च इंजन</string>
     <!-- Settings: Search: Default Search Engine category summary -->
-    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
+    <string name="pref_search_category_engine_summary">यह एड्रेस बार में आपका डिफ़ॉल्ट सर्च इंजन है। आप इसे कभी भी बदल सकते हैं।</string>
     <!-- Settings: Search: Use web-based homepage title -->
-    <string name="pref_use_web_homepage_title">Use web-based homepage</string>
+    <string name="pref_use_web_homepage_title">वेब-आधारित होमपेज का उपयोग करें</string>
     <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">Open a webpage instead of start page as homepage.</string>
     <!-- Settings: Search: Search Suggestions category summary -->
@@ -338,105 +338,107 @@
     <!-- Settings: Development: Remote debugging summary debuggable -->
     <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
     <!-- Settings: Development: Console logging category -->
-    <string name="pref_development_console_logging_category">Console logging</string>
+    <string name="pref_development_console_logging_category">कंसोल लॉगिंग</string>
     <!-- Settings: Development: Persistent console logging -->
-    <string name="pref_always_on_logging">Persistent logging</string>
+    <string name="pref_always_on_logging">लगातार लॉगिंग</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">Select update channel</string>
     <!-- Build Info: Protocol version (optional) title -->
-    <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
+    <string name="buildinfo_pref_protocol_info_title">प्रोटोकॉल वर्शन</string>
     <!-- Build Info: Protocol version (optional) summary -->
-    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
+    <string name="buildinfo_pref_protocol_info_summary">शेयर्ड प्रेफरेंसेस: %1$d\nपसंदीदा: %2$d\nइतिहास: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>
+    <string name="search_dialog_custom_message">फ़ॉर्मैट:\n{query}: क्वेरी\n{language}: भाषा</string>
     <!-- Settings - Wallpaper: Default -->
-    <string name="default_res">Default</string>
+    <string name="default_res">डिफ़ॉल्ट</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
-    <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
+    <string name="toast_ad_servers_finished">विज्ञापन ब्लॉकलिस्ट डाउनलोड करना समाप्त हुआ!</string>
     <!-- Settings - Reset to Default: Dialog message -->
-    <string name="dialog_settings_reset_to_default_message">This will clear all browser data\nAre you sure you want to continue?</string>
+    <string name="dialog_settings_reset_to_default_message">यह सभी ब्राउज़र डेटा साफ़ कर देगा\nक्या आप वाकई जारी रखना चाहते हैं?</string>
     <!-- Settings - Reset to Default: Toast message -->
-    <string name="toast_reset_complete">Reset completed successfully.</string>
+    <string name="toast_reset_complete">रीसेट सफलतापूर्वक पूरा हुआ।</string>
     <!-- Updates: Latest version toast -->
-    <string name="toast_version_latest">You are currently running the latest version of Viola.</string>
+    <string name="toast_version_latest">आप वर्तमान में वियोला के नवीनतम संस्करण चला रहे हैं।</string>
     <!-- Updates: Network unavailable toast -->
-    <string name="toast_network_unavailable">Network is unavailable.</string>
+    <string name="toast_network_unavailable">नेटवर्क अनुपलब्ध है।</string>
     <!-- Updates: Update available dialog title -->
-    <string name="dialog_update_available_title">Update available</string>
+    <string name="dialog_update_available_title">अपडेट उपलब्ध</string>
     <!-- Updates: Update available dialog message -->
-    <string name="dialog_update_available_message">Viola %1$s (%2$s) is available, do you want to install it?</string>
+    <string name="dialog_update_available_message">वियोला %1$s (%2$s) उपलब्ध है, क्या आप इसे इंस्टॉल करना चाहते हैं?</string>
     <!-- Updates: Update available dialog release date message -->
-    <string name="dialog_update_available_release_date_message">Release date: %s</string>
+    <string name="dialog_update_available_release_date_message">रिलीज़ की तारीख: %s</string>
     <!-- Updates: Update failed message -->
-    <string name="update_download_failed">Update failed to download!</string>
+    <string name="update_download_failed">अपडेट डाउनलोड करने में विफल!</string>
     <!-- Updates: Downloading update message -->
-    <string name="update_downloading">Downloading update…</string>
+    <string name="update_downloading">अपडेट डाउनलोड हो रहा है…</string>
     <!-- Lists: Delete all entries dialog title -->
-    <string name="dialog_delete_all_entries_title">Delete all entries</string>
+    <string name="dialog_delete_all_entries_title">Delete all entries
+
+सभी प्रविष्टियाँ हटाएं</string>
     <!-- Lists: Delete menu option -->
-    <string name="delete">Delete</string>
+    <string name="delete">हटाएं</string>
     <!-- History: Title -->
-    <string name="history_title">History</string>
+    <string name="history_title">इतिहास</string>
     <!-- History: Empty message -->
-    <string name="history_empty_message">History is empty!</string>
+    <string name="history_empty_message">इतिहास खाली है!</string>
     <!-- History: Save to favorites menu option -->
-    <string name="menu_save_to_favorites">Save to favorites</string>
+    <string name="menu_save_to_favorites">पसंदीदा में सहेजें</string>
     <!-- History: Delete all entries dialog message -->
-    <string name="dialog_delete_all_entries_history_message">You are about to delete all history entries, are you sure about this?</string>
+    <string name="dialog_delete_all_entries_history_message">आप सभी इतिहास प्रविष्टियाँ हटाने वाले हैं, क्या आप इसके बारे में निश्चित हैं?</string>
     <!-- Favorites: Title -->
-    <string name="favorites_title">Favorites</string>
+    <string name="favorites_title">पसंदीदा</string>
     <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">There are no favorites saved.</string>
+    <string name="favorites_empty_message">कोई पसंदीदा सहेजे नहीं गए हैं।</string>
     <!-- Favorites: Menu edit option -->
-    <string name="favorites_menu_edit">Edit</string>
+    <string name="favorites_menu_edit">संपादन</string>
     <!-- Favorites: Edit dialog title option -->
-    <string name="favorites_dialog_title">Title</string>
+    <string name="favorites_dialog_title">शीर्षक</string>
     <!-- Favorites: Edit dialog link option -->
-    <string name="favorites_dialog_link">Link</string>
+    <string name="favorites_dialog_link">लिंक</string>
     <!-- Favorites: Edit dialog added on detail -->
-    <string name="favorites_dialog_added_on">Added on</string>
+    <string name="favorites_dialog_added_on">को जोड़ा गया</string>
     <!-- Favorites: Delete all entries dialog message -->
-    <string name="dialog_delete_all_entries_favorites_message">You are about to delete all favorites entries, are you sure about this?</string>
+    <string name="dialog_delete_all_entries_favorites_message">आप सभी इतिहास प्रविष्टियाँ हटाने वाले हैं, क्या आप इसके बारे में निश्चित हैं?</string>
     <!-- Downloads: Toast failed -->
-    <string name="downloads_toast_failed">Download failed!</string>
+    <string name="downloads_toast_failed">डाउनलोड विफल हो गया!</string>
     <!-- Downloads: Toast success -->
-    <string name="downloads_toast_success">%s downloaded successfully.</string>
+    <string name="downloads_toast_success">%s सफलतापूर्वक डाउनलोड हो गया।</string>
     <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">No downloads</string>
+    <string name="downloads_empty_message">कोई डाउनलोड नहीं</string>
     <!-- Downloads: Confirmation dialog title -->
-    <string name="downloads_dialog_title">Download file?</string>
+    <string name="downloads_dialog_title">फ़ाइल डाउनलोड करें?</string>
     <!-- Downloads: Confirmation dialog message -->
-    <string name="downloads_dialog_message">Do you want to download %s?</string>
+    <string name="downloads_dialog_message">क्या आप %s डाउनलोड करना चाहते हैं?</string>
     <!-- Downloads: Error details dialog title -->
-    <string name="downloads_dialog_error_details_title">Download failure details</string>
+    <string name="downloads_dialog_error_details_title">डाउनलोड विफलता विवरण</string>
     <!-- Downloads: Confirmation dialog duplicated message -->
-    <string name="downloads_dialog_duplicated_message">File already present in your download directory, do you want to re-download %s?</string>
+    <string name="downloads_dialog_duplicated_message">फ़ाइल आपके डाउनलोड निर्देशिका में पहले से मौजूद है, क्या आप %s को फिर से डाउनलोड करना चाहते हैं?</string>
     <!-- Downloads: Menu re-download option -->
-    <string name="downloads_menu_re_download">Download again</string>
+    <string name="downloads_menu_re_download">फिर से डाउनलोड करें</string>
     <!-- Crash Activity: Generic error explanation -->
-    <string name="customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">एक अप्रत्याशित त्रुटि हुई। असुविधा के लिए खेद है।</string>
     <!-- Crash Activity: Restart app button -->
-    <string name="customactivityoncrash_error_activity_restart_app">Restart app</string>
+    <string name="customactivityoncrash_error_activity_restart_app">एप फिर से शुरू करें</string>
     <!-- Crash Activity: Close app button -->
-    <string name="customactivityoncrash_error_activity_close_app">Close app</string>
+    <string name="customactivityoncrash_error_activity_close_app">ऐप बंद करे</string>
     <!-- Crash Activity: Error details app button -->
-    <string name="customactivityoncrash_error_activity_error_details">Error details</string>
+    <string name="customactivityoncrash_error_activity_error_details">गलतियों की जानकारी</string>
     <!-- Crash Activity: Error details dialog title -->
-    <string name="customactivityoncrash_error_activity_error_details_title">Error details</string>
+    <string name="customactivityoncrash_error_activity_error_details_title">गलतियों की जानकारी</string>
     <!-- Crash Activity: Error details dialog close button -->
-    <string name="customactivityoncrash_error_activity_error_details_close">Close</string>
+    <string name="customactivityoncrash_error_activity_error_details_close">बंद करें</string>
     <!-- Crash Activity: Error details dialog copy button -->
-    <string name="customactivityoncrash_error_activity_error_details_copy">Copy to clipboard</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy">क्‍लिपबोर्ड पर प्रतिलिपि बनाएं</string>
     <!-- Crash Activity: Error details dialog copy toast -->
-    <string name="customactivityoncrash_error_activity_error_details_copied">Copied to clipboard</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied">क्लिपबोर्ड पर कॉपी बनाई गई</string>
     <!-- Crash Activity: Error details clipboard label -->
-    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">Error information</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">त्रुटि जानकारी</string>
     <string-array name="errMsg">
-        <item>Error!</item>
-        <item>Can\'t open this page</item>
-        <item>Viola failed to open your webpage.</item>
-        <item>Try:</item>
-        <item>Checking your internet connection</item>
+        <item>त्रुटि!</item>
+        <item>यह पेज नहीं खोला जा सकता</item>
+        <item>वियोला आपका वेबपेज खोलने में विफल रहा।</item>
+        <item>प्रयास करें:</item>
+        <item>आपके इंटरनेट कनेक्शन की जाँच हो रही है।</item>
         <item>Reloading the webpage</item>
     </string-array>
     <string-array name="search_entries">
