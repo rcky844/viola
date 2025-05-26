@@ -218,131 +218,135 @@
     <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">वेब-आधारित होमपेज का उपयोग करें</string>
     <!-- Settings: Search: Use web-based homepage summary -->
-    <string name="pref_use_web_homepage_summary">Open a webpage instead of start page as homepage.</string>
+    <string name="pref_use_web_homepage_summary">होमपेज के रूप में स्टार्ट पेज के बजाय एक वेबपेज खोलें।</string>
     <!-- Settings: Search: Search Suggestions category summary -->
-    <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
+    <string name="pref_search_category_suggestions_summary">चुनें कि खोज इंजनों से सुझाव कैसे दिखाई दें।</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
-    <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
+    <string name="pref_search_suggestions_provider_title">सुझाव प्रदाता</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
-    <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
+    <string name="pref_ps_category_ad_blocking_title">विज्ञापन अवरुद्ध करना</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
-    <string name="pref_ps_category_ad_blocking_summary">Stop annoying ads from distracting you.</string>
+    <string name="pref_ps_category_ad_blocking_summary">परेशान करने वाले विज्ञापनों को आपको विचलित करने से रोकें।</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
-    <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
+    <string name="pref_ad_blocker_source_title">विज्ञापन ब्लॉकलिस्ट स्रोत</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
-    <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
+    <string name="pref_ad_blocker_download_hosts_title">विज्ञापन ब्लॉकलिस्ट डाउनलोड करें</string>
     <!-- Settings: Privacy and security: Privacy category -->
-    <string name="pref_ps_category_privacy">Privacy</string>
+    <string name="pref_ps_category_privacy">प्राइवसी</string>
     <!-- Settings: Privacy: Do Not Track title -->
-    <string name="pref_do_not_track_title">Do Not Track</string>
+    <string name="pref_do_not_track_title">ट्रैक न करें</string>
     <!-- Settings: Privacy: Do Not Track summary -->
-    <string name="pref_do_not_track_summary">Send a Do Not Track request to websites you visit.</string>
+    <string name="pref_do_not_track_summary">आप जिन वेबसाइटों पर जाते हैं, उन्हें \'ट्रैक न करें\' अनुरोध भेजें।</string>
     <!-- Settings: Privacy: Send GPC title -->
-    <string name="pref_send_sec_gpc_title">Global Privacy Control</string>
+    <string name="pref_send_sec_gpc_title">वैश्विक गोपनीयता नियंत्रण</string>
     <!-- Settings: Privacy: Send GPC summary -->
-    <string name="pref_send_sec_gpc_summary">Enable to consent to the selling or sharing of your personal information on websites you visit with third parties.</string>
+    <string name="pref_send_sec_gpc_summary">वेबसाइटों पर तृतीय पक्षों के साथ आपकी व्यक्तिगत जानकारी बेचने या साझा करने की सहमति देने के लिए सक्षम करें।</string>
     <!-- Settings: Privacy: Enable history storage title -->
-    <string name="pref_enable_history_title">Use history storage</string>
+    <string name="pref_enable_history_title">इतिहास संग्रहण का उपयोग करें</string>
     <!-- Settings: Privacy: Enable history storage summary -->
-    <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
+    <string name="pref_enable_history_summary">देखी गई वेबपेजों के इतिहास को सुरक्षित रखें।</string>
     <!-- Settings: Privacy: Clear browsing data title -->
-    <string name="pref_clear_browsing_data">Clear browsing data</string>
+    <string name="pref_clear_browsing_data">ब्राउज़िंग डेटा साफ़ करें</string>
     <!-- Settings: Privacy: Reset to default title -->
-    <string name="pref_reset_to_default_title">Reset to default</string>
+    <string name="pref_reset_to_default_title">डिफ़ॉल्ट पर रीसेट करें</string>
     <!-- Settings: Privacy: Reset to default summary -->
-    <string name="pref_reset_to_default_summary">Clear all browser data.</string>
+    <string name="pref_reset_to_default_summary">सभी ब्राउज़र डेटा साफ़ करें।</string>
     <!-- Settings: Privacy and security: Security category -->
-    <string name="pref_ps_category_security">Security</string>
+    <string name="pref_ps_category_security">सुरक्षा</string>
     <!-- Settings: Security: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">Enforce HTTPS</string>
+    <string name="pref_enforce_https_title">हमेशा सुरक्षित कनेक्शन का उपयोग करें।</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Always visit websites using HTTPS for added security. (Experimental)</string>
+    <string name="pref_enforce_https_summary">जब भी संभव हो HTTPS का उपयोग करें और जो साइटें इसका समर्थन नहीं करती हैं उन्हें लोड करने से पहले चेतावनी प्राप्त करें।</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Enable Google\'s Safe Browsing</string>
+    <string name="pref_google_safe_browsing_title">गूगल सुरक्षित ब्राउज़िंग</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Allow Google\'s Safe Browsing to block websites it deems dangerous.</string>
+    <string name="pref_google_safe_browsing_summary">Allow Google Safe Browsing to block harmful websites.
+
+हानिकारक वेबसाइटों को ब्लॉक करने के लिए Google सुरक्षित ब्राउज़िंग को अनुमति दें।</string>
     <!-- Settings: Appearance: Theming category -->
-    <string name="pref_appearance_theming_category">Theming</string>
+    <string name="pref_appearance_theming_category">दिखावट</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_system_default">Automatic</string>
+    <string name="pref_theme_system_default">स्वचालित</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_light">Light</string>
+    <string name="pref_theme_light">प्रकाश</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_dark">Dark</string>
+    <string name="pref_theme_dark">अंधेरा</string>
     <!-- Settings: Appearance: Theme title -->
-    <string name="pref_theme_title">Theme</string>
+    <string name="pref_theme_title">थीम</string>
     <!-- Settings: Use web content force dark title -->
-    <string name="pref_use_force_dark_title">Allow web content force dark</string>
+    <string name="pref_use_force_dark_title">वेब सामग्री को डार्क मोड में दिखाने की अनुमति दें</string>
     <!-- Settings: Use web content force dark summary -->
-    <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
+    <string name="pref_use_force_dark_summary">वेबपेजों की रंग योजना को ब्राउज़र की थीम से मिलाएं।</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Select a wallpaper for start page</string>
+    <string name="pref_start_page_wallpaper_title">स्टार्टपेज वॉलपेपर</string>
     <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">Current: %s</string>
+    <string name="pref_start_page_wallpaper_summary">वर्तमान: %s</string>
     <!-- Settings: Appearance: User interface category -->
-    <string name="pref_appearance_ui_category">User interface</string>
+    <string name="pref_appearance_ui_category">उपयोगकर्ता इंटरफ़ेस</string>
     <!-- Settings: Appearance: Show favicon title -->
-    <string name="pref_show_favicon">Show favicon</string>
+    <string name="pref_show_favicon">फैविकॉन दिखाएँ।</string>
     <!-- Settings: Appearance: Show favicon summary -->
-    <string name="pref_show_favicon_summary">Show the favicon of the webpage next to the address bar.</string>
+    <string name="pref_show_favicon_summary">एड्रेस बार के बगल में वेबपेज का फैविकॉन दिखाएँ।</string>
     <!-- Settings: Appearance: Reach mode title -->
-    <string name="pref_reverse_address_bar_title">Reach mode</string>
+    <string name="pref_reverse_address_bar_title">पहुँच मोड</string>
     <!-- Settings: Appearance: Reach mode summary -->
-    <string name="pref_reverse_address_bar_summary">Relocate interface elements for easier one-hand usage.</string>
+    <string name="pref_reverse_address_bar_summary">एक हाथ से आसानी से उपयोग के लिए इंटरफ़ेस तत्वों को पुनः व्यवस्थित करें।</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Enable Pull to Refresh</string>
+    <string name="pref_enable_swipe_refresh_title">पुल टू रिफ्रेश</string>
     <!-- Settings: Swipe to Refresh summary -->
-    <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
+    <string name="pref_enable_swipe_refresh_summary">लंबवत रूप से अत्यधिक स्क्रॉल करने पर ट्रिगर होने वाले पेज रीलोड सक्षम करें।</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
-    <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
+    <string name="pref_update_recents_icon_title">हाल के टैब में आइकन और लेबल अपडेट करें।</string>
     <!-- Settings: Appearance: Update Recents icons and labels summary -->
-    <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
+    <string name="pref_update_recents_icon_summary">हाल के टैब में टैब के आइकन और लेबल को वेबपेज के अनुसार स्वचालित रूप से अपडेट करें।</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs title -->
-    <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
+    <string name="pref_use_custom_tabs_title">कस्टम टैब</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
-    <string name="pref_use_custom_tabs_summary">Always open App Links in Custom Tabs when it is opened from another application.</string>
+    <string name="pref_use_custom_tabs_summary">जब किसी अन्य एप्लिकेशन से खोला जाए तो हमेशा बाहरी लिंक कस्टम टैब में खोलें।</string>
     <!-- Settings: Main - Advanced: Data Saver title -->
-    <string name="pref_send_save_data_title">Data Saver</string>
+    <string name="pref_send_save_data_title">डेटा सेवर</string>
     <!-- Settings: Main - Advanced: Data Saver summary -->
-    <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
+    <string name="pref_send_save_data_summary">समर्थित वेबसाइटों को डेटा बचत अनुरोध भेजें।</string>
     <!-- Settings: Downloads: Show download confirmation dialog title -->
-    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <string name="pref_download_confirmation_ask_title">पुष्टिकरण संवाद दिखाएँ</string>
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
-    <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
+    <string name="pref_download_confirmation_ask_summary">प्रत्येक बार फ़ाइल डाउनलोड करने के बारे में पुष्टि करने के लिए पूछें।</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
-    <string name="pref_close_app_after_download_title">Close after a downloadable App Link</string>
+    <string name="pref_close_app_after_download_title">बाहरी लिंक डाउनलोड करने के बाद बंद करें</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">Always close Viola if the App Link is downloadable.</string>
+    <string name="pref_close_app_after_download_summary">बाहरी लिंक डाउनलोड करने के बाद वर्तमान टैब बंद करें।</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">Enable JavaScript</string>
+    <string name="pref_enable_javascript_title">जावास्क्रिप्ट</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
-    <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
+    <string name="pref_enable_javascript_summary">इसे सक्षम करने से जावास्क्रिप्ट वेब सामग्री लोड हो सकेगी।</string>
     <!-- Settings: Web features: Enable Cookies title -->
-    <string name="pref_enable_cookies_title">Cookies</string>
+    <string name="pref_enable_cookies_title">कूकीज़</string>
     <!-- Settings: Web features: Enable Cookies summary -->
-    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <string name="pref_enable_cookies_summary"> Accept all cookies from websites.
+
+वेबसाइटों से सभी कुकीज़ स्वीकार करें।</string>
     <!-- Settings: Web features: Bussin WebX category title -->
-    <string name="pref_web_webx_category_title">Bussin WebX</string>
+    <string name="pref_web_webx_category_title">बस्सिन वेबएक्स</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
-    <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
+    <string name="pref_web_webx_category_summary">यह वर्ल्ड वाइड वेब के एक अप्रचलित विकल्प के उपयोग को नियंत्रित करता है। आप स्व-होस्ट किए गए समाधानों के साथ इस सुविधा का उपयोग जारी रख सकते हैं।</string>
     <!-- Settings: Web features: Bussin WebX API Picker title -->
-    <string name="pref_webx_picker_title">Buss API URL</string>
+    <string name="pref_webx_picker_title">बस्स एपीआई यूआरएल</string>
     <!-- Settings: Main - Advanced: Development settings title -->
-    <string name="pref_main_development_title">Development settings</string>
+    <string name="pref_main_development_title">विकास सेटिंग्स</string>
     <!-- Settings: Main - Advanced: Development settings summary -->
-    <string name="pref_main_development_summary">Advanced features for experts.</string>
+    <string name="pref_main_development_summary">विशेषज्ञों के लिए उन्नत सुविधाएँ।</string>
     <!-- Settings: Development: Remote debugging title -->
-    <string name="pref_remote_debugging_title">Remote debugging</string>
+    <string name="pref_remote_debugging_title">दूरस्थ डिबगिंग</string>
     <!-- Settings: Development: Remote debugging summary -->
-    <string name="pref_remote_debugging_summary">To debug in-app WebViews, connect your device to a computer running Chromium browser and navigate to chrome://inspect.</string>
+    <string name="pref_remote_debugging_summary">इन-ऐप वेबव्यू को डिबग करने के लिए, अपने डिवाइस को क्रोमियम ब्राउज़र चलाने वाले कंप्यूटर से कनेक्ट करें और chrome://inspect पर नेविगेट करें।</string>
     <!-- Settings: Development: Remote debugging summary debuggable -->
-    <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
+    <string name="pref_remote_debugging_summary_debuggable">यह पहले से ही सक्षम है क्योंकि एप्लिकेशन डिबग करने योग्य है।</string>
     <!-- Settings: Development: Console logging category -->
     <string name="pref_development_console_logging_category">कंसोल लॉगिंग</string>
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">लगातार लॉगिंग</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Select update channel</string>
+    <string name="pref_update_channel_title">अपडेट चैनल</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">प्रोटोकॉल वर्शन</string>
     <!-- Build Info: Protocol version (optional) summary -->
@@ -439,32 +443,32 @@
         <item>वियोला आपका वेबपेज खोलने में विफल रहा।</item>
         <item>प्रयास करें:</item>
         <item>आपके इंटरनेट कनेक्शन की जाँच हो रही है।</item>
-        <item>Reloading the webpage</item>
+        <item>वेबपेज फिर से लोड हो रहा है।</item>
     </string-array>
     <string-array name="search_entries">
-        <item>Google</item>
-        <item>Baidu</item>
-        <item>DuckDuckGo</item>
-        <item>Bing</item>
-        <item>Yahoo!</item>
-        <item>AOL.com</item>
-        <item>Ecosia</item>
-        <item>Yandex</item>
-        <item>Brave Search</item>
-        <item>Startpage</item>
-        <item>Presearch</item>
-        <item>Swisscows</item>
-        <item>Qwant</item>
-        <item>Sogou</item>
-        <item>360 Search</item>
-        <item>FrogFind</item>
-        <item>Custom</item>
+        <item>गूगल</item>
+        <item>बईदू</item>
+        <item>डकडकगो</item>
+        <item>बिंग</item>
+        <item>याहू!</item>
+        <item>एओएल डॉट कॉम</item>
+        <item>इकोसिया</item>
+        <item>यैंडैक्स</item>
+        <item>ब्रेव सर्च</item>
+        <item>स्टार्टपेज</item>
+        <item>प्रीसर्च</item>
+        <item>स्विसकाउस</item>
+        <item>क्वांट</item>
+        <item>सोगौ</item>
+        <item>360 सर्च</item>
+        <item>फ्रॉगफाइंड</item>
+        <item>अनुकूलित</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien First-Party Trackers</item>
-        <item>Custom</item>
+        <item>एडअवे</item>
+        <item>गुडबायएड्स</item>
+        <item>यूनिफाइड होस्ट्स</item>
+        <item>यूलॉरारियन फर्स्ट-पार्टी ट्रैकर्स</item>
+        <item>अनुकूलित</item>
     </string-array>
 </resources>
