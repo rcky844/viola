@@ -38,7 +38,7 @@
     <!-- Menus: Copy link -->
     <string name="menu_copy_link">Copier le lien</string>
     <!-- WebView: Start page -->
-    <string name="start_page">Page de démarrage</string>
+    <string name="start_page">Page de début</string>
     <!-- WebView: No app to handle action -->
     <string name="toast_no_app_to_handle">Aucune application ne peut gérer cette action.</string>
     <!-- WebView: JavaScript dialog title -->
@@ -258,9 +258,9 @@
     <!-- Settings: Security: Enforce HTTPS summary -->
     <string name="pref_enforce_https_summary">Visitez toujours des sites Web utilisant HTTPS pour plus de sécurité. (Expérimental)</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Activer la navigation sécurisée de Google</string>
+    <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Autorisez la navigation sécurisée de Google à bloquer les sites Web qu’il juge dangereux.</string>
+    <string name="pref_google_safe_browsing_summary">Allow Google Safe Browsing to block harmful websites.</string>
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">Theming</string>
     <!-- Settings: Appearance: System default -->
@@ -276,7 +276,7 @@
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Sélectionnez un fond d\'écran pour la page de démarrage</string>
+    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Actuel: %s</string>
     <!-- Settings: Appearance: User interface category -->
@@ -290,7 +290,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Inverser la disposition du navigateur à l’envers. (Un redémarrage est nécessaire)</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Activer l’extraction pour actualiser</string>
+    <string name="pref_enable_swipe_refresh_title">Pull to Refresh</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Activez les rechargements de page déclenchés par le sursomulage vertical du contenu.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -314,7 +314,7 @@
     <!-- Settings: Main - Advanced: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Fermez toujours Viola si le lien de l’application est téléchargeable.</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">Activer JavaScript</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Activer ceci autorisera le chargement du contenu JavaScript.</string>
     <!-- Settings: Web features: Enable Cookies title -->
@@ -342,7 +342,7 @@
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">Persistent logging</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Sélectionner le canal de mise à jour</string>
+    <string name="pref_update_channel_title">Update channel</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
     <!-- Build Info: Protocol version (optional) summary -->
