@@ -38,7 +38,7 @@
     <!-- Menus: Copy link -->
     <string name="menu_copy_link">Bağlantıyı kopyala</string>
     <!-- WebView: Start page -->
-    <string name="start_page">Başlangıç sayfası</string>
+    <string name="start_page">Sayfa Başlangıcı</string>
     <!-- WebView: No app to handle action -->
     <string name="toast_no_app_to_handle">Hiçbir uygulama bu eylemi gerçekleştiremez.</string>
     <!-- WebView: JavaScript dialog title -->
@@ -128,7 +128,7 @@
     <!-- HTTP Authentication Dialog: Password -->
     <string name="dialog_auth_password">Password</string>
     <!-- Toolbar: Share dialog title -->
-    <string name="dialog_share_title">URL\'yi şununla paylaş:</string>
+    <string name="dialog_share_title">URL\'yi şununla paylaş</string>
     <!-- Expandable toolbar: New Tab -->
     <string name="toolbar_expandable_new_tab">Yeni sekme</string>
     <!-- Expandable toolbar: Favorites -->
@@ -254,13 +254,13 @@
     <!-- Settings: Privacy and security: Security category -->
     <string name="pref_ps_category_security">Security</string>
     <!-- Settings: Security: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">HTTPS\'yi zorunlu kılma</string>
+    <string name="pref_enforce_https_title">Always use secure connections</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Daha fazla güvenlik için her zaman HTTPS kullanan web sitelerini ziyaret edin. (Deneysel)</string>
+    <string name="pref_enforce_https_summary">Use HTTPS whenever possible and receive a warning before loading sites that don\'t support it.</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Google\'ın Güvenli Taramasını Etkinleştirme</string>
+    <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Google\'ın Güvenli Tarama\'sının tehlikeli bulduğu web sitelerini engellemesine izin verin.</string>
+    <string name="pref_google_safe_browsing_summary">Allow Google Safe Browsing to block harmful websites.</string>
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">Theming</string>
     <!-- Settings: Appearance: System default -->
@@ -276,7 +276,7 @@
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Başlangıç sayfası için bir duvar kağıdı seçin</string>
+    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Güncel: %s</string>
     <!-- Settings: Appearance: User interface category -->
@@ -290,7 +290,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Tarayıcı düzenini baş aşağı çevirin. (Yeniden başlatma gereklidir)</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Yenilemek için Çekmeyi Etkinleştir</string>
+    <string name="pref_enable_swipe_refresh_title">Yenilemek için Çek</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Dikey olarak aşırı kaydırılan içerik tarafından tetiklenen sayfa yeniden yüklemelerini etkinleştirin.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -314,7 +314,7 @@
     <!-- Settings: Main - Advanced: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Uygulama Bağlantısı indirilebilirse her zaman Viola\'yu kapatın.</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">JavaScript\'i etkinleştir</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Bunu etkinleştirmek JavaScript web içeriğinin yüklenmesine izin verecektir.</string>
     <!-- Settings: Web features: Enable Cookies title -->
@@ -342,7 +342,7 @@
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">Persistent logging</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Güncelleme kanalını seçin</string>
+    <string name="pref_update_channel_title">Kanalı Güncelle</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
     <!-- Build Info: Protocol version (optional) summary -->
