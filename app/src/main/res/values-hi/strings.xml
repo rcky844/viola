@@ -322,9 +322,7 @@
     <!-- Settings: Web features: Enable Cookies title -->
     <string name="pref_enable_cookies_title">कूकीज़</string>
     <!-- Settings: Web features: Enable Cookies summary -->
-    <string name="pref_enable_cookies_summary"> Accept all cookies from websites.
-
-वेबसाइटों से सभी कुकीज़ स्वीकार करें।</string>
+    <string name="pref_enable_cookies_summary">वेबसाइटों से सभी कुकीज़ स्वीकार करें।</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">बस्सिन वेबएक्स</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
@@ -376,9 +374,7 @@
     <!-- Updates: Downloading update message -->
     <string name="update_downloading">अपडेट डाउनलोड हो रहा है…</string>
     <!-- Lists: Delete all entries dialog title -->
-    <string name="dialog_delete_all_entries_title">Delete all entries
-
-सभी प्रविष्टियाँ हटाएं</string>
+    <string name="dialog_delete_all_entries_title">सभी प्रविष्टियाँ हटाएं</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">हटाएं</string>
     <!-- History: Title -->
