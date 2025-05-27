@@ -2,11 +2,23 @@
 <!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Generic: Clear -->
     <string name="clear">Xóa</string>
     <!-- Generic: Do not show again -->
     <string name="do_not_show_again">Do not show again</string>
+    <!-- Generic: Switch On -->
+    <string name="text_on">On</string>
+    <!-- Generic: Switch Off -->
+    <string name="text_off">Off</string>
+    <!-- Generic: Path -->
+    <string name="path">Path</string>
+    <!-- Generic: Path not found -->
+    <string name="path_not_found">Path not found</string>
+    <!-- Generic: Download location -->
+    <string name="download_location">Download location</string>
+    <!-- Generic: Reset -->
+    <string name="reset">Reset</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">Công cụ tìm kiếm</string>
     <!-- Generic - Defaults: Homepage -->
@@ -61,10 +73,18 @@
     <string name="ssl_certificate_unknown">Lỗi SSL không xác định.</string>
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">Failed to perform SSL handshake. Page load may still be possible by downgrading to HTTP.</string>
-    <!-- WebView: App link detected dialog title -->
-    <string name="dialog_open_external_title">Đã phát hiện thấy Đường liên kết ứng dụng có thể khởi chạy</string>
-    <!-- WebView: App link detected dialog message -->
-    <string name="dialog_open_external_message">Bạn có muốn mở liên kết này trong một ứng dụng bên ngoài không?</string>
+    <!-- WebView: Insecure HTTP connection dialog title -->
+    <string name="dialog_insecure_connection_title">Insecure connection</string>
+    <!-- WebView: Insecure HTTP connection dialog message -->
+    <string name="dialog_insecure_connection_message">You are seeing this warning because the site %s does not support HTTPS.</string>
+    <!-- WebView: Insecure HTTP connection dialog - Go back -->
+    <string name="dialog_insecure_connection_go_back">Go back</string>
+    <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
+    <string name="dialog_insecure_connection_continue_to_site">Continue to site</string>
+    <!-- WebView: Open in external app snackbar message -->
+    <string name="snackbar_open_external_message">External link detected.</string>
+    <!-- WebView: Open in external app snackbar action -->
+    <string name="snackbar_open_external_action">Open</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Tìm kiếm hoặc nhập địa chỉ web…</string>
     <!-- Hit Test Dialog: Copy link text -->
@@ -117,6 +137,8 @@
     <string name="toolbar_expandable_history">Lịch sử</string>
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">Chế độ xem</string>
+    <!-- Expandable toolbar: Find in page -->
+    <string name="toolbar_expandable_find">Find in page</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">Thêm vào yêu thích</string>
     <!-- Expandable toolbar: Translate -->
@@ -161,108 +183,170 @@
     <string name="console_toast_enabled">Console logging has been enabled!</string>
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">Disable</string>
+    <!-- Console: No logs -->
+    <string name="console_logging_none">No logs</string>
     <!-- Settings: Title -->
     <string name="settings_title">Cài đặt</string>
-    <!-- Settings: General category -->
-    <string name="pref_category_general">Chung</string>
-    <!-- Settings: Use web-based homepage title -->
+    <!-- Settings: Main: Basics category -->
+    <string name="pref_main_category_basics">Basics</string>
+    <!-- Settings: Main: Home title -->
+    <string name="pref_main_home">Home</string>
+    <!-- Settings: Main: Search title -->
+    <string name="pref_main_search">Search</string>
+    <!-- Settings: Main: Privacy and security title -->
+    <string name="pref_main_privacy_security">Privacy and security</string>
+    <!-- Settings: Main: Appearance title -->
+    <string name="pref_main_appearance">Appearance</string>
+    <!-- Settings: Main: Advanced category -->
+    <string name="pref_main_category_advanced">Nâng cao</string>
+    <!-- Expandable toolbar: Downloads -->
+    <string name="pref_main_downloads">Downloads</string>
+    <!-- Expandable toolbar: Web features -->
+    <string name="pref_main_web_features">Web features</string>
+    <!-- Settings: Main: Updates and version category -->
+    <string name="pref_main_category_updates_version">Updates and version</string>
+    <!-- Settings: Main: Check for updates title -->
+    <string name="pref_check_for_updates_title">Tìm bản cập nhật mới</string>
+    <!-- Settings: Main: Check for updates summary -->
+    <string name="pref_check_for_updates_summary">Kiểm tra bản cập nhật mới và cho phép bạn tải xuống nếu có.</string>
+    <!-- Settings: Main: About title -->
+    <string name="pref_about_title">Giới thiệu</string>
+    <!-- Settings: Search: Default Search Engine category title -->
+    <string name="pref_search_category_engine_title">Default search engine</string>
+    <!-- Settings: Search: Default Search Engine category summary -->
+    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
+    <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">Sử dụng trang chủ dựa trên web</string>
-    <!-- Settings: Use web-based homepage summary -->
+    <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">Mở một trang web thay vì trang bắt đầu làm trang chủ.</string>
-    <!-- Settings: Data & Privacy category -->
-    <string name="pref_category_data_privacy">Dữ liệu &amp; Bảo mật</string>
-    <!-- Settings: Enable ad blocker title -->
-    <string name="pref_ad_blocker_title">Bật chặn quảng cáo</string>
-    <!-- Settings: Enable ad blocker summary -->
+    <!-- Settings: Search: Search Suggestions category summary -->
+    <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
+    <!-- Settings: Search: Search Suggestions Provider title -->
+    <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
+    <!-- Settings: Privacy and security: Ad blocking category title -->
+    <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
+    <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">Chặn các quảng cáo khó chịu.</string>
-    <!-- Settings: Ad Blocklist source title -->
+    <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
-    <!-- Settings: Download ad blocker hosts title -->
+    <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
-    <!-- Settings: Do Not Track title -->
+    <!-- Settings: Privacy and security: Privacy category -->
+    <string name="pref_ps_category_privacy">Privacy</string>
+    <!-- Settings: Privacy: Do Not Track title -->
     <string name="pref_do_not_track_title">Không Theo Dõi</string>
-    <!-- Settings: Do Not Track summary -->
+    <!-- Settings: Privacy: Do Not Track summary -->
     <string name="pref_do_not_track_summary">Gửi một yêu cầu Không Theo Dõi các trang web bạn truy cập.</string>
-    <!-- Settings: Send GPC title -->
+    <!-- Settings: Privacy: Send GPC title -->
     <string name="pref_send_sec_gpc_title">Kiểm soát quyền riêng tư toàn cầu</string>
-    <!-- Settings: Send GPC summary -->
+    <!-- Settings: Privacy: Send GPC summary -->
     <string name="pref_send_sec_gpc_summary">Cho phép bán hoặc chia sẻ thông tin cá nhân của bạn với bên thứ ba trên các trang web bạn truy cập </string>
-    <!-- Settings: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">Thực thi HTTPS</string>
-    <!-- Settings: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Luôn truy cập các trang web sử dụng HTTPS để tăng cường bảo mật. (Thực nghiệm)</string>
-    <!-- Settings: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Bật tính năng Duyệt web an toàn của Google</string>
-    <!-- Settings: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Cho phép tính năng Duyệt web an toàn của Google chặn các trang web mà họ cho là nguy hiểm.</string>
-    <!-- Settings: Enable history storage title -->
+    <!-- Settings: Privacy: Enable history storage title -->
     <string name="pref_enable_history_title">Use history storage</string>
-    <!-- Settings: Enable history storage summary -->
+    <!-- Settings: Privacy: Enable history storage summary -->
     <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
-    <!-- Settings: Clear browsing data title -->
+    <!-- Settings: Privacy: Clear browsing data title -->
     <string name="pref_clear_browsing_data">Clear browsing data</string>
-    <!-- Settings: Reset to default title -->
+    <!-- Settings: Privacy: Reset to default title -->
     <string name="pref_reset_to_default_title">Đặt lại về mặc định</string>
-    <!-- Settings: Reset to default summary -->
+    <!-- Settings: Privacy: Reset to default summary -->
     <string name="pref_reset_to_default_summary">Xóa toàn bộ dữ liệu trình duyệt.</string>
-    <!-- Settings: Visuals category -->
-    <string name="pref_category_visuals">Giao diện</string>
-    <!-- Settings: Theme title -->
+    <!-- Settings: Privacy and security: Security category -->
+    <string name="pref_ps_category_security">Security</string>
+    <!-- Settings: Security: Enforce HTTPS title -->
+    <string name="pref_enforce_https_title">Thực thi HTTPS</string>
+    <!-- Settings: Security: Enforce HTTPS summary -->
+    <string name="pref_enforce_https_summary">Luôn truy cập các trang web sử dụng HTTPS để tăng cường bảo mật. (Thực nghiệm)</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing title -->
+    <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing summary -->
+    <string name="pref_google_safe_browsing_summary">Allow Google Safe Browsing to block harmful websites.</string>
+    <!-- Settings: Appearance: Theming category -->
+    <string name="pref_appearance_theming_category">Theming</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_system_default">Automatic</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_light">Sáng</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_dark">Tối</string>
+    <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">Chủ đề</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Chọn hình nền cho trang bắt đầu</string>
+    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Hiện tại: %s</string>
-    <!-- Settings: Show favicon title -->
+    <!-- Settings: Appearance: User interface category -->
+    <string name="pref_appearance_ui_category">User interface</string>
+    <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">Hiện favicon</string>
-    <!-- Settings: Show favicon summary -->
+    <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">Hiện favicon của trang web bên cạnh thanh địa chỉ trang web.</string>
-    <!-- Settings: Reach mode title -->
+    <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">Chế độ tiệm cận</string>
-    <!-- Settings: Reach mode summary -->
+    <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Di chuyển các thành phần giao diện để sử dụng một tay dễ dàng hơn.</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Bật Kéo để Làm mới</string>
+    <string name="pref_enable_swipe_refresh_title">Kéo để làm mới</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Cho phép tải lại trang được kích hoạt bởi nội dung ghi đè theo chiều dọc.</string>
-    <!-- Settings: Update Recents icons and labels title -->
+    <!-- Settings: Appearance: Update Recents icons and labels title -->
     <string name="pref_update_recents_icon_title">Cập nhật biểu tượng và nhãn của các tab trong Gần đây</string>
-    <!-- Settings: Update Recents icons and labels summary -->
+    <!-- Settings: Appearance: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">Tự động cập nhật biểu tượng và nhãn của các tab trong Gần đây thành biểu tượng và nhãn của trang web.</string>
-    <!-- Settings: Advanced category -->
-    <string name="pref_main_category_advanced">Nâng cao</string>
-    <!-- Settings: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">Cho phép JavaScript</string>
-    <!-- Settings: Enable JavaScript summary -->
-    <string name="pref_enable_javascript_summary">Bật nút này sẽ cho phép chạy các nội dung JavaScript trên web.</string>
-    <!-- Settings: Use Custom Tabs title -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs title -->
     <string name="pref_use_custom_tabs_title">Sử dụng tab tùy chỉnh</string>
-    <!-- Settings: Use Custom Tabs summary -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Luôn mở Liên kết ứng dụng trong Tab tùy chỉnh khi nó được mở từ một ứng dụng khác.</string>
-    <!-- Settings: Data Saver title -->
+    <!-- Settings: Main - Advanced: Data Saver title -->
     <string name="pref_send_save_data_title">Tiết kiệm dữ liệu</string>
-    <!-- Settings: Data Saver summary -->
+    <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">Gửi yêu cầu tiết kiệm dữ liệu tới các trang web được hỗ trợ </string>
-    <!-- Settings: Close app after download title -->
+    <!-- Settings: Downloads: Show download confirmation dialog title -->
+    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <!-- Settings: Downloads: Show download confirmation dialog summary -->
+    <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
+    <!-- Settings: Main - Advanced: Close app after download title -->
     <string name="pref_close_app_after_download_title">Đóng sau liên kết ứng dụng có thể tải xuống</string>
-    <!-- Settings: Close app after download summary -->
+    <!-- Settings: Main - Advanced: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Luôn đóng Viola nếu Liên kết ứng dụng có thể tải xuống được.</string>
-    <!-- Settings: Software updates category -->
-    <string name="pref_main_category_software_updates">Cập nhật phần mềm</string>
-    <!-- Settings: Check for updates title -->
-    <string name="pref_check_for_updates_title">Tìm bản cập nhật mới</string>
-    <!-- Settings: Check for updates summary -->
-    <string name="pref_check_for_updates_summary">Kiểm tra bản cập nhật mới và cho phép bạn tải xuống nếu có.</string>
-    <!-- Settings: Select update channel title -->
+    <!-- Settings: Web features: Enable JavaScript title -->
+    <string name="pref_enable_javascript_title">JavaScript</string>
+    <!-- Settings: Web features: Enable JavaScript summary -->
+    <string name="pref_enable_javascript_summary">Bật nút này sẽ cho phép chạy các nội dung JavaScript trên web.</string>
+    <!-- Settings: Web features: Enable Cookies title -->
+    <string name="pref_enable_cookies_title">Cookies</string>
+    <!-- Settings: Web features: Enable Cookies summary -->
+    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <!-- Settings: Web features: Bussin WebX category title -->
+    <string name="pref_web_webx_category_title">Bussin WebX</string>
+    <!-- Settings: Web features: Bussin WebX category summary -->
+    <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
+    <!-- Settings: Web features: Bussin WebX API Picker title -->
+    <string name="pref_webx_picker_title">Buss API URL</string>
+    <!-- Settings: Main - Advanced: Development settings title -->
+    <string name="pref_main_development_title">Development settings</string>
+    <!-- Settings: Main - Advanced: Development settings summary -->
+    <string name="pref_main_development_summary">Advanced features for experts.</string>
+    <!-- Settings: Development: Remote debugging title -->
+    <string name="pref_remote_debugging_title">Remote debugging</string>
+    <!-- Settings: Development: Remote debugging summary -->
+    <string name="pref_remote_debugging_summary">To debug in-app WebViews, connect your device to a computer running Chromium browser and navigate to chrome://inspect.</string>
+    <!-- Settings: Development: Remote debugging summary debuggable -->
+    <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
+    <!-- Settings: Development: Console logging category -->
+    <string name="pref_development_console_logging_category">Console logging</string>
+    <!-- Settings: Development: Persistent console logging -->
+    <string name="pref_always_on_logging">Persistent logging</string>
+    <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">Chọn kênh cập nhật</string>
-    <!-- Settings: Version category -->
-    <string name="pref_main_category_version">Phiên bản</string>
-    <!-- Settings: About title -->
-    <string name="pref_about_title">Giới thiệu</string>
+    <!-- Build Info: Protocol version (optional) title -->
+    <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
+    <!-- Build Info: Protocol version (optional) summary -->
+    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">Định dạng:\n{query}: Truy vấn\n{language}: Ngôn ngữ</string>
     <!-- Settings - Wallpaper: Default -->
@@ -285,6 +369,8 @@
     <string name="dialog_update_available_release_date_message">Release date: %s</string>
     <!-- Updates: Update failed message -->
     <string name="update_download_failed">Tải bản cập nhật bị lỗi!</string>
+    <!-- Updates: Downloading update message -->
+    <string name="update_downloading">Downloading update…</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">Xóa toàn bộ các mục</string>
     <!-- Lists: Delete menu option -->
@@ -307,6 +393,8 @@
     <string name="favorites_dialog_title">Tiêu đề</string>
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">Liên kết</string>
+    <!-- Favorites: Edit dialog added on detail -->
+    <string name="favorites_dialog_added_on">Added on</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">Bạn đang định xóa toàn bộ các mục yêu thích, bạn chắc chắn chứ?</string>
     <!-- Downloads: Toast failed -->
@@ -357,28 +445,24 @@
         <item>DuckDuckGo</item>
         <item>Bing</item>
         <item>Yahoo!</item>
+        <item>AOL.com</item>
         <item>Ecosia</item>
         <item>Yandex</item>
-        <item>Tìm kiếm Brave</item>
+        <item>Brave Search</item>
         <item>Startpage</item>
-        <item>Whoogle</item>
+        <item>Presearch</item>
         <item>Swisscows</item>
         <item>Qwant</item>
         <item>Sogou</item>
         <item>360 Search</item>
         <item>FrogFind</item>
-        <item>Tùy chỉnh</item>
+        <item>Custom</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">
         <item>AdAway</item>
         <item>GoodbyeAds</item>
         <item>Unified hosts</item>
         <item>Eulaurarien First-Party Trackers</item>
-        <item>Custom</item>
-    </string-array>
-    <string-array name="themes">
-        <item>Mặc định</item>
-        <item>Sáng</item>
-        <item>Tối</item>
+        <item>Tùy chỉnh</item>
     </string-array>
 </resources>

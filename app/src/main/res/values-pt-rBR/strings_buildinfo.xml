@@ -35,6 +35,8 @@
     <string name="pref_source_code_title">"Código-fonte"</string>
     <!-- Build Info: Source code summary -->
     <string name="pref_source_code_summary">"Ver o código-fonte do Viola."</string>
-    <!-- Build Info: Build number title -->
-    <string name="buildinfo_pref_build_number_title">Número de compilação</string>
+    <!-- Build Info: Build information title -->
+    <string name="buildinfo_pref_build_info_title">Informações da versão</string>
+    <!-- Build Info: Build information summary -->
+    <string name="buildinfo_pref_build_info_summary">Etiqueta: %1$s\nRamificação (revisão): %2$s (%3$s)\nHorário: %4$s</string>
 </resources>
