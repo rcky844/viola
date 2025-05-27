@@ -82,9 +82,9 @@
     <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
     <string name="dialog_insecure_connection_continue_to_site">Continuar ao site</string>
     <!-- WebView: Open in external app snackbar message -->
-    <string name="snackbar_open_external_message">External link detected.</string>
+    <string name="snackbar_open_external_message">Link externo detectado.</string>
     <!-- WebView: Open in external app snackbar action -->
-    <string name="snackbar_open_external_action">Open</string>
+    <string name="snackbar_open_external_action">Abrir</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Pesquisar ou digite o endereço Web…</string>
     <!-- Hit Test Dialog: Copy link text -->
@@ -138,7 +138,7 @@
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">Modo de visualização</string>
     <!-- Expandable toolbar: Find in page -->
-    <string name="toolbar_expandable_find">Find in page</string>
+    <string name="toolbar_expandable_find">Encontrar na página</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">Adicionar aos Favoritos</string>
     <!-- Expandable toolbar: Translate -->
@@ -168,7 +168,7 @@
     <!-- Translate: Target language -->
     <string name="dialog_translate_target_lang">Idioma de destino (ex. en)</string>
     <!-- Fullscreen: Warning dialog title -->
-    <string name="dialog_fullscreen_title">Fullscreen mode</string>
+    <string name="dialog_fullscreen_title">Modo Tela cheia</string>
     <!-- Fullscreen: Warning dialog message -->
     <string name="dialog_fullscreen_message">You have entered fullscreen mode. Exit by double tapping the button at the right bottom corner of your screen.</string>
     <!-- Shortcuts: Browser Access -->
