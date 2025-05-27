@@ -254,13 +254,13 @@
     <!-- Settings: Privacy and security: Security category -->
     <string name="pref_ps_category_security">Security</string>
     <!-- Settings: Security: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">HTTPS erzwingen</string>
+    <string name="pref_enforce_https_title">Always use secure connections</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Besuche immer Webseiten mit HTTPS für mehr Sicherheit. (Experimentell)</string>
+    <string name="pref_enforce_https_summary">Use HTTPS whenever possible and receive a warning before loading sites that don\'t support it.</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Google Safe Browsing aktivieren</string>
+    <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Google Safe Browsing erlauben, gefährliche Websites zu blockieren.</string>
+    <string name="pref_google_safe_browsing_summary">Google Safe Browsing erlauben, schädliche Websites zu blockieren.</string>
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">Theming</string>
     <!-- Settings: Appearance: System default -->
@@ -276,7 +276,7 @@
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Passen Sie das Farbschema der Webseite an das des Browsers an.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Hintergrund für Startseite auswählen</string>
+    <string name="pref_start_page_wallpaper_title">Startseite Hintergrund</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Aktuell: %s</string>
     <!-- Settings: Appearance: User interface category -->
@@ -290,7 +290,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Elemente der Benutzeroberfläche für einfache Einhand-Nutzung verschieben.</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Pull zum Aktualisieren aktivieren</string>
+    <string name="pref_enable_swipe_refresh_title">Zum Aktualisieren ziehen</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Aktivieren von vertikal überschriebenen Inhalten ausgelöste Seitenneuladen.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -300,7 +300,7 @@
     <!-- Settings: Main - Advanced: Use Custom Tabs title -->
     <string name="pref_use_custom_tabs_title">Benutzerdefinierte Tabs verwenden</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
-    <string name="pref_use_custom_tabs_summary">App-Links immer in benutzerdefinierten Tabs öffnen, wenn sie von einer anderen Anwendung aus geöffnet werden.</string>
+    <string name="pref_use_custom_tabs_summary">Always open external links in Custom Tabs when it is opened from another application.</string>
     <!-- Settings: Main - Advanced: Data Saver title -->
     <string name="pref_send_save_data_title">Datensparmodus</string>
     <!-- Settings: Main - Advanced: Data Saver summary -->
@@ -310,11 +310,11 @@
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
     <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
-    <string name="pref_close_app_after_download_title">Schließen nach einem Download-App-Link</string>
+    <string name="pref_close_app_after_download_title">Close after downloading external links</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">Schließen Sie Viola immer, wenn der App-Link herunterladbar ist.</string>
+    <string name="pref_close_app_after_download_summary">Close the current tab after downloading an external link.</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">JavaScript aktivieren</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Aktivieren dieser Option ermöglicht das Laden von JavaScript-Webinhalten.</string>
     <!-- Settings: Web features: Enable Cookies title -->
@@ -342,7 +342,7 @@
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">Persistent logging</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Update-Kanal auswählen</string>
+    <string name="pref_update_channel_title">Update-Kanal</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
     <!-- Build Info: Protocol version (optional) summary -->
