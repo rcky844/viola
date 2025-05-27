@@ -258,9 +258,9 @@
     <!-- Settings: Security: Enforce HTTPS summary -->
     <string name="pref_enforce_https_summary">Luôn truy cập các trang web sử dụng HTTPS để tăng cường bảo mật. (Thực nghiệm)</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Bật tính năng Duyệt web an toàn của Google</string>
+    <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Cho phép tính năng Duyệt web an toàn của Google chặn các trang web mà họ cho là nguy hiểm.</string>
+    <string name="pref_google_safe_browsing_summary">Allow Google Safe Browsing to block harmful websites.</string>
     <!-- Settings: Appearance: Theming category -->
     <string name="pref_appearance_theming_category">Theming</string>
     <!-- Settings: Appearance: System default -->
@@ -276,7 +276,7 @@
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Chọn hình nền cho trang bắt đầu</string>
+    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Hiện tại: %s</string>
     <!-- Settings: Appearance: User interface category -->
@@ -290,7 +290,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Di chuyển các thành phần giao diện để sử dụng một tay dễ dàng hơn.</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Bật Kéo để Làm mới</string>
+    <string name="pref_enable_swipe_refresh_title">Kéo để làm mới</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Cho phép tải lại trang được kích hoạt bởi nội dung ghi đè theo chiều dọc.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -314,7 +314,7 @@
     <!-- Settings: Main - Advanced: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Luôn đóng Viola nếu Liên kết ứng dụng có thể tải xuống được.</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">Cho phép JavaScript</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Bật nút này sẽ cho phép chạy các nội dung JavaScript trên web.</string>
     <!-- Settings: Web features: Enable Cookies title -->
