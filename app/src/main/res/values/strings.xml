@@ -374,9 +374,9 @@
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">Update channel</string>
 
-    <!-- Build Info: Protocol information (optional) title -->
-    <string name="buildinfo_pref_protocol_info_title">Protocol information</string>
-    <!-- Build Info: Protocol information (optional) summary -->
+    <!-- Build Info: Protocol version (optional) title -->
+    <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
+    <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
 
     <!-- Settings - Search: Custom dialog message -->
@@ -486,11 +486,12 @@
         <item>DuckDuckGo</item>
         <item>Bing</item>
         <item>Yahoo!</item>
+        <item>AOL.com</item>
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Brave Search</item>
         <item>Startpage</item>
-        <item>Whoogle</item>
+        <item>Presearch</item>
         <item>Swisscows</item>
         <item>Qwant</item>
         <item>Sogou</item>

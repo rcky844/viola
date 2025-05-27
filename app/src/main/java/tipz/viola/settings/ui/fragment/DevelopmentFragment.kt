@@ -3,7 +3,6 @@
 
 package tipz.viola.settings.ui.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.preference.Preference
 import tipz.build.info.BuildInfo
@@ -12,12 +11,10 @@ import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.preference.ListPickerAlertDialog
 import tipz.viola.settings.ui.preference.MaterialSwitchPreference
+import tipz.viola.utils.TimeUtils
 import tipz.viola.utils.UpdateService
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development_title) {
-    @SuppressLint("SimpleDateFormat")
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_development, rootKey)
 
@@ -75,7 +72,7 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
                 resources.getString(R.string.buildinfo_pref_build_info_summary,
                     getProductBuildTag() ?: "",
                         productBuildBranch, productBuildGitRevision,
-                    SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").format(Date(productBuildTimestamp))
+                    TimeUtils.formatEpochMillis(productBuildTimestamp)
                 )
             }
         )

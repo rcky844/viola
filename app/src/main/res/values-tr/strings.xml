@@ -2,11 +2,23 @@
 <!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Generic: Clear -->
     <string name="clear">Temizle</string>
     <!-- Generic: Do not show again -->
     <string name="do_not_show_again">Do not show again</string>
+    <!-- Generic: Switch On -->
+    <string name="text_on">On</string>
+    <!-- Generic: Switch Off -->
+    <string name="text_off">Off</string>
+    <!-- Generic: Path -->
+    <string name="path">Path</string>
+    <!-- Generic: Path not found -->
+    <string name="path_not_found">Path not found</string>
+    <!-- Generic: Download location -->
+    <string name="download_location">Download location</string>
+    <!-- Generic: Reset -->
+    <string name="reset">Reset</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">Arama motoru</string>
     <!-- Generic - Defaults: Homepage -->
@@ -26,7 +38,7 @@
     <!-- Menus: Copy link -->
     <string name="menu_copy_link">Bağlantıyı kopyala</string>
     <!-- WebView: Start page -->
-    <string name="start_page">Başlangıç sayfası</string>
+    <string name="start_page">Sayfa Başlangıcı</string>
     <!-- WebView: No app to handle action -->
     <string name="toast_no_app_to_handle">Hiçbir uygulama bu eylemi gerçekleştiremez.</string>
     <!-- WebView: JavaScript dialog title -->
@@ -61,10 +73,18 @@
     <string name="ssl_certificate_unknown">Bilinmeyen bir SSL hatası meydana geldi.</string>
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">Failed to perform SSL handshake. Page load may still be possible by downgrading to HTTP.</string>
-    <!-- WebView: App link detected dialog title -->
-    <string name="dialog_open_external_title">Başlatılabilir Uygulama Bağlantısı algılandı</string>
-    <!-- WebView: App link detected dialog message -->
-    <string name="dialog_open_external_message">Bu bağlantıyı harici bir uygulamada açmak ister misiniz?</string>
+    <!-- WebView: Insecure HTTP connection dialog title -->
+    <string name="dialog_insecure_connection_title">Insecure connection</string>
+    <!-- WebView: Insecure HTTP connection dialog message -->
+    <string name="dialog_insecure_connection_message">You are seeing this warning because the site %s does not support HTTPS.</string>
+    <!-- WebView: Insecure HTTP connection dialog - Go back -->
+    <string name="dialog_insecure_connection_go_back">Go back</string>
+    <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
+    <string name="dialog_insecure_connection_continue_to_site">Continue to site</string>
+    <!-- WebView: Open in external app snackbar message -->
+    <string name="snackbar_open_external_message">External link detected.</string>
+    <!-- WebView: Open in external app snackbar action -->
+    <string name="snackbar_open_external_action">Open</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Arayın ya da adres girin…</string>
     <!-- Hit Test Dialog: Copy link text -->
@@ -108,7 +128,7 @@
     <!-- HTTP Authentication Dialog: Password -->
     <string name="dialog_auth_password">Password</string>
     <!-- Toolbar: Share dialog title -->
-    <string name="dialog_share_title">URL\'yi şununla paylaş:</string>
+    <string name="dialog_share_title">URL\'yi şununla paylaş</string>
     <!-- Expandable toolbar: New Tab -->
     <string name="toolbar_expandable_new_tab">Yeni sekme</string>
     <!-- Expandable toolbar: Favorites -->
@@ -117,6 +137,8 @@
     <string name="toolbar_expandable_history">Tarih</string>
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">Görüntüleme modu</string>
+    <!-- Expandable toolbar: Find in page -->
+    <string name="toolbar_expandable_find">Find in page</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">Favorilere ekle</string>
     <!-- Expandable toolbar: Translate -->
@@ -161,108 +183,170 @@
     <string name="console_toast_enabled">Console logging has been enabled!</string>
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">Disable</string>
+    <!-- Console: No logs -->
+    <string name="console_logging_none">No logs</string>
     <!-- Settings: Title -->
     <string name="settings_title">Ayarlar</string>
-    <!-- Settings: General category -->
-    <string name="pref_category_general">Genel</string>
-    <!-- Settings: Use web-based homepage title -->
+    <!-- Settings: Main: Basics category -->
+    <string name="pref_main_category_basics">Basics</string>
+    <!-- Settings: Main: Home title -->
+    <string name="pref_main_home">Home</string>
+    <!-- Settings: Main: Search title -->
+    <string name="pref_main_search">Search</string>
+    <!-- Settings: Main: Privacy and security title -->
+    <string name="pref_main_privacy_security">Privacy and security</string>
+    <!-- Settings: Main: Appearance title -->
+    <string name="pref_main_appearance">Appearance</string>
+    <!-- Settings: Main: Advanced category -->
+    <string name="pref_main_category_advanced">Gelişmiş</string>
+    <!-- Expandable toolbar: Downloads -->
+    <string name="pref_main_downloads">Downloads</string>
+    <!-- Expandable toolbar: Web features -->
+    <string name="pref_main_web_features">Web features</string>
+    <!-- Settings: Main: Updates and version category -->
+    <string name="pref_main_category_updates_version">Updates and version</string>
+    <!-- Settings: Main: Check for updates title -->
+    <string name="pref_check_for_updates_title">Güncellemeleri denetle</string>
+    <!-- Settings: Main: Check for updates summary -->
+    <string name="pref_check_for_updates_summary">Yeni güncellemeyi kontrol edin ve varsa indirmenize izin verin.</string>
+    <!-- Settings: Main: About title -->
+    <string name="pref_about_title">Hakkında</string>
+    <!-- Settings: Search: Default Search Engine category title -->
+    <string name="pref_search_category_engine_title">Default search engine</string>
+    <!-- Settings: Search: Default Search Engine category summary -->
+    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
+    <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">Web tabanlı ana sayfayı kullanın</string>
-    <!-- Settings: Use web-based homepage summary -->
+    <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">Ana sayfa olarak başlangıç sayfası yerine bir web sayfası açın.</string>
-    <!-- Settings: Data & Privacy category -->
-    <string name="pref_category_data_privacy">Veri &amp; Gizlilik</string>
-    <!-- Settings: Enable ad blocker title -->
-    <string name="pref_ad_blocker_title">Reklam engelleyiciyi etkinleştir</string>
-    <!-- Settings: Enable ad blocker summary -->
+    <!-- Settings: Search: Search Suggestions category summary -->
+    <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
+    <!-- Settings: Search: Search Suggestions Provider title -->
+    <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
+    <!-- Settings: Privacy and security: Ad blocking category title -->
+    <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
+    <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">Reklamların rahatsızlık vermesini engeller.</string>
-    <!-- Settings: Ad Blocklist source title -->
+    <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
-    <!-- Settings: Download ad blocker hosts title -->
+    <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
-    <!-- Settings: Do Not Track title -->
+    <!-- Settings: Privacy and security: Privacy category -->
+    <string name="pref_ps_category_privacy">Privacy</string>
+    <!-- Settings: Privacy: Do Not Track title -->
     <string name="pref_do_not_track_title">İzlemeyi Durdur (Do Not Track)</string>
-    <!-- Settings: Do Not Track summary -->
+    <!-- Settings: Privacy: Do Not Track summary -->
     <string name="pref_do_not_track_summary">Girdiğiniz sitelere İzlemeyi Durdurma talebi gönderir.</string>
-    <!-- Settings: Send GPC title -->
+    <!-- Settings: Privacy: Send GPC title -->
     <string name="pref_send_sec_gpc_title">Genel Gizlilik Denetimi</string>
-    <!-- Settings: Send GPC summary -->
+    <!-- Settings: Privacy: Send GPC summary -->
     <string name="pref_send_sec_gpc_summary">Kişisel bilgilerinizin ziyaret ettiğiniz web sitelerinde satılmasına veya üçüncü taraflarla paylaşılmasına izin verin </string>
-    <!-- Settings: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">HTTPS\'yi zorunlu kılma</string>
-    <!-- Settings: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Daha fazla güvenlik için her zaman HTTPS kullanan web sitelerini ziyaret edin. (Deneysel)</string>
-    <!-- Settings: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Google\'ın Güvenli Taramasını Etkinleştirme</string>
-    <!-- Settings: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Google\'ın Güvenli Tarama\'sının tehlikeli bulduğu web sitelerini engellemesine izin verin.</string>
-    <!-- Settings: Enable history storage title -->
+    <!-- Settings: Privacy: Enable history storage title -->
     <string name="pref_enable_history_title">Use history storage</string>
-    <!-- Settings: Enable history storage summary -->
+    <!-- Settings: Privacy: Enable history storage summary -->
     <string name="pref_enable_history_summary">Preserve the history of webpages visited.</string>
-    <!-- Settings: Clear browsing data title -->
+    <!-- Settings: Privacy: Clear browsing data title -->
     <string name="pref_clear_browsing_data">Clear browsing data</string>
-    <!-- Settings: Reset to default title -->
+    <!-- Settings: Privacy: Reset to default title -->
     <string name="pref_reset_to_default_title">Varsayılanlara sıfırla</string>
-    <!-- Settings: Reset to default summary -->
+    <!-- Settings: Privacy: Reset to default summary -->
     <string name="pref_reset_to_default_summary">Tüm tarayıcı verisini sil.</string>
-    <!-- Settings: Visuals category -->
-    <string name="pref_category_visuals">Görsel</string>
-    <!-- Settings: Theme title -->
+    <!-- Settings: Privacy and security: Security category -->
+    <string name="pref_ps_category_security">Security</string>
+    <!-- Settings: Security: Enforce HTTPS title -->
+    <string name="pref_enforce_https_title">Always use secure connections</string>
+    <!-- Settings: Security: Enforce HTTPS summary -->
+    <string name="pref_enforce_https_summary">Use HTTPS whenever possible and receive a warning before loading sites that don\'t support it.</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing title -->
+    <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing summary -->
+    <string name="pref_google_safe_browsing_summary">Allow Google Safe Browsing to block harmful websites.</string>
+    <!-- Settings: Appearance: Theming category -->
+    <string name="pref_appearance_theming_category">Theming</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_system_default">Automatic</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_light">Açık</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_dark">Koyu</string>
+    <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">Tema</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Başlangıç sayfası için bir duvar kağıdı seçin</string>
+    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Güncel: %s</string>
-    <!-- Settings: Show favicon title -->
+    <!-- Settings: Appearance: User interface category -->
+    <string name="pref_appearance_ui_category">User interface</string>
+    <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">Web sitesi simgesini göster</string>
-    <!-- Settings: Show favicon summary -->
+    <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">Adres çubuğu yanında web sitesinin simgesini gösterir.</string>
-    <!-- Settings: Reach mode title -->
+    <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">Ters Düzen</string>
-    <!-- Settings: Reach mode summary -->
+    <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Tarayıcı düzenini baş aşağı çevirin. (Yeniden başlatma gereklidir)</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Yenilemek için Çekmeyi Etkinleştir</string>
+    <string name="pref_enable_swipe_refresh_title">Yenilemek için Çek</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Dikey olarak aşırı kaydırılan içerik tarafından tetiklenen sayfa yeniden yüklemelerini etkinleştirin.</string>
-    <!-- Settings: Update Recents icons and labels title -->
+    <!-- Settings: Appearance: Update Recents icons and labels title -->
     <string name="pref_update_recents_icon_title">Son Kullanılanlar\'daki sekmelerin simgesini ve etiketini güncelleme</string>
-    <!-- Settings: Update Recents icons and labels summary -->
+    <!-- Settings: Appearance: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">Son Kullanılanlar\'daki sekmelerin simgesini ve etiketini otomatik olarak web sayfasınınkiyle güncelleştirin.</string>
-    <!-- Settings: Advanced category -->
-    <string name="pref_main_category_advanced">Gelişmiş</string>
-    <!-- Settings: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">JavaScript\'i etkinleştir</string>
-    <!-- Settings: Enable JavaScript summary -->
-    <string name="pref_enable_javascript_summary">Bunu etkinleştirmek JavaScript web içeriğinin yüklenmesine izin verecektir.</string>
-    <!-- Settings: Use Custom Tabs title -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs title -->
     <string name="pref_use_custom_tabs_title">Özel Sekmeleri Kullanma</string>
-    <!-- Settings: Use Custom Tabs summary -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Uygulama Bağlantıları\'nı başka bir uygulamadan açıldığında her zaman Özel Sekmeler\'de açın.</string>
-    <!-- Settings: Data Saver title -->
+    <!-- Settings: Main - Advanced: Data Saver title -->
     <string name="pref_send_save_data_title">Veri kaydetme</string>
-    <!-- Settings: Data Saver summary -->
+    <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">Desteklenen web sitelerine veri kaydetme isteği gönderir </string>
-    <!-- Settings: Close app after download title -->
+    <!-- Settings: Downloads: Show download confirmation dialog title -->
+    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <!-- Settings: Downloads: Show download confirmation dialog summary -->
+    <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
+    <!-- Settings: Main - Advanced: Close app after download title -->
     <string name="pref_close_app_after_download_title">İndirilebilir bir Uygulama Bağlantısından sonra kapatın</string>
-    <!-- Settings: Close app after download summary -->
+    <!-- Settings: Main - Advanced: Close app after download summary -->
     <string name="pref_close_app_after_download_summary">Uygulama Bağlantısı indirilebilirse her zaman Viola\'yu kapatın.</string>
-    <!-- Settings: Software updates category -->
-    <string name="pref_main_category_software_updates">Yazılım güncellemeleri</string>
-    <!-- Settings: Check for updates title -->
-    <string name="pref_check_for_updates_title">Güncellemeleri denetle</string>
-    <!-- Settings: Check for updates summary -->
-    <string name="pref_check_for_updates_summary">Yeni güncellemeyi kontrol edin ve varsa indirmenize izin verin.</string>
-    <!-- Settings: Select update channel title -->
-    <string name="pref_update_channel_title">Güncelleme kanalını seçin</string>
-    <!-- Settings: Version category -->
-    <string name="pref_main_category_version">Sürüm</string>
-    <!-- Settings: About title -->
-    <string name="pref_about_title">Hakkında</string>
+    <!-- Settings: Web features: Enable JavaScript title -->
+    <string name="pref_enable_javascript_title">JavaScript</string>
+    <!-- Settings: Web features: Enable JavaScript summary -->
+    <string name="pref_enable_javascript_summary">Bunu etkinleştirmek JavaScript web içeriğinin yüklenmesine izin verecektir.</string>
+    <!-- Settings: Web features: Enable Cookies title -->
+    <string name="pref_enable_cookies_title">Cookies</string>
+    <!-- Settings: Web features: Enable Cookies summary -->
+    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <!-- Settings: Web features: Bussin WebX category title -->
+    <string name="pref_web_webx_category_title">Bussin WebX</string>
+    <!-- Settings: Web features: Bussin WebX category summary -->
+    <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
+    <!-- Settings: Web features: Bussin WebX API Picker title -->
+    <string name="pref_webx_picker_title">Buss API URL</string>
+    <!-- Settings: Main - Advanced: Development settings title -->
+    <string name="pref_main_development_title">Development settings</string>
+    <!-- Settings: Main - Advanced: Development settings summary -->
+    <string name="pref_main_development_summary">Advanced features for experts.</string>
+    <!-- Settings: Development: Remote debugging title -->
+    <string name="pref_remote_debugging_title">Remote debugging</string>
+    <!-- Settings: Development: Remote debugging summary -->
+    <string name="pref_remote_debugging_summary">To debug in-app WebViews, connect your device to a computer running Chromium browser and navigate to chrome://inspect.</string>
+    <!-- Settings: Development: Remote debugging summary debuggable -->
+    <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
+    <!-- Settings: Development: Console logging category -->
+    <string name="pref_development_console_logging_category">Console logging</string>
+    <!-- Settings: Development: Persistent console logging -->
+    <string name="pref_always_on_logging">Persistent logging</string>
+    <!-- Settings: Main: Select update channel title -->
+    <string name="pref_update_channel_title">Kanalı Güncelle</string>
+    <!-- Build Info: Protocol version (optional) title -->
+    <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
+    <!-- Build Info: Protocol version (optional) summary -->
+    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">Biçim:\n{query}: Sorgu\n{language}: Dil</string>
     <!-- Settings - Wallpaper: Default -->
@@ -285,6 +369,8 @@
     <string name="dialog_update_available_release_date_message">Release date: %s</string>
     <!-- Updates: Update failed message -->
     <string name="update_download_failed">Güncelleme indirilirken hata!</string>
+    <!-- Updates: Downloading update message -->
+    <string name="update_downloading">Downloading update…</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">Tüm girişleri sil</string>
     <!-- Lists: Delete menu option -->
@@ -307,6 +393,8 @@
     <string name="favorites_dialog_title">Başlık</string>
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">Bağlantı</string>
+    <!-- Favorites: Edit dialog added on detail -->
+    <string name="favorites_dialog_added_on">Added on</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">Tüm sık kullanılanları silmek üzeresiniz. Devam etmek istiyor musunuz?</string>
     <!-- Downloads: Toast failed -->
@@ -357,28 +445,24 @@
         <item>DuckDuckGo</item>
         <item>Bing</item>
         <item>Yahoo!</item>
+        <item>AOL.com</item>
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Brave Search</item>
         <item>Startpage</item>
-        <item>Whoogle</item>
+        <item>Presearch</item>
         <item>Swisscows</item>
         <item>Qwant</item>
         <item>Sogou</item>
         <item>360 Search</item>
         <item>FrogFind</item>
-        <item>Özel</item>
+        <item>Custom</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">
         <item>AdAway</item>
         <item>GoodbyeAds</item>
         <item>Unified hosts</item>
         <item>Eulaurarien First-Party Trackers</item>
-        <item>Custom</item>
-    </string-array>
-    <string-array name="themes">
-        <item>Sistem Varsayılanı</item>
-        <item>Açık</item>
-        <item>Koyu</item>
+        <item>Özel</item>
     </string-array>
 </resources>

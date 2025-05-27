@@ -36,6 +36,12 @@ open class BrohaClient(context: Context?, dbName: String?) {
         return listOf() // Stub!
     }
 
+    suspend fun getById(id: Int): Broha? {
+        if (brohaEnabled)
+            return dao!!.getById(id)
+        return null // Not found!
+    }
+
     suspend fun deleteById(id: Int) {
         if (brohaEnabled)
             dao!!.deleteById(id)
@@ -56,6 +62,9 @@ interface BrohaDao {
 
     @Query("SELECT * FROM broha")
     suspend fun getAll(): List<Broha>
+
+    @Query("SELECT * FROM broha WHERE id LIKE :id LIMIT 1")
+    suspend fun getById(id: Int): Broha
 
     @Query("DELETE FROM broha WHERE id = :id")
     suspend fun deleteById(id: Int)

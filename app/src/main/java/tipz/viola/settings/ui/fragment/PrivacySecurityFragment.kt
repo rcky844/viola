@@ -11,18 +11,16 @@ import androidx.appcompat.app.AppCompatActivity.ACTIVITY_SERVICE
 import androidx.preference.Preference
 import tipz.viola.R
 import tipz.viola.ext.showMessage
-import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.ui.preference.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.settings.ui.preference.ListPickerAlertDialog
 import tipz.viola.settings.ui.preference.MaterialDialogPreference
+import tipz.viola.settings.ui.preference.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.webview.VWebStorage
 import java.io.IOException
 
 class PrivacySecurityFragment : ExtPreferenceFragment(R.string.pref_main_privacy_security) {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_privacy_security, rootKey)
-
 
         val adBlockerHostsEntries =
             settingsActivity.resources.getStringArray(R.array.ad_blocker_hosts_entries)
@@ -35,7 +33,7 @@ class PrivacySecurityFragment : ExtPreferenceFragment(R.string.pref_main_privacy
                     stringPreference = SettingsKeys.adServerUrl
                     dialogTitleResId = R.string.pref_ad_blocker_source_title
                     customIndexEnabled = true
-                    customIndex = SearchEngineEntries.customIndex
+                    customIndex = adBlockerHostsEntries.size - 1
                 }
 
                 ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)

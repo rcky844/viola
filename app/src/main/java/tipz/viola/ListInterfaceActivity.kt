@@ -3,10 +3,8 @@
 
 package tipz.viola
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -18,6 +16,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -38,17 +37,16 @@ import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
-import tipz.viola.download.DownloadActivity.ItemsAdapter.EmptyViewHolder
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.utils.TimeUtils
 import tipz.viola.webview.activity.BaseActivity
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
 
 class ListInterfaceActivity : BaseActivity() {
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+
     private lateinit var binding: ActivityRecyclerDataListBinding
 
     lateinit var favClient: FavClient
@@ -57,7 +55,7 @@ class ListInterfaceActivity : BaseActivity() {
     lateinit var fab: FloatingActionButton
 
     fun updateListData(callback: () -> Any) {
-        CoroutineScope(Dispatchers.IO).launch {
+        ioScope.launch {
             listData =
                 (if (activityMode == mode_history) historyClient.getAll()
                 else favClient.getAll()).toMutableList()
@@ -119,7 +117,7 @@ class ListInterfaceActivity : BaseActivity() {
                     else R.string.dialog_delete_all_entries_favorites_message
                 )
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    CoroutineScope(Dispatchers.IO).launch {
+                    ioScope.launch {
                         if (activityMode == mode_history) historyClient.deleteAll()
                         else if (activityMode == mode_favorites) favClient.deleteAll()
                     }
@@ -186,7 +184,6 @@ class ListInterfaceActivity : BaseActivity() {
                     LayoutInflater.from(parent.context), parent, false))
             }
 
-        @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (listData.isEmpty()) {
                 if (holder is EmptyViewHolder) holder.text.setText(
@@ -195,125 +192,123 @@ class ListInterfaceActivity : BaseActivity() {
                 )
                 return
             }
+            if (holder !is ListViewHolder) return
 
-            if (holder is ListViewHolder) {
-                val iconHashClient = mIconHashClient
-                val data = listData[position]
-                val title = data.title
-                val url = data.url
-                var icon: Bitmap?
+            val iconHashClient = mIconHashClient
+            val data = listData[position]
+            val title = data.title
+            val url = data.url
+            var icon: Bitmap?
 
-                if (data.iconHash != null) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        icon = iconHashClient.read(data.iconHash)
-                        if (icon != null)
-                            MainScope().launch { holder.icon.setImageBitmap(icon) }
-                    }
-                } else {
-                    holder.icon.setImageResource(R.drawable.default_favicon)
+            if (data.iconHash != null) {
+                activity.ioScope.launch {
+                    icon = iconHashClient.read(data.iconHash)
+                    if (icon != null)
+                        MainScope().launch { holder.icon.setImageBitmap(icon) }
                 }
+            } else {
+                holder.icon.setImageResource(R.drawable.default_favicon)
+            }
 
-                holder.title.text = title ?: url
-                holder.url.text = Uri.parse(url ?: "").host
+            holder.title.text = title ?: url
+            holder.url.text = url.takeUnless { it == null }?.toUri()?.host ?: ""
+            if (activityMode == mode_history) {
+                holder.time.text = TimeUtils.formatEpochMillis(
+                    epochMillis = data.timestamp,
+                    formatStyle = "dd/MM\nHH:ss"
+                )
+            }
+            holder.back.setOnClickListener {
+                val needLoad = Intent()
+                needLoad.putExtra(SettingsKeys.needLoadUrl, url)
+                activity.setResult(0, needLoad)
+                activity.finish()
+            }
+            holder.back.setOnLongClickListener { view ->
+                val popup = PopupMenu(
+                    activity, view!!
+                )
+                val menu = popup.menu
                 if (activityMode == mode_history) {
-                    val date = Calendar.getInstance()
-                    date.timeInMillis = data.timestamp
-                    holder.time.text = SimpleDateFormat("dd/MM\nHH:ss").format(date.time)
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.ADD_TO_FAVORITES)
+                } else if (activityMode == mode_favorites) {
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.EDIT)
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
+                    PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
                 }
-                holder.back.setOnClickListener {
-                    val needLoad = Intent()
-                    needLoad.putExtra(SettingsKeys.needLoadUrl, url)
-                    activity.setResult(0, needLoad)
-                    activity.finish()
-                }
-                holder.back.setOnLongClickListener { view ->
-                    val popup = PopupMenu(
-                        activity, view!!
-                    )
-                    val menu = popup.menu
-                    if (activityMode == mode_history) {
-                        PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
-                        PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
-                        PopupMenuMap.addMenu(menu, PopupMenuMap.ADD_TO_FAVORITES)
-                    } else if (activityMode == mode_favorites) {
-                        PopupMenuMap.addMenu(menu, PopupMenuMap.EDIT)
-                        PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
-                        PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
-                    }
-                    popup.setOnMenuItemClickListener { item: MenuItem ->
-                        when (item.itemId) {
-                            PopupMenuMap.DELETE.itemId -> {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    if (activityMode == mode_history)
-                                        activity.historyClient.deleteById(data.id)
-                                    else if (activityMode == mode_favorites)
-                                        activity.favClient.deleteById(data.id)
-                                }
-                                listData.removeAt(position)
-                                notifyItemRemoved(position)
-                                notifyItemRangeRemoved(position, itemCount - position)
+                popup.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        PopupMenuMap.DELETE.itemId -> {
+                            activity.ioScope.launch {
+                                if (activityMode == mode_history)
+                                    activity.historyClient.deleteById(data.id)
+                                else if (activityMode == mode_favorites)
+                                    activity.favClient.deleteById(data.id)
                             }
-                            PopupMenuMap.EDIT.itemId -> {
-                                val binding: DialogFavEditBinding =
-                                    DialogFavEditBinding.inflate(activity.layoutInflater)
-                                val editView = binding.root
+                            listData.removeAt(position)
+                            notifyItemRemoved(position)
+                            notifyItemRangeRemoved(position, itemCount - position)
+                        }
+                        PopupMenuMap.EDIT.itemId -> {
+                            val binding: DialogFavEditBinding =
+                                DialogFavEditBinding.inflate(activity.layoutInflater)
+                            val editView = binding.root
 
-                                val titleEditText = binding.titleEditText
-                                val urlEditText = binding.favUrlEditText
-                                val propertyDisplay = binding.propertyDisplay
-                                titleEditText.setText(title)
-                                urlEditText.setText(url)
-                                propertyDisplay.property = arrayListOf(
-                                    arrayOf(R.string.favorites_dialog_added_on,
-                                        SimpleDateFormat("E MMM dd HH:mm:ss z yyyy")
-                                            .format(Date(data.timestamp))
-                                    )
+                            val titleEditText = binding.titleEditText
+                            val urlEditText = binding.favUrlEditText
+                            val propertyDisplay = binding.propertyDisplay
+                            titleEditText.setText(title)
+                            urlEditText.setText(url)
+                            propertyDisplay.property = arrayListOf(
+                                arrayOf(R.string.favorites_dialog_added_on,
+                                    TimeUtils.formatEpochMillis(data.timestamp)
                                 )
+                            )
 
-                                MaterialAlertDialogBuilder(activity)
-                                    .setTitle(R.string.favorites_menu_edit)
-                                    .setView(editView)
-                                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                                        val sTitle = titleEditText.text.toString()
-                                        val sUrl = urlEditText.text.toString()
-                                        if (sTitle != title || sUrl != url) {
-                                            data.title = sTitle
-                                            data.url = sUrl
-                                            CoroutineScope(Dispatchers.IO).launch {
-                                                activity.favClient.update(data)
-                                                // FIXME: Update list dynamically to save system resources
-                                                listData = activity.favClient.getAll().toMutableList()
-                                                MainScope().launch {
-                                                    notifyItemRangeRemoved(position, 1)
-                                                }
-                                            }
+                            MaterialAlertDialogBuilder(activity)
+                                .setTitle(R.string.favorites_menu_edit)
+                                .setView(editView)
+                                .setPositiveButton(android.R.string.ok) { _, _ ->
+                                    val sTitle = titleEditText.text.toString()
+                                    val sUrl = urlEditText.text.toString()
+                                    if (sTitle == title && sUrl == url) return@setPositiveButton
+
+                                    data.title = sTitle
+                                    data.url = sUrl
+                                    activity.ioScope.launch {
+                                        activity.favClient.update(data)
+                                        listData[position] = activity.favClient.getById(data.id)!!
+                                        MainScope().launch {
+                                            notifyItemRangeRemoved(position, 1)
                                         }
                                     }
-                                    .setNegativeButton(android.R.string.cancel, null)
-                                    .setIcon(holder.icon.drawable)
-                                    .create().show()
-                            }
-                            PopupMenuMap.COPY_URL.itemId -> {
-                                activity.copyClipboard(url)
-                            }
-                            PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    activity.favClient.insert(
-                                        Broha(data.iconHash, title, url!!)
-                                    )
                                 }
-                                activity.showMessage(R.string.save_successful)
-                            }
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setIcon(holder.icon.drawable)
+                                .create().show()
                         }
-                        true
+                        PopupMenuMap.COPY_URL.itemId -> {
+                            activity.copyClipboard(url)
+                        }
+                        PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
+                            activity.ioScope.launch {
+                                activity.favClient.insert(
+                                    Broha(data.iconHash, title, url!!)
+                                )
+                            }
+                            activity.showMessage(R.string.save_successful)
+                        }
                     }
-                    popup.show()
                     true
                 }
-
-                // Set tint to none
-                ImageViewCompat.setImageTintList(holder.icon, null)
+                popup.show()
+                true
             }
+
+            // Set tint to none
+            ImageViewCompat.setImageTintList(holder.icon, null)
         }
 
         override fun getItemCount(): Int {

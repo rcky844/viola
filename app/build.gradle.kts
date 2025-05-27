@@ -59,6 +59,7 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
 
+        multiDexEnabled = true
         resourceConfigurations += listOf("ar", "bn", "de", "en-rGB", "es-rES", "fr", "hi",
             "pt-rBR", "ru", "tr", "vi", "zh-rCN", "zh-rTW")
     }
@@ -89,7 +90,6 @@ android {
         // Debug internal
         getByName("debug") {
             applicationIdSuffix = ".debug"
-            multiDexEnabled = true
 
             buildConfigField("String", "VERSION_BUILD_TYPE", "\"debug\"")
             buildConfigField("String", "VERSION_BUILD_ID", "null")
@@ -133,6 +133,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -167,6 +168,7 @@ dependencies {
 
     // Others
     implementation("cat.ereza:customactivityoncrash:2.3.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
     // For compatibility
     // Modern dependencies

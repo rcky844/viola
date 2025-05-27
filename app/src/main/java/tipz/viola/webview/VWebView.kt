@@ -680,7 +680,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         if (useStartPage) {
             loadRealUrl(ProjectUrls.actualStartUrl)
         } else {
-            loadUrl(SearchEngineEntries.getPreferredHomePageUrl(settingsPreference))
+            loadUrl(SearchEngineEntries.getPreferredUrl(
+                settingsPreference, SearchEngineEntries.EngineInfoType.HOMEPAGE))
         }
     }
 

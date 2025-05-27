@@ -15,6 +15,7 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -50,6 +51,8 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import tipz.viola.LauncherActivity
 import tipz.viola.ListInterfaceActivity
 import tipz.viola.R
@@ -66,6 +69,7 @@ import tipz.viola.ext.dpToPx
 import tipz.viola.ext.getMinTouchTargetSize
 import tipz.viola.ext.getOnSurfaceColor
 import tipz.viola.ext.getSelectableItemBackground
+import tipz.viola.ext.setMaterialDialogViewPadding
 import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
@@ -226,7 +230,7 @@ class BrowserActivity : VWebViewActivity() {
                     setText(R.string.ssl_info_dialog_content_nocert)
                 }
             }
-            messageView.setPadding(dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
+            messageView.setMaterialDialogViewPadding()
 
             PopupMaterialAlertDialogBuilder(this, Gravity.TOP)
                 .setCustomTitle(titleView)
@@ -488,7 +492,11 @@ class BrowserActivity : VWebViewActivity() {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
-                    favClient.insert(Broha(iconHash, title, webview.url))
+                    val url = runBlocking {
+                        withContext(Dispatchers.Main) { webview.url }
+                    }
+
+                    favClient.insert(Broha(iconHash, title, url))
                 }
                 showMessage(R.string.save_successful)
             }
@@ -578,7 +586,6 @@ class BrowserActivity : VWebViewActivity() {
         return true // Close ToolBar if not interrupted
     }
 
-    @SuppressLint("RestrictedApi")
     fun itemLongSelected(view: AppCompatImageView?, @DrawableRes item: Int) {
         when (item) {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
@@ -695,7 +702,9 @@ class BrowserActivity : VWebViewActivity() {
                             addView(scrollView)
                             addView(editText)
                             addView(sendButton)
-                        }, dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
+
+                            setMaterialDialogViewPadding()
+                        })
                         .setPositiveButton(android.R.string.ok, null)
                         .setNeutralButton(R.string.clear) { _, _ -> webview.consoleMessages.clear() }
                         .setNegativeButton(R.string.console_logging_disable) { _, _ -> webview.consoleLogging = false }
@@ -758,30 +767,31 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     override fun onSslCertificateUpdated() {
-        // Startpage
-        if (webview.getRealUrl() == ProjectUrls.actualStartUrl) {
+        // Handle special cases
+        if (webview.getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
             sslState = SslState.SEARCH
-            sslLock.setImageResource(R.drawable.search)
-            return
-        }
-
-        // All the other pages
-        if (webview.certificate == null) {
+        else if (webview.certificate == null) // Mo certificates (HTTP)
             sslState = SslState.NONE
-            sslLock.setImageResource(R.drawable.warning)
-        } else if (sslState == SslState.ERROR) { // State error is set before SECURE
-            sslErrorHost = webview.url.toUri().host!!
-            sslState = SslState.NONE
-        } else {
+        else if (sslState != SslState.ERROR)
             sslState = SslState.SECURE
-            sslLock.setImageResource(R.drawable.lock)
+
+        // Handle individual SSL states
+        when (sslState) {
+            SslState.NONE -> sslLock.setImageResource(R.drawable.warning)
+            SslState.SECURE -> sslLock.setImageResource(R.drawable.lock)
+            SslState.ERROR -> {
+                sslLock.setImageResource(R.drawable.warning)
+                sslErrorHost = webview.url.toUri().host!!
+            }
+            SslState.SEARCH -> sslLock.setImageResource(R.drawable.search)
+            else -> {
+                Log.w(LOG_TAG, "onSslCertificateUpdated(): Unsupported SslState $sslState")
+            }
         }
     }
 
     override fun onSslErrorProceed() {
         sslState = SslState.ERROR
-        sslLock.setImageResource(R.drawable.warning)
-        sslLock.isClickable = true
     }
 
     override fun onFaviconUpdated(icon: Bitmap?) {
@@ -810,5 +820,9 @@ class BrowserActivity : VWebViewActivity() {
     class ViewVisibility {
         lateinit var view: View
         var isEnabledCallback: () -> Boolean = { true }
+    }
+
+    companion object {
+        const val LOG_TAG = "BrowserActivity"
     }
 }

@@ -2,11 +2,23 @@
 <!-- Copyright (c) 2020-2025 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Generic: Clear -->
     <string name="clear">清除</string>
     <!-- Generic: Do not show again -->
     <string name="do_not_show_again">不再提示</string>
+    <!-- Generic: Switch On -->
+    <string name="text_on">开启</string>
+    <!-- Generic: Switch Off -->
+    <string name="text_off">关闭</string>
+    <!-- Generic: Path -->
+    <string name="path">路径</string>
+    <!-- Generic: Path not found -->
+    <string name="path_not_found">路径不存在</string>
+    <!-- Generic: Download location -->
+    <string name="download_location">下载位置</string>
+    <!-- Generic: Reset -->
+    <string name="reset">重置</string>
     <!-- Generic - Defaults: Search engine -->
     <string name="search_engine">搜索引擎</string>
     <!-- Generic - Defaults: Homepage -->
@@ -61,10 +73,18 @@
     <string name="ssl_certificate_unknown">发生未知SSL错误。</string>
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">无法进行SSL握手，惟降级到HTTP有可能可以载入页面。</string>
-    <!-- WebView: App link detected dialog title -->
-    <string name="dialog_open_external_title">检测到可启动的 App Link</string>
-    <!-- WebView: App link detected dialog message -->
-    <string name="dialog_open_external_message">您想在外部应用程序中打开此 App Link 吗？</string>
+    <!-- WebView: Insecure HTTP connection dialog title -->
+    <string name="dialog_insecure_connection_title">连接不安全</string>
+    <!-- WebView: Insecure HTTP connection dialog message -->
+    <string name="dialog_insecure_connection_message">您看到此警告是因为 %s 不支持 HTTPS。</string>
+    <!-- WebView: Insecure HTTP connection dialog - Go back -->
+    <string name="dialog_insecure_connection_go_back">返回</string>
+    <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
+    <string name="dialog_insecure_connection_continue_to_site">继续访问网站</string>
+    <!-- WebView: Open in external app snackbar message -->
+    <string name="snackbar_open_external_message">检测到外部链接</string>
+    <!-- WebView: Open in external app snackbar action -->
+    <string name="snackbar_open_external_action">打开</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">搜索或输入网址…</string>
     <!-- Hit Test Dialog: Copy link text -->
@@ -117,6 +137,8 @@
     <string name="toolbar_expandable_history">历史记录</string>
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">浏览模式</string>
+    <!-- Expandable toolbar: Find in page -->
+    <string name="toolbar_expandable_find">查找页面</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">添加到收藏夹</string>
     <!-- Expandable toolbar: Translate -->
@@ -161,53 +183,93 @@
     <string name="console_toast_enabled">控制台日志已启用！</string>
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">停用</string>
+    <!-- Console: No logs -->
+    <string name="console_logging_none">没有日志</string>
     <!-- Settings: Title -->
     <string name="settings_title">设置</string>
-    <!-- Settings: General category -->
-    <string name="pref_category_general">常用</string>
-    <!-- Settings: Use web-based homepage title -->
+    <!-- Settings: Main: Basics category -->
+    <string name="pref_main_category_basics">基础</string>
+    <!-- Settings: Main: Home title -->
+    <string name="pref_main_home">首页</string>
+    <!-- Settings: Main: Search title -->
+    <string name="pref_main_search">搜索</string>
+    <!-- Settings: Main: Privacy and security title -->
+    <string name="pref_main_privacy_security">隐私与安全</string>
+    <!-- Settings: Main: Appearance title -->
+    <string name="pref_main_appearance">界面</string>
+    <!-- Settings: Main: Advanced category -->
+    <string name="pref_main_category_advanced">进阶</string>
+    <!-- Expandable toolbar: Downloads -->
+    <string name="pref_main_downloads">下载</string>
+    <!-- Expandable toolbar: Web features -->
+    <string name="pref_main_web_features">网页功能</string>
+    <!-- Settings: Main: Updates and version category -->
+    <string name="pref_main_category_updates_version">更新与版本</string>
+    <!-- Settings: Main: Check for updates title -->
+    <string name="pref_check_for_updates_title">检查更新</string>
+    <!-- Settings: Main: Check for updates summary -->
+    <string name="pref_check_for_updates_summary">检查是否有新更新，如果有可用则下载。</string>
+    <!-- Settings: Main: About title -->
+    <string name="pref_about_title">关于</string>
+    <!-- Settings: Search: Default Search Engine category title -->
+    <string name="pref_search_category_engine_title">默认搜索引擎</string>
+    <!-- Settings: Search: Default Search Engine category summary -->
+    <string name="pref_search_category_engine_summary">这是您在地址栏中的默认搜索引擎。您可以随时切换它。</string>
+    <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">使用网络主页</string>
-    <!-- Settings: Use web-based homepage summary -->
+    <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">开启网页而非内建起始页作为首页。</string>
-    <!-- Settings: Data & Privacy category -->
-    <string name="pref_category_data_privacy">数据 &amp; 隐私</string>
-    <!-- Settings: Enable ad blocker title -->
-    <string name="pref_ad_blocker_title">启用广告拦截器</string>
-    <!-- Settings: Enable ad blocker summary -->
+    <!-- Settings: Search: Search Suggestions category summary -->
+    <string name="pref_search_category_suggestions_summary">选择搜索建议的显示方式。</string>
+    <!-- Settings: Search: Search Suggestions Provider title -->
+    <string name="pref_search_suggestions_provider_title">建议提供者</string>
+    <!-- Settings: Privacy and security: Ad blocking category title -->
+    <string name="pref_ps_category_ad_blocking_title">广告过滤</string>
+    <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">拦截分散注意力而且烦人的广告。</string>
-    <!-- Settings: Ad Blocklist source title -->
+    <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">广告拦截器列表源</string>
-    <!-- Settings: Download ad blocker hosts title -->
+    <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">下载广告拦截器列表文件</string>
-    <!-- Settings: Do Not Track title -->
+    <!-- Settings: Privacy and security: Privacy category -->
+    <string name="pref_ps_category_privacy">隐私</string>
+    <!-- Settings: Privacy: Do Not Track title -->
     <string name="pref_do_not_track_title">不跟踪</string>
-    <!-- Settings: Do Not Track summary -->
+    <!-- Settings: Privacy: Do Not Track summary -->
     <string name="pref_do_not_track_summary">发送“不跟踪”请求到您浏览的网站。</string>
-    <!-- Settings: Send GPC title -->
+    <!-- Settings: Privacy: Send GPC title -->
     <string name="pref_send_sec_gpc_title">全局隐私控制</string>
-    <!-- Settings: Send GPC summary -->
+    <!-- Settings: Privacy: Send GPC summary -->
     <string name="pref_send_sec_gpc_summary">允许在您访问的网站上与第三方出售或共享您的个人信息。</string>
-    <!-- Settings: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">强制 HTTPS</string>
-    <!-- Settings: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">始终使用HTTPS访问网站以增加安全性 (实验性)</string>
-    <!-- Settings: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">启用谷歌安全浏览</string>
-    <!-- Settings: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">允许谷歌安全浏览功能屏蔽其认为危险的网站。</string>
-    <!-- Settings: Enable history storage title -->
+    <!-- Settings: Privacy: Enable history storage title -->
     <string name="pref_enable_history_title">存储历史记录</string>
-    <!-- Settings: Enable history storage summary -->
+    <!-- Settings: Privacy: Enable history storage summary -->
     <string name="pref_enable_history_summary">保留造访过的网页的历史记录。</string>
-    <!-- Settings: Clear browsing data title -->
+    <!-- Settings: Privacy: Clear browsing data title -->
     <string name="pref_clear_browsing_data">清空浏览数据</string>
-    <!-- Settings: Reset to default title -->
+    <!-- Settings: Privacy: Reset to default title -->
     <string name="pref_reset_to_default_title">还原到默认设置</string>
-    <!-- Settings: Reset to default summary -->
+    <!-- Settings: Privacy: Reset to default summary -->
     <string name="pref_reset_to_default_summary">清除全部浏览器数据。</string>
-    <!-- Settings: Visuals category -->
-    <string name="pref_category_visuals">显示</string>
-    <!-- Settings: Theme title -->
+    <!-- Settings: Privacy and security: Security category -->
+    <string name="pref_ps_category_security">安全</string>
+    <!-- Settings: Security: Enforce HTTPS title -->
+    <string name="pref_enforce_https_title">总是使用安全连接</string>
+    <!-- Settings: Security: Enforce HTTPS summary -->
+    <string name="pref_enforce_https_summary">尽可能使用 HTTPS 并在加载不支持的站点之前收到警告。</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing title -->
+    <string name="pref_google_safe_browsing_title">启用谷歌安全浏览</string>
+    <!-- Settings: Security: Enable Google's Safe Browsing summary -->
+    <string name="pref_google_safe_browsing_summary">允许谷歌安全浏览功能屏蔽其认为危险的网站。</string>
+    <!-- Settings: Appearance: Theming category -->
+    <string name="pref_appearance_theming_category">主题</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_system_default">系统默认</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_light">浅色</string>
+    <!-- Settings: Appearance: System default -->
+    <string name="pref_theme_dark">深色</string>
+    <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">主题</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">允许强制黑暗网页内容</string>
@@ -217,52 +279,74 @@
     <string name="pref_start_page_wallpaper_title">选择起始页壁纸</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">当前：%s</string>
-    <!-- Settings: Show favicon title -->
+    <!-- Settings: Appearance: User interface category -->
+    <string name="pref_appearance_ui_category">用户界面</string>
+    <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">显示网站图标</string>
-    <!-- Settings: Show favicon summary -->
+    <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">在地址栏旁边显示网站的图标。</string>
-    <!-- Settings: Reach mode title -->
+    <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">单手模式</string>
-    <!-- Settings: Reach mode summary -->
+    <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">重新排列界面元素以便于单手操作。</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">启用滑动刷新</string>
+    <string name="pref_enable_swipe_refresh_title">滑动刷新</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">启用由垂直过度滚动内容触发的页面重新加载。</string>
-    <!-- Settings: Update Recents icons and labels title -->
+    <!-- Settings: Appearance: Update Recents icons and labels title -->
     <string name="pref_update_recents_icon_title">更新最近使用的应用中的图标和标签</string>
-    <!-- Settings: Update Recents icons and labels summary -->
+    <!-- Settings: Appearance: Update Recents icons and labels summary -->
     <string name="pref_update_recents_icon_summary">自动将“最近使用的应用”中选项卡的图标和标签更新为网页的。</string>
-    <!-- Settings: Advanced category -->
-    <string name="pref_main_category_advanced">进阶</string>
-    <!-- Settings: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">启用 JavaScript</string>
-    <!-- Settings: Enable JavaScript summary -->
-    <string name="pref_enable_javascript_summary">启用將允許加載 JavaScript 內容。</string>
-    <!-- Settings: Use Custom Tabs title -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs title -->
     <string name="pref_use_custom_tabs_title">使用小分页</string>
-    <!-- Settings: Use Custom Tabs summary -->
+    <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">从其他应用程序打开的链接时，始终打开小分页。</string>
-    <!-- Settings: Data Saver title -->
+    <!-- Settings: Main - Advanced: Data Saver title -->
     <string name="pref_send_save_data_title">流量节省</string>
-    <!-- Settings: Data Saver summary -->
+    <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">向支持的网站发送流量节省请求。</string>
-    <!-- Settings: Close app after download title -->
-    <string name="pref_close_app_after_download_title">仅下载链接后关闭</string>
-    <!-- Settings: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">如果链接可下载，总是关闭 Viola。</string>
-    <!-- Settings: Software updates category -->
-    <string name="pref_main_category_software_updates">软件更新</string>
-    <!-- Settings: Check for updates title -->
-    <string name="pref_check_for_updates_title">检查更新</string>
-    <!-- Settings: Check for updates summary -->
-    <string name="pref_check_for_updates_summary">检查是否有新更新，如果有可用则下载。</string>
-    <!-- Settings: Select update channel title -->
-    <string name="pref_update_channel_title">选择更新频道</string>
-    <!-- Settings: Version category -->
-    <string name="pref_main_category_version">版本</string>
-    <!-- Settings: About title -->
-    <string name="pref_about_title">关于</string>
+    <!-- Settings: Downloads: Show download confirmation dialog title -->
+    <string name="pref_download_confirmation_ask_title">显示确认对话框</string>
+    <!-- Settings: Downloads: Show download confirmation dialog summary -->
+    <string name="pref_download_confirmation_ask_summary">每次询问是否下载文件。</string>
+    <!-- Settings: Main - Advanced: Close app after download title -->
+    <string name="pref_close_app_after_download_title">下载外部链接后关闭</string>
+    <!-- Settings: Main - Advanced: Close app after download summary -->
+    <string name="pref_close_app_after_download_summary">下载外部链接后关闭当前标签页。</string>
+    <!-- Settings: Web features: Enable JavaScript title -->
+    <string name="pref_enable_javascript_title">JavaScript</string>
+    <!-- Settings: Web features: Enable JavaScript summary -->
+    <string name="pref_enable_javascript_summary">启用將允許加載 JavaScript 內容。</string>
+    <!-- Settings: Web features: Enable Cookies title -->
+    <string name="pref_enable_cookies_title">Cookies</string>
+    <!-- Settings: Web features: Enable Cookies summary -->
+    <string name="pref_enable_cookies_summary">接受来自所有网站的 Cookies。</string>
+    <!-- Settings: Web features: Bussin WebX category title -->
+    <string name="pref_web_webx_category_title">Bussin WebX</string>
+    <!-- Settings: Web features: Bussin WebX category summary -->
+    <string name="pref_web_webx_category_summary">此设置控制一个已倒閉的互维网替代方案。您可以继续以自行托管的服务器使用此功能。</string>
+    <!-- Settings: Web features: Bussin WebX API Picker title -->
+    <string name="pref_webx_picker_title">Buss API 网址</string>
+    <!-- Settings: Main - Advanced: Development settings title -->
+    <string name="pref_main_development_title">开发者设置</string>
+    <!-- Settings: Main - Advanced: Development settings summary -->
+    <string name="pref_main_development_summary">给于极客的高级功能。</string>
+    <!-- Settings: Development: Remote debugging title -->
+    <string name="pref_remote_debugging_title">远程调试</string>
+    <!-- Settings: Development: Remote debugging summary -->
+    <string name="pref_remote_debugging_summary">若要调试应用内的 WebView，请将您的设备连接到运行 Chromium 浏览器的计算机并前往 chrome://inspect。</string>
+    <!-- Settings: Development: Remote debugging summary debuggable -->
+    <string name="pref_remote_debugging_summary_debuggable">应用可调试，此选项强制启用。</string>
+    <!-- Settings: Development: Console logging category -->
+    <string name="pref_development_console_logging_category">控制台日志</string>
+    <!-- Settings: Development: Persistent console logging -->
+    <string name="pref_always_on_logging">持续记录日志</string>
+    <!-- Settings: Main: Select update channel title -->
+    <string name="pref_update_channel_title">更新频道</string>
+    <!-- Build Info: Protocol version (optional) title -->
+    <string name="buildinfo_pref_protocol_info_title">协议版本</string>
+    <!-- Build Info: Protocol version (optional) summary -->
+    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\n收藏: %2$d\n历史: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">格式：\n{query}: 搜索内容\n{language}：语言</string>
     <!-- Settings - Wallpaper: Default -->
@@ -285,6 +369,8 @@
     <string name="dialog_update_available_release_date_message">发布日期：%s</string>
     <!-- Updates: Update failed message -->
     <string name="update_download_failed">更新下载失败！</string>
+    <!-- Updates: Downloading update message -->
+    <string name="update_downloading">正在下载更新…</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">刪除所有收藏</string>
     <!-- Lists: Delete menu option -->
@@ -307,6 +393,8 @@
     <string name="favorites_dialog_title">标题</string>
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">链接</string>
+    <!-- Favorites: Edit dialog added on detail -->
+    <string name="favorites_dialog_added_on">添加于</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">您确定要删除所有收藏条目吗？</string>
     <!-- Downloads: Toast failed -->
@@ -357,11 +445,12 @@
         <item>DuckDuckGo</item>
         <item>必应</item>
         <item>雅虎</item>
+        <item>AOL.com</item>
         <item>Ecosia</item>
         <item>Yandex</item>
         <item>Brave 搜索</item>
         <item>Startpage</item>
-        <item>Whoogle</item>
+        <item>Presearch</item>
         <item>Swisscows</item>
         <item>Qwant</item>
         <item>搜狗</item>
@@ -375,10 +464,5 @@
         <item>Unified hosts</item>
         <item>Eulaurarien 主方追踪器</item>
         <item>自定义</item>
-    </string-array>
-    <string-array name="themes">
-        <item>系统默认</item>
-        <item>浅色</item>
-        <item>深色</item>
     </string-array>
 </resources>

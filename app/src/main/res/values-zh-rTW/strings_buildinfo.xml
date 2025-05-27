@@ -35,6 +35,8 @@
     <string name="pref_source_code_title">"原始碼"</string>
     <!-- Build Info: Source code summary -->
     <string name="pref_source_code_summary">"查看 Viola 的原始碼。"</string>
-    <!-- Build Info: Build number title -->
-    <string name="buildinfo_pref_build_number_title">版本號碼</string>
+    <!-- Build Info: Build information title -->
+    <string name="buildinfo_pref_build_info_title">構建訊息</string>
+    <!-- Build Info: Build information summary -->
+    <string name="buildinfo_pref_build_info_summary">標籤: %1$s\n分支 (修訂號): %2$s (%3$s)\n時間: %4$s</string>
 </resources>

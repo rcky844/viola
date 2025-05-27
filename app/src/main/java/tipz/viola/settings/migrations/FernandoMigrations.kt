@@ -27,6 +27,21 @@ class FernandoMigrations(private val pref: SettingsSharedPreference) {
 
             // Cookies
             pref.setInt(SettingsKeys.isCookiesEnabled, 1)
+
+            // Disable FrogFind as suggestions provider
+            // Automatic removal of unsupported entries was added by build 105,
+            // migrate users who set FrogFind as the suggestions provider to the
+            // default.
+            if (pref.getString(SettingsKeys.suggestionsName) == "frogfind")
+                pref.setString(SettingsKeys.suggestionsName, "brave")
+
+            // Migrate Whoogle users to the default
+            if (pref.getString(SettingsKeys.searchName) == "whoogle")
+                pref.setString(SettingsKeys.searchName, "brave")
+            if (pref.getString(SettingsKeys.homePageName) == "whoogle")
+                pref.setString(SettingsKeys.homePageName, "brave")
+            if (pref.getString(SettingsKeys.suggestionsName) == "whoogle")
+                pref.setString(SettingsKeys.suggestionsName, "brave")
         }
     }
 }

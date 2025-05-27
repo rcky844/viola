@@ -26,8 +26,11 @@ open class SuggestionProvider(private val mContext: Context) {
     private fun createQueryUrl(
         query: String
     ): String {
-        val settingsPreference = SettingsSharedPreference.instance
-        return SearchEngineEntries.getPreferredSuggestionsUrl(settingsPreference, query)
+        return SearchEngineEntries.getPreferredUrl(
+            SettingsSharedPreference.instance,
+            SearchEngineEntries.EngineInfoType.SUGGESTION,
+            query
+        )
     }
 
     /**

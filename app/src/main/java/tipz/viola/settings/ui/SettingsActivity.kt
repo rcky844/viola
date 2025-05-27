@@ -64,11 +64,11 @@ class SettingsActivity : BaseActivity() {
         ExtPreferenceFragment.needReload = false
 
         // Setup fragments
+        supportFragmentManager.registerFragmentLifecycleCallbacks(TitleUpdater(), false)
         if (savedInstanceState == null) {
             val fragment = getPreferenceScreen(
                 intent.getIntExtra(EXTRA_INITIAL_PREF_SCREEN, R.xml.preference_settings_main)
             ) ?: MainFragment()
-            supportFragmentManager.registerFragmentLifecycleCallbacks(TitleUpdater(), false)
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.shared_x_axis_open_enter, R.anim.shared_x_axis_open_exit,
