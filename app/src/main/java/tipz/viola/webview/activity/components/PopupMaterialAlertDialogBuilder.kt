@@ -21,7 +21,8 @@ class PopupMaterialAlertDialogBuilder(
         dialog.setOnShowListener {
             val wlp = dialog.window?.attributes ?: return@setOnShowListener
             wlp.gravity = direction
-            wlp.width = WindowManager.LayoutParams.MATCH_PARENT
+            if (context.resources.configuration.smallestScreenWidthDp < 600)
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT
             wlp.flags = wlp.flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
             dialog.window?.attributes = wlp
         }
