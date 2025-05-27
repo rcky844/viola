@@ -300,7 +300,7 @@
     <!-- Settings: Main - Advanced: Use Custom Tabs title -->
     <string name="pref_use_custom_tabs_title">Utiliser des onglets personnalisés</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
-    <string name="pref_use_custom_tabs_summary">Ouvrez toujours les liens d’application dans les onglets personnalisés lorsqu’il est ouvert à partir d’une autre application.</string>
+    <string name="pref_use_custom_tabs_summary">Always open external links in Custom Tabs when it is opened from another application.</string>
     <!-- Settings: Main - Advanced: Data Saver title -->
     <string name="pref_send_save_data_title">Sauvegarde des données</string>
     <!-- Settings: Main - Advanced: Data Saver summary -->
@@ -310,9 +310,9 @@
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
     <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
-    <string name="pref_close_app_after_download_title">Fermer après un lien d’application téléchargeable</string>
+    <string name="pref_close_app_after_download_title">Close after downloading external links</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">Fermez toujours Viola si le lien de l’application est téléchargeable.</string>
+    <string name="pref_close_app_after_download_summary">Close the current tab after downloading an external link.</string>
     <!-- Settings: Web features: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
