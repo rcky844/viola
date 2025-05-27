@@ -69,6 +69,7 @@ import tipz.viola.ext.dpToPx
 import tipz.viola.ext.getMinTouchTargetSize
 import tipz.viola.ext.getOnSurfaceColor
 import tipz.viola.ext.getSelectableItemBackground
+import tipz.viola.ext.setMaterialDialogViewPadding
 import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
@@ -229,7 +230,7 @@ class BrowserActivity : VWebViewActivity() {
                     setText(R.string.ssl_info_dialog_content_nocert)
                 }
             }
-            messageView.setPadding(dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
+            messageView.setMaterialDialogViewPadding()
 
             PopupMaterialAlertDialogBuilder(this, Gravity.TOP)
                 .setCustomTitle(titleView)
@@ -585,7 +586,6 @@ class BrowserActivity : VWebViewActivity() {
         return true // Close ToolBar if not interrupted
     }
 
-    @SuppressLint("RestrictedApi")
     fun itemLongSelected(view: AppCompatImageView?, @DrawableRes item: Int) {
         when (item) {
             R.drawable.smartphone, R.drawable.desktop, R.drawable.custom -> {
@@ -702,7 +702,9 @@ class BrowserActivity : VWebViewActivity() {
                             addView(scrollView)
                             addView(editText)
                             addView(sendButton)
-                        }, dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(12))
+
+                            setMaterialDialogViewPadding()
+                        })
                         .setPositiveButton(android.R.string.ok, null)
                         .setNeutralButton(R.string.clear) { _, _ -> webview.consoleMessages.clear() }
                         .setNegativeButton(R.string.console_logging_disable) { _, _ -> webview.consoleLogging = false }

@@ -11,6 +11,11 @@ import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 import androidx.core.view.marginTop
 
+fun View.setMaterialDialogViewPadding() {
+    setPadding(context.dpToPx(20), context.dpToPx(16),
+        context.dpToPx(20), context.dpToPx(12))
+}
+
 fun View.doOnApplyWindowInsets(f: (View, WindowInsetsCompat, InitialPadding, InitialMargin) -> Unit) {
     val initialPadding = recordInitialPaddingForView(this)
     val initialMargin = recordInitialMarginForView(this)

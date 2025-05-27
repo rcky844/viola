@@ -3,7 +3,6 @@
 
 package tipz.viola.utils
 
-import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
@@ -30,6 +29,7 @@ import tipz.viola.R
 import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.ext.dpToPx
 import tipz.viola.ext.isOnline
+import tipz.viola.ext.setMaterialDialogViewPadding
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
@@ -91,8 +91,6 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         else JSONObject(String(r.response))
     }
 
-    @Suppress("DEPRECATION")
-    @SuppressLint("RestrictedApi")
     fun checkUpdates() = coroutineScope.launch {
         // Get update JSON
         val jObject = getUpdateJson() ?: return@launch
@@ -152,7 +150,8 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                                 setText(R.string.update_downloading)
                                 updatePadding(left = context.dpToPx(20))
                             })
-                        }, context.dpToPx(20), context.dpToPx(16), context.dpToPx(20), context.dpToPx(12))
+                            setMaterialDialogViewPadding()
+                        })
                         setCancelable(false)
                     }.create()
                     progressDialog.show()
