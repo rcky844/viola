@@ -48,7 +48,7 @@ object SearchEngineEntries {
         ),
         EngineItem(name = "yandex", homePage = "https://yandex.com",
             search = "https://yandex.com/search/?text=$queryPlaceholder",
-            suggestion = "https://yandex.com/suggest/suggest-ya.cgi?v=4&part=$queryPlaceholder"
+            suggestion = "https://yandex.com/suggest/suggest-ya.cgi?v=4&part=$queryPlaceholder&uil=$languagePlaceholder"
         ),
         EngineItem(name = "brave", homePage = "https://search.brave.com",
             search = "https://search.brave.com/search?q=$queryPlaceholder",
