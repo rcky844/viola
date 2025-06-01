@@ -476,13 +476,13 @@ class BrowserActivity : VWebViewActivity() {
 
             R.drawable.history -> {
                 val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
-                intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_history)
+                intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.MODE_HISTORY)
                 mGetNeedLoad.launch(intent)
             }
 
             R.drawable.favorites -> {
                 val intent = Intent(this@BrowserActivity, ListInterfaceActivity::class.java)
-                intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.mode_favorites)
+                intent.putExtra(Intent.EXTRA_TEXT, ListInterfaceActivity.MODE_FAVORITES)
                 mGetNeedLoad.launch(intent)
             }
 
