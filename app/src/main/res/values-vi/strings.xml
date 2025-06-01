@@ -52,7 +52,7 @@
     <!-- WebView: JavaScript page unresponsive wait -->
     <string name="dialog_page_unresponsive_wait">Đợi</string>
     <!-- WebView: JavaScript page unresponsive terminate -->
-    <string name="dialog_page_unresponsive_terminate">Chấm dứt</string>
+    <string name="dialog_page_unresponsive_terminate">Hủy bỏ</string>
     <!-- WebView: SSL certification error dialog title -->
     <string name="ssl_certificate_error_dialog_title">Lỗi chứng chỉ SSL</string>
     <!-- WebView: SSL certification error dialog message -->
