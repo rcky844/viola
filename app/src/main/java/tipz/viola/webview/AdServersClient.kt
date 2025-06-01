@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2024 Tipz Team
+// Copyright (c) 2023-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
@@ -76,6 +76,7 @@ open class AdServersClient(
             fos.close()
             Log.d(LOG_TAG, "Finished ad servers download")
         }
+        importAdServers()
         callback()
     }
 }
