@@ -21,6 +21,7 @@ open class AdServersClient(
     var adServers: String? = null
 
     private val LOG_TAG = "AdServersClient"
+    private val ioScope = CoroutineScope(Dispatchers.IO)
 
     private val localHostUrls = arrayOf("0.0.0.0", "127.0.0.1", "localhost")
     private val adServersFile = File(context.filesDir.path + "ad_servers_hosts.txt")
@@ -44,19 +45,22 @@ open class AdServersClient(
     }
 
     fun importAdServers() {
-        Log.d(LOG_TAG, "Starting ad servers import")
-        val reader = adServersFile.bufferedReader()
-        var receiveString: String?
-        val stringBuilder = java.lang.StringBuilder()
-        while (reader.readLine().also { receiveString = it } != null) {
-            stringBuilder.append("\n").append(receiveString)
+        ioScope.launch {
+            Log.d(LOG_TAG, "Starting ad servers import")
+            val reader = adServersFile.bufferedReader()
+            var receiveString: String?
+            val stringBuilder = java.lang.StringBuilder()
+            while (reader.readLine().also { receiveString = it } != null) {
+                stringBuilder.append("\n").append(receiveString)
+            }
+            adServers = stringBuilder.toString()
+            Log.d(LOG_TAG, "Processed ${stringBuilder.lines().size} entries")
+            Log.d(LOG_TAG, "Finished ad servers import")
         }
-        adServers = stringBuilder.toString()
-        Log.d(LOG_TAG, "Finished ad servers import")
     }
 
     fun downloadAdServers(callback: () -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
+        ioScope.launch {
             Log.d(LOG_TAG, "Starting ad servers download")
             val scanner = Scanner(String(
                 MiniDownloadHelper.startDownloadWithDialog(context,
