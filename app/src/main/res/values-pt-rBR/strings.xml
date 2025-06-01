@@ -82,9 +82,9 @@
     <!-- WebView: Insecure HTTP connection dialog - Continue to site -->
     <string name="dialog_insecure_connection_continue_to_site">Continuar ao site</string>
     <!-- WebView: Open in external app snackbar message -->
-    <string name="snackbar_open_external_message">External link detected.</string>
+    <string name="snackbar_open_external_message">Link externo detectado.</string>
     <!-- WebView: Open in external app snackbar action -->
-    <string name="snackbar_open_external_action">Open</string>
+    <string name="snackbar_open_external_action">Abrir</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Pesquisar ou digite o endereço Web…</string>
     <!-- Hit Test Dialog: Copy link text -->
@@ -138,7 +138,7 @@
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">Modo de visualização</string>
     <!-- Expandable toolbar: Find in page -->
-    <string name="toolbar_expandable_find">Find in page</string>
+    <string name="toolbar_expandable_find">Encontrar na página</string>
     <!-- Expandable toolbar: Add to favorites -->
     <string name="toolbar_expandable_favorites_add">Adicionar aos Favoritos</string>
     <!-- Expandable toolbar: Translate -->
@@ -168,9 +168,9 @@
     <!-- Translate: Target language -->
     <string name="dialog_translate_target_lang">Idioma de destino (ex. en)</string>
     <!-- Fullscreen: Warning dialog title -->
-    <string name="dialog_fullscreen_title">Fullscreen mode</string>
+    <string name="dialog_fullscreen_title">Modo Tela cheia</string>
     <!-- Fullscreen: Warning dialog message -->
-    <string name="dialog_fullscreen_message">You have entered fullscreen mode. Exit by double tapping the button at the right bottom corner of your screen.</string>
+    <string name="dialog_fullscreen_message">Você entrou no modo tela cheia. Saia tocando duas vezes o botão no canto inferior direito da tela.</string>
     <!-- Shortcuts: Browser Access -->
     <string name="shortcuts_menu_browser">Acesso ao Navegador</string>
     <!-- Shortcuts: Custom Tabs -->
@@ -184,27 +184,27 @@
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">Desativar</string>
     <!-- Console: No logs -->
-    <string name="console_logging_none">No logs</string>
+    <string name="console_logging_none">Sem registros</string>
     <!-- Settings: Title -->
     <string name="settings_title">Configurações</string>
     <!-- Settings: Main: Basics category -->
-    <string name="pref_main_category_basics">Basics</string>
+    <string name="pref_main_category_basics">Básicas</string>
     <!-- Settings: Main: Home title -->
-    <string name="pref_main_home">Home</string>
+    <string name="pref_main_home">Página inicial</string>
     <!-- Settings: Main: Search title -->
-    <string name="pref_main_search">Search</string>
+    <string name="pref_main_search">Pesquisa</string>
     <!-- Settings: Main: Privacy and security title -->
-    <string name="pref_main_privacy_security">Privacy and security</string>
+    <string name="pref_main_privacy_security">Privacidade e segurança</string>
     <!-- Settings: Main: Appearance title -->
-    <string name="pref_main_appearance">Appearance</string>
+    <string name="pref_main_appearance">Aparência</string>
     <!-- Settings: Main: Advanced category -->
     <string name="pref_main_category_advanced">Opções avançadas</string>
     <!-- Expandable toolbar: Downloads -->
     <string name="pref_main_downloads">Downloads</string>
     <!-- Expandable toolbar: Web features -->
-    <string name="pref_main_web_features">Web features</string>
+    <string name="pref_main_web_features">Recursos da Web</string>
     <!-- Settings: Main: Updates and version category -->
-    <string name="pref_main_category_updates_version">Updates and version</string>
+    <string name="pref_main_category_updates_version">Atualizações e versão</string>
     <!-- Settings: Main: Check for updates title -->
     <string name="pref_check_for_updates_title">Verificar se há atualizações</string>
     <!-- Settings: Main: Check for updates summary -->
@@ -212,19 +212,19 @@
     <!-- Settings: Main: About title -->
     <string name="pref_about_title">Sobre</string>
     <!-- Settings: Search: Default Search Engine category title -->
-    <string name="pref_search_category_engine_title">Default search engine</string>
+    <string name="pref_search_category_engine_title">Mecanismo de pesquisa padrão</string>
     <!-- Settings: Search: Default Search Engine category summary -->
-    <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
+    <string name="pref_search_category_engine_summary">Este é o seu mecanismo de pesquisa padrão na barra de endereços. Você pode trocá-lo a qualquer momento.</string>
     <!-- Settings: Search: Use web-based homepage title -->
     <string name="pref_use_web_homepage_title">Usar página inicial baseada na web</string>
     <!-- Settings: Search: Use web-based homepage summary -->
     <string name="pref_use_web_homepage_summary">Abrir uma página web em vez da página inicial.</string>
     <!-- Settings: Search: Search Suggestions category summary -->
-    <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
+    <string name="pref_search_category_suggestions_summary">Escolha como as sugestões dos mecanismos de busca aparecem.</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
-    <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
+    <string name="pref_search_suggestions_provider_title">Provedor de sugestões</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
-    <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
+    <string name="pref_ps_category_ad_blocking_title">Bloqueio de anúncios</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">Impeça os anúncios irritantes de te distrair.</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
@@ -232,7 +232,7 @@
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Baixar lista de bloqueio</string>
     <!-- Settings: Privacy and security: Privacy category -->
-    <string name="pref_ps_category_privacy">Privacy</string>
+    <string name="pref_ps_category_privacy">Privacidade</string>
     <!-- Settings: Privacy: Do Not Track title -->
     <string name="pref_do_not_track_title">Não rastrear</string>
     <!-- Settings: Privacy: Do Not Track summary -->
@@ -246,25 +246,25 @@
     <!-- Settings: Privacy: Enable history storage summary -->
     <string name="pref_enable_history_summary">Preservar o histórico de páginas web visitadas.</string>
     <!-- Settings: Privacy: Clear browsing data title -->
-    <string name="pref_clear_browsing_data">Clear browsing data</string>
+    <string name="pref_clear_browsing_data">Limpar dados de navegação</string>
     <!-- Settings: Privacy: Reset to default title -->
     <string name="pref_reset_to_default_title">Redefinir para o padrão</string>
     <!-- Settings: Privacy: Reset to default summary -->
     <string name="pref_reset_to_default_summary">Limpar todos os dados do navegador.</string>
     <!-- Settings: Privacy and security: Security category -->
-    <string name="pref_ps_category_security">Security</string>
+    <string name="pref_ps_category_security">Segurança</string>
     <!-- Settings: Security: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">Impor HTTPS</string>
+    <string name="pref_enforce_https_title">Sempre usar conexões seguras</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Sempre visite sites usando o HTTPS para aumentar a segurança. (Experimental)</string>
+    <string name="pref_enforce_https_summary">Usar HTTPS sempre que possível e receber um aviso antes de carregar sites que não suportam ele.</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
-    <string name="pref_google_safe_browsing_title">Ativar a navegação segura do Google</string>
+    <string name="pref_google_safe_browsing_title">Navegação Segura do Google</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
-    <string name="pref_google_safe_browsing_summary">Permitir que a navegação segura do Google bloqueie sites que considere perigoso.</string>
+    <string name="pref_google_safe_browsing_summary">Permite que a navegação segura do Google bloqueie sites perigosos.</string>
     <!-- Settings: Appearance: Theming category -->
-    <string name="pref_appearance_theming_category">Theming</string>
+    <string name="pref_appearance_theming_category">Temas</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_system_default">Automatic</string>
+    <string name="pref_theme_system_default">Automático</string>
     <!-- Settings: Appearance: System default -->
     <string name="pref_theme_light">Claro</string>
     <!-- Settings: Appearance: System default -->
@@ -276,11 +276,11 @@
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Combine o esquema de cores das páginas web com o tema do navegador.</string>
     <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Selecione um plano de fundo para a página inicial</string>
+    <string name="pref_start_page_wallpaper_title">Fundo da página inicial</string>
     <!-- Settings: Start page wallpaper summary -->
     <string name="pref_start_page_wallpaper_summary">Atual: %s</string>
     <!-- Settings: Appearance: User interface category -->
-    <string name="pref_appearance_ui_category">User interface</string>
+    <string name="pref_appearance_ui_category">Interface do usuário</string>
     <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">Mostrar favicon</string>
     <!-- Settings: Appearance: Show favicon summary -->
@@ -290,7 +290,7 @@
     <!-- Settings: Appearance: Reach mode summary -->
     <string name="pref_reverse_address_bar_summary">Reposicionar elementos da interface para uma utilização mais fácil com uma mão.</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Habilitar Puxar para Atualizar</string>
+    <string name="pref_enable_swipe_refresh_title">Puxe para atualizar</string>
     <!-- Settings: Swipe to Refresh summary -->
     <string name="pref_enable_swipe_refresh_summary">Ativar recarregamento de página acionado pelo deslizamento vertical excessivo do conteúdo.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
@@ -306,47 +306,47 @@
     <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">Enviar solicitação de economia de dados para sites suportados.</string>
     <!-- Settings: Downloads: Show download confirmation dialog title -->
-    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <string name="pref_download_confirmation_ask_title">Mostrar diálogo de confirmação</string>
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
-    <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
+    <string name="pref_download_confirmation_ask_summary">Pedir para confirmar toda vez se você quer fazer download de um arquivo.</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
-    <string name="pref_close_app_after_download_title">Fechar após um Link de Aplicativo baixável</string>
+    <string name="pref_close_app_after_download_title">Fechar após baixar links externos</string>
     <!-- Settings: Main - Advanced: Close app after download summary -->
-    <string name="pref_close_app_after_download_summary">Sempre fechar o Viola se o link do aplicativo for baixável.</string>
+    <string name="pref_close_app_after_download_summary">Feche a guia atual após baixar um link externo.</string>
     <!-- Settings: Web features: Enable JavaScript title -->
-    <string name="pref_enable_javascript_title">Habilitar JavaScript</string>
+    <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
     <string name="pref_enable_javascript_summary">Ativar isso permitirá que o conteúdo web JavaScript seja carregado.</string>
     <!-- Settings: Web features: Enable Cookies title -->
     <string name="pref_enable_cookies_title">Cookies</string>
     <!-- Settings: Web features: Enable Cookies summary -->
-    <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <string name="pref_enable_cookies_summary">Aceitar todos os cookies dos sites.</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
-    <string name="pref_web_webx_category_summary">This controls usage of a defunct alternative to the World Wide Web. You may continue to use this feature with self-hosted solutions.</string>
+    <string name="pref_web_webx_category_summary">Isto controla o uso de uma alternativa defunta para a World Wide Web. Você pode continuar a usar este recurso com soluções auto-hospedadas.</string>
     <!-- Settings: Web features: Bussin WebX API Picker title -->
     <string name="pref_webx_picker_title">Buss API URL</string>
     <!-- Settings: Main - Advanced: Development settings title -->
-    <string name="pref_main_development_title">Development settings</string>
+    <string name="pref_main_development_title">Configurações de desenvolvimento</string>
     <!-- Settings: Main - Advanced: Development settings summary -->
-    <string name="pref_main_development_summary">Advanced features for experts.</string>
+    <string name="pref_main_development_summary">Recursos avançados para especialistas.</string>
     <!-- Settings: Development: Remote debugging title -->
-    <string name="pref_remote_debugging_title">Remote debugging</string>
+    <string name="pref_remote_debugging_title">Depuração remota</string>
     <!-- Settings: Development: Remote debugging summary -->
-    <string name="pref_remote_debugging_summary">To debug in-app WebViews, connect your device to a computer running Chromium browser and navigate to chrome://inspect.</string>
+    <string name="pref_remote_debugging_summary">Para depurar WebViews na aplicação, conecte seu dispositivo a um computador rodando o navegador Chromium e navegue até chrome://inspect.</string>
     <!-- Settings: Development: Remote debugging summary debuggable -->
-    <string name="pref_remote_debugging_summary_debuggable">Already enabled as the application is debuggable.</string>
+    <string name="pref_remote_debugging_summary_debuggable">Já ativado porque o aplicativo pode ser depurado.</string>
     <!-- Settings: Development: Console logging category -->
-    <string name="pref_development_console_logging_category">Console logging</string>
+    <string name="pref_development_console_logging_category">Registro do console</string>
     <!-- Settings: Development: Persistent console logging -->
-    <string name="pref_always_on_logging">Persistent logging</string>
+    <string name="pref_always_on_logging">Registro persistente</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Selecionar canal de atualização</string>
+    <string name="pref_update_channel_title">Canal de Atualização</string>
     <!-- Build Info: Protocol version (optional) title -->
-    <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
+    <string name="buildinfo_pref_protocol_info_title">Versão do protocolo</string>
     <!-- Build Info: Protocol version (optional) summary -->
-    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
+    <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavoritos: %2$d\nHistórico: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">Formato:\n{query}: Query\n{language}: Idioma</string>
     <!-- Settings - Wallpaper: Default -->
@@ -370,7 +370,7 @@
     <!-- Updates: Update failed message -->
     <string name="update_download_failed">Falha ao baixar atualização!</string>
     <!-- Updates: Downloading update message -->
-    <string name="update_downloading">Downloading update…</string>
+    <string name="update_downloading">Baixando Atualização…</string>
     <!-- Lists: Delete all entries dialog title -->
     <string name="dialog_delete_all_entries_title">Excluir todas as entradas</string>
     <!-- Lists: Delete menu option -->
@@ -394,7 +394,7 @@
     <!-- Favorites: Edit dialog link option -->
     <string name="favorites_dialog_link">Link</string>
     <!-- Favorites: Edit dialog added on detail -->
-    <string name="favorites_dialog_added_on">Added on</string>
+    <string name="favorites_dialog_added_on">Adicionado em</string>
     <!-- Favorites: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_favorites_message">Você está prestes a excluir todas as entradas dos favoritos, você tem certeza disso?</string>
     <!-- Downloads: Toast failed -->
@@ -408,7 +408,7 @@
     <!-- Downloads: Confirmation dialog message -->
     <string name="downloads_dialog_message">Deseja baixar %s?</string>
     <!-- Downloads: Error details dialog title -->
-    <string name="downloads_dialog_error_details_title">Download failure details</string>
+    <string name="downloads_dialog_error_details_title">Detalhes da falha de download</string>
     <!-- Downloads: Confirmation dialog duplicated message -->
     <string name="downloads_dialog_duplicated_message">Arquivo já presente em seu diretório de download, você quer baixar %s novamente?</string>
     <!-- Downloads: Menu re-download option -->
@@ -456,7 +456,7 @@
         <item>Sogou</item>
         <item>360 Search</item>
         <item>FrogFind</item>
-        <item>Custom</item>
+        <item>Customizado</item>
     </string-array>
     <string-array name="ad_blocker_hosts_entries">
         <item>AdAway</item>
