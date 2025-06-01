@@ -54,10 +54,28 @@ class ListInterfaceActivity : BaseActivity() {
     lateinit var itemsAdapter: ItemsAdapter
     lateinit var fab: FloatingActionButton
 
+    enum class ActivityMode {
+        HISTORY, FAVORITES, UNKNOWN;
+
+        companion object {
+            private var activityMode = UNKNOWN
+            fun setActivityMode(mode: String?): Boolean {
+                activityMode = when (mode) {
+                    MODE_HISTORY -> HISTORY
+                    MODE_FAVORITES -> FAVORITES
+                    else -> UNKNOWN
+                }
+                return activityMode != UNKNOWN
+            }
+            fun isHistory(): Boolean = activityMode == HISTORY
+            fun isFavorites(): Boolean = activityMode == FAVORITES
+        }
+    }
+
     fun updateListData(callback: () -> Any) {
         ioScope.launch {
             listData =
-                (if (activityMode == mode_history) historyClient.getAll()
+                (if (ActivityMode.isHistory()) historyClient.getAll()
                 else favClient.getAll()).toMutableList()
             MainScope().launch { callback() }
         }
@@ -84,12 +102,13 @@ class ListInterfaceActivity : BaseActivity() {
         setContentView(view)
 
         // Setup some lateinit constants
-        activityMode = intent.getStringExtra(Intent.EXTRA_TEXT)
+        if (!ActivityMode.setActivityMode(intent.getStringExtra(Intent.EXTRA_TEXT)))
+            finish() // Exit if activity mode is unknown
         favClient = FavClient(this)
         historyClient = HistoryClient(this)
 
         // Setup UI
-        setTitle(if (activityMode == mode_history) R.string.history_title else R.string.favorites_title)
+        setTitle(if (ActivityMode.isHistory()) R.string.history_title else R.string.favorites_title)
 
         // Toolbar
         val toolbar = binding.toolbar
@@ -113,13 +132,13 @@ class ListInterfaceActivity : BaseActivity() {
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.dialog_delete_all_entries_title)
                 .setMessage(
-                    if (activityMode == mode_history) R.string.dialog_delete_all_entries_history_message
+                    if (ActivityMode.isHistory()) R.string.dialog_delete_all_entries_history_message
                     else R.string.dialog_delete_all_entries_favorites_message
                 )
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     ioScope.launch {
-                        if (activityMode == mode_history) historyClient.deleteAll()
-                        else if (activityMode == mode_favorites) favClient.deleteAll()
+                        if (ActivityMode.isHistory()) historyClient.deleteAll()
+                        else if (ActivityMode.isFavorites()) favClient.deleteAll()
                     }
                     val size = listData.size
                     listData.clear()
@@ -141,8 +160,8 @@ class ListInterfaceActivity : BaseActivity() {
         // RecyclerView
         val brohaList = binding.recyclerView
         val layoutManager = brohaList.layoutManager as LinearLayoutManager
-        layoutManager.reverseLayout = activityMode == mode_history
-        layoutManager.stackFromEnd = activityMode == mode_history
+        layoutManager.reverseLayout = ActivityMode.isHistory()
+        layoutManager.stackFromEnd = ActivityMode.isHistory()
         updateListData {
             itemsAdapter = ItemsAdapter(this)
             brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
@@ -187,7 +206,7 @@ class ListInterfaceActivity : BaseActivity() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (listData.isEmpty()) {
                 if (holder is EmptyViewHolder) holder.text.setText(
-                    if (activityMode == mode_history) R.string.history_empty_message
+                    if (ActivityMode.isHistory()) R.string.history_empty_message
                     else R.string.favorites_empty_message
                 )
                 return
@@ -212,7 +231,7 @@ class ListInterfaceActivity : BaseActivity() {
 
             holder.title.text = title ?: url
             holder.url.text = url.takeUnless { it == null }?.toUri()?.host ?: ""
-            if (activityMode == mode_history) {
+            if (ActivityMode.isHistory()) {
                 holder.time.text = TimeUtils.formatEpochMillis(
                     epochMillis = data.timestamp,
                     formatStyle = "dd/MM\nHH:ss"
@@ -229,11 +248,11 @@ class ListInterfaceActivity : BaseActivity() {
                     activity, view!!
                 )
                 val menu = popup.menu
-                if (activityMode == mode_history) {
+                if (ActivityMode.isHistory()) {
                     PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
                     PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
                     PopupMenuMap.addMenu(menu, PopupMenuMap.ADD_TO_FAVORITES)
-                } else if (activityMode == mode_favorites) {
+                } else if (ActivityMode.isFavorites()) {
                     PopupMenuMap.addMenu(menu, PopupMenuMap.EDIT)
                     PopupMenuMap.addMenu(menu, PopupMenuMap.COPY_URL)
                     PopupMenuMap.addMenu(menu, PopupMenuMap.DELETE)
@@ -242,9 +261,9 @@ class ListInterfaceActivity : BaseActivity() {
                     when (item.itemId) {
                         PopupMenuMap.DELETE.itemId -> {
                             activity.ioScope.launch {
-                                if (activityMode == mode_history)
+                                if (ActivityMode.isHistory())
                                     activity.historyClient.deleteById(data.id)
-                                else if (activityMode == mode_favorites)
+                                else if (ActivityMode.isFavorites())
                                     activity.favClient.deleteById(data.id)
                             }
                             listData.removeAt(position)
@@ -321,8 +340,7 @@ class ListInterfaceActivity : BaseActivity() {
         private var listData: MutableList<Broha> = mutableListOf()
 
         /* Activity mode */
-        var activityMode: String? = null
-        const val mode_history = "HISTORY"
-        const val mode_favorites = "FAVORITES"
+        const val MODE_HISTORY = "HISTORY"
+        const val MODE_FAVORITES = "FAVORITES"
     }
 }
