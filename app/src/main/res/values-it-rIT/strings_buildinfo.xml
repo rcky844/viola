@@ -13,7 +13,7 @@
         Build Info: Copyright information
         Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team
     -->
-    <string name="buildinfo_copyright">Copyright ©️ %s Tipz Team\n</string>
+    <string name="buildinfo_copyright">Copyright © %s Tipz Team\n</string>
     <!--
         Build Info: License information
         This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
