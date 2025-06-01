@@ -8,7 +8,7 @@
         {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
         Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
     -->
-    <string name="buildinfo_version">%1$s (%2$s)\nالإصدار %3$s (البنية %4$s%5$s)\n\n</string>
+    <string name="buildinfo_version">%1$s (%2$s)\nالإصدار %3$s (البناء %4$s%5$s)\n\n</string>
     <!--
         Build Info: Copyright information
         Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team
