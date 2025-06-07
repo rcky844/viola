@@ -7,13 +7,10 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.view.Gravity
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.content.FileProvider
 import androidx.core.view.updatePadding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -31,6 +28,7 @@ import tipz.viola.ext.dpToPx
 import tipz.viola.ext.isOnline
 import tipz.viola.ext.setMaterialDialogViewPadding
 import tipz.viola.ext.showMessage
+import tipz.viola.ext.uriFromFile
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.pages.ProjectUrls
@@ -51,18 +49,10 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         }
     }
 
-    private fun uriFromFile(file: File): Uri {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) FileProvider.getUriForFile(
-            context,
-            BuildConfig.APPLICATION_ID + ".provider",
-            file
-        ) else Uri.fromFile(file)
-    }
-
     private fun installApplication(file: File) =
         MainScope().launch {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(uriFromFile(file), "application/vnd.android.package-archive")
+            intent.setDataAndType(context.uriFromFile(file), "application/vnd.android.package-archive")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             try {

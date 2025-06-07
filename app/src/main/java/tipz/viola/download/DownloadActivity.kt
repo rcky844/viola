@@ -18,7 +18,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.FileProvider
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -38,6 +37,7 @@ import tipz.viola.download.database.DrohaClient
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
 import tipz.viola.ext.showMessage
+import tipz.viola.ext.uriFromFile
 import tipz.viola.settings.ui.SettingsActivity
 import tipz.viola.webview.activity.BaseActivity
 import java.io.File
@@ -202,10 +202,7 @@ class DownloadActivity : BaseActivity() {
                             return@apply
                         }
 
-                        val openUri = FileProvider.getUriForFile(
-                            activity, activity.applicationContext.packageName + ".provider",
-                            file
-                        )
+                        val openUri = activity.uriFromFile(file)
                         Log.i(LOG_TAG, "onClickListener(): taskId=$taskId, openUri=$openUri")
 
                         val intent = Intent()

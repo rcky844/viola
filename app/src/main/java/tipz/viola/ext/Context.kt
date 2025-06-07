@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2025 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.ext
@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Build
 import android.util.TypedValue
 import android.widget.Toast
@@ -17,10 +18,13 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import tipz.viola.BuildConfig
 import tipz.viola.R
+import java.io.File
 
 fun Context.dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
 fun Context.pxToDp(px: Int): Int = (px / resources.displayMetrics.density).toInt()
@@ -103,4 +107,10 @@ fun Context.getFrameworkIdentifier(name: String): Int =
 fun Context.isDarkMode(): Boolean {
     return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
             Configuration.UI_MODE_NIGHT_YES
+}
+
+fun Context.uriFromFile(file: File): Uri {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file)
+    else Uri.fromFile(file)
 }
