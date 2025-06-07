@@ -105,9 +105,7 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
 
         // Process the selected update channel data
         val jChannelObject = jObject.getJSONObject(updateChannelName)
-        val jChannelDataString =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) "channel_data_modern"
-            else "channel_data_legacy"
+        val jChannelDataString = "channel_data_${BuildConfig.FLAVOR}"
 
         if (!jChannelObject.has(jChannelDataString)) {
             showMessage(R.string.toast_version_latest)
