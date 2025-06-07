@@ -20,55 +20,55 @@
     <!-- Generic: Reset -->
     <string name="reset">Redefinir</string>
     <!-- Generic - Defaults: Search engine -->
-    <string name="search_engine">Mecanismo de Busca</string>
+    <string name="search_engine">Mecanismo de busca</string>
     <!-- Generic - Defaults: Homepage -->
-    <string name="homepage">Página inicial</string>
+    <string name="homepage">Início</string>
     <!-- Generic - Defaults: Search Suggestions -->
-    <string name="search_suggestions_title">Sugestões de Busca</string>
+    <string name="search_suggestions_title">Sugestões</string>
     <!-- Toasts: No WebView -->
-    <string name="toast_no_webview">WebView é necessário, mas não esta instalado.</string>
+    <string name="toast_no_webview">Requer o WebView, portanto ele não está instalado.</string>
     <!-- Toasts: Cleared -->
     <string name="toast_cleared">Limpado com sucesso!</string>
     <!-- Toasts: Copied to clipboard -->
-    <string name="toast_copied_clipboard">Copiado para a área de transferência!</string>
+    <string name="toast_copied_clipboard">Copiado a área de transferência!</string>
     <!-- Toasts: Saved -->
     <string name="save_successful">Salvo com sucesso!</string>
     <!-- Dialogs: Continue prompt message -->
-    <string name="dialog_continue_prompt_message">Você tem certeza que deseja continuar?</string>
+    <string name="dialog_continue_prompt_message">Deseja continuar?</string>
     <!-- Menus: Copy link -->
     <string name="menu_copy_link">Copiar link</string>
     <!-- WebView: Start page -->
-    <string name="start_page">Página Inicial</string>
+    <string name="start_page">Página de início</string>
     <!-- WebView: No app to handle action -->
-    <string name="toast_no_app_to_handle">Nenhum aplicativo pode executar esta ação.</string>
+    <string name="toast_no_app_to_handle">Nenhum aplicativo instalado consegue executar isso.</string>
     <!-- WebView: JavaScript dialog title -->
     <string name="dialog_js_title">%s diz</string>
     <!-- WebView: JavaScript leave page dialog title -->
-    <string name="dialog_js_leave_page_title">%s diz, você quer sair desta página?</string>
+    <string name="dialog_js_leave_page_title">%s diz, deseja sair da página?</string>
     <!-- WebView: JavaScript page unresponsive title -->
-    <string name="dialog_page_unresponsive_title">Página não responsiva</string>
+    <string name="dialog_page_unresponsive_title">Página indisponível</string>
     <!-- WebView: JavaScript page unresponsive message -->
-    <string name="dialog_page_unresponsive_message">Você pode esperar que ela se torne responsiva ou termine esta aba.</string>
+    <string name="dialog_page_unresponsive_message">Você pode fechar a página ou aguardar até ela se tornar disponível.</string>
     <!-- WebView: JavaScript page unresponsive wait -->
     <string name="dialog_page_unresponsive_wait">Aguardar</string>
     <!-- WebView: JavaScript page unresponsive terminate -->
-    <string name="dialog_page_unresponsive_terminate">Terminar</string>
+    <string name="dialog_page_unresponsive_terminate">Fechar</string>
     <!-- WebView: SSL certification error dialog title -->
     <string name="ssl_certificate_error_dialog_title">Erro de certificado SSL</string>
     <!-- WebView: SSL certification error dialog message -->
-    <string name="ssl_certificate_error_dialog_message">%s Você deseja continuar mesmo assim?</string>
+    <string name="ssl_certificate_error_dialog_message">%s deseja continuar mesmo assim?</string>
     <!-- WebView: SSL certificate date invalid -->
-    <string name="ssl_certificate_date_invalid">A data do certificado é inválida.</string>
+    <string name="ssl_certificate_date_invalid">Data de certificado inválida.</string>
     <!-- WebView: SSL certificate invalid -->
     <string name="ssl_certificate_invalid">Ocorreu um erro genérico de SSL.</string>
     <!-- WebView: SSL certificate expired -->
     <string name="ssl_certificate_expired">O certificado expirou.</string>
     <!-- WebView: SSL certificate hostname mismatch -->
-    <string name="ssl_certificate_idmismatch">O certificado não coincide com o hostname.</string>
+    <string name="ssl_certificate_idmismatch">O certificado não corresponde ao nome hóspede.</string>
     <!-- WebView: SSL certificate not yet valid -->
-    <string name="ssl_certificate_notyetvalid">O certificado ainda não é válido.</string>
+    <string name="ssl_certificate_notyetvalid">O certificado ainda é inválido.</string>
     <!-- WebView: SSL certificate authority not trusted -->
-    <string name="ssl_certificate_untrusted">A autoridade certificadora não é confiável.</string>
+    <string name="ssl_certificate_untrusted">A autoridade certificadora é inconfiável.</string>
     <!-- WebView: SSL certificate unknown -->
     <string name="ssl_certificate_unknown">Ocorreu um erro de SSL desconhecido.</string>
     <!-- WebView: SSL handshake failed dialog title -->
