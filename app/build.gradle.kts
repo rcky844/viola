@@ -61,7 +61,7 @@ android {
 
         multiDexEnabled = true
         resourceConfigurations += listOf("ar", "bn", "de", "en-rGB", "es-rES", "fr", "hi",
-            "pt-rBR", "ru", "tr", "vi", "zh-rCN", "zh-rTW")
+            "it", "pt-rBR", "ru", "tr", "vi", "zh-rCN", "zh-rTW")
     }
 
     buildFeatures {
