@@ -18,14 +18,12 @@ class PopupMaterialAlertDialogBuilder(
 ) : MaterialAlertDialogBuilder(context) {
     override fun create(): AlertDialog {
         val dialog = super.create()
-        dialog.setOnShowListener {
-            val wlp = dialog.window?.attributes ?: return@setOnShowListener
-            wlp.windowAnimations = 0
-            wlp.gravity = direction
+        dialog.window?.attributes.takeUnless { it == null }?.let {
+            it.gravity = direction
             if (context.resources.configuration.smallestScreenWidthDp < 600)
-                wlp.width = WindowManager.LayoutParams.MATCH_PARENT
-            wlp.flags = wlp.flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
-            dialog.window?.attributes = wlp
+                it.width = WindowManager.LayoutParams.MATCH_PARENT
+            it.flags = it.flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
+            dialog.window?.attributes = it
         }
         return dialog
     }

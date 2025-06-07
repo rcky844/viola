@@ -11,6 +11,7 @@
     <locale android:name="es-ES"/> <!-- Spanish (Spain) -->
     <locale android:name="fr"/> <!-- French (France) -->
     <locale android:name="hi"/> <!-- Hindi -->
+    <locale android:name="it"/> <!-- Italian -->
     <locale android:name="pt-BR"/> <!-- Portuguese (Brazil) -->
     <locale android:name="ru"/> <!-- Russian -->
     <locale android:name="tr"/> <!-- Turkish -->
