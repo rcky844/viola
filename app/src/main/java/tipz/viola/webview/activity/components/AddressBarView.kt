@@ -67,9 +67,8 @@ class AddressBarView(
             }
             setSelectAllOnFocus(true)
 
-            setAdapter(SuggestionAdapter(
-                context as VWebViewActivity // TODO: Fix hackyness
-            ))
+            assert(context is VWebViewActivity)
+            setAdapter(SuggestionAdapter(context as VWebViewActivity))
         }.updateLayoutParams<LayoutParams> {
             topToTop = ConstraintSet.PARENT_ID
             bottomToBottom = ConstraintSet.PARENT_ID
