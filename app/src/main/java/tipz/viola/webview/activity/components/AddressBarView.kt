@@ -82,9 +82,15 @@ class AddressBarView(
 
         // Set-up SSL lock
         sslLock.apply {
-            layoutParams = LayoutParams(actionBarHeight, actionBarHeight).apply {
-                setPadding(context.dpToPx(12))
+            layoutParams = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                LayoutParams(actionBarHeight, actionBarHeight).apply {
+                    setPadding(context.dpToPx(12))
+                }
+            } else {
+                val paddedActionBarHeight = actionBarHeight - context.dpToPx(12)
+                LayoutParams(paddedActionBarHeight, paddedActionBarHeight)
             }
+
             setImageResource(R.drawable.search) // Defaults
             setColorFilter(context.getOnSurfaceColor())
             setBackgroundResource(context.getSelectableItemBackground())
@@ -96,8 +102,11 @@ class AddressBarView(
             }
         }.updateLayoutParams<LayoutParams> {
             topToTop = ConstraintSet.PARENT_ID
+            bottomToBottom = ConstraintSet.PARENT_ID
             startToStart = ConstraintSet.PARENT_ID
-            leftMargin = context.dpToPx(8)
+            leftMargin =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) context.dpToPx(8)
+                else context.dpToPx(8 + 8)
         }
         addView(sslLock)
     }
