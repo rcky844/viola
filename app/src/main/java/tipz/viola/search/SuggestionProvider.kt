@@ -4,7 +4,6 @@
 
 package tipz.viola.search
 
-import android.content.Context
 import android.util.Log
 import org.json.JSONArray
 import tipz.viola.ext.getCharset
@@ -16,7 +15,9 @@ import java.net.URL
 import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
-open class SuggestionProvider(private val mContext: Context) {
+open class SuggestionProvider(
+    private val failedCallback: (error: String, throwable: Throwable) -> Unit = { _, _ -> }
+) {
     /**
      * Create a URL for the given query in the given language.
      *
@@ -66,6 +67,7 @@ open class SuggestionProvider(private val mContext: Context) {
             URLEncoder.encode(rawQuery, encoding)
         } catch (e: UnsupportedEncodingException) {
             Log.e(LOG_TAG, "Unable to encode the URL", e)
+            failedCallback("Unable to encode the URL", e)
             return filter
         }
 
@@ -80,6 +82,7 @@ open class SuggestionProvider(private val mContext: Context) {
             }
         } catch (e: Exception) {
             Log.e(LOG_TAG, "Unable to parse results", e)
+            failedCallback("Unable to parse results", e)
         }
         return filter
     }
@@ -109,6 +112,7 @@ open class SuggestionProvider(private val mContext: Context) {
                 }
             } catch (e: IOException) {
                 Log.d(LOG_TAG, "Problem getting search suggestions", e)
+                failedCallback("Problem getting search suggestions", e)
             } finally {
                 urlConnection.disconnect()
             }

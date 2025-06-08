@@ -16,6 +16,9 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.Space
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import tipz.viola.databinding.TemplateTextSuggestionsBinding
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.VWebViewActivity
@@ -106,5 +109,13 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
     }
 
     private val provider: SuggestionProvider
-        get() = SuggestionProvider(context)
+        get() = SuggestionProvider { error, throwable ->
+            MainScope().launch {
+                MaterialAlertDialogBuilder(context)
+                    .setTitle(error)
+                    .setMessage(throwable.message)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create().show()
+            }
+        }
 }
