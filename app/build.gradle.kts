@@ -11,16 +11,14 @@ plugins {
 
 fun getGitInfo(info: String): String {
     return try {
-        val byteOut = ByteArrayOutputStream()
-        project.exec {
+        val output = providers.exec {
             commandLine = when (info) {
                 "revision" -> "git describe --match=NeVeRmAtCh --always --dirty"
                 "branch" -> "git rev-parse --abbrev-ref HEAD"
                 else -> "UNKNOWN"
             }.split(" ")
-            standardOutput = byteOut
         }
-        String(byteOut.toByteArray()).trim()
+        output.standardOutput.asText.get().trim()
     } catch (e: Exception) {
         // Unlike before, allow the build to continue without Git
         logger.warn("Unable to get Git information: ${e.message}." +
