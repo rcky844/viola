@@ -9,7 +9,10 @@ import tipz.viola.download.providers.InternalDownloadProvider
 
 class VJavaScriptInterface(private val activity: VWebViewActivity) {
     @JavascriptInterface
-    fun getProductBuildTag(): String = BuildInfo().getProductBuildTag() ?: ""
+    fun getProductVersion(): String = BuildInfo().productVersion
+
+    @JavascriptInterface
+    fun getProductBuildTag(): String = BuildInfo().getProductBuildTag()
 
     // Internal DownloadProvider
     @JavascriptInterface
