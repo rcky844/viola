@@ -10,10 +10,12 @@ import java.util.Locale
 
 fun HttpURLConnection.getCharset(defaultEncoding: String) = contentEncoding?.let {
     return Charset.forName(it)
-} ?: contentType.split(";").toTypedArray().map { str ->
-    str.trim { it <= ' ' }
-}.firstOrNull {
-    it.lowercase(Locale.US).startsWith("charset=")
-}?.let {
-    Charset.forName(it.substring(8))
+} ?: contentType.takeUnless { it == null }?.let { type ->
+    type.split(";").toTypedArray().map { str ->
+        str.trim { it <= ' ' }
+    }.firstOrNull {
+        it.lowercase(Locale.US).startsWith("charset=")
+    }?.let {
+        Charset.forName(it.substring(8))
+    }
 } ?: Charset.forName(defaultEncoding)
