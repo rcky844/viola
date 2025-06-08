@@ -156,7 +156,7 @@ dependencies {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
     }
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.webkit:webkit:1.13.0")
+    implementation("androidx.webkit:webkit:1.14.0")
     annotationProcessor("androidx.annotation:annotation:1.9.1")
 
     // AndroidX Room
