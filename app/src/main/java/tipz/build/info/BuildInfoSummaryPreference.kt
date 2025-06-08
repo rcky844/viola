@@ -52,9 +52,7 @@ class BuildInfoSummaryPreference(
         }
 
         var productBuildExtra = buildInfo.productBuildExtra
-        productBuildExtra =
-            if (productBuildExtra!!.isEmpty()) ""
-            else " - $productBuildExtra"
+        productBuildExtra = if (productBuildExtra.isEmpty()) "" else " - $productBuildExtra"
 
         val textVersion = context.resources.getString(
             R.string.buildinfo_version,
