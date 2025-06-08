@@ -34,6 +34,9 @@ class BuildInfoSummaryPreference(
         super.onBindViewHolder(holder)
         binding = PreferenceBuildInfoSummaryBinding.bind(holder.itemView)
 
+        // Prevent clicking / ripple animation
+        holder.itemView.isClickable = false
+
         // Set-up views
         val aboutText = binding.aboutText
         val changelogBtn = binding.changelogBtn
