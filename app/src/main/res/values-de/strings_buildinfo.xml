@@ -22,7 +22,7 @@
     <!-- Build Info: License button -->
     <string name="buildinfo_license_button">Lizenz</string>
     <!-- Build Info: Changelog button -->
-    <string name="buildinfo_changelog_button">Read ChangeLogs</string>
+    <string name="buildinfo_changelog_button">Lese Changelogs</string>
     <!-- Build Info: Website title -->
     <string name="pref_website_title">Webseite</string>
     <!-- Build Info: Website summary -->
@@ -36,7 +36,7 @@
     <!-- Build Info: Source code summary -->
     <string name="pref_source_code_summary">"Sehen Sie sich den Quellcode von Viola an."</string>
     <!-- Build Info: Build information title -->
-    <string name="buildinfo_pref_build_info_title">Build information</string>
+    <string name="buildinfo_pref_build_info_title">Build Information</string>
     <!-- Build Info: Build information summary -->
-    <string name="buildinfo_pref_build_info_summary">Tag: %1$s\nBranch (revision): %2$s (%3$s)\nTimestamp: %4$s</string>
+    <string name="buildinfo_pref_build_info_summary">Tag: %1$s\nBranch (Revision): %2$s (%3$s)\nZeitstempel: %4$s</string>
 </resources>
