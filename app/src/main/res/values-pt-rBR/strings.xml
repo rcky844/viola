@@ -72,7 +72,7 @@
     <!-- WebView: SSL certificate unknown -->
     <string name="ssl_certificate_unknown">Ocorreu um erro de SSL desconhecido.</string>
     <!-- WebView: SSL handshake failed dialog title -->
-    <string name="dialog_ssl_failed_handshake_title">Falha ao realizar o handshake SSL. O carregamento da página ainda pode ser possível ao trocar para HTTP.</string>
+    <string name="dialog_ssl_failed_handshake_title">Falhou ao realizar comprimento SSL. A página talvez carregue ao alterar para HTTP.</string>
     <!-- WebView: Insecure HTTP connection dialog title -->
     <string name="dialog_insecure_connection_title">Conexão insegura</string>
     <!-- WebView: Insecure HTTP connection dialog message -->
@@ -86,21 +86,21 @@
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">Abrir</string>
     <!-- Address bar: Hint -->
-    <string name="address_bar_hint">Pesquisar ou digite o endereço Web…</string>
+    <string name="address_bar_hint">Buscar ou inserir endereço de site…</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">Copiar texto do link</string>
     <!-- Hit Test Dialog: Download link -->
     <string name="hit_test_download_link">Link de download</string>
     <!-- Hit Test Dialog: Download image -->
-    <string name="hit_test_download_image">Baixar imagem</string>
+    <string name="hit_test_download_image">Realizar download da imagem</string>
     <!-- Hit Test Dialog: Copy image link -->
     <string name="hit_test_copy_image_link">Copiar link da imagem</string>
     <!-- Hit Test Dialog: Search for similar images -->
-    <string name="hit_test_search_image">Pesquisar por imagens semelhantes</string>
+    <string name="hit_test_search_image">Buscar imagens semelhantes</string>
     <!-- Hit Test Dialog: Open in new tab -->
-    <string name="hit_test_open_in_new_tab">Abrir em uma nova aba</string>
+    <string name="hit_test_open_in_new_tab">Abrir numa nova aba</string>
     <!-- Hit Test Dialog: Share link -->
-    <string name="hit_test_share_link">Compartilhar Link</string>
+    <string name="hit_test_share_link">Compartilhar link</string>
     <!-- SSL Lock Dialog: Issued to -->
     <string name="ssl_info_dialog_issued_to">Emitido para:</string>
     <!-- SSL Lock Dialog: Issued by -->
@@ -118,19 +118,19 @@
     <!-- SSL Lock Dialog: Expires On -->
     <string name="ssl_info_dialog_expires_on">Expira em</string>
     <!-- SSL Lock Dialog: No certificate message -->
-    <string name="ssl_info_dialog_content_nocert">Este site parece não fornecer um certificado SSL. Não entretenha solicitações de informações confidenciais (por exemplo, senhas ou cartões de crédito).</string>
+    <string name="ssl_info_dialog_content_nocert">Este site aparenta não suprir um certificado SSL. Não busque clicar em solicitações de dados pessoais (p. e.x.: senhas ou cartões de crédito).</string>
     <!-- HTTP Authentication Dialog: Title -->
-    <string name="dialog_auth_title">Autenticação necessária</string>
+    <string name="dialog_auth_title">Requer uma autenticação</string>
     <!-- HTTP Authentication Dialog: Message -->
-    <string name="dialog_auth_message">%s precisa de um nome de usuário e senha.</string>
+    <string name="dialog_auth_message">%s requer um nome de usuário e senha.</string>
     <!-- HTTP Authentication Dialog: Username -->
-    <string name="dialog_auth_username">Nome de Usuário</string>
+    <string name="dialog_auth_username">Nome de usuário</string>
     <!-- HTTP Authentication Dialog: Password -->
     <string name="dialog_auth_password">Senha</string>
     <!-- Toolbar: Share dialog title -->
     <string name="dialog_share_title">Compartilhar URL usando</string>
     <!-- Expandable toolbar: New Tab -->
-    <string name="toolbar_expandable_new_tab">Nova Aba</string>
+    <string name="toolbar_expandable_new_tab">Nova aba</string>
     <!-- Expandable toolbar: Favorites -->
     <string name="toolbar_expandable_favorites">Favoritos</string>
     <!-- Expandable toolbar: History -->
@@ -138,21 +138,21 @@
     <!-- Expandable toolbar: Viewing Mode -->
     <string name="toolbar_expandable_viewport">Modo de visualização</string>
     <!-- Expandable toolbar: Find in page -->
-    <string name="toolbar_expandable_find">Encontrar na página</string>
+    <string name="toolbar_expandable_find">Buscar dentro da página</string>
     <!-- Expandable toolbar: Add to favorites -->
-    <string name="toolbar_expandable_favorites_add">Adicionar aos Favoritos</string>
+    <string name="toolbar_expandable_favorites_add">Favoritar</string>
     <!-- Expandable toolbar: Translate -->
     <string name="toolbar_expandable_translate">Traduzir</string>
     <!-- Expandable toolbar: Downloads -->
     <string name="toolbar_expandable_downloads">Downloads</string>
     <!-- Expandable toolbar: Enter full screen -->
-    <string name="toolbar_expandable_fullscreen">Entrar em tela cheia</string>
+    <string name="toolbar_expandable_fullscreen">Abrir em tela cheia</string>
     <!-- Expandable toolbar: Create shortcut -->
-    <string name="toolbar_expandable_app_shortcut">Criar um atalho</string>
+    <string name="toolbar_expandable_app_shortcut">Criar atalho</string>
     <!-- Expandable toolbar: Settings -->
-    <string name="toolbar_expandable_settings">Configurações</string>
+    <string name="toolbar_expandable_settings">Ajustes</string>
     <!-- Expandable toolbar: View Page Source -->
-    <string name="toolbar_expandable_view_page_source">Exibir código-fonte da página</string>
+    <string name="toolbar_expandable_view_page_source">Visualizar fonte da página</string>
     <!-- Expandable toolbar: Print -->
     <string name="toolbar_expandable_print">Imprimir</string>
     <!-- Expandable toolbar: Close app -->
@@ -162,17 +162,17 @@
     <!-- Viewing mode: Current user agent property -->
     <string name="viewing_mode_current_user_agent">Agente de usuário atual</string>
     <!-- Viewing mode: Wide viewport mode -->
-    <string name="viewing_mode_wide_viewport_mode">Ativar modo de visualização ampla</string>
+    <string name="viewing_mode_wide_viewport_mode">Ativar visualização larga</string>
     <!-- Translate: Page language -->
-    <string name="dialog_translate_page_lang">Idioma da página (ex: zh-TW)</string>
+    <string name="dialog_translate_page_lang">Idioma da página (p. e.x.: zh-TW)</string>
     <!-- Translate: Target language -->
-    <string name="dialog_translate_target_lang">Idioma de destino (ex. en)</string>
+    <string name="dialog_translate_target_lang">Idioma de tradução (ex. en)</string>
     <!-- Fullscreen: Warning dialog title -->
-    <string name="dialog_fullscreen_title">Modo Tela cheia</string>
+    <string name="dialog_fullscreen_title">Modo em tela cheia</string>
     <!-- Fullscreen: Warning dialog message -->
-    <string name="dialog_fullscreen_message">Você entrou no modo tela cheia. Saia tocando duas vezes o botão no canto inferior direito da tela.</string>
+    <string name="dialog_fullscreen_message">Você está em tela cheia. Saia ao clicar duas vezes no botão no canto inferior direito de sua tela.</string>
     <!-- Shortcuts: Browser Access -->
-    <string name="shortcuts_menu_browser">Acesso ao Navegador</string>
+    <string name="shortcuts_menu_browser">Acesso ao navegador</string>
     <!-- Shortcuts: Custom Tabs -->
     <string name="shortcuts_menu_custom_tabs">Abas personalizadas</string>
     <!-- Shortcuts: Web App -->
@@ -180,7 +180,7 @@
     <!-- Console: Dialog title -->
     <string name="console_dialog_title">Console</string>
     <!-- Console: Enabled toast -->
-    <string name="console_toast_enabled">Log do console foi ativado!</string>
+    <string name="console_toast_enabled">Ativado o registro do console!</string>
     <!-- Console: Disable logging -->
     <string name="console_logging_disable">Desativar</string>
     <!-- Console: No logs -->
