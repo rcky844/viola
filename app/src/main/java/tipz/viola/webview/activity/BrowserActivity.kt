@@ -75,6 +75,7 @@ import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.SettingsActivity
 import tipz.viola.utils.UpdateService
+import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.activity.components.AddressBarView
@@ -308,7 +309,23 @@ class BrowserActivity : VWebViewActivity() {
 
         // Finally, load homepage
         intent.data.takeUnless { it == null }?.let {
-            webview.loadUrl(it.toString())
+            // Check whether input data is JavaScript and warn
+            // the user if so to get their confirmation.
+            // Reference: CVE-2023-42471
+            if (UrlUtils.UriScheme.SCHEME_JAVASCRIPT.prefix.let { js ->
+                it.scheme.takeUnless { it == null }?.equals(js) ?: it.toString().startsWith(js)
+            }) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.dialog_js_cewarn_title)
+                    .setMessage(R.string.dialog_js_cewarn_message)
+                    .setPositiveButton(R.string.text_yes) { _, _ ->
+                        webview.loadUrl(it.toString())
+                    }
+                    .setNegativeButton(R.string.text_no, null)
+                    .create().show()
+            } else {
+                webview.loadUrl(it.toString())
+            }
         } ?: webview.loadHomepage()
     }
 
