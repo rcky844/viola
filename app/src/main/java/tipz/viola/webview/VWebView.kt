@@ -8,7 +8,6 @@ package tipz.viola.webview
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,7 +18,6 @@ import android.util.Log
 import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
-import android.webkit.WebIconDatabase
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.appcompat.widget.AppCompatImageView
@@ -156,13 +154,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             onPageLoadProgressChanged(0)
         }
 
+        // Features for legacy
+        WebkitCompat.setDefaultsForCompat(this)
+
         // JavaScript interface
         addJavascriptInterface(VJavaScriptInterface(activity), VJavaScriptInterface.INTERFACE_NAME)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            removeJavascriptInterface("searchBoxJavaBridge_") /* CVE-2014-1939 */
-            removeJavascriptInterface("accessibility") /* CVE-2014-7224 */
-            removeJavascriptInterface("accessibilityTraversal") /* CVE-2014-7224 */
-        }
 
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
@@ -199,11 +195,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             WebViewCompat.setWebViewRenderProcessClient(
                 this, VWebViewRenderProcessClient(this)
             )
-        }
-
-        // Favicon
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            WebIconDatabase.getInstance().open(context.getDir("icons", MODE_PRIVATE).path)
         }
 
         /* Hit Test Menu */
