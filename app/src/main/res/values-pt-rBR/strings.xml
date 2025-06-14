@@ -12,9 +12,9 @@
     <!-- Generic: Switch Off -->
     <string name="text_off">Desativado</string>
     <!-- Generic: Yes -->
-    <string name="text_yes">Yes</string>
+    <string name="text_yes">Sim</string>
     <!-- Generic: No -->
-    <string name="text_no">No</string>
+    <string name="text_no">Não</string>
     <!-- Generic: Path -->
     <string name="path">Caminho</string>
     <!-- Generic: Path not found -->
@@ -92,9 +92,9 @@
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Buscar ou inserir endereço de site…</string>
     <!-- Browser: JavaScript code execution warning dialog title -->
-    <string name="dialog_js_cewarn_title">JavaScript execution warning</string>
+    <string name="dialog_js_cewarn_title">Aviso de execução JavaScript</string>
     <!-- Browser: JavaScript code execution warning dialog message -->
-    <string name="dialog_js_cewarn_message">Someone is attempting to execute unknown JavaScript code in this browser tab. If this was not you, please cancel execution.\n\nDo you want to continue execution?</string>
+    <string name="dialog_js_cewarn_message">Alguém está tentando executar um código JavaScript desconhecido neste navegador. Se não for você, deseja cancelar a execução.\n\nVocê deseja continuar a execução?</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">Copiar texto do link</string>
     <!-- Hit Test Dialog: Download link -->
