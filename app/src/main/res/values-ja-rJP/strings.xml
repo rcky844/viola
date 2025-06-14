@@ -4,7 +4,7 @@
 -->
 <resources>
     <!-- Generic: Clear -->
-    <string name="clear">Xóa</string>
+    <string name="clear">Clear</string>
     <!-- Generic: Do not show again -->
     <string name="do_not_show_again">Do not show again</string>
     <!-- Generic: Switch On -->
@@ -24,57 +24,57 @@
     <!-- Generic: Reset -->
     <string name="reset">Reset</string>
     <!-- Generic - Defaults: Search engine -->
-    <string name="search_engine">Công cụ tìm kiếm</string>
+    <string name="search_engine">Search engine</string>
     <!-- Generic - Defaults: Homepage -->
-    <string name="homepage">Trang chủ</string>
+    <string name="homepage">Homepage</string>
     <!-- Generic - Defaults: Search Suggestions -->
-    <string name="search_suggestions_title">Đề xuất tìm kiếm</string>
+    <string name="search_suggestions_title">Search Suggestions</string>
     <!-- Toasts: No WebView -->
-    <string name="toast_no_webview">WebView cần thiết nhưng chưa được cài đặt.</string>
+    <string name="toast_no_webview">WebView is required but not installed.</string>
     <!-- Toasts: Cleared -->
-    <string name="toast_cleared">Xóa %s thành công!</string>
+    <string name="toast_cleared">Cleared successfully!</string>
     <!-- Toasts: Copied to clipboard -->
-    <string name="toast_copied_clipboard">Đã sao chép vào bảng nhớ tạm!</string>
+    <string name="toast_copied_clipboard">Copied to clipboard!</string>
     <!-- Toasts: Saved -->
-    <string name="save_successful">Lưu thành công!</string>
+    <string name="save_successful">Saved successfully!</string>
     <!-- Dialogs: Continue prompt message -->
-    <string name="dialog_continue_prompt_message">Bạn có muốn tiếp tục?</string>
+    <string name="dialog_continue_prompt_message">Are you sure you want to continue?</string>
     <!-- Menus: Copy link -->
-    <string name="menu_copy_link">Sao chép liên kết</string>
+    <string name="menu_copy_link">Copy link</string>
     <!-- WebView: Start page -->
-    <string name="start_page">Trang bắt đầu</string>
+    <string name="start_page">Start Page</string>
     <!-- WebView: No app to handle action -->
-    <string name="toast_no_app_to_handle">Không ứng dụng nào có thể xử lý hành động này.</string>
+    <string name="toast_no_app_to_handle">No application can handle this action.</string>
     <!-- WebView: JavaScript dialog title -->
-    <string name="dialog_js_title">%s nói</string>
+    <string name="dialog_js_title">%s says</string>
     <!-- WebView: JavaScript leave page dialog title -->
-    <string name="dialog_js_leave_page_title">%s nói, bạn có muốn rời khỏi trang này không?</string>
+    <string name="dialog_js_leave_page_title">%s says, do you want to leave this page?</string>
     <!-- WebView: JavaScript page unresponsive title -->
-    <string name="dialog_page_unresponsive_title">Trang không phản hồi</string>
+    <string name="dialog_page_unresponsive_title">Page Unresponsive</string>
     <!-- WebView: JavaScript page unresponsive message -->
-    <string name="dialog_page_unresponsive_message">Bạn có thể đợi nó trở nên phản hồi hoặc chấm dứt tab này.</string>
+    <string name="dialog_page_unresponsive_message">You can wait for it to become responsive or terminate this tab.</string>
     <!-- WebView: JavaScript page unresponsive wait -->
-    <string name="dialog_page_unresponsive_wait">Đợi</string>
+    <string name="dialog_page_unresponsive_wait">Wait</string>
     <!-- WebView: JavaScript page unresponsive terminate -->
-    <string name="dialog_page_unresponsive_terminate">Hủy bỏ</string>
+    <string name="dialog_page_unresponsive_terminate">Terminate</string>
     <!-- WebView: SSL certification error dialog title -->
-    <string name="ssl_certificate_error_dialog_title">Lỗi chứng chỉ SSL</string>
+    <string name="ssl_certificate_error_dialog_title">SSL Certificate Error</string>
     <!-- WebView: SSL certification error dialog message -->
-    <string name="ssl_certificate_error_dialog_message">%s Bạn có muốn đi tiếp?</string>
+    <string name="ssl_certificate_error_dialog_message">%s Do you want to continue anyway?</string>
     <!-- WebView: SSL certificate date invalid -->
-    <string name="ssl_certificate_date_invalid">Ngày của chứng chỉ SSL không hợp lệ.</string>
+    <string name="ssl_certificate_date_invalid">The date of the certificate is invalid.</string>
     <!-- WebView: SSL certificate invalid -->
-    <string name="ssl_certificate_invalid">Chứng chỉ SSL không hợp lệ.</string>
+    <string name="ssl_certificate_invalid">A generic SSL error occurred.</string>
     <!-- WebView: SSL certificate expired -->
-    <string name="ssl_certificate_expired">Chứng chỉ SSL đã hết hạn.</string>
+    <string name="ssl_certificate_expired">The certificate has expired.</string>
     <!-- WebView: SSL certificate hostname mismatch -->
-    <string name="ssl_certificate_idmismatch">Tên máy chủ không khớp với chứng chỉ SSL.</string>
+    <string name="ssl_certificate_idmismatch">The certificate hostname mismatch.</string>
     <!-- WebView: SSL certificate not yet valid -->
-    <string name="ssl_certificate_notyetvalid">Chứng chỉ SSL chưa tới thời gian hợp lệ.</string>
+    <string name="ssl_certificate_notyetvalid">The certificate is not yet valid.</string>
     <!-- WebView: SSL certificate authority not trusted -->
-    <string name="ssl_certificate_untrusted">Chứng chỉ SSL không đáng tin cậy.</string>
+    <string name="ssl_certificate_untrusted">The certificate authority is not trusted.</string>
     <!-- WebView: SSL certificate unknown -->
-    <string name="ssl_certificate_unknown">Lỗi SSL không xác định.</string>
+    <string name="ssl_certificate_unknown">An unknown SSL error occurred.</string>
     <!-- WebView: SSL handshake failed dialog title -->
     <string name="dialog_ssl_failed_handshake_title">Failed to perform SSL handshake. Page load may still be possible by downgrading to HTTP.</string>
     <!-- WebView: Insecure HTTP connection dialog title -->
@@ -90,87 +90,87 @@
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">Open</string>
     <!-- Address bar: Hint -->
-    <string name="address_bar_hint">Tìm kiếm hoặc nhập địa chỉ web…</string>
+    <string name="address_bar_hint">Search or type web address…</string>
     <!-- Browser: JavaScript code execution warning dialog title -->
     <string name="dialog_js_cewarn_title">JavaScript execution warning</string>
     <!-- Browser: JavaScript code execution warning dialog message -->
     <string name="dialog_js_cewarn_message">Someone is attempting to execute unknown JavaScript code in this browser tab. If this was not you, please cancel execution.\n\nDo you want to continue execution?</string>
     <!-- Hit Test Dialog: Copy link text -->
-    <string name="hit_test_copy_link_text">Sao chép văn bản liên kết</string>
+    <string name="hit_test_copy_link_text">Copy link text</string>
     <!-- Hit Test Dialog: Download link -->
-    <string name="hit_test_download_link">Tải xuống liên kết</string>
+    <string name="hit_test_download_link">Download link</string>
     <!-- Hit Test Dialog: Download image -->
-    <string name="hit_test_download_image">Tải hình ảnh xuống</string>
+    <string name="hit_test_download_image">Download image</string>
     <!-- Hit Test Dialog: Copy image link -->
-    <string name="hit_test_copy_image_link">Sao chép liên kết hình ảnh</string>
+    <string name="hit_test_copy_image_link">Copy image link</string>
     <!-- Hit Test Dialog: Search for similar images -->
-    <string name="hit_test_search_image">Tìm kiếm các hình ảnh tương tự</string>
+    <string name="hit_test_search_image">Search for similar images</string>
     <!-- Hit Test Dialog: Open in new tab -->
-    <string name="hit_test_open_in_new_tab">Mở bằng tab mới</string>
+    <string name="hit_test_open_in_new_tab">Open in new tab</string>
     <!-- Hit Test Dialog: Share link -->
-    <string name="hit_test_share_link">Chia sẻ liên kết</string>
+    <string name="hit_test_share_link">Share link</string>
     <!-- SSL Lock Dialog: Issued to -->
-    <string name="ssl_info_dialog_issued_to">Cấp cho:</string>
+    <string name="ssl_info_dialog_issued_to">Issued To:</string>
     <!-- SSL Lock Dialog: Issued by -->
-    <string name="ssl_info_dialog_issued_by">Cấp bởi:</string>
+    <string name="ssl_info_dialog_issued_by">Issued By:</string>
     <!-- SSL Lock Dialog: Validity Period -->
-    <string name="ssl_info_dialog_validity_period">Thời hạn hiệu lực:</string>
+    <string name="ssl_info_dialog_validity_period">Validity Period:</string>
     <!-- SSL Lock Dialog: Common Name -->
-    <string name="ssl_info_dialog_common_name">Tên phổ biến (CN)</string>
+    <string name="ssl_info_dialog_common_name">Common Name (CN)</string>
     <!-- SSL Lock Dialog: Organization -->
-    <string name="ssl_info_dialog_organization">Tổ chức (O)</string>
+    <string name="ssl_info_dialog_organization">Organization (O)</string>
     <!-- SSL Lock Dialog: Organizational Unit -->
-    <string name="ssl_info_dialog_organization_unit">Đơn vị tổ chức (OU)</string>
+    <string name="ssl_info_dialog_organization_unit">Organizational Unit (OU)</string>
     <!-- SSL Lock Dialog: Issued On -->
-    <string name="ssl_info_dialog_issued_on">Cấp vào</string>
+    <string name="ssl_info_dialog_issued_on">Issued On</string>
     <!-- SSL Lock Dialog: Expires On -->
-    <string name="ssl_info_dialog_expires_on">Hết hạn vào</string>
+    <string name="ssl_info_dialog_expires_on">Expires On</string>
     <!-- SSL Lock Dialog: No certificate message -->
     <string name="ssl_info_dialog_content_nocert">This website does not appear to supply a SSL certificate. Do not entertain requests for sensitive information (e.g. passwords or credit cards).</string>
     <!-- HTTP Authentication Dialog: Title -->
-    <string name="dialog_auth_title">Yêu cầu xác thực</string>
+    <string name="dialog_auth_title">Authentication required</string>
     <!-- HTTP Authentication Dialog: Message -->
-    <string name="dialog_auth_message">%s yêu cầu tên người dùng và mật khẩu.</string>
+    <string name="dialog_auth_message">%s requires a username and password.</string>
     <!-- HTTP Authentication Dialog: Username -->
-    <string name="dialog_auth_username">Tên Người Dùng</string>
+    <string name="dialog_auth_username">Username</string>
     <!-- HTTP Authentication Dialog: Password -->
-    <string name="dialog_auth_password">Mật Khẩu</string>
+    <string name="dialog_auth_password">Password</string>
     <!-- Toolbar: Share dialog title -->
-    <string name="dialog_share_title">Chia sẻ URL bằng</string>
+    <string name="dialog_share_title">Share URL using</string>
     <!-- Expandable toolbar: New Tab -->
-    <string name="toolbar_expandable_new_tab">Tab mới</string>
+    <string name="toolbar_expandable_new_tab">New Tab</string>
     <!-- Expandable toolbar: Favorites -->
-    <string name="toolbar_expandable_favorites">Yêu thích</string>
+    <string name="toolbar_expandable_favorites">Favorites</string>
     <!-- Expandable toolbar: History -->
-    <string name="toolbar_expandable_history">Lịch sử</string>
+    <string name="toolbar_expandable_history">History</string>
     <!-- Expandable toolbar: Viewing Mode -->
-    <string name="toolbar_expandable_viewport">Chế độ xem</string>
+    <string name="toolbar_expandable_viewport">Viewing mode</string>
     <!-- Expandable toolbar: Find in page -->
     <string name="toolbar_expandable_find">Find in page</string>
     <!-- Expandable toolbar: Add to favorites -->
-    <string name="toolbar_expandable_favorites_add">Thêm vào yêu thích</string>
+    <string name="toolbar_expandable_favorites_add">Add to favorites</string>
     <!-- Expandable toolbar: Translate -->
-    <string name="toolbar_expandable_translate">Dịch</string>
+    <string name="toolbar_expandable_translate">Translate</string>
     <!-- Expandable toolbar: Downloads -->
-    <string name="toolbar_expandable_downloads">Tải xuống</string>
+    <string name="toolbar_expandable_downloads">Downloads</string>
     <!-- Expandable toolbar: Enter full screen -->
     <string name="toolbar_expandable_fullscreen">Enter full screen</string>
     <!-- Expandable toolbar: Create shortcut -->
-    <string name="toolbar_expandable_app_shortcut">Tạo lối tắt</string>
+    <string name="toolbar_expandable_app_shortcut">Create shortcut</string>
     <!-- Expandable toolbar: Settings -->
-    <string name="toolbar_expandable_settings">Cài đặt</string>
+    <string name="toolbar_expandable_settings">Settings</string>
     <!-- Expandable toolbar: View Page Source -->
-    <string name="toolbar_expandable_view_page_source">Xem nguồn trang</string>
+    <string name="toolbar_expandable_view_page_source">View Page Source</string>
     <!-- Expandable toolbar: Print -->
-    <string name="toolbar_expandable_print">In</string>
+    <string name="toolbar_expandable_print">Print</string>
     <!-- Expandable toolbar: Close app -->
-    <string name="toolbar_expandable_close">Đóng ứng dụng</string>
+    <string name="toolbar_expandable_close">Close app</string>
     <!-- Viewing mode: Custom user agent dialog title -->
-    <string name="viewing_mode_custom_user_agent">User Agent tùy chỉnh</string>
+    <string name="viewing_mode_custom_user_agent">Custom User Agent</string>
     <!-- Viewing mode: Current user agent property -->
     <string name="viewing_mode_current_user_agent">Current user agent</string>
     <!-- Viewing mode: Wide viewport mode -->
-    <string name="viewing_mode_wide_viewport_mode">Bật chế độ xem rộng</string>
+    <string name="viewing_mode_wide_viewport_mode">Enable wide viewport mode</string>
     <!-- Translate: Page language -->
     <string name="dialog_translate_page_lang">Page Language (e.g. zh-TW)</string>
     <!-- Translate: Target language -->
@@ -180,11 +180,11 @@
     <!-- Fullscreen: Warning dialog message -->
     <string name="dialog_fullscreen_message">You have entered fullscreen mode. Exit by double tapping the button at the right bottom corner of your screen.</string>
     <!-- Shortcuts: Browser Access -->
-    <string name="shortcuts_menu_browser">Truy cập trình duyệt</string>
+    <string name="shortcuts_menu_browser">Browser Access</string>
     <!-- Shortcuts: Custom Tabs -->
-    <string name="shortcuts_menu_custom_tabs">Tab tùy chỉnh</string>
+    <string name="shortcuts_menu_custom_tabs">Custom Tabs</string>
     <!-- Shortcuts: Web App -->
-    <string name="shortcuts_menu_webapp">ứng dụng web</string>
+    <string name="shortcuts_menu_webapp">Web App</string>
     <!-- Console: Dialog title -->
     <string name="console_dialog_title">Console</string>
     <!-- Console: Enabled toast -->
@@ -194,7 +194,7 @@
     <!-- Console: No logs -->
     <string name="console_logging_none">No logs</string>
     <!-- Settings: Title -->
-    <string name="settings_title">Cài đặt</string>
+    <string name="settings_title">Settings</string>
     <!-- Settings: Main: Basics category -->
     <string name="pref_main_category_basics">Basics</string>
     <!-- Settings: Main: Home title -->
@@ -206,7 +206,7 @@
     <!-- Settings: Main: Appearance title -->
     <string name="pref_main_appearance">Appearance</string>
     <!-- Settings: Main: Advanced category -->
-    <string name="pref_main_category_advanced">Nâng cao</string>
+    <string name="pref_main_category_advanced">Advanced</string>
     <!-- Expandable toolbar: Downloads -->
     <string name="pref_main_downloads">Downloads</string>
     <!-- Expandable toolbar: Web features -->
@@ -214,19 +214,19 @@
     <!-- Settings: Main: Updates and version category -->
     <string name="pref_main_category_updates_version">Updates and version</string>
     <!-- Settings: Main: Check for updates title -->
-    <string name="pref_check_for_updates_title">Tìm bản cập nhật mới</string>
+    <string name="pref_check_for_updates_title">Check for Updates</string>
     <!-- Settings: Main: Check for updates summary -->
-    <string name="pref_check_for_updates_summary">Kiểm tra bản cập nhật mới và cho phép bạn tải xuống nếu có.</string>
+    <string name="pref_check_for_updates_summary">Check for new update and allow you to download it if one is available.</string>
     <!-- Settings: Main: About title -->
-    <string name="pref_about_title">Giới thiệu</string>
+    <string name="pref_about_title">About</string>
     <!-- Settings: Search: Default Search Engine category title -->
     <string name="pref_search_category_engine_title">Default search engine</string>
     <!-- Settings: Search: Default Search Engine category summary -->
     <string name="pref_search_category_engine_summary">This is your default search engine in the address bar. You can switch it at any time.</string>
     <!-- Settings: Search: Use web-based homepage title -->
-    <string name="pref_use_web_homepage_title">Sử dụng trang chủ dựa trên web</string>
+    <string name="pref_use_web_homepage_title">Use web-based homepage</string>
     <!-- Settings: Search: Use web-based homepage summary -->
-    <string name="pref_use_web_homepage_summary">Mở một trang web thay vì trang bắt đầu làm trang chủ.</string>
+    <string name="pref_use_web_homepage_summary">Open a webpage instead of start page as homepage.</string>
     <!-- Settings: Search: Search Suggestions category summary -->
     <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
@@ -234,7 +234,7 @@
     <!-- Settings: Privacy and security: Ad blocking category title -->
     <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
-    <string name="pref_ps_category_ad_blocking_summary">Chặn các quảng cáo khó chịu.</string>
+    <string name="pref_ps_category_ad_blocking_summary">Stop annoying ads from distracting you.</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
@@ -242,13 +242,13 @@
     <!-- Settings: Privacy and security: Privacy category -->
     <string name="pref_ps_category_privacy">Privacy</string>
     <!-- Settings: Privacy: Do Not Track title -->
-    <string name="pref_do_not_track_title">Không Theo Dõi</string>
+    <string name="pref_do_not_track_title">Do Not Track</string>
     <!-- Settings: Privacy: Do Not Track summary -->
-    <string name="pref_do_not_track_summary">Gửi một yêu cầu Không Theo Dõi các trang web bạn truy cập.</string>
+    <string name="pref_do_not_track_summary">Send a Do Not Track request to websites you visit.</string>
     <!-- Settings: Privacy: Send GPC title -->
-    <string name="pref_send_sec_gpc_title">Kiểm soát quyền riêng tư toàn cầu</string>
+    <string name="pref_send_sec_gpc_title">Global Privacy Control</string>
     <!-- Settings: Privacy: Send GPC summary -->
-    <string name="pref_send_sec_gpc_summary">Cho phép bán hoặc chia sẻ thông tin cá nhân của bạn với bên thứ ba trên các trang web bạn truy cập </string>
+    <string name="pref_send_sec_gpc_summary">Enable to consent to the selling or sharing of your personal information on websites you visit with third parties.</string>
     <!-- Settings: Privacy: Enable history storage title -->
     <string name="pref_enable_history_title">Use history storage</string>
     <!-- Settings: Privacy: Enable history storage summary -->
@@ -256,15 +256,15 @@
     <!-- Settings: Privacy: Clear browsing data title -->
     <string name="pref_clear_browsing_data">Clear browsing data</string>
     <!-- Settings: Privacy: Reset to default title -->
-    <string name="pref_reset_to_default_title">Đặt lại về mặc định</string>
+    <string name="pref_reset_to_default_title">Reset to default</string>
     <!-- Settings: Privacy: Reset to default summary -->
-    <string name="pref_reset_to_default_summary">Xóa toàn bộ dữ liệu trình duyệt.</string>
+    <string name="pref_reset_to_default_summary">Clear all browser data.</string>
     <!-- Settings: Privacy and security: Security category -->
     <string name="pref_ps_category_security">Security</string>
     <!-- Settings: Security: Enforce HTTPS title -->
-    <string name="pref_enforce_https_title">Thực thi HTTPS</string>
+    <string name="pref_enforce_https_title">Always use secure connections</string>
     <!-- Settings: Security: Enforce HTTPS summary -->
-    <string name="pref_enforce_https_summary">Luôn truy cập các trang web sử dụng HTTPS để tăng cường bảo mật. (Thực nghiệm)</string>
+    <string name="pref_enforce_https_summary">Use HTTPS whenever possible and receive a warning before loading sites that don\'t support it.</string>
     <!-- Settings: Security: Enable Google's Safe Browsing title -->
     <string name="pref_google_safe_browsing_title">Google Safe Browsing</string>
     <!-- Settings: Security: Enable Google's Safe Browsing summary -->
@@ -274,11 +274,11 @@
     <!-- Settings: Appearance: System default -->
     <string name="pref_theme_system_default">Automatic</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_light">Sáng</string>
+    <string name="pref_theme_light">Light</string>
     <!-- Settings: Appearance: System default -->
-    <string name="pref_theme_dark">Tối</string>
+    <string name="pref_theme_dark">Dark</string>
     <!-- Settings: Appearance: Theme title -->
-    <string name="pref_theme_title">Chủ đề</string>
+    <string name="pref_theme_title">Theme</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <!-- Settings: Use web content force dark summary -->
@@ -286,33 +286,33 @@
     <!-- Settings: Start page wallpaper title -->
     <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
     <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">Hiện tại: %s</string>
+    <string name="pref_start_page_wallpaper_summary">Current: %s</string>
     <!-- Settings: Appearance: User interface category -->
     <string name="pref_appearance_ui_category">User interface</string>
     <!-- Settings: Appearance: Show favicon title -->
-    <string name="pref_show_favicon">Hiện favicon</string>
+    <string name="pref_show_favicon">Show favicon</string>
     <!-- Settings: Appearance: Show favicon summary -->
-    <string name="pref_show_favicon_summary">Hiện favicon của trang web bên cạnh thanh địa chỉ trang web.</string>
+    <string name="pref_show_favicon_summary">Show the favicon of the webpage next to the address bar.</string>
     <!-- Settings: Appearance: Reach mode title -->
-    <string name="pref_reverse_address_bar_title">Chế độ tiệm cận</string>
+    <string name="pref_reverse_address_bar_title">Reach mode</string>
     <!-- Settings: Appearance: Reach mode summary -->
-    <string name="pref_reverse_address_bar_summary">Di chuyển các thành phần giao diện để sử dụng một tay dễ dàng hơn.</string>
+    <string name="pref_reverse_address_bar_summary">Relocate interface elements for easier one-hand usage.</string>
     <!-- Settings: Swipe to Refresh title -->
-    <string name="pref_enable_swipe_refresh_title">Kéo để làm mới</string>
+    <string name="pref_enable_swipe_refresh_title">Pull to Refresh</string>
     <!-- Settings: Swipe to Refresh summary -->
-    <string name="pref_enable_swipe_refresh_summary">Cho phép tải lại trang được kích hoạt bởi nội dung ghi đè theo chiều dọc.</string>
+    <string name="pref_enable_swipe_refresh_summary">Enable page reloads triggered by vertically overscrolling content.</string>
     <!-- Settings: Appearance: Update Recents icons and labels title -->
-    <string name="pref_update_recents_icon_title">Cập nhật biểu tượng và nhãn của các tab trong Gần đây</string>
+    <string name="pref_update_recents_icon_title">Update icon and label of tabs in Recents</string>
     <!-- Settings: Appearance: Update Recents icons and labels summary -->
-    <string name="pref_update_recents_icon_summary">Tự động cập nhật biểu tượng và nhãn của các tab trong Gần đây thành biểu tượng và nhãn của trang web.</string>
+    <string name="pref_update_recents_icon_summary">Automatically update the icon and label of tabs in Recents to that of the webpage.</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs title -->
-    <string name="pref_use_custom_tabs_title">Sử dụng tab tùy chỉnh</string>
+    <string name="pref_use_custom_tabs_title">Use Custom Tabs</string>
     <!-- Settings: Main - Advanced: Use Custom Tabs summary -->
     <string name="pref_use_custom_tabs_summary">Always open external links in Custom Tabs when it is opened from another application.</string>
     <!-- Settings: Main - Advanced: Data Saver title -->
-    <string name="pref_send_save_data_title">Tiết kiệm dữ liệu</string>
+    <string name="pref_send_save_data_title">Data Saver</string>
     <!-- Settings: Main - Advanced: Data Saver summary -->
-    <string name="pref_send_save_data_summary">Gửi yêu cầu tiết kiệm dữ liệu tới các trang web được hỗ trợ </string>
+    <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
     <!-- Settings: Downloads: Show download confirmation dialog title -->
     <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
@@ -324,7 +324,7 @@
     <!-- Settings: Web features: Enable JavaScript title -->
     <string name="pref_enable_javascript_title">JavaScript</string>
     <!-- Settings: Web features: Enable JavaScript summary -->
-    <string name="pref_enable_javascript_summary">Bật nút này sẽ cho phép chạy các nội dung JavaScript trên web.</string>
+    <string name="pref_enable_javascript_summary">Enabling this will allow JavaScript web content to load.</string>
     <!-- Settings: Web features: Enable Cookies title -->
     <string name="pref_enable_cookies_title">Cookies</string>
     <!-- Settings: Web features: Enable Cookies summary -->
@@ -350,71 +350,71 @@
     <!-- Settings: Development: Persistent console logging -->
     <string name="pref_always_on_logging">Persistent logging</string>
     <!-- Settings: Main: Select update channel title -->
-    <string name="pref_update_channel_title">Chọn kênh cập nhật</string>
+    <string name="pref_update_channel_title">Update channel</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">Định dạng:\n{query}: Truy vấn\n{language}: Ngôn ngữ</string>
+    <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>
     <!-- Settings - Wallpaper: Default -->
-    <string name="default_res">Mặc định</string>
+    <string name="default_res">Default</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
     <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
     <!-- Settings - Reset to Default: Dialog message -->
     <string name="dialog_settings_reset_to_default_message">This will clear all browser data\nAre you sure you want to continue?</string>
     <!-- Settings - Reset to Default: Toast message -->
-    <string name="toast_reset_complete">Đặt lại thành.</string>
+    <string name="toast_reset_complete">Reset completed successfully.</string>
     <!-- Updates: Latest version toast -->
-    <string name="toast_version_latest">Bạn đang chạy phiên bản mới nhất của Viola.</string>
+    <string name="toast_version_latest">You are currently running the latest version of Viola.</string>
     <!-- Updates: Network unavailable toast -->
-    <string name="toast_network_unavailable">Không có mạng.</string>
+    <string name="toast_network_unavailable">Network is unavailable.</string>
     <!-- Updates: Update available dialog title -->
-    <string name="dialog_update_available_title">Có bản cập nhật mới</string>
+    <string name="dialog_update_available_title">Update available</string>
     <!-- Updates: Update available dialog message -->
-    <string name="dialog_update_available_message">Viola %1$s (%2$s) tồn tại, bạn có muốn cài đặt?</string>
+    <string name="dialog_update_available_message">Viola %1$s (%2$s) is available, do you want to install it?</string>
     <!-- Updates: Update available dialog release date message -->
     <string name="dialog_update_available_release_date_message">Release date: %s</string>
     <!-- Updates: Update failed message -->
-    <string name="update_download_failed">Tải bản cập nhật bị lỗi!</string>
+    <string name="update_download_failed">Update failed to download!</string>
     <!-- Updates: Downloading update message -->
     <string name="update_downloading">Downloading update…</string>
     <!-- Lists: Delete all entries dialog title -->
-    <string name="dialog_delete_all_entries_title">Xóa toàn bộ các mục</string>
+    <string name="dialog_delete_all_entries_title">Delete all entries</string>
     <!-- Lists: Delete menu option -->
-    <string name="delete">Xóa</string>
+    <string name="delete">Delete</string>
     <!-- History: Title -->
-    <string name="history_title">Lịch sử</string>
+    <string name="history_title">History</string>
     <!-- History: Empty message -->
-    <string name="history_empty_message">Lịch sử trống rỗng!</string>
+    <string name="history_empty_message">History is empty!</string>
     <!-- History: Save to favorites menu option -->
-    <string name="menu_save_to_favorites">Lưu vào Yêu thích</string>
+    <string name="menu_save_to_favorites">Save to favorites</string>
     <!-- History: Delete all entries dialog message -->
-    <string name="dialog_delete_all_entries_history_message">Bạn đang định xóa toàn bộ lịch sử, bạn chắc chắn chứ?</string>
+    <string name="dialog_delete_all_entries_history_message">You are about to delete all history entries, are you sure about this?</string>
     <!-- Favorites: Title -->
-    <string name="favorites_title">Yêu thích</string>
+    <string name="favorites_title">Favorites</string>
     <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">Chưa lưu trang yêu thích nào.</string>
+    <string name="favorites_empty_message">There are no favorites saved.</string>
     <!-- Favorites: Menu edit option -->
-    <string name="favorites_menu_edit">Chỉnh sửa</string>
+    <string name="favorites_menu_edit">Edit</string>
     <!-- Favorites: Edit dialog title option -->
-    <string name="favorites_dialog_title">Tiêu đề</string>
+    <string name="favorites_dialog_title">Title</string>
     <!-- Favorites: Edit dialog link option -->
-    <string name="favorites_dialog_link">Liên kết</string>
+    <string name="favorites_dialog_link">Link</string>
     <!-- Favorites: Edit dialog added on detail -->
     <string name="favorites_dialog_added_on">Added on</string>
     <!-- Favorites: Delete all entries dialog message -->
-    <string name="dialog_delete_all_entries_favorites_message">Bạn đang định xóa toàn bộ các mục yêu thích, bạn chắc chắn chứ?</string>
+    <string name="dialog_delete_all_entries_favorites_message">You are about to delete all favorites entries, are you sure about this?</string>
     <!-- Downloads: Toast failed -->
-    <string name="downloads_toast_failed">Tải xuống thất bại!</string>
+    <string name="downloads_toast_failed">Download failed!</string>
     <!-- Downloads: Toast success -->
-    <string name="downloads_toast_success">%s đã tải xuống thành công.</string>
+    <string name="downloads_toast_success">%s downloaded successfully.</string>
     <!-- Downloads: Empty message -->
     <string name="downloads_empty_message">No downloads</string>
     <!-- Downloads: Confirmation dialog title -->
-    <string name="downloads_dialog_title">Tải về tập tin?</string>
+    <string name="downloads_dialog_title">Download file?</string>
     <!-- Downloads: Confirmation dialog message -->
-    <string name="downloads_dialog_message">Bạn có muốn tải về %s?</string>
+    <string name="downloads_dialog_message">Do you want to download %s?</string>
     <!-- Downloads: Error details dialog title -->
     <string name="downloads_dialog_error_details_title">Download failure details</string>
     <!-- Downloads: Confirmation dialog duplicated message -->
@@ -422,30 +422,30 @@
     <!-- Downloads: Menu re-download option -->
     <string name="downloads_menu_re_download">Download again</string>
     <!-- Crash Activity: Generic error explanation -->
-    <string name="customactivityoncrash_error_activity_error_occurred_explanation">Lỗi bất ngờ! Xin lỗi vì sự bất tiện.</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">An unexpected error occurred. Sorry for the inconvenience.</string>
     <!-- Crash Activity: Restart app button -->
-    <string name="customactivityoncrash_error_activity_restart_app">Khởi động lại ứng dụng</string>
+    <string name="customactivityoncrash_error_activity_restart_app">Restart app</string>
     <!-- Crash Activity: Close app button -->
-    <string name="customactivityoncrash_error_activity_close_app">Tắt ứng dụng</string>
+    <string name="customactivityoncrash_error_activity_close_app">Close app</string>
     <!-- Crash Activity: Error details app button -->
-    <string name="customactivityoncrash_error_activity_error_details">Chi tiết về lỗi</string>
+    <string name="customactivityoncrash_error_activity_error_details">Error details</string>
     <!-- Crash Activity: Error details dialog title -->
-    <string name="customactivityoncrash_error_activity_error_details_title">Chi tiết về lỗi</string>
+    <string name="customactivityoncrash_error_activity_error_details_title">Error details</string>
     <!-- Crash Activity: Error details dialog close button -->
-    <string name="customactivityoncrash_error_activity_error_details_close">Đóng</string>
+    <string name="customactivityoncrash_error_activity_error_details_close">Close</string>
     <!-- Crash Activity: Error details dialog copy button -->
-    <string name="customactivityoncrash_error_activity_error_details_copy">Sao chép vào bộ nhớ tạm</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy">Copy to clipboard</string>
     <!-- Crash Activity: Error details dialog copy toast -->
-    <string name="customactivityoncrash_error_activity_error_details_copied">Đã sao chép vào bộ nhớ tạm</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied">Copied to clipboard</string>
     <!-- Crash Activity: Error details clipboard label -->
-    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">Thông tin về lỗi</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">Error information</string>
     <string-array name="errMsg">
-        <item>Lỗi!</item>
-        <item>Không thể mở trang này</item>
-        <item>Viola không thể mở trang web này.</item>
-        <item>Hãy thử:</item>
-        <item>Kiểm tra kết nối Internet</item>
-        <item>Tải lại trang web</item>
+        <item>Error!</item>
+        <item>Can\'t open this page</item>
+        <item>Viola failed to open your webpage.</item>
+        <item>Try:</item>
+        <item>Checking your internet connection</item>
+        <item>Reloading the webpage</item>
     </string-array>
     <string-array name="search_entries">
         <item>Google</item>
@@ -471,6 +471,6 @@
         <item>GoodbyeAds</item>
         <item>Unified hosts</item>
         <item>Eulaurarien First-Party Trackers</item>
-        <item>Tùy chỉnh</item>
+        <item>Custom</item>
     </string-array>
 </resources>

@@ -11,6 +11,10 @@
     <string name="text_on">開啟</string>
     <!-- Generic: Switch Off -->
     <string name="text_off">關閉</string>
+    <!-- Generic: Yes -->
+    <string name="text_yes">Yes</string>
+    <!-- Generic: No -->
+    <string name="text_no">No</string>
     <!-- Generic: Path -->
     <string name="path">路徑</string>
     <!-- Generic: Path not found -->
@@ -87,6 +91,10 @@
     <string name="snackbar_open_external_action">打開</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">搜尋或輸入網址…</string>
+    <!-- Browser: JavaScript code execution warning dialog title -->
+    <string name="dialog_js_cewarn_title">JavaScript execution warning</string>
+    <!-- Browser: JavaScript code execution warning dialog message -->
+    <string name="dialog_js_cewarn_message">Someone is attempting to execute unknown JavaScript code in this browser tab. If this was not you, please cancel execution.\n\nDo you want to continue execution?</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">複製連結文字</string>
     <!-- Hit Test Dialog: Download link -->

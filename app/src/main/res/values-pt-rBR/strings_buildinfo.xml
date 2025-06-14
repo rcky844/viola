@@ -18,23 +18,23 @@
         Build Info: License information
         This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
     -->
-    <string name="buildinfo_license">Este produto é licenciado sob a %s.</string>
+    <string name="buildinfo_license">Este produto é licenciado sobre %s.</string>
     <!-- Build Info: License button -->
     <string name="buildinfo_license_button">Licença</string>
     <!-- Build Info: Changelog button -->
-    <string name="buildinfo_changelog_button">Ler registros de alterações</string>
+    <string name="buildinfo_changelog_button">Ver registros de mudança</string>
     <!-- Build Info: Website title -->
-    <string name="pref_website_title">Website</string>
+    <string name="pref_website_title">Site</string>
     <!-- Build Info: Website summary -->
     <string name="pref_website_summary">Confira o site do projeto.</string>
     <!-- Build Info: Feedback title -->
     <string name="pref_feedback_title">Feedback</string>
     <!-- Build Info: Feedback summary -->
-    <string name="pref_feedback_summary">"Reportar bugs ou pedir por novas funções."</string>
+    <string name="pref_feedback_summary">"Informar erros ou sugerir recursos novos."</string>
     <!-- Build Info: Source code title -->
     <string name="pref_source_code_title">"Código-fonte"</string>
     <!-- Build Info: Source code summary -->
-    <string name="pref_source_code_summary">"Ver o código-fonte do Viola."</string>
+    <string name="pref_source_code_summary">"Visualizar código-fonte de Viola."</string>
     <!-- Build Info: Build information title -->
     <string name="buildinfo_pref_build_info_title">Informações da versão</string>
     <!-- Build Info: Build information summary -->
