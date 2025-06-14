@@ -46,7 +46,7 @@ class BuildInfoSummaryPreference(
         buildInfo.productName = context.resources.getString(R.string.app_name)
 
         var buildId = buildInfo.productBuildId
-        if (buildId == null) {
+        if (buildId == null || buildInfo.productBuildBranch.startsWith("master")) {
             Log.d(LOG_TAG, "Build ID is missing, showing Git revision as build ID instead")
             buildId = buildInfo.productBuildGitRevision
         }
