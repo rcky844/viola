@@ -70,7 +70,7 @@ class BuildInfoSummaryPreference(
         )
 
         // We can do this because they are sections
-        aboutText.text = textVersion + textCopyright + textLicense
+        aboutText.text = "$textVersion\n\n$textCopyright\n$textLicense"
 
         // Set-up buttons
         changelogBtn.visibility = if (BuildConfig.DEBUG) View.GONE else View.VISIBLE

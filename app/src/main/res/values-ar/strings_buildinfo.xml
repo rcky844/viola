@@ -8,12 +8,12 @@
         {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
         Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
     -->
-    <string name="buildinfo_version">%1$s (%2$s)\nالإصدار %3$s (البناء %4$s%5$s)\n\n</string>
+    <string name="buildinfo_version">%1$s (%2$s)\nالإصدار %3$s (البناء %4$s%5$s)</string>
     <!--
         Build Info: Copyright information
         Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team
     -->
-    <string name="buildinfo_copyright">حقوق الطبع والنشر ©️ %s فريق Tipz\n</string>
+    <string name="buildinfo_copyright">حقوق الطبع والنشر ©️ %s فريق Tipz</string>
     <!--
         Build Info: License information
         This product is licensed to you under the {PRODUCT_LICENSE_DOCUMENT}.
