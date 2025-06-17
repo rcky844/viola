@@ -12,9 +12,9 @@
     <!-- Generic: Switch Off -->
     <string name="text_off">Выкл</string>
     <!-- Generic: Yes -->
-    <string name="text_yes">Yes</string>
+    <string name="text_yes">Да</string>
     <!-- Generic: No -->
-    <string name="text_no">No</string>
+    <string name="text_no">Нет</string>
     <!-- Generic: Path -->
     <string name="path">Путь</string>
     <!-- Generic: Path not found -->
@@ -92,9 +92,9 @@
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Введите запрос или ссылку…</string>
     <!-- Browser: JavaScript code execution warning dialog title -->
-    <string name="dialog_js_cewarn_title">JavaScript execution warning</string>
+    <string name="dialog_js_cewarn_title">Предупреждение об исполнении JavaScript</string>
     <!-- Browser: JavaScript code execution warning dialog message -->
-    <string name="dialog_js_cewarn_message">Someone is attempting to execute unknown JavaScript code in this browser tab. If this was not you, please cancel execution.\n\nDo you want to continue execution?</string>
+    <string name="dialog_js_cewarn_message">На этой вкладке браузера кто-то пытается исполнить неизвестный код JavaScript, если это были не вы, пожалуйста, отмените исполнение.\n\nВы хотите продолжить исполнение?</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">Скопировать текст ссылки</string>
     <!-- Hit Test Dialog: Download link -->
