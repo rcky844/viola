@@ -438,11 +438,12 @@ class BrowserActivity : VWebViewActivity() {
                 val dialog = PopupMaterialAlertDialogBuilder(this, Gravity.BOTTOM)
                 dialog.setTitle(R.string.toolbar_expandable_app_shortcut)
 
-                // TODO: Export as proper list
                 val arrayAdapter = StringResAdapter(this)
-                arrayAdapter.add(R.string.shortcuts_menu_browser)
-                arrayAdapter.add(R.string.shortcuts_menu_custom_tabs)
-                arrayAdapter.add(R.string.shortcuts_menu_webapp)
+                arrayAdapter.addAll(
+                    R.string.shortcuts_menu_browser,
+                    R.string.shortcuts_menu_custom_tabs,
+                    R.string.shortcuts_menu_webapp
+                )
                 dialog.setAdapter(arrayAdapter) { _, which ->
                     val launchIntent = Intent(this, LauncherActivity::class.java)
                         .setData(webview.url.toUri())
