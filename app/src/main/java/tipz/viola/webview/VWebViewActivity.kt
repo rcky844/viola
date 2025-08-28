@@ -103,8 +103,6 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
 
     open fun onSslCertificateUpdated() {}
 
-    open fun onSslErrorProceed() {}
-
     @Suppress("DEPRECATION")
     @CallSuper
     open fun onFaviconUpdated(icon: Bitmap?) {

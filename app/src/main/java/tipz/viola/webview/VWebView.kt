@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.http.SslError
 import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
@@ -81,6 +82,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
     private var pageError = false
+
+    var sslState = SslState.NONE
+    internal val unsecureURLs = ArrayList<SslError>()
+
+    enum class SslState {
+        NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
+    }
 
     internal val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
@@ -276,7 +284,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onSslErrorProceed() {
-        activity.onSslErrorProceed()
+        sslState = SslState.ERROR
     }
 
     @SuppressLint("InlinedApi")
@@ -510,8 +518,18 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.PAGE_FINISHED -> {
                 onPageLoadProgressChanged(0)
                 activity.onPageStateChanged(false)
-                activity.onSslCertificateUpdated()
                 activity.swipeRefreshLayout.setRefreshing(false)
+
+                // Update SSL state
+                if (getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
+                    sslState = SslState.SEARCH
+                else if (certificate == null) // No certificates (HTTP)
+                    sslState = SslState.NONE
+                else if (sslState != SslState.ERROR
+                    || !unsecureURLs.any { it.url.toUri().host == getRealUrl().toUri().host })
+                    sslState = SslState.SECURE
+
+                activity.onSslCertificateUpdated()
             }
 
             PageLoadState.PAGE_ERROR -> {
