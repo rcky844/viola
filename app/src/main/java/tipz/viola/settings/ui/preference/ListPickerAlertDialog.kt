@@ -12,6 +12,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.databinding.DialogEditTextBinding
+import tipz.viola.ext.getFrameworkIdentifier
 import tipz.viola.settings.SettingsSharedPreference
 
 class ListPickerAlertDialog(context: Context,
@@ -29,7 +30,8 @@ class ListPickerAlertDialog(context: Context,
             setSingleChoiceItems(
                 displayList.takeUnless { it == null } ?: nameList, checkedItem
             ) { _, which -> checkedItem = which }
-            setPositiveButton(android.R.string.ok) { _, _ ->
+            setPositiveButton(context.resources.getString(
+                context.getFrameworkIdentifier("date_time_set"))) { _, _ ->
                 if (customIndexEnabled && checkedItem == customIndex) createCustomDialog(checkedItem)
                 else {
                     if (!stringPreference.isNullOrBlank()) settingsPreference.setString(stringPreference!!, "")
@@ -87,7 +89,8 @@ class ListPickerAlertDialog(context: Context,
             }
 
             dialog.setView(view)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
+                .setPositiveButton(context.resources.getString(
+                    context.getFrameworkIdentifier("date_time_set"))) { _, _ ->
                     if (customInput.text?.trim().toString().isNotEmpty()) {
                         if (!stringPreference.isNullOrBlank())
                             settingsPreference.setString(stringPreference!!,
