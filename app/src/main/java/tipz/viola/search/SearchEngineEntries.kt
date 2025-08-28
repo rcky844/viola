@@ -14,6 +14,7 @@ import java.util.Locale
 object SearchEngineEntries {
     private const val queryPlaceholder = "{query}"
     private const val languagePlaceholder = "{language}"
+    val placeholderList = listOf(queryPlaceholder, languagePlaceholder)
 
     data class EngineItem(val name: String, val homePage: String? = null,
                            val search: String? = null, val suggestion: String? = null)

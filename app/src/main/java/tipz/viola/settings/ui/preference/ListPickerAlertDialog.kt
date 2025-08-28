@@ -6,7 +6,10 @@ package tipz.viola.settings.ui.preference
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.HorizontalScrollView
 import androidx.preference.Preference
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.settings.SettingsSharedPreference
@@ -68,6 +71,21 @@ class ListPickerAlertDialog(context: Context,
                 }
             else dialog.setMessage(dialogCustomMessageResId)
 
+            dialogCustomTemplates.takeUnless { dialogCustomTemplates.isNullOrEmpty() }?.let {
+                view.addView(HorizontalScrollView(context).apply {
+                    addView(ChipGroup(context).apply {
+                        it.forEach { template ->
+                            addView(Chip(context).apply {
+                                text = template
+                                setOnClickListener {
+                                    customInput.append(text)
+                                }
+                            })
+                        }
+                    })
+                })
+            }
+
             dialog.setView(view)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     if (customInput.text?.trim().toString().isNotEmpty()) {
@@ -95,6 +113,7 @@ class ListPickerAlertDialog(context: Context,
         var dialogTitleResId = 0 // Dialog title resource ID
         var dialogCustomMessage: String? = null // Message for custom dialog
         var dialogCustomMessageResId = 0 // Resource ID of message for custom dialog
+        var dialogCustomTemplates: List<String>? = null // Templates for placeholders as a list
         var dialogPositivePressed: () -> Unit = { } // Ran when a positive button is pressed
         var customIndexEnabled = false // Uses custom item index
         var customIndex = 0 // Custom item index

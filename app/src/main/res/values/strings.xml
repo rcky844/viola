@@ -389,7 +389,7 @@
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
 
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>
+    <string name="search_dialog_custom_message">Type web address of custom search provider, and click on the chips to append placeholders.</string>
 
     <!-- Settings - Wallpaper: Default -->
     <string name="default_res">Default</string>
