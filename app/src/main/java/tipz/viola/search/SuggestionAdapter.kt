@@ -29,6 +29,13 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
     private val filter = ItemFilter()
     private var queryText: String? = null
 
+    var enableFiltering = true
+        set(value) {
+            field = value
+            queryText = ""
+            items = listOf()
+        }
+
     override fun getCount() = items.size
 
     override fun getItem(position: Int) = items[position]
@@ -80,7 +87,7 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
 
     private inner class ItemFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            if (!context.settingsPreference.getIntBool(SettingsKeys.useSearchSuggestions)) {
+            if (!enableFiltering || !context.settingsPreference.getIntBool(SettingsKeys.useSearchSuggestions)) {
                 queryText = ""
                 items = listOf()
                 return FilterResults().apply {

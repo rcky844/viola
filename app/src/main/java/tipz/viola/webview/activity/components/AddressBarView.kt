@@ -11,7 +11,6 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
@@ -37,6 +36,7 @@ class AddressBarView(
 ): ConstraintLayout(context, attrs) {
     val settingsPreference = SettingsSharedPreference.instance
     val webViewActivity = context as VWebViewActivity
+    val suggestionAdapter = SuggestionAdapter(context as VWebViewActivity)
     val sslLock = AppCompatImageView(context)
     val textView = MaterialAutoCompleteTextView(context)
     private val imm: InputMethodManager =
@@ -86,9 +86,7 @@ class AddressBarView(
                 importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO
             }
             setSelectAllOnFocus(true)
-
-            assert(context is VWebViewActivity)
-            setAdapter(SuggestionAdapter(context as VWebViewActivity))
+            setAdapter(suggestionAdapter)
         }.updateLayoutParams<LayoutParams> {
             topToTop = ConstraintSet.PARENT_ID
             bottomToBottom = ConstraintSet.PARENT_ID
@@ -165,12 +163,16 @@ class AddressBarView(
         onStateChangeListener = listener
     }
 
+    // TODO: Investigate why Url bar remains focused in some cases
     fun setAddressBarState(newState: AddressBarState) {
+        if (state == newState)
+            return
+
         Log.d(LOG_TAG, "New address bar state: $newState")
         when (newState) {
             AddressBarState.FOCUSED -> {
                 // Enable suggestions
-                textView.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+                suggestionAdapter.enableFiltering = true
             }
 
             AddressBarState.CLOSED -> {
@@ -179,7 +181,7 @@ class AddressBarView(
                     .let { textView.setText(it) }
 
                 // Disable suggestions
-                textView.dropDownHeight = 0
+                suggestionAdapter.enableFiltering = false
 
                 // Close keyboard
                 imm.hideSoftInputFromWindow(webViewActivity.currentFocus?.windowToken, 0)
