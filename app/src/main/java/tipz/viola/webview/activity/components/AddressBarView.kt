@@ -7,11 +7,17 @@ import android.content.Context
 import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.setPadding
@@ -30,8 +36,22 @@ class AddressBarView(
     context: Context, attrs: AttributeSet?
 ): ConstraintLayout(context, attrs) {
     val settingsPreference = SettingsSharedPreference.instance
+    val webViewActivity = context as VWebViewActivity
     val sslLock = AppCompatImageView(context)
     val textView = MaterialAutoCompleteTextView(context)
+    private val imm: InputMethodManager =
+        context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+
+    enum class AddressBarState {
+        FOCUSED, CLOSED
+    }
+
+    var state = AddressBarState.CLOSED
+        set(value) {
+            field = value
+            onStateChangeListener?.onStateChanged(value)
+        }
+    private var onStateChangeListener: OnAddressBarStateChangeListener? = null
 
     init {
         val actionBarHeight = context.resources.getDimension(R.dimen.actionbar_widget_height).toInt()
@@ -111,12 +131,70 @@ class AddressBarView(
     }
 
     fun doSettingsCheck() {
-        textView.apply {
+        textView.run {
             setOnTouchListener(
                 SwipeController(if (settingsPreference.getIntBool(SettingsKeys.reverseAddressBar))
                     SwipeController.DIRECTION_SWIPE_UP else SwipeController.DIRECTION_SWIPE_DOWN) {
                     sslLock.performClick()
                 })
+
+            setOnFocusChangeListener { _, hasFocus ->
+                setAddressBarState(if (hasFocus) AddressBarState.FOCUSED else AddressBarState.CLOSED)
+            }
+
+            setOnEditorActionListener { _, actionId, _ ->
+                when (actionId) {
+                    EditorInfo.IME_ACTION_GO, KeyEvent.ACTION_DOWN -> {
+                        webViewActivity.webview.loadUrl(textView.text.toString())
+                        setAddressBarState(AddressBarState.CLOSED)
+                        return@setOnEditorActionListener true
+                    }
+                }
+                false
+            }
+
+            setOnItemClickListener { _, v, _, _ ->
+                webViewActivity.webview.loadUrl(
+                    v.findViewById<AppCompatTextView>(android.R.id.text1).text.toString())
+                setAddressBarState(AddressBarState.CLOSED)
+            }
         }
+    }
+
+    fun setOnStateChangeListener(listener: OnAddressBarStateChangeListener) {
+        onStateChangeListener = listener
+    }
+
+    fun setAddressBarState(newState: AddressBarState) {
+        Log.d(LOG_TAG, "New address bar state: $newState")
+        when (newState) {
+            AddressBarState.FOCUSED -> {
+                // Enable suggestions
+                textView.dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
+            }
+
+            AddressBarState.CLOSED -> {
+                // Reset address bar on closing
+                webViewActivity.webview.url.takeIf { it != textView.text.toString() }
+                    .let { textView.setText(it) }
+
+                // Disable suggestions
+                textView.dropDownHeight = 0
+
+                // Close keyboard
+                imm.hideSoftInputFromWindow(webViewActivity.currentFocus?.windowToken, 0)
+                textView.clearFocus()
+                webViewActivity.webview.requestFocus()
+            }
+        }
+        state = newState
+    }
+
+    interface OnAddressBarStateChangeListener {
+        fun onStateChanged(newState: AddressBarState)
+    }
+
+    companion object {
+        const val LOG_TAG = "AddressBarView"
     }
 }

@@ -17,12 +17,9 @@ import android.print.PrintManager
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.webkit.ConsoleMessage
 import android.widget.RelativeLayout
 import android.widget.ScrollView
@@ -79,6 +76,7 @@ import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.activity.components.AddressBarView
+import tipz.viola.webview.activity.components.AddressBarView.AddressBarState
 import tipz.viola.webview.activity.components.ExpandableToolbarView
 import tipz.viola.webview.activity.components.FavIconView
 import tipz.viola.webview.activity.components.FindInPageView
@@ -116,7 +114,6 @@ class BrowserActivity : VWebViewActivity() {
     private var sslState: SslState = SslState.NONE
     private var sslErrorHost: String = ""
     private var setFabHiddenViews = false
-    private lateinit var imm: InputMethodManager
 
     enum class SslState {
         NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
@@ -149,9 +146,6 @@ class BrowserActivity : VWebViewActivity() {
         favClient = FavClient(this)
         iconHashClient = IconHashClient(this)
 
-        // Miscellaneous
-        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-
         // Start update service
         UpdateService(this, true)
 
@@ -166,7 +160,8 @@ class BrowserActivity : VWebViewActivity() {
         // Layout HitBox
         webview.setOnTouchListener { _, _ ->
             if (expandableToolbarView.isVisible) expandableToolbarView.expandToolBar()
-            if (urlEditText.hasFocus() && imm.isAcceptingText) closeKeyboard()
+            if (addressBar.state == AddressBarState.FOCUSED)
+                addressBar.setAddressBarState(AddressBarState.CLOSED)
             false
         }
 
@@ -240,36 +235,18 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Setup Url EditText box
-        urlEditText.run {
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_GO, KeyEvent.ACTION_DOWN -> {
-                        webview.loadUrl(urlEditText.text.toString())
-                        closeKeyboard()
-                        return@setOnEditorActionListener true
-                    }
-                }
-                false
-            }
-
-            setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
-                } else {
-                    webview.url.takeIf { it != text.toString() }.let { setText(it) }
-                    dropDownHeight = 0
-                }
-            }
-
-            setOnClickListener {
+        addressBar.run {
+            textView.setOnClickListener {
                 if (expandableToolbarView.isVisible)
                     expandableToolbarView.expandToolBar()
             }
 
-            setOnItemClickListener { _, v, _, _ ->
-                webview.loadUrl(v.findViewById<AppCompatTextView>(android.R.id.text1).text.toString())
-                closeKeyboard()
-            }
+            setOnStateChangeListener(object : AddressBarView.OnAddressBarStateChangeListener {
+                override fun onStateChanged(newState: AddressBarState) {
+                    if (newState == AddressBarState.CLOSED)
+                        if (fullscreenFab.isFullscreen) appbar.visibility = View.GONE
+                }
+            })
         }
 
         // Setup the up most fab (currently for reload)
@@ -763,15 +740,8 @@ class BrowserActivity : VWebViewActivity() {
         if (progress == 0) upRightFab.setImageResource(R.drawable.refresh)
     }
 
-    private fun closeKeyboard() {
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-        urlEditText.clearFocus()
-        webview.requestFocus()
-        if (fullscreenFab.isFullscreen) appbar.visibility = View.GONE
-    }
-
     override fun onUrlUpdated(url: String?) {
-        if (!urlEditText.isFocused) urlEditText.setText(url)
+        if (addressBar.state == AddressBarState.CLOSED) urlEditText.setText(url)
     }
 
     override fun onUrlUpdated(url: String?, position: Int) {
