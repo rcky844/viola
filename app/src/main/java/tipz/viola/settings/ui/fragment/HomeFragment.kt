@@ -27,6 +27,7 @@ class HomeFragment : ExtPreferenceFragment(R.string.pref_main_home) {
                     nameToIdFunction = { name -> homePageNameList.indexOfFirst { it == name } }
                     stringPreference = SettingsKeys.homePageCustomUrl
                     dialogTitleResId = R.string.homepage
+                    dialogCustomMessageResId = R.string.homepage_dialog_custom_message
                     customIndexEnabled = true
                     customIndex = homePageNameList.size - 1
                 }
