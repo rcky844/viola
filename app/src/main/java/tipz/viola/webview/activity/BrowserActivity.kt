@@ -315,7 +315,6 @@ class BrowserActivity : VWebViewActivity() {
     override fun doSettingsCheck() {
         super.doSettingsCheck()
         favicon.updateIsDisplayed()
-        addressBar.doSettingsCheck()
 
         val reverseAddressBar = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
         if (reverseAddressBar != viewMode) {

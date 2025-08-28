@@ -34,13 +34,14 @@ import tipz.viola.webview.VWebViewActivity
 class AddressBarView(
     context: Context, attrs: AttributeSet?
 ): ConstraintLayout(context, attrs) {
-    val settingsPreference = SettingsSharedPreference.instance
-    val webViewActivity = context as VWebViewActivity
-    val suggestionAdapter = SuggestionAdapter(context as VWebViewActivity)
-    val sslLock = AppCompatImageView(context)
-    val textView = MaterialAutoCompleteTextView(context)
+    private val settingsPreference = SettingsSharedPreference.instance
+    private val webViewActivity = context as VWebViewActivity
+    private val suggestionAdapter = SuggestionAdapter(webViewActivity)
     private val imm: InputMethodManager =
         context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+
+    val sslLock = AppCompatImageView(context)
+    val textView = MaterialAutoCompleteTextView(context)
 
     enum class AddressBarState {
         FOCUSED, CLOSED
@@ -87,6 +88,33 @@ class AddressBarView(
             }
             setSelectAllOnFocus(true)
             setAdapter(suggestionAdapter)
+
+            setOnTouchListener(
+                SwipeController(if (settingsPreference.getIntBool(SettingsKeys.reverseAddressBar))
+                    SwipeController.DIRECTION_SWIPE_UP else SwipeController.DIRECTION_SWIPE_DOWN) {
+                    sslLock.performClick()
+                })
+
+            setOnFocusChangeListener { _, hasFocus ->
+                setAddressBarState(if (hasFocus) AddressBarState.FOCUSED else AddressBarState.CLOSED)
+            }
+
+            setOnEditorActionListener { _, actionId, _ ->
+                when (actionId) {
+                    EditorInfo.IME_ACTION_GO, KeyEvent.ACTION_DOWN -> {
+                        webViewActivity.webview.loadUrl(textView.text.toString())
+                        setAddressBarState(AddressBarState.CLOSED)
+                        return@setOnEditorActionListener true
+                    }
+                }
+                false
+            }
+
+            setOnItemClickListener { _, v, _, _ ->
+                webViewActivity.webview.loadUrl(
+                    v.findViewById<AppCompatTextView>(android.R.id.text1).text.toString())
+                setAddressBarState(AddressBarState.CLOSED)
+            }
         }.updateLayoutParams<LayoutParams> {
             topToTop = ConstraintSet.PARENT_ID
             bottomToBottom = ConstraintSet.PARENT_ID
@@ -126,37 +154,6 @@ class AddressBarView(
                 else context.dpToPx(8 + 8)
         }
         addView(sslLock)
-    }
-
-    fun doSettingsCheck() {
-        textView.run {
-            setOnTouchListener(
-                SwipeController(if (settingsPreference.getIntBool(SettingsKeys.reverseAddressBar))
-                    SwipeController.DIRECTION_SWIPE_UP else SwipeController.DIRECTION_SWIPE_DOWN) {
-                    sslLock.performClick()
-                })
-
-            setOnFocusChangeListener { _, hasFocus ->
-                setAddressBarState(if (hasFocus) AddressBarState.FOCUSED else AddressBarState.CLOSED)
-            }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_GO, KeyEvent.ACTION_DOWN -> {
-                        webViewActivity.webview.loadUrl(textView.text.toString())
-                        setAddressBarState(AddressBarState.CLOSED)
-                        return@setOnEditorActionListener true
-                    }
-                }
-                false
-            }
-
-            setOnItemClickListener { _, v, _, _ ->
-                webViewActivity.webview.loadUrl(
-                    v.findViewById<AppCompatTextView>(android.R.id.text1).text.toString())
-                setAddressBarState(AddressBarState.CLOSED)
-            }
-        }
     }
 
     fun setOnStateChangeListener(listener: OnAddressBarStateChangeListener) {
