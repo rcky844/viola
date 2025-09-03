@@ -355,8 +355,10 @@
     <string name="buildinfo_pref_protocol_info_title">Versione protocollo</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nPreferiti: %2$d\nCronologia: %3$d</string>
+    <!-- Settings - Homepage: Custom dialog message -->
+    <string name="homepage_dialog_custom_message">Type web address of custom homepage, which could become your start page.</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">Formato:\n{query}: Query\n{language}: Lingua</string>
+    <string name="search_dialog_custom_message">Type web address of custom search provider, and click on the chips to append placeholders.</string>
     <!-- Settings - Wallpaper: Default -->
     <string name="default_res">Predefinito</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
