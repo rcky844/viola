@@ -357,8 +357,10 @@
     <string name="buildinfo_pref_protocol_info_title">प्रोटोकॉल वर्शन</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">शेयर्ड प्रेफरेंसेस: %1$d\nपसंदीदा: %2$d\nइतिहास: %3$d</string>
+    <!-- Settings - Homepage: Custom dialog message -->
+    <string name="homepage_dialog_custom_message">Type web address of custom homepage, which could become your start page.</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">फ़ॉर्मैट:\n{query}: क्वेरी\n{language}: भाषा</string>
+    <string name="search_dialog_custom_message">Type web address of custom search provider, and click on the chips to append placeholders.</string>
     <!-- Settings - Wallpaper: Default -->
     <string name="default_res">डिफ़ॉल्ट</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
