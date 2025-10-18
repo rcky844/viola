@@ -21,6 +21,6 @@ open class MaterialPreference(context: Context, attrs: AttributeSet?) : Preferen
         a.recycle()
 
         // Check for required API
-        if (mRequiredApi > Build.VERSION.SDK_INT) this.isEnabled = false
+        if (mRequiredApi >= Build.VERSION.SDK_INT) this.isEnabled = false
     }
 }
