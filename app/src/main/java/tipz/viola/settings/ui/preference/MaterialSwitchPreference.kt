@@ -6,7 +6,6 @@ package tipz.viola.settings.ui.preference
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.SwitchPreferenceCompat
 import tipz.viola.R
 import tipz.viola.settings.SettingsSharedPreference
@@ -34,7 +33,7 @@ class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
             ExtPreferenceFragment.needReload = needReload
             true
         }
-        if (requiredApi > Build.VERSION.SDK_INT) this.isEnabled = false
+        if (requiredApi >= Build.VERSION.SDK_INT) this.isEnabled = false
 
         // Use material switch
         widgetLayoutResource = R.layout.preference_material_switch
