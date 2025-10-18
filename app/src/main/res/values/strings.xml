@@ -307,6 +307,10 @@
     <string name="pref_theme_title">Theme</string>
     <!-- Settings: Change start page wallpaper title -->
     <string name="pref_start_page_wallpaper_title">Change wallpaper</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_colors_title">Colors</string>
+    <!-- Settings: Start page wallpaper: Pick a color -->
+    <string name="dialog_start_page_solid_color_picker">Solid color picker</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <!-- Settings: Use web content force dark summary -->

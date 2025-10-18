@@ -7,13 +7,14 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
+import com.github.dhaval2404.colorpicker.ColorPickerDialog
+import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.google.android.material.elevation.SurfaceColors
 import tipz.viola.R
 import tipz.viola.databinding.PreferenceWallpaperBinding
@@ -26,6 +27,8 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
 
     lateinit var previewWallpaper: AppCompatImageView
     lateinit var changeWallpaper: CardView
+    lateinit var resetWallpaper: CardView
+    lateinit var colorWallpaper: CardView
 
     init {
         layoutResource = R.layout.preference_wallpaper
@@ -36,25 +39,54 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
         binding = PreferenceWallpaperBinding.bind(holder.itemView)
         previewWallpaper = binding.previewWallpaperView
         changeWallpaper = binding.changeWallpaperCard
+        resetWallpaper = binding.resetWallpaperCard
+        colorWallpaper = binding.colorWallpaperCard
 
-        val density = context.resources.displayMetrics.density
-        changeWallpaper.setCardBackgroundColor(
-            SurfaceColors.getColorForElevation(context, 1 * density))
+        listOf(changeWallpaper, resetWallpaper, colorWallpaper).forEach {
+            it.setCardBackgroundColor(SurfaceColors.getColorForElevation(
+                context, 1 * context.resources.displayMetrics.density))
+        }
+
         changeWallpaper.setOnClickListener {
             if (onPreferenceChangeListener != null) {
                 onPreferenceChangeListener!!.onPreferenceChange(this, null)
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) setWallpaperPreview()
-        else changeWallpaper.isVisible = false
+        resetWallpaper.setOnClickListener {
+            settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
+            settingsPreference.setInt(SettingsKeys.startPageColor, 0)
+            previewWallpaper.setImageResource(0)
+            previewWallpaper.setBackgroundColor(0)
+        }
+
+        colorWallpaper.setOnClickListener {
+            ColorPickerDialog
+                .Builder(context)
+                .setTitle(R.string.dialog_start_page_solid_color_picker)
+                .setColorShape(ColorShape.SQAURE)
+                .setColorListener { color, colorHex ->
+                    settingsPreference.setInt(SettingsKeys.startPageColor, color)
+                    setWallpaperPreview()
+                }
+                .show()
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) changeWallpaper.isVisible = false
+        setWallpaperPreview()
     }
 
     @Suppress("DEPRECATION")
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun setWallpaperPreview(
         uri: Uri = settingsPreference.getString(SettingsKeys.startPageWallpaper).toUri()
     ) {
+        if (settingsPreference.getInt(SettingsKeys.startPageColor) != 0) {
+            previewWallpaper.setBackgroundColor(
+                settingsPreference.getInt(SettingsKeys.startPageColor))
+            return
+        }
+        previewWallpaper.setBackgroundColor(0)
+
         try {
             previewWallpaper.setImageURI(uri)
         } catch (_: Exception) {

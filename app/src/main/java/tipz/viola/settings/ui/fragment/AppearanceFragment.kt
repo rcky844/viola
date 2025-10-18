@@ -44,15 +44,9 @@ class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return@run
 
             setOnPreferenceChangeListener { _, _ ->
-                if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
-                    pickMedia.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                } else {
-                    // TODO: Add reset button & remove
-                    settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
-                    setWallpaperPreview()
-                }
+                pickMedia.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
                 true
             }
         }

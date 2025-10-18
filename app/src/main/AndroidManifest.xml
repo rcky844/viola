@@ -13,7 +13,7 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
-    <uses-sdk tools:overrideLibrary="androidx.annotation.experimental,androidx.webkit" />
+    <uses-sdk tools:overrideLibrary="androidx.annotation.experimental,androidx.webkit,com.github.dhaval2404.colorpicker" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

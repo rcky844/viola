@@ -165,6 +165,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     // Others
+    implementation("com.github.Dhaval2404:ColorPicker:2.3")
     implementation("cat.ereza:customactivityoncrash:2.3.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 

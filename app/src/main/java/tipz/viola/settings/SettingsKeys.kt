@@ -59,6 +59,7 @@ object SettingsKeys {
     const val useForceDark = "useForceDark" /* INTEGER */
     const val showFavicon = "showFavicon" /* INTEGER */
     const val startPageWallpaper = "startPageWallpaper" /* STRING */
+    const val startPageColor = "startPageColor" /* INTEGER */
     const val reverseAddressBar = "reverseAddressBar" /* INTEGER */
     const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
     const val showFullscreenWarningDialog = "showFullscreenWarningDialog" /* INTEGER */

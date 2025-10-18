@@ -296,18 +296,25 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Start Page Wallpaper
-        settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
-            try {
-                localNtpPageView.setBackgroundDrawable(
-                    MediaStore.Images.Media.getBitmap(this.contentResolver, it.toUri())
-                        .toDrawable(resources)
-                )
-            } catch (_: SecurityException) {
+        if (settingsPreference.getInt(SettingsKeys.startPageColor) != 0) {
+            localNtpPageView.setBackgroundColor(
+                settingsPreference.getInt(SettingsKeys.startPageColor))
+            return
+        } else {
+            localNtpPageView.setBackgroundColor(0)
+            settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
+                try {
+                    localNtpPageView.setBackgroundDrawable(
+                        MediaStore.Images.Media.getBitmap(this.contentResolver, it.toUri())
+                            .toDrawable(resources)
+                    )
+                } catch (_: SecurityException) {
+                    localNtpPageView.setBackgroundResource(0)
+                    settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
+                }
+            } ?: run {
                 localNtpPageView.setBackgroundResource(0)
-                settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
             }
-        } ?: run {
-            localNtpPageView.setBackgroundResource(0)
         }
 
         // History access
