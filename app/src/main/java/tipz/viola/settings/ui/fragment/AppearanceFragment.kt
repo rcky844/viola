@@ -10,16 +10,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.documentfile.provider.DocumentFile
-import androidx.preference.Preference
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.webview.activity.BaseActivity.Companion.performThemeModeChecks
-import androidx.core.net.toUri
 import tipz.viola.settings.ui.preference.ThemePreference
+import tipz.viola.settings.ui.preference.WallpaperPreference
+import tipz.viola.webview.activity.BaseActivity.Companion.performThemeModeChecks
 
 class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) {
-    private lateinit var startPageWallpaper: Preference
+    private lateinit var startPageWallpaper: WallpaperPreference
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private var pickMedia: ActivityResultLauncher<PickVisualMediaRequest> =
@@ -28,10 +26,7 @@ class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) 
             val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
             settingsActivity.contentResolver.takePersistableUriPermission(uri, flag)
             settingsPreference.setString(SettingsKeys.startPageWallpaper, uri.toString())
-            startPageWallpaper.summary = resources.getString(
-                R.string.pref_start_page_wallpaper_summary,
-                DocumentFile.fromSingleUri(settingsActivity, uri)?.name
-            )
+            startPageWallpaper.setWallpaperPreview(uri)
         }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -44,35 +39,22 @@ class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) 
             }
         }
 
-        startPageWallpaper = findPreference(PREF_START_PAGE_WALLPAPER)!!
+        startPageWallpaper = findPreference<WallpaperPreference>(PREF_START_PAGE_WALLPAPER)!!
         startPageWallpaper.run {
-            setOnPreferenceClickListener {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return@run
+
+            setOnPreferenceChangeListener { _, _ ->
                 if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
                     pickMedia.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                     )
                 } else {
-                    startPageWallpaper.setSummary(
-                        resources.getString(
-                            R.string.pref_start_page_wallpaper_summary,
-                            resources.getString(R.string.default_res)
-                        )
-                    )
+                    // TODO: Add reset button & remove
                     settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
+                    setWallpaperPreview()
                 }
                 true
             }
-            summary = resources.getString(
-                R.string.pref_start_page_wallpaper_summary,
-                if (settingsPreference.getString(SettingsKeys.startPageWallpaper).isEmpty()) {
-                    resources.getString(R.string.default_res)
-                } else {
-                    DocumentFile.fromSingleUri(
-                        settingsActivity,
-                        settingsPreference.getString(SettingsKeys.startPageWallpaper).toUri()
-                    )?.name
-                }
-            )
         }
     }
 
