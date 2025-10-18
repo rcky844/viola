@@ -54,6 +54,7 @@ import tipz.viola.download.database.Droha
 import tipz.viola.ext.Matcher
 import tipz.viola.ext.isDarkMode
 import tipz.viola.ext.matchAndExec
+import tipz.viola.ext.setStartAligned
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
@@ -306,6 +307,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }).setAction(R.string.snackbar_open_external_action) {
                 context.startActivity(intent)
             }.apply {
+                setStartAligned()
                 show()
             }
             return true
