@@ -281,14 +281,16 @@
     <string name="pref_theme_dark">अंधेरा</string>
     <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">थीम</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_wallpaper_title">Change wallpaper</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_colors_title">Colors</string>
+    <!-- Settings: Start page wallpaper: Pick a color -->
+    <string name="dialog_start_page_solid_color_picker">Solid color picker</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">वेब सामग्री को डार्क मोड में दिखाने की अनुमति दें</string>
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">वेबपेजों की रंग योजना को ब्राउज़र की थीम से मिलाएं।</string>
-    <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">स्टार्टपेज वॉलपेपर</string>
-    <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">वर्तमान: %s</string>
     <!-- Settings: Appearance: User interface category -->
     <string name="pref_appearance_ui_category">उपयोगकर्ता इंटरफ़ेस</string>
     <!-- Settings: Appearance: Show favicon title -->
@@ -361,8 +363,6 @@
     <string name="homepage_dialog_custom_message">Type web address of custom homepage, which could become your start page.</string>
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">Type web address of custom search provider, and click on the chips to append placeholders.</string>
-    <!-- Settings - Wallpaper: Default -->
-    <string name="default_res">डिफ़ॉल्ट</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
     <string name="toast_ad_servers_finished">विज्ञापन ब्लॉकलिस्ट डाउनलोड करना समाप्त हुआ!</string>
     <!-- Settings - Reset to Default: Dialog message -->
