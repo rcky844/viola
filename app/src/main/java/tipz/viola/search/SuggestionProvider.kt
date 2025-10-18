@@ -102,6 +102,7 @@ open class SuggestionProvider(private val mContext: Context) {
                 "max-age=$INTERVAL_DAY, max-stale=$INTERVAL_DAY"
             )
             urlConnection.addRequestProperty("Accept-Charset", encoding)
+            urlConnection.addRequestProperty("User-Agent", "")
             try {
                 val charset = urlConnection.getCharset(encoding)
                 urlConnection.inputStream.bufferedReader(charset).use {
