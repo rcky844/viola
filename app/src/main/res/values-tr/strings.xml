@@ -279,14 +279,16 @@
     <string name="pref_theme_dark">Koyu</string>
     <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">Tema</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_wallpaper_title">Change wallpaper</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_colors_title">Colors</string>
+    <!-- Settings: Start page wallpaper: Pick a color -->
+    <string name="dialog_start_page_solid_color_picker">Solid color picker</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
-    <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
-    <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">Güncel: %s</string>
     <!-- Settings: Appearance: User interface category -->
     <string name="pref_appearance_ui_category">User interface</string>
     <!-- Settings: Appearance: Show favicon title -->
@@ -359,8 +361,6 @@
     <string name="homepage_dialog_custom_message">Type web address of custom homepage, which could become your start page.</string>
     <!-- Settings - Search: Custom dialog message -->
     <string name="search_dialog_custom_message">Type web address of custom search provider, and click on the chips to append placeholders.</string>
-    <!-- Settings - Wallpaper: Default -->
-    <string name="default_res">Varsayılan</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
     <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
     <!-- Settings - Reset to Default: Dialog message -->
