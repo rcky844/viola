@@ -5,6 +5,7 @@ package tipz.viola.widget
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import android.util.TypedValue
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatTextView
@@ -17,8 +18,13 @@ fun Context.makeViolaBanner(): CardView {
     val appBannerCard = CardView(this).apply {
         id = R.id.app_banner_card
         radius = context.dpToPx(64).toFloat()
-        setContentPadding(0, context.dpToPx(8),
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            setContentPadding(context.dpToPx(8), context.dpToPx(16),
+                context.dpToPx(24), context.dpToPx(16))
+        else
+            setContentPadding(0, context.dpToPx(8),
             context.dpToPx(16), context.dpToPx(8))
+
         setCardBackgroundColor(SurfaceColors.getColorForElevation(
             context, 1 * context.resources.displayMetrics.density))
         cardElevation = 0f
