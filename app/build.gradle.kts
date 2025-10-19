@@ -165,7 +165,8 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     // Others
-    implementation("com.github.Dhaval2404:ColorPicker:2.3")
+    implementation("com.github.duanhong169:checkerboarddrawable:1.0.2")
+    implementation("com.github.duanhong169:colorpicker:1.1.6")
     implementation("cat.ereza:customactivityoncrash:2.3.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 

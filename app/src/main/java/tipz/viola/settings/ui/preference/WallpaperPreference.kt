@@ -4,6 +4,7 @@
 package tipz.viola.settings.ui.preference
 
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
@@ -13,13 +14,14 @@ import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
-import com.github.dhaval2404.colorpicker.ColorPickerDialog
-import com.github.dhaval2404.colorpicker.model.ColorShape
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import tipz.viola.R
 import tipz.viola.databinding.PreferenceWallpaperBinding
+import tipz.viola.ext.getFrameworkIdentifier
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
+import top.defaults.colorpicker.ColorPickerView
 
 class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(context, attrs) {
     private lateinit var binding: PreferenceWallpaperBinding
@@ -61,14 +63,20 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
         }
 
         colorWallpaper.setOnClickListener {
-            ColorPickerDialog
-                .Builder(context)
+            val picker = ColorPickerView(context)
+            picker.setInitialColor(Color.WHITE)
+            picker.setEnabledAlpha(true)
+            picker.setEnabledBrightness(true)
+
+            MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.dialog_start_page_solid_color_picker)
-                .setColorShape(ColorShape.SQAURE)
-                .setColorListener { color, colorHex ->
-                    settingsPreference.setInt(SettingsKeys.startPageColor, color)
+                .setPositiveButton(context.resources.getString(
+                    context.getFrameworkIdentifier("date_time_set"))) { _, _ ->
+                    settingsPreference.setInt(SettingsKeys.startPageColor, picker.color)
                     setWallpaperPreview()
                 }
+                .setNegativeButton(context.resources.getString(android.R.string.cancel), null)
+                .setView(picker)
                 .show()
         }
 
