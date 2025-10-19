@@ -296,7 +296,7 @@ class BrowserActivity : VWebViewActivity() {
         }
 
         // Start Page Wallpaper
-        if (settingsPreference.getInt(SettingsKeys.startPageColor) != 0) {
+        if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
             localNtpPageView.setBackgroundColor(
                 settingsPreference.getInt(SettingsKeys.startPageColor))
             return

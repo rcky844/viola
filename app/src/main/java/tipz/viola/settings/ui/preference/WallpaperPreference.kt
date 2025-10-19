@@ -57,14 +57,15 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
 
         resetWallpaper.setOnClickListener {
             settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
-            settingsPreference.setInt(SettingsKeys.startPageColor, 0)
+            settingsPreference.setInt(SettingsKeys.startPageColor, -1)
             previewWallpaper.setImageResource(0)
             previewWallpaper.setBackgroundColor(0)
         }
 
         colorWallpaper.setOnClickListener {
             val picker = ColorPickerView(context)
-            picker.setInitialColor(Color.WHITE)
+            picker.setInitialColor(settingsPreference.getInt(SettingsKeys.startPageColor)
+                .takeIf { it != -1 } ?: Color.WHITE)
             picker.setEnabledAlpha(true)
             picker.setEnabledBrightness(true)
 
@@ -88,7 +89,7 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
     fun setWallpaperPreview(
         uri: Uri = settingsPreference.getString(SettingsKeys.startPageWallpaper).toUri()
     ) {
-        if (settingsPreference.getInt(SettingsKeys.startPageColor) != 0) {
+        if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
             previewWallpaper.setBackgroundColor(
                 settingsPreference.getInt(SettingsKeys.startPageColor))
             return
