@@ -26,6 +26,7 @@ import tipz.viola.databinding.TemplateTextSuggestionsBinding
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.setStartAligned
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebViewActivity
 import java.util.Locale
 
@@ -92,20 +93,15 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
 
     private inner class ItemFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            if (!enableFiltering || !context.settingsPreference.getIntBool(SettingsKeys.useSearchSuggestions)) {
-                queryText = ""
-                items = listOf()
-                return FilterResults().apply {
-                    count = 0
-                    values = null
-                }
-            }
-
             val filterResults = FilterResults()
 
             constraint?.takeUnless { it.isBlank() }?.let {
                 val provider: SuggestionProvider = provider
                 val query = constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
+                if (!enableFiltering || UrlUtils.isUriSupported(query)
+                    || !context.settingsPreference.getIntBool(SettingsKeys.useSearchSuggestions))
+                    return cancelFiltering()
+
                 val results = provider.fetchResults(query)
                 filterResults.count = items.size
                 filterResults.values = items
@@ -113,6 +109,15 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
                 items = results
             }
             return filterResults
+        }
+
+        fun cancelFiltering(): FilterResults {
+            queryText = ""
+            items = listOf()
+            return FilterResults().apply {
+                count = 0
+                values = null
+            }
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
