@@ -5,6 +5,7 @@ package tipz.viola.webview.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Typeface
@@ -82,6 +83,7 @@ import tipz.viola.webview.activity.components.PopupMaterialAlertDialogBuilder
 import tipz.viola.webview.activity.components.ToolbarView
 import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webview.pages.ProjectUrls
+import tipz.viola.widget.FadeOrchestrator
 import tipz.viola.widget.PropertyDisplayView
 import tipz.viola.widget.StringResAdapter
 
@@ -105,6 +107,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var consoleMessageTextView: TextView? = null
+    val fade = FadeOrchestrator(this)
     var viewMode: Int = 0
     private var setFabHiddenViews = false
 
@@ -138,13 +141,18 @@ class BrowserActivity : VWebViewActivity() {
         // Start update service
         UpdateService(this, true)
 
+        // Animations
+        fade.requireInitialClickToFade = true
+
         // Setup toolbar
         toolbarView = binding.toolbarView
         toolbarView.activity = this
         toolbarView.init()
+        fade.register(toolbarView)
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
+        fade.register(expandableToolbarView)
 
         // Layout HitBox
         webview.setOnTouchListener { _, _ ->
@@ -236,6 +244,11 @@ class BrowserActivity : VWebViewActivity() {
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.clear()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        fade.dynamicDisable = resources.configuration.smallestScreenWidthDp < 600
     }
 
     override fun doSettingsCheck() {
