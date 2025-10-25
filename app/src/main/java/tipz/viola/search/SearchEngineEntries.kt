@@ -5,6 +5,7 @@ package tipz.viola.search
 
 import android.content.Context
 import android.text.TextUtils
+import androidx.annotation.Discouraged
 import androidx.core.net.toUri
 import tipz.viola.R
 import tipz.viola.settings.SettingsKeys
@@ -85,14 +86,11 @@ object SearchEngineEntries {
         ),
         EngineItem(name = "") /* The object for custom URL */
     )
-    private const val defaultEngine = 8
+    const val defaultEngineName = "brave"
 
     enum class EngineInfoType {
         HOMEPAGE, SEARCH, SUGGESTION
     }
-
-    // TODO: Improvements needed
-    fun getNameByIndex(index: Int = defaultEngine): String = engines[index].name
 
     private fun findByName(name: String): EngineItem? = engines.find { it.name == name }
     private fun getHostUrl(item: EngineItem): String? = item.homePage?.toUri()?.host

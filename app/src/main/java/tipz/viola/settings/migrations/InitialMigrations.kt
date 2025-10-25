@@ -3,6 +3,7 @@
 
 package tipz.viola.settings.migrations
 
+import android.annotation.SuppressLint
 import tipz.viola.BuildConfig
 import tipz.viola.download.DownloadClient
 import tipz.viola.search.SearchEngineEntries
@@ -11,6 +12,7 @@ import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.buss.BussUtils
 
 // For first start
+@SuppressLint("DiscouragedApi")
 class InitialMigrations(pref: SettingsSharedPreference) {
     init {
         // Initialize only protocol version 0, as it is defined as uninitialized
@@ -27,11 +29,11 @@ class InitialMigrations(pref: SettingsSharedPreference) {
 
             // Homepage
             pref.setInt(SettingsKeys.useHomePage, 1)
-            pref.setString(SettingsKeys.homePageName, SearchEngineEntries.getNameByIndex())
+            pref.setString(SettingsKeys.homePageName, SearchEngineEntries.defaultEngineName)
 
             // Search
-            pref.setString(SettingsKeys.searchName, SearchEngineEntries.getNameByIndex())
-            pref.setString(SettingsKeys.suggestionsName, SearchEngineEntries.getNameByIndex())
+            pref.setString(SettingsKeys.searchName, SearchEngineEntries.defaultEngineName)
+            pref.setString(SettingsKeys.suggestionsName, SearchEngineEntries.defaultEngineName)
             pref.setInt(SettingsKeys.useSearchSuggestions, 1)
 
             // Updates
