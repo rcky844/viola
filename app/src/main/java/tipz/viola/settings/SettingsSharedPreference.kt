@@ -24,9 +24,12 @@ class SettingsSharedPreference(context: Context) {
 
     private fun settingsInit() {
         // Migration modules
-        InitialMigrations(this)
-        ExoticMigrations(this)
-        FernandoMigrations(this)
+        if (getInt(SettingsKeys.protocolVersion) == 0) {
+            InitialMigrations(this)
+        } else {
+            ExoticMigrations(this)
+            FernandoMigrations(this)
+        }
 
         // Sets CURRENT_PROTOCOL_VERSION, currently 5
         // Must be non-zero, as zero is defined as uninitialized

@@ -51,7 +51,7 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
 
     init {
         // Apply migrations only to the previous protocol version
-        if (pref.getInt(SettingsKeys.protocolVersion) == 1) { // Update to protocol version 2
+        if (pref.getInt(SettingsKeys.protocolVersion) <= 1) { // Update to protocol version 2
             // Migrations
             migrateSearchIndex()
             migrateDefaultBoolean()
@@ -59,11 +59,15 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
 
             // Remove deleted keys
             deletedKeys.forEach { pref.remove(it) }
-        } else if (pref.getInt(SettingsKeys.protocolVersion) == 2) { // Update to protocol version 3
+        }
+
+        if (pref.getInt(SettingsKeys.protocolVersion) <= 2) { // Update to protocol version 3
             // Migrations
             // Download API version tracking is also introduced with protocol version 3
             pref.setInt(SettingsKeys.showFullscreenWarningDialog, 1)
-        } else if (pref.getInt(SettingsKeys.protocolVersion) == 3) {
+        }
+
+        if (pref.getInt(SettingsKeys.protocolVersion) <= 3) {
             // Migrations
             // Check App Link is enabled by default in protocol version 4
             pref.remove(SettingsKeys.checkAppLink)
