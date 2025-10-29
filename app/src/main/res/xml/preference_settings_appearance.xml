@@ -28,6 +28,12 @@
             app:preferenceTag="showFavicon"
             app:needReload="false" />
         <tipz.viola.settings.ui.preference.MaterialSwitchPreference
+            android:key="auto_fade_toolbar"
+            android:summary="@string/pref_auto_fade_toolbar_summary"
+            android:title="@string/pref_auto_fade_toolbar_title"
+            app:preferenceTag="autoFadeToolbar"
+            app:needReload="false" />
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="reverse_address_bar"
             android:summary="@string/pref_reverse_address_bar_summary"
             android:title="@string/pref_reverse_address_bar_title"

@@ -63,6 +63,7 @@ object SettingsKeys {
     const val reverseAddressBar = "reverseAddressBar" /* INTEGER */
     const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
     const val showFullscreenWarningDialog = "showFullscreenWarningDialog" /* INTEGER */
+    const val autoFadeToolbar = "autoFadeToolbar" /* INTEGER */
 
     /* Updater */
     const val updateChannelName = "updateChannelName" /* STRING */

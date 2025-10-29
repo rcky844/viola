@@ -248,7 +248,8 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        fade.dynamicDisable = resources.configuration.smallestScreenWidthDp < 600
+        fade.dynamicDisable = !settingsPreference.getIntBool(SettingsKeys.autoFadeToolbar)
+                || resources.configuration.smallestScreenWidthDp < 600
     }
 
     override fun doSettingsCheck() {
@@ -307,6 +308,10 @@ class BrowserActivity : VWebViewActivity() {
             }
             viewMode = reverseAddressBar
         }
+
+        // Auto-fade toolbar
+        fade.dynamicDisable = !settingsPreference.getIntBool(SettingsKeys.autoFadeToolbar)
+                || resources.configuration.smallestScreenWidthDp < 600
 
         // Start Page Wallpaper
         if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
