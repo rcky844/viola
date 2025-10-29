@@ -10,7 +10,7 @@ import tipz.viola.webview.buss.BussUtils
 
 class FernandoMigrations(private val pref: SettingsSharedPreference) {
     init {
-        if (pref.getInt(SettingsKeys.protocolVersion) == 4) {
+        if (pref.getInt(SettingsKeys.protocolVersion) <= 4) {
             // Homepage kill switch defaults
             pref.setInt(SettingsKeys.useHomePage, 1)
 
