@@ -145,6 +145,7 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
                 result.cancel()
                 vWebView.onPageInformationUpdated(VWebView.PageLoadState.PAGE_FINISHED)
             }
+            .setCancelable(false)
         if (defaultValue != null) dialog.setView(view)
         dialog.create().show()
     }
