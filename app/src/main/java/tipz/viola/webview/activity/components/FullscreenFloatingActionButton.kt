@@ -5,7 +5,6 @@ package tipz.viola.webview.activity.components
 
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
 import android.util.AttributeSet
 import android.widget.CheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -15,53 +14,30 @@ import tipz.viola.ext.setImmersiveMode
 import tipz.viola.ext.setMaterialDialogViewPadding
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BrowserActivity
+import tipz.viola.widget.FadeOrchestrator
 
 class FullscreenFloatingActionButton(
     context: Context, attrs: AttributeSet?
 ) : FloatingActionButton(context, attrs) {
     lateinit var activity: BrowserActivity
     var hiddenViews: MutableList<BrowserActivity.ViewVisibility> = mutableListOf()
-    private var faded = false
+    private val fade = FadeOrchestrator(context)
     var isFullscreen = false
-
-    private fun resetAnim() {
-        this.alpha = 1f
-        faded = false
-    }
-
-    private fun fadeOut() {
-        val animate = this.animate()
-        animate.alpha(0f)
-        animate.duration = resources.getInteger(R.integer.anim_fullscreen_fab_fade_out_speed).toLong()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            animate.withEndAction {
-                faded = true
-            }
-        }
-        animate.startDelay = resources.getInteger(R.integer.anim_fullscreen_fab_fade_out_delay).toLong()
-        animate.start()
-    }
 
     init {
         // Basic setup
         setImageResource(R.drawable.fullscreen_close)
-        setOnClickListener {
-            // Animations
-            if (faded) {
-                resetAnim()
-                fadeOut()
-            } else {
-                isFullscreen = false
+        fade.setOnVisibleClickListener {
+            isFullscreen = false
 
-                // Handle views
-                hiddenViews.forEach {
-                    if (it.isEnabledCallback()) it.view.visibility = VISIBLE
-                }
-                this.visibility = GONE
-
-                // Immersive Mode
-                activity.setImmersiveMode(false)
+            // Handle views
+            hiddenViews.forEach {
+                if (it.isEnabledCallback()) it.view.visibility = VISIBLE
             }
+            this.visibility = GONE
+
+            // Immersive Mode
+            activity.setImmersiveMode(false)
         }
     }
 
@@ -78,8 +54,7 @@ class FullscreenFloatingActionButton(
         activity.setImmersiveMode(true)
 
         // Animations
-        resetAnim()
-        fadeOut()
+        fade.register(this)
 
         // Warning dialog
         if (activity.settingsPreference.getIntBool(SettingsKeys.showFullscreenWarningDialog)) {

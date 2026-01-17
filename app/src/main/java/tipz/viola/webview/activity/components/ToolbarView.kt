@@ -30,6 +30,7 @@ class ToolbarView(
     init {
         /* Set-up LinearLayoutCompat */
         orientation = VERTICAL
+        isSoundEffectsEnabled = false
 
         /* Create divider */
         if (tag != "hideDivider") {
@@ -76,9 +77,11 @@ class ToolbarView(
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.imageView.setImageResource(itemsList[position])
             holder.imageView.setOnClickListener {
+                toolbarView.performClick()
                 toolbarView.activity.itemSelected(holder.imageView, itemsList[position])
             }
             holder.imageView.setOnLongClickListener {
+                toolbarView.performLongClick()
                 toolbarView.activity.itemLongSelected(holder.imageView, itemsList[position])
                 true
             }

@@ -9,7 +9,7 @@ import tipz.viola.settings.SettingsSharedPreference
 class FrancescoMigrations(private val pref: SettingsSharedPreference) {
     init {
         if (pref.getInt(SettingsKeys.protocolVersion) <= 5) {
-
+            pref.setInt(SettingsKeys.autoFadeToolbar, 1)
         }
     }
 }

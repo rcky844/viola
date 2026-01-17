@@ -143,7 +143,8 @@ class ExpandableToolbarView(
                 .setDuration(resources.getInteger(R.integer.anim_toolbar_expand_fade_speed).toLong())
             )
         TransitionManager.beginDelayedTransition(this, transitionSet)
-        visibility = if (viewVisible) View.GONE else View.VISIBLE
+        visibility = if (viewVisible) GONE else VISIBLE
+        activity.fade.dynamicDisable = !viewVisible
     }
 
     class ToolbarItemsAdapter(
