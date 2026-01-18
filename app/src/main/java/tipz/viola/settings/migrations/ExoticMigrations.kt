@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.migrations
@@ -6,14 +6,7 @@ package tipz.viola.settings.migrations
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 
-// For version 7.0.x
-class ExoticMigrations(private val pref: SettingsSharedPreference) {
-    private val deletedKeys = arrayOf(
-        SettingsKeys.defaultHomePage, SettingsKeys.defaultHomePageId,
-        SettingsKeys.defaultSearch, SettingsKeys.defaultSearchId,
-        SettingsKeys.defaultSuggestions, SettingsKeys.defaultSuggestionsId,
-    )
-
+object ExoticMigrations : Migration(1) {
     /* In Exotic 7.0, index based search IDs are ditched over
      * using more identifiable names representing the search
      * engine. This will need to be migrated using a map of
@@ -27,7 +20,19 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
         "swisscows", "qwant", "sogou", "so360", ""
     )
 
-    private fun migrateSearchIndex() {
+    override val keyPairsUpdate: Array<Pair<String, Any>> = arrayOf(
+        Pair(SettingsKeys.showFavicon, 0),
+        Pair(SettingsKeys.useForceDark, 1),
+        Pair(SettingsKeys.enableHistoryStorage, 1),
+    )
+
+    override val keysRemoval: Array<String> = arrayOf(
+        SettingsKeys.defaultHomePage, SettingsKeys.defaultHomePageId,
+        SettingsKeys.defaultSearch, SettingsKeys.defaultSearchId,
+        SettingsKeys.defaultSuggestions, SettingsKeys.defaultSuggestionsId,
+    )
+
+    override fun process(pref: SettingsSharedPreference) {
         pref.setString(SettingsKeys.homePageName,
             oldEnginesMapping[pref.getInt(SettingsKeys.defaultHomePageId)])
         pref.setString(SettingsKeys.homePageCustomUrl,
@@ -43,34 +48,18 @@ class ExoticMigrations(private val pref: SettingsSharedPreference) {
         pref.setString(SettingsKeys.suggestionsCustomUrl,
             pref.getString(SettingsKeys.defaultSuggestions))
     }
+}
 
-    private fun migrateDefaultBoolean() {
-        pref.setInt(SettingsKeys.showFavicon, 0)
-        pref.setInt(SettingsKeys.useForceDark, 1)
-    }
+object ExoticMR1Migrations : Migration(2) {
+    override val keyPairsUpdate: Array<Pair<String, Any>> = arrayOf(
+        Pair(SettingsKeys.showFullscreenWarningDialog, 1),
+    )
+    override val keysRemoval: Array<String> = arrayOf()
+    override fun process(pref: SettingsSharedPreference) { }
+}
 
-    init {
-        // Apply migrations only to the previous protocol version
-        if (pref.getInt(SettingsKeys.protocolVersion) <= 1) { // Update to protocol version 2
-            // Migrations
-            migrateSearchIndex()
-            migrateDefaultBoolean()
-            pref.setInt(SettingsKeys.enableHistoryStorage, 1) // migrateHistoryStorageEnablement()
-
-            // Remove deleted keys
-            deletedKeys.forEach { pref.remove(it) }
-        }
-
-        if (pref.getInt(SettingsKeys.protocolVersion) <= 2) { // Update to protocol version 3
-            // Migrations
-            // Download API version tracking is also introduced with protocol version 3
-            pref.setInt(SettingsKeys.showFullscreenWarningDialog, 1)
-        }
-
-        if (pref.getInt(SettingsKeys.protocolVersion) <= 3) {
-            // Migrations
-            // Check App Link is enabled by default in protocol version 4
-            pref.remove(SettingsKeys.checkAppLink)
-        }
-    }
+object ExoticMR2Migrations : Migration(3) {
+    override val keyPairsUpdate: Array<Pair<String, Any>> = arrayOf()
+    override val keysRemoval: Array<String> = arrayOf(SettingsKeys.checkAppLink)
+    override fun process(pref: SettingsSharedPreference) { }
 }

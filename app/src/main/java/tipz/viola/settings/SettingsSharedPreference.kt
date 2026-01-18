@@ -1,4 +1,4 @@
-// Copyright (c) 2023-2025 Tipz Team
+// Copyright (c) 2023-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings
@@ -8,10 +8,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import tipz.viola.Application
+import tipz.viola.settings.migrations.ExoticMR1Migrations
+import tipz.viola.settings.migrations.ExoticMR2Migrations
 import tipz.viola.settings.migrations.ExoticMigrations
 import tipz.viola.settings.migrations.FernandoMigrations
 import tipz.viola.settings.migrations.FrancescoMigrations
 import tipz.viola.settings.migrations.InitialMigrations
+import tipz.viola.settings.migrations.Migration
 
 /* TODO: Migrate to something newer? */
 class SettingsSharedPreference(context: Context) {
@@ -26,11 +29,13 @@ class SettingsSharedPreference(context: Context) {
     private fun settingsInit() {
         // Migration modules
         if (getInt(SettingsKeys.protocolVersion) == 0) {
-            InitialMigrations(this)
+            Migration.migrationProcess(this, InitialMigrations)
         } else {
-            ExoticMigrations(this)
-            FernandoMigrations(this)
-            FrancescoMigrations(this)
+            Migration.migrationProcess(this, ExoticMigrations) // 7.0.x
+            Migration.migrationProcess(this, ExoticMR1Migrations) // 7.1.x
+            Migration.migrationProcess(this, ExoticMR2Migrations) // 7.2.x
+            Migration.migrationProcess(this, FernandoMigrations) // 8.0.x
+            Migration.migrationProcess(this, FrancescoMigrations) // 8.1.x
         }
 
         // Sets CURRENT_PROTOCOL_VERSION, currently 5

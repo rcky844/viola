@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.migrations
@@ -13,49 +13,51 @@ import tipz.viola.webview.buss.BussUtils
 
 // Initialize when protocol version is 0, as it is defined as uninitialized
 @SuppressLint("DiscouragedApi")
-class InitialMigrations(pref: SettingsSharedPreference) {
-    init {
+object InitialMigrations : Migration(0) {
+    override val keyPairsUpdate: Array<Pair<String, Any>> = arrayOf(
         // Bussin WebX
-        pref.setString(SettingsKeys.bussApiUrl, BussUtils.defaultApiUrl)
+        Pair(SettingsKeys.bussApiUrl, BussUtils.defaultApiUrl),
 
         // Downloads
-        pref.setInt(SettingsKeys.closeAppAfterDownload, 1)
-        pref.setString(SettingsKeys.downloadLocationDefault, DownloadClient.defaultInitialDownloadPath)
-        pref.setInt(SettingsKeys.downloadMgrMode, 0)
-        pref.setInt(SettingsKeys.enableDownloads, 1)
-        pref.setInt(SettingsKeys.requireDownloadConformation, 1)
+        Pair(SettingsKeys.closeAppAfterDownload, 1),
+        Pair(SettingsKeys.downloadLocationDefault, DownloadClient.defaultInitialDownloadPath),
+        Pair(SettingsKeys.downloadMgrMode, 0),
+        Pair(SettingsKeys.enableDownloads, 1),
+        Pair(SettingsKeys.requireDownloadConformation, 1),
 
         // Homepage
-        pref.setInt(SettingsKeys.useHomePage, 1)
-        pref.setString(SettingsKeys.homePageName, SearchEngineEntries.defaultEngineName)
+        Pair(SettingsKeys.useHomePage, 1),
+        Pair(SettingsKeys.homePageName, SearchEngineEntries.defaultEngineName),
 
         // Search
-        pref.setString(SettingsKeys.searchName, SearchEngineEntries.defaultEngineName)
-        pref.setString(SettingsKeys.suggestionsName, SearchEngineEntries.defaultEngineName)
-        pref.setInt(SettingsKeys.useSearchSuggestions, 1)
+        Pair(SettingsKeys.searchName, SearchEngineEntries.defaultEngineName),
+        Pair(SettingsKeys.suggestionsName, SearchEngineEntries.defaultEngineName),
+        Pair(SettingsKeys.useSearchSuggestions, 1),
 
         // Updates
-        pref.setString(SettingsKeys.updateChannelName, BuildConfig.VERSION_BUILD_TYPE)
+        Pair(SettingsKeys.updateChannelName, BuildConfig.VERSION_BUILD_TYPE),
 
         // Miscellaneous
-        pref.setInt(SettingsKeys.adServerId, 0)
-        pref.setInt(SettingsKeys.autoFadeToolbar, 1)
-        pref.setInt(SettingsKeys.enableHistoryStorage, 1)
-        pref.setInt(SettingsKeys.isCookiesEnabled, 1)
-        pref.setInt(SettingsKeys.isJavaScriptEnabled, 1)
-        pref.setInt(SettingsKeys.enableAdBlock, 0)
-        pref.setInt(SettingsKeys.enableGoogleSafeBrowse, 0)
-        pref.setInt(SettingsKeys.enableSwipeRefresh, 1)
-        pref.setInt(SettingsKeys.enforceHttps, 1)
-        pref.setInt(SettingsKeys.reverseAddressBar, 0)
-        pref.setInt(SettingsKeys.sendDNT, 0)
-        pref.setInt(SettingsKeys.sendSaveData, 0)
-        pref.setInt(SettingsKeys.sendSecGPC, 0)
-        pref.setInt(SettingsKeys.showFavicon, 0)
-        pref.setInt(SettingsKeys.showFullscreenWarningDialog, 1)
-        pref.setInt(SettingsKeys.themeId, 0)
-        pref.setInt(SettingsKeys.useCustomTabs, 1)
-        pref.setInt(SettingsKeys.useForceDark, 1)
-        pref.setInt(SettingsKeys.updateRecentsIcon, 1)
-    }
+        Pair(SettingsKeys.adServerId, 0),
+        Pair(SettingsKeys.autoFadeToolbar, 1),
+        Pair(SettingsKeys.enableHistoryStorage, 1),
+        Pair(SettingsKeys.isCookiesEnabled, 1),
+        Pair(SettingsKeys.isJavaScriptEnabled, 1),
+        Pair(SettingsKeys.enableAdBlock, 0),
+        Pair(SettingsKeys.enableGoogleSafeBrowse, 0),
+        Pair(SettingsKeys.enableSwipeRefresh, 1),
+        Pair(SettingsKeys.enforceHttps, 1),
+        Pair(SettingsKeys.reverseAddressBar, 0),
+        Pair(SettingsKeys.sendDNT, 0),
+        Pair(SettingsKeys.sendSaveData, 0),
+        Pair(SettingsKeys.sendSecGPC, 0),
+        Pair(SettingsKeys.showFavicon, 0),
+        Pair(SettingsKeys.showFullscreenWarningDialog, 1),
+        Pair(SettingsKeys.themeId, 0),
+        Pair(SettingsKeys.useCustomTabs, 1),
+        Pair(SettingsKeys.useForceDark, 1),
+        Pair(SettingsKeys.updateRecentsIcon, 1),
+    )
+    override val keysRemoval: Array<String> = arrayOf()
+    override fun process(pref: SettingsSharedPreference) {}
 }
