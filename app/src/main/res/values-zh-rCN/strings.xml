@@ -295,6 +295,10 @@
     <string name="pref_show_favicon">显示网站图标</string>
     <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">在地址栏旁边显示网站的图标。</string>
+    <!-- Settings: Appearance: Auto-fade toolbar title -->
+    <string name="pref_auto_fade_toolbar_title">Auto-fade toolbar</string>
+    <!-- Settings: Appearance: Auto-fade toolbar summary -->
+    <string name="pref_auto_fade_toolbar_summary">Reduce opacity of the toolbar when not in use.</string>
     <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">单手模式</string>
     <!-- Settings: Appearance: Reach mode summary -->
