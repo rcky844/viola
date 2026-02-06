@@ -297,6 +297,10 @@
     <string name="pref_show_favicon">फैविकॉन दिखाएँ</string>
     <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">एड्रेस बार के बगल में वेबपेज का फैविकॉन दिखाएँ।</string>
+    <!-- Settings: Appearance: Auto-fade toolbar title -->
+    <string name="pref_auto_fade_toolbar_title">Auto-fade toolbar</string>
+    <!-- Settings: Appearance: Auto-fade toolbar summary -->
+    <string name="pref_auto_fade_toolbar_summary">Reduce opacity of the toolbar when not in use.</string>
     <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">पहुँच मोड</string>
     <!-- Settings: Appearance: Reach mode summary -->
