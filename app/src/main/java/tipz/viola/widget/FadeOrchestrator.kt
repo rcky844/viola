@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.widget
@@ -25,6 +25,7 @@ class FadeOrchestrator(private val context: Context) {
     fun resetAnim() {
         fadeViewList.forEach {
             it.alpha = 1f
+            it.animate().cancel()
         }
         faded = false
         fadeOut()
