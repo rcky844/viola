@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2025 Tipz Team
+<!-- Copyright (c) 2020-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
@@ -295,6 +295,10 @@
     <string name="pref_show_favicon">ফাভিকন দেখুন</string>
     <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">ওয়েবপেজ এর ফাভিকোন অ্যাড্রেসবার এর পাশে দেখান।</string>
+    <!-- Settings: Appearance: Legacy toolbar title -->
+    <string name="pref_legacy_toolbar_title">Simple toolbar</string>
+    <!-- Settings: Appearance: Legacy toolbar summary -->
+    <string name="pref_legacy_toolbar_summary">Collapse into a single toolbar. Some options will not be available.</string>
     <!-- Settings: Appearance: Auto-fade toolbar title -->
     <string name="pref_auto_fade_toolbar_title">Auto-fade toolbar</string>
     <!-- Settings: Appearance: Auto-fade toolbar summary -->
