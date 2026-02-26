@@ -3,8 +3,9 @@
 
 package tipz.viola.widget
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
-import android.os.Build
 import android.view.View
 import tipz.viola.R
 
@@ -38,11 +39,11 @@ class FadeOrchestrator(private val context: Context) {
             animate.alpha(0.25f)
             animate.duration = context.resources.getInteger(
                 R.integer.anim_fullscreen_fab_fade_out_speed).toLong()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                animate.withEndAction {
+            animate.setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
                     faded = true
                 }
-            }
+            })
             animate.startDelay = context.resources.getInteger(
                 R.integer.anim_fullscreen_fab_fade_out_delay).toLong()
             animate.start()
@@ -56,11 +57,8 @@ class FadeOrchestrator(private val context: Context) {
         view.setOnClickListener {
             // Animations
             firstFade = false
-            if (faded || (requireInitialClickToFade && !firstFade)) {
-                resetAnim()
-            } else {
-                onClickListener?.onClick(view)
-            }
+            if (faded) resetAnim()
+            else onClickListener?.onClick(view)
         }
         view.setOnLongClickListener {
             resetAnim()
@@ -70,7 +68,6 @@ class FadeOrchestrator(private val context: Context) {
 
         // Begin timer
         resetAnim()
-        fadeOut()
     }
 
     fun setOnVisibleClickListener(onClickListener: View.OnClickListener) {
