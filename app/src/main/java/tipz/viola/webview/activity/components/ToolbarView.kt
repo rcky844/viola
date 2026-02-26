@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -6,7 +6,6 @@ package tipz.viola.webview.activity.components
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -19,6 +18,7 @@ import com.google.android.flexbox.JustifyContent
 import com.google.android.material.divider.MaterialDivider
 import tipz.viola.R
 import tipz.viola.databinding.TemplateIconItemBinding
+import tipz.viola.settings.SettingsKeys
 import tipz.viola.webview.activity.BrowserActivity
 
 class ToolbarView(
@@ -48,13 +48,16 @@ class ToolbarView(
             flexDirection = FlexDirection.ROW
             flexWrap = FlexWrap.WRAP
         }
-        recyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER)
+        recyclerView.setOverScrollMode(OVER_SCROLL_NEVER)
         addView(recyclerView)
     }
 
-    fun init() {
+    fun setUpAdapter() {
         /* Initialize RecyclerView */
-        recyclerView.adapter = ItemsAdapter(this, toolsBarItemList)
+        if (activity.settingsPreference.getIntBool(SettingsKeys.legacyToolbar))
+            recyclerView.adapter = ItemsAdapter(this, legacyToolsBarItemList)
+        else
+            recyclerView.adapter = ItemsAdapter(this, toolsBarItemList)
     }
 
     class ItemsAdapter(
@@ -101,13 +104,13 @@ class ToolbarView(
             R.drawable.view_stream
         )
 
-        // TODO: Add support for reverting to legacy layout
         private val legacyToolsBarItemList = listOf(
             R.drawable.arrow_back_alt,
             R.drawable.arrow_forward_alt,
             R.drawable.refresh,
             R.drawable.home,
             R.drawable.smartphone,
+            R.drawable.search,
             R.drawable.new_tab,
             R.drawable.share,
             R.drawable.app_shortcut,

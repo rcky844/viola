@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2025 Tipz Team
+// Copyright (c) 2020-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity
@@ -147,7 +147,7 @@ class BrowserActivity : VWebViewActivity() {
         // Setup toolbar
         toolbarView = binding.toolbarView
         toolbarView.activity = this
-        toolbarView.init()
+        toolbarView.setUpAdapter()
         fade.register(toolbarView)
 
         // Setup toolbar expandable

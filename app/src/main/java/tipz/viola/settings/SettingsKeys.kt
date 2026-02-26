@@ -1,4 +1,4 @@
-// Copyright (c) 2021-2025 Tipz Team
+// Copyright (c) 2021-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings
@@ -64,6 +64,7 @@ object SettingsKeys {
     const val updateRecentsIcon = "updateRecentsIcon" /* INTEGER */
     const val showFullscreenWarningDialog = "showFullscreenWarningDialog" /* INTEGER */
     const val autoFadeToolbar = "autoFadeToolbar" /* INTEGER */
+    const val legacyToolbar = "legacyToolbar" /* INTEGER */
 
     /* Updater */
     const val updateChannelName = "updateChannelName" /* STRING */
