@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022-2025 Tipz Team
+<!-- Copyright (c) 2022-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -14,28 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="179dp"
-                app:statusBarScrim="@android:color/transparent"
-                app:title=" ">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/app_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:autoSizeTextType="uniform"
-                    android:text="@string/app_name_display"
-                    android:textSize="24sp"
-                    android:typeface="sans"
-                    android:drawableStart="@drawable/app_logo"
-                    android:drawableLeft="@drawable/app_logo"
-                    app:fontFamily="sans-serif-medium"
-                    tools:targetApi="o" />
-            </com.google.android.material.appbar.MaterialToolbar>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/pref_about_title" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView

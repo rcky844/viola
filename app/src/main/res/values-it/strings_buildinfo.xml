@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2024 Tipz Team
+<!-- Copyright (c) 2024-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
     <!--
         Build Info: Version information
-        {PRODUCT_NAME} {PRODUCT_VERSION_CODENAME}
-        Version {PRODUCT_VERSION} (Build {PRODUCT_BUILD_ID})
+        Version {PRODUCT_VERSION} ({PRODUCT_VERSION_CODENAME})
+        Build {PRODUCT_BUILD_ID}
     -->
-    <string name="buildinfo_version">%1$s (%2$s)\nVersione %3$s (Build %4$s%5$s)</string>
+    <string name="buildinfo_version">Versione %1$s (%2$s)\nBuild %3$s%4$s</string>
     <!--
         Build Info: Copyright information
         Copyright © {PRODUCT_COPYRIGHT_YEAR} Tipz Team

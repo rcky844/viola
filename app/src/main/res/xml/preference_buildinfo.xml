@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2025 Tipz Team
+<!-- Copyright (c) 2025-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <tipz.build.info.BuildInfoSummaryPreference
-        app:allowDividerBelow="true" />
+    <tipz.build.info.BuildInfoGlancePreference />
+    <androidx.preference.Preference
+        android:key="license"
+        android:title="@string/buildinfo_license_button" />
+    <androidx.preference.Preference
+        android:key="changelog"
+        android:title="@string/buildinfo_changelog_button" />
     <androidx.preference.Preference
         android:key="website"
         android:summary="@string/pref_website_summary"
