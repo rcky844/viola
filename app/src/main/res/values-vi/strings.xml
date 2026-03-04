@@ -193,6 +193,12 @@
     <string name="console_logging_disable">Disable</string>
     <!-- Console: No logs -->
     <string name="console_logging_none">No logs</string>
+    <!-- Settings: Restart to apply dialog title -->
+    <string name="dialog_settings_restart_apply_title">Restart Application?</string>
+    <!-- Settings: Restart to apply dialog message -->
+    <string name="dialog_settings_restart_apply_message">The browser needs to restart to apply new settings. This will close currently opened tabs.</string>
+    <!-- Settings: Restart to apply dialog positive -->
+    <string name="dialog_settings_restart_apply_positive">Restart</string>
     <!-- Settings: Title -->
     <string name="settings_title">Cài đặt</string>
     <!-- Settings: Main: Basics category -->
@@ -300,9 +306,9 @@
     <!-- Settings: Appearance: Legacy toolbar summary -->
     <string name="pref_legacy_toolbar_summary">Collapse into a single toolbar. Some options will not be available.</string>
     <!-- Settings: Appearance: Auto-fade toolbar title -->
-    <string name="pref_auto_fade_toolbar_title">Auto-fade toolbar</string>
+    <string name="pref_auto_fade_toolbar_title">Auto-fade floating toolbar</string>
     <!-- Settings: Appearance: Auto-fade toolbar summary -->
-    <string name="pref_auto_fade_toolbar_summary">Reduce opacity of the toolbar when not in use.</string>
+    <string name="pref_auto_fade_toolbar_summary">Reduce opacity of the floating toolbar when not in use.</string>
     <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">Chế độ tiệm cận</string>
     <!-- Settings: Appearance: Reach mode summary -->
