@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.ext
@@ -23,6 +23,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import tipz.viola.BuildConfig
+import tipz.viola.LauncherActivity
 import tipz.viola.R
 import java.io.File
 
@@ -113,4 +114,11 @@ fun Context.uriFromFile(file: File): Uri {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file)
     else Uri.fromFile(file)
+}
+
+fun Context.restartApplication() {
+    val intent = Intent(this, LauncherActivity::class.java)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(intent)
+    Runtime.getRuntime().exit(0)
 }

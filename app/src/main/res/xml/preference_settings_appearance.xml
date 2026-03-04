@@ -32,7 +32,8 @@
             android:summary="@string/pref_legacy_toolbar_summary"
             android:title="@string/pref_legacy_toolbar_title"
             app:preferenceTag="legacyToolbar"
-            app:needReload="false" />
+            app:needReload="false"
+            app:needRestart="true" />
         <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="auto_fade_toolbar"
             android:summary="@string/pref_auto_fade_toolbar_summary"

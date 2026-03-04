@@ -214,6 +214,13 @@
     <!-- Console: No logs -->
     <string name="console_logging_none">No logs</string>
 
+    <!-- Settings: Restart to apply dialog title -->
+    <string name="dialog_settings_restart_apply_title">Restart Application?</string>
+    <!-- Settings: Restart to apply dialog message -->
+    <string name="dialog_settings_restart_apply_message">The browser needs to restart to apply new settings. This will close currently opened tabs.</string>
+    <!-- Settings: Restart to apply dialog positive -->
+    <string name="dialog_settings_restart_apply_positive">Restart</string>
+
     <!-- Settings: Title -->
     <string name="settings_title">Settings</string>
     <!-- Settings: Main: Basics category -->
