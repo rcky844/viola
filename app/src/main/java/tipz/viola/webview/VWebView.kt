@@ -488,6 +488,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Update favicon
         this.faviconExt = favicon
 
+        Log.v(LOG_TAG, "onPageInformationUpdated(): state=${state.name}")
         when (state) {
             PageLoadState.PAGE_STARTED -> {
                 if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return
@@ -601,7 +602,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.UNKNOWN -> {
             }
         }
-        Log.v(LOG_TAG, "onPageInformationUpdated(): state=${state.name}")
 
         activity.onUrlUpdated(newUrl)
         activity.onDropDownDismissed()
