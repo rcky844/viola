@@ -20,9 +20,9 @@
     -->
     <string name="buildinfo_license">This product is licensed under the %s.</string>
     <!-- Build Info: License title -->
-    <string name="pref_license_title">License</string>
+    <string name="pref_license_title">Licence</string>
     <!-- Build Info: License summary -->
-    <string name="pref_license_summary">View license information of the project.</string>
+    <string name="pref_license_summary">View licence information of the project.</string>
     <!-- Build Info: License dialog redirect -->
     <string name="pref_license_summary_redirect">Read document</string>
     <!-- Build Info: Changelog title -->
