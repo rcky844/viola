@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2025 Tipz Team
+// Copyright (c) 2020-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 @file:Suppress("DEPRECATION")
@@ -39,7 +39,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import tipz.viola.Application
@@ -476,9 +475,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     private suspend fun commitHistory(newUrl: String) {
-        val currentTitle = runBlocking {
-            withContext(Dispatchers.Main) { title }
-        }
+        val currentTitle = withContext(Dispatchers.Main) { title }
         val iconHash = faviconExt.takeUnless { it == null }?.let { iconHashClient.save(it) }
         historyClient.insert(Broha(iconHash, currentTitle, newUrl))
         Log.d(LOG_TAG, "History committed, url=$newUrl")
@@ -557,12 +554,10 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
                 CoroutineScope(Dispatchers.IO).launch {
                     Log.d(LOG_TAG, "History commit job START")
-                    runBlocking {
-                        withTimeoutOrNull(25000L) {
-                            while (faviconExt == null) {
-                                delay(1000)
-                                continue
-                            }
+                    withTimeoutOrNull(25000L) {
+                        while (faviconExt == null) {
+                            delay(1000)
+                            continue
                         }
                     }
 
