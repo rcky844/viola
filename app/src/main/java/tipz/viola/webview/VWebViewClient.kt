@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2025 Tipz Team
+// Copyright (c) 2020-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
@@ -51,6 +51,9 @@ open class VWebViewClient(
     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
         vWebView.onPageInformationUpdated(PageLoadState.UPDATE_HISTORY, url)
+
+        // Workaround issue of title updating too early
+        vWebView.onPageInformationUpdated(PageLoadState.UPDATE_TITLE)
     }
 
     @Deprecated("Deprecated in Java")
