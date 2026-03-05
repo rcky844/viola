@@ -81,6 +81,7 @@ class ToolbarView(
             holder.imageView.setImageResource(itemsList[position])
             holder.imageView.setOnClickListener {
                 toolbarView.performClick()
+                toolbarView.activity.fade.resetAnim() // HACK: Fix fade out stuck issue
                 toolbarView.activity.itemSelected(holder.imageView, itemsList[position])
             }
             holder.imageView.setOnLongClickListener {

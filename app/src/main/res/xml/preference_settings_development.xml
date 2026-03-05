@@ -27,6 +27,15 @@
             app:preferenceTag="alwaysOnLogging" />
     </androidx.preference.PreferenceCategory>
 
+    <tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory
+        android:summary="@string/pref_experiments_summary"
+        android:title="@string/pref_experiments_title">
+
+        <androidx.preference.Preference
+            android:key="view_experiments"
+            android:title="@string/pref_experiments_redirect_title" />
+    </tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory>
+
     <androidx.preference.PreferenceCategory
         android:title="@string/pref_main_category_updates_version">
 

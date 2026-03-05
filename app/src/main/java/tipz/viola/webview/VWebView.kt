@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2025 Tipz Team
+// Copyright (c) 2020-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 @file:Suppress("DEPRECATION")
@@ -38,7 +38,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import tipz.viola.Application
@@ -76,9 +75,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private var activeSnackBar: Snackbar? = null
     val downloadClient: DownloadClient = (context.applicationContext as Application).downloadClient
     val webSettings = this.settings
-    private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+    private var historyState = UpdateHistoryState.STATE_WAIT_TASK
     private var insecureAllow = false
-    var loadProgress = 100
+    private var loadProgress = 100
     val settingsPreference = SettingsSharedPreference.instance
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
@@ -160,7 +159,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl ?: "")
-            onPageLoadProgressChanged(0)
+            onPageLoadProgressChanged(PROGRESS_LOAD_COMPLETED)
         }
 
         // Features for legacy
@@ -280,7 +279,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun setUpdateHistory(value: Boolean) {
-        historyState = if (value) UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+        historyState = if (value) UpdateHistoryState.STATE_WAIT_TASK
         else UpdateHistoryState.STATE_DISABLED
     }
 
@@ -311,7 +310,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
             return true
         } else {
-            if (!noToast && (loadProgress == 0 || loadProgress == 100)) {
+            if (!noToast && progress == PROGRESS_LOAD_COMPLETED) {
                 Log.v(LOG_TAG, "App Link not handled and page loaded, showing toast")
                 context.showMessage(R.string.toast_no_app_to_handle)
             }
@@ -475,9 +474,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     private suspend fun commitHistory(newUrl: String) {
-        val currentTitle = runBlocking {
-            withContext(Dispatchers.Main) { title }
-        }
+        val currentTitle = withContext(Dispatchers.Main) { title }
         val iconHash = faviconExt.takeUnless { it == null }?.let { iconHashClient.save(it) }
         historyClient.insert(Broha(iconHash, currentTitle, newUrl))
         Log.d(LOG_TAG, "History committed, url=$newUrl")
@@ -491,6 +488,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Update favicon
         this.faviconExt = favicon
 
+        Log.v(LOG_TAG, "onPageInformationUpdated(): state=${state.name}")
         when (state) {
             PageLoadState.PAGE_STARTED -> {
                 if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return
@@ -511,14 +509,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     return
                 }
 
-                onPageLoadProgressChanged(-1)
+                historyState = UpdateHistoryState.STATE_WAIT_TASK
                 activity.onPageStateChanged(true)
                 consoleMessages.clear()
                 activeSnackBar.takeUnless { it == null }?.dismiss()
             }
 
             PageLoadState.PAGE_FINISHED -> {
-                onPageLoadProgressChanged(0)
                 activity.onPageStateChanged(false)
                 activity.swipeRefreshLayout.setRefreshing(false)
 
@@ -532,6 +529,16 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     sslState = SslState.SECURE
 
                 activity.onSslCertificateUpdated()
+
+                if (historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
+                    // Handling for long loading websites
+                    // Commit history when load is complete
+                    historyState = UpdateHistoryState.STATE_WAIT_TASK
+                    onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
+                } else {
+                    // Solve duplicated history commits
+                    historyState = UpdateHistoryState.STATE_COMMITTED
+                }
             }
 
             PageLoadState.PAGE_ERROR -> {
@@ -557,29 +564,29 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
             PageLoadState.UPDATE_HISTORY -> {
                 if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
-                if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK)
-                    historyState = UpdateHistoryState.STATE_URL_UPDATED
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    CookieManager.getInstance().flush()
-                else CookieSyncManager.getInstance().sync()
-                activity.swipeRefreshLayout.setRefreshing(false)
+
+                if (historyState != UpdateHistoryState.STATE_WAIT_TASK) {
+                    Log.d(LOG_TAG, "Wrong state for history commit")
+                    return
+                }
+
+                if (loadProgress != PROGRESS_LOAD_COMPLETED) {
+                    Log.d(LOG_TAG, "Stage history commit for load completion")
+                    historyState = UpdateHistoryState.STATE_PENDING_COMMIT
+                    return
+                }
 
                 CoroutineScope(Dispatchers.IO).launch {
                     Log.d(LOG_TAG, "History commit job START")
-                    runBlocking {
-                        withTimeoutOrNull(25000L) {
-                            while (faviconExt == null) {
-                                delay(1000)
-                                continue
-                            }
+                    withTimeoutOrNull(25000L) {
+                        while (faviconExt == null) {
+                            delay(1000)
+                            continue
                         }
                     }
 
-                    if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
-                        historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
-                        commitHistory(newUrl)
-                    }
-                    MainScope().launch { activity.onFaviconUpdated(faviconExt) }
+                    commitHistory(newUrl)
+                    historyState = UpdateHistoryState.STATE_COMMITTED
                 }
             }
 
@@ -595,15 +602,30 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.UNKNOWN -> {
             }
         }
-        Log.v(LOG_TAG, "onPageInformationUpdated(): state=${state.name}")
 
         activity.onUrlUpdated(newUrl)
         activity.onDropDownDismissed()
     }
 
     fun onPageLoadProgressChanged(progress: Int) {
+        if (progress == loadProgress) return
         loadProgress = progress
         activity.onPageLoadProgressChanged(progress)
+
+        if (progress == PROGRESS_LOAD_COMPLETED) {
+            // Commit history when load is complete
+            if (historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
+                historyState = UpdateHistoryState.STATE_WAIT_TASK
+                onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
+            }
+
+            // Perform actions for actual page completion
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                CookieManager.getInstance().flush()
+            else CookieSyncManager.getInstance().sync()
+            activity.swipeRefreshLayout.setRefreshing(false)
+            MainScope().launch { activity.onFaviconUpdated(faviconExt) }
+        }
     }
 
     fun setUserAgent(agentMode: UserAgentMode, dataBundle: UserAgentBundle) {
@@ -684,7 +706,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     fun loadHomepage(useStartPage: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
         if (!settingsPreference.getIntBool(SettingsKeys.useHomePage)) {
-            activity.onPageLoadProgressChanged(0) // Reset page load progress
             return
         }
 
@@ -702,5 +723,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
         loadRealUrl("${BrowserUrls.viewSourcePrefix}$currentUrl")
         return true
+    }
+
+    companion object {
+        const val PROGRESS_LOAD_COMPLETED = 100
     }
 }
