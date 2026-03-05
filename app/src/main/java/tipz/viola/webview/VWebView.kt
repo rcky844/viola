@@ -518,7 +518,16 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.PAGE_FINISHED -> {
                 activity.onPageStateChanged(false)
                 activity.onSslCertificateUpdated()
-                activity.swipeRefreshLayout.setRefreshing(false)
+
+                if (historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
+                    // Handling for long loading websites
+                    // Commit history when load is complete
+                    historyState = UpdateHistoryState.STATE_WAIT_TASK
+                    onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
+                } else {
+                    // Solve duplicated history commits
+                    historyState = UpdateHistoryState.STATE_COMMITTED
+                }
             }
 
             PageLoadState.PAGE_ERROR -> {
@@ -556,11 +565,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     return
                 }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    CookieManager.getInstance().flush()
-                else CookieSyncManager.getInstance().sync()
-                activity.swipeRefreshLayout.setRefreshing(false)
-
                 CoroutineScope(Dispatchers.IO).launch {
                     Log.d(LOG_TAG, "History commit job START")
                     withTimeoutOrNull(25000L) {
@@ -572,7 +576,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
                     commitHistory(newUrl)
                     historyState = UpdateHistoryState.STATE_COMMITTED
-                    MainScope().launch { activity.onFaviconUpdated(faviconExt) }
                 }
             }
 
@@ -599,11 +602,19 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         loadProgress = progress
         activity.onPageLoadProgressChanged(progress)
 
-        // Commit history when load is complete
-        if (progress == PROGRESS_LOAD_COMPLETED
-            && historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
-            historyState = UpdateHistoryState.STATE_WAIT_TASK
-            onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
+        if (progress == PROGRESS_LOAD_COMPLETED) {
+            // Commit history when load is complete
+            if (historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
+                historyState = UpdateHistoryState.STATE_WAIT_TASK
+                onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
+            }
+
+            // Perform actions for actual page completion
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                CookieManager.getInstance().flush()
+            else CookieSyncManager.getInstance().sync()
+            activity.swipeRefreshLayout.setRefreshing(false)
+            MainScope().launch { activity.onFaviconUpdated(faviconExt) }
         }
     }
 
