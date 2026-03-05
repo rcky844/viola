@@ -50,7 +50,8 @@
         <androidx.preference.Preference
             android:key="check_for_updates"
             android:summary="@string/pref_check_for_updates_summary"
-            android:title="@string/pref_check_for_updates_title" />
+            android:title="@string/pref_check_for_updates_title"
+            android:enabled="false" />
         <androidx.preference.Preference
             android:key="about"
             android:summary=""

@@ -9,6 +9,7 @@ import androidx.preference.Preference
 import tipz.build.info.BuildInfoActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
+import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.preference.SummaryOnOffPreference
 import tipz.viola.utils.UpdateService
 
@@ -65,6 +66,17 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
         super.onStart()
         findPreference<SummaryOnOffPreference>(PREF_SCREEN_HOME)?.setOnOffSummary()
         findPreference<SummaryOnOffPreference>(PREF_SCREEN_DOWNLOADS)?.setOnOffSummary()
+
+        // Perform checks for update channel
+        val identifier = mutableListOf<String>()
+        UpdateService(settingsActivity, false)
+            .getAvailableUpdateChannels().forEach {
+                identifier.add(it.identifier)
+            }
+
+        findPreference<Preference>(PREF_CHECK_FOR_UPDATES)?.isEnabled =
+            identifier.any { it == settingsPreference.getString(SettingsKeys.updateChannelName)
+                    || it == BuildConfig.VERSION_BUILD_TYPE }
     }
 
     companion object {
