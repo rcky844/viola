@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2025 Tipz Team
+// Copyright (c) 2022-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.database.instances
@@ -10,7 +10,7 @@ import tipz.viola.settings.SettingsSharedPreference
 
 class HistoryClient(context: Context) : BrohaClient(context, "history") {
     enum class UpdateHistoryState {
-        STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK
+        STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK, STATE_PENDING_COMMIT
     }
 
     val settingsPreference = SettingsSharedPreference.instance
