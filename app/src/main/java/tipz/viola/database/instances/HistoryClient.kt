@@ -10,7 +10,7 @@ import tipz.viola.settings.SettingsSharedPreference
 
 class HistoryClient(context: Context) : BrohaClient(context, "history") {
     enum class UpdateHistoryState {
-        STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_URL_UPDATED, STATE_COMMITTED_WAIT_TASK, STATE_PENDING_COMMIT
+        STATE_DISABLED, STATE_DISABLED_DUPLICATED, STATE_WAIT_TASK, STATE_PENDING_COMMIT, STATE_COMMITTED
     }
 
     val settingsPreference = SettingsSharedPreference.instance
