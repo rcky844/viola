@@ -367,6 +367,12 @@
     <string name="pref_always_on_logging">Persistentes Logging</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">Update-Kanal</string>
+    <!-- Settings: Development: Experiments -->
+    <string name="pref_experiments_title">Experiments</string>
+    <!-- Settings: Development: Experiments summary -->
+    <string name="pref_experiments_summary">We constantly run experiments to deliver improved experiences. You can help out by opting in for these experiments.</string>
+    <!-- Settings: Development: Remote debugging title -->
+    <string name="pref_experiments_redirect_title">View experimental features</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protokoll Version</string>
     <!-- Build Info: Protocol version (optional) summary -->
