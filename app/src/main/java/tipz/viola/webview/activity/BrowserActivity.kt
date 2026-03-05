@@ -76,6 +76,7 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.SettingsActivity
 import tipz.viola.utils.UpdateService
 import tipz.viola.webview.VWebView
+import tipz.viola.webview.VWebView.Companion.PROGRESS_LOAD_COMPLETED
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.activity.components.AddressBarView
 import tipz.viola.webview.activity.components.ExpandableToolbarView
@@ -743,8 +744,8 @@ class BrowserActivity : VWebViewActivity() {
 
     override fun onPageLoadProgressChanged(progress: Int) {
         super.onPageLoadProgressChanged(progress)
-        if (progress == -1) upRightFab.setImageResource(R.drawable.stop)
-        if (progress == 0) upRightFab.setImageResource(R.drawable.refresh)
+        if (progress != PROGRESS_LOAD_COMPLETED) upRightFab.setImageResource(R.drawable.stop)
+        if (progress == PROGRESS_LOAD_COMPLETED) upRightFab.setImageResource(R.drawable.refresh)
     }
 
     private fun closeKeyboard() {

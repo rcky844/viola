@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2025 Tipz Team
+// Copyright (c) 2022-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
@@ -19,6 +19,7 @@ import tipz.viola.R
 import tipz.viola.ext.finishAndRemoveTaskExt
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.webview.VWebView.Companion.PROGRESS_LOAD_COMPLETED
 import tipz.viola.webview.activity.BaseActivity
 
 
@@ -118,7 +119,7 @@ open class VWebViewActivity(private val volatile: Boolean = false) : BaseActivit
 
     @CallSuper
     open fun onPageLoadProgressChanged(progress: Int) {
-        progressBar.progress = if (progress == 100) 0 else progress
+        progressBar.progress = if (progress == PROGRESS_LOAD_COMPLETED) 0 else progress
     }
 
     open fun onConsoleMessage(consoleMessage: ConsoleMessage) {}
