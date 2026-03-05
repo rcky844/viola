@@ -28,6 +28,11 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
             }
         }
 
+        findPreference<Preference>(PREF_VIEW_EXPERIMENTS)?.setOnPreferenceClickListener {
+            settingsActivity.openScreen(R.xml.preference_settings_experiments)
+            true
+        }
+
         findPreference<Preference>(PREF_UPDATE_CHANNEL)?.run {
             val identifier = mutableListOf<String>()
             val display = mutableListOf<String>()
@@ -91,6 +96,7 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
 
     companion object {
         private const val PREF_REMOTE_DEBUGGING = "remote_debugging"
+        private const val PREF_VIEW_EXPERIMENTS = "view_experiments"
         private const val PREF_UPDATE_CHANNEL = "update_channel"
         private const val PREF_BUILD_INFO = "build_info"
         private const val PREF_PROTOCOL_INFO = "protocol_info"

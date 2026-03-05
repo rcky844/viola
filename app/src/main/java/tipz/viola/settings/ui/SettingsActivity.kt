@@ -15,6 +15,7 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.fragment.AppearanceFragment
 import tipz.viola.settings.ui.fragment.DevelopmentFragment
 import tipz.viola.settings.ui.fragment.DownloadsFragment
+import tipz.viola.settings.ui.fragment.ExperimentsFragment
 import tipz.viola.settings.ui.fragment.ExtPreferenceFragment
 import tipz.viola.settings.ui.fragment.HomeFragment
 import tipz.viola.settings.ui.fragment.MainFragment
@@ -94,6 +95,7 @@ class SettingsActivity : BaseActivity() {
             R.xml.preference_settings_downloads -> DownloadsFragment()
             R.xml.preference_settings_web_features -> WebFeaturesFragment()
             R.xml.preference_settings_development -> DevelopmentFragment()
+            R.xml.preference_settings_experiments -> ExperimentsFragment()
             else -> null
         }
 
