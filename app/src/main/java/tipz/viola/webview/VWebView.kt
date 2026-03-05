@@ -75,7 +75,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private var activeSnackBar: Snackbar? = null
     val downloadClient: DownloadClient = (context.applicationContext as Application).downloadClient
     val webSettings = this.settings
-    private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+    private var historyState = UpdateHistoryState.STATE_WAIT_TASK
     private var insecureAllow = false
     private var loadProgress = 100
     val settingsPreference = SettingsSharedPreference.instance
@@ -279,7 +279,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun setUpdateHistory(value: Boolean) {
-        historyState = if (value) UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
+        historyState = if (value) UpdateHistoryState.STATE_WAIT_TASK
         else UpdateHistoryState.STATE_DISABLED
     }
 
@@ -508,6 +508,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     return
                 }
 
+                historyState = UpdateHistoryState.STATE_WAIT_TASK
                 activity.onPageStateChanged(true)
                 consoleMessages.clear()
                 activeSnackBar.takeUnless { it == null }?.dismiss()
@@ -552,14 +553,18 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
             PageLoadState.UPDATE_HISTORY -> {
                 if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
-                if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK) {
-                    if (loadProgress != PROGRESS_LOAD_COMPLETED) {
-                        Log.d(LOG_TAG, "Stage history commit for load completion")
-                        historyState = UpdateHistoryState.STATE_PENDING_COMMIT
-                        return
-                    }
-                    historyState = UpdateHistoryState.STATE_URL_UPDATED
+
+                if (historyState != UpdateHistoryState.STATE_WAIT_TASK) {
+                    Log.d(LOG_TAG, "Wrong state for history commit")
+                    return
                 }
+
+                if (loadProgress != PROGRESS_LOAD_COMPLETED) {
+                    Log.d(LOG_TAG, "Stage history commit for load completion")
+                    historyState = UpdateHistoryState.STATE_PENDING_COMMIT
+                    return
+                }
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                     CookieManager.getInstance().flush()
                 else CookieSyncManager.getInstance().sync()
@@ -574,10 +579,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                         }
                     }
 
-                    if (historyState == UpdateHistoryState.STATE_URL_UPDATED) {
-                        historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
-                        commitHistory(newUrl)
-                    }
+                    commitHistory(newUrl)
+                    historyState = UpdateHistoryState.STATE_COMMITTED
                     MainScope().launch { activity.onFaviconUpdated(faviconExt) }
                 }
             }
@@ -608,7 +611,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Commit history when load is complete
         if (progress == PROGRESS_LOAD_COMPLETED
             && historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
-            historyState = UpdateHistoryState.STATE_URL_UPDATED
+            historyState = UpdateHistoryState.STATE_WAIT_TASK
             onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
         }
     }
