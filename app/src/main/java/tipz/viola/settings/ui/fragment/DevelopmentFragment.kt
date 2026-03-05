@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Tipz Team
+// Copyright (c) 2025-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.ui.fragment
@@ -24,6 +24,7 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
                 summaryOn = null
                 summaryOff = null
                 isEnabled = false
+                isChecked = true
             }
         }
 
