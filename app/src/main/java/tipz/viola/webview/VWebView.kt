@@ -543,8 +543,14 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
             PageLoadState.UPDATE_HISTORY -> {
                 if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
-                if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK)
+                if (historyState == UpdateHistoryState.STATE_COMMITTED_WAIT_TASK) {
+                    if (loadProgress != PROGRESS_LOAD_COMPLETED) {
+                        Log.d(LOG_TAG, "Stage history commit for load completion")
+                        historyState = UpdateHistoryState.STATE_PENDING_COMMIT
+                        return
+                    }
                     historyState = UpdateHistoryState.STATE_URL_UPDATED
+                }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                     CookieManager.getInstance().flush()
                 else CookieSyncManager.getInstance().sync()
@@ -589,6 +595,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         if (progress == loadProgress) return
         loadProgress = progress
         activity.onPageLoadProgressChanged(progress)
+
+        // Commit history when load is complete
+        if (progress == PROGRESS_LOAD_COMPLETED
+            && historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
+            historyState = UpdateHistoryState.STATE_URL_UPDATED
+            onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
+        }
     }
 
     fun setUserAgent(agentMode: UserAgentMode, dataBundle: UserAgentBundle) {
