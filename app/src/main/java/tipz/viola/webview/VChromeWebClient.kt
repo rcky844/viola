@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2025 Tipz Team
+// Copyright (c) 2020-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview
@@ -74,10 +74,6 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
 
     override fun onReceivedIcon(view: WebView, favicon: Bitmap) {
         vWebView.faviconExt = favicon
-    }
-
-    override fun onReceivedTitle(view: WebView, title: String) {
-        vWebView.onPageInformationUpdated(VWebView.PageLoadState.UPDATE_TITLE)
     }
 
     override fun onGeolocationPermissionsShowPrompt(
