@@ -37,10 +37,10 @@ class BuildInfoFragment : PreferenceFragmentCompat() {
             )
 
             MaterialAlertDialogBuilder(buildInfoActivity)
-                .setTitle(R.string.buildinfo_license_button)
+                .setTitle(R.string.pref_license_title)
                 .setMessage("$textCopyright\n$textLicense")
                 .setPositiveButton(android.R.string.ok, null)
-                .setNeutralButton(R.string.buildinfo_license_read_button) { _, _ ->
+                .setNeutralButton(R.string.pref_license_summary_redirect) { _, _ ->
                     needLoad(ProjectUrls.actualLicenseUrl)
                 }
                 .create().show()

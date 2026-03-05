@@ -7,10 +7,12 @@
     <tipz.build.info.BuildInfoGlancePreference />
     <androidx.preference.Preference
         android:key="license"
-        android:title="@string/buildinfo_license_button" />
+        android:summary="@string/pref_license_summary"
+        android:title="@string/pref_license_title" />
     <androidx.preference.Preference
         android:key="changelog"
-        android:title="@string/buildinfo_changelog_button" />
+        android:summary="@string/pref_changelog_summary"
+        android:title="@string/pref_changelog_title" />
     <androidx.preference.Preference
         android:key="website"
         android:summary="@string/pref_website_summary"
