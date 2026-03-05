@@ -8,10 +8,10 @@ package tipz.viola.webview
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.http.SslError
 import android.os.Build
 import android.os.Handler
 import android.util.AttributeSet
@@ -19,7 +19,6 @@ import android.util.Log
 import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
-import android.webkit.WebIconDatabase
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.appcompat.widget.AppCompatImageView
@@ -54,6 +53,7 @@ import tipz.viola.download.database.Droha
 import tipz.viola.ext.Matcher
 import tipz.viola.ext.isDarkMode
 import tipz.viola.ext.matchAndExec
+import tipz.viola.ext.setStartAligned
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
 import tipz.viola.settings.SettingsKeys
@@ -83,6 +83,13 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
     private var pageError = false
+
+    var sslState = SslState.NONE
+    internal val unsecureURLs = ArrayList<SslError>()
+
+    enum class SslState {
+        NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
+    }
 
     internal val requestHeaders = HashMap<String, String>()
     var consoleLogging = false
@@ -156,13 +163,11 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             onPageLoadProgressChanged(0)
         }
 
+        // Features for legacy
+        WebkitCompat.setDefaultsForCompat(this)
+
         // JavaScript interface
         addJavascriptInterface(VJavaScriptInterface(activity), VJavaScriptInterface.INTERFACE_NAME)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            removeJavascriptInterface("searchBoxJavaBridge_") /* CVE-2014-1939 */
-            removeJavascriptInterface("accessibility") /* CVE-2014-7224 */
-            removeJavascriptInterface("accessibilityTraversal") /* CVE-2014-7224 */
-        }
 
         setLayerType(LAYER_TYPE_HARDWARE, null)
 
@@ -199,11 +204,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             WebViewCompat.setWebViewRenderProcessClient(
                 this, VWebViewRenderProcessClient(this)
             )
-        }
-
-        // Favicon
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            WebIconDatabase.getInstance().open(context.getDir("icons", MODE_PRIVATE).path)
         }
 
         /* Hit Test Menu */
@@ -285,7 +285,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onSslErrorProceed() {
-        activity.onSslErrorProceed()
+        sslState = SslState.ERROR
     }
 
     @SuppressLint("InlinedApi")
@@ -306,6 +306,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }).setAction(R.string.snackbar_open_external_action) {
                 context.startActivity(intent)
             }.apply {
+                setStartAligned()
                 show()
             }
             return true
@@ -519,8 +520,18 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.PAGE_FINISHED -> {
                 onPageLoadProgressChanged(0)
                 activity.onPageStateChanged(false)
-                activity.onSslCertificateUpdated()
                 activity.swipeRefreshLayout.setRefreshing(false)
+
+                // Update SSL state
+                if (getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
+                    sslState = SslState.SEARCH
+                else if (certificate == null) // No certificates (HTTP)
+                    sslState = SslState.NONE
+                else if (sslState != SslState.ERROR
+                    || !unsecureURLs.any { it.url.toUri().host == getRealUrl().toUri().host })
+                    sslState = SslState.SECURE
+
+                activity.onSslCertificateUpdated()
             }
 
             PageLoadState.PAGE_ERROR -> {

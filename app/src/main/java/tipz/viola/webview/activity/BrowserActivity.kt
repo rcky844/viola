@@ -1,10 +1,11 @@
-// Copyright (c) 2020-2025 Tipz Team
+// Copyright (c) 2020-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Typeface
@@ -15,14 +16,9 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Gravity
-import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.webkit.ConsoleMessage
 import android.widget.RelativeLayout
 import android.widget.ScrollView
@@ -44,7 +40,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
-import androidx.core.widget.NestedScrollView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -61,7 +56,6 @@ import tipz.viola.database.instances.FavClient
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogEditTextBinding
-import tipz.viola.databinding.DialogHitTestTitleBinding
 import tipz.viola.databinding.DialogTranslateBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.ext.copyClipboard
@@ -75,9 +69,11 @@ import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.SettingsActivity
 import tipz.viola.utils.UpdateService
+import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
 import tipz.viola.webview.activity.components.AddressBarView
+import tipz.viola.webview.activity.components.AddressBarView.AddressBarState
 import tipz.viola.webview.activity.components.ExpandableToolbarView
 import tipz.viola.webview.activity.components.FavIconView
 import tipz.viola.webview.activity.components.FindInPageView
@@ -87,9 +83,9 @@ import tipz.viola.webview.activity.components.PopupMaterialAlertDialogBuilder
 import tipz.viola.webview.activity.components.ToolbarView
 import tipz.viola.webview.pages.PrivilegedPages
 import tipz.viola.webview.pages.ProjectUrls
+import tipz.viola.widget.FadeOrchestrator
 import tipz.viola.widget.PropertyDisplayView
 import tipz.viola.widget.StringResAdapter
-import java.text.DateFormat
 
 
 @Suppress("DEPRECATION")
@@ -111,15 +107,9 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var sslLock: AppCompatImageView
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var consoleMessageTextView: TextView? = null
+    val fade = FadeOrchestrator(this)
     var viewMode: Int = 0
-    private var sslState: SslState = SslState.NONE
-    private var sslErrorHost: String = ""
     private var setFabHiddenViews = false
-    private lateinit var imm: InputMethodManager
-
-    enum class SslState {
-        NONE, SECURE, ERROR, SEARCH, FILES, INTERNAL
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,24 +138,27 @@ class BrowserActivity : VWebViewActivity() {
         favClient = FavClient(this)
         iconHashClient = IconHashClient(this)
 
-        // Miscellaneous
-        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-
         // Start update service
         UpdateService(this, true)
+
+        // Animations
+        fade.requireInitialClickToFade = true
 
         // Setup toolbar
         toolbarView = binding.toolbarView
         toolbarView.activity = this
-        toolbarView.init()
+        toolbarView.setUpAdapter()
+        fade.register(toolbarView)
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
+        fade.register(expandableToolbarView)
 
         // Layout HitBox
         webview.setOnTouchListener { _, _ ->
             if (expandableToolbarView.isVisible) expandableToolbarView.expandToolBar()
-            if (urlEditText.hasFocus() && imm.isAcceptingText) closeKeyboard()
+            if (addressBar.state == AddressBarState.FOCUSED)
+                addressBar.setAddressBarState(AddressBarState.CLOSED)
             false
         }
 
@@ -175,100 +168,19 @@ class BrowserActivity : VWebViewActivity() {
             sslLock.performClick()
         }
 
-        // Setup SSL Lock
-        sslLock.setOnClickListener {
-            val cert = webview.certificate
-            val binding: DialogHitTestTitleBinding =
-                DialogHitTestTitleBinding.inflate(LayoutInflater.from(this)).apply {
-                    title.apply {
-                        text = webview.title
-                        setOnLongClickListener {
-                            copyClipboard(webview.title)
-                            true
-                        }
-                    }
-                    url.text = webview.url.toUri().host
-                    this.icon.apply {
-                        webview.faviconExt.takeUnless { it == null }?.let {
-                            setImageBitmap(it)
-                        } ?: setImageResource(R.drawable.default_favicon)
-                    }
-                }
-            val titleView = binding.root
-
-            // SSL information
-            val messageView = if (cert != null) {
-                val issuedTo = cert.issuedTo
-                val issuedBy = cert.issuedBy
-
-                val scrollView = NestedScrollView(this)
-                scrollView.addView(PropertyDisplayView(this).apply {
-                    property = arrayListOf(
-                        arrayOf(R.string.ssl_info_dialog_issued_to),
-                        arrayOf(R.string.ssl_info_dialog_common_name, issuedTo.cName),
-                        arrayOf(R.string.ssl_info_dialog_organization, issuedTo.oName),
-                        arrayOf(R.string.ssl_info_dialog_organization_unit, issuedTo.uName),
-                        arrayOf(R.string.ssl_info_dialog_issued_by),
-                        arrayOf(R.string.ssl_info_dialog_common_name, issuedBy.cName),
-                        arrayOf(R.string.ssl_info_dialog_organization, issuedBy.oName),
-                        arrayOf(R.string.ssl_info_dialog_organization_unit, issuedBy.uName),
-                        arrayOf(R.string.ssl_info_dialog_validity_period),
-                        arrayOf(R.string.ssl_info_dialog_issued_on,
-                            DateFormat.getDateTimeInstance().format(cert.validNotBeforeDate)),
-                        arrayOf(R.string.ssl_info_dialog_expires_on,
-                            DateFormat.getDateTimeInstance().format(cert.validNotAfterDate)),
-                    )
-                })
-
-                scrollView // Return
-            } else if (sslState == SslState.SEARCH) {
-                TextView(this).apply {
-                    setText(R.string.address_bar_hint)
-                }
-            } else {
-                TextView(this).apply {
-                    setText(R.string.ssl_info_dialog_content_nocert)
-                }
-            }
-            messageView.setMaterialDialogViewPadding()
-
-            PopupMaterialAlertDialogBuilder(this, Gravity.TOP)
-                .setCustomTitle(titleView)
-                .setView(messageView)
-                .create().show()
-        }
-
         // Setup Url EditText box
-        urlEditText.run {
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_GO, KeyEvent.ACTION_DOWN -> {
-                        webview.loadUrl(urlEditText.text.toString())
-                        closeKeyboard()
-                        return@setOnEditorActionListener true
-                    }
-                }
-                false
-            }
-
-            setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    dropDownHeight = ViewGroup.LayoutParams.WRAP_CONTENT
-                } else {
-                    webview.url.takeIf { it != text.toString() }.let { setText(it) }
-                    dropDownHeight = 0
-                }
-            }
-
-            setOnClickListener {
+        addressBar.run {
+            textView.setOnClickListener {
                 if (expandableToolbarView.isVisible)
                     expandableToolbarView.expandToolBar()
             }
 
-            setOnItemClickListener { _, v, _, _ ->
-                webview.loadUrl(v.findViewById<AppCompatTextView>(android.R.id.text1).text.toString())
-                closeKeyboard()
-            }
+            setOnStateChangeListener(object : AddressBarView.OnAddressBarStateChangeListener {
+                override fun onStateChanged(newState: AddressBarState) {
+                    if (newState == AddressBarState.CLOSED)
+                        if (fullscreenFab.isFullscreen) appbar.visibility = View.GONE
+                }
+            })
         }
 
         // Setup the up most fab (currently for reload)
@@ -308,7 +220,23 @@ class BrowserActivity : VWebViewActivity() {
 
         // Finally, load homepage
         intent.data.takeUnless { it == null }?.let {
-            webview.loadUrl(it.toString())
+            // Check whether input data is JavaScript and warn
+            // the user if so to get their confirmation.
+            // Reference: CVE-2023-42471
+            if (UrlUtils.UriScheme.SCHEME_JAVASCRIPT.prefix.let { js ->
+                it.scheme.takeUnless { it == null }?.equals(js) ?: it.toString().startsWith(js)
+            }) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.dialog_js_cewarn_title)
+                    .setMessage(R.string.dialog_js_cewarn_message)
+                    .setPositiveButton(R.string.text_yes) { _, _ ->
+                        webview.loadUrl(it.toString())
+                    }
+                    .setNegativeButton(R.string.text_no, null)
+                    .create().show()
+            } else {
+                webview.loadUrl(it.toString())
+            }
         } ?: webview.loadHomepage()
     }
 
@@ -318,10 +246,15 @@ class BrowserActivity : VWebViewActivity() {
         outState.clear()
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        fade.dynamicDisable = !settingsPreference.getIntBool(SettingsKeys.autoFadeToolbar)
+                || resources.configuration.smallestScreenWidthDp < 600
+    }
+
     override fun doSettingsCheck() {
         super.doSettingsCheck()
         favicon.updateIsDisplayed()
-        addressBar.doSettingsCheck()
 
         val reverseAddressBar = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
         if (reverseAddressBar != viewMode) {
@@ -376,19 +309,30 @@ class BrowserActivity : VWebViewActivity() {
             viewMode = reverseAddressBar
         }
 
+        // Auto-fade toolbar
+        fade.dynamicDisable = !settingsPreference.getIntBool(SettingsKeys.autoFadeToolbar)
+                || resources.configuration.smallestScreenWidthDp < 600
+
         // Start Page Wallpaper
-        settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
-            try {
-                localNtpPageView.setBackgroundDrawable(
-                    MediaStore.Images.Media.getBitmap(this.contentResolver, it.toUri())
-                        .toDrawable(resources)
-                )
-            } catch (_: SecurityException) {
+        if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
+            localNtpPageView.setBackgroundColor(
+                settingsPreference.getInt(SettingsKeys.startPageColor))
+            return
+        } else {
+            localNtpPageView.setBackgroundColor(0)
+            settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
+                try {
+                    localNtpPageView.setBackgroundDrawable(
+                        MediaStore.Images.Media.getBitmap(this.contentResolver, it.toUri())
+                            .toDrawable(resources)
+                    )
+                } catch (_: SecurityException) {
+                    localNtpPageView.setBackgroundResource(0)
+                    settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
+                }
+            } ?: run {
                 localNtpPageView.setBackgroundResource(0)
-                settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
             }
-        } ?: run {
-            localNtpPageView.setBackgroundResource(0)
         }
 
         // History access
@@ -438,11 +382,12 @@ class BrowserActivity : VWebViewActivity() {
                 val dialog = PopupMaterialAlertDialogBuilder(this, Gravity.BOTTOM)
                 dialog.setTitle(R.string.toolbar_expandable_app_shortcut)
 
-                // TODO: Export as proper list
                 val arrayAdapter = StringResAdapter(this)
-                arrayAdapter.add(R.string.shortcuts_menu_browser)
-                arrayAdapter.add(R.string.shortcuts_menu_custom_tabs)
-                arrayAdapter.add(R.string.shortcuts_menu_webapp)
+                arrayAdapter.addAll(
+                    R.string.shortcuts_menu_browser,
+                    R.string.shortcuts_menu_custom_tabs,
+                    R.string.shortcuts_menu_webapp
+                )
                 dialog.setAdapter(arrayAdapter) { _, which ->
                     val launchIntent = Intent(this, LauncherActivity::class.java)
                         .setData(webview.url.toUri())
@@ -746,15 +691,8 @@ class BrowserActivity : VWebViewActivity() {
         if (progress == 0) upRightFab.setImageResource(R.drawable.refresh)
     }
 
-    private fun closeKeyboard() {
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-        urlEditText.clearFocus()
-        webview.requestFocus()
-        if (fullscreenFab.isFullscreen) appbar.visibility = View.GONE
-    }
-
     override fun onUrlUpdated(url: String?) {
-        if (!urlEditText.isFocused) urlEditText.setText(url)
+        if (addressBar.state == AddressBarState.CLOSED) urlEditText.setText(url)
     }
 
     override fun onUrlUpdated(url: String?, position: Int) {
@@ -767,31 +705,7 @@ class BrowserActivity : VWebViewActivity() {
     }
 
     override fun onSslCertificateUpdated() {
-        // Handle special cases
-        if (webview.getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
-            sslState = SslState.SEARCH
-        else if (webview.certificate == null) // Mo certificates (HTTP)
-            sslState = SslState.NONE
-        else if (sslState != SslState.ERROR)
-            sslState = SslState.SECURE
-
-        // Handle individual SSL states
-        when (sslState) {
-            SslState.NONE -> sslLock.setImageResource(R.drawable.warning)
-            SslState.SECURE -> sslLock.setImageResource(R.drawable.lock)
-            SslState.ERROR -> {
-                sslLock.setImageResource(R.drawable.warning)
-                sslErrorHost = webview.url.toUri().host!!
-            }
-            SslState.SEARCH -> sslLock.setImageResource(R.drawable.search)
-            else -> {
-                Log.w(LOG_TAG, "onSslCertificateUpdated(): Unsupported SslState $sslState")
-            }
-        }
-    }
-
-    override fun onSslErrorProceed() {
-        sslState = SslState.ERROR
+        addressBar.updateSslStateIcon()
     }
 
     override fun onFaviconUpdated(icon: Bitmap?) {

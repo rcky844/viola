@@ -5,7 +5,6 @@ package tipz.viola.webview
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.view.LayoutInflater
@@ -17,8 +16,11 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import androidx.core.net.toUri
 import androidx.webkit.WebViewClientCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import tipz.viola.R
 import tipz.viola.databinding.DialogAuthBinding
 import tipz.viola.settings.SettingsKeys
@@ -34,8 +36,6 @@ open class VWebViewClient(
     private val LOG_TAG = "VWebViewClient"
 
     private val settingsPreference = vWebView.settingsPreference
-    private val unsecureURLSet = ArrayList<String>()
-    private val unsecureURLErrorSet = ArrayList<SslError>()
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
@@ -118,16 +118,19 @@ open class VWebViewClient(
     @Deprecated("Deprecated in Java")
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         // Handle SSL errors
-        if (unsecureURLSet.contains(url)) {
-            getSslDialog(unsecureURLErrorSet[unsecureURLSet.indexOf(url)].primaryError)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    run {
-                        view.loadUrl(url)
-                        vWebView.onSslErrorProceed()
+        val error = vWebView.unsecureURLs.firstOrNull { it.url.toUri().host == url.toUri().host }
+        if (error != null) {
+            MainScope().launch {
+                getSslDialog(error.primaryError)
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                        run {
+                            view.loadUrl(url)
+                            vWebView.onSslErrorProceed()
+                        }
                     }
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create().show()
+            }
             return true
         }
 
@@ -155,13 +158,12 @@ open class VWebViewClient(
 
     @SuppressLint("WebViewClientOnReceivedSslError")
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-        unsecureURLErrorSet.add(error)
         getSslDialog(error.primaryError)
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 run {
                     handler.proceed()
                     vWebView.onSslErrorProceed()
-                    unsecureURLSet.add(error.url)
+                    vWebView.unsecureURLs.add(error)
                 }
             }
             .setNegativeButton(android.R.string.cancel) { _, _ ->
@@ -182,7 +184,7 @@ open class VWebViewClient(
                 // TODO: Add dialog to warn users of this issue
                 return super.shouldInterceptRequest(view, url)
             }
-            if (adServersHandler.adServers!!.contains(" ${Uri.parse(url).host}"))
+            if (adServersHandler.adServers!!.contains(" ${url.toUri().host}"))
                 return WebResourceResponse(
                     "text/plain", "utf-8",
                     ByteArrayInputStream("".toByteArray())

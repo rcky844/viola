@@ -4,23 +4,19 @@
 package tipz.viola.webview.activity.components
 
 import android.content.Context
-import android.graphics.Typeface
 import android.text.InputType
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.util.TypedValue
-import android.view.Gravity
-import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import tipz.viola.R
 import tipz.viola.ext.dpToPx
 import tipz.viola.webview.activity.BrowserActivity
+import tipz.viola.widget.makeViolaBanner
 
 
 class LocalNtpPageView(
@@ -35,16 +31,8 @@ class LocalNtpPageView(
 
     init {
         // Create app banner
-        val appBanner = AppCompatTextView(context).apply {
-            id = R.id.app_banner
-            gravity = Gravity.CENTER
-            setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.app_logo, 0, 0, 0)
-            setText(R.string.app_name_display)
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
-            setTypeface(null, Typeface.BOLD)
-        }
-        addView(appBanner)
+        val appBannerCard = context.makeViolaBanner()
+        addView(appBannerCard)
 
         // Create fake search bar
         fakeSearchBar = AppCompatAutoCompleteTextView(context).apply {
@@ -73,7 +61,7 @@ class LocalNtpPageView(
         set.clone(this)
         set.apply {
             // App banner
-            appBanner.id.let {
+            appBannerCard.id.let {
                 centerHorizontally(it, ConstraintSet.PARENT_ID)
                 setVerticalChainStyle(it, ConstraintSet.CHAIN_PACKED)
                 connect(it, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
@@ -82,7 +70,7 @@ class LocalNtpPageView(
 
             // Fake search bar
             fakeSearchBar.id.let {
-                connect(it, ConstraintSet.TOP, appBanner.id, ConstraintSet.BOTTOM,
+                connect(it, ConstraintSet.TOP, appBannerCard.id, ConstraintSet.BOTTOM,
                     context.dpToPx(36))
                 connect(it, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
                 centerHorizontally(it, ConstraintSet.PARENT_ID)

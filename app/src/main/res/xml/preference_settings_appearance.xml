@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022-2025 Tipz Team
+<!-- Copyright (c) 2022-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.preference.PreferenceCategory>
+        <tipz.viola.settings.ui.preference.WallpaperPreference
+            android:key="start_page_wallpaper" />
+    </androidx.preference.PreferenceCategory>
+
     <androidx.preference.PreferenceCategory android:title="@string/pref_appearance_theming_category">
         <tipz.viola.settings.ui.preference.ThemePreference
             android:key="theme" />
@@ -12,11 +18,6 @@
             android:summary="@string/pref_use_force_dark_summary"
             android:title="@string/pref_use_force_dark_title"
             app:preferenceTag="useForceDark" />
-        <tipz.viola.settings.ui.preference.MaterialPreference
-            android:key="start_page_wallpaper"
-            android:summary=""
-            android:title="@string/pref_start_page_wallpaper_title"
-            app:requiredApi="19" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/pref_appearance_ui_category">
@@ -25,6 +26,19 @@
             android:summary="@string/pref_show_favicon_summary"
             android:title="@string/pref_show_favicon"
             app:preferenceTag="showFavicon"
+            app:needReload="false" />
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
+            android:key="legacy_toolbar"
+            android:summary="@string/pref_legacy_toolbar_summary"
+            android:title="@string/pref_legacy_toolbar_title"
+            app:preferenceTag="legacyToolbar"
+            app:needReload="false"
+            app:needRestart="true" />
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
+            android:key="auto_fade_toolbar"
+            android:summary="@string/pref_auto_fade_toolbar_summary"
+            android:title="@string/pref_auto_fade_toolbar_title"
+            app:preferenceTag="autoFadeToolbar"
             app:needReload="false" />
         <tipz.viola.settings.ui.preference.MaterialSwitchPreference
             android:key="reverse_address_bar"

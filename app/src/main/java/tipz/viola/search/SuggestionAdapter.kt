@@ -16,11 +16,17 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.Space
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.behavior.SwipeDismissBehavior
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import tipz.viola.R
 import tipz.viola.databinding.TemplateTextSuggestionsBinding
+import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.setStartAligned
 import tipz.viola.settings.SettingsKeys
+import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebViewActivity
 import java.util.Locale
 
@@ -28,6 +34,13 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
     private var items = listOf<String>()
     private val filter = ItemFilter()
     private var queryText: String? = null
+
+    var enableFiltering = true
+        set(value) {
+            field = value
+            queryText = ""
+            items = listOf()
+        }
 
     override fun getCount() = items.size
 
@@ -80,20 +93,15 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
 
     private inner class ItemFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            if (!context.settingsPreference.getIntBool(SettingsKeys.useSearchSuggestions)) {
-                queryText = ""
-                items = listOf()
-                return FilterResults().apply {
-                    count = 0
-                    values = null
-                }
-            }
-
             val filterResults = FilterResults()
 
             constraint?.takeUnless { it.isBlank() }?.let {
                 val provider: SuggestionProvider = provider
                 val query = constraint.toString().lowercase(Locale.getDefault()).trim { it <= ' ' }
+                if (!enableFiltering || UrlUtils.isUriSupported(query)
+                    || !context.settingsPreference.getIntBool(SettingsKeys.useSearchSuggestions))
+                    return cancelFiltering()
+
                 val results = provider.fetchResults(query)
                 filterResults.count = items.size
                 filterResults.values = items
@@ -101,6 +109,15 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
                 items = results
             }
             return filterResults
+        }
+
+        fun cancelFiltering(): FilterResults {
+            queryText = ""
+            items = listOf()
+            return FilterResults().apply {
+                count = 0
+                values = null
+            }
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
@@ -111,11 +128,19 @@ class SuggestionAdapter(private val context: VWebViewActivity) : BaseAdapter(), 
     private val provider: SuggestionProvider
         get() = SuggestionProvider { error, throwable ->
             MainScope().launch {
-                MaterialAlertDialogBuilder(context)
-                    .setTitle(error)
-                    .setMessage(throwable.message)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create().show()
+                Snackbar.make(
+                    context.webviewContainer,
+                    error, Snackbar.LENGTH_SHORT
+                ).run {
+                    setBehavior(BaseTransientBottomBar.Behavior().apply {
+                        setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_ANY)
+                    })
+                    setAction(R.string.customactivityoncrash_error_activity_error_details_title) {
+                        context.copyClipboard(throwable.message)
+                    }
+                    setStartAligned()
+                    show()
+                }
             }
         }
 }
