@@ -77,7 +77,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     val webSettings = this.settings
     private var historyState = UpdateHistoryState.STATE_COMMITTED_WAIT_TASK
     private var insecureAllow = false
-    var loadProgress = 100
+    private var loadProgress = 100
     val settingsPreference = SettingsSharedPreference.instance
     internal var adServersHandler: AdServersClient
     private val initialUserAgent = settings.userAgentString
@@ -159,7 +159,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl ?: "")
-            onPageLoadProgressChanged(0)
+            onPageLoadProgressChanged(PROGRESS_LOAD_COMPLETED)
         }
 
         // Features for legacy
@@ -310,7 +310,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
             return true
         } else {
-            if (!noToast && (loadProgress == 0 || loadProgress == 100)) {
+            if (!noToast && progress == PROGRESS_LOAD_COMPLETED) {
                 Log.v(LOG_TAG, "App Link not handled and page loaded, showing toast")
                 context.showMessage(R.string.toast_no_app_to_handle)
             }
@@ -508,14 +508,12 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     return
                 }
 
-                onPageLoadProgressChanged(-1)
                 activity.onPageStateChanged(true)
                 consoleMessages.clear()
                 activeSnackBar.takeUnless { it == null }?.dismiss()
             }
 
             PageLoadState.PAGE_FINISHED -> {
-                onPageLoadProgressChanged(0)
                 activity.onPageStateChanged(false)
                 activity.swipeRefreshLayout.setRefreshing(false)
 
@@ -597,6 +595,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageLoadProgressChanged(progress: Int) {
+        if (progress == loadProgress) return
         loadProgress = progress
         activity.onPageLoadProgressChanged(progress)
     }
@@ -679,7 +678,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     fun loadHomepage(useStartPage: Boolean = !settingsPreference.getIntBool(SettingsKeys.useWebHomePage)) {
         if (!settingsPreference.getIntBool(SettingsKeys.useHomePage)) {
-            activity.onPageLoadProgressChanged(0) // Reset page load progress
             return
         }
 
@@ -697,5 +695,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         if (currentUrl.startsWith(BrowserUrls.viewSourcePrefix)) return false // TODO: Allow changing behaviour
         loadRealUrl("${BrowserUrls.viewSourcePrefix}$currentUrl")
         return true
+    }
+
+    companion object {
+        const val PROGRESS_LOAD_COMPLETED = 100
     }
 }
