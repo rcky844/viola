@@ -53,6 +53,7 @@ object InitialMigrations : Migration(0) {
         Pair(SettingsKeys.sendSecGPC, 0),
         Pair(SettingsKeys.showFavicon, 0),
         Pair(SettingsKeys.showFullscreenWarningDialog, 1),
+        Pair(SettingsKeys.startPageColor, -1),
         Pair(SettingsKeys.themeId, 0),
         Pair(SettingsKeys.useCustomTabs, 1),
         Pair(SettingsKeys.useForceDark, 1),
