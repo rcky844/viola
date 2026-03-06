@@ -4,6 +4,7 @@
 package tipz.viola.settings.ui.fragment
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -48,6 +49,18 @@ class AppearanceFragment : ExtPreferenceFragment(R.string.pref_main_appearance) 
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
                 true
+            }
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        // HACK: Width/height as zero issue
+        findPreference<WallpaperPreference>(PREF_START_PAGE_WALLPAPER)?.run {
+            if (activeColorPickerDialog != null) {
+                activeColorPickerDialog?.dismiss()
+                colorWallpaper.performClick()
             }
         }
     }

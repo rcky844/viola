@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Tipz Team
+// Copyright (c) 2025-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.ui.preference
@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
@@ -31,6 +32,9 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
     lateinit var changeWallpaper: CardView
     lateinit var resetWallpaper: CardView
     lateinit var colorWallpaper: CardView
+
+    // HACK: Width/height as zero issue
+    var activeColorPickerDialog: AlertDialog? = null
 
     init {
         layoutResource = R.layout.preference_wallpaper
@@ -69,7 +73,7 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
             picker.setEnabledAlpha(true)
             picker.setEnabledBrightness(true)
 
-            MaterialAlertDialogBuilder(context)
+            activeColorPickerDialog = MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.dialog_start_page_solid_color_picker)
                 .setPositiveButton(context.resources.getString(
                     context.getFrameworkIdentifier("date_time_set"))) { _, _ ->
@@ -77,8 +81,10 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
                     setWallpaperPreview()
                 }
                 .setNegativeButton(context.resources.getString(android.R.string.cancel), null)
+                .setOnDismissListener { activeColorPickerDialog = null }
                 .setView(picker)
-                .show()
+                .create()
+            activeColorPickerDialog?.show()
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) changeWallpaper.isVisible = false
