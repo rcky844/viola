@@ -7,10 +7,12 @@ import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.util.AttributeSet
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.preference.Preference
@@ -60,10 +62,12 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
         }
 
         resetWallpaper.setOnClickListener {
+            // Update wallpaper preferences
             settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
             settingsPreference.setInt(SettingsKeys.startPageColor, -1)
-            previewWallpaper.setImageResource(0)
-            previewWallpaper.setBackgroundColor(0)
+
+            // Reset preview
+            previewWallpaper.setBackgroundDrawable(null)
         }
 
         colorWallpaper.setOnClickListener {
@@ -95,17 +99,24 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
     fun setWallpaperPreview(
         uri: Uri = settingsPreference.getString(SettingsKeys.startPageWallpaper).toUri()
     ) {
+        // Reset preview
+        previewWallpaper.setBackgroundDrawable(null)
+
+        // Try applying colours first
         if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
             previewWallpaper.setBackgroundColor(
                 settingsPreference.getInt(SettingsKeys.startPageColor))
             return
         }
-        previewWallpaper.setBackgroundColor(0)
 
+        // ... then wallpapers
         try {
-            previewWallpaper.setImageURI(uri)
+            previewWallpaper.setBackgroundDrawable(
+                MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                    .toDrawable(context.resources)
+            )
         } catch (_: Exception) {
-            previewWallpaper.setImageResource(0)
+            previewWallpaper.setBackgroundDrawable(null)
         }
     }
 }

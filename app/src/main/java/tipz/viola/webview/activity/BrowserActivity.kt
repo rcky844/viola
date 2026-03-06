@@ -315,12 +315,12 @@ class BrowserActivity : VWebViewActivity() {
                 || resources.configuration.smallestScreenWidthDp < 600
 
         // Start Page Wallpaper
+        localNtpPageView.setBackgroundDrawable(null)
         if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
             localNtpPageView.setBackgroundColor(
                 settingsPreference.getInt(SettingsKeys.startPageColor))
             return
         } else {
-            localNtpPageView.setBackgroundColor(0)
             settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
                 try {
                     localNtpPageView.setBackgroundDrawable(
@@ -328,11 +328,11 @@ class BrowserActivity : VWebViewActivity() {
                             .toDrawable(resources)
                     )
                 } catch (_: SecurityException) {
-                    localNtpPageView.setBackgroundResource(0)
+                    localNtpPageView.setBackgroundDrawable(null)
                     settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
                 }
             } ?: run {
-                localNtpPageView.setBackgroundResource(0)
+                localNtpPageView.setBackgroundDrawable(null)
             }
         }
 
