@@ -9,4 +9,6 @@ object ExperimentalSettingsKeys {
      * via SharedPreferences. They are grouped by their version
      * of introduction.
      */
+
+    const val extDownloaderRedirect = "expExtDownloaderRedirect" /* INTEGER */
 }

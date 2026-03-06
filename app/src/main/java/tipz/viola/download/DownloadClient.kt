@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.download
@@ -20,6 +20,7 @@ import tipz.viola.R.string
 import tipz.viola.download.database.Droha
 import tipz.viola.download.database.DrohaClient
 import tipz.viola.download.providers.AndroidDownloadProvider
+import tipz.viola.download.providers.ExternalDownloadProvider
 import tipz.viola.download.providers.InternalDownloadProvider
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
@@ -71,6 +72,7 @@ class DownloadClient(private val context: Application) {
                 }
                 DownloadMode.ANDROID_DOWNLOAD_PROVIDER -> AndroidDownloadProvider(context)
                 DownloadMode.INTERNAL_DOWNLOAD_PROVIDER -> InternalDownloadProvider(context)
+                DownloadMode.EXTERNAL_DOWNLOAD_PROVIDER -> ExternalDownloadProvider(context)
                 else -> null
             } ?: return@forEach
             Log.i(LOG_TAG, "id=${it.taskId}: DownloadProvider found, provider=${provider.javaClass.name}")
@@ -90,7 +92,9 @@ class DownloadClient(private val context: Application) {
 
             if (it.showDialog) {
                 val supportExternalDownload =
-                    provider.javaClass == AndroidDownloadProvider::class.java
+                    listOf(
+                        AndroidDownloadProvider::class.java, ExternalDownloadProvider::class.java
+                    ).any { cls -> cls == provider.javaClass }
                 withContext(Dispatchers.Main) {
                     val dialog = MaterialAlertDialogBuilder(ActivityManager.instance.currentActivity!!)
                         .setTitle(string.downloads_dialog_title)
