@@ -56,8 +56,11 @@ android {
         }
 
         multiDexEnabled = true
-        resourceConfigurations += listOf("ar", "bn", "de", "en-rGB", "es-rES", "fr", "hi",
-            "it", "pt-rBR", "ru", "tr", "vi", "zh-rCN", "zh-rTW")
+    }
+
+    androidResources {
+        localeFilters.addAll(listOf("ar", "bn", "de", "en-rGB", "es-rES", "fr", "hi",
+            "it", "pt-rBR", "ru", "tr", "vi", "zh-rCN", "zh-rTW"))
     }
 
     buildFeatures {
@@ -96,6 +99,7 @@ android {
         create("modern") {
             dimension = "apilevel"
             minSdk = 21
+
         }
         create("legacy") {
             dimension = "apilevel"
@@ -109,6 +113,11 @@ android {
     flavorDimensions.add("apilevel")
 
     sourceSets {
+        // Modern flavour
+        named("modern") {
+            java.srcDirs("src/modern")
+        }
+
         // Next release
         named("next") {
             res.srcDir("src/next/res")
@@ -146,7 +155,6 @@ dependencies {
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
     // AndroidX
-    implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.preference:preference-ktx:1.2.1") {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel")
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
@@ -180,6 +188,7 @@ dependencies {
     // These will remain on their currently defined versions indefinitely,
     // since these are the last known versions to support API 14+
     val legacyImplementation by configurations
+    legacyImplementation("androidx.multidex:multidex:2.0.1")
     legacyImplementation("androidx.core:core-ktx:1.12.0")
     legacyImplementation("androidx.appcompat:appcompat:1.6.1")
     legacyImplementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")

@@ -118,7 +118,8 @@ fun Context.uriFromFile(file: File): Uri {
 
 fun Context.restartApplication() {
     val intent = Intent(this, LauncherActivity::class.java)
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .addCategory(Intent.CATEGORY_LAUNCHER)
     startActivity(intent)
     Runtime.getRuntime().exit(0)
 }

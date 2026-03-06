@@ -48,6 +48,7 @@ import tipz.viola.database.instances.HistoryClient
 import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
 import tipz.viola.database.instances.IconHashClient
 import tipz.viola.download.DownloadClient
+import tipz.viola.download.DownloadMode
 import tipz.viola.download.database.Droha
 import tipz.viola.ext.Matcher
 import tipz.viola.ext.isDarkMode
@@ -55,6 +56,7 @@ import tipz.viola.ext.matchAndExec
 import tipz.viola.ext.setStartAligned
 import tipz.viola.ext.showMessage
 import tipz.viola.search.SearchEngineEntries
+import tipz.viola.settings.ExperimentalSettingsKeys
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.utils.UrlUtils
@@ -156,6 +158,9 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                         && settingsPreference.getIntBool(SettingsKeys.closeAppAfterDownload))
                         activity.finish()
                 }
+
+                if (settingsPreference.getIntBool(ExperimentalSettingsKeys.extDownloaderRedirect))
+                    downloadMode = DownloadMode.EXTERNAL_DOWNLOAD_PROVIDER
             })
 
             onPageInformationUpdated(PageLoadState.UNKNOWN, originalUrl ?: "")
