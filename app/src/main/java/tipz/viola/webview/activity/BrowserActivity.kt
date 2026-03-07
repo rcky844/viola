@@ -37,7 +37,9 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginTop
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -146,11 +148,28 @@ class BrowserActivity : VWebViewActivity() {
         // Animations
         fade.requireInitialClickToFade = true
 
+        // Setup appbar
+        ViewCompat.setOnApplyWindowInsetsListener(appbar) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            insets.top.takeIf { it > 0 }?.let {
+                (view.layoutParams as ConstraintLayout.LayoutParams).topMargin = it
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+
         // Setup toolbar
         toolbarView = binding.toolbarView
         toolbarView.activity = this
         toolbarView.setUpAdapter()
         fade.register(toolbarView)
+
+        ViewCompat.setOnApplyWindowInsetsListener(toolbarView) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            insets.bottom.takeIf { it > 0 }?.let {
+                (view.layoutParams as ConstraintLayout.LayoutParams).bottomMargin = it
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
@@ -215,6 +234,7 @@ class BrowserActivity : VWebViewActivity() {
             ViewVisibility().apply {
                 this.view = appbar
                 isEnabledCallback = {
+                    findInPageView.expand(true) // WORKAROUND: Fix margin of "Find in Page" view
                     !fullscreenFab.isFullscreen
                 }
             }
@@ -493,6 +513,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.fullscreen -> {
+                findInPageView.expand(true) // WORKAROUND: Fix margin of "Find in Page" view
                 if (!setFabHiddenViews) {
                     fullscreenFab.hiddenViews = mutableListOf(
                         ViewVisibility().apply {
@@ -539,6 +560,9 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.search -> {
+                // HACK: Fix margin of "Find in Page" view
+                (findInPageView.layoutParams as ConstraintLayout.LayoutParams)
+                    .topMargin = if (appbar.isVisible) dpToPx(8) else appbar.marginTop
                 findInPageView.expand(false)
             }
         }
