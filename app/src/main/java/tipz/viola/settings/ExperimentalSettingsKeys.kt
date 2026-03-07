@@ -11,4 +11,5 @@ object ExperimentalSettingsKeys {
      */
 
     const val extDownloaderRedirect = "expExtDownloaderRedirect" /* INTEGER */
+    const val wallpaperForegroundLayer = "expWallpaperForegroundLayer" /* INTEGER */
 }

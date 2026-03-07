@@ -68,6 +68,7 @@ import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.SettingsActivity
+import tipz.viola.settings.ui.preference.WallpaperPreference.Companion.wallpaperForegroundFlag
 import tipz.viola.utils.UpdateService
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView
@@ -315,29 +316,41 @@ class BrowserActivity : VWebViewActivity() {
                 || resources.configuration.smallestScreenWidthDp < 600
 
         // Start Page Wallpaper
-        localNtpPageView.setBackgroundDrawable(null)
-        if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
-            localNtpPageView.setBackgroundColor(
-                settingsPreference.getInt(SettingsKeys.startPageColor))
-            return
-        } else {
-            settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
-                try {
-                    localNtpPageView.setBackgroundDrawable(
-                        MediaStore.Images.Media.getBitmap(this.contentResolver, it.toUri())
-                            .toDrawable(resources)
-                    )
-                } catch (_: SecurityException) {
-                    localNtpPageView.setBackgroundDrawable(null)
-                    settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
-                }
-            } ?: run {
-                localNtpPageView.setBackgroundDrawable(null)
-            }
-        }
+        setWallpaper()
 
         // History access
         doExpandableToolbarStateCheck(R.drawable.history)
+    }
+
+    private fun setWallpaper() {
+        var bitmap: BitmapDrawable? = null
+
+        // Reset preview
+        localNtpPageView.setBackgroundDrawable(null)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) localNtpPageView.foreground = null
+
+        // Try applying colors first
+        if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
+            localNtpPageView.setBackgroundColor(
+                settingsPreference.getInt(SettingsKeys.startPageColor))
+            if (!wallpaperForegroundFlag()) return
+        }
+
+        // Then, try applying wallpapers
+        try {
+            settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it.toUri())
+                        .toDrawable(resources)
+                } catch (_: SecurityException) {
+                    settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        if (wallpaperForegroundFlag()) localNtpPageView.foreground = bitmap
+        else localNtpPageView.setBackgroundDrawable(bitmap)
     }
 
     internal fun doExpandableToolbarStateCheck(@DrawableRes res: Int) {

@@ -5,6 +5,7 @@ package tipz.viola.settings.ui.preference
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -22,6 +23,7 @@ import com.google.android.material.elevation.SurfaceColors
 import tipz.viola.R
 import tipz.viola.databinding.PreferenceWallpaperBinding
 import tipz.viola.ext.getFrameworkIdentifier
+import tipz.viola.settings.ExperimentalSettingsKeys
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import top.defaults.colorpicker.ColorPickerView
@@ -68,6 +70,7 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
 
             // Reset preview
             previewWallpaper.setBackgroundDrawable(null)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) previewWallpaper.foreground = null
         }
 
         colorWallpaper.setOnClickListener {
@@ -99,24 +102,33 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
     fun setWallpaperPreview(
         uri: Uri = settingsPreference.getString(SettingsKeys.startPageWallpaper).toUri()
     ) {
+        var bitmap: BitmapDrawable? = null
+
         // Reset preview
         previewWallpaper.setBackgroundDrawable(null)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) previewWallpaper.foreground = null
 
-        // Try applying colours first
+        // Try applying colors first
         if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
             previewWallpaper.setBackgroundColor(
                 settingsPreference.getInt(SettingsKeys.startPageColor))
-            return
+            if (!wallpaperForegroundFlag()) return
         }
 
-        // ... then wallpapers
+        // Then, try applying wallpapers
         try {
-            previewWallpaper.setBackgroundDrawable(
-                MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-                    .toDrawable(context.resources)
-            )
-        } catch (_: Exception) {
-            previewWallpaper.setBackgroundDrawable(null)
+            bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                .toDrawable(context.resources)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        if (wallpaperForegroundFlag()) previewWallpaper.foreground = bitmap
+        else previewWallpaper.setBackgroundDrawable(bitmap)
+    }
+
+    companion object {
+        fun wallpaperForegroundFlag() = SettingsSharedPreference.instance.getIntBool(
+            ExperimentalSettingsKeys.wallpaperForegroundLayer)
+                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M
     }
 }
