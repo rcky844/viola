@@ -4,6 +4,7 @@
 package tipz.viola.webview.activity.components
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ class ToolbarView(
         /* Set-up LinearLayoutCompat */
         orientation = VERTICAL
         isSoundEffectsEnabled = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) clipToOutline = true
 
         /* Create divider */
         if (tag != "hideDivider") {
