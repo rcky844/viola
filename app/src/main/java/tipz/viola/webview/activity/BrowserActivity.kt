@@ -759,6 +759,8 @@ class BrowserActivity : VWebViewActivity() {
             doExpandableToolbarStateCheck(R.drawable.app_shortcut)
             doExpandableToolbarStateCheck(R.drawable.favorites_add)
             doExpandableToolbarStateCheck(R.drawable.translate)
+            doExpandableToolbarStateCheck(R.drawable.code)
+            doExpandableToolbarStateCheck(R.drawable.search)
         }
     }
 
