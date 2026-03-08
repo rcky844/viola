@@ -12,9 +12,9 @@
     <!-- Generic: Switch Off -->
     <string name="text_off">關閉</string>
     <!-- Generic: Yes -->
-    <string name="text_yes">Yes</string>
+    <string name="text_yes">是</string>
     <!-- Generic: No -->
-    <string name="text_no">No</string>
+    <string name="text_no">否</string>
     <!-- Generic: Path -->
     <string name="path">路徑</string>
     <!-- Generic: Path not found -->
@@ -90,13 +90,13 @@
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">打開</string>
     <!-- WebView: Description for files -->
-    <string name="dialog_files_description">This page is stored on your device.</string>
+    <string name="dialog_files_description">此頁面儲存在您的裝置上。</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">搜尋或輸入網址…</string>
     <!-- Browser: JavaScript code execution warning dialog title -->
-    <string name="dialog_js_cewarn_title">JavaScript execution warning</string>
+    <string name="dialog_js_cewarn_title">JavaScript 執行警告</string>
     <!-- Browser: JavaScript code execution warning dialog message -->
-    <string name="dialog_js_cewarn_message">Someone is attempting to execute unknown JavaScript code in this browser tab. If this was not you, please cancel execution.\n\nDo you want to continue execution?</string>
+    <string name="dialog_js_cewarn_message">有人試圖在此瀏覽器標籤頁中執行未知的 JavaScript 程式碼。如果您沒有執行此操作，請取消執行。 \n\n您是否要繼續執行？</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">複製連結文字</string>
     <!-- Hit Test Dialog: Download link -->
@@ -196,11 +196,11 @@
     <!-- Console: No logs -->
     <string name="console_logging_none">沒有日誌</string>
     <!-- Settings: Restart to apply dialog title -->
-    <string name="dialog_settings_restart_apply_title">Restart Application?</string>
+    <string name="dialog_settings_restart_apply_title">重啟應用程式？</string>
     <!-- Settings: Restart to apply dialog message -->
-    <string name="dialog_settings_restart_apply_message">The browser needs to restart to apply new settings. This will close currently opened tabs.</string>
+    <string name="dialog_settings_restart_apply_message">瀏覽器需要重新啟動以套用新設定。這將關閉目前開啟的標籤頁。</string>
     <!-- Settings: Restart to apply dialog positive -->
-    <string name="dialog_settings_restart_apply_positive">Restart</string>
+    <string name="dialog_settings_restart_apply_positive">重新啟動</string>
     <!-- Settings: Title -->
     <string name="settings_title">設定</string>
     <!-- Settings: Main: Basics category -->
@@ -288,11 +288,11 @@
     <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">主題</string>
     <!-- Settings: Change start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Change wallpaper</string>
+    <string name="pref_start_page_wallpaper_title">更換桌布</string>
     <!-- Settings: Change start page wallpaper title -->
-    <string name="pref_start_page_colors_title">Colors</string>
+    <string name="pref_start_page_colors_title">色彩</string>
     <!-- Settings: Start page wallpaper: Pick a color -->
-    <string name="dialog_start_page_solid_color_picker">Solid color picker</string>
+    <string name="dialog_start_page_solid_color_picker">純色選擇器</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">允許強制黑暗網頁內容</string>
     <!-- Settings: Use web content force dark summary -->
@@ -304,13 +304,13 @@
     <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">在網址列旁邊顯示網站的圖示。</string>
     <!-- Settings: Appearance: Legacy toolbar title -->
-    <string name="pref_legacy_toolbar_title">Simple toolbar</string>
+    <string name="pref_legacy_toolbar_title">簡易工具列</string>
     <!-- Settings: Appearance: Legacy toolbar summary -->
-    <string name="pref_legacy_toolbar_summary">Collapse into a single toolbar. Some options will not be available.</string>
+    <string name="pref_legacy_toolbar_summary">合併為一個工具列。部分選項將不可用。</string>
     <!-- Settings: Appearance: Auto-fade toolbar title -->
-    <string name="pref_auto_fade_toolbar_title">Auto-fade floating toolbar</string>
+    <string name="pref_auto_fade_toolbar_title">自動淡出浮動工具列</string>
     <!-- Settings: Appearance: Auto-fade toolbar summary -->
-    <string name="pref_auto_fade_toolbar_summary">Reduce opacity of the floating toolbar when not in use.</string>
+    <string name="pref_auto_fade_toolbar_summary">不使用浮動工具列時，降低其不透明度。</string>
     <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">單手模式</string>
     <!-- Settings: Appearance: Reach mode summary -->
@@ -370,19 +370,19 @@
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">更新頻道</string>
     <!-- Settings: Development: Experiments -->
-    <string name="pref_experiments_title">Experiments</string>
+    <string name="pref_experiments_title">實驗性功能</string>
     <!-- Settings: Development: Experiments summary -->
-    <string name="pref_experiments_summary">We constantly run experiments to deliver improved experiences. You can help out by opting in for these experiments.</string>
+    <string name="pref_experiments_summary">我們不斷進行實驗以提供更佳的使用者體驗。您可以選擇參與這些實驗，幫助我們改進。</string>
     <!-- Settings: Development: Remote debugging title -->
-    <string name="pref_experiments_redirect_title">View experimental features</string>
+    <string name="pref_experiments_redirect_title">查看實驗性功能</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">協議版本</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\n收藏: %2$d\n歷史: %3$d</string>
     <!-- Settings - Homepage: Custom dialog message -->
-    <string name="homepage_dialog_custom_message">Type web address of custom homepage, which could become your start page.</string>
+    <string name="homepage_dialog_custom_message">輸入自訂主頁的網址，該網址可以設為您的起始頁。</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">Type web address of custom search provider, and click on the chips to append placeholders.</string>
+    <string name="search_dialog_custom_message">輸入自訂搜尋的網址，然後點選方塊新增佔位符。</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
     <string name="toast_ad_servers_finished">廣告伺服器列表下載完畢！</string>
     <!-- Settings - Reset to Default: Dialog message -->
