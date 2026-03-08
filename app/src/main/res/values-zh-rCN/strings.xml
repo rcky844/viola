@@ -12,9 +12,9 @@
     <!-- Generic: Switch Off -->
     <string name="text_off">关闭</string>
     <!-- Generic: Yes -->
-    <string name="text_yes">Yes</string>
+    <string name="text_yes">是</string>
     <!-- Generic: No -->
-    <string name="text_no">No</string>
+    <string name="text_no">否</string>
     <!-- Generic: Path -->
     <string name="path">路径</string>
     <!-- Generic: Path not found -->
@@ -89,12 +89,14 @@
     <string name="snackbar_open_external_message">检测到外部链接</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">打开</string>
+    <!-- WebView: Description for files -->
+    <string name="dialog_files_description">此页面存储在您的设备上。</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">搜索或输入网址…</string>
     <!-- Browser: JavaScript code execution warning dialog title -->
-    <string name="dialog_js_cewarn_title">JavaScript execution warning</string>
+    <string name="dialog_js_cewarn_title">JavaScript 执行警告</string>
     <!-- Browser: JavaScript code execution warning dialog message -->
-    <string name="dialog_js_cewarn_message">Someone is attempting to execute unknown JavaScript code in this browser tab. If this was not you, please cancel execution.\n\nDo you want to continue execution?</string>
+    <string name="dialog_js_cewarn_message">有人试图在此浏览器标签页中执行未知的 JavaScript 代码。如果您没有执行此操作，请取消执行。\n\n您是否要继续执行？</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">复制链接文本</string>
     <!-- Hit Test Dialog: Download link -->
@@ -194,11 +196,11 @@
     <!-- Console: No logs -->
     <string name="console_logging_none">没有日志</string>
     <!-- Settings: Restart to apply dialog title -->
-    <string name="dialog_settings_restart_apply_title">Restart Application?</string>
+    <string name="dialog_settings_restart_apply_title">重启应用程序？</string>
     <!-- Settings: Restart to apply dialog message -->
-    <string name="dialog_settings_restart_apply_message">The browser needs to restart to apply new settings. This will close currently opened tabs.</string>
+    <string name="dialog_settings_restart_apply_message">浏览器需要重新启动以应用新的设置。这将关闭当前打开的标签页。</string>
     <!-- Settings: Restart to apply dialog positive -->
-    <string name="dialog_settings_restart_apply_positive">Restart</string>
+    <string name="dialog_settings_restart_apply_positive">重启</string>
     <!-- Settings: Title -->
     <string name="settings_title">设置</string>
     <!-- Settings: Main: Basics category -->
@@ -286,11 +288,11 @@
     <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">主题</string>
     <!-- Settings: Change start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Change wallpaper</string>
+    <string name="pref_start_page_wallpaper_title">更换壁纸</string>
     <!-- Settings: Change start page wallpaper title -->
-    <string name="pref_start_page_colors_title">Colors</string>
+    <string name="pref_start_page_colors_title">颜色</string>
     <!-- Settings: Start page wallpaper: Pick a color -->
-    <string name="dialog_start_page_solid_color_picker">Solid color picker</string>
+    <string name="dialog_start_page_solid_color_picker">纯色选择器</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">允许强制黑暗网页内容</string>
     <!-- Settings: Use web content force dark summary -->
@@ -302,13 +304,13 @@
     <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">在地址栏旁边显示网站的图标。</string>
     <!-- Settings: Appearance: Legacy toolbar title -->
-    <string name="pref_legacy_toolbar_title">Simple toolbar</string>
+    <string name="pref_legacy_toolbar_title">简易工具栏</string>
     <!-- Settings: Appearance: Legacy toolbar summary -->
-    <string name="pref_legacy_toolbar_summary">Collapse into a single toolbar. Some options will not be available.</string>
+    <string name="pref_legacy_toolbar_summary">折叠到单个工具栏。有些选项将不可用。</string>
     <!-- Settings: Appearance: Auto-fade toolbar title -->
-    <string name="pref_auto_fade_toolbar_title">Auto-fade floating toolbar</string>
+    <string name="pref_auto_fade_toolbar_title">自动淡出浮动工具栏</string>
     <!-- Settings: Appearance: Auto-fade toolbar summary -->
-    <string name="pref_auto_fade_toolbar_summary">Reduce opacity of the floating toolbar when not in use.</string>
+    <string name="pref_auto_fade_toolbar_summary">当不使用时，降低浮动工具栏的透明度。</string>
     <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">单手模式</string>
     <!-- Settings: Appearance: Reach mode summary -->
@@ -368,9 +370,9 @@
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">更新频道</string>
     <!-- Settings: Development: Experiments -->
-    <string name="pref_experiments_title">Experiments</string>
+    <string name="pref_experiments_title">实验性内容</string>
     <!-- Settings: Development: Experiments summary -->
-    <string name="pref_experiments_summary">We constantly run experiments to deliver improved experiences. You can help out by opting in for these experiments.</string>
+    <string name="pref_experiments_summary">我们一直在进行实验以提供更好的体验。您可以通过选择这些实验来提供帮助。</string>
     <!-- Settings: Development: Remote debugging title -->
     <string name="pref_experiments_redirect_title">View experimental features</string>
     <!-- Build Info: Protocol version (optional) title -->
