@@ -35,7 +35,7 @@ import tipz.viola.webview.activity.BrowserActivity
 class FindInPageView(
     context: Context, attrs: AttributeSet?
 ): ConstraintLayout(context, attrs) {
-    lateinit var activity: BrowserActivity
+    private val activity = context as BrowserActivity
     private val actionBarHeight = context.resources.getDimension(R.dimen.actionbar_widget_height).toInt()
 
     val closeButton = AppCompatImageView(context)
@@ -213,6 +213,7 @@ class FindInPageView(
     }
 
     fun expand(viewVisible: Boolean = isVisible) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) return
         val transitionSet = TransitionSet()
             .addTransition(
                 Slide(when (activity.viewMode) {
