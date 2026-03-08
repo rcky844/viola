@@ -89,6 +89,8 @@
     <string name="snackbar_open_external_message">External link detected.</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">Open</string>
+    <!-- WebView: Description for files -->
+    <string name="dialog_files_description">This page is stored on your device.</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Search or type web address…</string>
     <!-- Browser: JavaScript code execution warning dialog title -->
@@ -330,7 +332,7 @@
     <!-- Settings: Main - Advanced: Data Saver summary -->
     <string name="pref_send_save_data_summary">Send data saving request to supported websites.</string>
     <!-- Settings: Downloads: Show download confirmation dialog title -->
-    <string name="pref_download_confirmation_ask_title">Show confirmation dialog</string>
+    <string name="pref_download_confirmation_ask_title">Show confirmation dialogue</string>
     <!-- Settings: Downloads: Show download confirmation dialog summary -->
     <string name="pref_download_confirmation_ask_summary">Ask to confirm each time whether to download a file.</string>
     <!-- Settings: Main - Advanced: Close app after download title -->
