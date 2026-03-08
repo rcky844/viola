@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2025 Tipz Team
+<!-- Copyright (c) 2020-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
@@ -11,6 +11,10 @@
     <string name="text_on">开启</string>
     <!-- Generic: Switch Off -->
     <string name="text_off">关闭</string>
+    <!-- Generic: Yes -->
+    <string name="text_yes">是</string>
+    <!-- Generic: No -->
+    <string name="text_no">否</string>
     <!-- Generic: Path -->
     <string name="path">路径</string>
     <!-- Generic: Path not found -->
@@ -85,8 +89,14 @@
     <string name="snackbar_open_external_message">检测到外部链接</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">打开</string>
+    <!-- WebView: Description for files -->
+    <string name="dialog_files_description">此页面存储在您的设备上。</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">搜索或输入网址…</string>
+    <!-- Browser: JavaScript code execution warning dialog title -->
+    <string name="dialog_js_cewarn_title">JavaScript 执行警告</string>
+    <!-- Browser: JavaScript code execution warning dialog message -->
+    <string name="dialog_js_cewarn_message">有人试图在此浏览器标签页中执行未知的 JavaScript 代码。如果您没有执行此操作，请取消执行。\n\n您是否要继续执行？</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">复制链接文本</string>
     <!-- Hit Test Dialog: Download link -->
@@ -185,6 +195,12 @@
     <string name="console_logging_disable">停用</string>
     <!-- Console: No logs -->
     <string name="console_logging_none">没有日志</string>
+    <!-- Settings: Restart to apply dialog title -->
+    <string name="dialog_settings_restart_apply_title">重启应用程序？</string>
+    <!-- Settings: Restart to apply dialog message -->
+    <string name="dialog_settings_restart_apply_message">浏览器需要重新启动以应用新的设置。这将关闭当前打开的标签页。</string>
+    <!-- Settings: Restart to apply dialog positive -->
+    <string name="dialog_settings_restart_apply_positive">重新启动</string>
     <!-- Settings: Title -->
     <string name="settings_title">设置</string>
     <!-- Settings: Main: Basics category -->
@@ -271,20 +287,30 @@
     <string name="pref_theme_dark">深色</string>
     <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">主题</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_wallpaper_title">更换壁纸</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_colors_title">色彩</string>
+    <!-- Settings: Start page wallpaper: Pick a color -->
+    <string name="dialog_start_page_solid_color_picker">纯色选择器</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">允许强制黑暗网页内容</string>
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">将网页的配色方案与浏览器的主题相匹配。</string>
-    <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">选择起始页壁纸</string>
-    <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">当前：%s</string>
     <!-- Settings: Appearance: User interface category -->
     <string name="pref_appearance_ui_category">用户界面</string>
     <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">显示网站图标</string>
     <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">在地址栏旁边显示网站的图标。</string>
+    <!-- Settings: Appearance: Legacy toolbar title -->
+    <string name="pref_legacy_toolbar_title">简易工具栏</string>
+    <!-- Settings: Appearance: Legacy toolbar summary -->
+    <string name="pref_legacy_toolbar_summary">折叠到单个工具栏。部分选项将不可用。</string>
+    <!-- Settings: Appearance: Auto-fade toolbar title -->
+    <string name="pref_auto_fade_toolbar_title">自动淡出浮动工具栏</string>
+    <!-- Settings: Appearance: Auto-fade toolbar summary -->
+    <string name="pref_auto_fade_toolbar_summary">当不使用时，降低浮动工具栏的不透明度。</string>
     <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">单手模式</string>
     <!-- Settings: Appearance: Reach mode summary -->
@@ -343,14 +369,20 @@
     <string name="pref_always_on_logging">持续记录日志</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">更新频道</string>
+    <!-- Settings: Development: Experiments -->
+    <string name="pref_experiments_title">实验性功能</string>
+    <!-- Settings: Development: Experiments summary -->
+    <string name="pref_experiments_summary">我们一直在进行实验以提供更好的使用者体验。您可以通过选择这些实验来提供帮助。</string>
+    <!-- Settings: Development: Remote debugging title -->
+    <string name="pref_experiments_redirect_title">查看实验性功能</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">协议版本</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\n收藏: %2$d\n历史: %3$d</string>
+    <!-- Settings - Homepage: Custom dialog message -->
+    <string name="homepage_dialog_custom_message">输入自定义主页的网址，该网址可以设为您的起始页。</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">格式：\n{query}: 搜索内容\n{language}：语言</string>
-    <!-- Settings - Wallpaper: Default -->
-    <string name="default_res">默认</string>
+    <string name="search_dialog_custom_message">输入自定义搜索的网址，然后点击方框添加占位符。</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
     <string name="toast_ad_servers_finished">广告伺服器列表下载完毕！</string>
     <!-- Settings - Reset to Default: Dialog message -->

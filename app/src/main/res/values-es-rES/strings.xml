@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2020-2025 Tipz Team
+<!-- Copyright (c) 2020-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
@@ -11,6 +11,10 @@
     <string name="text_on">On</string>
     <!-- Generic: Switch Off -->
     <string name="text_off">Off</string>
+    <!-- Generic: Yes -->
+    <string name="text_yes">Sí</string>
+    <!-- Generic: No -->
+    <string name="text_no">No</string>
     <!-- Generic: Path -->
     <string name="path">Path</string>
     <!-- Generic: Path not found -->
@@ -85,8 +89,14 @@
     <string name="snackbar_open_external_message">External link detected.</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">Open</string>
+    <!-- WebView: Description for files -->
+    <string name="dialog_files_description">This page is stored on your device.</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">Busca o escribe una dirección web…</string>
+    <!-- Browser: JavaScript code execution warning dialog title -->
+    <string name="dialog_js_cewarn_title">JavaScript execution warning</string>
+    <!-- Browser: JavaScript code execution warning dialog message -->
+    <string name="dialog_js_cewarn_message">Someone is attempting to execute unknown JavaScript code in this browser tab. If this was not you, please cancel execution.\n\nDo you want to continue execution?</string>
     <!-- Hit Test Dialog: Copy link text -->
     <string name="hit_test_copy_link_text">Copiar texto de enlace</string>
     <!-- Hit Test Dialog: Download link -->
@@ -185,6 +195,12 @@
     <string name="console_logging_disable">Disable</string>
     <!-- Console: No logs -->
     <string name="console_logging_none">No logs</string>
+    <!-- Settings: Restart to apply dialog title -->
+    <string name="dialog_settings_restart_apply_title">Restart Application?</string>
+    <!-- Settings: Restart to apply dialog message -->
+    <string name="dialog_settings_restart_apply_message">The browser needs to restart to apply new settings. This will close currently opened tabs.</string>
+    <!-- Settings: Restart to apply dialog positive -->
+    <string name="dialog_settings_restart_apply_positive">Restart</string>
     <!-- Settings: Title -->
     <string name="settings_title">Ajustes</string>
     <!-- Settings: Main: Basics category -->
@@ -271,20 +287,30 @@
     <string name="pref_theme_dark">Dark</string>
     <!-- Settings: Appearance: Theme title -->
     <string name="pref_theme_title">Theme</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_wallpaper_title">Change wallpaper</string>
+    <!-- Settings: Change start page wallpaper title -->
+    <string name="pref_start_page_colors_title">Colors</string>
+    <!-- Settings: Start page wallpaper: Pick a color -->
+    <string name="dialog_start_page_solid_color_picker">Solid color picker</string>
     <!-- Settings: Use web content force dark title -->
     <string name="pref_use_force_dark_title">Allow web content force dark</string>
     <!-- Settings: Use web content force dark summary -->
     <string name="pref_use_force_dark_summary">Match the color scheme of webpages with the browser\'s theme.</string>
-    <!-- Settings: Start page wallpaper title -->
-    <string name="pref_start_page_wallpaper_title">Start page wallpaper</string>
-    <!-- Settings: Start page wallpaper summary -->
-    <string name="pref_start_page_wallpaper_summary">Current: %s</string>
     <!-- Settings: Appearance: User interface category -->
     <string name="pref_appearance_ui_category">User interface</string>
     <!-- Settings: Appearance: Show favicon title -->
     <string name="pref_show_favicon">Show favicon</string>
     <!-- Settings: Appearance: Show favicon summary -->
     <string name="pref_show_favicon_summary">Show the favicon of the webpage next to the address bar.</string>
+    <!-- Settings: Appearance: Legacy toolbar title -->
+    <string name="pref_legacy_toolbar_title">Simple toolbar</string>
+    <!-- Settings: Appearance: Legacy toolbar summary -->
+    <string name="pref_legacy_toolbar_summary">Collapse into a single toolbar. Some options will not be available.</string>
+    <!-- Settings: Appearance: Auto-fade toolbar title -->
+    <string name="pref_auto_fade_toolbar_title">Auto-fade floating toolbar</string>
+    <!-- Settings: Appearance: Auto-fade toolbar summary -->
+    <string name="pref_auto_fade_toolbar_summary">Reduce opacity of the floating toolbar when not in use.</string>
     <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">Reach mode</string>
     <!-- Settings: Appearance: Reach mode summary -->
@@ -343,14 +369,20 @@
     <string name="pref_always_on_logging">Persistent logging</string>
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">Update channel</string>
+    <!-- Settings: Development: Experiments -->
+    <string name="pref_experiments_title">Experiments</string>
+    <!-- Settings: Development: Experiments summary -->
+    <string name="pref_experiments_summary">We constantly run experiments to deliver improved experiences. You can help out by opting in for these experiments.</string>
+    <!-- Settings: Development: Remote debugging title -->
+    <string name="pref_experiments_redirect_title">View experimental features</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">Protocol version</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\nFavorites: %2$d\nHistory: %3$d</string>
+    <!-- Settings - Homepage: Custom dialog message -->
+    <string name="homepage_dialog_custom_message">Type web address of custom homepage, which could become your start page.</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">Format:\n{query}: Query\n{language}: Language</string>
-    <!-- Settings - Wallpaper: Default -->
-    <string name="default_res">Default</string>
+    <string name="search_dialog_custom_message">Type web address of custom search provider, and click on the chips to append placeholders.</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
     <string name="toast_ad_servers_finished">Finished downloading ad blocklist!</string>
     <!-- Settings - Reset to Default: Dialog message -->
