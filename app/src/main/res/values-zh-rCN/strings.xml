@@ -200,7 +200,7 @@
     <!-- Settings: Restart to apply dialog message -->
     <string name="dialog_settings_restart_apply_message">浏览器需要重新启动以应用新的设置。这将关闭当前打开的标签页。</string>
     <!-- Settings: Restart to apply dialog positive -->
-    <string name="dialog_settings_restart_apply_positive">重启</string>
+    <string name="dialog_settings_restart_apply_positive">重新启动</string>
     <!-- Settings: Title -->
     <string name="settings_title">设置</string>
     <!-- Settings: Main: Basics category -->
@@ -290,7 +290,7 @@
     <!-- Settings: Change start page wallpaper title -->
     <string name="pref_start_page_wallpaper_title">更换壁纸</string>
     <!-- Settings: Change start page wallpaper title -->
-    <string name="pref_start_page_colors_title">颜色</string>
+    <string name="pref_start_page_colors_title">色彩</string>
     <!-- Settings: Start page wallpaper: Pick a color -->
     <string name="dialog_start_page_solid_color_picker">纯色选择器</string>
     <!-- Settings: Use web content force dark title -->
@@ -306,11 +306,11 @@
     <!-- Settings: Appearance: Legacy toolbar title -->
     <string name="pref_legacy_toolbar_title">简易工具栏</string>
     <!-- Settings: Appearance: Legacy toolbar summary -->
-    <string name="pref_legacy_toolbar_summary">折叠到单个工具栏。有些选项将不可用。</string>
+    <string name="pref_legacy_toolbar_summary">折叠到单个工具栏。部分选项将不可用。</string>
     <!-- Settings: Appearance: Auto-fade toolbar title -->
     <string name="pref_auto_fade_toolbar_title">自动淡出浮动工具栏</string>
     <!-- Settings: Appearance: Auto-fade toolbar summary -->
-    <string name="pref_auto_fade_toolbar_summary">当不使用时，降低浮动工具栏的透明度。</string>
+    <string name="pref_auto_fade_toolbar_summary">当不使用时，降低浮动工具栏的不透明度。</string>
     <!-- Settings: Appearance: Reach mode title -->
     <string name="pref_reverse_address_bar_title">单手模式</string>
     <!-- Settings: Appearance: Reach mode summary -->
@@ -370,19 +370,19 @@
     <!-- Settings: Main: Select update channel title -->
     <string name="pref_update_channel_title">更新频道</string>
     <!-- Settings: Development: Experiments -->
-    <string name="pref_experiments_title">实验性内容</string>
+    <string name="pref_experiments_title">实验性功能</string>
     <!-- Settings: Development: Experiments summary -->
-    <string name="pref_experiments_summary">我们一直在进行实验以提供更好的体验。您可以通过选择这些实验来提供帮助。</string>
+    <string name="pref_experiments_summary">我们一直在进行实验以提供更好的使用者体验。您可以通过选择这些实验来提供帮助。</string>
     <!-- Settings: Development: Remote debugging title -->
-    <string name="pref_experiments_redirect_title">View experimental features</string>
+    <string name="pref_experiments_redirect_title">查看实验性功能</string>
     <!-- Build Info: Protocol version (optional) title -->
     <string name="buildinfo_pref_protocol_info_title">协议版本</string>
     <!-- Build Info: Protocol version (optional) summary -->
     <string name="buildinfo_pref_protocol_info_summary">SharedPreferences: %1$d\n收藏: %2$d\n历史: %3$d</string>
     <!-- Settings - Homepage: Custom dialog message -->
-    <string name="homepage_dialog_custom_message">Type web address of custom homepage, which could become your start page.</string>
+    <string name="homepage_dialog_custom_message">输入自定义主页的网址，该网址可以设为您的起始页。</string>
     <!-- Settings - Search: Custom dialog message -->
-    <string name="search_dialog_custom_message">Type web address of custom search provider, and click on the chips to append placeholders.</string>
+    <string name="search_dialog_custom_message">输入自定义搜索的网址，然后点击方框添加占位符。</string>
     <!-- Settings - Ad Servers: Downloading finished toast -->
     <string name="toast_ad_servers_finished">广告伺服器列表下载完毕！</string>
     <!-- Settings - Reset to Default: Dialog message -->
