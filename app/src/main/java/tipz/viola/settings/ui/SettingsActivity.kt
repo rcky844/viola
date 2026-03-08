@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2025 Tipz Team
+// Copyright (c) 2022-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.ui
@@ -7,6 +7,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.annotation.XmlRes
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import tipz.viola.R
@@ -55,6 +58,13 @@ class SettingsActivity : BaseActivity() {
             supportActionBar?.title = savedInstanceState.getString(BUNDLE_ACTION_BAR_TITLE)
         }
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.appbar) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            insets.top.takeIf { it > 0 }?.let {
+                (view.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         onBackPressedDispatcher.addCallback(this) {
             needLoad.putExtra(SettingsKeys.needReload, ExtPreferenceFragment.needReload)
