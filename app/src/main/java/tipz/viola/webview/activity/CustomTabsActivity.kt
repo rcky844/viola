@@ -1,19 +1,21 @@
-// Copyright (c) 2022-2025 Tipz Team
+// Copyright (c) 2022-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import tipz.viola.databinding.ActivityCustomTabBinding
 import tipz.viola.ext.finishAndRemoveTaskExt
 import tipz.viola.ext.shareUrl
 import tipz.viola.webview.VWebViewActivity
-import androidx.core.net.toUri
 
 class CustomTabsActivity : VWebViewActivity(true) {
     private lateinit var binding: ActivityCustomTabBinding
@@ -29,6 +31,13 @@ class CustomTabsActivity : VWebViewActivity(true) {
         /* Appbar */
         appbar = binding.appbar
         webviewContainer = binding.webviewContainer
+        ViewCompat.setOnApplyWindowInsetsListener(appbar) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            insets.top.takeIf { it > 0 }?.let {
+                (view.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         /* Back button */
         val actionBarBack : AppCompatImageView = binding.close
