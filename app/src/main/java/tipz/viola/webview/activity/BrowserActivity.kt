@@ -212,7 +212,6 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup find in page
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            findInPageView.activity = this
             webview.setFindListener { activeMatchOrdinal, numberOfMatches, _ ->
                 findInPageView.searchPositionInfo = Pair(activeMatchOrdinal, numberOfMatches)
             }
