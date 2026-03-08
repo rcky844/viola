@@ -379,10 +379,11 @@ class BrowserActivity : VWebViewActivity() {
                 settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage))
             R.drawable.app_shortcut -> expandableToolbarView.setItemEnabled(res,
                 !(webview.title.isNullOrBlank() || webview.url.isBlank()))
-            R.drawable.favorites_add -> expandableToolbarView.setItemEnabled(res,
-                !webview.url.let { it.isBlank() || PrivilegedPages.isPrivilegedPage(it) })
-            R.drawable.translate -> expandableToolbarView.setItemEnabled(res,
-                !(webview.url.isBlank() || PrivilegedPages.isPrivilegedPage(webview.url)))
+            R.drawable.favorites_add, R.drawable.translate, R.drawable.code, R.drawable.search ->
+                expandableToolbarView.setItemEnabled(res,
+                    !webview.url.let {
+                        it.isBlank() || PrivilegedPages.isPrivilegedPage(it)
+                    })
         }
     }
 
