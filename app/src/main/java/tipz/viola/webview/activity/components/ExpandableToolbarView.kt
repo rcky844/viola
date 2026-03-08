@@ -145,7 +145,8 @@ class ExpandableToolbarView(
             )
         TransitionManager.beginDelayedTransition(this, transitionSet)
         visibility = if (viewVisible) GONE else VISIBLE
-        activity.fade.dynamicDisable = !viewVisible
+        if (resources.configuration.smallestScreenWidthDp >= 600)
+            activity.fade.dynamicDisable = !viewVisible
     }
 
     class ToolbarItemsAdapter(
