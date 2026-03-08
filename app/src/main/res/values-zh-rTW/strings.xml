@@ -89,6 +89,8 @@
     <string name="snackbar_open_external_message">偵測到外部連結</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">打開</string>
+    <!-- WebView: Description for files -->
+    <string name="dialog_files_description">This page is stored on your device.</string>
     <!-- Address bar: Hint -->
     <string name="address_bar_hint">搜尋或輸入網址…</string>
     <!-- Browser: JavaScript code execution warning dialog title -->
