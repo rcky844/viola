@@ -9,4 +9,9 @@
         android:summary="external_downloader_redirect"
         app:preferenceTag="expExtDownloaderRedirect" />
 
+    <tipz.viola.settings.ui.preference.MaterialSwitchPreference
+        android:summary="wallpaper_foreground_layer"
+        app:preferenceTag="expWallpaperForegroundLayer"
+        app:requiredApi="23" />
+
 </androidx.preference.PreferenceScreen>

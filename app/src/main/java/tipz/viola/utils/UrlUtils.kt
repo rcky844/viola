@@ -1,4 +1,4 @@
-// Copyright (c) 2021-2025 Tipz Team
+// Copyright (c) 2021-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.utils
@@ -51,7 +51,8 @@ object UrlUtils {
         SCHEME_VIOLA("viola", true, true);
 
         companion object {
-            fun getUriScheme(prefix: String): UriScheme? {
+            fun getUriScheme(uriString: String): UriScheme? {
+                val prefix = uriString.substringBefore(":")
                 for (it in entries) {
                     if (it.prefix == prefix) return it
                 }
@@ -61,7 +62,7 @@ object UrlUtils {
     }
 
     fun isUriSupported(uri: String): Boolean {
-        val scheme = UriScheme.getUriScheme(uri.substringBefore(":")) ?: return false
+        val scheme = UriScheme.getUriScheme(uri) ?: return false
         if (scheme.ignoreRegex) return true
 
         val regex = getUriRegex(scheme.requireStartSlashes)

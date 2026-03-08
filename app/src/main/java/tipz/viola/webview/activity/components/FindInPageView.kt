@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Tipz Team
+// Copyright (c) 2025-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -35,7 +35,7 @@ import tipz.viola.webview.activity.BrowserActivity
 class FindInPageView(
     context: Context, attrs: AttributeSet?
 ): ConstraintLayout(context, attrs) {
-    lateinit var activity: BrowserActivity
+    private val activity = context as BrowserActivity
     private val actionBarHeight = context.resources.getDimension(R.dimen.actionbar_widget_height).toInt()
 
     val closeButton = AppCompatImageView(context)
@@ -74,6 +74,7 @@ class FindInPageView(
             }
         }
         visibility = View.GONE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) clipToOutline = true
 
         // Set-up close button
         createButtons(closeButton)
@@ -213,6 +214,7 @@ class FindInPageView(
     }
 
     fun expand(viewVisible: Boolean = isVisible) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) return
         val transitionSet = TransitionSet()
             .addTransition(
                 Slide(when (activity.viewMode) {

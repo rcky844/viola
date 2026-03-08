@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -86,6 +86,7 @@ class ExpandableToolbarView(
         orientation = VERTICAL
         gravity = Gravity.CENTER_HORIZONTAL
         visibility = View.GONE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) clipToOutline = true
 
         /* Create hint indicator */
         val hint = ImageView(context)
@@ -144,7 +145,8 @@ class ExpandableToolbarView(
             )
         TransitionManager.beginDelayedTransition(this, transitionSet)
         visibility = if (viewVisible) GONE else VISIBLE
-        activity.fade.dynamicDisable = !viewVisible
+        if (resources.configuration.smallestScreenWidthDp >= 600)
+            activity.fade.dynamicDisable = !viewVisible
     }
 
     class ToolbarItemsAdapter(

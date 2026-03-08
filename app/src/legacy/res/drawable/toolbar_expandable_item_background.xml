@@ -3,6 +3,6 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?attr/colorSurfaceVariant" />
+    <solid android:color="@color/legacy_colorSurfaceContainer" />
     <corners android:radius="4dp"/>
 </shape>

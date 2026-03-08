@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.activity.components
@@ -206,6 +206,10 @@ class AddressBarView(
                     TextView(context).apply {
                         setText(R.string.address_bar_hint)
                     }
+                } else if (webViewActivity.webview.sslState == VWebView.SslState.FILES) {
+                    TextView(context).apply {
+                        setText(R.string.dialog_files_description)
+                    }
                 } else {
                     TextView(context).apply {
                         setText(R.string.ssl_info_dialog_content_nocert)
@@ -269,6 +273,7 @@ class AddressBarView(
                 sslLock.setImageResource(R.drawable.warning)
             VWebView.SslState.SECURE -> sslLock.setImageResource(R.drawable.lock)
             VWebView.SslState.SEARCH -> sslLock.setImageResource(R.drawable.search)
+            VWebView.SslState.FILES -> sslLock.setImageResource(R.drawable.document)
             else -> {
                 Log.w(LOG_TAG, "setSslCertificateState(): " +
                         "Unsupported SslState ${webViewActivity.webview.sslState}")

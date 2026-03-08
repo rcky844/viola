@@ -37,7 +37,9 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginTop
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -68,6 +70,7 @@ import tipz.viola.ext.shareUrl
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.SettingsActivity
+import tipz.viola.settings.ui.preference.WallpaperPreference.Companion.wallpaperForegroundFlag
 import tipz.viola.utils.UpdateService
 import tipz.viola.utils.UrlUtils
 import tipz.viola.webview.VWebView
@@ -145,11 +148,28 @@ class BrowserActivity : VWebViewActivity() {
         // Animations
         fade.requireInitialClickToFade = true
 
+        // Setup appbar
+        ViewCompat.setOnApplyWindowInsetsListener(appbar) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            insets.top.takeIf { it > 0 }?.let {
+                (view.layoutParams as ConstraintLayout.LayoutParams).topMargin = it
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+
         // Setup toolbar
         toolbarView = binding.toolbarView
         toolbarView.activity = this
         toolbarView.setUpAdapter()
         fade.register(toolbarView)
+
+        ViewCompat.setOnApplyWindowInsetsListener(toolbarView) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            insets.bottom.takeIf { it > 0 }?.let {
+                (view.layoutParams as ConstraintLayout.LayoutParams).bottomMargin = it
+            }
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
@@ -192,7 +212,6 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup find in page
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            findInPageView.activity = this
             webview.setFindListener { activeMatchOrdinal, numberOfMatches, _ ->
                 findInPageView.searchPositionInfo = Pair(activeMatchOrdinal, numberOfMatches)
             }
@@ -214,6 +233,7 @@ class BrowserActivity : VWebViewActivity() {
             ViewVisibility().apply {
                 this.view = appbar
                 isEnabledCallback = {
+                    findInPageView.expand(true) // WORKAROUND: Fix margin of "Find in Page" view
                     !fullscreenFab.isFullscreen
                 }
             }
@@ -315,29 +335,41 @@ class BrowserActivity : VWebViewActivity() {
                 || resources.configuration.smallestScreenWidthDp < 600
 
         // Start Page Wallpaper
-        if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
-            localNtpPageView.setBackgroundColor(
-                settingsPreference.getInt(SettingsKeys.startPageColor))
-            return
-        } else {
-            localNtpPageView.setBackgroundColor(0)
-            settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
-                try {
-                    localNtpPageView.setBackgroundDrawable(
-                        MediaStore.Images.Media.getBitmap(this.contentResolver, it.toUri())
-                            .toDrawable(resources)
-                    )
-                } catch (_: SecurityException) {
-                    localNtpPageView.setBackgroundResource(0)
-                    settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
-                }
-            } ?: run {
-                localNtpPageView.setBackgroundResource(0)
-            }
-        }
+        setWallpaper()
 
         // History access
         doExpandableToolbarStateCheck(R.drawable.history)
+    }
+
+    private fun setWallpaper() {
+        var bitmap: BitmapDrawable? = null
+
+        // Reset preview
+        localNtpPageView.setBackgroundDrawable(null)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) localNtpPageView.foreground = null
+
+        // Try applying colors first
+        if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
+            localNtpPageView.setBackgroundColor(
+                settingsPreference.getInt(SettingsKeys.startPageColor))
+            if (!wallpaperForegroundFlag()) return
+        }
+
+        // Then, try applying wallpapers
+        try {
+            settingsPreference.getString(SettingsKeys.startPageWallpaper).takeUnless { it.isEmpty() }?.let {
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver, it.toUri())
+                        .toDrawable(resources)
+                } catch (_: SecurityException) {
+                    settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        if (wallpaperForegroundFlag()) localNtpPageView.foreground = bitmap
+        else localNtpPageView.setBackgroundDrawable(bitmap)
     }
 
     internal fun doExpandableToolbarStateCheck(@DrawableRes res: Int) {
@@ -346,10 +378,11 @@ class BrowserActivity : VWebViewActivity() {
                 settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage))
             R.drawable.app_shortcut -> expandableToolbarView.setItemEnabled(res,
                 !(webview.title.isNullOrBlank() || webview.url.isBlank()))
-            R.drawable.favorites_add -> expandableToolbarView.setItemEnabled(res,
-                !webview.url.let { it.isBlank() || PrivilegedPages.isPrivilegedPage(it) })
-            R.drawable.translate -> expandableToolbarView.setItemEnabled(res,
-                !(webview.url.isBlank() || PrivilegedPages.isPrivilegedPage(webview.url)))
+            R.drawable.favorites_add, R.drawable.translate, R.drawable.code, R.drawable.search ->
+                expandableToolbarView.setItemEnabled(res,
+                    !webview.url.let {
+                        it.isBlank() || PrivilegedPages.isPrivilegedPage(it)
+                    })
         }
     }
 
@@ -480,6 +513,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.fullscreen -> {
+                findInPageView.expand(true) // WORKAROUND: Fix margin of "Find in Page" view
                 if (!setFabHiddenViews) {
                     fullscreenFab.hiddenViews = mutableListOf(
                         ViewVisibility().apply {
@@ -526,6 +560,9 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.search -> {
+                // HACK: Fix margin of "Find in Page" view
+                (findInPageView.layoutParams as ConstraintLayout.LayoutParams)
+                    .topMargin = if (appbar.isVisible) dpToPx(8) else appbar.marginTop
                 findInPageView.expand(false)
             }
         }

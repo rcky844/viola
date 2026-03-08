@@ -101,6 +101,8 @@ android {
             minSdk = 21
 
         }
+
+        // TODO: Drop legacy flavour for version 9.0.x
         create("legacy") {
             dimension = "apilevel"
             minSdk = 14
@@ -115,7 +117,14 @@ android {
     sourceSets {
         // Modern flavour
         named("modern") {
-            java.srcDirs("src/modern")
+            java.srcDir("src/modern/java")
+            res.srcDir("src/modern/res")
+        }
+
+        // Legacy flavour
+        named("legacy") {
+            java.srcDir("src/legacy/java")
+            res.srcDir("src/legacy/res")
         }
 
         // Next release

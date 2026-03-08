@@ -514,7 +514,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     return
                 }
 
-                historyState = UpdateHistoryState.STATE_WAIT_TASK
+                if (historyState != UpdateHistoryState.STATE_DISABLED)
+                    historyState = UpdateHistoryState.STATE_WAIT_TASK
                 activity.onPageStateChanged(true)
                 consoleMessages.clear()
                 activeSnackBar.takeUnless { it == null }?.dismiss()
@@ -525,25 +526,35 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 activity.swipeRefreshLayout.setRefreshing(false)
 
                 // Update SSL state
-                if (getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
-                    sslState = SslState.SEARCH
-                else if (certificate == null) // No certificates (HTTP)
-                    sslState = SslState.NONE
-                else if (sslState != SslState.ERROR
-                    || !unsecureURLs.any { it.url.toUri().host == getRealUrl().toUri().host })
-                    sslState = SslState.SECURE
+                val scheme = UrlUtils.UriScheme.getUriScheme(getRealUrl())
+                when (scheme) {
+                    UrlUtils.UriScheme.SCHEME_HTTP, UrlUtils.UriScheme.SCHEME_HTTPS -> {
+                        if (certificate == null) // No certificates (HTTP)
+                            sslState = SslState.NONE
+                        else if (sslState != SslState.ERROR
+                            || !unsecureURLs.any { it.url.toUri().host == getRealUrl().toUri().host })
+                            sslState = SslState.SECURE
+                    }
+                    UrlUtils.UriScheme.SCHEME_FILE -> {
+                        if (getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
+                            sslState = SslState.SEARCH
+                        else sslState = SslState.FILES
+                    }
+                    else -> sslState = SslState.NONE
+                }
 
                 activity.onSslCertificateUpdated()
 
-                if (historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
-                    // Handling for long loading websites
-                    // Commit history when load is complete
-                    historyState = UpdateHistoryState.STATE_WAIT_TASK
-                    onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
-                } else {
-                    // Solve duplicated history commits
-                    historyState = UpdateHistoryState.STATE_COMMITTED
-                }
+                if (historyState != UpdateHistoryState.STATE_DISABLED)
+                    if (historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
+                        // Handling for long loading websites
+                        // Commit history when load is complete
+                        historyState = UpdateHistoryState.STATE_WAIT_TASK
+                        onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
+                    } else {
+                        // Solve duplicated history commits
+                        historyState = UpdateHistoryState.STATE_COMMITTED
+                    }
             }
 
             PageLoadState.PAGE_ERROR -> {

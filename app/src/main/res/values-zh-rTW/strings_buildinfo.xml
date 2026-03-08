@@ -22,13 +22,13 @@
     <!-- Build Info: License title -->
     <string name="pref_license_title">授權</string>
     <!-- Build Info: License summary -->
-    <string name="pref_license_summary">View license information of the project.</string>
+    <string name="pref_license_summary">查看項目的授權資訊。</string>
     <!-- Build Info: License dialog redirect -->
-    <string name="pref_license_summary_redirect">Read document</string>
+    <string name="pref_license_summary_redirect">閱讀文件</string>
     <!-- Build Info: Changelog title -->
     <string name="pref_changelog_title">更新日誌</string>
     <!-- Build Info: Changelog summary -->
-    <string name="pref_changelog_summary">Learn about new features in releases.</string>
+    <string name="pref_changelog_summary">了解新版中的功能。</string>
     <!-- Build Info: Website title -->
     <string name="pref_website_title">網站</string>
     <!-- Build Info: Website summary -->

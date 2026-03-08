@@ -5,12 +5,15 @@ package tipz.viola.settings.ui.preference
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.util.AttributeSet
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.preference.Preference
@@ -20,6 +23,7 @@ import com.google.android.material.elevation.SurfaceColors
 import tipz.viola.R
 import tipz.viola.databinding.PreferenceWallpaperBinding
 import tipz.viola.ext.getFrameworkIdentifier
+import tipz.viola.settings.ExperimentalSettingsKeys
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import top.defaults.colorpicker.ColorPickerView
@@ -60,10 +64,13 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
         }
 
         resetWallpaper.setOnClickListener {
+            // Update wallpaper preferences
             settingsPreference.setString(SettingsKeys.startPageWallpaper, "")
             settingsPreference.setInt(SettingsKeys.startPageColor, -1)
-            previewWallpaper.setImageResource(0)
-            previewWallpaper.setBackgroundColor(0)
+
+            // Reset preview
+            previewWallpaper.setBackgroundDrawable(null)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) previewWallpaper.foreground = null
         }
 
         colorWallpaper.setOnClickListener {
@@ -95,17 +102,33 @@ class WallpaperPreference(context: Context, attrs: AttributeSet) : Preference(co
     fun setWallpaperPreview(
         uri: Uri = settingsPreference.getString(SettingsKeys.startPageWallpaper).toUri()
     ) {
+        var bitmap: BitmapDrawable? = null
+
+        // Reset preview
+        previewWallpaper.setBackgroundDrawable(null)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) previewWallpaper.foreground = null
+
+        // Try applying colors first
         if (settingsPreference.getInt(SettingsKeys.startPageColor) != -1) {
             previewWallpaper.setBackgroundColor(
                 settingsPreference.getInt(SettingsKeys.startPageColor))
-            return
+            if (!wallpaperForegroundFlag()) return
         }
-        previewWallpaper.setBackgroundColor(0)
 
+        // Then, try applying wallpapers
         try {
-            previewWallpaper.setImageURI(uri)
-        } catch (_: Exception) {
-            previewWallpaper.setImageResource(0)
+            bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                .toDrawable(context.resources)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        if (wallpaperForegroundFlag()) previewWallpaper.foreground = bitmap
+        else previewWallpaper.setBackgroundDrawable(bitmap)
+    }
+
+    companion object {
+        fun wallpaperForegroundFlag() = SettingsSharedPreference.instance.getIntBool(
+            ExperimentalSettingsKeys.wallpaperForegroundLayer)
+                && Build.VERSION.SDK_INT > Build.VERSION_CODES.M
     }
 }
