@@ -514,7 +514,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     return
                 }
 
-                historyState = UpdateHistoryState.STATE_WAIT_TASK
+                if (historyState != UpdateHistoryState.STATE_DISABLED)
+                    historyState = UpdateHistoryState.STATE_WAIT_TASK
                 activity.onPageStateChanged(true)
                 consoleMessages.clear()
                 activeSnackBar.takeUnless { it == null }?.dismiss()
@@ -544,15 +545,16 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
                 activity.onSslCertificateUpdated()
 
-                if (historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
-                    // Handling for long loading websites
-                    // Commit history when load is complete
-                    historyState = UpdateHistoryState.STATE_WAIT_TASK
-                    onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
-                } else {
-                    // Solve duplicated history commits
-                    historyState = UpdateHistoryState.STATE_COMMITTED
-                }
+                if (historyState != UpdateHistoryState.STATE_DISABLED)
+                    if (historyState == UpdateHistoryState.STATE_PENDING_COMMIT) {
+                        // Handling for long loading websites
+                        // Commit history when load is complete
+                        historyState = UpdateHistoryState.STATE_WAIT_TASK
+                        onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
+                    } else {
+                        // Solve duplicated history commits
+                        historyState = UpdateHistoryState.STATE_COMMITTED
+                    }
             }
 
             PageLoadState.PAGE_ERROR -> {
