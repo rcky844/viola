@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.download
@@ -28,7 +28,7 @@ class MiniDownloadHelper {
         fun startDownload(uriString: String): Response {
             val r = Response()
 
-            when (UriScheme.getUriScheme(uriString.substringBefore(":"))) {
+            when (UriScheme.getUriScheme(uriString)) {
                 UriScheme.SCHEME_HTTP, UriScheme.SCHEME_HTTPS -> {
                     try {
                         r.response = URL(uriString).readBytes()

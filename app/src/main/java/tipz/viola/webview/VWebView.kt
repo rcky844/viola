@@ -525,13 +525,22 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 activity.swipeRefreshLayout.setRefreshing(false)
 
                 // Update SSL state
-                if (getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
-                    sslState = SslState.SEARCH
-                else if (certificate == null) // No certificates (HTTP)
-                    sslState = SslState.NONE
-                else if (sslState != SslState.ERROR
-                    || !unsecureURLs.any { it.url.toUri().host == getRealUrl().toUri().host })
-                    sslState = SslState.SECURE
+                val scheme = UrlUtils.UriScheme.getUriScheme(getRealUrl())
+                when (scheme) {
+                    UrlUtils.UriScheme.SCHEME_HTTP, UrlUtils.UriScheme.SCHEME_HTTPS -> {
+                        if (certificate == null) // No certificates (HTTP)
+                            sslState = SslState.NONE
+                        else if (sslState != SslState.ERROR
+                            || !unsecureURLs.any { it.url.toUri().host == getRealUrl().toUri().host })
+                            sslState = SslState.SECURE
+                    }
+                    UrlUtils.UriScheme.SCHEME_FILE -> {
+                        if (getRealUrl() == ProjectUrls.actualStartUrl) // Startpage
+                            sslState = SslState.SEARCH
+                        else sslState = SslState.FILES
+                    }
+                    else -> sslState = SslState.NONE
+                }
 
                 activity.onSslCertificateUpdated()
 
