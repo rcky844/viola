@@ -30,9 +30,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import tipz.viola.database.Broha
-import tipz.viola.database.instances.FavClient
-import tipz.viola.database.instances.HistoryClient
-import tipz.viola.database.instances.IconHashClient
+import tipz.viola.database.FavClient
+import tipz.viola.database.HistoryClient
+import tipz.viola.database.IconHashClient
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
@@ -75,8 +75,8 @@ class ListInterfaceActivity : BaseActivity() {
     fun updateListData(callback: () -> Any) {
         ioScope.launch {
             listData =
-                (if (ActivityMode.isHistory()) historyClient.getAll()
-                else favClient.getAll()).toMutableList()
+                (if (ActivityMode.isHistory()) historyClient.dao.getAll()
+                else favClient.dao.getAll()).toMutableList()
             MainScope().launch { callback() }
         }
     }
@@ -137,8 +137,8 @@ class ListInterfaceActivity : BaseActivity() {
                 )
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     ioScope.launch {
-                        if (ActivityMode.isHistory()) historyClient.deleteAll()
-                        else if (ActivityMode.isFavorites()) favClient.deleteAll()
+                        if (ActivityMode.isHistory()) historyClient.dao.deleteAll()
+                        else if (ActivityMode.isFavorites()) favClient.dao.deleteAll()
                     }
                     val size = listData.size
                     listData.clear()
@@ -219,7 +219,7 @@ class ListInterfaceActivity : BaseActivity() {
             val url = data.url
             var icon: Bitmap?
 
-            if (data.iconHash != null) {
+            if (data.iconHash != IconHashClient.INVALID_HASH) {
                 activity.ioScope.launch {
                     icon = iconHashClient.read(data.iconHash)
                     if (icon != null)
@@ -229,8 +229,8 @@ class ListInterfaceActivity : BaseActivity() {
                 holder.icon.setImageResource(R.drawable.default_favicon)
             }
 
-            holder.title.text = title ?: url
-            holder.url.text = url.takeUnless { it == null }?.toUri()?.host ?: ""
+            holder.url.text = url.toUri().host.takeUnless { it.isNullOrEmpty() } ?: url
+            holder.title.text = title.takeUnless { it.isEmpty() } ?: holder.url.text
             if (ActivityMode.isHistory()) {
                 holder.time.text = TimeUtils.formatEpochMillis(
                     epochMillis = data.timestamp,
@@ -262,9 +262,9 @@ class ListInterfaceActivity : BaseActivity() {
                         PopupMenuMap.DELETE.itemId -> {
                             activity.ioScope.launch {
                                 if (ActivityMode.isHistory())
-                                    activity.historyClient.deleteById(data.id)
+                                    activity.historyClient.dao.deleteById(data.id)
                                 else if (ActivityMode.isFavorites())
-                                    activity.favClient.deleteById(data.id)
+                                    activity.favClient.dao.deleteById(data.id)
                             }
                             listData.removeAt(position)
                             notifyItemRemoved(position)
@@ -294,11 +294,9 @@ class ListInterfaceActivity : BaseActivity() {
                                     val sUrl = urlEditText.text.toString()
                                     if (sTitle == title && sUrl == url) return@setPositiveButton
 
-                                    data.title = sTitle
-                                    data.url = sUrl
                                     activity.ioScope.launch {
-                                        activity.favClient.update(data)
-                                        listData[position] = activity.favClient.getById(data.id)!!
+                                        activity.favClient.dao.update(data.id, sTitle, sUrl)
+                                        listData[position] = activity.favClient.dao.getById(data.id)
                                         MainScope().launch {
                                             notifyItemRangeRemoved(position, 1)
                                         }
@@ -313,9 +311,7 @@ class ListInterfaceActivity : BaseActivity() {
                         }
                         PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
                             activity.ioScope.launch {
-                                activity.favClient.insert(
-                                    Broha(data.iconHash, title, url!!)
-                                )
+                                activity.favClient.dao.insert(title, url, data.iconHash)
                             }
                             activity.showMessage(R.string.save_successful)
                         }

@@ -53,9 +53,8 @@ import kotlinx.coroutines.withContext
 import tipz.viola.LauncherActivity
 import tipz.viola.ListInterfaceActivity
 import tipz.viola.R
-import tipz.viola.database.Broha
-import tipz.viola.database.instances.FavClient
-import tipz.viola.database.instances.IconHashClient
+import tipz.viola.database.FavClient
+import tipz.viola.database.IconHashClient
 import tipz.viola.databinding.ActivityMainBinding
 import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.databinding.DialogTranslateBinding
@@ -339,6 +338,9 @@ class BrowserActivity : VWebViewActivity() {
 
         // History access
         doExpandableToolbarStateCheck(R.drawable.history)
+
+        // Check disable history
+        webview.setUpdateHistory(settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage))
     }
 
     private fun setWallpaper() {
@@ -470,12 +472,14 @@ class BrowserActivity : VWebViewActivity() {
                 val title = webview.title
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    val iconHash = if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap) else null
+                    val iconHash =
+                        if (icon is BitmapDrawable) iconHashClient.save(icon.bitmap)
+                        else IconHashClient.INVALID_HASH
                     val url = runBlocking {
                         withContext(Dispatchers.Main) { webview.url }
                     }
 
-                    favClient.insert(Broha(iconHash, title, url))
+                    favClient.dao.insert(title ?: "", url, iconHash)
                 }
                 showMessage(R.string.save_successful)
             }
