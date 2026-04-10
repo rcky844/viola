@@ -33,7 +33,7 @@ android {
         applicationId = "tipz.viola"
         minSdk = 14
         targetSdk = 36
-        versionCode = 121
+        versionCode = 122
         versionName = "8.1"
 
         /* Extra build info */
@@ -41,9 +41,9 @@ android {
             "\"Apache License, Version 2.0\"")
         buildConfigField("String", "VERSION_CODENAME", "\"Francesco\"")
         buildConfigField("String", "VERSION_COPYRIGHT_YEAR", "\"2020-2026\"")
-        buildConfigField("String", "VERSION_BUILD_EXTRA", "\"Beta 2\"")
+        buildConfigField("String", "VERSION_BUILD_EXTRA", "\"Beta 3\"")
         buildConfigField("String", "VERSION_BUILD_ID", "\"${versionCode}\"")
-        buildConfigField("int", "VERSION_BUILD_REVISION", "1")
+        buildConfigField("int", "VERSION_BUILD_REVISION", "0")
         buildConfigField("String", "VERSION_BUILD_GIT_REVISION",
             "\"${getGitInfo("revision")}\"")
         buildConfigField("String", "VERSION_BUILD_BRANCH",
