@@ -409,16 +409,12 @@
     <string name="delete">删除</string>
     <!-- History: Title -->
     <string name="history_title">历史记录</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">历史记录为空！</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">保存到收藏夹</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">您确定要删除所有历史条目吗？</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">收藏夹</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">没有已添加的收藏。</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">编辑</string>
     <!-- Favorites: Edit dialog title option -->
@@ -433,8 +429,6 @@
     <string name="downloads_toast_failed">下载失败！</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s 下载成功。</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">无下载记录</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">下载文件？</string>
     <!-- Downloads: Confirmation dialog message -->
@@ -488,13 +482,6 @@
         <item>搜狗</item>
         <item>360 搜索</item>
         <item>FrogFind</item>
-        <item>自定义</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien 主方追踪器</item>
         <item>自定义</item>
     </string-array>
 </resources>

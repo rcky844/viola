@@ -409,16 +409,12 @@
     <string name="delete">Löschen</string>
     <!-- History: Title -->
     <string name="history_title">Verlauf</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">Verlauf ist leer!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">In Favoriten speichern</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">Sie sind dabei, alle Verlaufseinträge zu löschen, sind Sie sich sicher?</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">Lesezeichen</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">Keine Favoriten gespeichert.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">Bearbeiten</string>
     <!-- Favorites: Edit dialog title option -->
@@ -433,8 +429,6 @@
     <string name="downloads_toast_failed">Herunterladen fehlgeschlagen!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s erfolgreich heruntergeladen.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">Keine Downloads verfügbar</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">Datei herunterladen?</string>
     <!-- Downloads: Confirmation dialog message -->
@@ -489,12 +483,5 @@
         <item>360 Search</item>
         <item>FrogFind</item>
         <item>Custom</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien First-Party Trackers</item>
-        <item>Benutzerdefiniert</item>
     </string-array>
 </resources>

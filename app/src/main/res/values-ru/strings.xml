@@ -409,16 +409,12 @@
     <string name="delete">Удалить</string>
     <!-- History: Title -->
     <string name="history_title">История</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">История пуста!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">Сохранить в избранное</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">Вы собираетесь удалить все записи истории, вы уверены?</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">Избранное</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">Избранных нет.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">Редактировать</string>
     <!-- Favorites: Edit dialog title option -->
@@ -433,8 +429,6 @@
     <string name="downloads_toast_failed">Не удалось загрузить!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s успешно загружен.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">Нет загрузок</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">Загрузить файл?</string>
     <!-- Downloads: Confirmation dialog message -->
@@ -488,13 +482,6 @@
         <item>Sogou</item>
         <item>360 Search</item>
         <item>FrogFind</item>
-        <item>Пользовательский</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Унифицированные хосты</item>
-        <item>Отслеживающие устройства первой стороны Eulaurarien</item>
         <item>Пользовательский</item>
     </string-array>
 </resources>
