@@ -239,12 +239,18 @@
     <string name="pref_search_category_suggestions_summary">選擇搜尋建議的顯示方式。</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
     <string name="pref_search_suggestions_provider_title">建議提供者</string>
+    <!-- Settings: Search: Search Suggestions from History title -->
+    <string name="pref_search_suggestions_history_title">Use browser history</string>
+    <!-- Settings: Search: Search Suggestions from History summary -->
+    <string name="pref_search_suggestions_history_summary">Pick the most recent relevant history items for search suggestions.</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
     <string name="pref_ps_category_ad_blocking_title">廣告過濾</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">阻擋分散注意力而且煩人的廣告。</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">廣告攔截器列表來源</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器列表</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -407,18 +413,18 @@
     <string name="dialog_delete_all_entries_title">刪除全部書籤</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">刪除</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">歷史記錄</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">歷史記錄為空！</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">儲存到書籤</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">您確定要刪除所有歷史條目嗎？</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">書籤夾</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">沒有已新增的書籤。</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">編輯</string>
     <!-- Favorites: Edit dialog title option -->
@@ -433,8 +439,6 @@
     <string name="downloads_toast_failed">下載失敗！</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s 下載成功。</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">無下載記錄</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">下載檔案？</string>
     <!-- Downloads: Confirmation dialog message -->
@@ -488,13 +492,6 @@
         <item>搜狗</item>
         <item>360 搜索</item>
         <item>FrogFind</item>
-        <item>自訂</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien 主方追蹤器</item>
         <item>自訂</item>
     </string-array>
 </resources>

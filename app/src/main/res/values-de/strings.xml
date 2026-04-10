@@ -239,12 +239,18 @@
     <string name="pref_search_category_suggestions_summary">Passen Sie Vorschläge von Suchmaschinen an.</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
     <string name="pref_search_suggestions_provider_title">Vorschlägeprovider</string>
+    <!-- Settings: Search: Search Suggestions from History title -->
+    <string name="pref_search_suggestions_history_title">Use browser history</string>
+    <!-- Settings: Search: Search Suggestions from History summary -->
+    <string name="pref_search_suggestions_history_summary">Pick the most recent relevant history items for search suggestions.</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
     <string name="pref_ps_category_ad_blocking_title">Werbeblocker</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">Deaktivieren Sie störende Werbung.</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Füge Blockliste hinzu</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Lade Blockliste herunter</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -407,18 +413,18 @@
     <string name="dialog_delete_all_entries_title">Alle Einträge löschen</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">Löschen</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">Verlauf</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">Verlauf ist leer!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">In Favoriten speichern</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">Sie sind dabei, alle Verlaufseinträge zu löschen, sind Sie sich sicher?</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">Lesezeichen</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">Keine Favoriten gespeichert.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">Bearbeiten</string>
     <!-- Favorites: Edit dialog title option -->
@@ -433,8 +439,6 @@
     <string name="downloads_toast_failed">Herunterladen fehlgeschlagen!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s erfolgreich heruntergeladen.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">Keine Downloads verfügbar</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">Datei herunterladen?</string>
     <!-- Downloads: Confirmation dialog message -->
@@ -489,12 +493,5 @@
         <item>360 Search</item>
         <item>FrogFind</item>
         <item>Custom</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien First-Party Trackers</item>
-        <item>Benutzerdefiniert</item>
     </string-array>
 </resources>

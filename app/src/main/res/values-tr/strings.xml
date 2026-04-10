@@ -239,12 +239,18 @@
     <string name="pref_search_category_suggestions_summary">Choose how suggestions from search engines appear.</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
     <string name="pref_search_suggestions_provider_title">Suggestions provider</string>
+    <!-- Settings: Search: Search Suggestions from History title -->
+    <string name="pref_search_suggestions_history_title">Use browser history</string>
+    <!-- Settings: Search: Search Suggestions from History summary -->
+    <string name="pref_search_suggestions_history_summary">Pick the most recent relevant history items for search suggestions.</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
     <string name="pref_ps_category_ad_blocking_title">Ad blocking</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">Reklamların rahatsızlık vermesini engeller.</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Ad Blocklist Source</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Download Ad Blocklist</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -407,18 +413,18 @@
     <string name="dialog_delete_all_entries_title">Tüm girişleri sil</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">Sil</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">Geçmiş</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">Geçmiş temiz!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">Sık kullanılanlara ekle</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">Tüm geçmişi silmek üzeresiniz. Devam etmek istiyor musunuz?</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">Sık kullanılanlar</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">Sık kullanılan listesi boş.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">Düzenle</string>
     <!-- Favorites: Edit dialog title option -->
@@ -433,8 +439,6 @@
     <string name="downloads_toast_failed">İndirme başarısız!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s başarıyla indirildi.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">No downloads</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">Download file?</string>
     <!-- Downloads: Confirmation dialog message -->
@@ -489,12 +493,5 @@
         <item>360 Search</item>
         <item>FrogFind</item>
         <item>Custom</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien First-Party Trackers</item>
-        <item>Özel</item>
     </string-array>
 </resources>

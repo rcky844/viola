@@ -239,12 +239,18 @@
     <string name="pref_search_category_suggestions_summary">Выберите, как появляются предложения из поисковых систем.</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
     <string name="pref_search_suggestions_provider_title">Поставщик предложений</string>
+    <!-- Settings: Search: Search Suggestions from History title -->
+    <string name="pref_search_suggestions_history_title">Use browser history</string>
+    <!-- Settings: Search: Search Suggestions from History summary -->
+    <string name="pref_search_suggestions_history_summary">Pick the most recent relevant history items for search suggestions.</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
     <string name="pref_ps_category_ad_blocking_title">Блокировка рекламы</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">Не позволяйте назойливой рекламе отвлекать вас.</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Источник Ad Blocklist</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Скачать Ad Blocklist</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -407,18 +413,18 @@
     <string name="dialog_delete_all_entries_title">Удалить все записи</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">Удалить</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">История</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">История пуста!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">Сохранить в избранное</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">Вы собираетесь удалить все записи истории, вы уверены?</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">Избранное</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">Избранных нет.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">Редактировать</string>
     <!-- Favorites: Edit dialog title option -->
@@ -433,8 +439,6 @@
     <string name="downloads_toast_failed">Не удалось загрузить!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s успешно загружен.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">Нет загрузок</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">Загрузить файл?</string>
     <!-- Downloads: Confirmation dialog message -->
@@ -488,13 +492,6 @@
         <item>Sogou</item>
         <item>360 Search</item>
         <item>FrogFind</item>
-        <item>Пользовательский</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Унифицированные хосты</item>
-        <item>Отслеживающие устройства первой стороны Eulaurarien</item>
         <item>Пользовательский</item>
     </string-array>
 </resources>
