@@ -249,6 +249,8 @@
     <string name="pref_ps_category_ad_blocking_summary">阻擋分散注意力而且煩人的廣告。</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">廣告攔截器列表來源</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器列表</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -490,13 +492,6 @@
         <item>搜狗</item>
         <item>360 搜索</item>
         <item>FrogFind</item>
-        <item>自訂</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien 主方追蹤器</item>
         <item>自訂</item>
     </string-array>
 </resources>
