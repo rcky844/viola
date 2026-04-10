@@ -1,8 +1,9 @@
-// Copyright (c) 2020-2025 Tipz Team
+// Copyright (c) 2020-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -12,9 +13,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat
@@ -28,17 +31,22 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.withContext
 import tipz.viola.database.Broha
-import tipz.viola.database.instances.FavClient
-import tipz.viola.database.instances.HistoryClient
-import tipz.viola.database.instances.IconHashClient
+import tipz.viola.database.FavClient
+import tipz.viola.database.HistoryClient
+import tipz.viola.database.IconHashClient
 import tipz.viola.databinding.ActivityRecyclerDataListBinding
 import tipz.viola.databinding.DialogFavEditBinding
 import tipz.viola.databinding.TemplateEmptyBinding
 import tipz.viola.databinding.TemplateIconTitleDescriptorTimeBinding
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.doOnApplyWindowInsets
+import tipz.viola.ext.dpToPx
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.utils.TimeUtils
@@ -51,8 +59,11 @@ class ListInterfaceActivity : BaseActivity() {
 
     lateinit var favClient: FavClient
     lateinit var historyClient: HistoryClient
+    lateinit var brohaList: RecyclerView
     lateinit var itemsAdapter: ItemsAdapter
     lateinit var fab: FloatingActionButton
+
+    private var searchBarExpanded = false
 
     enum class ActivityMode {
         HISTORY, FAVORITES, UNKNOWN;
@@ -72,13 +83,15 @@ class ListInterfaceActivity : BaseActivity() {
         }
     }
 
-    fun updateListData(callback: () -> Any) {
-        ioScope.launch {
-            listData =
-                (if (ActivityMode.isHistory()) historyClient.getAll()
-                else favClient.getAll()).toMutableList()
-            MainScope().launch { callback() }
-        }
+    suspend fun getAllListData(): MutableList<Broha> {
+        return (if (ActivityMode.isHistory()) historyClient.dao.getAll()
+        else favClient.dao.getAll()).toMutableList()
+    }
+
+    suspend fun searchListData(query: String): MutableList<Broha> {
+        return (if (ActivityMode.isHistory())
+            historyClient.dao.search("%$query%", -1)
+        else favClient.dao.search("%$query%", -1)).toMutableList()
     }
 
     enum class PopupMenuMap(val itemId: Int, @StringRes val resId: Int) {
@@ -137,8 +150,8 @@ class ListInterfaceActivity : BaseActivity() {
                 )
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     ioScope.launch {
-                        if (ActivityMode.isHistory()) historyClient.deleteAll()
-                        else if (ActivityMode.isFavorites()) favClient.deleteAll()
+                        if (ActivityMode.isHistory()) historyClient.dao.deleteAll()
+                        else if (ActivityMode.isFavorites()) favClient.dao.deleteAll()
                     }
                     val size = listData.size
                     listData.clear()
@@ -158,12 +171,15 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         // RecyclerView
-        val brohaList = binding.recyclerView
+        brohaList = binding.recyclerView
         val layoutManager = brohaList.layoutManager as LinearLayoutManager
         layoutManager.reverseLayout = ActivityMode.isHistory()
         layoutManager.stackFromEnd = ActivityMode.isHistory()
-        updateListData {
-            itemsAdapter = ItemsAdapter(this)
+        synchronized(this) {
+            listData = runBlocking(Dispatchers.IO) {
+                getAllListData()
+            }
+            itemsAdapter = ItemsAdapter(this@ListInterfaceActivity)
             brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
         }
         brohaList.doOnApplyWindowInsets { v, insets, _, _ ->
@@ -171,6 +187,73 @@ class ListInterfaceActivity : BaseActivity() {
                 v.updatePadding(left = left, right = right, bottom = bottom)
             }
         }
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_list_interface, menu)
+
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.run {
+            queryHint = resources.getString(R.string.action_search_view_hint, title)
+            maxWidth = Int.MAX_VALUE
+
+            findViewById<View>(androidx.appcompat.R.id.search_plate).run {
+                setBackgroundDrawable(
+                    AppCompatResources.getDrawable(context, R.drawable.round_corner_elevated)
+                )
+                setPadding(context.dpToPx(8), 0, 0, 0)
+            }
+
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                private val mutex = Mutex()
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    synchronized(context) {
+                        listData = runBlocking(Dispatchers.IO) {
+                            searchListData(query ?: "")
+                        }
+                        // FIXME: Workaround to refresh list
+                        brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
+                    }
+                    return true
+                }
+
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (!mutex.tryLock()) return false
+                    ioScope.launch {
+                        delay(1000L)
+                        listData = query.toString().takeUnless { it.isEmpty() }?.let {
+                            searchListData(it)
+                        } ?: getAllListData()
+                        withContext(Dispatchers.Main) {
+                            // FIXME: Workaround to refresh list
+                            brohaList.setAdapter(itemsAdapter) // Property access is causing lint issues
+                        }
+                        mutex.unlock()
+                    }
+                    return true
+                }
+            })
+        }
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                searchBarExpanded = true
+                updateFabVisibility()
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                searchBarExpanded = false
+                updateFabVisibility()
+                return true
+            }
+        })
+
+        return true
     }
 
     class ItemsAdapter(
@@ -205,10 +288,8 @@ class ListInterfaceActivity : BaseActivity() {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (listData.isEmpty()) {
-                if (holder is EmptyViewHolder) holder.text.setText(
-                    if (ActivityMode.isHistory()) R.string.history_empty_message
-                    else R.string.favorites_empty_message
-                )
+                if (holder is EmptyViewHolder) holder.text.text =
+                    activity.resources.getString(R.string.list_empty_hint, activity.title)
                 return
             }
             if (holder !is ListViewHolder) return
@@ -219,7 +300,7 @@ class ListInterfaceActivity : BaseActivity() {
             val url = data.url
             var icon: Bitmap?
 
-            if (data.iconHash != null) {
+            if (data.iconHash != IconHashClient.INVALID_HASH) {
                 activity.ioScope.launch {
                     icon = iconHashClient.read(data.iconHash)
                     if (icon != null)
@@ -229,8 +310,8 @@ class ListInterfaceActivity : BaseActivity() {
                 holder.icon.setImageResource(R.drawable.default_favicon)
             }
 
-            holder.title.text = title ?: url
-            holder.url.text = url.takeUnless { it == null }?.toUri()?.host ?: ""
+            holder.url.text = url.toUri().host.takeUnless { it.isNullOrEmpty() } ?: url
+            holder.title.text = title.takeUnless { it.isEmpty() } ?: holder.url.text
             if (ActivityMode.isHistory()) {
                 holder.time.text = TimeUtils.formatEpochMillis(
                     epochMillis = data.timestamp,
@@ -262,9 +343,9 @@ class ListInterfaceActivity : BaseActivity() {
                         PopupMenuMap.DELETE.itemId -> {
                             activity.ioScope.launch {
                                 if (ActivityMode.isHistory())
-                                    activity.historyClient.deleteById(data.id)
+                                    activity.historyClient.dao.deleteById(data.id)
                                 else if (ActivityMode.isFavorites())
-                                    activity.favClient.deleteById(data.id)
+                                    activity.favClient.dao.deleteById(data.id)
                             }
                             listData.removeAt(position)
                             notifyItemRemoved(position)
@@ -294,11 +375,9 @@ class ListInterfaceActivity : BaseActivity() {
                                     val sUrl = urlEditText.text.toString()
                                     if (sTitle == title && sUrl == url) return@setPositiveButton
 
-                                    data.title = sTitle
-                                    data.url = sUrl
                                     activity.ioScope.launch {
-                                        activity.favClient.update(data)
-                                        listData[position] = activity.favClient.getById(data.id)!!
+                                        activity.favClient.dao.update(data.id, sTitle, sUrl)
+                                        listData[position] = activity.favClient.dao.getById(data.id)
                                         MainScope().launch {
                                             notifyItemRangeRemoved(position, 1)
                                         }
@@ -313,9 +392,7 @@ class ListInterfaceActivity : BaseActivity() {
                         }
                         PopupMenuMap.ADD_TO_FAVORITES.itemId -> {
                             activity.ioScope.launch {
-                                activity.favClient.insert(
-                                    Broha(data.iconHash, title, url!!)
-                                )
+                                activity.favClient.dao.insert(title, url, data.iconHash)
                             }
                             activity.showMessage(R.string.save_successful)
                         }
@@ -331,9 +408,13 @@ class ListInterfaceActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
-            activity.fab.visibility = if (listData.isEmpty()) View.GONE else View.VISIBLE
+            activity.updateFabVisibility()
             return if (listData.isEmpty()) 1 else listData.size
         }
+    }
+
+    fun updateFabVisibility() {
+        fab.visibility = if (listData.isEmpty() || searchBarExpanded) View.GONE else View.VISIBLE
     }
 
     companion object {

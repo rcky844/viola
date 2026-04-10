@@ -43,10 +43,9 @@ import kotlinx.coroutines.withTimeoutOrNull
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
-import tipz.viola.database.Broha
-import tipz.viola.database.instances.HistoryClient
-import tipz.viola.database.instances.HistoryClient.UpdateHistoryState
-import tipz.viola.database.instances.IconHashClient
+import tipz.viola.database.HistoryClient
+import tipz.viola.database.HistoryClient.UpdateHistoryState
+import tipz.viola.database.IconHashClient
 import tipz.viola.download.DownloadClient
 import tipz.viola.download.DownloadMode
 import tipz.viola.download.database.Droha
@@ -279,7 +278,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // Setup history client
         if (historyState != UpdateHistoryState.STATE_DISABLED) {
             historyClient = HistoryClient(context)
-            historyClient.doSettingsCheck()
         }
     }
 
@@ -480,8 +478,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     private suspend fun commitHistory(newUrl: String) {
         val currentTitle = withContext(Dispatchers.Main) { title }
-        val iconHash = faviconExt.takeUnless { it == null }?.let { iconHashClient.save(it) }
-        historyClient.insert(Broha(iconHash, currentTitle, newUrl))
+        val iconHash = iconHashClient.save(faviconExt)
+        historyClient.dao.insert(currentTitle ?: "", newUrl, iconHash)
         Log.d(LOG_TAG, "History committed, url=$newUrl")
     }
 

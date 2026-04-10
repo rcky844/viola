@@ -19,7 +19,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.net.toUri
@@ -29,6 +28,7 @@ import androidx.core.widget.NestedScrollView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import tipz.viola.R
 import tipz.viola.databinding.DialogHitTestTitleBinding
+import tipz.viola.databinding.TemplateTextSuggestionsBinding
 import tipz.viola.ext.copyClipboard
 import tipz.viola.ext.dpToPx
 import tipz.viola.ext.getOnSurfaceColor
@@ -122,8 +122,9 @@ class AddressBarView(
             }
 
             setOnItemClickListener { _, v, _, _ ->
-                webViewActivity.webview.loadUrl(
-                    v.findViewById<AppCompatTextView>(android.R.id.text1).text.toString())
+                val binding = TemplateTextSuggestionsBinding.bind(v)
+                val text = binding.url.text.takeUnless { it.isEmpty() } ?: binding.title.text
+                webViewActivity.webview.loadUrl(text.toString())
                 setAddressBarState(AddressBarState.CLOSED)
             }
         }.updateLayoutParams<LayoutParams> {

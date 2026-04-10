@@ -409,16 +409,12 @@
     <string name="delete">حذف</string>
     <!-- History: Title -->
     <string name="history_title">السّجل</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">السجل فارغ!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">إضافة إلى المفضلات</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">أنت على وشك حذف جميع السجلات، متيقنٌ من هذا؟</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">المفضلات</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">لا توجد مفضلات محفوظة.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">تعديل</string>
     <!-- Favorites: Edit dialog title option -->
@@ -433,8 +429,6 @@
     <string name="downloads_toast_failed">فشل التنزيل!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">تم تنزيل %s بنجاح.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">لا توجد تنزيلات</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">تنزيل الملف؟</string>
     <!-- Downloads: Confirmation dialog message -->
@@ -488,13 +482,6 @@
         <item>Sogou</item>
         <item>360 Search</item>
         <item>FrogFind</item>
-        <item>تخصيص</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien First-Party Trackers</item>
         <item>تخصيص</item>
     </string-array>
 </resources>

@@ -1,13 +1,19 @@
-// Copyright (c) 2020-2023 The LineageOS Project
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2020-2025 The LineageOS Project
+// Copyright (c) 2022-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.search
 
+import android.graphics.Bitmap
 import android.util.Log
 import org.json.JSONArray
+import tipz.viola.database.HistoryClient
+import tipz.viola.database.IconHashClient
 import tipz.viola.ext.getCharset
+import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
+import tipz.viola.utils.UrlUtils
+import tipz.viola.webview.VWebViewActivity
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
@@ -15,7 +21,10 @@ import java.net.URL
 import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
+data class SuggestItem(val title: String, val url: String? = null, val icon: Bitmap? = null)
+
 open class SuggestionProvider(
+    private val context: VWebViewActivity,
     private val failedCallback: (error: String, throwable: Throwable) -> Unit = { _, _ -> }
 ) {
     /**
@@ -51,7 +60,8 @@ open class SuggestionProvider(
         val size = jsonArray.length()
         for (n in 0 until size) {
             val suggestion = jsonArray.getString(n)
-            if (!callback.addResult(suggestion)) break
+            val item = SuggestItem(suggestion)
+            if (!callback.addResult(item)) break
         }
     }
 
@@ -61,15 +71,24 @@ open class SuggestionProvider(
      * @param rawQuery the raw query to retrieve the results for.
      * @return a list of history items for the query.
      */
-    fun fetchResults(rawQuery: String): List<String> {
-        val filter: MutableList<String> = ArrayList(5)
+    fun fetchResults(rawQuery: String): List<SuggestItem> {
+        val filter: MutableList<SuggestItem> = ArrayList(5)
         val query: String = try {
             URLEncoder.encode(rawQuery, encoding)
         } catch (e: UnsupportedEncodingException) {
             Log.e(LOG_TAG, "Unable to encode the URL", e)
             failedCallback("Unable to encode the URL", e)
-            return filter
+            "" // Return empty string
         }
+
+        // First, search for relevant history items
+        // TODO: Allow using more than one item
+        if (context.settingsPreference.getIntBool(SettingsKeys.historySearchSuggestions))
+            HistoryClient(context).dao.search("%$rawQuery%", 1).forEach {
+                if (!it.url.startsWith(UrlUtils.httpPrefix) && !it.url.startsWith(UrlUtils.httpsPrefix))
+                    return@forEach
+                filter.add(SuggestItem(it.title, it.url, IconHashClient(context).read(it.iconHash)))
+            }
 
         // There could be no suggestions for this query, return an empty list.
         val content = downloadSuggestionsForQuery(query)
@@ -77,7 +96,7 @@ open class SuggestionProvider(
             ?: return filter
         try {
             parseResults(content) {
-                filter.add(it!!)
+                filter.add(it)
                 filter.size < 5
             }
         } catch (e: Exception) {
@@ -129,7 +148,7 @@ open class SuggestionProvider(
         private const val encoding = "UTF-8"
 
         fun interface ResultCallback {
-            fun addResult(suggestion: String?): Boolean
+            fun addResult(suggestion: SuggestItem): Boolean
         }
     }
 }

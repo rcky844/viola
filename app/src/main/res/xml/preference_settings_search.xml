@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022-2025 Tipz Team
+<!-- Copyright (c) 2022-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,5 +29,12 @@
             android:key="search_suggestions"
             android:summary=""
             android:title="@string/pref_search_suggestions_provider_title" />
+        <tipz.viola.settings.ui.preference.MaterialSwitchPreference
+            android:dependency="suggestions_enablement"
+            android:key="suggest_history"
+            android:summary="@string/pref_search_suggestions_history_summary"
+            android:title="@string/pref_search_suggestions_history_title"
+            app:preferenceTag="historySearchSuggestions"
+            app:needReload="false" />
     </tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory>
 </androidx.preference.PreferenceScreen>

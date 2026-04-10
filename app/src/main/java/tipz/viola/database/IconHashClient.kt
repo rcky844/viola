@@ -1,7 +1,7 @@
-// Copyright (c) 2022-2024 Tipz Team
+// Copyright (c) 2022-2024, 2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
-package tipz.viola.database.instances
+package tipz.viola.database
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -15,7 +15,8 @@ import java.nio.ByteBuffer
 class IconHashClient(context: Context) {
     private val fileDir: String = context.filesDir.path + "/favicon"
 
-    fun save(icon: Bitmap): Int? {
+    fun save(icon: Bitmap?): Int {
+        if (icon == null) return INVALID_HASH
         val buffer = ByteBuffer.allocate(icon.byteCount)
         icon.copyPixelsToBuffer(buffer)
         val hashInt = buffer.array().contentHashCode()
@@ -31,15 +32,15 @@ class IconHashClient(context: Context) {
                 )
                 out.flush()
                 out.close()
-            } catch (e: Exception) {
-                return null
+            } catch (_: Exception) {
+                return INVALID_HASH
             }
         }
         return hashInt
     }
 
-    fun read(hash: Int?): Bitmap? {
-        if (hash == null) return null
+    fun read(hash: Int): Bitmap? {
+        if (hash == INVALID_HASH) return null
         val imgFile = File(fileDir, "$hash.webp")
         try {
             if (imgFile.exists()) return BitmapFactory.decodeFile(imgFile.absolutePath)
@@ -47,5 +48,9 @@ class IconHashClient(context: Context) {
             return null
         }
         return null
+    }
+
+    companion object {
+        const val INVALID_HASH = 0
     }
 }

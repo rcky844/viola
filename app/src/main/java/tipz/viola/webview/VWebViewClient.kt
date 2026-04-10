@@ -183,11 +183,11 @@ open class VWebViewClient(
     @Deprecated("Deprecated in Java")
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         if (settingsPreference.getIntBool(SettingsKeys.enableAdBlock)) {
-            if (adServersHandler.adServers.isNullOrEmpty()) {
+            if (adServersHandler.adServers.isEmpty()) {
                 // TODO: Add dialog to warn users of this issue
                 return super.shouldInterceptRequest(view, url)
             }
-            if (adServersHandler.adServers!!.contains(" ${url.toUri().host}"))
+            if (adServersHandler.isAd(url))
                 return WebResourceResponse(
                     "text/plain", "utf-8",
                     ByteArrayInputStream("".toByteArray())

@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.download
@@ -183,7 +183,8 @@ class DownloadActivity : BaseActivity() {
         @SuppressLint("SimpleDateFormat")
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             if (listData.isEmpty()) {
-                if (holder is EmptyViewHolder) holder.text.setText(R.string.downloads_empty_message)
+                if (holder is EmptyViewHolder) holder.text.text =
+                    activity.resources.getString(R.string.list_empty_hint, activity.title)
                 return
             }
 
@@ -196,7 +197,7 @@ class DownloadActivity : BaseActivity() {
 
                 holder.back.setOnClickListener {
                     data.apply {
-                        val file = File("$downloadPath$filename")
+                        val file = File("$downloadPath/$filename")
                         if (!file.exists()) {
                             Log.w(LOG_TAG, "onClickListener(): File does not exist, taskId=$taskId")
                             return@apply
