@@ -249,6 +249,8 @@
     <string name="pref_ps_category_ad_blocking_summary">Impeça os anúncios irritantes de te distrair.</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">Fonte hosts do bloqueador de anúncios</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">Baixar lista de bloqueio</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -490,13 +492,6 @@
         <item>Sogou</item>
         <item>360 Search</item>
         <item>FrogFind</item>
-        <item>Customizado</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>AdAway</item>
-        <item>GoodbyeAds</item>
-        <item>Unified hosts</item>
-        <item>Eulaurarien First-Party Trackers</item>
         <item>Customizado</item>
     </string-array>
 </resources>
