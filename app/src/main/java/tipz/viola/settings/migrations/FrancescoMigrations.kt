@@ -11,6 +11,7 @@ object FrancescoMigrations : Migration(5) {
         Pair(SettingsKeys.startPageColor, -1),
         Pair(SettingsKeys.autoFadeToolbar, 1),
         Pair(SettingsKeys.legacyToolbar, 0),
+        Pair(SettingsKeys.historySearchSuggestions, 1),
     )
     override val keysRemoval: Array<String> = arrayOf()
     override fun process(pref: SettingsSharedPreference) { }

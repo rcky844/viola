@@ -33,6 +33,7 @@ object InitialMigrations : Migration(0) {
         Pair(SettingsKeys.searchName, SearchEngineEntries.defaultEngineName),
         Pair(SettingsKeys.suggestionsName, SearchEngineEntries.defaultEngineName),
         Pair(SettingsKeys.useSearchSuggestions, 1),
+        Pair(SettingsKeys.historySearchSuggestions, 1),
 
         // Updates
         Pair(SettingsKeys.updateChannelName, BuildConfig.VERSION_BUILD_TYPE),

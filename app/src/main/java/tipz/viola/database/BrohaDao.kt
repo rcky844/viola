@@ -11,6 +11,14 @@ interface BrohaDao {
     @Query("SELECT * FROM Broha")
     suspend fun getAll(): List<Broha>
 
+    @Query(
+        "SELECT * FROM Broha" +
+                "  WHERE title LIKE :keyword OR url LIKE :keyword" +
+                "  ORDER BY timestamp DESC" +
+                "  LIMIT :limit"
+    )
+    fun search(keyword: String, limit: Int): List<Broha>
+
     @Query("SELECT * FROM broha WHERE id LIKE :id LIMIT 1")
     suspend fun getById(id: Long): Broha
 
