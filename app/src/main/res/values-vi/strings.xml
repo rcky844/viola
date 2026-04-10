@@ -411,18 +411,18 @@
     <string name="dialog_delete_all_entries_title">Xóa toàn bộ các mục</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">Xóa</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">Lịch sử</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">Lịch sử trống rỗng!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">Lưu vào Yêu thích</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">Bạn đang định xóa toàn bộ lịch sử, bạn chắc chắn chứ?</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">Yêu thích</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">Chưa lưu trang yêu thích nào.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">Chỉnh sửa</string>
     <!-- Favorites: Edit dialog title option -->
@@ -437,8 +437,6 @@
     <string name="downloads_toast_failed">Tải xuống thất bại!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s đã tải xuống thành công.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">No downloads</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">Tải về tập tin?</string>
     <!-- Downloads: Confirmation dialog message -->
