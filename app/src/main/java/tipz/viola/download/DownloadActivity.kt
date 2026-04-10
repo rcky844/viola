@@ -196,7 +196,7 @@ class DownloadActivity : BaseActivity() {
 
                 holder.back.setOnClickListener {
                     data.apply {
-                        val file = File("$downloadPath$filename")
+                        val file = File("$downloadPath/$filename")
                         if (!file.exists()) {
                             Log.w(LOG_TAG, "onClickListener(): File does not exist, taskId=$taskId")
                             return@apply
