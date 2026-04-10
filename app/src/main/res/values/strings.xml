@@ -449,11 +449,13 @@
     <string name="dialog_delete_all_entries_title">Delete all entries</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">Delete</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
 
     <!-- History: Title -->
     <string name="history_title">History</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">History is empty!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">Save to favorites</string>
     <!-- History: Delete all entries dialog message -->
@@ -461,8 +463,6 @@
 
     <!-- Favorites: Title -->
     <string name="favorites_title">Favorites</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">There are no favorites saved.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">Edit</string>
     <!-- Favorites: Edit dialog title option -->
@@ -478,8 +478,6 @@
     <string name="downloads_toast_failed">Download failed!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s downloaded successfully.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">No downloads</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">Download file?</string>
     <!-- Downloads: Confirmation dialog message -->

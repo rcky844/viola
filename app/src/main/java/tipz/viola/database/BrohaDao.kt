@@ -8,7 +8,7 @@ import androidx.room.Query
 
 @Dao
 interface BrohaDao {
-    @Query("SELECT * FROM Broha")
+    @Query("SELECT * FROM Broha ORDER BY id DESC")
     suspend fun getAll(): List<Broha>
 
     @Query(
