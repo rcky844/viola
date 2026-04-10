@@ -411,18 +411,18 @@
     <string name="dialog_delete_all_entries_title">Effacer toutes les entrées</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">Effacer</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">Historique</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">L’historique est vide !</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">Sauvegarder comme favori</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">Vous êtes sur le point d’effacer tout l’historique, êtes-vous sûr ?</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">Favoris</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">Aucun favori enregistré.</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">Editer</string>
     <!-- Favorites: Edit dialog title option -->
@@ -437,8 +437,6 @@
     <string name="downloads_toast_failed">Echec du téléchargement!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s téléchargé avec succès.</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">No downloads</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">Download file?</string>
     <!-- Downloads: Confirmation dialog message -->
