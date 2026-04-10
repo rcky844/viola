@@ -249,6 +249,8 @@
     <string name="pref_ps_category_ad_blocking_summary">परेशान करने वाले विज्ञापनों को आपको विचलित करने से रोकें।</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">विज्ञापन ब्लॉकलिस्ट स्रोत</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">विज्ञापन ब्लॉकलिस्ट डाउनलोड करें</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -492,13 +494,6 @@
         <item>सोगौ</item>
         <item>360 सर्च</item>
         <item>फ्रॉगफाइंड</item>
-        <item>अनुकूलित</item>
-    </string-array>
-    <string-array name="ad_blocker_hosts_entries">
-        <item>एडअवे</item>
-        <item>गुडबायएड्स</item>
-        <item>यूनिफाइड होस्ट्स</item>
-        <item>यूलॉरारियन फर्स्ट-पार्टी ट्रैकर्स</item>
         <item>अनुकूलित</item>
     </string-array>
 </resources>
