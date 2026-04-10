@@ -413,18 +413,18 @@
     <string name="dialog_delete_all_entries_title">सभी प्रविष्टियाँ हटाएं</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">हटाएं</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">इतिहास</string>
-    <!-- History: Empty message -->
-    <string name="history_empty_message">इतिहास खाली है!</string>
     <!-- History: Save to favorites menu option -->
     <string name="menu_save_to_favorites">पसंदीदा में सहेजें</string>
     <!-- History: Delete all entries dialog message -->
     <string name="dialog_delete_all_entries_history_message">आप सभी इतिहास प्रविष्टियाँ हटाने वाले हैं, क्या आप इसके बारे में निश्चित हैं?</string>
     <!-- Favorites: Title -->
     <string name="favorites_title">पसंदीदा</string>
-    <!-- Favorites: Empty message -->
-    <string name="favorites_empty_message">कोई पसंदीदा सहेजे नहीं गए हैं।</string>
     <!-- Favorites: Menu edit option -->
     <string name="favorites_menu_edit">संपादन</string>
     <!-- Favorites: Edit dialog title option -->
@@ -439,8 +439,6 @@
     <string name="downloads_toast_failed">डाउनलोड विफल हो गया!</string>
     <!-- Downloads: Toast success -->
     <string name="downloads_toast_success">%s सफलतापूर्वक डाउनलोड हो गया।</string>
-    <!-- Downloads: Empty message -->
-    <string name="downloads_empty_message">कोई डाउनलोड नहीं</string>
     <!-- Downloads: Confirmation dialog title -->
     <string name="downloads_dialog_title">फ़ाइल डाउनलोड करें?</string>
     <!-- Downloads: Confirmation dialog message -->
