@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2025 Tipz Team
+// Copyright (c) 2022-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.ui.fragment
@@ -7,12 +7,17 @@ import android.app.ActivityManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity.ACTIVITY_SERVICE
 import androidx.preference.Preference
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tipz.viola.R
+import tipz.viola.databinding.DialogEditTextBinding
+import tipz.viola.ext.dpToPx
+import tipz.viola.ext.getFrameworkIdentifier
 import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
-import tipz.viola.settings.ui.preference.ListPickerAlertDialog
 import tipz.viola.settings.ui.preference.MaterialDialogPreference
 import tipz.viola.settings.ui.preference.MaterialPreferenceDialogFragmentCompat.MaterialDialogPreferenceListener
 import tipz.viola.webview.VWebStorage
@@ -22,25 +27,38 @@ class PrivacySecurityFragment : ExtPreferenceFragment(R.string.pref_main_privacy
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_settings_privacy_security, rootKey)
 
-        val adBlockerHostsEntries =
-            settingsActivity.resources.getStringArray(R.array.ad_blocker_hosts_entries)
         findPreference<Preference>(PREF_AD_BLOCKER_SOURCE)?.run {
             setOnPreferenceClickListener {
-                val listPickerObject = ListPickerAlertDialog.ListPickerObject().apply {
-                    preference = it
-                    nameList = adBlockerHostsEntries
-                    idPreference = SettingsKeys.adServerId
-                    stringPreference = SettingsKeys.adServerUrl
-                    dialogTitleResId = R.string.pref_ad_blocker_source_title
-                    customIndexEnabled = true
-                    customIndex = adBlockerHostsEntries.size - 1
+                val binding: DialogEditTextBinding =
+                    DialogEditTextBinding.inflate(LayoutInflater.from(context))
+                val view = binding.root
+                val input = binding.edittext
+
+                input.run {
+                    gravity = Gravity.TOP
+                    minHeight = context.dpToPx(240)
+                    maxHeight = context.dpToPx(240)
+                    isSingleLine = false
+                    setHorizontallyScrolling(true)
+                    setText(settingsPreference.getString(SettingsKeys.adServerUrls))
                 }
 
-                ListPickerAlertDialog(settingsActivity, settingsPreference, listPickerObject)
+                MaterialAlertDialogBuilder(context)
+                    .setTitle(R.string.pref_ad_blocker_source_title)
+                    .setMessage(R.string.pref_ad_blocker_source_message)
+                    .setView(view)
+                    .setPositiveButton(context.resources.getString(
+                        context.getFrameworkIdentifier("date_time_set"))) { _, _ ->
+                        if (input.text?.trim().toString().isNotEmpty()) {
+                            settingsPreference.setString(SettingsKeys.adServerUrls,
+                                input.text.toString())
+                        }
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
                     .create().show()
+
                 true
             }
-            summary = adBlockerHostsEntries[settingsPreference.getInt(SettingsKeys.adServerId)]
         }
 
         findPreference<Preference>(PREF_AD_BLOCKER_DOWNLOAD)?.setOnPreferenceClickListener {

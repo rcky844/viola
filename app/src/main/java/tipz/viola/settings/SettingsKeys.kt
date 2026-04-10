@@ -14,9 +14,9 @@ object SettingsKeys {
     const val protocolVersion = "protocolVersion" /* INTEGER */ /* Protocol of settings config */
 
     /* Ad blocker */
+    const val adClientApi = "adClientApi" /* INTEGER */
     const val enableAdBlock = "enableAdBlock" /* INTEGER */
-    const val adServerId = "adServerId" /* STRING */
-    const val adServerUrl = "adServerUrl" /* STRING */
+    const val adServerUrls = "adServerUrls" /* STRING */
 
     /* Broha */
     const val favApi = "favApi" /* INTEGER */
@@ -79,6 +79,10 @@ object SettingsKeys {
     const val sendDNT = "sendDNT" /* INTEGER */
     const val sendSaveData = "sendSaveData" /* INTEGER */
     const val sendSecGPC = "sendSecGPC" /* INTEGER */
+
+    /* Removed in 8.1.x */
+    const val adServerId = "adServerId" /* INTEGER */
+    const val adServerUrl = "adServerUrl" /* STRING */
 
     /* Removed in 7.1.x */
     const val checkAppLink = "checkAppLink" /* INTEGER */

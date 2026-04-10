@@ -13,6 +13,7 @@ object FrancescoMigrations : Migration(5) {
         Pair(SettingsKeys.legacyToolbar, 0),
         Pair(SettingsKeys.historySearchSuggestions, 1),
     )
-    override val keysRemoval: Array<String> = arrayOf()
+    override val keysRemoval: Array<String> = arrayOf(
+        SettingsKeys.adServerId, SettingsKeys.adServerUrl)
     override fun process(pref: SettingsSharedPreference) { }
 }
