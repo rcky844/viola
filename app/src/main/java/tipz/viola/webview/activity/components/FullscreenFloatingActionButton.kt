@@ -7,7 +7,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.util.AttributeSet
-import android.widget.CheckBox
+import androidx.appcompat.widget.LinearLayoutCompat
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import tipz.viola.R
@@ -83,16 +84,19 @@ class FullscreenFloatingActionButton(
 
         // Warning dialog
         if (activity.settingsPreference.getIntBool(SettingsKeys.showFullscreenWarningDialog)) {
-            val checkBox = CheckBox(context).apply {
-                setText(R.string.do_not_show_again)
-                isChecked = true
+            val layout = LinearLayoutCompat(context).apply {
                 setMaterialDialogViewPadding()
             }
+            val checkBox = MaterialCheckBox(context).apply {
+                setText(R.string.do_not_show_again)
+                isChecked = true
+            }
+            layout.addView(checkBox)
 
             MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.dialog_fullscreen_title)
                 .setMessage(R.string.dialog_fullscreen_message)
-                .setView(checkBox)
+                .setView(layout)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
                     if (checkBox.isChecked)
                         activity.settingsPreference.setIntBool(
