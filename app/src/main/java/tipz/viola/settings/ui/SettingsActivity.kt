@@ -58,10 +58,10 @@ class SettingsActivity : BaseActivity() {
             supportActionBar?.title = savedInstanceState.getString(BUNDLE_ACTION_BAR_TITLE)
         }
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
-        ViewCompat.setOnApplyWindowInsetsListener(binding.appbar) { view, windowInsets ->
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             insets.top.takeIf { it > 0 }?.let {
-                (view.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
+                (binding.appbar.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
             }
             WindowInsetsCompat.CONSUMED
         }

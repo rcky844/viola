@@ -147,11 +147,14 @@ class BrowserActivity : VWebViewActivity() {
         // Animations
         fade.requireInitialClickToFade = true
 
-        // Setup appbar
-        ViewCompat.setOnApplyWindowInsetsListener(appbar) { view, windowInsets ->
+        // Setup layout insets
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             insets.top.takeIf { it > 0 }?.let {
-                (view.layoutParams as ConstraintLayout.LayoutParams).topMargin = it
+                (appbar.layoutParams as ConstraintLayout.LayoutParams).topMargin = it
+            }
+            insets.bottom.takeIf { it > 0 }?.let {
+                (toolbarView.layoutParams as ConstraintLayout.LayoutParams).bottomMargin = it
             }
             WindowInsetsCompat.CONSUMED
         }
@@ -161,14 +164,6 @@ class BrowserActivity : VWebViewActivity() {
         toolbarView.activity = this
         toolbarView.setUpAdapter()
         fade.register(toolbarView)
-
-        ViewCompat.setOnApplyWindowInsetsListener(toolbarView) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            insets.bottom.takeIf { it > 0 }?.let {
-                (view.layoutParams as ConstraintLayout.LayoutParams).bottomMargin = it
-            }
-            WindowInsetsCompat.CONSUMED
-        }
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
