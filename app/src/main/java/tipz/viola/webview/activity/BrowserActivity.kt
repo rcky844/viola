@@ -625,14 +625,17 @@ class BrowserActivity : VWebViewActivity() {
                 dialog.setTitle(R.string.viewing_mode_custom_user_agent)
                     .setView(uaEditView)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
+                        val newUa = customUserAgent.text.toString()
+                        if (newUa.isEmpty()) return@setPositiveButton
+
                         val dataBundle = VWebView.UserAgentBundle()
-                        dataBundle.userAgentString = customUserAgent.text.toString()
+                        dataBundle.userAgentString = newUa
                         dataBundle.iconView = view
                         dataBundle.enableDesktop = deskMode.isChecked
                         webview.setUserAgent(VWebView.UserAgentMode.CUSTOM, dataBundle)
 
                         currentUserAgentState = VWebView.UserAgentMode.CUSTOM
-                        currentCustomUserAgent = customUserAgent.text.toString()
+                        currentCustomUserAgent = newUa
                         currentCustomUAWideView = deskMode.isChecked
                     }
                     .setNegativeButton(android.R.string.cancel, null)
