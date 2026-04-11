@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Tipz Team
+// Copyright (c) 2025-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.ui.preference
@@ -11,7 +11,7 @@ import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.jetbrains.annotations.MustBeInvokedByOverriders
 import tipz.viola.R
-import tipz.viola.databinding.DialogDownloadLocationPickerBinding
+import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.ext.getFrameworkIdentifier
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
@@ -39,10 +39,11 @@ class WebXApiPickerPreference(
     }
 
     private fun createPickerDialog() {
-        val binding = DialogDownloadLocationPickerBinding.inflate(LayoutInflater.from(context))
-        val textView = binding.pathEditText.apply {
+        val binding = DialogEditTextBinding.inflate(LayoutInflater.from(context))
+        val textView = binding.edittext.apply {
             setText(getUrl())
         }
+        binding.inputLayout.setHint(R.string.path)
 
         val dialog = MaterialAlertDialogBuilder(context)
             .setTitle(R.string.pref_webx_picker_title)
