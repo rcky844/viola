@@ -142,7 +142,7 @@ class BrowserActivity : VWebViewActivity() {
         iconHashClient = IconHashClient(this)
 
         // Start update service
-        UpdateService(this, true)
+        UpdateService(this)
 
         // Animations
         fade.requireInitialClickToFade = true

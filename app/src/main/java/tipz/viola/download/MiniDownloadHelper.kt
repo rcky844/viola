@@ -25,7 +25,7 @@ class MiniDownloadHelper {
         const val LOG_TAG = "MiniDownloadHelper"
         const val UNSUPPORTED = "unsupported"
 
-        fun startDownload(uriString: String): Response {
+        suspend fun startDownload(uriString: String): Response {
             val r = Response()
 
             when (UriScheme.getUriScheme(uriString)) {
@@ -56,7 +56,7 @@ class MiniDownloadHelper {
             return r
         }
 
-        fun startDownloadWithDialog(
+        suspend fun startDownloadWithDialog(
             context: Context, uriString: String,
             @StringRes titleMessage: Int = R.string.downloads_dialog_error_details_title
         ): Response {

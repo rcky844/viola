@@ -1,20 +1,20 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.utils
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.view.Gravity
-import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -27,7 +27,6 @@ import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.ext.dpToPx
 import tipz.viola.ext.isOnline
 import tipz.viola.ext.setMaterialDialogViewPadding
-import tipz.viola.ext.showMessage
 import tipz.viola.ext.uriFromFile
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
@@ -35,10 +34,16 @@ import tipz.viola.webview.pages.ProjectUrls
 import java.io.File
 import java.io.FileOutputStream
 
-class UpdateService(private val context: Context, private val silent: Boolean) {
+class UpdateService(private val activity: AppCompatActivity) {
     private val settingsPreference = SettingsSharedPreference.instance
-    private val dirFile = File(context.filesDir.path + "/updates")
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val dirFile = File(activity.filesDir.path + "/updates")
+
+    data class Response(val name: String, val code: Int, val revision: Int,
+                        val date: String, val url: String, val isValid: Boolean)
+    enum class Status {
+        SUCCESS, LATEST_VERSION, NO_NETWORK, FAILURE
+    }
+    var updateResponse: MutableLiveData<Response> = MutableLiveData()
 
     init {
         // Auto clean the directory on start
@@ -47,127 +52,127 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
                 if (!file.isDirectory)
                     file.delete()
         }
+
+        // Observe update response values
+        updateResponse.observe(activity, Observer {
+            if (it.isValid) showInformationalDialog(it)
+        })
     }
 
-    private fun installApplication(file: File) =
+    private fun installApk(file: File) =
         MainScope().launch {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(context.uriFromFile(file), "application/vnd.android.package-archive")
+            intent.setDataAndType(activity.uriFromFile(file),
+                "application/vnd.android.package-archive")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             try {
-                context.startActivity(intent)
+                activity.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
                 e.printStackTrace()
             }
         }
 
-    private fun showMessage(@StringRes resId: Int) =
-        MainScope().launch { if (!silent) context.showMessage(resId) }
-
-    private fun getUpdateJson(): JSONObject? {
+    private suspend fun getUpdateJson(): Pair<JSONObject?, Status> {
         // Check for internet access
-        if (!context.isOnline()) {
-            showMessage(R.string.toast_network_unavailable)
-            return null
-        }
+        if (!activity.isOnline()) return Pair(null, Status.NO_NETWORK)
 
         // Here we go!
-        val r = MiniDownloadHelper.startDownloadWithDialog(context,
+        val r = MiniDownloadHelper.startDownloadWithDialog(activity,
             ProjectUrls.updateJSONUrl,
             R.string.update_download_failed
         )
-        return if (!r.successful) null
-        else JSONObject(String(r.response))
+        return if (!r.successful) Pair(null, Status.FAILURE)
+        else Pair(JSONObject(String(r.response)), Status.SUCCESS)
     }
 
-    fun checkUpdates() = coroutineScope.launch {
+    suspend fun fetchUpdate(): Status {
         // Get update JSON
-        val jObject = getUpdateJson() ?: return@launch
+        val jObject: JSONObject = getUpdateJson().let { it.first ?: return it.second }
 
         // Get update channel name
-        val updateChannelName = settingsPreference.getString(SettingsKeys.updateChannelName)
-            .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }
-        if (!jObject.has(updateChannelName)) {
-            showMessage(R.string.update_download_failed)
-            return@launch
-        }
+        val channelName = settingsPreference.getString(SettingsKeys.updateChannelName)
+            .ifEmpty { BuildConfig.VERSION_BUILD_TYPE }.ifEmpty { return Status.FAILURE }
 
         // Process the selected update channel data
-        val jChannelObject = jObject.getJSONObject(updateChannelName)
-        val jChannelDataString = "channel_data_${BuildConfig.FLAVOR}"
+        jObject.getJSONObject(channelName).let {
+            val jChannelDataString = "channel_data_${BuildConfig.FLAVOR}"
+            if (it.has(jChannelDataString))
+                return@let it.getJSONObject(jChannelDataString)
+            else return Status.LATEST_VERSION // When update channel does not exist
+        }.let {
+            val remoteCode = it.optInt("code", 0)
+            val remoteRev = it.optInt("revision", 0)
 
-        if (!jChannelObject.has(jChannelDataString)) {
-            showMessage(R.string.toast_version_latest)
-            return@launch
+            // When local version is newer than remote
+            if (BuildConfig.VERSION_CODE > remoteCode
+                || (BuildConfig.VERSION_CODE == remoteCode
+                        && BuildConfig.VERSION_BUILD_REVISION >= remoteRev))
+                return Status.LATEST_VERSION
+
+            // Return with response
+            updateResponse.postValue(Response(it.getString("name"),
+                remoteCode, remoteRev, it.getString("date"),
+                it.getString("download_url"), true))
+            return Status.SUCCESS
         }
+    }
 
-        // Process the update channel object
-        val jChannelUpdateObject = jChannelObject.getJSONObject(jChannelDataString)
-
-        val remoteVerCode = jChannelUpdateObject.optInt("code", 0)
-        val remoteVerRev = jChannelUpdateObject.optInt("revision", 0)
-        if (BuildConfig.VERSION_CODE > remoteVerCode
-            || (BuildConfig.VERSION_CODE == remoteVerCode
-                    && BuildConfig.VERSION_BUILD_REVISION >= remoteVerRev)) {
-            showMessage(R.string.toast_version_latest)
-            return@launch
-        }
-
-        withContext(Dispatchers.Main) {
-            MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.dialog_update_available_title)
-                .setMessage(
-                    context.resources.getString(
-                        R.string.dialog_update_available_message,
-                        jChannelUpdateObject.getString("name"),
-                        if (remoteVerRev > 0) "$remoteVerCode.$remoteVerRev" else remoteVerCode.toString()
-                    ) + "\n" + context.resources.getString(
-                                R.string.dialog_update_available_release_date_message,
-                                jChannelUpdateObject.getString("date"))
-                )
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                    // Show indeterminate progress bar dialog
-                    val progressDialog = MaterialAlertDialogBuilder(context).apply {
-                        setView(LinearLayoutCompat(context).apply {
-                            gravity = Gravity.CENTER_VERTICAL
-                            addView(CircularProgressIndicator(context).apply {
-                                isIndeterminate = true
-                            })
-                            addView(AppCompatTextView(context).apply {
-                                setText(R.string.update_downloading)
-                                updatePadding(left = context.dpToPx(20))
-                            })
-                            setMaterialDialogViewPadding()
-                        })
-                        setCancelable(false)
-                    }.create()
-                    progressDialog.show()
-
-                    // Download update
-                    val filename = jChannelUpdateObject.getString("download_url")
-                        .substringAfterLast('/')
-                    val dirFile = File(context.filesDir.path + "/updates")
-                    val apkFile = File(dirFile, filename)
-
-                    coroutineScope.launch {
-                        val ar = MiniDownloadHelper.startDownloadWithDialog(context,
-                            jChannelUpdateObject.getString("download_url"),
-                            R.string.update_download_failed
-                        )
-                        if (ar.successful && (dirFile.exists() || dirFile.mkdirs())) {
-                            apkFile.createNewFile()
-                            val fos = FileOutputStream(apkFile)
-                            fos.write(ar.response)
-                            fos.close()
-                            progressDialog.dismiss()
-                            installApplication(apkFile)
-                        }
-                    }
+    suspend fun downloadUpdate(response: Response, apkFile: File) {
+        val ar = MiniDownloadHelper.startDownloadWithDialog(activity,
+            response.url, R.string.update_download_failed)
+        if (ar.successful && (dirFile.exists() || dirFile.mkdirs()))
+            withContext(Dispatchers.IO) {
+                apkFile.createNewFile()
+                FileOutputStream(apkFile).use {
+                    it.write(ar.response)
                 }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create().show()
-        }
+            }
+    }
+
+    private fun showInformationalDialog(response: Response) {
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.dialog_update_available_title)
+            .setMessage(
+                activity.resources.getString(
+                    R.string.dialog_update_available_message, response.name,
+                    if (response.revision > 0) "${response.code}.${response.revision}"
+                    else response.code.toString()
+                ) + "\n" + activity.resources.getString(
+                    R.string.dialog_update_available_release_date_message,
+                    response.date)
+            )
+            .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
+                // Show indeterminate progress bar dialog
+                val progressDialog = MaterialAlertDialogBuilder(activity).apply {
+                    setView(LinearLayoutCompat(activity).apply {
+                        gravity = Gravity.CENTER_VERTICAL
+                        addView(CircularProgressIndicator(activity).apply {
+                            isIndeterminate = true
+                        })
+                        addView(AppCompatTextView(activity).apply {
+                            setText(R.string.update_downloading)
+                            updatePadding(left = context.dpToPx(20))
+                        })
+                        setMaterialDialogViewPadding()
+                    })
+                    setCancelable(false)
+                }.create()
+                progressDialog.show()
+
+                // Download update
+                val apkFile = File(dirFile,
+                    response.url.substringAfterLast('/'))
+                runBlocking(Dispatchers.IO) {
+                    downloadUpdate(response, apkFile)
+                }
+
+                // Install application
+                progressDialog.dismiss()
+                installApk(apkFile)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create().show()
     }
 
     class UpdateChannel {
@@ -175,22 +180,26 @@ class UpdateService(private val context: Context, private val silent: Boolean) {
         var displayName: String = ""
     }
 
-    fun getAvailableUpdateChannels(): List<UpdateChannel> = runBlocking(coroutineScope.coroutineContext) {
-        // Get update JSON
-        val jObject = getUpdateJson() ?: return@runBlocking listOf()
-        val updateChannelList = mutableListOf<UpdateChannel>()
+    fun getAvailableUpdateChannels(): Pair<List<UpdateChannel>?, Status> {
+        return runBlocking(Dispatchers.IO) {
+            // Get update JSON
+            val jObject: JSONObject = getUpdateJson().let {
+                it.first ?: return@runBlocking Pair(null, it.second)
+            }
+            val updateChannelList = mutableListOf<UpdateChannel>()
 
-        // Build list of update channels
-        jObject.keys().forEach {
-            updateChannelList.add(UpdateChannel().apply {
-                identifier = it
+            // Build list of update channels
+            jObject.keys().forEach {
+                updateChannelList.add(UpdateChannel().apply {
+                    identifier = it
 
-                val channelObj = jObject.getJSONObject(it)
-                if (channelObj.has("channel_name")) {
-                    displayName = channelObj.getString("channel_name")
-                }
-            })
+                    val channelObj = jObject.getJSONObject(it)
+                    if (channelObj.has("channel_name")) {
+                        displayName = channelObj.getString("channel_name")
+                    }
+                })
+            }
+            Pair(updateChannelList, Status.SUCCESS)
         }
-        return@runBlocking updateChannelList
     }
 }

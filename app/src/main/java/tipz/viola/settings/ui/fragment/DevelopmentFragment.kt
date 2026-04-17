@@ -36,8 +36,8 @@ class DevelopmentFragment : ExtPreferenceFragment(R.string.pref_main_development
         findPreference<Preference>(PREF_UPDATE_CHANNEL)?.run {
             val identifier = mutableListOf<String>()
             val display = mutableListOf<String>()
-            UpdateService(settingsActivity, false)
-                .getAvailableUpdateChannels().forEach {
+            UpdateService(settingsActivity)
+                .getAvailableUpdateChannels().first?.forEach {
                     identifier.add(it.identifier)
                     display.add(
                         if (it.displayName.isEmpty()) it.identifier

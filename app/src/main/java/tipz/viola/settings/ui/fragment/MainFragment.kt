@@ -1,17 +1,24 @@
-// Copyright (c) 2025 Tipz Team
+// Copyright (c) 2025-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.preference.Preference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import tipz.build.info.BuildInfoActivity
 import tipz.viola.BuildConfig
 import tipz.viola.R
+import tipz.viola.ext.showMessage
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.preference.SummaryOnOffPreference
 import tipz.viola.utils.UpdateService
+import tipz.viola.utils.UpdateService.Status
 
 class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -48,7 +55,28 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
         }
 
         findPreference<Preference>(PREF_CHECK_FOR_UPDATES)?.setOnPreferenceClickListener {
-            UpdateService(settingsActivity, false).checkUpdates()
+            val service = UpdateService(settingsActivity)
+            val status = MutableLiveData<Status>()
+
+            status.observe(settingsActivity, Observer {
+                // Handle all other cases
+                if (it != Status.SUCCESS) {
+                    settingsActivity.showMessage(
+                        when (it) {
+                            Status.LATEST_VERSION -> R.string.toast_version_latest
+                            Status.NO_NETWORK -> R.string.toast_network_unavailable
+                            else -> R.string.update_download_failed
+                        }
+                    )
+                    return@Observer
+                }
+            })
+
+            // Start fetching update
+            CoroutineScope(Dispatchers.IO).launch {
+                status.postValue(service.fetchUpdate())
+            }
+
             true
         }
 
@@ -69,8 +97,8 @@ class MainFragment : ExtPreferenceFragment(R.string.settings_title) {
 
         // Perform checks for update channel
         val identifier = mutableListOf<String>()
-        UpdateService(settingsActivity, false)
-            .getAvailableUpdateChannels().forEach {
+        UpdateService(settingsActivity)
+            .getAvailableUpdateChannels().first?.forEach {
                 identifier.add(it.identifier)
             }
 
