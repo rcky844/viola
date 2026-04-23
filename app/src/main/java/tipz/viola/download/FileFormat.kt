@@ -46,22 +46,25 @@ enum class FileFormat(val mimeType: String?, val extensions: Array<String>) {
 
     /* Audio */
     FORMAT_AUDIO_GENERIC("audio/",
-        arrayOf("mp3", "aac", /* Lossy */
-                "ogg", "oga", "ogv", "ogx", "opus", /* Lossy: Ogg & Opus */
+        arrayOf("mp3", "aac", "aifc", /* Lossy */
+                "ogg", "oga", "ogv", "ogx", "opus", /* Ogg & Opus */
                 "mid", "midi", "flac", "m4a", /* Lossless */
-                "wav", "aiff", "pcm" /* Uncompressed */)
+                "wav", "aif", "aiff", "pcm", /* Uncompressed */
+                "wma" /* Microslop */)
     ),
 
     /* Image */
     FORMAT_IMAGE_GENERIC("image/",
         arrayOf("jpg", "jpeg", /* Lossy */
                 "png", "apng", "bmp", "gif", "ico", /* Lossless */
-                "webp", "avif", "tiff" /* Both */)
+                "webp", "avif", "tiff", /* Both */
+                "heif", "heic" /* HEIF */)
     ),
 
     /* Video */
     FORMAT_VIDEO_GENERIC("video/",
-        arrayOf("mp4", "mpeg", "webm", "mkv", "avi", "mov", "wmv", "3gp", "3g2")
+        arrayOf("mp4", "mpg", "mpeg", "m4v",
+            "webm", "mkv", "avi", "mov", "wmv", "3gp", "3g2")
     );
 
     companion object {

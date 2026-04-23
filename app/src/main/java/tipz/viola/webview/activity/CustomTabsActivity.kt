@@ -31,10 +31,10 @@ class CustomTabsActivity : VWebViewActivity(true) {
         /* Appbar */
         appbar = binding.appbar
         webviewContainer = binding.webviewContainer
-        ViewCompat.setOnApplyWindowInsetsListener(appbar) { view, windowInsets ->
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             insets.top.takeIf { it > 0 }?.let {
-                (view.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
+                (appbar.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
             }
             WindowInsetsCompat.CONSUMED
         }

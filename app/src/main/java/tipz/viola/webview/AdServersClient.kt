@@ -29,13 +29,6 @@ open class AdServersClient(
     private val localHostUrls = arrayOf("0.0.0.0", "127.0.0.1", "localhost")
     private val adServersFile = File(context.filesDir.path + "/ad_servers_hosts.txt.gz")
 
-    private val defaultAdServers = """
-        https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt
-        https://cdn.jsdelivr.net/gh/jerryn70/GoodbyeAds@master/Hosts/GoodbyeAds.txt
-        http://sbc.io/hosts/hosts
-        https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
-    """.trimIndent()
-
     init {
         // API checks & Migration
         val apiVer = pref.getInt(SettingsKeys.adClientApi)
@@ -145,5 +138,13 @@ open class AdServersClient(
          * - API 1 -> Path move, merged hosts lists + compression
          */
         private const val LATEST_API = 1
+
+        /* Default built-in ad servers list */
+        val defaultAdServers = """
+            https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt
+            https://cdn.jsdelivr.net/gh/jerryn70/GoodbyeAds@master/Hosts/GoodbyeAds.txt
+            http://sbc.io/hosts/hosts
+            https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
+        """.trimIndent()
     }
 }

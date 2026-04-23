@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022-2025 Tipz Team
+<!-- Copyright (c) 2022-2026 Tipz Team
      SPDX-License-Identifier: Apache-2.0
 -->
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,11 +14,9 @@
             android:summaryOff="@string/text_off"
             app:preferenceTag="enableAdBlock"
             app:needReload="true" />
-        <androidx.preference.Preference
+        <tipz.viola.settings.ui.preference.AdBlockerSourcePreference
             android:dependency="adBlocker"
-            android:key="adBlockerSource"
-            android:summary=""
-            android:title="@string/pref_ad_blocker_source_title" />
+            android:key="adBlockerSource" />
         <androidx.preference.Preference
             android:dependency="adBlocker"
             android:key="adBlockerDownload"

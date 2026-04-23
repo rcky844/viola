@@ -16,6 +16,7 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -89,6 +90,7 @@ import tipz.viola.webview.pages.ProjectUrls
 import tipz.viola.widget.FadeOrchestrator
 import tipz.viola.widget.PropertyDisplayView
 import tipz.viola.widget.StringResAdapter
+import java.util.UUID
 
 
 @Suppress("DEPRECATION")
@@ -142,16 +144,19 @@ class BrowserActivity : VWebViewActivity() {
         iconHashClient = IconHashClient(this)
 
         // Start update service
-        UpdateService(this, true)
+        UpdateService(this)
 
         // Animations
         fade.requireInitialClickToFade = true
 
-        // Setup appbar
-        ViewCompat.setOnApplyWindowInsetsListener(appbar) { view, windowInsets ->
+        // Setup layout insets
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             insets.top.takeIf { it > 0 }?.let {
-                (view.layoutParams as ConstraintLayout.LayoutParams).topMargin = it
+                (appbar.layoutParams as ConstraintLayout.LayoutParams).topMargin = it
+            }
+            insets.bottom.takeIf { it > 0 }?.let {
+                (toolbarView.layoutParams as ConstraintLayout.LayoutParams).bottomMargin = it
             }
             WindowInsetsCompat.CONSUMED
         }
@@ -161,14 +166,6 @@ class BrowserActivity : VWebViewActivity() {
         toolbarView.activity = this
         toolbarView.setUpAdapter()
         fade.register(toolbarView)
-
-        ViewCompat.setOnApplyWindowInsetsListener(toolbarView) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            insets.bottom.takeIf { it > 0 }?.let {
-                (view.layoutParams as ConstraintLayout.LayoutParams).bottomMargin = it
-            }
-            WindowInsetsCompat.CONSUMED
-        }
 
         // Setup toolbar expandable
         expandableToolbarView = binding.expandableToolbarView
@@ -379,7 +376,8 @@ class BrowserActivity : VWebViewActivity() {
             R.drawable.history -> expandableToolbarView.setItemEnabled(res,
                 settingsPreference.getIntBool(SettingsKeys.enableHistoryStorage))
             R.drawable.app_shortcut -> expandableToolbarView.setItemEnabled(res,
-                !(webview.title.isNullOrBlank() || webview.url.isBlank()))
+                !(webview.title.isNullOrBlank() || webview.url.isBlank())
+                        && ShortcutManagerCompat.isRequestPinShortcutSupported(this))
             R.drawable.favorites_add, R.drawable.translate, R.drawable.code, R.drawable.search ->
                 expandableToolbarView.setItemEnabled(res,
                     !webview.url.let {
@@ -413,7 +411,7 @@ class BrowserActivity : VWebViewActivity() {
             }
 
             R.drawable.share -> shareUrl(webview.url)
-            R.drawable.app_shortcut -> { // FIXME: Shortcuts pointing to the same URL does not behave as expected
+            R.drawable.app_shortcut -> {
                 // Show dialog for selecting modes
                 val dialog = PopupMaterialAlertDialogBuilder(this, Gravity.BOTTOM)
                 dialog.setTitle(R.string.toolbar_expandable_app_shortcut)
@@ -438,8 +436,10 @@ class BrowserActivity : VWebViewActivity() {
                     drawable.setBounds(0, 0, canvas.width, canvas.height)
                     drawable.draw(canvas)
 
+                    val uuid = UUID.randomUUID().toString()
+                    Log.d(LOG_TAG, "Creating shortcut with uuid=$uuid")
                     ShortcutManagerCompat.requestPinShortcut(
-                        this, ShortcutInfoCompat.Builder(this, webview.title!!)
+                        this, ShortcutInfoCompat.Builder(this, uuid)
                             .setShortLabel(webview.title!!)
                             .setIcon(IconCompat.createWithBitmap(icon))
                             .setIntent(launchIntent)
@@ -607,14 +607,17 @@ class BrowserActivity : VWebViewActivity() {
                 dialog.setTitle(R.string.viewing_mode_custom_user_agent)
                     .setView(uaEditView)
                     .setPositiveButton(android.R.string.ok) { _, _ ->
+                        val newUa = customUserAgent.text.toString()
+                        if (newUa.isEmpty()) return@setPositiveButton
+
                         val dataBundle = VWebView.UserAgentBundle()
-                        dataBundle.userAgentString = customUserAgent.text.toString()
+                        dataBundle.userAgentString = newUa
                         dataBundle.iconView = view
                         dataBundle.enableDesktop = deskMode.isChecked
                         webview.setUserAgent(VWebView.UserAgentMode.CUSTOM, dataBundle)
 
                         currentUserAgentState = VWebView.UserAgentMode.CUSTOM
-                        currentCustomUserAgent = customUserAgent.text.toString()
+                        currentCustomUserAgent = newUa
                         currentCustomUAWideView = deskMode.isChecked
                     }
                     .setNegativeButton(android.R.string.cancel, null)

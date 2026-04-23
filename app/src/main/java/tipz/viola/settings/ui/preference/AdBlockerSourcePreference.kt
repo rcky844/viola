@@ -1,53 +1,56 @@
-// Copyright (c) 2025-2026 Tipz Team
+// Copyright (c) 2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.settings.ui.preference
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.jetbrains.annotations.MustBeInvokedByOverriders
 import tipz.viola.R
 import tipz.viola.databinding.DialogEditTextBinding
+import tipz.viola.ext.dpToPx
 import tipz.viola.ext.getFrameworkIdentifier
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
-import tipz.viola.webview.buss.BussUtils
+import tipz.viola.webview.AdServersClient
 
-class WebXApiPickerPreference(
+class AdBlockerSourcePreference(
     private val context: Context,
     attrs: AttributeSet
 ) : Preference(context, attrs) {
     private val settingsPreference = SettingsSharedPreference(context)
-    private fun getUrl() = settingsPreference.getString(SettingsKeys.bussApiUrl)
 
     init {
-        setTitle(R.string.pref_webx_picker_title)
-        setUrlSummary()
+        setTitle(R.string.pref_ad_blocker_source_title)
         setOnPreferenceClickListener {
-            createPickerDialog()
+            createDialog()
             true
         }
     }
 
-    @MustBeInvokedByOverriders
-    fun setUrlSummary() {
-        setSummary(getUrl())
-    }
+    private fun createDialog() {
+        val binding: DialogEditTextBinding =
+            DialogEditTextBinding.inflate(LayoutInflater.from(context))
+        val view = binding.root
+        val input = binding.edittext
 
-    private fun createPickerDialog() {
-        val binding = DialogEditTextBinding.inflate(LayoutInflater.from(context))
-        val textView = binding.edittext.apply {
-            setText(getUrl())
+        input.run {
+            gravity = Gravity.TOP
+            minHeight = context.dpToPx(240)
+            maxHeight = context.dpToPx(240)
+            isSingleLine = false
+            setHorizontallyScrolling(true)
+            setText(settingsPreference.getString(SettingsKeys.adServerUrls))
         }
-        binding.inputLayout.setHint(R.string.path)
 
         val dialog = MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.pref_webx_picker_title)
-            .setView(binding.root)
+            .setTitle(R.string.pref_ad_blocker_source_title)
+            .setMessage(R.string.pref_ad_blocker_source_message)
+            .setView(view)
             .setPositiveButton(context.resources.getString(
                 context.getFrameworkIdentifier("date_time_set")), null)
             .setNeutralButton(R.string.reset, null)
@@ -57,12 +60,12 @@ class WebXApiPickerPreference(
         dialog.run {
             setOnShowListener {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    settingsPreference.setString(SettingsKeys.bussApiUrl, textView.text.toString())
-                    setUrlSummary()
-                    dialog.dismiss()
+                    if (input.text?.trim().toString().isNotEmpty())
+                        settingsPreference.setString(SettingsKeys.adServerUrls,
+                            input.text.toString())
                 }
                 dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
-                    textView.setText(BussUtils.defaultApiUrl)
+                    input.setText(AdServersClient.defaultAdServers)
                 }
             }
             show()
