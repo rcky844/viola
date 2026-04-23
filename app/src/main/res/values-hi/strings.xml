@@ -239,12 +239,18 @@
     <string name="pref_search_category_suggestions_summary">चुनें कि खोज इंजनों से सुझाव कैसे दिखाई दें।</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
     <string name="pref_search_suggestions_provider_title">सुझाव प्रदाता</string>
+    <!-- Settings: Search: Search Suggestions from History title -->
+    <string name="pref_search_suggestions_history_title">Use browser history</string>
+    <!-- Settings: Search: Search Suggestions from History summary -->
+    <string name="pref_search_suggestions_history_summary">Pick the most recent relevant history items for search suggestions.</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
     <string name="pref_ps_category_ad_blocking_title">विज्ञापन अवरुद्ध करना</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">परेशान करने वाले विज्ञापनों को आपको विचलित करने से रोकें।</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">विज्ञापन ब्लॉकलिस्ट स्रोत</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">विज्ञापन ब्लॉकलिस्ट डाउनलोड करें</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -409,6 +415,10 @@
     <string name="dialog_delete_all_entries_title">सभी प्रविष्टियाँ हटाएं</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">हटाएं</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">इतिहास</string>
     <!-- History: Save to favorites menu option -->
