@@ -37,5 +37,8 @@ class MaterialSwitchPreference(context: Context, attrs: AttributeSet?) :
 
         // Use material switch
         widgetLayoutResource = R.layout.preference_material_switch
+
+        // Disable storage in SharedPreference
+        isPersistent = false
     }
 }
