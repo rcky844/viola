@@ -192,6 +192,8 @@ dependencies {
     modernImplementation("androidx.coordinatorlayout:coordinatorlayout:1.3.0")
     modernImplementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0")
     modernImplementation("com.google.android.material:material:1.13.0")
+    modernImplementation("androidx.credentials:credentials:1.5.0")
+    modernImplementation("androidx.credentials:credentials-play-services-auth:1.5.0")
 
     // Legacy dependencies
     // These will remain on their currently defined versions indefinitely,

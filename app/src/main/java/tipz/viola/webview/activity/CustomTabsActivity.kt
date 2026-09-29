@@ -6,13 +6,14 @@ package tipz.viola.webview.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import tipz.viola.databinding.ActivityCustomTabBinding
+import tipz.viola.ext.defaultInsets
 import tipz.viola.ext.finishAndRemoveTaskExt
 import tipz.viola.ext.shareUrl
 import tipz.viola.webview.VWebViewActivity
@@ -32,11 +33,11 @@ class CustomTabsActivity : VWebViewActivity(true) {
         appbar = binding.appbar
         webviewContainer = binding.webviewContainer
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            insets.top.takeIf { it > 0 }?.let {
-                (appbar.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
+            val insets = windowInsets.getInsets(defaultInsets)
+            appbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
             }
-            WindowInsetsCompat.CONSUMED
+            windowInsets
         }
 
         /* Back button */

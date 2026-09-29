@@ -6,8 +6,10 @@ package tipz.viola.webview
 import android.Manifest
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -23,10 +25,16 @@ import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import tipz.viola.R
 import tipz.viola.databinding.DialogEditTextBinding
+import tipz.viola.download.MiniDownloadHelper
 import tipz.viola.ext.askForPermission
 import tipz.viola.ext.setImmersiveMode
+import tipz.viola.webview.VWebView.PageLoadState
 import java.util.Objects
 
 open class VChromeWebClient(private val activity: VWebViewActivity,
@@ -73,7 +81,24 @@ open class VChromeWebClient(private val activity: VWebViewActivity,
     }
 
     override fun onReceivedIcon(view: WebView, favicon: Bitmap) {
-        vWebView.faviconExt = favicon
+        vWebView.onPageInformationUpdated(PageLoadState.UPDATE_FAVICON, favicon = Pair(favicon, false))
+    }
+
+    override fun onReceivedTouchIconUrl(view: WebView?, url: String?, precomposed: Boolean) {
+        super.onReceivedTouchIconUrl(view, url, precomposed)
+        Log.d("onReceivedTouchIconUrl", "url=$url, precomposed=$precomposed")
+        if (vWebView.faviconPosted || url.isNullOrEmpty()) return
+
+        // Precomposed icons should take precedence over non-composed icons
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = MiniDownloadHelper.startDownload(url).response
+            val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+            if (bitmap != null)
+                MainScope().launch {
+                    vWebView.onPageInformationUpdated(
+                        PageLoadState.UPDATE_FAVICON, favicon = Pair(bitmap, precomposed))
+                }
+        }
     }
 
     override fun onGeolocationPermissionsShowPrompt(

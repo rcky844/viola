@@ -95,6 +95,8 @@
     <string name="dialog_insecure_connection_continue_to_site">Continue to site</string>
     <!-- WebView: Open in external app snackbar message -->
     <string name="snackbar_open_external_message">External link detected.</string>
+    <!-- WebView: Open in external app fallback snackbar message -->
+    <string name="snackbar_open_external_fallback_message">No application can handle this external link. Open fallback?</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">Open</string>
     <!-- WebView: Description for files -->
@@ -384,6 +386,10 @@
     <string name="pref_enable_cookies_title">Cookies</string>
     <!-- Settings: Web features: Enable Cookies summary -->
     <string name="pref_enable_cookies_summary">Accept all cookies from websites.</string>
+    <!-- Settings: Web features: Rendering layers title -->
+    <string name="pref_rendering_layers_title">Rendering layers</string>
+    <!-- Settings: Web features: Rendering layers summary -->
+    <string name="pref_rendering_layers_summary">Choose the layer type of off-screen buffer backing WebView.</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->

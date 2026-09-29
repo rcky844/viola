@@ -8,6 +8,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+
+val defaultInsets: Int
+    get() = WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
 
 fun Activity.askForPermission(permission: Array<String>): Boolean {
     var shouldRequest = false

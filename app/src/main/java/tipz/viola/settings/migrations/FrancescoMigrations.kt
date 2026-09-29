@@ -3,6 +3,7 @@
 
 package tipz.viola.settings.migrations
 
+import android.view.View.LAYER_TYPE_HARDWARE
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 
@@ -12,6 +13,7 @@ object FrancescoMigrations : Migration(5) {
         Pair(SettingsKeys.autoFadeToolbar, 1),
         Pair(SettingsKeys.legacyToolbar, 0),
         Pair(SettingsKeys.historySearchSuggestions, 1),
+        Pair(SettingsKeys.renderingLayers, LAYER_TYPE_HARDWARE),
     )
     override val keysRemoval: Array<String> = arrayOf(
         SettingsKeys.adServerId, SettingsKeys.adServerUrl)

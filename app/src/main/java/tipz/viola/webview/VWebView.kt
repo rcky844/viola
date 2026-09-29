@@ -36,10 +36,8 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeoutOrNull
 import tipz.viola.Application
 import tipz.viola.BuildConfig
 import tipz.viola.R
@@ -103,6 +101,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     private lateinit var historyClient: HistoryClient
     private val iconHashClient = IconHashClient(context)
     var faviconExt: Bitmap? = null
+    var faviconPosted = false
 
     private val titleHandler = Handler { message ->
         val webLongPress = HitTestAlertDialog(context)
@@ -117,7 +116,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     enum class PageLoadState {
         PAGE_STARTED, PAGE_FINISHED, PAGE_ERROR,
-        UPDATE_HISTORY, UPDATE_TITLE, UNKNOWN
+        UPDATE_HISTORY, UPDATE_TITLE, UPDATE_FAVICON, UNKNOWN
     }
 
     init {
@@ -172,8 +171,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         // JavaScript interface
         addJavascriptInterface(VJavaScriptInterface(activity), VJavaScriptInterface.INTERFACE_NAME)
 
-        setLayerType(LAYER_TYPE_HARDWARE, null)
-
         // Zoom controls
         webSettings.setSupportZoom(true)
         webSettings.builtInZoomControls = true
@@ -197,6 +194,20 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         webSettings.databaseEnabled = false // Disabled as no-op since Android 15
         webSettings.domStorageEnabled = true
         webSettings.savePassword = false
+
+        // Enable web authentication support
+        // See: https://developer.android.com/identity/sign-in/credential-manager-webview
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.WEB_AUTHENTICATION)) {
+            WebSettingsCompat.setWebAuthenticationSupport(
+                webSettings, WebSettingsCompat.WEB_AUTHENTICATION_SUPPORT_FOR_APP
+            )
+
+            // Check if getWebauthenticationSupport may have been disabled by the WebView.
+            Log.d(LOG_TAG,
+                "getWebAuthenticationSupport result: "
+                        + WebSettingsCompat.getWebAuthenticationSupport(webSettings)
+            )
+        }
 
         // Ad Server Hosts
         adServersHandler = AdServersClient(context, settingsPreference)
@@ -237,6 +248,17 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         settingsPreference.getIntBool(SettingsKeys.isJavaScriptEnabled).apply {
             webSettings.javaScriptEnabled = this
             webSettings.javaScriptCanOpenWindowsAutomatically = this
+        }
+
+        // Rendering Layers
+        settingsPreference.getInt(SettingsKeys.renderingLayers).takeIf { it in 0..2 }?.let {
+            setLayerType(it, null)
+            Log.d(LOG_TAG, "Set render layer: $it")
+        } ?: {
+            // Invalid layer type, reset to default
+            settingsPreference.setInt(SettingsKeys.renderingLayers, LAYER_TYPE_HARDWARE)
+            setLayerType(LAYER_TYPE_HARDWARE, null)
+            Log.d(LOG_TAG, "Invalid type, reset render layer")
         }
 
         // HTTPS enforce setting
@@ -296,7 +318,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         Log.i(LOG_TAG, "Checking for possible App Link, url=$url")
         val intent =
-            if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+            if (url.startsWith("intent:")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
             else Intent(Intent.ACTION_VIEW, url.toUri())
         if (intent.resolveActivity(context.packageManager) != null) {
             activeSnackBar = Snackbar.make(
@@ -313,11 +335,26 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
             return true
         } else {
-            if (!noToast && progress == PROGRESS_LOAD_COMPLETED) {
+            Log.w(LOG_TAG, "Found no application to handle App Link!")
+            val fallbackUrl = intent.getStringExtra("browser_fallback_url")
+            if (!fallbackUrl.isNullOrEmpty()) {
+                Log.v(LOG_TAG, "Prompting user for App Link fallback, url=$fallbackUrl")
+                activeSnackBar = Snackbar.make(
+                    activity.webviewContainer,
+                    R.string.snackbar_open_external_fallback_message,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBehavior(BaseTransientBottomBar.Behavior().apply {
+                    setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_ANY)
+                }).setAction(R.string.snackbar_open_external_action) {
+                    loadUrl(fallbackUrl)
+                }.apply {
+                    setStartAligned()
+                    show()
+                }
+            } else if (!noToast && progress == PROGRESS_LOAD_COMPLETED) {
                 Log.v(LOG_TAG, "App Link not handled and page loaded, showing toast")
                 context.showMessage(R.string.toast_no_app_to_handle)
             }
-            Log.w(LOG_TAG, "Found no application to handle App Link!")
             return false
         }
     }
@@ -484,12 +521,10 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
     }
 
     fun onPageInformationUpdated(state: PageLoadState, url: String? = null,
-                                 favicon: Bitmap? = null, description: String? = null) {
+                                 favicon: Pair<Bitmap?, Boolean /* isPreferred */> = Pair(null, false),
+                                 description: String? = null) {
         val currentUrl = this.url
         val newUrl = if (!url.isNullOrBlank()) filterUrl(url) else currentUrl
-
-        // Update favicon
-        this.faviconExt = favicon
 
         Log.v(LOG_TAG, "onPageInformationUpdated(): state=${state.name}")
         when (state) {
@@ -514,6 +549,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
                 if (historyState != UpdateHistoryState.STATE_DISABLED)
                     historyState = UpdateHistoryState.STATE_WAIT_TASK
+                faviconPosted = false
                 activity.onPageStateChanged(true)
                 consoleMessages.clear()
                 activeSnackBar.takeUnless { it == null }?.dismiss()
@@ -549,10 +585,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                         // Commit history when load is complete
                         historyState = UpdateHistoryState.STATE_WAIT_TASK
                         onPageInformationUpdated(PageLoadState.UPDATE_HISTORY)
-                    } else {
-                        // Solve duplicated history commits
-                        historyState = UpdateHistoryState.STATE_COMMITTED
                     }
+                    // FIXME: Original fix for duplicate history commits, needs further investigation
             }
 
             PageLoadState.PAGE_ERROR -> {
@@ -579,8 +613,8 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             PageLoadState.UPDATE_HISTORY -> {
                 if (currentUrl.isBlank() || getRealUrl() == BrowserUrls.aboutBlankUrl) return
 
-                if (historyState != UpdateHistoryState.STATE_WAIT_TASK) {
-                    Log.d(LOG_TAG, "Wrong state for history commit")
+                if (historyState != UpdateHistoryState.STATE_WAIT_TASK || !faviconPosted) {
+                    Log.d(LOG_TAG, "Wrong state for history commit ($historyState)")
                     return
                 }
 
@@ -592,13 +626,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
                 CoroutineScope(Dispatchers.IO).launch {
                     Log.d(LOG_TAG, "History commit job START")
-                    withTimeoutOrNull(25000L) {
-                        while (faviconExt == null) {
-                            delay(1000)
-                            continue
-                        }
-                    }
-
                     commitHistory(newUrl)
                     historyState = UpdateHistoryState.STATE_COMMITTED
                 }
@@ -611,6 +638,17 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                     else title?.trim()
                 )
                 activity.swipeRefreshLayout.setRefreshing(false)
+            }
+
+            PageLoadState.UPDATE_FAVICON -> {
+                if (faviconPosted && !favicon.second) {
+                    Log.d(LOG_TAG, "Favicon posted and not preferred")
+                    return
+                }
+                faviconPosted = true
+                faviconExt = favicon.first
+                MainScope().launch { activity.onFaviconUpdated(favicon.first) }
+                onPageInformationUpdated(PageLoadState.UPDATE_HISTORY) // Trigger again
             }
 
             PageLoadState.UNKNOWN -> {
@@ -638,7 +676,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
                 CookieManager.getInstance().flush()
             else CookieSyncManager.getInstance().sync()
             activity.swipeRefreshLayout.setRefreshing(false)
-            MainScope().launch { activity.onFaviconUpdated(faviconExt) }
         }
     }
 
@@ -741,5 +778,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     companion object {
         const val PROGRESS_LOAD_COMPLETED = 100
+        const val INTENT_FALLBACK_URL = "S.browser_fallback_url"
     }
 }

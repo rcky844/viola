@@ -4,6 +4,7 @@
 package tipz.viola.settings.migrations
 
 import android.annotation.SuppressLint
+import android.view.View.LAYER_TYPE_HARDWARE
 import tipz.viola.BuildConfig
 import tipz.viola.download.DownloadClient
 import tipz.viola.search.SearchEngineEntries
@@ -48,6 +49,7 @@ object InitialMigrations : Migration(0) {
         Pair(SettingsKeys.enableGoogleSafeBrowse, 0),
         Pair(SettingsKeys.enableSwipeRefresh, 1),
         Pair(SettingsKeys.enforceHttps, 1),
+        Pair(SettingsKeys.renderingLayers, LAYER_TYPE_HARDWARE),
         Pair(SettingsKeys.reverseAddressBar, 0),
         Pair(SettingsKeys.sendDNT, 0),
         Pair(SettingsKeys.sendSaveData, 0),

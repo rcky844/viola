@@ -19,6 +19,9 @@
         app:preferenceTag="isCookiesEnabled"
         app:needReload="true" />
 
+    <tipz.viola.settings.ui.preference.RenderingLayersPreference
+        android:key="rendering_layers" />
+
     <tipz.viola.settings.ui.preference.LongSummaryPreferenceCategory
         android:summary="@string/pref_web_webx_category_summary"
         android:title="@string/pref_web_webx_category_title">

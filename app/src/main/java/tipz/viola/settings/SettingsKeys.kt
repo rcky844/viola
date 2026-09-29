@@ -66,6 +66,7 @@ object SettingsKeys {
     const val showFullscreenWarningDialog = "showFullscreenWarningDialog" /* INTEGER */
     const val autoFadeToolbar = "autoFadeToolbar" /* INTEGER */
     const val legacyToolbar = "legacyToolbar" /* INTEGER */
+    const val renderingLayers = "renderingLayers" /* INTEGER */
 
     /* Updater */
     const val updateChannelName = "updateChannelName" /* STRING */
