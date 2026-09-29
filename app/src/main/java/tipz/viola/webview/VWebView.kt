@@ -196,6 +196,20 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
         webSettings.domStorageEnabled = true
         webSettings.savePassword = false
 
+        // Enable web authentication support
+        // See: https://developer.android.com/identity/sign-in/credential-manager-webview
+        if (WebkitCompat.isFeatureSupported(WebViewFeature.WEB_AUTHENTICATION)) {
+            WebSettingsCompat.setWebAuthenticationSupport(
+                webSettings, WebSettingsCompat.WEB_AUTHENTICATION_SUPPORT_FOR_APP
+            )
+
+            // Check if getWebauthenticationSupport may have been disabled by the WebView.
+            Log.d(LOG_TAG,
+                "getWebAuthenticationSupport result: "
+                        + WebSettingsCompat.getWebAuthenticationSupport(webSettings)
+            )
+        }
+
         // Ad Server Hosts
         adServersHandler = AdServersClient(context, settingsPreference)
 
