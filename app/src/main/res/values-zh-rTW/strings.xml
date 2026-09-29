@@ -87,6 +87,8 @@
     <string name="dialog_insecure_connection_continue_to_site">繼續訪問網站</string>
     <!-- WebView: Open in external app snackbar message -->
     <string name="snackbar_open_external_message">偵測到外部連結</string>
+    <!-- WebView: Open in external app fallback snackbar message -->
+    <string name="snackbar_open_external_fallback_message">No application can handle this external link. Open fallback?</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">打開</string>
     <!-- WebView: Description for files -->
@@ -239,12 +241,18 @@
     <string name="pref_search_category_suggestions_summary">選擇搜尋建議的顯示方式。</string>
     <!-- Settings: Search: Search Suggestions Provider title -->
     <string name="pref_search_suggestions_provider_title">建議提供者</string>
+    <!-- Settings: Search: Search Suggestions from History title -->
+    <string name="pref_search_suggestions_history_title">Use browser history</string>
+    <!-- Settings: Search: Search Suggestions from History summary -->
+    <string name="pref_search_suggestions_history_summary">Pick the most recent relevant history items for search suggestions.</string>
     <!-- Settings: Privacy and security: Ad blocking category title -->
     <string name="pref_ps_category_ad_blocking_title">廣告過濾</string>
     <!-- Settings: Privacy and security: Ad blocking category summary -->
     <string name="pref_ps_category_ad_blocking_summary">阻擋分散注意力而且煩人的廣告。</string>
     <!-- Settings: Ad blocking: Ad Blocklist source title -->
     <string name="pref_ad_blocker_source_title">廣告攔截器列表來源</string>
+    <!-- Settings: Ad blocking: Ad Blocklist source message -->
+    <string name="pref_ad_blocker_source_message">Type address of ad blocking hosts, each in separate lines containing one address per line.</string>
     <!-- Settings: Ad blocking: Download ad blocker hosts title -->
     <string name="pref_ad_blocker_download_hosts_title">下載廣告攔截器列表</string>
     <!-- Settings: Privacy and security: Privacy category -->
@@ -347,6 +355,10 @@
     <string name="pref_enable_cookies_title">Cookies</string>
     <!-- Settings: Web features: Enable Cookies summary -->
     <string name="pref_enable_cookies_summary">接受來自所有網站的 Cookies。</string>
+    <!-- Settings: Web features: Rendering layers title -->
+    <string name="pref_rendering_layers_title">Rendering layers</string>
+    <!-- Settings: Web features: Rendering layers summary -->
+    <string name="pref_rendering_layers_summary">Choose the layer type of off-screen buffer backing WebView.</string>
     <!-- Settings: Web features: Bussin WebX category title -->
     <string name="pref_web_webx_category_title">Bussin WebX</string>
     <!-- Settings: Web features: Bussin WebX category summary -->
@@ -407,6 +419,10 @@
     <string name="dialog_delete_all_entries_title">刪除全部書籤</string>
     <!-- Lists: Delete menu option -->
     <string name="delete">刪除</string>
+    <!-- Lists: No entries / empty hint -->
+    <string name="list_empty_hint">No %s</string>
+    <!-- Lists: Search bar hint -->
+    <string name="action_search_view_hint">Search %s</string>
     <!-- History: Title -->
     <string name="history_title">歷史記錄</string>
     <!-- History: Save to favorites menu option -->
