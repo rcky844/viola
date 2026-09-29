@@ -38,7 +38,6 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.marginTop
 import androidx.core.view.setPadding
@@ -61,6 +60,7 @@ import tipz.viola.databinding.DialogEditTextBinding
 import tipz.viola.databinding.DialogTranslateBinding
 import tipz.viola.download.DownloadActivity
 import tipz.viola.ext.copyClipboard
+import tipz.viola.ext.defaultInsets
 import tipz.viola.ext.dpToPx
 import tipz.viola.ext.getMinTouchTargetSize
 import tipz.viola.ext.getOnSurfaceColor
@@ -151,14 +151,14 @@ class BrowserActivity : VWebViewActivity() {
 
         // Setup layout insets
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            insets.top.takeIf { it > 0 }?.let {
-                (appbar.layoutParams as ConstraintLayout.LayoutParams).topMargin = it
+            val insets = windowInsets.getInsets(defaultInsets)
+            appbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
             }
-            insets.bottom.takeIf { it > 0 }?.let {
-                (toolbarView.layoutParams as ConstraintLayout.LayoutParams).bottomMargin = it
+            toolbarView.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = insets.bottom
             }
-            WindowInsetsCompat.CONSUMED
+            windowInsets
         }
 
         // Setup toolbar

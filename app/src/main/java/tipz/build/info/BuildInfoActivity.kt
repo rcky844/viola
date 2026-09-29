@@ -4,9 +4,10 @@
 package tipz.build.info
 
 import android.os.Bundle
-import androidx.appcompat.widget.LinearLayoutCompat
+import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import tipz.viola.R
 import tipz.viola.databinding.ActivityBuildinfoBinding
 import tipz.viola.webview.activity.BaseActivity
@@ -28,10 +29,10 @@ class BuildInfoActivity : BaseActivity() {
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
         ViewCompat.setOnApplyWindowInsetsListener(binding.appbar) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            insets.top.takeIf { it > 0 }?.let {
-                (view.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
             }
-            WindowInsetsCompat.CONSUMED
+            windowInsets
         }
 
         // Set-up preference

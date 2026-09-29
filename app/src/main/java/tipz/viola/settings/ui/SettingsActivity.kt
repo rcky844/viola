@@ -5,16 +5,17 @@ package tipz.viola.settings.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.annotation.XmlRes
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import tipz.viola.R
 import tipz.viola.databinding.ActivitySettingsBinding
+import tipz.viola.ext.defaultInsets
 import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.ui.fragment.AppearanceFragment
 import tipz.viola.settings.ui.fragment.DevelopmentFragment
@@ -51,14 +52,12 @@ class SettingsActivity : BaseActivity() {
         setContentView(view)
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            insets.top.takeIf { it > 0 }?.let {
-                (binding.appbar.layoutParams as LinearLayoutCompat.LayoutParams).topMargin = it
+            val insets = windowInsets.getInsets(defaultInsets)
+            binding.appbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
             }
-            insets.bottom.takeIf { it > 0 }?.let {
-                binding.scrollView.updatePadding(bottom = it)
-            }
-            WindowInsetsCompat.CONSUMED
+            binding.scrollView.updatePadding(bottom = insets.bottom)
+            windowInsets
         }
 
         // Setup toolbar

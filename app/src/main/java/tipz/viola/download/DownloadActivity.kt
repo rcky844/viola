@@ -102,7 +102,6 @@ class DownloadActivity : BaseActivity() {
         fab.doOnApplyWindowInsets { v, insets, _, margin ->
             insets.getInsets(WindowInsetsCompat.Type.systemBars()).apply {
                 v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                    leftMargin = left + margin.left
                     bottomMargin = bottom + margin.bottom
                     rightMargin = right + margin.right
                 }
