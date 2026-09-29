@@ -87,6 +87,8 @@
     <string name="dialog_insecure_connection_continue_to_site">المتابعة إلى الموقع</string>
     <!-- WebView: Open in external app snackbar message -->
     <string name="snackbar_open_external_message">اكتُشاف رابط خارجي.</string>
+    <!-- WebView: Open in external app fallback snackbar message -->
+    <string name="snackbar_open_external_fallback_message">No application can handle this external link. Open fallback?</string>
     <!-- WebView: Open in external app snackbar action -->
     <string name="snackbar_open_external_action">فتح</string>
     <!-- WebView: Description for files -->
