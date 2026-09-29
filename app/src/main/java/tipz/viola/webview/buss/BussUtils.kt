@@ -1,4 +1,4 @@
-// Copyright (c) 2024-2025 Tipz Team
+// Copyright (c) 2024-2026 Tipz Team
 // SPDX-License-Identifier: Apache-2.0
 
 package tipz.viola.webview.buss
@@ -74,7 +74,7 @@ object BussUtils {
             MainScope().launch {
                 view.loadDataWithBaseURL(realUrl, parsedHtml,
                     "text/html", "UTF-8", url)
-                view.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url, null)
+                view.onPageInformationUpdated(PageLoadState.PAGE_FINISHED, url)
             }
         }
         return true
