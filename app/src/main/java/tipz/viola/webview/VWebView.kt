@@ -319,7 +319,7 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
         Log.i(LOG_TAG, "Checking for possible App Link, url=$url")
         val intent =
-            if (url.startsWith("intent://")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+            if (url.startsWith("intent:")) Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
             else Intent(Intent.ACTION_VIEW, url.toUri())
         if (intent.resolveActivity(context.packageManager) != null) {
             activeSnackBar = Snackbar.make(
@@ -336,11 +336,26 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
             }
             return true
         } else {
-            if (!noToast && progress == PROGRESS_LOAD_COMPLETED) {
+            Log.w(LOG_TAG, "Found no application to handle App Link!")
+            val fallbackUrl = intent.getStringExtra("browser_fallback_url")
+            if (!fallbackUrl.isNullOrEmpty()) {
+                Log.v(LOG_TAG, "Prompting user for App Link fallback, url=$fallbackUrl")
+                activeSnackBar = Snackbar.make(
+                    activity.webviewContainer,
+                    R.string.snackbar_open_external_fallback_message,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBehavior(BaseTransientBottomBar.Behavior().apply {
+                    setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_ANY)
+                }).setAction(R.string.snackbar_open_external_action) {
+                    loadUrl(fallbackUrl)
+                }.apply {
+                    setStartAligned()
+                    show()
+                }
+            } else if (!noToast && progress == PROGRESS_LOAD_COMPLETED) {
                 Log.v(LOG_TAG, "App Link not handled and page loaded, showing toast")
                 context.showMessage(R.string.toast_no_app_to_handle)
             }
-            Log.w(LOG_TAG, "Found no application to handle App Link!")
             return false
         }
     }
@@ -764,5 +779,6 @@ class VWebView(private val context: Context, attrs: AttributeSet?) : WebView(
 
     companion object {
         const val PROGRESS_LOAD_COMPLETED = 100
+        const val INTENT_FALLBACK_URL = "S.browser_fallback_url"
     }
 }
