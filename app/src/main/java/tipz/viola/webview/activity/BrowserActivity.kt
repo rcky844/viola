@@ -113,7 +113,7 @@ class BrowserActivity : VWebViewActivity() {
     private lateinit var fullscreenFab: FullscreenFloatingActionButton
     private var consoleMessageTextView: TextView? = null
     val fade = FadeOrchestrator(this)
-    var viewMode: Int = 0
+    var reverseBarMode = false
     private var setFabHiddenViews = false
 
     @SuppressLint("ClickableViewAccessibility")
@@ -152,11 +152,17 @@ class BrowserActivity : VWebViewActivity() {
         // Setup layout insets
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
             val insets = windowInsets.getInsets(defaultInsets)
+            val isReverseBar = settingsPreference.getIntBool(SettingsKeys.reverseAddressBar)
             appbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = insets.top
+                topMargin = if (isReverseBar) 0 else insets.top
+                bottomMargin = if (isReverseBar && appbar.isVisible) insets.bottom else 0
             }
             toolbarView.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                bottomMargin = insets.bottom
+                bottomMargin = if (isReverseBar && appbar.isVisible) 0 else insets.bottom
+            }
+            webviewContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                // TODO: Proper edge-to-edge implementation for webview
+                topMargin = if (isReverseBar) insets.top else 0
             }
             windowInsets
         }
@@ -273,57 +279,30 @@ class BrowserActivity : VWebViewActivity() {
         super.doSettingsCheck()
         favicon.updateIsDisplayed()
 
-        val reverseAddressBar = settingsPreference.getInt(SettingsKeys.reverseAddressBar)
-        if (reverseAddressBar != viewMode) {
+        val isReverseBar = settingsPreference.getIntBool(SettingsKeys.reverseAddressBar)
+        if (reverseBarMode != isReverseBar) {
             appbar.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                topToBottom = when (reverseAddressBar) {
-                    1 -> R.id.toolbarView
-                    else -> ConstraintSet.UNSET
-                }
-                bottomToBottom = when (reverseAddressBar) {
-                    1 -> ConstraintSet.PARENT_ID
-                    else -> ConstraintSet.UNSET
-                }
-                bottomToTop = when (reverseAddressBar) {
-                    0 -> R.id.webviewContainer
-                    else -> ConstraintSet.UNSET
-                }
-                topToTop = when (reverseAddressBar) {
-                    0 -> ConstraintSet.PARENT_ID
-                    else -> ConstraintSet.UNSET
-                }
+                topToBottom = if (isReverseBar) R.id.toolbarView else ConstraintSet.UNSET
+                bottomToBottom = if (isReverseBar) ConstraintSet.PARENT_ID else ConstraintSet.UNSET
+                bottomToTop = if (isReverseBar) ConstraintSet.UNSET else R.id.webviewContainer
+                topToTop = if (isReverseBar) ConstraintSet.UNSET else ConstraintSet.PARENT_ID
             }
             findInPageView.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                bottomToTop = when (reverseAddressBar) {
-                    1 -> R.id.toolbarView
-                    else -> ConstraintSet.UNSET
-                }
-                topToBottom = when (reverseAddressBar) {
-                    0 -> R.id.appbar
-                    else -> ConstraintSet.UNSET
-                }
+                bottomToTop = if (isReverseBar) R.id.toolbarView else ConstraintSet.UNSET
+                topToBottom = if (isReverseBar) ConstraintSet.UNSET else R.id.appbar
             }
             webviewContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                topToTop = when (reverseAddressBar) {
-                    1 -> ConstraintSet.PARENT_ID
-                    else -> ConstraintSet.UNSET
-                }
-                topToBottom = when (reverseAddressBar) {
-                    0 -> R.id.appbar
-                    else -> ConstraintSet.UNSET
-                }
+                topToTop = if (isReverseBar) ConstraintSet.PARENT_ID else ConstraintSet.UNSET
+                topToBottom = if (isReverseBar) ConstraintSet.UNSET else R.id.appbar
             }
             toolbarView.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                bottomToTop = when (reverseAddressBar) {
-                    1 -> R.id.appbar
-                    else -> ConstraintSet.UNSET
-                }
-                bottomToBottom = when (reverseAddressBar) {
-                    0 -> ConstraintSet.PARENT_ID
-                    else -> ConstraintSet.UNSET
-                }
+                bottomToTop = if (isReverseBar) R.id.appbar else ConstraintSet.UNSET
+                bottomToBottom = if (isReverseBar) ConstraintSet.UNSET else ConstraintSet.PARENT_ID
             }
-            viewMode = reverseAddressBar
+            reverseBarMode = isReverseBar
+
+            // Ensure insets are updated after reversing views
+            ViewCompat.requestApplyInsets(binding.root)
         }
 
         // Auto-fade toolbar

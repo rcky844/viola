@@ -37,6 +37,10 @@ class CustomTabsActivity : VWebViewActivity(true) {
             appbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 topMargin = insets.top
             }
+            webviewContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                // TODO: Proper edge-to-edge implementation for webview
+                bottomMargin = insets.bottom
+            }
             windowInsets
         }
 

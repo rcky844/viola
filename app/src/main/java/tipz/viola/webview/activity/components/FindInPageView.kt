@@ -217,11 +217,7 @@ class FindInPageView(
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) return
         val transitionSet = TransitionSet()
             .addTransition(
-                Slide(when (activity.viewMode) {
-                    0 -> Gravity.TOP
-                    1 -> Gravity.BOTTOM
-                    else -> Gravity.BOTTOM
-                })
+                Slide(if (activity.reverseBarMode) Gravity.BOTTOM else Gravity.TOP)
                 .addTarget(this)
                 .setDuration(resources.getInteger(R.integer.anim_toolbar_expand_slide_speed).toLong())
             )
