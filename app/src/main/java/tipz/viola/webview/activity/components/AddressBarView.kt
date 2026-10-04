@@ -39,6 +39,7 @@ import tipz.viola.settings.SettingsKeys
 import tipz.viola.settings.SettingsSharedPreference
 import tipz.viola.webview.VWebView
 import tipz.viola.webview.VWebViewActivity
+import tipz.viola.webview.activity.BrowserActivity
 import tipz.viola.widget.PropertyDisplayView
 import java.text.DateFormat
 
@@ -218,7 +219,10 @@ class AddressBarView(
                 }
                 messageView.setMaterialDialogViewPadding()
 
-                PopupMaterialAlertDialogBuilder(context, Gravity.TOP)
+                val popupGravity = if (context is BrowserActivity) {
+                    if (context.reverseBarMode) Gravity.BOTTOM else Gravity.TOP
+                } else Gravity.TOP
+                PopupMaterialAlertDialogBuilder(context, popupGravity)
                     .setCustomTitle(titleView)
                     .setView(messageView)
                     .create().show()
