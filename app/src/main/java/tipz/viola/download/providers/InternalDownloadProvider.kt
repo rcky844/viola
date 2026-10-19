@@ -14,6 +14,7 @@ import tipz.viola.download.database.Droha
 import tipz.viola.ext.showMessage
 import tipz.viola.webview.VJavaScriptInterface.Companion.INTERFACE_NAME
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
@@ -107,24 +108,41 @@ class InternalDownloadProvider(override val context: Context) : DownloadProvider
         fun byteArrayToFile(context: Context, barr: ByteArray, downloadPath: String, filename: String) {
             Log.i(LOG_TAG, "byteArrayToFile(): filename=${filename}")
 
-            val path = File(downloadPath)
-            val file = File(path, filename)
+            val baseDir = File(context.getExternalFilesDir(null), "Download").canonicalFile
+            val requestedDir = File(baseDir, downloadPath).canonicalFile
+            if (!requestedDir.path.startsWith(baseDir.path + File.separator) && requestedDir != baseDir) {
+                Log.w(LOG_TAG, "Rejected unsafe downloadPath: $downloadPath")
+                return
+            }
+
+            val safeFilename = filename.substringAfterLast('/').substringAfterLast('\\')
+            if (safeFilename.contains("..") || safeFilename.isBlank()) {
+                Log.w(LOG_TAG, "Rejected unsafe filename: $filename")
+                return
+            }
+
+            val file = File(requestedDir, safeFilename).canonicalFile
+            if (!file.path.startsWith(requestedDir.path + File.separator)) {
+                Log.w(LOG_TAG, "Rejected file escaping target directory: $filename")
+                return
+            }
 
             try {
-                if (!path.exists()) path.mkdirs()
+                if (!requestedDir.exists()) requestedDir.mkdirs()
                 if (!file.exists()) file.createNewFile()
 
                 val os: OutputStream = FileOutputStream(file)
                 os.write(barr)
                 os.close()
             } catch (ignored: IOException) {
+                return
             }
 
             // Tell the media scanner about the new file so that it is immediately available to the user.
             MediaScannerConnection.scanFile(context, arrayOf(file.toString()),
                 null, null)
             context.showMessage(context.resources.getString(
-                R.string.downloads_toast_success, filename))
+                R.string.downloads_toast_success, safeFilename))
         }
     }
 }
